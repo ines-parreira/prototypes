@@ -1,21 +1,24 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {Component, ReactNode} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import {DatetimeLabel} from '../../../../../../../../utils/labels'
-import ActionButtonsGroup from '../../ActionButtonsGroup'
-import {CardHeaderDetails} from '../../CardHeaderDetails'
-import DraftOrderModal from '../shared/DraftOrderModal'
-import {CardHeaderValue} from '../../CardHeaderValue'
-import type {ActionType} from '../../types'
-import {ShopifyAction} from '../constants'
-import MoneyAmount from '../../MoneyAmount'
+import {
+    FulfillmentStatus,
+    FinancialStatus,
+} from '../../../../../../../../../../constants/integrations/types/shopify'
+import {DatetimeLabel} from '../../../../../../../../utils/labels.js'
+import ActionButtonsGroup from '../../ActionButtonsGroup.js'
+import {CardHeaderDetails} from '../../CardHeaderDetails.js'
+import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal.js'
+import {CardHeaderValue} from '../../CardHeaderValue.js'
+import {InfobarAction} from '../../types'
+//$TsFixMe replace with enum once migrated
+import {ShopifyAction} from '../constants.js'
+import MoneyAmount from '../../MoneyAmount.js'
 
-import CancelOrderModal from './CancelOrderModal'
-import RefundOrderModal from './RefundOrderModal'
+import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
+import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
 import OrderStatus from './OrderStatus'
 
 export default function OrderWidget() {
@@ -28,11 +31,11 @@ export default function OrderWidget() {
 }
 
 type AfterTitleProps = {
-    isEditing: boolean,
-    source: Map<string, string | number | boolean>,
+    isEditing: boolean
+    source: Map<string, string | number | boolean>
 }
 
-class AfterTitle extends React.Component<AfterTitleProps> {
+class AfterTitle extends Component<AfterTitleProps> {
     static contextTypes = {
         integrationId: PropTypes.number,
         isOrderCancelled: PropTypes.bool.isRequired,
@@ -50,7 +53,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             isOrderPartiallyFulfilled,
         } = this.context
 
-        const actions: Array<ActionType> = [
+        const actions: Array<InfobarAction> = [
             {
                 key: 'refund',
                 options: [
@@ -136,7 +139,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             },
         ]
 
-        const removed = []
+        const removed: string[] = []
 
         if (isOrderCancelled || isOrderFulfilled || isOrderPartiallyFulfilled) {
             removed.push('cancel')
@@ -148,7 +151,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
         // remove removed actions from list of available actions
         return actions.filter(
-            (action: ActionType) => !removed.includes(action.key)
+            (action: InfobarAction) => !removed.includes(action.key)
         )
     }
 
@@ -164,15 +167,19 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             return null
         }
 
-        const payload: Object = {
-            order_id: source.get('id') || '',
+        const payload = {
+            order_id: (source.get('id') as number) || '',
         }
 
         return (
             <>
                 <OrderStatus
-                    fulfillmentStatus={source.get('fulfillment_status')}
-                    financialStatus={source.get('financial_status')}
+                    fulfillmentStatus={
+                        source.get('fulfillment_status') as FulfillmentStatus
+                    }
+                    financialStatus={
+                        source.get('financial_status') as FinancialStatus
+                    }
                     isCancelled={isOrderCancelled}
                 />
                 <ActionButtonsGroup
@@ -183,7 +190,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     <CardHeaderValue label="Created">
                         <DatetimeLabel
                             key="created-at"
-                            dateTime={source.get('created_at')}
+                            dateTime={source.get('created_at') as string}
                         />
                     </CardHeaderValue>
                     <CardHeaderValue label="Total">
@@ -207,11 +214,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 }
 
 type TitleWrapperProps = {
-    children?: Node,
-    source: Map<*, *>,
+    children?: ReactNode
+    source: Map<any, any>
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapper extends Component<TitleWrapperProps> {
     // eslint-disable-line
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
@@ -219,15 +226,14 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
     render() {
         const {children, source} = this.props
-        const shopName: string = this.context.integration.getIn([
-            'meta',
-            'shop_name',
-        ])
+        const shopName: string = (this.context as {
+            integration: Map<any, any>
+        }).integration.getIn(['meta', 'shop_name']) as string
 
         return (
             <a
                 href={`https://${shopName}.myshopify.com/admin/orders/${(
-                    source.get('id') || ''
+                    (source.get('id') as number) || ''
                 ).toString()}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -239,12 +245,11 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 }
 
 type WrapperProps = {
-    children: Node,
-    source: Map<*, *>,
+    children: ReactNode
+    source: Map<any, any>
 }
 
 class Wrapper extends React.Component<WrapperProps> {
-    // eslint-disable-line
     static childContextTypes = {
         order: ImmutablePropTypes.map.isRequired,
         orderId: PropTypes.number,

@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import {shallow} from 'enzyme'
 import {Button, Form, InputGroupAddon, Popover} from 'reactstrap'
@@ -9,25 +7,31 @@ import _noop from 'lodash/noop'
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {AppliedDiscount} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {
+    AppliedDiscount,
+    DiscountType,
+} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 import DiscountPopover from '../DiscountPopover'
-import {ShopifyAction} from '../../../../constants'
+//$TsFixMe replace with enum once migrated
+import {ShopifyAction} from '../../../../constants.js'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
+        const segmentTracker: Record<string, unknown> = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+        )
+
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...segmentTracker,
             logEvent: jest.fn(),
         }
     }
 )
 
 describe('<DiscountPopover/>', () => {
-    let onChange
+    let onChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -57,7 +61,7 @@ describe('<DiscountPopover/>', () => {
             const appliedDiscount: AppliedDiscount = {
                 title: 'foo',
                 value: '5.99',
-                value_type: 'fixed_amount',
+                value_type: DiscountType.FixedAmount,
                 amount: '5.99',
             }
 
@@ -95,7 +99,7 @@ describe('<DiscountPopover/>', () => {
         ])(
             'should call prop `onChange` with fixed amount discount',
             (actionName, openEvent, submitEvent) => {
-                const component = shallow(
+                const component = shallow<DiscountPopover>(
                     <DiscountPopover
                         label="order"
                         actionName={actionName}
@@ -142,7 +146,7 @@ describe('<DiscountPopover/>', () => {
         )
 
         it('should call prop `onChange` with percentage amount discount', () => {
-            const component = shallow(
+            const component = shallow<DiscountPopover>(
                 <DiscountPopover
                     label="order"
                     actionName={ShopifyAction.DUPLICATE_ORDER}
@@ -204,7 +208,7 @@ describe('<DiscountPopover/>', () => {
             const appliedDiscount: AppliedDiscount = {
                 title: 'foo',
                 value: '5.99',
-                value_type: 'fixed_amount',
+                value_type: DiscountType.FixedAmount,
                 amount: '5.99',
             }
 
@@ -247,7 +251,7 @@ describe('<DiscountPopover/>', () => {
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow(
+            const component = shallow<DiscountPopover>(
                 <DiscountPopover
                     label="order"
                     actionName={actionName}

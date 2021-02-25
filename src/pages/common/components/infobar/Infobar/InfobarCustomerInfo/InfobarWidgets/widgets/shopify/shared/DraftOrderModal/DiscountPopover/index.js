@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './DiscountPopover'
+export {default} from './DiscountPopover.tsx'

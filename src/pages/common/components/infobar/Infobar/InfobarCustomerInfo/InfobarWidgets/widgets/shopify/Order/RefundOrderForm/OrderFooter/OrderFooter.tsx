@@ -16,7 +16,7 @@ import {
     getTotalQuantities,
 } from '../../../../../../../../../../../../business/shopify/refund'
 import {ShopifyAction} from '../../../constants.js'
-import AmountInput from '../../../shared/AmountInput/AmountInput.js'
+import AmountInput from '../../../shared/AmountInput/AmountInput'
 
 import OrderTotals from './OrderTotals/OrderTotals'
 import css from './OrderFooter.less'
@@ -120,7 +120,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
         } = this.props
         const amount = payload.getIn(['transactions', 0, 'amount'], '')
         const amountMax = refund.isEmpty()
-            ? null
+            ? undefined
             : getTotalAvailableToRefund(refund)
         const totalQuantities = getTotalQuantities(payload, refund)
         const discrepancyLimit = getRefundAmount(refund)

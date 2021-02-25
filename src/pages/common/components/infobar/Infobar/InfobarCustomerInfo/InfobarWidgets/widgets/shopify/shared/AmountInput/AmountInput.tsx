@@ -1,31 +1,29 @@
-// @flow
-
-import React from 'react'
+import React, {FocusEvent, ChangeEvent, PureComponent} from 'react'
 import {Input} from 'reactstrap'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify.ts'
-import {formatPrice} from '../../../../../../../../../../../business/shopify/number.ts'
-import getShopifyMoneySymbol from '../helpers'
+import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify'
+import {formatPrice} from '../../../../../../../../../../../business/shopify/number'
+import getShopifyMoneySymbol from '../helpers.js'
 
 import css from './AmountInput.less'
 
 type Props = {
-    id: string,
-    value: string,
-    min: ?number,
-    max: ?number,
-    className: ?string,
-    required: boolean,
-    disabled: boolean,
-    currencyCode: string,
-    symbol: ?string,
-    saveInputRef: (inputRef: HTMLInputElement) => void,
-    onChange: (value: string) => void,
+    id: string
+    value: string
+    min?: number
+    max?: number
+    className: string | null
+    required: boolean
+    disabled: boolean
+    currencyCode: string
+    symbol: string | null
+    saveInputRef: (inputRef: HTMLInputElement) => void
+    onChange: (value: string) => void
 }
 
-export default class AmountInput extends React.PureComponent<Props> {
+export default class AmountInput extends PureComponent<Props> {
     static defaultProps = {
         id: 'amount',
         min: 0,
@@ -37,7 +35,7 @@ export default class AmountInput extends React.PureComponent<Props> {
         saveInputRef: _noop,
     }
 
-    _onBlur = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onBlur = (event: FocusEvent<HTMLInputElement>) => {
         const {currencyCode, onChange} = this.props
         const {value} = event.target
         const formattedValue = formatPrice(value || 0, currencyCode)
@@ -48,7 +46,7 @@ export default class AmountInput extends React.PureComponent<Props> {
         }
     }
 
-    _onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {onChange} = this.props
         const {value} = event.target
 

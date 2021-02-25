@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './DraftOrderTable'
+export {default} from './DraftOrderTable.tsx'

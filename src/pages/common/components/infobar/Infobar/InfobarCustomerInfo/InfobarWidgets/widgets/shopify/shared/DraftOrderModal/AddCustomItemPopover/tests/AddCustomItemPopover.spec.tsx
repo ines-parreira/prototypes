@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import {shallow} from 'enzyme'
 import {Button, Form, Popover} from 'reactstrap'
@@ -9,24 +7,27 @@ import _noop from 'lodash/noop'
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import AddCustomItemPopover from '../AddCustomItemPopover'
-import {ShopifyAction} from '../../../../constants'
+//$TsFixMe replace with enum once migrated
+import {ShopifyAction} from '../../../../constants.js'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
+        const segmentTracker: Record<string, unknown> = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+        )
+
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...segmentTracker,
             logEvent: jest.fn(),
         }
     }
 )
 
 describe('<AddCustomItemPopover/>', () => {
-    let onSubmit
+    let onSubmit: jest.MockedFunction<any>
 
     beforeEach(() => {
         onSubmit = jest.fn()
@@ -62,7 +63,7 @@ describe('<AddCustomItemPopover/>', () => {
         ])(
             'should call prop `onSubmit` with form values',
             (actionName, openEvent, submitEvent) => {
-                const component = shallow(
+                const component = shallow<AddCustomItemPopover>(
                     <AddCustomItemPopover
                         currencyCode="USD"
                         actionName={actionName}
@@ -123,7 +124,7 @@ describe('<AddCustomItemPopover/>', () => {
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow(
+            const component = shallow<AddCustomItemPopover>(
                 <AddCustomItemPopover
                     currencyCode="USD"
                     actionName={actionName}

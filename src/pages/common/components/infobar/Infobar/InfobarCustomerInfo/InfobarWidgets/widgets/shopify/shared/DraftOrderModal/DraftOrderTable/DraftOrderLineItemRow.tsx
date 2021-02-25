@@ -1,8 +1,6 @@
-// @flow
-
-import React from 'react'
+import React, {ChangeEvent, PureComponent} from 'react'
 import {Button, Input} from 'reactstrap'
-import {type Record} from 'immutable'
+import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -10,53 +8,47 @@ import _debounce from 'lodash/debounce'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
-} from '../../../../../../../../../../../../business/shopify/lineItem.ts'
+} from '../../../../../../../../../../../../business/shopify/lineItem'
 import defaultImage from '../../../../../../../../../../../../../img/presentationals/shopify-product-default-image.png'
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {
-    LineItem,
-    Product,
-    AppliedDiscount,
-} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
-import {ProductStockQuantity} from '../../StockQuantity/index.ts'
-import DiscountPopover from '../DiscountPopover'
-import MoneyAmount from '../../../../MoneyAmount'
-import {ShopifyAction} from '../../../constants'
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import {ProductStockQuantity} from '../../StockQuantity'
+import DiscountPopover from '../DiscountPopover/DiscountPopover'
+import MoneyAmount from '../../../../MoneyAmount.js'
+// $TsFixMe replace with ShopifyAction enum
+import {ShopifyAction} from '../../../constants.js'
 
 import css from './DraftOrderLineItemRow.less'
 
 type Props = {
-    id: string,
-    actionName: string,
-    lineItem: Record<$Shape<LineItem>>,
-    product: ?Record<Product>,
-    shopName: string,
-    currencyCode: string,
-    removable: boolean,
-    onChange: (Record<$Shape<LineItem>>) => void,
-    onDelete: () => void,
+    id: string
+    actionName: string
+    lineItem: Map<any, any>
+    product: Map<any, any> | null
+    shopName: string
+    currencyCode: string
+    removable: boolean
+    onChange: (record: Map<any, any>) => void
+    onDelete: () => void
 }
 
 type State = {
-    quantity: number,
+    quantity: number
 }
 
-export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
+export class DraftOrderLineItemRow extends PureComponent<Props, State> {
     state = {
         quantity: this.props.lineItem.get('quantity'),
     }
 
-    _onAppliedDiscountChange = (
-        appliedDiscount: Record<$Shape<AppliedDiscount>> | null
-    ) => {
+    _onAppliedDiscountChange = (appliedDiscount: Map<any, any> | null) => {
         const {onChange, lineItem} = this.props
         const newLineItem = lineItem.set('applied_discount', appliedDiscount)
 
         onChange(newLineItem)
     }
 
-    _onQuantityChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(event.target.value)
         const quantity = isNaN(value) ? 1 : value
 
@@ -98,7 +90,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
 
     _renderTitle() {
         const {shopName, lineItem} = this.props
-        const productId = lineItem.get('product_id')
+        const productId = lineItem.get('product_id') as string | null
         if (!productId) {
             return (
                 <div>
@@ -108,7 +100,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
         }
 
         const href = `https://${shopName}.myshopify.com/admin/products/${productId}`
-        const variantId = lineItem.get('variant_id')
+        const variantId = lineItem.get('variant_id') as number | null
 
         return (
             <div>
@@ -149,9 +141,9 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
         const {lineItem, product} = this.props
         const variantId = lineItem.get('variant_id')
         const variant = !!product
-            ? product
-                  .get('variants', [])
-                  .find((variant) => variant.get('id') === variantId)
+            ? ((product.get('variants', []) as List<any>).find(
+                  (variant: Map<any, any>) => variant.get('id') === variantId
+              ) as Map<any, any>)
             : null
 
         return (

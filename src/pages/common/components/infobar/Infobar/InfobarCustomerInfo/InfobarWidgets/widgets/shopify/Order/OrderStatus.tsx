@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
@@ -7,58 +5,54 @@ import classnames from 'classnames'
 import {
     FinancialStatus,
     FulfillmentStatus,
-} from '../../../../../../../../../../constants/integrations/shopify.ts'
-import type {
-    FulfillmentStatusType,
-    FinancialStatusType,
-} from '../../../../../../../../../../constants/integrations/types/shopify.js'
-import {humanizeString} from '../../../../../../../../../../utils.ts'
+} from '../../../../../../../../../../constants/integrations/types/shopify'
+import {humanizeString} from '../../../../../../../../../../utils'
 
 import css from './OrderStatus.less'
 
 type FulfillmentBadgeProps = {
-    fulfillmentStatus: FulfillmentStatusType,
+    fulfillmentStatus: FulfillmentStatus
 }
 
 type FinancialBadgeProps = {
-    financialStatus: FinancialStatusType,
+    financialStatus: FinancialStatus
 }
 
 type Props = FulfillmentBadgeProps &
     FinancialBadgeProps & {
-        isCancelled: boolean,
+        isCancelled: boolean
     }
 
-type FulfillmentValues = Map<FulfillmentStatusType, [string, string, string]>
-type FinancialValues = Map<FinancialStatusType, [string, string]>
+type FulfillmentValues = Map<FulfillmentStatus | null, [string, string, string]>
+type FinancialValues = Map<FinancialStatus, [string, string]>
 
 const fulfillmentValues: FulfillmentValues = new Map([
     [
-        FulfillmentStatus.FULFILLED,
+        FulfillmentStatus.Fulfilled,
         [css.successBadge, css.fullIcon, 'Fulfilled'],
     ],
     [
-        FulfillmentStatus.PARTIAL,
+        FulfillmentStatus.Partial,
         [css.successBadge, css.partialIcon, 'Partially fulfilled'],
     ],
     [
-        FulfillmentStatus.RESTOCKED,
+        FulfillmentStatus.Restocked,
         [css.secondaryBadge, css.emptyIcon, 'Restocked'],
     ],
     [null, [css.secondaryBadge, css.emptyIcon, 'Unfulfilled']],
 ])
 
 const financialValues: FinancialValues = new Map([
-    [FinancialStatus.PENDING, [css.secondaryBadge, css.emptyIcon]],
-    [FinancialStatus.AUTHORIZED, [css.secondaryBadge, css.emptyIcon]],
-    [FinancialStatus.PARTIALLY_PAID, [css.successBadge, css.partialIcon]],
-    [FinancialStatus.PAID, [css.successBadge, css.fullIcon]],
+    [FinancialStatus.Pending, [css.secondaryBadge, css.emptyIcon]],
+    [FinancialStatus.Authorized, [css.secondaryBadge, css.emptyIcon]],
+    [FinancialStatus.PartiallyPaid, [css.successBadge, css.partialIcon]],
+    [FinancialStatus.Paid, [css.successBadge, css.fullIcon]],
     [
-        FinancialStatus.PARTIALLY_REFUNDED,
+        FinancialStatus.PartiallyRefunded,
         [css.secondaryBadge, css.partialIconSecondary],
     ],
-    [FinancialStatus.REFUNDED, [css.secondaryBadge, css.fullIconSecondary]],
-    [FinancialStatus.VOIDED, [css.secondaryBadge, css.fullIconSecondary]],
+    [FinancialStatus.Refunded, [css.secondaryBadge, css.fullIconSecondary]],
+    [FinancialStatus.Voided, [css.secondaryBadge, css.fullIconSecondary]],
 ])
 
 export default function OrderStatus({

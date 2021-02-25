@@ -1,12 +1,10 @@
-// @flow
-
 import React from 'react'
 import {shallow} from 'enzyme'
 
 import AmountInput from '../AmountInput'
 
 describe('<AmountInput/>', () => {
-    let onChange
+    let onChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         onChange = jest.fn()

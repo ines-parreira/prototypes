@@ -51,37 +51,37 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
       onChange={[Function]}
       onDelete={[Function]}
       product={
-        Object {
-          "created_at": "2020-01-01 00:00:00.000000",
+        Immutable.Map {
           "id": 1,
-          "image": Object {
-            "alt": "Alt",
+          "title": "Product 1",
+          "created_at": "2020-01-01 00:00:00.000000",
+          "image": Immutable.Map {
             "id": 1,
+            "alt": "Alt",
             "src": "src",
           },
-          "images": Array [
-            Object {
-              "alt": "Alt",
+          "images": Immutable.List [
+            Immutable.Map {
               "id": 1,
+              "alt": "Alt",
               "src": "src",
             },
           ],
-          "title": "Product 1",
-          "variants": Array [
-            Object {
+          "variants": Immutable.List [
+            Immutable.Map {
+              "taxable": true,
               "admin_graphql_api_id": "gid://shopify/ProductVariant/1",
-              "id": 1,
-              "image_id": 1,
               "inventory_management": null,
+              "price": "9.99",
               "inventory_quantity": 0,
+              "title": "Variant 1",
+              "id": 1,
               "option1": null,
+              "sku": "11111",
               "option2": null,
               "option3": null,
-              "price": "9.99",
+              "image_id": 1,
               "requires_shipping": true,
-              "sku": "11111",
-              "taxable": true,
-              "title": "Variant 1",
             },
           ],
         }
@@ -113,37 +113,37 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
       onChange={[Function]}
       onDelete={[Function]}
       product={
-        Object {
-          "created_at": "2020-01-01 00:00:00.000000",
+        Immutable.Map {
           "id": 2,
-          "image": Object {
-            "alt": "Alt",
+          "title": "Product 2",
+          "created_at": "2020-01-01 00:00:00.000000",
+          "image": Immutable.Map {
             "id": 1,
+            "alt": "Alt",
             "src": "src",
           },
-          "images": Array [
-            Object {
-              "alt": "Alt",
+          "images": Immutable.List [
+            Immutable.Map {
               "id": 1,
+              "alt": "Alt",
               "src": "src",
             },
           ],
-          "title": "Product 2",
-          "variants": Array [
-            Object {
+          "variants": Immutable.List [
+            Immutable.Map {
+              "taxable": true,
               "admin_graphql_api_id": "gid://shopify/ProductVariant/1",
-              "id": 1,
-              "image_id": 1,
               "inventory_management": null,
+              "price": "9.99",
               "inventory_quantity": 0,
+              "title": "Variant 1",
+              "id": 1,
               "option1": null,
+              "sku": "11111",
               "option2": null,
               "option3": null,
-              "price": "9.99",
+              "image_id": 1,
               "requires_shipping": true,
-              "sku": "11111",
-              "taxable": true,
-              "title": "Variant 1",
             },
           ],
         }

@@ -1,7 +1,7 @@
 // List of non-fractional currencies (zero-decimal currencies). Source: https://stripe.com/docs/currencies#zero-decimal
 // Supported currencies on Shopify:
 // https://help.shopify.com/en/manual/payments/shopify-payments/multi-currency#supported-currencies
-export const NON_FRACTIONAL_CURRENCIES = [
+export const NON_FRACTIONAL_CURRENCIES = Object.freeze([
     'BIF',
     'CLP',
     'DJF',
@@ -18,7 +18,7 @@ export const NON_FRACTIONAL_CURRENCIES = [
     'XAF',
     'XOF',
     'XPF',
-]
+])
 
 //$TsFixMe fallback value for js, use FinancialStatus enum instead
 export const FinancialStatus = Object.freeze({

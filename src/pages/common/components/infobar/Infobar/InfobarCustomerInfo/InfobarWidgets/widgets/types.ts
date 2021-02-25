@@ -22,7 +22,7 @@ export type InfobarAction = {
     key: string
     options: Array<Option>
     title: ReactNode
-    child: Record<string, unknown>
+    child: JSX.Element
     popover?: string
     tooltip?: string
     modal?: ComponentType<InfobarModalProps>

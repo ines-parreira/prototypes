@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './OrderWidget'
+export {default} from './OrderWidget.tsx'

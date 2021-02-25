@@ -12,7 +12,7 @@ import {
     getTotalTax,
 } from '../../../../../../../../../../../../../business/shopify/refund'
 import MoneyAmount from '../../../../../MoneyAmount.js'
-import AmountInput from '../../../../shared/AmountInput/AmountInput.js'
+import AmountInput from '../../../../shared/AmountInput/AmountInput'
 
 import css from './OrderTotals.less'
 

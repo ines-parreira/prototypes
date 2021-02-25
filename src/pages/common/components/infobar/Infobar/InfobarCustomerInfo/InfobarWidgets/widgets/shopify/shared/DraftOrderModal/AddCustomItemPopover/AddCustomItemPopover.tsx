@@ -1,6 +1,10 @@
-// @flow
-
-import React from 'react'
+import React, {
+    ChangeEvent,
+    FormEvent,
+    ComponentProps,
+    PureComponent,
+    KeyboardEvent,
+} from 'react'
 import {
     Button,
     Form,
@@ -10,47 +14,44 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, type Record} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {LineItem} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
-import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
-import AmountInput from '../../AmountInput'
-import {ShopifyAction} from '../../../constants'
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import {focusElement} from '../../../../../../../../../../../../utils/html'
+import AmountInput from '../../AmountInput/AmountInput'
+// $TsFixMe replace with ShopifyAction enum
+import {ShopifyAction} from '../../../constants.js'
 
 import css from './AddCustomItemPopover.less'
 
 type Props = {
-    id: string,
-    placement: string,
-    actionName: string,
-    className: ?string,
-    currencyCode: string,
-    onSubmit: (Record<$Shape<LineItem>>) => void,
+    id: string
+    placement: ComponentProps<typeof Popover>['placement']
+    actionName: string
+    className: string | null
+    currencyCode: string
+    onSubmit: (record: Map<any, any>) => void
 }
 
 type State = {
-    isOpen: boolean,
-    title: string,
-    price: string,
-    quantity: number,
-    taxable: boolean,
-    requiresShipping: boolean,
+    isOpen: boolean
+    title: string
+    price: string
+    quantity: number
+    taxable: boolean
+    requiresShipping: boolean
 }
 
-export default class AddCustomItemPopover extends React.PureComponent<
-    Props,
-    State
-> {
+export default class AddCustomItemPopover extends PureComponent<Props, State> {
     static defaultProps = {
         placement: 'bottom',
         className: null,
     }
 
-    _buttonElement: HTMLButtonElement
-    _inputElement: HTMLInputElement
+    _buttonElement: HTMLButtonElement | null = null
+    _inputElement: HTMLInputElement | null = null
 
     state = {
         isOpen: false,
@@ -70,7 +71,7 @@ export default class AddCustomItemPopover extends React.PureComponent<
         const onClose = wasOpen && !isOpen
 
         if (onOpen) {
-            focusElement(() => this._inputElement)
+            focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
                     ? segmentTracker.EVENTS
@@ -79,11 +80,11 @@ export default class AddCustomItemPopover extends React.PureComponent<
                           .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
             )
         } else if (onClose) {
-            focusElement(() => this._buttonElement)
+            focusElement(() => this._buttonElement as HTMLInputElement)
         }
     }
 
-    _onKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             this._toggle()
         }
@@ -105,7 +106,7 @@ export default class AddCustomItemPopover extends React.PureComponent<
         this._inputElement = inputRef
     }
 
-    _onTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value
         this.setState({title})
     }
@@ -114,22 +115,22 @@ export default class AddCustomItemPopover extends React.PureComponent<
         this.setState({price})
     }
 
-    _onQuantityChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
         const quantity = parseInt(event.target.value) || 1
         this.setState({quantity})
     }
 
-    _onTaxableChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onTaxableChange = (event: ChangeEvent<HTMLInputElement>) => {
         const taxable = event.target.checked
         this.setState({taxable})
     }
 
-    _onShippingChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onShippingChange = (event: ChangeEvent<HTMLInputElement>) => {
         const requiresShipping = event.target.checked
         this.setState({requiresShipping})
     }
 
-    _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    _onSubmit = (event: FormEvent) => {
         const {currencyCode, actionName, onSubmit} = this.props
         const {title, price, quantity, taxable, requiresShipping} = this.state
 

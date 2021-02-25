@@ -1,45 +1,48 @@
-// @flow
-
 import {shallow} from 'enzyme'
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../../fixtures/shopify'
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {DraftOrderLineItemRow} from '../DraftOrderLineItemRow'
-import {ShopifyAction} from '../../../../constants'
-import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify.ts'
+// $TsFixMe replace with ShopifyAction enum
+import {ShopifyAction} from '../../../../constants.js'
+import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
+        const segmentTracker: Record<string, unknown> = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+        )
+
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...segmentTracker,
             logEvent: jest.fn(),
         }
     }
 )
 
 describe('<DraftOrderLineItemRow/>', () => {
-    let onChange, onDelete, props
+    let onChange: jest.MockedFunction<any>,
+        onDelete,
+        props: ComponentProps<typeof DraftOrderLineItemRow>
 
     beforeEach(() => {
         onChange = jest.fn()
         onDelete = jest.fn()
 
-        props = {
+        props = ({
             id: 'line-item',
             actionName: ShopifyAction.DUPLICATE_ORDER,
             shopName: 'storegorgias3',
@@ -47,12 +50,15 @@ describe('<DraftOrderLineItemRow/>', () => {
             removable: true,
             onChange,
             onDelete,
-        }
+        } as unknown) as ComponentProps<typeof DraftOrderLineItemRow>
     })
 
     describe('render()', () => {
         it('should render without product image', () => {
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
             const lineItem = payload.getIn(['line_items', 0])
 
             const component = shallow(
@@ -67,7 +73,10 @@ describe('<DraftOrderLineItemRow/>', () => {
         })
 
         it('should render with product image', () => {
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
             const lineItem = payload.getIn(['line_items', 0])
 
             const component = shallow(
@@ -82,13 +91,17 @@ describe('<DraftOrderLineItemRow/>', () => {
         })
 
         it('should render with applied discount', () => {
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
             const appliedDiscount = fromJS(
                 shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'})
             )
-            const lineItem = payload
-                .getIn(['line_items', 0])
-                .set('applied_discount', appliedDiscount)
+            const lineItem = (payload.getIn(['line_items', 0]) as Map<
+                any,
+                any
+            >).set('applied_discount', appliedDiscount)
 
             const component = shallow(
                 <DraftOrderLineItemRow
@@ -102,8 +115,14 @@ describe('<DraftOrderLineItemRow/>', () => {
         })
 
         it('should render without quantity and without price', () => {
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+            const lineItem = (payload.getIn(['line_items', 0]) as Map<
+                any,
+                any
+            >).set('quantity', 0)
 
             const component = shallow(
                 <DraftOrderLineItemRow
@@ -118,13 +137,19 @@ describe('<DraftOrderLineItemRow/>', () => {
         })
 
         it('should render with product stock quantity', () => {
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+            const lineItem = (payload.getIn(['line_items', 0]) as Map<
+                any,
+                any
+            >).set('quantity', 0)
             const variantId = payload.getIn(['line_items', 0, 'variant_id'])
             const variant = fromJS(
                 shopifyVariantFixture({
                     id: variantId,
-                    inventoryManagement: InventoryManagement.Shopify,
+                    inventoryManagement: InventoryManagement.Shopify as any,
                     inventoryQuantity: 99,
                 })
             )
@@ -143,8 +168,14 @@ describe('<DraftOrderLineItemRow/>', () => {
         })
 
         it('should render without product stock quantity because the inventory is not tracked', () => {
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+            const lineItem = (payload.getIn(['line_items', 0]) as Map<
+                any,
+                any
+            >).set('quantity', 0)
             const variantId = payload.getIn(['line_items', 0, 'variant_id'])
             const variant = fromJS(
                 shopifyVariantFixture({
@@ -181,8 +212,13 @@ describe('<DraftOrderLineItemRow/>', () => {
         ])(
             'should call onChange() with updated line item',
             (actionName, event) => {
-                const payload = fromJS(shopifyDraftOrderPayloadFixture())
-                const lineItem = payload.getIn(['line_items', 0])
+                const payload = fromJS(
+                    shopifyDraftOrderPayloadFixture()
+                ) as Map<any, any>
+                const lineItem = payload.getIn(['line_items', 0]) as Map<
+                    any,
+                    any
+                >
 
                 const component = shallow(
                     <DraftOrderLineItemRow

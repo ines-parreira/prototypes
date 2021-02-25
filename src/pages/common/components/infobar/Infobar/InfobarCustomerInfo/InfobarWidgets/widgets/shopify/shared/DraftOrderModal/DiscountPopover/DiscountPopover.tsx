@@ -1,6 +1,12 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {
+    ReactNode,
+    ChangeEvent,
+    ComponentProps,
+    MouseEvent,
+    PureComponent,
+    KeyboardEvent,
+    SyntheticEvent,
+} from 'react'
 import {
     Button,
     Form,
@@ -12,53 +18,54 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, type Record} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount.ts'
-import type {
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount'
+import {
     AppliedDiscount,
     DiscountType,
 } from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {
     formatPercentage,
     formatPrice,
-} from '../../../../../../../../../../../../business/shopify/number.ts'
-import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
-import getShopifyMoneySymbol from '../../helpers'
-import AmountInput from '../../AmountInput'
-import {ShopifyAction} from '../../../constants'
+} from '../../../../../../../../../../../../business/shopify/number'
+import {focusElement} from '../../../../../../../../../../../../utils/html'
+import getShopifyMoneySymbol from '../../helpers.js'
+import AmountInput from '../../AmountInput/AmountInput'
+//$TsFixMe replace with enum once migrated
+import {ShopifyAction} from '../../../constants.js'
 
 import css from './DiscountPopover.less'
 
 type Props = {
-    id: string,
-    label: string,
-    actionName: string,
-    children: Node,
-    placement: string,
-    editable: boolean,
-    currencyCode: string,
-    max: number,
-    value: Record<AppliedDiscount> | null,
-    onChange: (Record<AppliedDiscount> | null) => void,
+    id: string
+    label: string
+    actionName: string
+    children: ReactNode
+    placement: ComponentProps<typeof Popover>['placement']
+    editable: boolean
+    currencyCode: string
+    max: number
+    value: Map<any, any> | null
+    onChange: (arg0: Map<any, any> | null) => void
 }
 
 type State = {
-    isOpen: boolean,
-    type: DiscountType,
-    discountValue: string,
-    title: string,
+    isOpen: boolean
+    type: DiscountType
+    discountValue: string
+    title: string
 }
 
-export default class DiscountPopover extends React.PureComponent<Props, State> {
+export default class DiscountPopover extends PureComponent<Props, State> {
     static defaultProps = {
         placement: 'bottom',
     }
 
-    _buttonElement: HTMLButtonElement
-    _inputElement: HTMLInputElement
+    _buttonElement: HTMLButtonElement | null = null
+    _inputElement: HTMLInputElement | null = null
 
     state = {
         isOpen: false,
@@ -80,20 +87,22 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
         const onClose = wasOpen && !isOpen
 
         if (onOpen) {
-            focusElement(() => this._inputElement)
+            focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS
+                    ? //$TsFixMe use enum once migrated
+                      segmentTracker.EVENTS
                           .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN
-                    : segmentTracker.EVENTS
+                    : //$TsFixMe use enum once migrated
+                      segmentTracker.EVENTS
                           .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN
             )
         } else if (onClose) {
-            focusElement(() => this._buttonElement)
+            focusElement(() => this._buttonElement as HTMLButtonElement)
         }
     }
 
-    _onKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             this._toggle()
         }
@@ -107,25 +116,25 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
         })
     }
 
-    _onFixedAmountClicked = (event: SyntheticInputEvent<HTMLButtonElement>) => {
+    _onFixedAmountClicked = (event: MouseEvent) => {
         event.preventDefault()
 
         const {currencyCode} = this.props
         const {discountValue} = this.state
 
         this.setState({
-            type: 'fixed_amount',
+            type: DiscountType.FixedAmount,
             discountValue: formatPrice(discountValue, currencyCode),
         })
     }
 
-    _onPercentageClicked = (event: SyntheticInputEvent<HTMLButtonElement>) => {
+    _onPercentageClicked = (event: MouseEvent) => {
         event.preventDefault()
 
         const {discountValue} = this.state
 
         this.setState({
-            type: 'percentage',
+            type: DiscountType.Percentage,
             discountValue: formatPercentage(discountValue),
         })
     }
@@ -142,12 +151,12 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
         this.setState({discountValue})
     }
 
-    _onTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value
         this.setState({title})
     }
 
-    _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    _onSubmit = (event: SyntheticEvent) => {
         const {max, currencyCode, actionName, onChange} = this.props
         const {title, type, discountValue} = this.state
         const value = formatPrice(discountValue, currencyCode)
@@ -170,9 +179,11 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS
+                ? //$TsFixMe use enum once migrated
+                  segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY
-                : segmentTracker.EVENTS
+                : //$TsFixMe use enum once migrated
+                  segmentTracker.EVENTS
                       .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY
         )
     }
@@ -184,16 +195,18 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
         onChange(null)
 
         this.setState({
-            type: 'fixed_amount',
+            type: DiscountType.FixedAmount,
             discountValue: '',
             title: '',
         })
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS
+                ? //$TsFixMe use enum once migrated
+                  segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE
-                : segmentTracker.EVENTS
+                : //$TsFixMe use enum once migrated
+                  segmentTracker.EVENTS
                       .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE
         )
     }
@@ -205,9 +218,11 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS
+                ? //$TsFixMe use enum once migrated
+                  segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE
-                : segmentTracker.EVENTS
+                : //$TsFixMe use enum once migrated
+                  segmentTracker.EVENTS
                       .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE
         )
     }

@@ -1,33 +1,26 @@
-// @flow
-
-import React from 'react'
+import React, {PureComponent} from 'react'
 import {Table} from 'reactstrap'
-import {type List, type Record} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import hash from 'object-hash'
-
-import type {
-    LineItem,
-    Product,
-} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 
 import {DraftOrderLineItemRow} from './DraftOrderLineItemRow'
 import css from './DraftOrderTable.less'
 
 type Props = {
-    shopName: string,
-    actionName: string,
-    currencyCode: string,
-    lineItems: List<$Shape<LineItem>>,
-    products: Map<number, Record<Product>>,
-    onChange: (lineItems: List<$Shape<LineItem>>) => void,
+    shopName: string
+    actionName: string
+    currencyCode: string
+    lineItems: List<any>
+    products: Map<any, any>
+    onChange: (lineItems: List<any>) => void
 }
 
-export default class DraftOrderTable extends React.PureComponent<Props> {
+export default class DraftOrderTable extends PureComponent<Props> {
     static defaultProps = {
-        products: new Map<number, Record<Product>>(),
+        products: fromJS({}),
     }
 
-    _onLineItemChange = (index: number, updatedLineItem: Record<LineItem>) => {
+    _onLineItemChange = (index: number, updatedLineItem: Map<any, any>) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 
@@ -69,7 +62,7 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
                             </td>
                         </tr>
                     )}
-                    {lineItems.map((lineItem, index) => {
+                    {lineItems.map((lineItem: Map<any, any>, index) => {
                         let keyObject = lineItem.remove('quantity')
                         if (keyObject.get('applied_discount')) {
                             keyObject = keyObject.removeIn([
@@ -87,18 +80,22 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
                                 actionName={actionName}
                                 lineItem={lineItem}
                                 product={products.get(
-                                    lineItem.get('product_id')
+                                    (lineItem.get(
+                                        'product_id'
+                                    ) as number).toString()
                                 )}
                                 shopName={shopName}
                                 currencyCode={currencyCode}
                                 removable={lineItems.size > 1}
                                 onChange={(updatedLineItem) =>
                                     this._onLineItemChange(
-                                        index,
+                                        index as number,
                                         updatedLineItem
                                     )
                                 }
-                                onDelete={() => this._onLineItemDelete(index)}
+                                onDelete={() =>
+                                    this._onLineItemDelete(index as number)
+                                }
                             />
                         )
                     })}
