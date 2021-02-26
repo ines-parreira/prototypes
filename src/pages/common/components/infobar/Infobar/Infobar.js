@@ -148,11 +148,10 @@ export class Infobar extends React.Component<Props, State> {
 
         this.props
             .searchSimilarCustomer(props.customer.get('id'))
-            .then((data) => {
-                if (!data) {
+            .then(({customer: suggestion}) => {
+                if (!suggestion) {
                     return
                 }
-                const {customer: suggestion} = data
                 const suggestionImmutable = fromJS(suggestion)
 
                 if (suggestionImmutable.isEmpty()) {
