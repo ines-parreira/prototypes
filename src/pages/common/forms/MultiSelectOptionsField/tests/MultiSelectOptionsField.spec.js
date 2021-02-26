@@ -3,7 +3,7 @@ import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
 
-import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
+import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu.tsx'
 
 import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'

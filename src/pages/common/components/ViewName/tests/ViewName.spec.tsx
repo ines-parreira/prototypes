@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
@@ -18,6 +17,7 @@ describe('<ViewName/>', () => {
 
         it('should pass props to span', () => {
             const wrapper = shallow(
+                // @ts-ignore
                 <ViewName view={fromJS(defaultView)} style={{color: 'red'}} />
             )
             expect(wrapper.render()).toMatchSnapshot()

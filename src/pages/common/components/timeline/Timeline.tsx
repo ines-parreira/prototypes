@@ -1,17 +1,20 @@
-// @flow
 import classnames from 'classnames'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import React from 'react'
+
+import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
 
 import css from './Timeline.less'
 import TimelineTicket from './TimelineTicket'
 
 type Props = {
-    actions: {},
-    customerHistory: Map<*, *>,
-    currentTicketId: number,
-    displayAll: boolean,
-    revert: boolean,
+    actions?: Maybe<{
+        displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
+    }>
+    customerHistory: Map<any, any>
+    currentTicketId: number
+    displayAll: boolean
+    revert: boolean
 }
 
 export default class Timeline extends React.Component<Props> {
@@ -35,18 +38,17 @@ export default class Timeline extends React.Component<Props> {
             return null
         }
 
-        let history = customerHistory.get('tickets', fromJS([]))
+        let history = customerHistory.get('tickets', fromJS([])) as List<any>
 
         if (revert) {
-            history = history.reverse()
+            history = history.reverse() as List<any>
         }
 
         return (
             <div className={classnames(css.component)}>
                 {history
-                    .map((obj) => {
-                        const isTicket = obj.get('channel')
-                        if (isTicket) {
+                    .map((obj: Map<any, any>) => {
+                        if (obj.get('channel')) {
                             return (
                                 <TimelineTicket
                                     actions={actions}

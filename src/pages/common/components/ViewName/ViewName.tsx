@@ -1,9 +1,8 @@
-// @flow
 import React from 'react'
 import {Map} from 'immutable'
 
 type Props = {
-    view: Map<*, *>,
+    view: Map<any, any>
 }
 
 const ViewName = (props: Props) => {

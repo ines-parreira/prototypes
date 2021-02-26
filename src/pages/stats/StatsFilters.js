@@ -32,7 +32,7 @@ import {getTeams} from '../../state/teams/selectors.ts'
 import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
 import Popover from '../common/components/Popover'
-import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
+import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'

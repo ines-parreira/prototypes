@@ -11,7 +11,7 @@ import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 import {getTags} from '../../../../../state/tags/selectors.ts'
 
 import {timedeltaOperators} from '../../../../../config/rules.ts'
-import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
+import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu.tsx'
 
 import FilterDropdown from '../FilterDropdown.tsx'
 import DatetimePicker from '../../../forms/DatetimePicker'

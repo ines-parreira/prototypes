@@ -1,25 +1,29 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
+import {Map, List} from 'immutable'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views.tsx'
-import {getPluralObjectName} from '../../../../utils.ts'
-import Tooltip from '../Tooltip'
-import shortcutManager from '../../../../services/shortcutManager/index.ts'
-import {moveIndex} from '../../utils/keyboard.ts'
+import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
+import {getPluralObjectName} from '../../../../utils'
+import Tooltip from '../Tooltip.js'
+import shortcutManager from '../../../../services/shortcutManager/index'
+import {moveIndex, MoveIndexDirection} from '../../utils/keyboard'
 import {
     getActiveView,
     makeGetView,
     makeGetViewCount,
     makeGetViewsByType,
-} from '../../../../state/views/selectors.ts'
-import {makeGetSettingsByType} from '../../../../state/currentUser/selectors.ts'
-import ViewName from '../ViewName'
-import ViewCount from '../ViewCount'
-import history from '../../../history.ts'
+} from '../../../../state/views/selectors'
+import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
+import ViewName from '../ViewName/ViewName'
+import ViewCount from '../ViewCount/index.js'
+import history from '../../../history'
+import {RootState} from '../../../../state/types'
+import {ViewType} from '../../../../models/view/types'
+import {UserSettingType} from '../../../../config/types/user'
 
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 import css from './ViewNavbarView.less'
@@ -27,26 +31,28 @@ import css from './ViewNavbarView.less'
 const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
 
-// Component used to display a list of views in the navbar
-class ViewNavbarView extends Component {
-    static propTypes = {
-        views: PropTypes.object.isRequired,
-        activeView: PropTypes.object.isRequired,
-        viewType: PropTypes.oneOf(['ticket-list', 'customer-list']).isRequired,
-        settings: PropTypes.object,
-        settingType: PropTypes.oneOf(['ticket-views', 'customer-views'])
-            .isRequired,
-        isLoading: PropTypes.bool.isRequired,
-        getViewCount: PropTypes.func.isRequired,
-    }
+type OwnProps = {
+    viewType: ViewType
+    settingType: UserSettingType
+    isLoading: boolean
+}
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+type State = {
+    hasEditMode: boolean
+    viewCursor: number
+}
+
+// Component used to display a list of views in the navbar
+class ViewNavbarView extends Component<Props, State> {
     static contextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
 
     state = {
         hasEditMode: false,
-        viewCusor: 0,
+        viewCursor: 0,
     }
 
     componentDidMount() {
@@ -57,7 +63,7 @@ class ViewNavbarView extends Component {
         shortcutManager.unbind('ViewNavbar')
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         this.setState({
             viewCursor: this._getViewCursor(
                 nextProps.activeView,
@@ -72,29 +78,33 @@ class ViewNavbarView extends Component {
                 action: () => this._moveCursor(),
             },
             GO_PREV_VIEW: {
-                action: () => this._moveCursor('previous'),
+                action: () => this._moveCursor(MoveIndexDirection.Prev),
             },
         })
     }
 
-    _getDisplayedViews = () => {
+    _getDisplayedViews = (): List<any> => {
         // hide hidden views if we are not in edit mode
         if (!this.state.hasEditMode) {
-            return this.props.views.filter((view) => !view.get('hide', false))
+            return this.props.views.filter(
+                (view: Map<any, any>) => !view.get('hide', false)
+            ) as List<any>
         }
 
         return this.props.views
     }
 
-    _getViewCursor(activeView, views) {
-        return views.findIndex((v) => v.get('id') === activeView.get('id'))
+    _getViewCursor(activeView: Map<any, any>, views: List<any>) {
+        return views.findIndex(
+            (v: Map<any, any>) => v.get('id') === activeView.get('id')
+        )
     }
 
-    _updateViewUrl = _debounce((viewUrl) => {
+    _updateViewUrl = _debounce((viewUrl: string) => {
         history.push(viewUrl)
     })
 
-    _moveCursor = (direction: string = 'next') => {
+    _moveCursor = (direction: MoveIndexDirection = MoveIndexDirection.Next) => {
         const displayedViews = this._getDisplayedViews()
         const viewCursor = moveIndex(
             this.state.viewCursor,
@@ -119,21 +129,23 @@ class ViewNavbarView extends Component {
         this.setState({hasEditMode: !hasEditMode})
     }
 
-    _getViewUrl = (objectName, view) => {
-        return `/app/${objectName}/${view.get('id')}/${view.get('slug')}`
+    _getViewUrl = (objectName: string, view: Map<any, any>) => {
+        return `/app/${objectName}/${view.get('id') as number}/${
+            view.get('slug') as string
+        }`
     }
 
     render() {
         const {activeView, viewType, settings, isLoading} = this.props
         const {hasEditMode} = this.state
         // we use this to build urls
-        const objectName = getPluralObjectName(viewType)
+        const objectName: string = getPluralObjectName(viewType)
 
         const settingButtonClass = classnames(css.settingButton, {
             [css.active]: hasEditMode,
         })
 
-        let displayedViews = this._getDisplayedViews()
+        const displayedViews: List<any> = this._getDisplayedViews()
 
         return (
             <div>
@@ -174,24 +186,22 @@ class ViewNavbarView extends Component {
                     <div className="menu">
                         {hasEditMode ? (
                             <ViewNavbarViewEditor
-                                initialValues={settings.toJS()}
                                 setting={settings}
-                                isLoading={isLoading}
                                 views={displayedViews}
                                 objectName={objectName}
                             />
                         ) : (
-                            displayedViews.map((view) => {
+                            displayedViews.map((view: Map<any, any>) => {
                                 const isCurrentView =
                                     activeView.get('id') === view.get('id')
                                 const isFocused = window.location.pathname.startsWith(
-                                    `/app/tickets/${view.get('id')}/`
+                                    `/app/tickets/${view.get('id') as number}/`
                                 )
 
-                                const key = `${view.get('slug')}-${view.get(
-                                    'id'
-                                )}`
-                                let classes = classnames('item', {
+                                const key = `${view.get('slug') as string}-${
+                                    view.get('id') as number
+                                }`
+                                const classes = classnames('item', {
                                     active: isCurrentView,
                                     focused: isFocused,
                                 })
@@ -219,9 +229,13 @@ class ViewNavbarView extends Component {
                                         key={key}
                                         to={this._getViewUrl(objectName, view)}
                                         className={classes}
-                                        title={`${view.get('name')} ${count}`}
+                                        title={`${
+                                            view.get('name') as string
+                                        } ${count}`}
                                         onClick={() => {
-                                            this.context.closePanel()
+                                            ;(this.context as {
+                                                closePanel: () => void
+                                            }).closePanel()
                                         }}
                                     >
                                         <span className="item-name">
@@ -241,18 +255,16 @@ class ViewNavbarView extends Component {
     }
 }
 
-const createMapStateToProps = () => {
+const connector = connect((state: RootState, props: OwnProps) => {
     const getSettingsByType = makeGetSettingsByType()
     const getViewsByType = makeGetViewsByType()
-    return (state, ownProps) => {
-        return {
-            getView: makeGetView(state),
-            getViewCount: makeGetViewCount(state),
-            activeView: getActiveView(state),
-            views: getViewsByType(state, ownProps.viewType),
-            settings: getSettingsByType(state, ownProps.settingType),
-        }
+    return {
+        getView: makeGetView(state),
+        getViewCount: makeGetViewCount(state),
+        activeView: getActiveView(state),
+        views: getViewsByType(state, props.viewType),
+        settings: getSettingsByType(state, props.settingType),
     }
-}
+})
 
-export default connect(createMapStateToProps())(ViewNavbarView)
+export default connector(ViewNavbarView)

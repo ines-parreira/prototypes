@@ -7,7 +7,7 @@ import _noop from 'lodash/noop'
 import {Button} from 'reactstrap'
 
 import {AgentLabel} from '../../../common/utils/labels'
-import Timeline from '../../../common/components/timeline/Timeline'
+import Timeline from '../../../common/components/timeline/Timeline.tsx'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import * as tagsSelectors from '../../../../state/tags/selectors.ts'
 import * as customersSelectors from '../../../../state/customers/selectors.ts'

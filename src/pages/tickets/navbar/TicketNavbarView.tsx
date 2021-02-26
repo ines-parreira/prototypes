@@ -12,7 +12,7 @@ import {RootState} from '../../../state/types'
 import {activeViewIdSet} from '../../../state/ui/views/actions'
 import {hasRole} from '../../../utils'
 import ViewCount from '../../common/components/ViewCount/index.js'
-import ViewName from '../../common/components/ViewName/index.js'
+import ViewName from '../../common/components/ViewName/ViewName'
 
 import {TicketNavbarElementType} from './TicketNavbar'
 import css from './TicketNavbarView.less'

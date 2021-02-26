@@ -1,18 +1,18 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import Modal from '../Modal'
+import Modal from '../Modal.js'
 
 import css from './Video.less'
 
 type Props = {
-    videoId: string,
-    videoPreviewIndex?: string,
-    legend: string,
+    videoId: string
+    videoPreviewIndex?: string
+    legend: string
 }
 
 type State = {
-    modalIsOpen: boolean,
+    modalIsOpen: boolean
 }
 
 export default class Video extends React.Component<Props, State> {
@@ -28,7 +28,7 @@ export default class Video extends React.Component<Props, State> {
         const {videoId, videoPreviewIndex, legend} = this.props
         const {modalIsOpen} = this.state
 
-        let previewIndex = videoPreviewIndex || 0
+        const previewIndex = videoPreviewIndex || 0
 
         return (
             <div>

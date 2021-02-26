@@ -41,7 +41,7 @@ import {
 } from '../../../../../constants/job.ts'
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
 import {hasRole} from '../../../../../utils.ts'
-import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
+import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 import history from '../../../../history.ts'
 

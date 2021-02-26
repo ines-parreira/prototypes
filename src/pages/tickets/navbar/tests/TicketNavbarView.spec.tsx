@@ -6,11 +6,11 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {view} from '../../../../fixtures/views'
 import ViewCount from '../../../common/components/ViewCount/index.js'
-import ViewName from '../../../common/components/ViewName/index.js'
+import ViewName from '../../../common/components/ViewName/ViewName'
 import {TicketNavbarViewContainer} from '../TicketNavbarView'
 
 jest.mock(
-    '../../../common/components/ViewName/index.js',
+    '../../../common/components/ViewName/ViewName',
     () => ({view}: ComponentProps<typeof ViewName>) => {
         return <div data-testid="ViewName">{view.get('name')}</div>
     }

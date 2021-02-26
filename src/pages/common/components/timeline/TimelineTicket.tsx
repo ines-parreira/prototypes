@@ -1,25 +1,36 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {MouseEvent} from 'react'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
+import {Map} from 'immutable'
 
-import history from '../../../history.ts'
-import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
-import {stripHTML} from '../../../../utils.ts'
+import history from '../../../history'
+import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels.js'
+import {stripHTML} from '../../../../utils'
+import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
 
-import SourceIcon from '../SourceIcon'
+import SourceIcon from '../SourceIcon.js'
 
 import css from './TimelineTicket.less'
 
-export default class TimelineTicket extends React.Component {
-    _goToTicket = (e) => {
+type Props = {
+    actions?: Maybe<{
+        displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
+    }>
+    isCurrent: boolean
+    ticket: Map<any, any>
+}
+
+export default class TimelineTicket extends React.Component<Props> {
+    static defaultProps: Partial<Props> = {isCurrent: false}
+
+    _goToTicket = (e: MouseEvent) => {
         e.preventDefault()
 
-        if (this.props.actions.displayHistoryOnNextPage) {
+        if (this.props.actions?.displayHistoryOnNextPage) {
             this.props.actions.displayHistoryOnNextPage(true)
         }
 
-        history.push(`/app/ticket/${this.props.ticket.get('id')}`)
+        history.push(`/app/ticket/${this.props.ticket.get('id') as number}`)
     }
 
     render() {
@@ -30,9 +41,9 @@ export default class TimelineTicket extends React.Component {
         }
 
         // Optionally show how many messages a ticket has in the subject
-        let subject = stripHTML(ticket.get('subject'))
+        let subject = stripHTML(ticket.get('subject')) as string
 
-        const messageCount = ticket.get('messages_count')
+        const messageCount = ticket.get('messages_count') as number
         if (messageCount > 1) {
             subject = `(${messageCount}) ${subject}`
         }
@@ -45,16 +56,18 @@ export default class TimelineTicket extends React.Component {
                 })}
                 onClick={this._goToTicket}
                 tag="a"
-                href={`/app/ticket/${ticket.get('id')}`}
+                href={`/app/ticket/${ticket.get('id') as string}`}
             >
                 <CardBody className={classnames(css.body, 'd-flex')}>
                     <div className={css.meta}>
                         <StatusLabel
                             status={ticket.get('status')}
+                            // @ts-ignore remove after StatusLabel is migrated to TS
                             className="mb-2 mr-2"
                         />
                         <DatetimeLabel
                             dateTime={ticket.get('created_datetime')}
+                            // @ts-ignore remove after StatusLabel is migrated to TS
                             className="d-block mb-1"
                         />
                         {assigneeName && <AgentLabel name={assigneeName} />}
@@ -75,15 +88,4 @@ export default class TimelineTicket extends React.Component {
             </Card>
         )
     }
-}
-
-TimelineTicket.propTypes = {
-    ticket: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    isCurrent: PropTypes.bool.isRequired,
-}
-
-TimelineTicket.defaultProps = {
-    actions: {},
-    isCurrent: false,
 }

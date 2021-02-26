@@ -1,9 +1,8 @@
-// @flow
-import React from 'react'
+import React, {CSSProperties} from 'react'
 import {DropdownMenu} from 'reactstrap'
 
 type Props = {
-    style?: {},
+    style?: CSSProperties
 }
 
 export default function TagDropdownMenu(props: Props) {

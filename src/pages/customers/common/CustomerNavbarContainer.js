@@ -25,7 +25,6 @@ class CustomerNavbarContainer extends React.Component {
             <Navbar activeContent="customers">
                 <CustomersNavbarView
                     settingType="customer-views"
-                    setting={this.props.setting}
                     isLoading={this.props.isLoading}
                 />
             </Navbar>

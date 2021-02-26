@@ -10,7 +10,7 @@ import * as customersActions from '../../../state/customers/actions.ts'
 
 import Loader from '../../common/components/Loader'
 import CustomerForm from '../common/components/CustomerForm'
-import Timeline from '../../common/components/timeline/Timeline'
+import Timeline from '../../common/components/timeline/Timeline.tsx'
 import Modal from '../../common/components/Modal'
 
 import {

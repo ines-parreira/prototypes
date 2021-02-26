@@ -13,7 +13,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 
 import ReactSortable from '../../../../common/components/dragging/ReactSortable.js'
 import {getAST, getCode} from '../../../../../utils'
-import Video from '../../../../common/components/Video/index.js'
+import Video from '../../../../common/components/Video/Video'
 
 import {RuleDraft, RuleLimitStatus} from '../../../../../state/rules/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'

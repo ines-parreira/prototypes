@@ -1,2 +1,2 @@
 // @flow
-export {default} from './ViewName'
+export {default} from './ViewName.tsx'
