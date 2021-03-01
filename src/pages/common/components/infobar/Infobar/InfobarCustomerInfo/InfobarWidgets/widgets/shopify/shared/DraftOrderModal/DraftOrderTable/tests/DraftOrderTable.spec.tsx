@@ -20,10 +20,10 @@ describe('<DraftOrderTable/>', () => {
     const product1 = shopifyProductFixture({id: 1, title: 'Product 1'})
     const product2 = shopifyProductFixture({id: 2, title: 'Product 2'})
 
-    const products = fromJS({
-        1: product1,
-        2: product2,
-    })
+    const products = new window.Map([
+        [1, fromJS(product1)],
+        [2, fromJS(product2)],
+    ])
 
     beforeEach(() => {
         onChange = jest.fn()

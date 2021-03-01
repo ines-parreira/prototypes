@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react'
 import {Table} from 'reactstrap'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, List, Map as ImmutableMap} from 'immutable'
 import hash from 'object-hash'
 
 import {DraftOrderLineItemRow} from './DraftOrderLineItemRow'
@@ -11,7 +11,7 @@ type Props = {
     actionName: string
     currencyCode: string
     lineItems: List<any>
-    products: Map<any, any>
+    products: Map<number, ImmutableMap<any, any>>
     onChange: (lineItems: List<any>) => void
 }
 
@@ -20,7 +20,10 @@ export default class DraftOrderTable extends PureComponent<Props> {
         products: fromJS({}),
     }
 
-    _onLineItemChange = (index: number, updatedLineItem: Map<any, any>) => {
+    _onLineItemChange = (
+        index: number,
+        updatedLineItem: ImmutableMap<any, any>
+    ) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 
@@ -62,43 +65,43 @@ export default class DraftOrderTable extends PureComponent<Props> {
                             </td>
                         </tr>
                     )}
-                    {lineItems.map((lineItem: Map<any, any>, index) => {
-                        let keyObject = lineItem.remove('quantity')
-                        if (keyObject.get('applied_discount')) {
-                            keyObject = keyObject.removeIn([
-                                'applied_discount',
-                                'amount',
-                            ])
+                    {lineItems.map(
+                        (lineItem: ImmutableMap<any, any>, index) => {
+                            let keyObject = lineItem.remove('quantity')
+                            if (keyObject.get('applied_discount')) {
+                                keyObject = keyObject.removeIn([
+                                    'applied_discount',
+                                    'amount',
+                                ])
+                            }
+
+                            const key = hash(keyObject)
+
+                            return (
+                                <DraftOrderLineItemRow
+                                    key={key}
+                                    id={key}
+                                    actionName={actionName}
+                                    lineItem={lineItem}
+                                    product={products.get(
+                                        lineItem.get('product_id') as number
+                                    )}
+                                    shopName={shopName}
+                                    currencyCode={currencyCode}
+                                    removable={lineItems.size > 1}
+                                    onChange={(updatedLineItem) =>
+                                        this._onLineItemChange(
+                                            index as number,
+                                            updatedLineItem
+                                        )
+                                    }
+                                    onDelete={() =>
+                                        this._onLineItemDelete(index as number)
+                                    }
+                                />
+                            )
                         }
-
-                        const key = hash(keyObject)
-
-                        return (
-                            <DraftOrderLineItemRow
-                                key={key}
-                                id={key}
-                                actionName={actionName}
-                                lineItem={lineItem}
-                                product={products.get(
-                                    (lineItem.get(
-                                        'product_id'
-                                    ) as number).toString()
-                                )}
-                                shopName={shopName}
-                                currencyCode={currencyCode}
-                                removable={lineItems.size > 1}
-                                onChange={(updatedLineItem) =>
-                                    this._onLineItemChange(
-                                        index as number,
-                                        updatedLineItem
-                                    )
-                                }
-                                onDelete={() =>
-                                    this._onLineItemDelete(index as number)
-                                }
-                            />
-                        )
-                    })}
+                    )}
                 </tbody>
             </Table>
         )

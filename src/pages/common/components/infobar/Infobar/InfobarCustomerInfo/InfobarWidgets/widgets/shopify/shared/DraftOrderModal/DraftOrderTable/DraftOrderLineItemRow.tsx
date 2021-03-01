@@ -24,7 +24,7 @@ type Props = {
     id: string
     actionName: string
     lineItem: Map<any, any>
-    product: Map<any, any> | null
+    product?: Map<any, any> | null
     shopName: string
     currencyCode: string
     removable: boolean
