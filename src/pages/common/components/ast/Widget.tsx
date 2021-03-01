@@ -239,6 +239,24 @@ export class Widget extends React.Component<Props, State> {
         )
     }
 
+    _snoozePicker = (value: any) => {
+        const units = [
+            {label: 'minute(s)', value: 'm'},
+            {label: 'hour(s)', value: 'h'},
+            {label: 'day(s)', value: 'd'},
+        ]
+
+        return (
+            <div className="widget d-inline-block">
+                <TimedeltaPicker
+                    value={value}
+                    units={units}
+                    onChange={this._handleChange as any}
+                />
+            </div>
+        )
+    }
+
     _resolveLeft(left: List<any>, schemas: Map<any, any>): List<any> {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
@@ -546,6 +564,8 @@ export class Widget extends React.Component<Props, State> {
                         onChange={this._handleChange}
                     />
                 )
+            case 'snooze-picker':
+                return this._snoozePicker(value)
             case 'textarea':
                 return this._textarea(value)
             case 'rich-field':

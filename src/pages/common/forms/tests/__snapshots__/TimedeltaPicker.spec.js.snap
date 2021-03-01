@@ -5,6 +5,24 @@ Object {
   "dropdownOpen": false,
   "quantity": "5",
   "unit": "d",
+  "units": Array [
+    Object {
+      "label": "minute(s) ago",
+      "value": "m",
+    },
+    Object {
+      "label": "hour(s) ago",
+      "value": "h",
+    },
+    Object {
+      "label": "day(s) ago",
+      "value": "d",
+    },
+    Object {
+      "label": "week(s) ago",
+      "value": "w",
+    },
+  ],
 }
 `;
 
@@ -13,6 +31,24 @@ Object {
   "dropdownOpen": false,
   "quantity": "10",
   "unit": "d",
+  "units": Array [
+    Object {
+      "label": "minute(s) ago",
+      "value": "m",
+    },
+    Object {
+      "label": "hour(s) ago",
+      "value": "h",
+    },
+    Object {
+      "label": "day(s) ago",
+      "value": "d",
+    },
+    Object {
+      "label": "week(s) ago",
+      "value": "w",
+    },
+  ],
 }
 `;
 
@@ -21,6 +57,24 @@ Object {
   "dropdownOpen": false,
   "quantity": 1,
   "unit": "w",
+  "units": Array [
+    Object {
+      "label": "minute(s) ago",
+      "value": "m",
+    },
+    Object {
+      "label": "hour(s) ago",
+      "value": "h",
+    },
+    Object {
+      "label": "day(s) ago",
+      "value": "d",
+    },
+    Object {
+      "label": "week(s) ago",
+      "value": "w",
+    },
+  ],
 }
 `;
 
@@ -29,6 +83,24 @@ Object {
   "dropdownOpen": false,
   "quantity": 1,
   "unit": "m",
+  "units": Array [
+    Object {
+      "label": "minute(s) ago",
+      "value": "m",
+    },
+    Object {
+      "label": "hour(s) ago",
+      "value": "h",
+    },
+    Object {
+      "label": "day(s) ago",
+      "value": "d",
+    },
+    Object {
+      "label": "week(s) ago",
+      "value": "w",
+    },
+  ],
 }
 `;
 

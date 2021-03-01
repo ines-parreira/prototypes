@@ -76,6 +76,10 @@ const ASSIGN_TEAM_ACTION_DEFAULT = {
     assignee_team: '', // means unassigned
 }
 
+const SNOOZE_ACTION_DEFAULT = {
+    snooze_timedelta: '1d',
+}
+
 export const ACTION_DEFAULT_STATE = {
     applyMacro: APPLY_MACRO_ACTION_DEFAULT,
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
@@ -87,6 +91,7 @@ export const ACTION_DEFAULT_STATE = {
     setAssignee: ASSIGN_USER_ACTION_DEFAULT,
     setTeamAssignee: ASSIGN_TEAM_ACTION_DEFAULT,
     replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
+    snoozeTicket: SNOOZE_ACTION_DEFAULT,
 }
 
 export const DEFAULT_STATEMENT = {

@@ -118,6 +118,10 @@ export type ActionConfig = {
             widget: string
             validate: ValidateFn
         }
+        snooze_timedelta?: {
+            widget?: string
+            validate?: ValidateFn
+        }
     }
     validate?: ValidateFn
     note?: string
@@ -223,6 +227,15 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     setStatus: {
         compact: true,
         name: 'Set status',
+    },
+    snoozeTicket: {
+        compact: true,
+        name: 'Snooze for ',
+        args: {
+            snooze_timedelta: {
+                widget: 'snooze-picker',
+            },
+        },
     },
     setAssignee: {
         compact: true,

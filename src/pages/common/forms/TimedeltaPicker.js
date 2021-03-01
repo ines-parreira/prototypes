@@ -15,15 +15,22 @@ import {
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
 } from '../../../config.ts'
 
+type Unit = {
+    label: string,
+    value: string,
+}
+
 type Props = {
     value: string,
     onChange: (string) => null,
+    units?: Array<Unit>,
 }
 
 type State = {
     quantity: number,
     unit: string,
     dropdownOpen: boolean,
+    units: Array<Unit>,
 }
 
 const UNITS = [
@@ -39,17 +46,20 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
     constructor(props) {
         super(props)
         const {value} = this.props
+        const units = this.props.units ? this.props.units : UNITS
 
         if (isTimedelta(value)) {
             this.state = {
                 ...this._buildValue(value),
                 dropdownOpen: false,
+                units: units,
             }
         } else {
             this.state = {
                 quantity: TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
                 unit: TIMEDELTA_OPERATOR_DEFAULT_UNIT,
                 dropdownOpen: false,
+                units: units,
             }
         }
     }
@@ -94,8 +104,10 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
     }
 
     render() {
-        const unitLabel = _find(UNITS, (unit) => unit.value === this.state.unit)
-            .label
+        const unitLabel = _find(
+            this.state.units,
+            (unit) => unit.value === this.state.unit
+        ).label
 
         return (
             <div className="d-flex">
@@ -120,7 +132,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
                             <span>{unitLabel}</span>
                         </DropdownToggle>
                         <DropdownMenu>
-                            {UNITS.map((unit) => {
+                            {this.state.units.map((unit) => {
                                 return (
                                     <DropdownItem
                                         key={unit.value}

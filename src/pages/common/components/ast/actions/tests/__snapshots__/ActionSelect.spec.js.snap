@@ -96,7 +96,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Assign agent
+      Snooze for 
     </DropdownItem>
     <DropdownItem
       key="9"
@@ -105,7 +105,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Assign team
+      Assign agent
     </DropdownItem>
     <DropdownItem
       key="10"
@@ -114,7 +114,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Delete ticket
+      Assign team
     </DropdownItem>
     <DropdownItem
       key="11"
@@ -123,10 +123,19 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Hide Facebook comment
+      Delete ticket
     </DropdownItem>
     <DropdownItem
       key="12"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Hide Facebook comment
+    </DropdownItem>
+    <DropdownItem
+      key="13"
       onClick={[Function]}
       tag="button"
       toggle={true}
@@ -225,7 +234,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Assign agent
+      Snooze for 
     </DropdownItem>
     <DropdownItem
       key="9"
@@ -234,7 +243,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Assign team
+      Assign agent
     </DropdownItem>
     <DropdownItem
       key="10"
@@ -243,7 +252,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Delete ticket
+      Assign team
     </DropdownItem>
     <DropdownItem
       key="11"
@@ -252,10 +261,19 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Hide Facebook comment
+      Delete ticket
     </DropdownItem>
     <DropdownItem
       key="12"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Hide Facebook comment
+    </DropdownItem>
+    <DropdownItem
+      key="13"
       onClick={[Function]}
       tag="button"
       toggle={true}
