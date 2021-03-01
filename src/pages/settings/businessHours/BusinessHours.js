@@ -98,7 +98,7 @@ class BusinessHours extends React.Component<Props, State> {
                     </p>
                     <p>
                         The appearance of your{' '}
-                        <Link to="/app/settings/integrations/smooch_inside">
+                        <Link to="/app/settings/integrations/gorgias_chat">
                             Chat integrations
                         </Link>{' '}
                         will change when outside business hours.
