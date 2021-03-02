@@ -95,6 +95,26 @@ exports[`BillingUsage component should display price 1`] = `
               <div
                 className="card-body"
               >
+                <LegacyTag
+                  className="usagePlans"
+                  label="Legacy Plan"
+                  labelIcon="warning"
+                >
+                  <div
+                    className="legacyPlanTag usagePlans"
+                  >
+                    <i
+                      className="material-icons"
+                    >
+                      warning
+                    </i>
+                    <div
+                      className="legacyPlanTagLabel"
+                    >
+                      Legacy Plan
+                    </div>
+                  </div>
+                </LegacyTag>
                 <h4>
                   Pro monthly plan
                 </h4>
@@ -488,6 +508,26 @@ exports[`BillingUsage component should load with empty props 1`] = `
               <div
                 className="card-body"
               >
+                <LegacyTag
+                  className="usagePlans"
+                  label="Legacy Plan"
+                  labelIcon="warning"
+                >
+                  <div
+                    className="legacyPlanTag usagePlans"
+                  >
+                    <i
+                      className="material-icons"
+                    >
+                      warning
+                    </i>
+                    <div
+                      className="legacyPlanTagLabel"
+                    >
+                      Legacy Plan
+                    </div>
+                  </div>
+                </LegacyTag>
                 <h4>
                   Pro monthly plan
                 </h4>

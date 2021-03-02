@@ -119,16 +119,11 @@ exports[`<BillingPlans/> should display a custom plan 1`] = `
         </div>
       </div>
       <div
-        class="plan plan-Basic mt-4 featured card"
+        class="plan plan-Basic mt-4 card"
       >
         <div
-          class="plan-header featured-header card-header"
+          class="plan-header card-header"
         >
-          <div
-            class="featured-header-title"
-          >
-            Most Popular
-          </div>
           <div
             class="header-text"
           >
@@ -194,11 +189,16 @@ exports[`<BillingPlans/> should display a custom plan 1`] = `
         </div>
       </div>
       <div
-        class="plan plan-Pro mt-4 card"
+        class="plan plan-Pro mt-4 featured card"
       >
         <div
-          class="plan-header card-header"
+          class="plan-header featured-header card-header"
         >
+          <div
+            class="featured-header-title"
+          >
+            Most Popular
+          </div>
           <div
             class="header-text"
           >

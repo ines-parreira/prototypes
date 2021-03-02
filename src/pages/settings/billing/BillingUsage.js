@@ -17,6 +17,7 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../common/components/Loader'
+import LegacyTag from '../../common/components/LegacyTag.tsx'
 import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
 import {openChat} from '../../../utils.ts'
 import * as integrationSelectors from '../../../state/integrations/selectors.ts'
@@ -282,6 +283,13 @@ export class BillingUsage extends Component {
                     )}
                 >
                     <CardBody>
+                        {!currentPlan.get('public') && (
+                            <LegacyTag
+                                label="Legacy Plan"
+                                labelIcon="warning"
+                                className={css.usagePlans}
+                            />
+                        )}
                         <h4>{planTitle}</h4>
                         {isTrialing ? (
                             <div>

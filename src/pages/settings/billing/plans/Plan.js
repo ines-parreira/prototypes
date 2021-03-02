@@ -12,6 +12,7 @@ import {
 } from 'reactstrap'
 import _omitBy from 'lodash/omitBy'
 
+import LegacyTag from '../../../common/components/LegacyTag.tsx'
 import './Plan.less'
 import {openChat} from '../../../../utils.ts'
 
@@ -223,7 +224,10 @@ export function Plan(props: Props) {
                     'featured-header': isFeatured,
                 })}
             >
-                {isFeatured && (
+                {!plan.get('public') && !isEnterprisePlan && (
+                    <LegacyTag label="Legacy Plan" labelIcon="warning" />
+                )}
+                {isFeatured && plan.get('public') && (
                     <div className="featured-header-title">Most Popular</div>
                 )}
                 <div className="header-text">

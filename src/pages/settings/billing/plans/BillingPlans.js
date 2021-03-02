@@ -230,7 +230,7 @@ export class BillingPlans extends React.Component<Props, State> {
                                         )
                                     }
                                     isUpdating={this.state.isUpdating}
-                                    isFeatured={index === 1}
+                                    isFeatured={planId.includes('pro')}
                                     onClick={() =>
                                         this._updateSubscription(planId)
                                     }
