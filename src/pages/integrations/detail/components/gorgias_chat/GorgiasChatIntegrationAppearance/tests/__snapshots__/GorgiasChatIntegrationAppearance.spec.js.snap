@@ -107,12 +107,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 options={
                   Array [
                     Object {
-                      "label": "English US",
+                      "label": "English (US)",
                       "value": "en-US",
                     },
                     Object {
-                      "label": "French",
-                      "value": "fr",
+                      "label": "French (France)",
+                      "value": "fr-FR",
+                    },
+                    Object {
+                      "label": "French (Canada)",
+                      "value": "fr-CA",
                     },
                     Object {
                       "label": "Spanish",
@@ -155,13 +159,19 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   key="en-US"
                   value="en-US"
                 >
-                  English US
+                  English (US)
                 </option>
                 <option
-                  key="fr"
-                  value="fr"
+                  key="fr-FR"
+                  value="fr-FR"
                 >
-                  French
+                  French (France)
+                </option>
+                <option
+                  key="fr-CA"
+                  value="fr-CA"
+                >
+                  French (Canada)
                 </option>
                 <option
                   key="es"
@@ -437,12 +447,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 options={
                   Array [
                     Object {
-                      "label": "English US",
+                      "label": "English (US)",
                       "value": "en-US",
                     },
                     Object {
-                      "label": "French",
-                      "value": "fr",
+                      "label": "French (France)",
+                      "value": "fr-FR",
+                    },
+                    Object {
+                      "label": "French (Canada)",
+                      "value": "fr-CA",
                     },
                     Object {
                       "label": "Spanish",
@@ -485,13 +499,19 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   key="en-US"
                   value="en-US"
                 >
-                  English US
+                  English (US)
                 </option>
                 <option
-                  key="fr"
-                  value="fr"
+                  key="fr-FR"
+                  value="fr-FR"
                 >
-                  French
+                  French (France)
+                </option>
+                <option
+                  key="fr-CA"
+                  value="fr-CA"
+                >
+                  French (Canada)
                 </option>
                 <option
                   key="es"
@@ -780,12 +800,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 options={
                   Array [
                     Object {
-                      "label": "English US",
+                      "label": "English (US)",
                       "value": "en-US",
                     },
                     Object {
-                      "label": "French",
-                      "value": "fr",
+                      "label": "French (France)",
+                      "value": "fr-FR",
+                    },
+                    Object {
+                      "label": "French (Canada)",
+                      "value": "fr-CA",
                     },
                     Object {
                       "label": "Spanish",
@@ -828,13 +852,19 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   key="en-US"
                   value="en-US"
                 >
-                  English US
+                  English (US)
                 </option>
                 <option
-                  key="fr"
-                  value="fr"
+                  key="fr-FR"
+                  value="fr-FR"
                 >
-                  French
+                  French (France)
+                </option>
+                <option
+                  key="fr-CA"
+                  value="fr-CA"
+                >
+                  French (Canada)
                 </option>
                 <option
                   key="es"
@@ -1145,12 +1175,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 options={
                   Array [
                     Object {
-                      "label": "English US",
+                      "label": "English (US)",
                       "value": "en-US",
                     },
                     Object {
-                      "label": "French",
-                      "value": "fr",
+                      "label": "French (France)",
+                      "value": "fr-FR",
+                    },
+                    Object {
+                      "label": "French (Canada)",
+                      "value": "fr-CA",
                     },
                     Object {
                       "label": "Spanish",
@@ -1193,13 +1227,19 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   key="en-US"
                   value="en-US"
                 >
-                  English US
+                  English (US)
                 </option>
                 <option
-                  key="fr"
-                  value="fr"
+                  key="fr-FR"
+                  value="fr-FR"
                 >
-                  French
+                  French (France)
+                </option>
+                <option
+                  key="fr-CA"
+                  value="fr-CA"
+                >
+                  French (Canada)
                 </option>
                 <option
                   key="es"
@@ -1492,12 +1532,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 options={
                   Array [
                     Object {
-                      "label": "English US",
+                      "label": "English (US)",
                       "value": "en-US",
                     },
                     Object {
-                      "label": "French",
-                      "value": "fr",
+                      "label": "French (France)",
+                      "value": "fr-FR",
+                    },
+                    Object {
+                      "label": "French (Canada)",
+                      "value": "fr-CA",
                     },
                     Object {
                       "label": "Spanish",
@@ -1540,13 +1584,19 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   key="en-US"
                   value="en-US"
                 >
-                  English US
+                  English (US)
                 </option>
                 <option
-                  key="fr"
-                  value="fr"
+                  key="fr-FR"
+                  value="fr-FR"
                 >
-                  French
+                  French (France)
+                </option>
+                <option
+                  key="fr-CA"
+                  value="fr-CA"
+                >
+                  French (Canada)
                 </option>
                 <option
                   key="es"
@@ -1867,12 +1917,16 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 options={
                   Array [
                     Object {
-                      "label": "English US",
+                      "label": "English (US)",
                       "value": "en-US",
                     },
                     Object {
-                      "label": "French",
-                      "value": "fr",
+                      "label": "French (France)",
+                      "value": "fr-FR",
+                    },
+                    Object {
+                      "label": "French (Canada)",
+                      "value": "fr-CA",
                     },
                     Object {
                       "label": "Spanish",
@@ -1915,13 +1969,19 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   key="en-US"
                   value="en-US"
                 >
-                  English US
+                  English (US)
                 </option>
                 <option
-                  key="fr"
-                  value="fr"
+                  key="fr-FR"
+                  value="fr-FR"
                 >
-                  French
+                  French (France)
+                </option>
+                <option
+                  key="fr-CA"
+                  value="fr-CA"
+                >
+                  French (Canada)
                 </option>
                 <option
                   key="es"

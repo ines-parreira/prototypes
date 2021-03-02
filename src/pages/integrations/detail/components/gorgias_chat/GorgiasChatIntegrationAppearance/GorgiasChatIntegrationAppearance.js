@@ -37,6 +37,7 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../../constants/integration.ts'
+import {Language} from '../../../../../../constants/languages.ts'
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 
@@ -159,7 +160,11 @@ export class GorgiasChatIntegrationAppearanceComponent extends React.Component<
                         'decoration',
                         'conversation_color',
                     ]),
-                    language: integration.getIn(['meta', 'language']),
+                    language:
+                        integration.getIn(['meta', 'language']) ===
+                        Language.French
+                            ? Language.FrenchFr
+                            : integration.getIn(['meta', 'language']),
                     avatarType:
                         integration.getIn(['decoration', 'avatar_type']) ||
                         GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,

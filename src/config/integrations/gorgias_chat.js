@@ -4,7 +4,8 @@ import {
     DANISH_LANGUAGE,
     DUTCH_LANGUAGE,
     ENGLISH_US_LANGUAGE,
-    FRENCH_LANGUAGE,
+    FRENCH_FR_LANGUAGE,
+    FRENCH_CA_LANGUAGE,
     ITALIAN_LANGUAGE,
     SPANISH_LANGUAGE,
     SWEDISH_LANGUAGE,
@@ -17,8 +18,9 @@ export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS = fromJS([
-    {value: ENGLISH_US_LANGUAGE, label: 'English US'},
-    {value: FRENCH_LANGUAGE, label: 'French'},
+    {value: ENGLISH_US_LANGUAGE, label: 'English (US)'},
+    {value: FRENCH_FR_LANGUAGE, label: 'French (France)'},
+    {value: FRENCH_CA_LANGUAGE, label: 'French (Canada)'},
     {value: SPANISH_LANGUAGE, label: 'Spanish'},
     {value: DANISH_LANGUAGE, label: 'Danish'},
     {value: SWEDISH_LANGUAGE, label: 'Swedish'},

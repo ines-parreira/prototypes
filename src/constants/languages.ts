@@ -1,6 +1,8 @@
 export enum Language {
     EnglishUs = 'en-US',
     French = 'fr',
+    FrenchCa = 'fr-CA',
+    FrenchFr = 'fr-FR',
     Spanish = 'es',
     Danish = 'da',
     Swedish = 'sv',
@@ -14,6 +16,8 @@ export enum Language {
 //$TsFixMe fallback values, use Language enum instead
 export const ENGLISH_US_LANGUAGE = Language.EnglishUs
 export const FRENCH_LANGUAGE = Language.French
+export const FRENCH_CA_LANGUAGE = Language.FrenchCa
+export const FRENCH_FR_LANGUAGE = Language.FrenchFr
 export const SPANISH_LANGUAGE = Language.Spanish
 export const DANISH_LANGUAGE = Language.Danish
 export const SWEDISH_LANGUAGE = Language.Swedish
