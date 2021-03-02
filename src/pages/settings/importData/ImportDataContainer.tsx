@@ -17,24 +17,11 @@ import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 export const ImportDataContainer = (
     props: ConnectedProps<typeof connector>
 ) => {
-    const {hasEmailIntegration, zendeskIntegrations, actions, loading} = props
+    const {zendeskIntegrations, actions, loading} = props
 
     useEffectOnce(() => {
         actions.fetchIntegrations()
     })
-
-    const importNotAllowedAlert = (): React.ReactChild => {
-        return (
-            <Alert
-                className="col-md-5"
-                color="warning"
-                hidden={hasEmailIntegration}
-            >
-                You must add an Email, Gmail or Outlook integration to be able
-                to start a data import.
-            </Alert>
-        )
-    }
 
     if (loading) {
         return <Loader />
@@ -50,7 +37,6 @@ export const ImportDataContainer = (
                         history.push('/app/settings/import-data/zendesk')
                     }}
                     className="float-right"
-                    disabled={!hasEmailIntegration}
                 >
                     Add account
                 </Button>
@@ -74,7 +60,6 @@ export const ImportDataContainer = (
                         Read more
                     </a>
                 </Alert>
-                {hasEmailIntegration ? null : importNotAllowedAlert()}
                 {zendeskIntegrations.isEmpty() ? (
                     <span>You don't have any imports at the moment</span>
                 ) : (
@@ -91,9 +76,6 @@ const mapStateToProps = (state: RootState) => {
         zendeskIntegrations: integrationSelectors.getIntegrationsByTypes(
             IntegrationType.ZendeskIntegrationType
         )(state),
-        hasEmailIntegration: integrationSelectors.hasAtLeastOneEmailIntegration(
-            state
-        ),
     }
 }
 
