@@ -22,8 +22,20 @@ exports[`<ViewCount/> should render an error icon because view is deactivated 1`
 </Fragment>
 `;
 
-exports[`<ViewCount/> should render compacted count 1`] = `"1.1k"`;
+exports[`<ViewCount/> should render compacted count 1`] = `
+<Fragment>
+  1.1k
+</Fragment>
+`;
 
-exports[`<ViewCount/> should render max count 1`] = `"5k+"`;
+exports[`<ViewCount/> should render max count 1`] = `
+<Fragment>
+  5k+
+</Fragment>
+`;
 
-exports[`<ViewCount/> should render uncompacted count 1`] = `"111"`;
+exports[`<ViewCount/> should render uncompacted count 1`] = `
+<Fragment>
+  111
+</Fragment>
+`;

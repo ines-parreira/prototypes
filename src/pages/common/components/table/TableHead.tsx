@@ -1,14 +1,12 @@
-//@flow
 import classnames from 'classnames'
-import React, {type Node as ReactNode} from 'react'
+import React, {HTMLProps, ReactNode} from 'react'
 
 import css from './TableHead.less'
 
-type Props = $Exact<{
-    ...HTMLTableSectionElement,
-    children: ReactNode,
-    className?: string,
-}>
+type Props = HTMLProps<HTMLTableSectionElement> & {
+    children: ReactNode
+    className?: string
+}
 
 export default function TableHead({children, className, ...otherProps}: Props) {
     return (

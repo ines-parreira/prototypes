@@ -11,7 +11,7 @@ import {View, ViewVisibility} from '../../../models/view/types'
 import {RootState} from '../../../state/types'
 import {activeViewIdSet} from '../../../state/ui/views/actions'
 import {hasRole} from '../../../utils'
-import ViewCount from '../../common/components/ViewCount/index.js'
+import ViewCount from '../../common/components/ViewCount/ViewCount'
 import ViewName from '../../common/components/ViewName/ViewName'
 
 import {TicketNavbarElementType} from './TicketNavbar'
@@ -125,8 +125,6 @@ export function TicketNavbarViewContainer({
                                 <ViewName view={fromJS(view)} />
                             </span>
                             <span className="item-count">
-                                {/*$TsFixMe remove once ViewCount is migrated*/}
-                                {/*@ts-ignore*/}
                                 <ViewCount view={fromJS(view)} />
                             </span>
                         </Link>

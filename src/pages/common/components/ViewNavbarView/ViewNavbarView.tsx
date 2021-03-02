@@ -19,7 +19,7 @@ import {
 } from '../../../../state/views/selectors'
 import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
 import ViewName from '../ViewName/ViewName'
-import ViewCount from '../ViewCount/index.js'
+import ViewCount from '../ViewCount/ViewCount'
 import history from '../../../history'
 import {RootState} from '../../../../state/types'
 import {ViewType} from '../../../../models/view/types'

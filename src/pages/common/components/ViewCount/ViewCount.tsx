@@ -1,25 +1,25 @@
-// @flow
-
 import React from 'react'
 import {Map} from 'immutable'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views.tsx'
-import {compactInteger} from '../../../../utils.ts'
-import {makeGetViewCount} from '../../../../state/views/selectors.ts'
+import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
+import {compactInteger} from '../../../../utils'
+import {makeGetViewCount} from '../../../../state/views/selectors'
+import {RootState} from '../../../../state/types'
 
 import css from './ViewCount.less'
 
-type Props = {
-    view: Map<*, *>,
-    getViewCount: (viewId: number) => number | null,
+type OwnProps = {
+    view: Map<any, any>
 }
 
-function ViewCount({view, getViewCount}: Props) {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export function ViewCountContainer({view, getViewCount}: Props) {
     if (!!view.get('deactivated_datetime')) {
-        const id = `deactivated-view-${view.get('id')}`
+        const id = `deactivated-view-${view.get('id') as number}`
 
         return (
             <>
@@ -48,11 +48,17 @@ function ViewCount({view, getViewCount}: Props) {
     const isMoreThanMaxCount = viewCount >= MAX_TICKET_COUNT_PER_VIEW
     const compactCount = compactInteger(viewCount, 1)
 
-    return isMoreThanMaxCount
-        ? `${compactInteger(MAX_TICKET_COUNT_PER_VIEW)}+`
-        : compactCount
+    return (
+        <>
+            {isMoreThanMaxCount
+                ? `${compactInteger(MAX_TICKET_COUNT_PER_VIEW)}+`
+                : compactCount}
+        </>
+    )
 }
 
-export default connect((state) => ({
+const connector = connect((state: RootState) => ({
     getViewCount: makeGetViewCount(state),
-}))(ViewCount)
+}))
+
+export default connector(ViewCountContainer)

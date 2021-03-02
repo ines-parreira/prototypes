@@ -8,7 +8,7 @@ import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {MacrosState} from '../../../../state/entities/macros/types'
 import Loader from '../../../common/components/Loader/index.js'
 import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty.js'
-import TableBodyRow from '../../../common/components/table/TableBodyRow.js'
+import TableBodyRow from '../../../common/components/table/TableBodyRow'
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 import history from '../../../history'
 

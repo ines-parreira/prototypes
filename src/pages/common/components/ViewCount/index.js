@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './ViewCount'
+export {default} from './ViewCount.tsx'
