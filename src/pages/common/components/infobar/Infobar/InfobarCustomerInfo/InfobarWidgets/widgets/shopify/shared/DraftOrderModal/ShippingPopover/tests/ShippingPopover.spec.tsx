@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
@@ -9,29 +7,33 @@ import {Button, Form, Popover} from 'reactstrap'
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {
     shopifyAvailableShippingRate,
     shopifyShippingLineFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify.ts'
-import AmountInput from '../../../AmountInput'
+} from '../../../../../../../../../../../../../fixtures/shopify'
+import AmountInput from '../../../AmountInput/AmountInput'
 import ShippingPopover from '../ShippingPopover'
-import {ShopifyAction} from '../../../../constants'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../../constants.js'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
+        const segmentTracker: Record<string, unknown> = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+        )
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...segmentTracker,
             logEvent: jest.fn(),
         }
     }
 )
 
 describe('<ShippingPopover/>', () => {
-    let onChange
+    let onChange: jest.MockedFunction<
+        ComponentProps<typeof ShippingPopover>['onChange']
+    >
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -46,7 +48,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={null}
-                    availableShippingRates={[]}
+                    availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
                     Add shipping
@@ -66,7 +68,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={shippingLine}
-                    availableShippingRates={[]}
+                    availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
                     Add shipping
@@ -101,7 +103,7 @@ describe('<ShippingPopover/>', () => {
                         editable
                         currencyCode="USD"
                         value={shippingLine}
-                        availableShippingRates={[]}
+                        availableShippingRates={fromJS([])}
                         onChange={onChange}
                     >
                         Add shipping
@@ -159,7 +161,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={shippingLine}
-                    availableShippingRates={[]}
+                    availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
                     Add shipping
@@ -193,7 +195,9 @@ describe('<ShippingPopover/>', () => {
         })
 
         it('should call onChange() with available shipping line', () => {
-            const availableShippingRate = fromJS(shopifyAvailableShippingRate())
+            const availableShippingRate = fromJS(
+                shopifyAvailableShippingRate()
+            ) as Map<any, any>
 
             const component = shallow(
                 <ShippingPopover
@@ -202,7 +206,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={null}
-                    availableShippingRates={[availableShippingRate]}
+                    availableShippingRates={fromJS([availableShippingRate])}
                     onChange={onChange}
                 >
                     Add shipping
@@ -258,7 +262,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={shippingLine}
-                    availableShippingRates={[]}
+                    availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
                     Add shipping
@@ -288,14 +292,14 @@ describe('<ShippingPopover/>', () => {
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow(
+            const component = shallow<ShippingPopover>(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={actionName}
                     editable
                     currencyCode="USD"
                     value={null}
-                    availableShippingRates={[]}
+                    availableShippingRates={fromJS([])}
                     onChange={onChange}
                 >
                     Add shipping

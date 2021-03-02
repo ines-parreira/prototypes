@@ -1,49 +1,38 @@
-// @flow
-
-import React from 'react'
-import {fromJS, type Record, type Map} from 'immutable'
+import React, {Component} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import hash from 'object-hash'
 
-import {getCreateOrderState} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
-import {onPayloadChange} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
-import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem.ts'
-import type {
-    DraftOrder,
-    ShippingLine,
-    AppliedDiscount,
-} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number.ts'
-import DiscountPopover from '../../DiscountPopover'
-import ShippingPopover from '../../ShippingPopover'
-import MoneyAmount from '../../../../../MoneyAmount'
-import TaxesPopover from '../../TaxesPopover'
+import {getCreateOrderState} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {onPayloadChange} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import {RootState} from '../../../../../../../../../../../../../state/types'
+import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem'
+import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
+import DiscountPopover from '../../DiscountPopover/DiscountPopover'
+import ShippingPopover from '../../ShippingPopover/ShippingPopover'
+import MoneyAmount from '../../../../../MoneyAmount.js'
+import TaxesPopover from '../../TaxesPopover/TaxesPopover'
 
 import css from './OrderTotals.less'
 
 type Props = {
-    editable: boolean,
-    actionName: string,
-    currencyCode: string,
-    loading: boolean,
-    payload: Record<$Shape<DraftOrder>>,
-    calculatedDraftOrder: Map<*, *>,
-    onPayloadChange: (
-        integrationId: number,
-        Record<$Shape<DraftOrder>>
-    ) => void,
+    editable: boolean
+    actionName: string
+    currencyCode: string
+    loading: boolean
+    payload: Map<any, any>
+    calculatedDraftOrder: Map<any, any>
+    onPayloadChange: (integrationId: number, record: Map<any, any>) => void
 }
 
-export class OrderTotalsComponent extends React.PureComponent<Props> {
+export class OrderTotalsComponent extends Component<Props> {
     static contextTypes = {
         integrationId: PropTypes.number.isRequired,
     }
 
-    _onAppliedDiscountChange = (
-        appliedDiscount: Record<$Shape<AppliedDiscount>> | null
-    ) => {
+    _onAppliedDiscountChange = (appliedDiscount: Map<any, any> | null) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('applied_discount', appliedDiscount)
@@ -51,7 +40,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
         onPayloadChange(integrationId, newPayload)
     }
 
-    _onShippingLineChange = (shippingLine: $Shape<ShippingLine>) => {
+    _onShippingLineChange = (shippingLine: Map<any, any> | null) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('shipping_line', shippingLine)
@@ -77,7 +66,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
             actionName,
         } = this.props
 
-        const taxLines = calculatedDraftOrder.get('taxLines', [])
+        const taxLines = calculatedDraftOrder.get('taxLines', []) as List<any>
 
         return (
             <dl className="row text-right mb-0">
@@ -165,7 +154,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                             Taxes
                         </TaxesPopover>
                     </span>
-                    {taxLines.map((taxLine) => (
+                    {taxLines.map((taxLine: Map<any, any>) => (
                         <span
                             key={hash(taxLine.toJS())}
                             className={classnames('d-block', css.grey)}
@@ -177,7 +166,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                 </dt>
                 <dd className="col-3 mb-2">
                     {payload.get('tax_exempt') || !taxLines.size ? '—' : <br />}
-                    {taxLines.map((taxLine) => (
+                    {taxLines.map((taxLine: Map<any, any>) => (
                         <span
                             key={hash(taxLine.toJS())}
                             className={classnames('d-block', {
@@ -215,7 +204,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
     loading: getCreateOrderState(state).get('loading'),
     payload: getCreateOrderState(state).get('payload'),
     calculatedDraftOrder:

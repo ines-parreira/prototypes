@@ -43,7 +43,7 @@ exports[`<DuplicateOrderFooterComponent/> render() should render 1`] = `
           className="form-control"
           onChange={[Function]}
           placeholder="Add a note..."
-          rows="1"
+          rows={1}
           value="ahahah??"
         />
       </div>
@@ -141,7 +141,7 @@ exports[`<DuplicateOrderFooterComponent/> render() should render with tags 1`] =
           className="form-control"
           onChange={[Function]}
           placeholder="Add a note..."
-          rows="1"
+          rows={1}
           value="ahahah??"
         />
       </div>

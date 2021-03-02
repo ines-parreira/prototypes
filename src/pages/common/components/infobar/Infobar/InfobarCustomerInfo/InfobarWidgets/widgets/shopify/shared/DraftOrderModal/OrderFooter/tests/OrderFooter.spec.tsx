@@ -1,26 +1,26 @@
-// @flow
-
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
 import {DuplicateOrderFooterComponent} from '../OrderFooter'
-import {ShopifyAction} from '../../../../constants'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../../constants.js'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
+        const segmentTracker: Record<string, unknown> = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+        )
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...segmentTracker,
             logEvent: jest.fn(),
         }
     }
@@ -28,7 +28,9 @@ jest.mock(
 
 describe('<DuplicateOrderFooterComponent/>', () => {
     const context = {integrationId: 1}
-    let onPayloadChange
+    let onPayloadChange: jest.MockedFunction<
+        ComponentProps<typeof DuplicateOrderFooterComponent>['onPayloadChange']
+    >
 
     beforeEach(() => {
         onPayloadChange = jest.fn()
@@ -82,7 +84,9 @@ describe('<DuplicateOrderFooterComponent/>', () => {
         ])(
             'should call onPayloadChange() with updated payload',
             (actionName, event) => {
-                const payload = fromJS(shopifyDraftOrderPayloadFixture())
+                const payload = fromJS(
+                    shopifyDraftOrderPayloadFixture()
+                ) as Map<any, any>
 
                 const component = shallow(
                     <DuplicateOrderFooterComponent
@@ -127,9 +131,11 @@ describe('<DuplicateOrderFooterComponent/>', () => {
         ])(
             'should call onPayloadChange() with updated payload',
             (actionName, event) => {
-                const payload = fromJS(shopifyDraftOrderPayloadFixture())
+                const payload = fromJS(
+                    shopifyDraftOrderPayloadFixture()
+                ) as Map<any, any>
 
-                const component = shallow(
+                const component = shallow<DuplicateOrderFooterComponent>(
                     <DuplicateOrderFooterComponent
                         editable
                         actionName={actionName}

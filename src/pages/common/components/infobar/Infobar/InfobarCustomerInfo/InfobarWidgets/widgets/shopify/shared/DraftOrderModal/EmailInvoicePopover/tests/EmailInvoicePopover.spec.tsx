@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {Button, Form, Popover} from 'reactstrap'
 import {fromJS} from 'immutable'
@@ -9,25 +7,29 @@ import _noop from 'lodash/noop'
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import EmailInvoicePopover from '../EmailInvoicePopover'
-import {ShopifyAction} from '../../../../constants'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../../constants.js'
 
 jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
+    '../../../../../../../../../../../../../store/middlewares/segmentTracker.js',
     () => {
+        const SegmentTracker = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+        )
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...SegmentTracker,
             logEvent: jest.fn(),
-        }
+        } as Record<string, unknown>
     }
 )
 
 describe('<EmailInvoicePopover/>', () => {
     const customerEmail = 'foo@bar.xyz'
-    let onSubmit
+    let onSubmit: jest.MockedFunction<
+        ComponentProps<typeof EmailInvoicePopover>['onSubmit']
+    >
 
     beforeEach(() => {
         onSubmit = jest.fn()
@@ -123,7 +125,7 @@ describe('<EmailInvoicePopover/>', () => {
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow(
+            const component = shallow<EmailInvoicePopover>(
                 <EmailInvoicePopover
                     id="email-invoice"
                     actionName={actionName}

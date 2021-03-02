@@ -1,6 +1,11 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {
+    ReactNode,
+    Component,
+    ChangeEvent,
+    FormEvent,
+    ComponentProps,
+    KeyboardEvent,
+} from 'react'
 import {
     Button,
     Form,
@@ -10,43 +15,41 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, type Record} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
-import {ShopifyAction} from '../../../constants'
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
+import {focusElement} from '../../../../../../../../../../../../utils/html'
+//$TsFixMe replace with enum once constants is migrated
+import {ShopifyAction} from '../../../constants.js'
 
 import css from './EmailInvoicePopover.less'
 
 type Props = {
-    id: string,
-    actionName: string,
-    children: Node,
-    placement: string,
-    color: string,
-    customerEmail: string,
-    disabled: boolean,
-    onSubmit: (Record<DraftOrderInvoice>) => void,
+    id: string
+    actionName: string
+    children: ReactNode
+    placement: ComponentProps<typeof Popover>['placement']
+    color: string
+    customerEmail: string
+    disabled: boolean
+    onSubmit: (record: Map<any, any>) => void
 }
 
 type State = {
-    isOpen: boolean,
-    to: string,
-    customMessage: string,
+    isOpen: boolean
+    to: string
+    customMessage: string
 }
 
-export default class EmailInvoicePopover extends React.PureComponent<
-    Props,
-    State
-> {
+export default class EmailInvoicePopover extends Component<Props, State> {
     static defaultProps = {
         placement: 'bottom',
     }
 
-    _buttonElement: HTMLButtonElement
-    _inputElement: HTMLInputElement
+    _buttonElement?: HTMLButtonElement
+    _inputElement?: HTMLInputElement
 
     state = {
         isOpen: false,
@@ -63,7 +66,7 @@ export default class EmailInvoicePopover extends React.PureComponent<
         const onClose = wasOpen && !isOpen
 
         if (onOpen) {
-            focusElement(() => this._inputElement)
+            focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
                     ? segmentTracker.EVENTS
@@ -72,11 +75,11 @@ export default class EmailInvoicePopover extends React.PureComponent<
                           .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
             )
         } else if (onClose) {
-            focusElement(() => this._buttonElement)
+            focusElement(() => this._buttonElement as HTMLButtonElement)
         }
     }
 
-    _onKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             this._toggle()
         }
@@ -98,17 +101,17 @@ export default class EmailInvoicePopover extends React.PureComponent<
         this._inputElement = inputRef
     }
 
-    _onToChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onToChange = (event: ChangeEvent<HTMLInputElement>) => {
         const to = event.target.value
         this.setState({to})
     }
 
-    _onCustomMessageChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onCustomMessageChange = (event: ChangeEvent<HTMLInputElement>) => {
         const customMessage = event.target.value
         this.setState({customMessage})
     }
 
-    _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    _onSubmit = (event: FormEvent) => {
         const {actionName, onSubmit} = this.props
         const {to, customMessage} = this.state
 

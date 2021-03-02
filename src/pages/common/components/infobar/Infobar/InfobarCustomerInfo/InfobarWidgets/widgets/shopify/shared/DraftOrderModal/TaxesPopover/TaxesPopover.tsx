@@ -1,6 +1,11 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {
+    Component,
+    ComponentProps,
+    ReactNode,
+    KeyboardEvent,
+    ChangeEvent,
+    FormEvent,
+} from 'react'
 import classnames from 'classnames'
 import {
     Button,
@@ -12,34 +17,35 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
-import {ShopifyAction} from '../../../constants'
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {focusElement} from '../../../../../../../../../../../../utils/html'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../constants.js'
 
 import css from './TaxesPopover.less'
 
 type Props = {
-    id: string,
-    actionName: string,
-    children: Node,
-    placement: string,
-    editable: boolean,
-    value: boolean,
-    onChange: (boolean) => void,
+    id: string
+    actionName: string
+    children: ReactNode
+    placement: ComponentProps<typeof Popover>['placement']
+    editable: boolean
+    value: boolean
+    onChange: (arg0: boolean) => void
 }
 
 type State = {
-    isOpen: boolean,
-    taxExempt: boolean,
+    isOpen: boolean
+    taxExempt: boolean
 }
 
-export default class TaxesPopover extends React.PureComponent<Props, State> {
+export default class TaxesPopover extends Component<Props, State> {
     static defaultProps = {
         placement: 'bottom',
     }
 
-    _buttonElement: HTMLButtonElement
-    _inputElement: HTMLInputElement
+    _buttonElement?: HTMLButtonElement
+    _inputElement?: HTMLInputElement
 
     state = {
         isOpen: false,
@@ -55,7 +61,7 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
         const onClose = wasOpen && !isOpen
 
         if (onOpen) {
-            focusElement(() => this._inputElement)
+            focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
                     ? segmentTracker.EVENTS
@@ -64,11 +70,11 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
                           .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN
             )
         } else if (onClose) {
-            focusElement(() => this._buttonElement)
+            focusElement(() => this._buttonElement as HTMLButtonElement)
         }
     }
 
-    _onKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             this._toggle()
         }
@@ -90,12 +96,12 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
         this._inputElement = inputRef
     }
 
-    _onChargeTaxesChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onChargeTaxesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const taxExempt = !event.target.checked
         this.setState({taxExempt})
     }
 
-    _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    _onSubmit = (event: FormEvent) => {
         const {actionName, onChange} = this.props
         const {taxExempt} = this.state
 

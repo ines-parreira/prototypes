@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './EmailInvoicePopover'
+export {default} from './EmailInvoicePopover.tsx'

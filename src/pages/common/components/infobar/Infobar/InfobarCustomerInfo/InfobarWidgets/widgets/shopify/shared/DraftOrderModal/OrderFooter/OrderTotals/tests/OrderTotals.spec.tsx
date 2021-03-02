@@ -1,24 +1,27 @@
-// @flow
-
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyShippingLineFixture,
-} from '../../../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../../../fixtures/shopify'
 import {OrderTotalsComponent} from '../OrderTotals'
-import {ShopifyAction} from '../../../../../constants'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../../../constants.js'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 describe('<OrderTotalsComponent/>', () => {
     const context = {integrationId: 1}
-    const payload = fromJS(shopifyDraftOrderPayloadFixture())
-    const calculatedDraftOrder = fromJS(shopifyCalculatedDraftOrderFixture())
-    let onPayloadChange
+    const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
+    const calculatedDraftOrder = fromJS(
+        shopifyCalculatedDraftOrderFixture()
+    ) as Map<any, any>
+    let onPayloadChange: jest.MockedFunction<
+        ComponentProps<typeof OrderTotalsComponent>['onPayloadChange']
+    >
 
     beforeEach(() => {
         onPayloadChange = jest.fn()
@@ -84,7 +87,7 @@ describe('<OrderTotalsComponent/>', () => {
 
     describe('_onDiscountCodesChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
-            const component = shallow(
+            const component = shallow<OrderTotalsComponent>(
                 <OrderTotalsComponent
                     editable
                     actionName={ShopifyAction.DUPLICATE_ORDER}
@@ -109,7 +112,7 @@ describe('<OrderTotalsComponent/>', () => {
 
     describe('_onShippingLineChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
-            const component = shallow(
+            const component = shallow<OrderTotalsComponent>(
                 <OrderTotalsComponent
                     editable
                     actionName={ShopifyAction.DUPLICATE_ORDER}
@@ -135,7 +138,7 @@ describe('<OrderTotalsComponent/>', () => {
 
     describe('_onTaxExemptChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
-            const component = shallow(
+            const component = shallow<OrderTotalsComponent>(
                 <OrderTotalsComponent
                     editable
                     actionName={ShopifyAction.DUPLICATE_ORDER}

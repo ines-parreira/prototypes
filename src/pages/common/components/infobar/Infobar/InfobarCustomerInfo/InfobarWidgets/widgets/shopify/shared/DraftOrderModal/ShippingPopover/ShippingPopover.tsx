@@ -1,6 +1,11 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {
+    Component,
+    ComponentProps,
+    ReactNode,
+    ChangeEvent,
+    FormEvent,
+    KeyboardEvent,
+} from 'react'
 import {
     Button,
     Form,
@@ -10,90 +15,60 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, type Map, type Record} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {ShippingLine} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
-import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
-import MoneyAmount from '../../../../MoneyAmount'
-import AmountInput from '../../AmountInput'
-import {ShopifyAction} from '../../../constants'
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import {focusElement} from '../../../../../../../../../../../../utils/html'
+import MoneyAmount from '../../../../MoneyAmount.js'
+import AmountInput from '../../AmountInput/AmountInput'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../constants.js'
 
 import css from './ShippingPopover.less'
 
 type Props = {
-    id: string,
-    actionName: string,
-    children: Node,
-    placement: string,
-    editable: boolean,
-    currencyCode: string,
-    value: Record<$Shape<ShippingLine>> | null,
-    availableShippingRates: Map<*, *>,
-    onChange: (Record<$Shape<ShippingLine>> | null) => void,
+    id: string
+    actionName: string
+    children: ReactNode
+    placement: ComponentProps<typeof Popover>['placement']
+    editable: boolean
+    currencyCode: string
+    value: Map<any, any> | null
+    availableShippingRates: List<any>
+    onChange: (arg0: Map<any, any> | null) => void
 }
 
 type State = {
-    isOpen: boolean,
-    handle: ?string,
-    title: string,
-    price: string,
+    isOpen: boolean
+    handle: string | null
+    title: string
+    price: string
 }
 
-export default class ShippingPopover extends React.PureComponent<Props, State> {
+export default class ShippingPopover extends Component<Props, State> {
     static _FREE_SHIPPING_TITLE = 'Free shipping'
 
     static defaultProps = {
         placement: 'bottom',
     }
 
-    _buttonElement: HTMLButtonElement
-    _firstInputElement: HTMLInputElement
+    _buttonElement?: HTMLButtonElement
+    _firstInputElement?: HTMLInputElement
 
-    state = {
-        isOpen: false,
-        ...this._initState(),
+    _isFreeShipping = (value: Map<any, any>): boolean => {
+        const {currencyCode} = this.props
+
+        return (
+            value.get('custom') === true &&
+            value.get('handle') === null &&
+            value.get('price') === formatPrice(0, currencyCode) &&
+            value.get('title') === ShippingPopover._FREE_SHIPPING_TITLE
+        )
     }
 
-    componentDidUpdate(prevProps: Props, prevState: State) {
-        const {actionName} = this.props
-        const {isOpen} = this.state
-        const {isOpen: wasOpen} = prevState
-
-        const onOpen = !wasOpen && isOpen
-        const onClose = wasOpen && !isOpen
-
-        if (onOpen) {
-            focusElement(() => this._firstInputElement)
-            segmentTracker.logEvent(
-                actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS
-                          .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN
-                    : segmentTracker.EVENTS
-                          .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN
-            )
-        } else if (onClose) {
-            focusElement(() => this._buttonElement)
-        }
-    }
-
-    _onKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Escape') {
-            this._toggle()
-        }
-    }
-
-    _toggle = () => {
-        const {isOpen} = this.state
-
-        this.setState({
-            isOpen: !isOpen,
-        })
-    }
-
-    _initState(): $Shape<State> {
+    _initState = (): Omit<State, 'isOpen'> => {
         const {value} = this.props
 
         if (!value) {
@@ -119,15 +94,45 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         }
     }
 
-    _isFreeShipping(value: Record<$Shape<ShippingLine>>): boolean {
-        const {currencyCode} = this.props
+    state = {
+        isOpen: false,
+        ...this._initState(),
+    }
 
-        return (
-            value.get('custom') === true &&
-            value.get('handle') === null &&
-            value.get('price') === formatPrice(0, currencyCode) &&
-            value.get('title') === ShippingPopover._FREE_SHIPPING_TITLE
-        )
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        const {actionName} = this.props
+        const {isOpen} = this.state
+        const {isOpen: wasOpen} = prevState
+
+        const onOpen = !wasOpen && isOpen
+        const onClose = wasOpen && !isOpen
+
+        if (onOpen) {
+            focusElement(() => this._firstInputElement as HTMLInputElement)
+            segmentTracker.logEvent(
+                actionName === ShopifyAction.CREATE_ORDER
+                    ? segmentTracker.EVENTS
+                          .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN
+                    : segmentTracker.EVENTS
+                          .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN
+            )
+        } else if (onClose) {
+            focusElement(() => this._buttonElement as HTMLButtonElement)
+        }
+    }
+
+    _onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            this._toggle()
+        }
+    }
+
+    _toggle = () => {
+        const {isOpen} = this.state
+
+        this.setState({
+            isOpen: !isOpen,
+        })
     }
 
     _getShippingRateTitle() {
@@ -135,15 +140,15 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         const {handle} = this.state
 
         if (!!value && value.get('title')) {
-            return value.get('title')
+            return value.get('title') as string
         }
 
         const shippingRate = availableShippingRates.find(
-            (availableShippingRate) =>
+            (availableShippingRate: Map<any, any>) =>
                 availableShippingRate.get('handle') === handle
-        )
+        ) as Map<any, any>
 
-        return shippingRate ? shippingRate.get('title') : null
+        return shippingRate ? (shippingRate.get('title') as string) : null
     }
 
     _saveButtonRef = (buttonRef: HTMLButtonElement) => {
@@ -154,12 +159,12 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         this._firstInputElement = inputRef
     }
 
-    _onHandleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onHandleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const handle = event.target.value
         this.setState({handle})
     }
 
-    _onTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value
         this.setState({title})
     }
@@ -168,7 +173,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         this.setState({price})
     }
 
-    _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    _onSubmit = (event: FormEvent) => {
         const {currencyCode, onChange, actionName} = this.props
         const {handle, title, price} = this.state
 
@@ -293,7 +298,10 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
                             {availableShippingRates.map(
-                                (availableShippingRate, index) => (
+                                (
+                                    availableShippingRate: Map<any, any>,
+                                    index
+                                ) => (
                                     <FormGroup
                                         check
                                         className="mb-3"

@@ -1,49 +1,44 @@
-// @flow
-
-import React from 'react'
+import React, {Component, ChangeEvent} from 'react'
 import {Col, Container, Row} from 'reactstrap'
-import {type Record} from 'immutable'
+import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import _debounce from 'lodash/debounce'
 
-import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
-import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
-import MultiSelectOptionsField, {
-    type Option,
-} from '../../../../../../../../../../forms/MultiSelectOptionsField'
-import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {DraftOrder} from '../../../../../../../../../../../../constants/integrations/types/shopify.ts'
-import {ShopifyAction} from '../../../constants'
+import {RootState} from '../../../../../../../../../../../../state/types'
+import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import MultiSelectOptionsField from '../../../../../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField.js'
+import {Option} from '../../../../../../../../../../forms/MultiSelectOptionsField/types'
+import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../constants.js'
 
-import OrderTotals from './OrderTotals'
+import OrderTotals from './OrderTotals/OrderTotals'
 import css from './OrderFooter.less'
 
 type Props = {
-    editable: boolean,
-    actionName: string,
-    currencyCode: string,
-    payload: Record<$Shape<DraftOrder>>,
+    editable: boolean
+    actionName: string
+    currencyCode: string
+    payload: Map<any, any>
     onPayloadChange: (
         integrationId: number,
-        Record<$Shape<DraftOrder>>,
+        record: Map<any, any>,
         shouldCalculate?: boolean
-    ) => void,
+    ) => void
 }
 
 type State = {
-    note: string,
+    note: string
 }
 
-export class DuplicateOrderFooterComponent extends React.PureComponent<
-    Props,
-    State
-> {
+export class DuplicateOrderFooterComponent extends Component<Props, State> {
     static contextTypes = {
         integrationId: PropTypes.number.isRequired,
     }
 
-    static tagsToOptions(tags: string = ''): Option[] {
+    static tagsToOptions(tags = ''): Option[] {
         return tags
             .split(',')
             .map((tag) => tag.trim())
@@ -60,7 +55,7 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<
 
     _defaultTags = this.props.payload.get('tags') || ''
 
-    _onNoteChange = (event: SyntheticInputEvent<HTMLTextAreaElement>) => {
+    _onNoteChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const padding = 2
         const element = event.target
         const note = element.value
@@ -97,7 +92,7 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<
         const {onPayloadChange, payload, actionName} = this.props
         const {integrationId} = this.context
 
-        const newValue = tags.map((option) => option.value).join(',')
+        const newValue = tags.map((option) => option.value as string).join(',')
         const newPayload = payload.set('tags', newValue)
 
         onPayloadChange(integrationId, newPayload, false)
@@ -120,7 +115,7 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<
                         <div className="mb-4">
                             <h4>Notes</h4>
                             <textarea
-                                rows="1"
+                                rows={1}
                                 className="form-control"
                                 placeholder="Add a note..."
                                 value={note}
@@ -161,7 +156,7 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
     payload: getCreateOrderState(state).get('payload'),
 })
 

@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './TaxesPopover'
+export {default} from './TaxesPopover.tsx'

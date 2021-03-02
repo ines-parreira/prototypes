@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import {Button, Form, Popover} from 'reactstrap'
@@ -8,24 +6,28 @@ import {Button, Form, Popover} from 'reactstrap'
 import {
     EVENTS,
     logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+} from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import TaxesPopover from '../TaxesPopover'
-import {ShopifyAction} from '../../../../constants'
+//$TsFixMe replace with enum when constants is migrated
+import {ShopifyAction} from '../../../../constants.js'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
     () => {
+        const segmentTracker: Record<string, unknown> = jest.requireActual(
+            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
+        )
         return {
-            ...jest.requireActual(
-                '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-            ),
+            ...segmentTracker,
             logEvent: jest.fn(),
         }
     }
 )
 
 describe('<TaxesPopover/>', () => {
-    let onChange
+    let onChange: jest.MockedFunction<
+        ComponentProps<typeof TaxesPopover>['onChange']
+    >
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -136,7 +138,7 @@ describe('<TaxesPopover/>', () => {
         ])('should track', (actionName, event) => {
             const taxExempt = false
 
-            const component = shallow(
+            const component = shallow<TaxesPopover>(
                 <TaxesPopover
                     id="taxes"
                     actionName={actionName}
