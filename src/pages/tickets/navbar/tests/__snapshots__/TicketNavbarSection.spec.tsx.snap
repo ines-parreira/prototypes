@@ -50,7 +50,6 @@ exports[`<TicketNavbarSection/> should render a section (views collapsed) 1`] = 
         >
           <button
             class="action dropdown-item"
-            role="menuitem"
             tabindex="0"
             type="button"
           >
@@ -58,7 +57,6 @@ exports[`<TicketNavbarSection/> should render a section (views collapsed) 1`] = 
           </button>
           <button
             class="action red dropdown-item"
-            role="menuitem"
             tabindex="0"
             type="button"
           >
@@ -121,7 +119,6 @@ exports[`<TicketNavbarSection/> should render a section (views expanded) 1`] = `
         >
           <button
             class="action dropdown-item"
-            role="menuitem"
             tabindex="0"
             type="button"
           >
@@ -129,7 +126,6 @@ exports[`<TicketNavbarSection/> should render a section (views expanded) 1`] = `
           </button>
           <button
             class="action red dropdown-item"
-            role="menuitem"
             tabindex="0"
             type="button"
           >

@@ -35,15 +35,6 @@ exports[`BusinessHours component should render default values 1`] = `
       <Row
         className="mb-2"
         tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
       >
         <Col
           md="9"
@@ -259,15 +250,6 @@ exports[`BusinessHours component should render values from state 1`] = `
               <Row
                 className="mb-2"
                 tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
               >
                 <div
                   className="mb-2 row"
@@ -399,17 +381,19 @@ exports[`BusinessHours component should render values from state 1`] = `
                                     toggle={[Function]}
                                   >
                                     <Dropdown
-                                      a11y={true}
                                       active={false}
                                       addonType={false}
                                       direction="down"
                                       inNavbar={false}
                                       isOpen={false}
                                       nav={false}
-                                      setActiveFromChild={false}
                                       toggle={[Function]}
                                     >
-                                      <Manager>
+                                      <Manager
+                                        className="dropdown"
+                                        onKeyDown={[Function]}
+                                        tag="div"
+                                      >
                                         <div
                                           className="dropdown"
                                           onKeyDown={[Function]}
@@ -420,50 +404,53 @@ exports[`BusinessHours component should render values from state 1`] = `
                                             data-toggle="dropdown"
                                             tag="div"
                                           >
-                                            <Reference>
-                                              <InnerReference
-                                                setReferenceNode={[Function]}
+                                            <Target
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className=""
+                                              component="div"
+                                              data-toggle="dropdown"
+                                              onClick={[Function]}
+                                            >
+                                              <div
+                                                aria-expanded={false}
+                                                aria-haspopup={true}
+                                                className=""
+                                                data-toggle="dropdown"
+                                                onClick={[Function]}
                                               >
                                                 <div
-                                                  aria-expanded={false}
-                                                  aria-haspopup={true}
-                                                  className=""
-                                                  data-toggle="dropdown"
+                                                  className="select dropdown-toggle"
                                                   onClick={[Function]}
                                                 >
-                                                  <div
-                                                    className="select dropdown-toggle"
-                                                    onClick={[Function]}
+                                                  <span
+                                                    className="label"
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
+                                                        "opacity": 1,
+                                                      }
+                                                    }
                                                   >
-                                                    <span
-                                                      className="label"
-                                                      style={
-                                                        Object {
-                                                          "minWidth": 82,
-                                                          "opacity": 1,
-                                                        }
+                                                    Tuesday
+                                                  </span>
+                                                  <input
+                                                    className="input"
+                                                    onBlur={[Function]}
+                                                    onChange={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
                                                       }
-                                                    >
-                                                      Tuesday
-                                                    </span>
-                                                    <input
-                                                      className="input"
-                                                      onBlur={[Function]}
-                                                      onChange={[Function]}
-                                                      onFocus={[Function]}
-                                                      onKeyDown={[Function]}
-                                                      style={
-                                                        Object {
-                                                          "minWidth": 82,
-                                                        }
-                                                      }
-                                                      type="text"
-                                                      value=""
-                                                    />
-                                                  </div>
+                                                    }
+                                                    type="text"
+                                                    value=""
+                                                  />
                                                 </div>
-                                              </InnerReference>
-                                            </Reference>
+                                              </div>
+                                            </Target>
                                           </DropdownToggle>
                                           <DropdownMenu
                                             className="options"
@@ -489,7 +476,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option option--focused dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -511,7 +497,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -533,7 +518,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -555,7 +539,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -575,7 +558,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -595,7 +577,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -615,7 +596,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -635,7 +615,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -655,7 +634,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -809,17 +787,19 @@ exports[`BusinessHours component should render values from state 1`] = `
                                     toggle={[Function]}
                                   >
                                     <Dropdown
-                                      a11y={true}
                                       active={false}
                                       addonType={false}
                                       direction="down"
                                       inNavbar={false}
                                       isOpen={false}
                                       nav={false}
-                                      setActiveFromChild={false}
                                       toggle={[Function]}
                                     >
-                                      <Manager>
+                                      <Manager
+                                        className="dropdown"
+                                        onKeyDown={[Function]}
+                                        tag="div"
+                                      >
                                         <div
                                           className="dropdown"
                                           onKeyDown={[Function]}
@@ -830,50 +810,53 @@ exports[`BusinessHours component should render values from state 1`] = `
                                             data-toggle="dropdown"
                                             tag="div"
                                           >
-                                            <Reference>
-                                              <InnerReference
-                                                setReferenceNode={[Function]}
+                                            <Target
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className=""
+                                              component="div"
+                                              data-toggle="dropdown"
+                                              onClick={[Function]}
+                                            >
+                                              <div
+                                                aria-expanded={false}
+                                                aria-haspopup={true}
+                                                className=""
+                                                data-toggle="dropdown"
+                                                onClick={[Function]}
                                               >
                                                 <div
-                                                  aria-expanded={false}
-                                                  aria-haspopup={true}
-                                                  className=""
-                                                  data-toggle="dropdown"
+                                                  className="select dropdown-toggle"
                                                   onClick={[Function]}
                                                 >
-                                                  <div
-                                                    className="select dropdown-toggle"
-                                                    onClick={[Function]}
+                                                  <span
+                                                    className="label"
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
+                                                        "opacity": 1,
+                                                      }
+                                                    }
                                                   >
-                                                    <span
-                                                      className="label"
-                                                      style={
-                                                        Object {
-                                                          "minWidth": 82,
-                                                          "opacity": 1,
-                                                        }
+                                                    Thursday
+                                                  </span>
+                                                  <input
+                                                    className="input"
+                                                    onBlur={[Function]}
+                                                    onChange={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    style={
+                                                      Object {
+                                                        "minWidth": 82,
                                                       }
-                                                    >
-                                                      Thursday
-                                                    </span>
-                                                    <input
-                                                      className="input"
-                                                      onBlur={[Function]}
-                                                      onChange={[Function]}
-                                                      onFocus={[Function]}
-                                                      onKeyDown={[Function]}
-                                                      style={
-                                                        Object {
-                                                          "minWidth": 82,
-                                                        }
-                                                      }
-                                                      type="text"
-                                                      value=""
-                                                    />
-                                                  </div>
+                                                    }
+                                                    type="text"
+                                                    value=""
+                                                  />
                                                 </div>
-                                              </InnerReference>
-                                            </Reference>
+                                              </div>
+                                            </Target>
                                           </DropdownToggle>
                                           <DropdownMenu
                                             className="options"
@@ -899,7 +882,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option option--focused dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -921,7 +903,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -943,7 +924,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -965,7 +945,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -985,7 +964,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -1005,7 +983,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -1025,7 +1002,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -1045,7 +1021,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -1065,7 +1040,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   className="option dropdown-item"
                                                   onClick={[Function]}
                                                   onMouseEnter={[Function]}
-                                                  role="menuitem"
                                                   tabIndex="0"
                                                   type="button"
                                                 >
@@ -1137,7 +1111,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                           type="button"
                         >
                           <button
-                            aria-label={null}
                             className="btn btn-secondary"
                             onClick={[Function]}
                             type="button"
@@ -1203,6 +1176,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   className="form-control"
                                   id="id-timezone"
                                   onChange={[Function]}
+                                  type="select"
                                   value="US/Pacific"
                                 >
                                   <option
@@ -1241,7 +1215,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                 type="submit"
               >
                 <button
-                  aria-label={null}
                   className="btn btn-success"
                   disabled={false}
                   onClick={[Function]}

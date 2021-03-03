@@ -27,7 +27,6 @@ exports[`<RuleSelect/> should display the label of the selected value 1`] = `
     >
       <button
         class="option dropdown-item"
-        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -65,7 +64,6 @@ exports[`<RuleSelect/> should display the placeholder when no label is passed 1`
     >
       <button
         class="option dropdown-item"
-        role="menuitem"
         tabindex="0"
         type="button"
       >

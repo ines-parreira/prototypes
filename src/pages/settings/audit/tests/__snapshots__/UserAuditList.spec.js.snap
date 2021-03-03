@@ -134,7 +134,6 @@ exports[`UserAuditList component mounts correctly 1`] = `
       <Alert
         closeAriaLabel="Close"
         color="info"
-        fade={true}
         isOpen={true}
         tag="div"
         transition={

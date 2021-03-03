@@ -239,7 +239,6 @@ export default class Form extends Component<Props, State> {
                                             toggle={this._toggleEmojiPicker}
                                             hideArrow={true}
                                             className={css.popover}
-                                            trigger="legacy"
                                         >
                                             <PopoverBody className={'p-0'}>
                                                 <EmojiPicker

@@ -7,30 +7,25 @@ exports[`<BillingPlans/> should display a custom plan 1`] = `
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <ol
+      class="breadcrumb"
     >
-      <ol
-        class="breadcrumb"
+      <li
+        class="breadcrumb-item"
       >
-        <li
-          class="breadcrumb-item"
+        <a
+          class="section"
+          to="/app/settings/billing"
         >
-          <a
-            class="section"
-            to="/app/settings/billing"
-          >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
+          Billing & Usage
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        Plans
+      </li>
+    </ol>
   </div>
   <div
     class="page-container plans-container container-fluid"
@@ -402,30 +397,25 @@ exports[`<BillingPlans/> should display plans with product features 1`] = `
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <ol
+      class="breadcrumb"
     >
-      <ol
-        class="breadcrumb"
+      <li
+        class="breadcrumb-item"
       >
-        <li
-          class="breadcrumb-item"
+        <a
+          class="section"
+          to="/app/settings/billing"
         >
-          <a
-            class="section"
-            to="/app/settings/billing"
-          >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
+          Billing & Usage
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        Plans
+      </li>
+    </ol>
   </div>
   <div
     class="page-container plans-container container-fluid"
@@ -858,30 +848,25 @@ exports[`<BillingPlans/> should display plans without product features 1`] = `
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <ol
+      class="breadcrumb"
     >
-      <ol
-        class="breadcrumb"
+      <li
+        class="breadcrumb-item"
       >
-        <li
-          class="breadcrumb-item"
+        <a
+          class="section"
+          to="/app/settings/billing"
         >
-          <a
-            class="section"
-            to="/app/settings/billing"
-          >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
+          Billing & Usage
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        Plans
+      </li>
+    </ol>
   </div>
   <div
     class="page-container plans-container container-fluid"
@@ -1184,30 +1169,25 @@ exports[`<BillingPlans/> should display public plans 1`] = `
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <ol
+      class="breadcrumb"
     >
-      <ol
-        class="breadcrumb"
+      <li
+        class="breadcrumb-item"
       >
-        <li
-          class="breadcrumb-item"
+        <a
+          class="section"
+          to="/app/settings/billing"
         >
-          <a
-            class="section"
-            to="/app/settings/billing"
-          >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
+          Billing & Usage
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        Plans
+      </li>
+    </ol>
   </div>
   <div
     class="page-container plans-container container-fluid"

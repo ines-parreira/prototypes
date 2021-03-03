@@ -7,9 +7,7 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -51,9 +49,7 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -128,9 +124,7 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -194,9 +188,7 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"

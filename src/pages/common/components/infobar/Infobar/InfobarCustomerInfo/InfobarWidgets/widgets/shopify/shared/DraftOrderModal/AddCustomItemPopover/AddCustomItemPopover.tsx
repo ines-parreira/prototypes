@@ -209,7 +209,6 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
-                    trigger="legacy"
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">

@@ -128,7 +128,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
               toggle={[Function]}
             >
               <Dropdown
-                a11y={true}
                 active={false}
                 addonType={false}
                 direction="down"
@@ -136,10 +135,13 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                 inNavbar={false}
                 isOpen={false}
                 nav={false}
-                setActiveFromChild={false}
                 toggle={[Function]}
               >
-                <Manager>
+                <Manager
+                  className="btn-group"
+                  onKeyDown={[Function]}
+                  tag="div"
+                >
                   <div
                     className="btn-group"
                     onKeyDown={[Function]}
@@ -149,32 +151,34 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                       caret={true}
                       color="secondary"
                     >
-                      <Reference>
-                        <InnerReference
-                          setReferenceNode={[Function]}
+                      <Target
+                        aria-expanded={false}
+                        aria-haspopup={true}
+                        className="dropdown-toggle"
+                        color="secondary"
+                        component={[Function]}
+                        onClick={[Function]}
+                      >
+                        <Button
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className="dropdown-toggle"
+                          color="secondary"
+                          innerRef={[Function]}
+                          onClick={[Function]}
+                          tag="button"
                         >
-                          <Button
+                          <button
                             aria-expanded={false}
                             aria-haspopup={true}
-                            className="dropdown-toggle"
-                            color="secondary"
-                            innerRef={[Function]}
+                            className="dropdown-toggle btn btn-secondary"
                             onClick={[Function]}
-                            tag="button"
+                            type="button"
                           >
-                            <button
-                              aria-expanded={false}
-                              aria-haspopup={true}
-                              aria-label={null}
-                              className="dropdown-toggle btn btn-secondary"
-                              onClick={[Function]}
-                              type="button"
-                            >
-                              Choose intent
-                            </button>
-                          </Button>
-                        </InnerReference>
-                      </Reference>
+                            Choose intent
+                          </button>
+                        </Button>
+                      </Target>
                     </DropdownToggle>
                     <DropdownMenu
                       className="dropdown"
@@ -196,7 +200,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                           <button
                             className="dropdown-item"
                             onClick={[Function]}
-                            role="menuitem"
                             tabIndex="0"
                             type="button"
                           >
@@ -293,7 +296,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                               <button
                                 className="dropdown-item"
                                 onClick={[Function]}
-                                role="menuitem"
                                 tabIndex="0"
                                 type="button"
                               >
@@ -316,7 +318,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                               <button
                                 className="dropdown-item"
                                 onClick={[Function]}
-                                role="menuitem"
                                 tabIndex="0"
                                 type="button"
                               >
@@ -376,7 +377,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                               <button
                                 className="dropdown-item"
                                 onClick={[Function]}
-                                role="menuitem"
                                 tabIndex="0"
                                 type="button"
                               >
@@ -412,7 +412,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
             toggle={[Function]}
           >
             <Dropdown
-              a11y={true}
               active={false}
               addonType={false}
               className="mr-2"
@@ -421,10 +420,13 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
               inNavbar={false}
               isOpen={false}
               nav={false}
-              setActiveFromChild={false}
               toggle={[Function]}
             >
-              <Manager>
+              <Manager
+                className="mr-2 btn-group"
+                onKeyDown={[Function]}
+                tag="div"
+              >
                 <div
                   className="mr-2 btn-group"
                   onKeyDown={[Function]}
@@ -435,33 +437,36 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                     color="primary"
                     type="button"
                   >
-                    <Reference>
-                      <InnerReference
-                        setReferenceNode={[Function]}
+                    <Target
+                      aria-expanded={false}
+                      aria-haspopup={true}
+                      className="dropdown-toggle"
+                      color="primary"
+                      component={[Function]}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      <Button
+                        aria-expanded={false}
+                        aria-haspopup={true}
+                        className="dropdown-toggle"
+                        color="primary"
+                        innerRef={[Function]}
+                        onClick={[Function]}
+                        tag="button"
+                        type="button"
                       >
-                        <Button
+                        <button
                           aria-expanded={false}
                           aria-haspopup={true}
-                          className="dropdown-toggle"
-                          color="primary"
-                          innerRef={[Function]}
+                          className="dropdown-toggle btn btn-primary"
                           onClick={[Function]}
-                          tag="button"
                           type="button"
                         >
-                          <button
-                            aria-expanded={false}
-                            aria-haspopup={true}
-                            aria-label={null}
-                            className="dropdown-toggle btn btn-primary"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            Add action
-                          </button>
-                        </Button>
-                      </InnerReference>
-                    </Reference>
+                          Add action
+                        </button>
+                      </Button>
+                    </Target>
                   </DropdownToggle>
                   <DropdownMenu
                     className="dropdown"
@@ -508,7 +513,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -525,7 +529,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -542,7 +545,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -559,7 +561,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -576,7 +577,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -593,7 +593,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -610,7 +609,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >
@@ -651,7 +649,6 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         <button
                           className="dropdown-item"
                           onClick={[Function]}
-                          role="menuitem"
                           tabIndex="0"
                           type="button"
                         >

@@ -109,6 +109,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 className="form-control"
                                 id="id-survey_interval"
                                 onChange={[Function]}
+                                type="select"
                               >
                                 <option
                                   key="0"
@@ -348,7 +349,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   toggle={[Function]}
                                 >
                                   <Dropdown
-                                    a11y={true}
                                     active={false}
                                     addonType={false}
                                     direction="down"
@@ -356,10 +356,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     inNavbar={false}
                                     isOpen={false}
                                     nav={false}
-                                    setActiveFromChild={false}
                                     toggle={[Function]}
                                   >
-                                    <Manager>
+                                    <Manager
+                                      className="btn-group"
+                                      onKeyDown={[Function]}
+                                      tag="div"
+                                    >
                                       <div
                                         className="btn-group"
                                         onKeyDown={[Function]}
@@ -375,43 +378,51 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           }
                                           type="button"
                                         >
-                                          <Reference>
-                                            <InnerReference
-                                              setReferenceNode={[Function]}
+                                          <Target
+                                            aria-expanded={false}
+                                            aria-haspopup={true}
+                                            className="dropdown-toggle"
+                                            color="link"
+                                            component={[Function]}
+                                            onClick={[Function]}
+                                            style={
+                                              Object {
+                                                "color": "inherit",
+                                              }
+                                            }
+                                            type="button"
+                                          >
+                                            <Button
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className="dropdown-toggle"
+                                              color="link"
+                                              innerRef={[Function]}
+                                              onClick={[Function]}
+                                              style={
+                                                Object {
+                                                  "color": "inherit",
+                                                }
+                                              }
+                                              tag="button"
+                                              type="button"
                                             >
-                                              <Button
+                                              <button
                                                 aria-expanded={false}
                                                 aria-haspopup={true}
-                                                className="dropdown-toggle"
-                                                color="link"
-                                                innerRef={[Function]}
+                                                className="dropdown-toggle btn btn-link"
                                                 onClick={[Function]}
                                                 style={
                                                   Object {
                                                     "color": "inherit",
                                                   }
                                                 }
-                                                tag="button"
                                                 type="button"
                                               >
-                                                <button
-                                                  aria-expanded={false}
-                                                  aria-haspopup={true}
-                                                  aria-label={null}
-                                                  className="dropdown-toggle btn btn-link"
-                                                  onClick={[Function]}
-                                                  style={
-                                                    Object {
-                                                      "color": "inherit",
-                                                    }
-                                                  }
-                                                  type="button"
-                                                >
-                                                  Ticket customer
-                                                </button>
-                                              </Button>
-                                            </InnerReference>
-                                          </Reference>
+                                                Ticket customer
+                                              </button>
+                                            </Button>
+                                          </Target>
                                         </DropdownToggle>
                                         <DropdownMenu
                                           flip={true}
@@ -433,7 +444,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -450,7 +460,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -467,7 +476,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -484,7 +492,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -506,7 +513,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   toggle={[Function]}
                                 >
                                   <Dropdown
-                                    a11y={true}
                                     active={false}
                                     addonType={false}
                                     direction="down"
@@ -514,10 +520,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     inNavbar={false}
                                     isOpen={false}
                                     nav={false}
-                                    setActiveFromChild={false}
                                     toggle={[Function]}
                                   >
-                                    <Manager>
+                                    <Manager
+                                      className="btn-group"
+                                      onKeyDown={[Function]}
+                                      tag="div"
+                                    >
                                       <div
                                         className="btn-group"
                                         onKeyDown={[Function]}
@@ -533,43 +542,51 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           }
                                           type="button"
                                         >
-                                          <Reference>
-                                            <InnerReference
-                                              setReferenceNode={[Function]}
+                                          <Target
+                                            aria-expanded={false}
+                                            aria-haspopup={true}
+                                            className="dropdown-toggle"
+                                            color="link"
+                                            component={[Function]}
+                                            onClick={[Function]}
+                                            style={
+                                              Object {
+                                                "color": "inherit",
+                                              }
+                                            }
+                                            type="button"
+                                          >
+                                            <Button
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className="dropdown-toggle"
+                                              color="link"
+                                              innerRef={[Function]}
+                                              onClick={[Function]}
+                                              style={
+                                                Object {
+                                                  "color": "inherit",
+                                                }
+                                              }
+                                              tag="button"
+                                              type="button"
                                             >
-                                              <Button
+                                              <button
                                                 aria-expanded={false}
                                                 aria-haspopup={true}
-                                                className="dropdown-toggle"
-                                                color="link"
-                                                innerRef={[Function]}
+                                                className="dropdown-toggle btn btn-link"
                                                 onClick={[Function]}
                                                 style={
                                                   Object {
                                                     "color": "inherit",
                                                   }
                                                 }
-                                                tag="button"
                                                 type="button"
                                               >
-                                                <button
-                                                  aria-expanded={false}
-                                                  aria-haspopup={true}
-                                                  aria-label={null}
-                                                  className="dropdown-toggle btn btn-link"
-                                                  onClick={[Function]}
-                                                  style={
-                                                    Object {
-                                                      "color": "inherit",
-                                                    }
-                                                  }
-                                                  type="button"
-                                                >
-                                                  Current agent
-                                                </button>
-                                              </Button>
-                                            </InnerReference>
-                                          </Reference>
+                                                Current agent
+                                              </button>
+                                            </Button>
+                                          </Target>
                                         </DropdownToggle>
                                         <DropdownMenu
                                           flip={true}
@@ -591,7 +608,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -608,7 +624,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -625,7 +640,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -642,7 +656,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -659,7 +672,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <button
                                                 className="dropdown-item"
                                                 onClick={[Function]}
-                                                role="menuitem"
                                                 tabIndex="0"
                                                 type="button"
                                               >
@@ -685,7 +697,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 tag="button"
                               >
                                 <button
-                                  aria-label={null}
                                   className="btn btn-link"
                                   onClick={[Function]}
                                   style={
@@ -3285,7 +3296,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                     type="submit"
                   >
                     <button
-                      aria-label={null}
                       className="btn btn-success"
                       disabled={false}
                       onClick={[Function]}

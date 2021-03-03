@@ -1,26 +1,13 @@
 // @flow
-import React, {type ElementProps} from 'react'
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React from 'react'
+import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import EmojiPicker from '../../../EmojiPicker'
 import EmojiSelect from '../EmojiSelect'
 import css from '../EmojiSelect.less'
 
 const POPOVER_SELECTOR = '.popover'
-
-jest.mock(
-    '../../../EmojiPicker',
-    () => ({children, onClick}: ElementProps<typeof EmojiPicker>) => {
-        return (
-            <div data-testid="EmojiPicker">
-                <div data-testid="EmojiPicker-new-emoji" onClick={onClick} />
-                {children}
-            </div>
-        )
-    }
-)
+const EMOJI_MART_EMOJI_SELECTOR = '.emoji-mart-emoji'
 
 const defaultProps = {
     emoji: '1',
@@ -44,41 +31,39 @@ afterEach(() => {
 describe('<EmojiSelect/>', () => {
     describe('.render()', () => {
         it('should show smiley when no emoji selected', () => {
-            const {baseElement} = render(
+            const wrapper = shallow(
                 <EmojiSelect {...defaultProps} emoji={null} />
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(wrapper).toMatchSnapshot()
         })
 
         it('show emoji picker on icon click', () => {
-            const {baseElement, getByText} = render(
-                <EmojiSelect {...defaultProps} />
-            )
-            userEvent.click(getByText('1'))
-            expect(baseElement).toMatchSnapshot()
+            const wrapper = shallow(<EmojiSelect {...defaultProps} />)
+            wrapper.find('.' + css.icon).simulate('click')
+            expect(wrapper).toMatchSnapshot()
         })
     })
 
     describe('onEmojiSelect()', () => {
         it('should call onEmojiSelect on emoji click', () => {
             const onEmojiSelect = jest.spyOn(defaultProps, 'onEmojiSelect')
-            const {getByTestId, getByText} = render(
-                <EmojiSelect {...defaultProps} />
+            const wrapper = mount(<EmojiSelect {...defaultProps} />)
+            wrapper.find('.' + css.icon).simulate('click')
+            const emoji = global.document.querySelector(
+                EMOJI_MART_EMOJI_SELECTOR
             )
-            userEvent.click(getByText('1'))
-            userEvent.click(getByTestId('EmojiPicker-new-emoji'))
-            expect(onEmojiSelect).toHaveBeenCalled()
+            const expectedEmoji = emoji.querySelector('span').innerHTML
+            emoji.click()
+            expect(onEmojiSelect).toHaveBeenLastCalledWith(expectedEmoji)
         })
     })
 
     describe('onEmojiClear()', () => {
         it('should call onEmojiClear on clear button click', () => {
             const onEmojiClear = jest.spyOn(defaultProps, 'onEmojiClear')
-            const {getByText} = render(<EmojiSelect {...defaultProps} />)
-            userEvent.click(getByText('1'))
-            userEvent.click(
-                global.document.querySelector('.' + css.clearButton)
-            )
+            const wrapper = mount(<EmojiSelect {...defaultProps} />)
+            wrapper.find('.' + css.icon).simulate('click')
+            global.document.querySelector('.' + css.clearButton).click()
             expect(onEmojiClear).toHaveBeenLastCalledWith()
         })
     })

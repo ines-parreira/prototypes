@@ -160,33 +160,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-0"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-0"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -249,33 +229,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-1"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-1"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -288,7 +248,6 @@ exports[`CustomerChannels component should display all passed channels because t
       type="button"
     >
       <button
-        aria-label={null}
         className="container pl-0 btn btn-link"
         onClick={[Function]}
         type="button"
@@ -366,33 +325,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-0"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-0"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -455,33 +394,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-1"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-1"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -544,33 +463,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-2"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-2"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -633,33 +532,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-3"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-3"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -722,33 +601,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-4"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-4"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -811,33 +670,13 @@ exports[`CustomerChannels component should display all passed channels because t
                   "show": 1000,
                 }
               }
+              hideArrow={false}
               isOpen={false}
               placement="top"
               placementPrefix="bs-tooltip"
               target="copy-icon-5"
               toggle={[Function]}
-              trigger="hover focus"
-            >
-              <TooltipPopoverWrapper
-                autohide={true}
-                delay={
-                  Object {
-                    "hide": 0,
-                    "show": 1000,
-                  }
-                }
-                fade={true}
-                hideArrow={false}
-                innerClassName="tooltip-inner"
-                isOpen={false}
-                placement="top"
-                placementPrefix="bs-tooltip"
-                popperClassName="tooltip show"
-                target="copy-icon-5"
-                toggle={[Function]}
-                trigger="hover focus"
-              />
-            </Tooltip>
+            />
           </UncontrolledTooltip>
         </Tooltip>
       </span>
@@ -870,7 +709,6 @@ exports[`CustomerChannels component should display all passed channels because t
       type="button"
     >
       <button
-        aria-label={null}
         className="container pl-0 btn btn-link"
         onClick={[Function]}
         type="button"

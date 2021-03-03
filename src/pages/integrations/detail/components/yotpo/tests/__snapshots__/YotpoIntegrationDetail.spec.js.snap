@@ -43,9 +43,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -79,15 +77,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -165,9 +154,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -201,15 +188,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -279,9 +257,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -315,15 +291,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -393,9 +360,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -429,15 +394,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -507,9 +463,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -543,15 +497,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"

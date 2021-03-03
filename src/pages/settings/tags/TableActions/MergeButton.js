@@ -53,7 +53,6 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
                 isOpen={askMergeConfirmation}
                 target="bulk-merge-button"
                 toggle={toggleMergeConfirmation}
-                trigger="legacy"
             >
                 <PopoverHeader>Are you sure?</PopoverHeader>
                 <PopoverBody>

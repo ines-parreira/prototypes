@@ -53,7 +53,6 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       tag="button"
     >
       <button
-        aria-label={null}
         className="mr-2 mb-2 btn btn-primary"
         onClick={[Function]}
         type="button"
@@ -68,7 +67,6 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       tag="button"
     >
       <button
-        aria-label={null}
         className="mr-2 mb-2 btn btn-secondary"
         onClick={[Function]}
         type="button"

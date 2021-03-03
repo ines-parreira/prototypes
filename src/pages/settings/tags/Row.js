@@ -247,7 +247,6 @@ export class Row extends Component<Props, State> {
                             isOpen={this.state.askRemoveConfirmation}
                             target={`remove-button-${row.get('id')}`}
                             toggle={this._toggleRemoveConfirmation}
-                            trigger="legacy"
                         >
                             <PopoverHeader>Are you sure?</PopoverHeader>
                             <PopoverBody>

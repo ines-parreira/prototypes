@@ -1095,33 +1095,19 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                           className="tools"
                                         />
                                         <Popover
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 0,
+                                            }
+                                          }
+                                          hideArrow={false}
                                           isOpen={false}
                                           placement="left"
                                           placementPrefix="bs-popover"
                                           target="card-widget-1"
                                           toggle={[Function]}
-                                          trigger="legacy"
-                                        >
-                                          <TooltipPopoverWrapper
-                                            autohide={false}
-                                            delay={
-                                              Object {
-                                                "hide": 50,
-                                                "show": 0,
-                                              }
-                                            }
-                                            fade={true}
-                                            hideArrow={false}
-                                            innerClassName="popover-inner"
-                                            isOpen={false}
-                                            placement="left"
-                                            placementPrefix="bs-popover"
-                                            popperClassName="popover show"
-                                            target="card-widget-1"
-                                            toggle={[Function]}
-                                            trigger="legacy"
-                                          />
-                                        </Popover>
+                                        />
                                       </div>
                                     </CardBody>
                                     <CardBody
@@ -1305,33 +1291,19 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                   1
                                                 </span>
                                                 <Popover
+                                                  delay={
+                                                    Object {
+                                                      "hide": 0,
+                                                      "show": 0,
+                                                    }
+                                                  }
+                                                  hideArrow={false}
                                                   isOpen={false}
                                                   placement="left"
                                                   placementPrefix="bs-popover"
                                                   target="field-widget-2"
                                                   toggle={[Function]}
-                                                  trigger="legacy"
-                                                >
-                                                  <TooltipPopoverWrapper
-                                                    autohide={false}
-                                                    delay={
-                                                      Object {
-                                                        "hide": 50,
-                                                        "show": 0,
-                                                      }
-                                                    }
-                                                    fade={true}
-                                                    hideArrow={false}
-                                                    innerClassName="popover-inner"
-                                                    isOpen={false}
-                                                    placement="left"
-                                                    placementPrefix="bs-popover"
-                                                    popperClassName="popover show"
-                                                    target="field-widget-2"
-                                                    toggle={[Function]}
-                                                    trigger="legacy"
-                                                  />
-                                                </Popover>
+                                                />
                                               </div>
                                             </FieldInfobarWidget>
                                           </InfobarWidget>
@@ -1871,33 +1843,19 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                           className="tools"
                                         />
                                         <Popover
+                                          delay={
+                                            Object {
+                                              "hide": 0,
+                                              "show": 0,
+                                            }
+                                          }
+                                          hideArrow={false}
                                           isOpen={false}
                                           placement="left"
                                           placementPrefix="bs-popover"
                                           target="card-widget-3"
                                           toggle={[Function]}
-                                          trigger="legacy"
-                                        >
-                                          <TooltipPopoverWrapper
-                                            autohide={false}
-                                            delay={
-                                              Object {
-                                                "hide": 50,
-                                                "show": 0,
-                                              }
-                                            }
-                                            fade={true}
-                                            hideArrow={false}
-                                            innerClassName="popover-inner"
-                                            isOpen={false}
-                                            placement="left"
-                                            placementPrefix="bs-popover"
-                                            popperClassName="popover show"
-                                            target="card-widget-3"
-                                            toggle={[Function]}
-                                            trigger="legacy"
-                                          />
-                                        </Popover>
+                                        />
                                       </div>
                                     </CardBody>
                                     <CardBody
@@ -2079,33 +2037,19 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                                   2
                                                 </span>
                                                 <Popover
+                                                  delay={
+                                                    Object {
+                                                      "hide": 0,
+                                                      "show": 0,
+                                                    }
+                                                  }
+                                                  hideArrow={false}
                                                   isOpen={false}
                                                   placement="left"
                                                   placementPrefix="bs-popover"
                                                   target="field-widget-4"
                                                   toggle={[Function]}
-                                                  trigger="legacy"
-                                                >
-                                                  <TooltipPopoverWrapper
-                                                    autohide={false}
-                                                    delay={
-                                                      Object {
-                                                        "hide": 50,
-                                                        "show": 0,
-                                                      }
-                                                    }
-                                                    fade={true}
-                                                    hideArrow={false}
-                                                    innerClassName="popover-inner"
-                                                    isOpen={false}
-                                                    placement="left"
-                                                    placementPrefix="bs-popover"
-                                                    popperClassName="popover show"
-                                                    target="field-widget-4"
-                                                    toggle={[Function]}
-                                                    trigger="legacy"
-                                                  />
-                                                </Popover>
+                                                />
                                               </div>
                                             </FieldInfobarWidget>
                                           </InfobarWidget>
@@ -3127,33 +3071,19 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                   </span>
                                                 </span>
                                                 <Popover
+                                                  delay={
+                                                    Object {
+                                                      "hide": 0,
+                                                      "show": 0,
+                                                    }
+                                                  }
+                                                  hideArrow={false}
                                                   isOpen={false}
                                                   placement="left"
                                                   placementPrefix="bs-popover"
                                                   target="card-widget-5"
                                                   toggle={[Function]}
-                                                  trigger="legacy"
-                                                >
-                                                  <TooltipPopoverWrapper
-                                                    autohide={false}
-                                                    delay={
-                                                      Object {
-                                                        "hide": 50,
-                                                        "show": 0,
-                                                      }
-                                                    }
-                                                    fade={true}
-                                                    hideArrow={false}
-                                                    innerClassName="popover-inner"
-                                                    isOpen={false}
-                                                    placement="left"
-                                                    placementPrefix="bs-popover"
-                                                    popperClassName="popover show"
-                                                    target="card-widget-5"
-                                                    toggle={[Function]}
-                                                    trigger="legacy"
-                                                  />
-                                                </Popover>
+                                                />
                                               </div>
                                             </CardBody>
                                             <CardBody
@@ -3375,33 +3305,19 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               </i>
                                                             </span>
                                                             <Popover
+                                                              delay={
+                                                                Object {
+                                                                  "hide": 0,
+                                                                  "show": 0,
+                                                                }
+                                                              }
+                                                              hideArrow={false}
                                                               isOpen={false}
                                                               placement="left"
                                                               placementPrefix="bs-popover"
                                                               target="field-widget-6"
                                                               toggle={[Function]}
-                                                              trigger="legacy"
-                                                            >
-                                                              <TooltipPopoverWrapper
-                                                                autohide={false}
-                                                                delay={
-                                                                  Object {
-                                                                    "hide": 50,
-                                                                    "show": 0,
-                                                                  }
-                                                                }
-                                                                fade={true}
-                                                                hideArrow={false}
-                                                                innerClassName="popover-inner"
-                                                                isOpen={false}
-                                                                placement="left"
-                                                                placementPrefix="bs-popover"
-                                                                popperClassName="popover show"
-                                                                target="field-widget-6"
-                                                                toggle={[Function]}
-                                                                trigger="legacy"
-                                                              />
-                                                            </Popover>
+                                                            />
                                                           </div>
                                                         </FieldInfobarWidget>
                                                       </InfobarWidget>
@@ -3994,33 +3910,19 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                   </span>
                                                 </span>
                                                 <Popover
+                                                  delay={
+                                                    Object {
+                                                      "hide": 0,
+                                                      "show": 0,
+                                                    }
+                                                  }
+                                                  hideArrow={false}
                                                   isOpen={false}
                                                   placement="left"
                                                   placementPrefix="bs-popover"
                                                   target="card-widget-7"
                                                   toggle={[Function]}
-                                                  trigger="legacy"
-                                                >
-                                                  <TooltipPopoverWrapper
-                                                    autohide={false}
-                                                    delay={
-                                                      Object {
-                                                        "hide": 50,
-                                                        "show": 0,
-                                                      }
-                                                    }
-                                                    fade={true}
-                                                    hideArrow={false}
-                                                    innerClassName="popover-inner"
-                                                    isOpen={false}
-                                                    placement="left"
-                                                    placementPrefix="bs-popover"
-                                                    popperClassName="popover show"
-                                                    target="card-widget-7"
-                                                    toggle={[Function]}
-                                                    trigger="legacy"
-                                                  />
-                                                </Popover>
+                                                />
                                               </div>
                                             </CardBody>
                                             <CardBody
@@ -4240,33 +4142,19 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               </i>
                                                             </span>
                                                             <Popover
+                                                              delay={
+                                                                Object {
+                                                                  "hide": 0,
+                                                                  "show": 0,
+                                                                }
+                                                              }
+                                                              hideArrow={false}
                                                               isOpen={false}
                                                               placement="left"
                                                               placementPrefix="bs-popover"
                                                               target="field-widget-8"
                                                               toggle={[Function]}
-                                                              trigger="legacy"
-                                                            >
-                                                              <TooltipPopoverWrapper
-                                                                autohide={false}
-                                                                delay={
-                                                                  Object {
-                                                                    "hide": 50,
-                                                                    "show": 0,
-                                                                  }
-                                                                }
-                                                                fade={true}
-                                                                hideArrow={false}
-                                                                innerClassName="popover-inner"
-                                                                isOpen={false}
-                                                                placement="left"
-                                                                placementPrefix="bs-popover"
-                                                                popperClassName="popover show"
-                                                                target="field-widget-8"
-                                                                toggle={[Function]}
-                                                                trigger="legacy"
-                                                              />
-                                                            </Popover>
+                                                            />
                                                           </div>
                                                         </FieldInfobarWidget>
                                                       </InfobarWidget>

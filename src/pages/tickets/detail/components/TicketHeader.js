@@ -371,7 +371,6 @@ export default class TicketHeader extends React.Component<Props, State> {
                                             toggle={() =>
                                                 this._toggleTrashConfirmation()
                                             }
-                                            trigger="legacy"
                                         >
                                             <PopoverHeader>
                                                 Are you sure?

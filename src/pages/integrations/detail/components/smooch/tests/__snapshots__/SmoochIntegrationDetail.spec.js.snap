@@ -7,9 +7,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -66,15 +64,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -252,9 +241,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -311,15 +298,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -496,9 +474,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -555,15 +531,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"

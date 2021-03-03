@@ -152,7 +152,6 @@ export const ImportZendeskDetail = (
                                 toggle={() => {
                                     setIsPopoverOpened(false)
                                 }}
-                                trigger="legacy"
                             >
                                 <PopoverBody>
                                     <div className="align-content-center mb-1">

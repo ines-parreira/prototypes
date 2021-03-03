@@ -18,12 +18,18 @@ exports[`<TaxesPopover/> render() should render with checked checkbox because we
     </strong>
   </Button>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
     target="taxes"
     toggle={[Function]}
-    trigger="legacy"
   >
     <Form
       onKeyDown={[Function]}
@@ -122,12 +128,18 @@ exports[`<TaxesPopover/> render() should render with unchecked checkbox because 
     </strong>
   </Button>
   <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
+    hideArrow={false}
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
     target="taxes"
     toggle={[Function]}
-    trigger="legacy"
   >
     <Form
       onKeyDown={[Function]}

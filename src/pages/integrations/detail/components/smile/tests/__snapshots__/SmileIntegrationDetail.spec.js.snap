@@ -43,9 +43,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -79,15 +77,6 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -162,9 +151,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -198,15 +185,6 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -283,9 +261,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -319,15 +295,6 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -346,7 +313,6 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           className="mb-4"
           closeAriaLabel="Close"
           color="info"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -445,9 +411,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -481,15 +445,6 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -508,7 +463,6 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           className="mb-4"
           closeAriaLabel="Close"
           color="info"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -610,9 +564,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -646,15 +598,6 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -673,7 +616,6 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           className="mb-4"
           closeAriaLabel="Close"
           color="info"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={

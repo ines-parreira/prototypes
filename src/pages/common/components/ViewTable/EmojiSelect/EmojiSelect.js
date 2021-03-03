@@ -41,8 +41,6 @@ const EmojiSelect = (props: Props) => {
                     target={iconRef.current}
                     placement="bottom"
                     toggle={toggle}
-                    fade={false}
-                    trigger="legacy"
                 >
                     <div className={css.popover}>
                         <EmojiPicker

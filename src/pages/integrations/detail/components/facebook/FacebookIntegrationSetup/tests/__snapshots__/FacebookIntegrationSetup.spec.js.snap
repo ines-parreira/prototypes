@@ -7,9 +7,7 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -103,9 +101,7 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -174,9 +170,7 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -312,7 +306,6 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
                     className="d-flex align-items-center"
                     closeAriaLabel="Close"
                     color="warning"
-                    fade={true}
                     isOpen={true}
                     tag="div"
                     transition={
@@ -398,9 +391,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -536,7 +527,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                     className="d-flex align-items-center"
                     closeAriaLabel="Close"
                     color="warning"
-                    fade={true}
                     isOpen={true}
                     tag="div"
                     transition={
@@ -622,9 +612,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"

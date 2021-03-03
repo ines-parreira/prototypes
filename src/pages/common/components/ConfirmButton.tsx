@@ -87,6 +87,15 @@ const ConfirmButton = ({
         Promise.resolve(confirm()).then(hideLoading).catch(hideLoading)
     }
 
+    const popoverContainer = () => {
+        if (type === 'submit' && ref.current) {
+            // keep submit popovers in form
+            return ref.current.closest('form') || 'body'
+        }
+
+        return 'body'
+    }
+
     const isLoading = isLoadingInternal || loading
 
     return (
@@ -112,7 +121,7 @@ const ConfirmButton = ({
                 isOpen={isConfirmationDisplayed}
                 target={uid}
                 toggle={hideConfirmation}
-                trigger="legacy"
+                container={popoverContainer()}
             >
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>

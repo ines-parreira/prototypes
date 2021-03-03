@@ -32,15 +32,6 @@ exports[`<HTTPIntegrationEvent/> component should render the data of HTTP reques
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       className="request mb-4"
@@ -169,15 +160,6 @@ exports[`<HTTPIntegrationEvent/> component should render the data of HTTP reques
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       className="request mb-4"
@@ -336,15 +318,6 @@ exports[`<HTTPIntegrationEvent/> component should render the data of a HTTP requ
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       className="request mb-4"
@@ -500,15 +473,6 @@ exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP re
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       className="request mb-4"
@@ -653,15 +617,6 @@ exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP re
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       className="request mb-4"
@@ -797,15 +752,6 @@ exports[`<HTTPIntegrationEvent/> component should render the error that occurred
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       className="mb-4"

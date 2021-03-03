@@ -117,7 +117,6 @@ class CustomerListActions extends React.Component {
                     isOpen={this._isPopoverOpen('delete')}
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
-                    trigger="legacy"
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>

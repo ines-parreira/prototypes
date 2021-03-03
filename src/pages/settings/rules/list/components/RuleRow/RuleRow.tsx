@@ -118,7 +118,6 @@ class RuleRow extends React.Component<Props, State> {
                         isOpen={showConfirmation}
                         target={toggleId}
                         toggle={this._toggleConfirmation}
-                        trigger="legacy"
                     >
                         <PopoverHeader>Are you sure?</PopoverHeader>
                         <PopoverBody>

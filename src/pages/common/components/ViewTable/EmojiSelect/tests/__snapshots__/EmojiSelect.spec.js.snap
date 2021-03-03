@@ -1,79 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EmojiSelect/> .render() should show smiley when no emoji selected 1`] = `
-<body>
-  <div>
-    <div
-      class="picker"
-    >
-      <span
-        class="material-icons empty icon"
-      >
-        insert_emoticon
-      </span>
-    </div>
-  </div>
-</body>
+<div
+  className="picker"
+>
+  <span
+    className="material-icons empty icon"
+    onClick={[Function]}
+  >
+    insert_emoticon
+  </span>
+</div>
 `;
 
 exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
-<body>
-  <div>
-    <div
-      class="picker"
-    >
-      <span
-        class="icon"
-      >
-        1
-      </span>
-    </div>
-  </div>
-  <div>
-    <div
-      class=""
-    >
-      <div
-        class="popover show bs-popover-auto"
-        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-      >
-        <div
-          class="popover-inner"
-          role="tooltip"
-        >
-          <div
-            class="popover"
-          >
-            <div
-              data-testid="EmojiPicker"
-            >
-              <div
-                data-testid="EmojiPicker-new-emoji"
-              />
-            </div>
-            <button
-              class="clearButton btn btn-link"
-              type="button"
-            >
-              <span
-                class="clearInner"
-              >
-                <i
-                  class="icon material-icons"
-                >
-                  clear
-                </i>
-                 
-                Clear icon
-              </span>
-            </button>
-          </div>
-        </div>
-        <span
-          class="arrow"
-        />
-      </div>
-    </div>
-  </div>
-</body>
+<div
+  className="picker"
+>
+  <span
+    className="icon"
+    onClick={[Function]}
+  >
+    1
+  </span>
+</div>
 `;

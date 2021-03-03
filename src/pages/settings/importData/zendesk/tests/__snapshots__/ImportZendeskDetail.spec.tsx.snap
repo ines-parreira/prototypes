@@ -8,31 +8,25 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <nav
-        aria-label="breadcrumb"
-        class=""
+      <ol
+        class="breadcrumb"
       >
-        <ol
-          class="breadcrumb"
+        <li
+          class="breadcrumb-item"
         >
-          <li
-            class="breadcrumb-item"
+          <a
+            to="/app/settings/import-data"
           >
-            <a
-              to="/app/settings/import-data"
-            >
-              Import data
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            gorgias-au
-             
-          </li>
-        </ol>
-      </nav>
+            Import data
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          gorgias-au
+           
+        </li>
+      </ol>
     </div>
     <div
       class="page-container container-fluid"
@@ -223,31 +217,25 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <nav
-        aria-label="breadcrumb"
-        class=""
+      <ol
+        class="breadcrumb"
       >
-        <ol
-          class="breadcrumb"
+        <li
+          class="breadcrumb-item"
         >
-          <li
-            class="breadcrumb-item"
+          <a
+            to="/app/settings/import-data"
           >
-            <a
-              to="/app/settings/import-data"
-            >
-              Import data
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            gorgias-eu
-             
-          </li>
-        </ol>
-      </nav>
+            Import data
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          gorgias-eu
+           
+        </li>
+      </ol>
     </div>
     <div
       class="page-container container-fluid"
@@ -420,31 +408,25 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <nav
-        aria-label="breadcrumb"
-        class=""
+      <ol
+        class="breadcrumb"
       >
-        <ol
-          class="breadcrumb"
+        <li
+          class="breadcrumb-item"
         >
-          <li
-            class="breadcrumb-item"
+          <a
+            to="/app/settings/import-data"
           >
-            <a
-              to="/app/settings/import-data"
-            >
-              Import data
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            gorgias-us
-             
-          </li>
-        </ol>
-      </nav>
+            Import data
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          gorgias-us
+           
+        </li>
+      </ol>
     </div>
     <div
       class="page-container container-fluid"

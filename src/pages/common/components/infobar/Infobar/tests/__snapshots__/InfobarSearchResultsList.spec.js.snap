@@ -14,7 +14,7 @@ exports[`<InfobarSearchResultsList /> Should match snapshot when results are ava
 >
   <CardTitle
     className="cardTitle"
-    tag="div"
+    tag="h5"
   >
     Customers found:
   </CardTitle>

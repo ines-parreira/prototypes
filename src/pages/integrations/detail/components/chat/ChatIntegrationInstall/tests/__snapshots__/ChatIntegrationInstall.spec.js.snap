@@ -63,9 +63,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
       <PageHeader
         title={
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
             <BreadcrumbItem
               tag="li"
@@ -103,73 +101,65 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
           className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
-            <nav
-              aria-label="breadcrumb"
-              className=""
+            <ol
+              className="breadcrumb"
             >
-              <ol
-                className="breadcrumb"
+              <BreadcrumbItem
+                tag="li"
               >
-                <BreadcrumbItem
-                  tag="li"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations"
                     >
-                      <a
-                        to="/app/settings/integrations"
-                      >
-                        Integrations
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations/smooch_inside"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations/smooch_inside"
                     >
-                      <a
-                        to="/app/settings/integrations/smooch_inside"
-                      >
-                        Chat (Deprecated)
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Chat (Deprecated)
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
-                  >
-                    mychat
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
+                  mychat
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
                 >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Installation
-                  </li>
-                </BreadcrumbItem>
-              </ol>
-            </nav>
+                  Installation
+                </li>
+              </BreadcrumbItem>
+            </ol>
           </Breadcrumb>
         </div>
       </PageHeader>
@@ -295,15 +285,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
         >
           <Row
             tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             <div
               className="row"
@@ -524,7 +505,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                               className="code-wrapper"
                               closeAriaLabel="Close"
                               color="success"
-                              fade={true}
                               isOpen={true}
                               tag="div"
                               transition={
@@ -613,7 +593,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                           type="button"
                         >
                           <button
-                            aria-label={null}
                             className="copy btn btn-info"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"

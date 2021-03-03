@@ -50,6 +50,7 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                 id="id-input-2"
                 placeholder="Description"
                 rows="1"
+                type="textarea"
               >
                 foo
               </textarea>
@@ -144,7 +145,6 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                       >
                         <button
                           class="option option--focused dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -152,7 +152,6 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                         </button>
                         <button
                           class="option dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -160,7 +159,6 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                         </button>
                         <button
                           class="option dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -201,7 +199,6 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                     >
                       <button
                         class="dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -209,7 +206,6 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                       </button>
                       <button
                         class="dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -334,6 +330,7 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                 id="id-input-1"
                 placeholder="Description"
                 rows="1"
+                type="textarea"
               >
                 foo
               </textarea>
@@ -415,7 +412,6 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                       >
                         <button
                           class="option option--focused dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -423,7 +419,6 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                         </button>
                         <button
                           class="option dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -431,7 +426,6 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                         </button>
                         <button
                           class="option dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -439,7 +433,6 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                         </button>
                         <button
                           class="option dropdown-item"
-                          role="menuitem"
                           tabindex="0"
                           type="button"
                         >
@@ -485,7 +478,6 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                     >
                       <button
                         class="dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -493,7 +485,6 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                       </button>
                       <button
                         class="dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >

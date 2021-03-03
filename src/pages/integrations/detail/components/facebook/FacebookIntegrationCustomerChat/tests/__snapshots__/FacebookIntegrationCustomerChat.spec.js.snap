@@ -63,9 +63,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
       <PageHeader
         title={
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
             <BreadcrumbItem
               tag="li"
@@ -101,71 +99,63 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
           className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
-            <nav
-              aria-label="breadcrumb"
-              className=""
+            <ol
+              className="breadcrumb"
             >
-              <ol
-                className="breadcrumb"
+              <BreadcrumbItem
+                tag="li"
               >
-                <BreadcrumbItem
-                  tag="li"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations"
                     >
-                      <a
-                        to="/app/settings/integrations"
-                      >
-                        Integrations
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations/facebook"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations/facebook"
                     >
-                      <a
-                        to="/app/settings/integrations/facebook"
-                      >
-                        Facebook, Messenger & Instagram
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Facebook, Messenger & Instagram
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
+                />
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
-                  />
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
-                >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Customer chat
-                  </li>
-                </BreadcrumbItem>
-              </ol>
-            </nav>
+                  Customer chat
+                </li>
+              </BreadcrumbItem>
+            </ol>
           </Breadcrumb>
         </div>
       </PageHeader>
@@ -249,15 +239,6 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
         >
           <Row
             tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             <div
               className="row"
@@ -534,7 +515,6 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                               className="code-wrapper"
                               closeAriaLabel="Close"
                               color="success"
-                              fade={true}
                               isOpen={true}
                               tag="div"
                               transition={
@@ -645,7 +625,6 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                           type="button"
                         >
                           <button
-                            aria-label={null}
                             className="copy mr-4 btn btn-info"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"

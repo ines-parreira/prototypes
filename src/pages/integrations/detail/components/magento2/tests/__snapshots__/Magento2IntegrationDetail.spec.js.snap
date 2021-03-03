@@ -7,9 +7,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -45,15 +43,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -145,9 +134,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -183,15 +170,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -213,7 +191,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           <Alert
             closeAriaLabel="Close"
             color="warning"
-            fade={true}
             isOpen={true}
             tag="div"
             transition={
@@ -305,9 +282,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -343,15 +318,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -370,7 +336,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           className="mb-4"
           closeAriaLabel="Close"
           color="info"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -485,9 +450,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -523,15 +486,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -553,7 +507,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
           <Alert
             closeAriaLabel="Close"
             color="warning"
-            fade={true}
             isOpen={true}
             tag="div"
             transition={
@@ -645,9 +598,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -683,15 +634,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"

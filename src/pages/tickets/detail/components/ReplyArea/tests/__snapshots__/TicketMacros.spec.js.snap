@@ -77,14 +77,12 @@ exports[`TicketMacros component should display macros list, and selected macro 1
       className="previewContainer"
     >
       <Dropdown
-        a11y={true}
         active={false}
         addonType={false}
         direction="down"
         inNavbar={false}
         isOpen={false}
         nav={false}
-        setActiveFromChild={false}
         toggle={[Function]}
       >
         <DropdownToggle
@@ -163,12 +161,18 @@ exports[`TicketMacros component should display macros list, and selected macro 1
         </DropdownMenu>
       </Dropdown>
       <Popover
+        delay={
+          Object {
+            "hide": 0,
+            "show": 0,
+          }
+        }
+        hideArrow={false}
         isOpen={false}
         placement="bottom"
         placementPrefix="bs-popover"
         target="deleteMacroTarget"
         toggle={[Function]}
-        trigger="legacy"
       >
         <PopoverBody
           tag="div"

@@ -2,14 +2,12 @@
 
 exports[`<SearchInput/> render() should render a closed dropdown because input is empty 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   direction="down"
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -54,14 +52,12 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
 
 exports[`<SearchInput/> render() should render a closed dropdown because input is not focused 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   direction="down"
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -106,14 +102,12 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
 
 exports[`<SearchInput/> render() should render an open dropdown because input is focused and value is not empty 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   direction="down"
   inNavbar={false}
   isOpen={true}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -209,14 +203,12 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
 
 exports[`<SearchInput/> render() should render sub results 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   direction="down"
   inNavbar={false}
   isOpen={true}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle

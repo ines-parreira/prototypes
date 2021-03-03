@@ -92,7 +92,6 @@ export default class LinkPopover extends React.Component<Props, State> {
                     innerClassName={css.inner}
                     onMouseEnter={this._onMouseEnter}
                     onMouseLeave={this._onMouseLeave}
-                    trigger="legacy"
                 >
                     <a
                         className={css.url}

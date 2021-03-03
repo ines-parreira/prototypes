@@ -23,9 +23,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -302,9 +300,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -445,7 +441,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <Alert
           closeAriaLabel="Close"
           color="warning"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -624,9 +619,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -767,7 +760,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <Alert
           closeAriaLabel="Close"
           color="warning"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -949,9 +941,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -1092,7 +1082,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <Alert
           closeAriaLabel="Close"
           color="warning"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -1274,9 +1263,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -1417,7 +1404,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <Alert
           closeAriaLabel="Close"
           color="warning"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={

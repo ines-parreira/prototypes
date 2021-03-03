@@ -77,12 +77,18 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </i>
         </Button>
         <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
           isOpen={false}
           placement="left"
           placementPrefix="bs-popover"
           target="delete-button-1"
           toggle={[Function]}
-          trigger="legacy"
         >
           <PopoverHeader
             tag="h3"
@@ -163,12 +169,18 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </i>
         </Button>
         <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
           isOpen={false}
           placement="left"
           placementPrefix="bs-popover"
           target="delete-button-2"
           toggle={[Function]}
-          trigger="legacy"
         >
           <PopoverHeader
             tag="h3"

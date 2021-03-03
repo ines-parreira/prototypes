@@ -25,9 +25,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -186,9 +184,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"

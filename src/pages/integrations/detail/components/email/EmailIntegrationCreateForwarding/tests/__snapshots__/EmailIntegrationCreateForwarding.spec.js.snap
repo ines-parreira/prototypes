@@ -7,9 +7,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -218,9 +216,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"

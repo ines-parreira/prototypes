@@ -20,6 +20,13 @@ exports[`ActionButton component should display a single option with a checkbox p
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -41,7 +48,6 @@ exports[`ActionButton component should display a single option with a checkbox p
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -110,6 +116,13 @@ exports[`ActionButton component should display a single option with a number par
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -131,7 +144,6 @@ exports[`ActionButton component should display a single option with a number par
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -204,6 +216,13 @@ exports[`ActionButton component should display a single option with a select par
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -225,7 +244,6 @@ exports[`ActionButton component should display a single option with a select par
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -313,6 +331,13 @@ exports[`ActionButton component should display a single option with a text param
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -334,7 +359,6 @@ exports[`ActionButton component should display a single option with a text param
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -404,6 +428,13 @@ exports[`ActionButton component should display a single option with no parameter
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -425,7 +456,6 @@ exports[`ActionButton component should display a single option with no parameter
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -485,6 +515,13 @@ exports[`ActionButton component should display multiple options with a common pa
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -506,7 +543,6 @@ exports[`ActionButton component should display multiple options with a common pa
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -619,6 +655,13 @@ exports[`ActionButton component should display multiple options with different p
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -640,7 +683,6 @@ exports[`ActionButton component should display multiple options with different p
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -753,6 +795,13 @@ exports[`ActionButton component should display multiple options without paramete
        Little action
     </div>
     <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
@@ -774,7 +823,6 @@ exports[`ActionButton component should display multiple options without paramete
         }
       }
       toggle={[Function]}
-      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"

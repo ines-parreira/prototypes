@@ -2,7 +2,6 @@
 
 exports[`<TicketAssignee/> render() should display teams only 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -10,7 +9,6 @@ exports[`<TicketAssignee/> render() should display teams only 1`] = `
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -91,7 +89,6 @@ exports[`<TicketAssignee/> render() should display teams only 1`] = `
 
 exports[`<TicketAssignee/> render() should display the email of the agent assigned as its name because it has no name 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -99,7 +96,6 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -206,7 +202,6 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
 
 exports[`<TicketAssignee/> render() should display the info of the agent assigned 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -214,7 +209,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -321,7 +315,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
 
 exports[`<TicketAssignee/> render() should display the info of the agent assigned even if a team is assigned too 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -329,7 +322,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -441,7 +433,6 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
 
 exports[`<TicketAssignee/> render() should display the name of the team assigned because there is no user assigned 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -449,7 +440,6 @@ exports[`<TicketAssignee/> render() should display the name of the team assigned
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -549,7 +539,6 @@ exports[`<TicketAssignee/> render() should display the name of the team assigned
 
 exports[`<TicketAssignee/> render() should display users only 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -557,7 +546,6 @@ exports[`<TicketAssignee/> render() should display users only 1`] = `
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -648,7 +636,6 @@ exports[`<TicketAssignee/> render() should display users only 1`] = `
 
 exports[`<TicketAssignee/> render() should not display any agent info because there is no assignee 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -656,7 +643,6 @@ exports[`<TicketAssignee/> render() should not display any agent info because th
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle
@@ -747,7 +733,6 @@ exports[`<TicketAssignee/> render() should not display any agent info because th
 
 exports[`<TicketAssignee/> render() should not display teams because object is empty 1`] = `
 <Dropdown
-  a11y={true}
   active={false}
   addonType={false}
   className="classname"
@@ -755,7 +740,6 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
   inNavbar={false}
   isOpen={false}
   nav={false}
-  setActiveFromChild={false}
   toggle={[Function]}
 >
   <DropdownToggle

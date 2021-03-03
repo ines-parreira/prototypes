@@ -113,9 +113,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -169,15 +167,6 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         tag="div"
@@ -404,9 +393,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -460,15 +447,6 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         tag="div"

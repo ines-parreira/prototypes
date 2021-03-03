@@ -225,7 +225,6 @@ export class TicketMacros extends React.Component<Props, State> {
                             target="deleteMacroTarget"
                             isOpen={this.state.isDeleteConfirmOpen}
                             toggle={this._toggleMacroDeleteConfirmOpen}
-                            trigger="legacy"
                         >
                             <PopoverBody>
                                 <p>

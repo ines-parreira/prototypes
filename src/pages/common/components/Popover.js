@@ -1,12 +1,7 @@
 // @flow
 //$FlowFixMe
 import React, {useRef, useState, type Node} from 'react'
-import {
-    Button,
-    Popover as ReactstrapPopover,
-    PopoverHeader,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 type Props = {
     header?: string,
@@ -15,7 +10,7 @@ type Props = {
     children: Node,
 }
 
-const Popover = ({
+const PopoverGorgias = ({
     buttonText = 'Learn more',
     header,
     placement = 'auto',
@@ -38,20 +33,17 @@ const Popover = ({
                 <i className="material-icons">info_outline</i>
                 <span className="ml-1">{buttonText}</span>
             </Button>
-            {ref.current && (
-                <ReactstrapPopover
-                    trigger="legacy"
-                    placement={placement}
-                    isOpen={isOpen}
-                    target={ref.current}
-                    toggle={togglePopover}
-                >
-                    {header && <PopoverHeader>{header}</PopoverHeader>}
-                    <PopoverBody>{children}</PopoverBody>
-                </ReactstrapPopover>
-            )}
+            <Popover
+                placement={placement}
+                isOpen={isOpen}
+                target={ref.current}
+                toggle={togglePopover}
+            >
+                {header && <PopoverHeader>{header}</PopoverHeader>}
+                <PopoverBody>{children}</PopoverBody>
+            </Popover>
         </>
     )
 }
 
-export default Popover
+export default PopoverGorgias

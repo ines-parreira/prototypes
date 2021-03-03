@@ -8,15 +8,6 @@ exports[`<OrderFooter/> render() should render 1`] = `
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       tag="div"
@@ -44,15 +35,6 @@ exports[`<OrderFooter/> render() should render 1`] = `
     >
       <Row
         tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
       >
         <Col
           lg={6}
@@ -170,15 +152,6 @@ exports[`<OrderFooter/> render() should render 1`] = `
       </Row>
       <Row
         tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
       >
         <Col
           tag="div"
@@ -419,15 +392,6 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
 >
   <Row
     tag="div"
-    widths={
-      Array [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
   >
     <Col
       tag="div"
@@ -455,15 +419,6 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
     >
       <Row
         tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
       >
         <Col
           lg={6}
@@ -561,15 +516,6 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
       </Row>
       <Row
         tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
       >
         <Col
           tag="div"

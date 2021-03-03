@@ -17,7 +17,6 @@ Array [
   >
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -46,7 +45,6 @@ Array [
     </button>
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -89,7 +87,6 @@ Array [
   >
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -118,7 +115,6 @@ Array [
     </button>
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -169,7 +165,6 @@ Array [
   >
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -198,7 +193,6 @@ Array [
     </button>
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -241,7 +235,6 @@ Array [
   >
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -270,7 +263,6 @@ Array [
     </button>
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -318,7 +310,6 @@ Array [
   >
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -347,7 +338,6 @@ Array [
     </button>
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -395,7 +385,6 @@ Array [
   >
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >
@@ -424,7 +413,6 @@ Array [
     </button>
     <button
       class="item dropdown-item"
-      role="menuitem"
       tabindex="0"
       type="button"
     >

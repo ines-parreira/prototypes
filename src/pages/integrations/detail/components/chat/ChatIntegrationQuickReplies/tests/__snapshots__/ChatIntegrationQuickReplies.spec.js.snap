@@ -57,9 +57,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
       <PageHeader
         title={
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
             <BreadcrumbItem
               tag="li"
@@ -97,73 +95,65 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
           className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
-            <nav
-              aria-label="breadcrumb"
-              className=""
+            <ol
+              className="breadcrumb"
             >
-              <ol
-                className="breadcrumb"
+              <BreadcrumbItem
+                tag="li"
               >
-                <BreadcrumbItem
-                  tag="li"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations"
                     >
-                      <a
-                        to="/app/settings/integrations"
-                      >
-                        Integrations
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations/undefined"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations/undefined"
                     >
-                      <a
-                        to="/app/settings/integrations/undefined"
-                      >
-                        Chat (Deprecated)
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Chat (Deprecated)
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
-                  >
-                    my chat integration
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
+                  my chat integration
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
                 >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Quick replies
-                  </li>
-                </BreadcrumbItem>
-              </ol>
-            </nav>
+                  Quick replies
+                </li>
+              </BreadcrumbItem>
+            </ol>
           </Breadcrumb>
         </div>
       </PageHeader>
@@ -288,15 +278,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
         >
           <Row
             tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             <div
               className="row"
@@ -422,15 +403,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                             className="mb-3 form-row"
                             key="0"
                             tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
                           >
                             <div
                               className="mb-3 form-row row"
@@ -523,7 +495,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                     type="button"
                                   >
                                     <button
-                                      aria-label={null}
                                       className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
                                       type="button"
@@ -543,15 +514,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                             className="mb-3 form-row"
                             key="1"
                             tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
                           >
                             <div
                               className="mb-3 form-row row"
@@ -644,7 +606,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                     type="button"
                                   >
                                     <button
-                                      aria-label={null}
                                       className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
                                       type="button"
@@ -667,7 +628,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                             tag="button"
                           >
                             <button
-                              aria-label={null}
                               className="btn btn-secondary btn-sm"
                               onClick={[Function]}
                               type="button"
@@ -690,7 +650,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                           type="submit"
                         >
                           <button
-                            aria-label={null}
                             className="btn btn-success"
                             disabled={false}
                             onClick={[Function]}
@@ -994,9 +953,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
       <PageHeader
         title={
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
             <BreadcrumbItem
               tag="li"
@@ -1034,73 +991,65 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
           className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
-            aria-label="breadcrumb"
-            listTag="ol"
-            tag="nav"
+            tag="ol"
           >
-            <nav
-              aria-label="breadcrumb"
-              className=""
+            <ol
+              className="breadcrumb"
             >
-              <ol
-                className="breadcrumb"
+              <BreadcrumbItem
+                tag="li"
               >
-                <BreadcrumbItem
-                  tag="li"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations"
                     >
-                      <a
-                        to="/app/settings/integrations"
-                      >
-                        Integrations
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Integrations
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
+                  <Link
+                    to="/app/settings/integrations/undefined"
                   >
-                    <Link
+                    <a
                       to="/app/settings/integrations/undefined"
                     >
-                      <a
-                        to="/app/settings/integrations/undefined"
-                      >
-                        Chat (Deprecated)
-                      </a>
-                    </Link>
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  tag="li"
+                      Chat (Deprecated)
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <li
+                  className="breadcrumb-item"
                 >
-                  <li
-                    className="breadcrumb-item"
-                  >
-                    my chat integration
-                  </li>
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
+                  my chat integration
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
+              >
+                <li
+                  className="active breadcrumb-item"
                 >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Quick replies
-                  </li>
-                </BreadcrumbItem>
-              </ol>
-            </nav>
+                  Quick replies
+                </li>
+              </BreadcrumbItem>
+            </ol>
           </Breadcrumb>
         </div>
       </PageHeader>
@@ -1233,15 +1182,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
         >
           <Row
             tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             <div
               className="row"
@@ -1367,15 +1307,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                             className="mb-3 form-row"
                             key="0"
                             tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
                           >
                             <div
                               className="mb-3 form-row row"
@@ -1468,7 +1399,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                     type="button"
                                   >
                                     <button
-                                      aria-label={null}
                                       className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
                                       type="button"
@@ -1488,15 +1418,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                             className="mb-3 form-row"
                             key="1"
                             tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
                           >
                             <div
                               className="mb-3 form-row row"
@@ -1589,7 +1510,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                     type="button"
                                   >
                                     <button
-                                      aria-label={null}
                                       className="btn btn-secondary btn-sm"
                                       onClick={[Function]}
                                       type="button"
@@ -1612,7 +1532,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                             tag="button"
                           >
                             <button
-                              aria-label={null}
                               className="btn btn-secondary btn-sm"
                               onClick={[Function]}
                               type="button"
@@ -1635,7 +1554,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                           type="submit"
                         >
                           <button
-                            aria-label={null}
                             className="btn btn-success"
                             disabled={false}
                             onClick={[Function]}

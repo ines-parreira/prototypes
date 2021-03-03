@@ -82,7 +82,6 @@ export default class ColorPicker extends Component {
                     isOpen={this.state.displayPopup}
                     target={this.uniqueId}
                     toggle={this._togglePopup}
-                    trigger="legacy"
                 >
                     <PopoverBody className={css['popover-content']}>
                         <div className={css.popup}>

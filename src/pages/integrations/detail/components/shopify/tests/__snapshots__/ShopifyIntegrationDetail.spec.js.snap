@@ -7,9 +7,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -45,15 +43,6 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -200,9 +189,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -238,15 +225,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -309,9 +287,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -347,15 +323,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -492,9 +459,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -530,15 +495,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -557,7 +513,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           className="mb-4"
           closeAriaLabel="Close"
           color="info"
-          fade={true}
           isOpen={true}
           tag="div"
           transition={
@@ -716,9 +671,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -754,15 +707,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -899,9 +843,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -937,15 +879,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -1092,9 +1025,7 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -1130,15 +1061,6 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"
@@ -1201,9 +1123,7 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
   <PageHeader
     title={
       <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+        tag="ol"
       >
         <BreadcrumbItem
           tag="li"
@@ -1239,15 +1159,6 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
   >
     <Row
       tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
     >
       <Col
         md="8"

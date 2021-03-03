@@ -141,12 +141,18 @@ exports[`TicketHeader component should render existing ticket 1`] = `
             Delete
           </div>
           <Popover
+            delay={
+              Object {
+                "hide": 0,
+                "show": 0,
+              }
+            }
+            hideArrow={false}
             isOpen={false}
             placement="bottom"
             placementPrefix="bs-popover"
             target="ticket-actions-button"
             toggle={[Function]}
-            trigger="legacy"
           >
             <PopoverHeader
               tag="h3"
@@ -420,12 +426,18 @@ exports[`TicketHeader component should render spam ticket 1`] = `
             Delete
           </div>
           <Popover
+            delay={
+              Object {
+                "hide": 0,
+                "show": 0,
+              }
+            }
+            hideArrow={false}
             isOpen={false}
             placement="bottom"
             placementPrefix="bs-popover"
             target="ticket-actions-button"
             toggle={[Function]}
-            trigger="legacy"
           >
             <PopoverHeader
               tag="h3"

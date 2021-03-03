@@ -729,7 +729,6 @@ class TicketListActions extends React.Component<Props, State> {
                     isOpen={this._isPopoverOpen('trash')}
                     target="bulk-more-button"
                     toggle={this._toggleTrashConfirmation}
-                    trigger="legacy"
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>
@@ -752,7 +751,6 @@ class TicketListActions extends React.Component<Props, State> {
                     isOpen={askDeleteConfirmation}
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
-                    trigger="legacy"
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>

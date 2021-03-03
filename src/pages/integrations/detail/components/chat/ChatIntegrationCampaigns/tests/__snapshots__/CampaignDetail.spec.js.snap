@@ -8,53 +8,47 @@ exports[`CampaignDetail component should display default value when it's a new c
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <nav
-        aria-label="breadcrumb"
-        class=""
+      <ol
+        class="breadcrumb"
       >
-        <ol
-          class="breadcrumb"
+        <li
+          class="breadcrumb-item"
         >
-          <li
-            class="breadcrumb-item"
+          <a
+            to="/app/settings/integrations"
           >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
-            <a
-              to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
-            >
-              Chat
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          My new chat
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/smooch_inside/1/campaigns"
           >
-            My new chat
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/smooch_inside/1/campaigns"
-            >
-              Campaigns
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            New campaign
-          </li>
-        </ol>
-      </nav>
+            Campaigns
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          New campaign
+        </li>
+      </ol>
     </div>
     <nav
       class="navbar navbar"
@@ -191,7 +185,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       
                       <button
                         class="option option--focused dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -199,7 +192,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -207,7 +199,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -215,7 +206,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -223,7 +213,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -281,7 +270,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                 >
                   <button
                     class="dropdown-item"
-                    role="menuitem"
                     tabindex="0"
                     type="button"
                   >
@@ -289,7 +277,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                   </button>
                   <button
                     class="dropdown-item"
-                    role="menuitem"
                     tabindex="0"
                     type="button"
                   >
@@ -346,7 +333,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       
                       <button
                         class="option option--focused dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -368,7 +354,6 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -655,53 +640,47 @@ exports[`CampaignDetail component should display the campaign correctly when upd
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <nav
-        aria-label="breadcrumb"
-        class=""
+      <ol
+        class="breadcrumb"
       >
-        <ol
-          class="breadcrumb"
+        <li
+          class="breadcrumb-item"
         >
-          <li
-            class="breadcrumb-item"
+          <a
+            to="/app/settings/integrations"
           >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
-            <a
-              to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
-            >
-              Chat
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          My new chat
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/smooch_inside/1/campaigns"
           >
-            My new chat
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/smooch_inside/1/campaigns"
-            >
-              Campaigns
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            My little campaign
-          </li>
-        </ol>
-      </nav>
+            Campaigns
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          My little campaign
+        </li>
+      </ol>
     </div>
     <nav
       class="navbar navbar"
@@ -838,7 +817,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       
                       <button
                         class="option option--focused dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -846,7 +824,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -854,7 +831,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -862,7 +838,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -870,7 +845,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1018,7 +992,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 >
                   <button
                     class="dropdown-item"
-                    role="menuitem"
                     tabindex="0"
                     type="button"
                   >
@@ -1026,7 +999,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   </button>
                   <button
                     class="dropdown-item"
-                    role="menuitem"
                     tabindex="0"
                     type="button"
                   >
@@ -1097,7 +1069,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       
                       <button
                         class="option option--focused dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1119,7 +1090,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1405,53 +1375,47 @@ exports[`CampaignDetail component should display the campaign correctly when upd
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <nav
-        aria-label="breadcrumb"
-        class=""
+      <ol
+        class="breadcrumb"
       >
-        <ol
-          class="breadcrumb"
+        <li
+          class="breadcrumb-item"
         >
-          <li
-            class="breadcrumb-item"
+          <a
+            to="/app/settings/integrations"
           >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
-            <a
-              to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
-            >
-              Chat
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          My new chat
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/smooch_inside/1/campaigns"
           >
-            My new chat
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/smooch_inside/1/campaigns"
-            >
-              Campaigns
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            My little campaign
-          </li>
-        </ol>
-      </nav>
+            Campaigns
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          My little campaign
+        </li>
+      </ol>
     </div>
     <nav
       class="navbar navbar"
@@ -1588,7 +1552,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       
                       <button
                         class="option option--focused dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1596,7 +1559,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1604,7 +1566,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1612,7 +1573,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1620,7 +1580,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1768,7 +1727,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                 >
                   <button
                     class="dropdown-item"
-                    role="menuitem"
                     tabindex="0"
                     type="button"
                   >
@@ -1776,7 +1734,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   </button>
                   <button
                     class="dropdown-item"
-                    role="menuitem"
                     tabindex="0"
                     type="button"
                   >
@@ -1847,7 +1804,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       
                       <button
                         class="option option--focused dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
@@ -1869,7 +1825,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="option dropdown-item"
-                        role="menuitem"
                         tabindex="0"
                         type="button"
                       >
