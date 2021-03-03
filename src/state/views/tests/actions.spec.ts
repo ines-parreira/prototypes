@@ -3,8 +3,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _identity from 'lodash/identity'
+import _range from 'lodash/range'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
@@ -18,6 +19,7 @@ import {JobType} from '../../../models/job/types'
 import {notify} from '../../notifications/actions'
 import {MoveIndexDirection} from '../../../pages/common/utils/keyboard'
 import {getAST} from '../../../utils'
+import * as viewsSelectors from '../selectors'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -711,6 +713,27 @@ describe('actions', () => {
             await store.dispatch(actions.submitView(viewToUpdate))
             expect(mockServer.history).toMatchSnapshot()
             expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('fetchVisibleViewsCounts()', () => {
+        jest.useFakeTimers()
+        beforeEach(() => {
+            socketManager.send = jest.fn()
+            jest.spyOn(
+                viewsSelectors,
+                'getViewIdsOrderedByCollapsedSections'
+            ).mockReturnValue(() => fromJS(_range(101)) as List<any>)
+        })
+
+        it('should fetch the views count', () => {
+            const store = mockStore({
+                views: initialState,
+            })
+            store.dispatch(actions.fetchVisibleViewsCounts())
+            jest.runAllTimers()
+
+            expect(socketManager.send).toHaveBeenCalledTimes(11)
         })
     })
 })

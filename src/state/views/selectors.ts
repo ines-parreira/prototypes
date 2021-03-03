@@ -325,20 +325,27 @@ export const getRecentViews = createSelector<
     (state) => (state.get('recent') || fromJS({})) as Map<any, any>
 )
 
-export const getVisibleViewIds = () =>
+export const getViewIdsOrderedByCollapsedSections = () =>
     createSelector<RootState, List<any>, List<any>, List<any>>(
         getViewsByType(ViewType.TicketList),
         getViewsByType(ViewType.CustomerList),
         (ticketViews, userViews) => {
-            const views = ticketViews
+            const hiddenSectionIds: number[] = JSON.parse(
+                window.localStorage.getItem('collapsed-view-sections') || '[]'
+            )
+
+            return ticketViews
                 .concat(userViews)
-                .filter((v: Map<any, any>) => !v.get('hide'))
-            return views.map(
-                (v: Map<any, any>) => v.get('id') as number
-            ) as List<any>
+                .sort(
+                    (view1: Map<any, any>, view2: Map<any, any>) =>
+                        +hiddenSectionIds.includes(view1.get('section_id')) -
+                        +hiddenSectionIds.includes(view2.get('section_id'))
+                )
+                .map((view: Map<any, any>) => view.get('id') as number) as List<
+                any
+            >
         }
     )
-
 /**
  * Get id of views which have their counts expired
  */

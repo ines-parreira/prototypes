@@ -5,6 +5,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {initialState} from '../reducers.ts'
 import * as selectors from '../selectors.ts'
 import {user} from '../../../fixtures/users.ts'
+import {ViewType} from '../../../models/view/constants.ts'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
 import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
 import {getExpirationTimeForCount} from '../../../config/views.tsx'
@@ -12,6 +13,10 @@ import {getExpirationTimeForCount} from '../../../config/views.tsx'
 jest.addMatchers(immutableMatchers)
 
 describe('selectors', () => {
+    afterEach(() => {
+        localStorage.clear()
+    })
+
     describe('isActiveViewTrashView()', () => {
         it('should be the trash view', () => {
             const state = {
@@ -298,5 +303,25 @@ describe('selectors', () => {
                 ])
             )
         })
+    })
+
+    describe('getViewIdsOrderedByCollapsedSections', () => {
+        window.localStorage.setItem(
+            'collapsed-view-sections',
+            JSON.stringify([1])
+        )
+        const selector = selectors.getViewIdsOrderedByCollapsedSections()
+
+        expect(
+            selector({
+                views: fromJS({
+                    items: [
+                        {id: 1, type: ViewType.TicketList},
+                        {id: 2, section_id: 1, type: ViewType.TicketList},
+                        {id: 3, section_id: 2, type: ViewType.TicketList},
+                    ],
+                }),
+            })
+        ).toEqualImmutable(fromJS([1, 3, 2]))
     })
 })

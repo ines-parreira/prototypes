@@ -1,5 +1,6 @@
 import axios, {CancelToken, AxiosError} from 'axios'
 import {fromJS, List, Map} from 'immutable'
+import _chunk from 'lodash/chunk'
 import _max from 'lodash/max'
 import {Moment} from 'moment'
 import {updateNotification} from 'reapop'
@@ -676,11 +677,22 @@ export const fetchVisibleViewsCounts = () => (
     getState: () => RootState
 ) => {
     const state = getState()
-    const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS() as number[]
-    socketManager.send(SocketEventType.ViewsCountExpired, {
-        viewIds,
-        all: true,
-    })
+    const viewIdsChunks = _chunk(
+        viewsSelectors
+            .getViewIdsOrderedByCollapsedSections()(state)
+            .toJS() as number[],
+        10
+    )
+    function sendNextChunk(chunks: number[][]) {
+        socketManager.send(SocketEventType.ViewsCountExpired, {
+            viewIds: chunks.shift(),
+            all: true,
+        })
+        if (chunks.length) {
+            setTimeout(() => sendNextChunk(chunks), 500)
+        }
+    }
+    sendNextChunk(viewIdsChunks)
 }
 
 export const fetchRecentViewsCounts = () => (
