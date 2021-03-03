@@ -8,38 +8,44 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should call 
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <ol
-        class="breadcrumb"
+      <nav
+        aria-label="breadcrumb"
+        class=""
       >
-        <li
-          class="breadcrumb-item"
+        <ol
+          class="breadcrumb"
         >
-          <a
-            to="/app/settings/integrations"
+          <li
+            class="breadcrumb-item"
           >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/gorgias_chat"
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
           >
-            Chat
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          my chat integration
-        </li>
-        <li
-          class="active breadcrumb-item"
-        >
-          Self-service
-        </li>
-      </ol>
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            my chat integration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Self-service
+          </li>
+        </ol>
+      </nav>
     </div>
     <nav
       class="navbar navbar"
@@ -187,38 +193,44 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the default
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Chat
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        my chat integration
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Self-service
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Self-service
+        </li>
+      </ol>
+    </nav>
   </div>
   <nav
     class="navbar navbar"
@@ -315,38 +327,44 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Chat
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        my chat integration
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Self-service
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Self-service
+        </li>
+      </ol>
+    </nav>
   </div>
   <nav
     class="navbar navbar"
@@ -493,38 +511,44 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Chat
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        my chat integration
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Self-service
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Self-service
+        </li>
+      </ol>
+    </nav>
   </div>
   <nav
     class="navbar navbar"
@@ -671,38 +695,44 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Chat
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        my chat integration
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Self-service
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Self-service
+        </li>
+      </ol>
+    </nav>
   </div>
   <nav
     class="navbar navbar"
@@ -849,38 +879,44 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Chat
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        my chat integration
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Self-service
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Self-service
+        </li>
+      </ol>
+    </nav>
   </div>
   <nav
     class="navbar navbar"

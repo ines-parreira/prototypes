@@ -25,7 +25,9 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -184,7 +186,9 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"

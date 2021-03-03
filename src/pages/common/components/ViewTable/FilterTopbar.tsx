@@ -324,6 +324,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
                                             toggle={
                                                 this._toggleUpdateConfirmation
                                             }
+                                            trigger="legacy"
                                         >
                                             <PopoverHeader>
                                                 Are you sure?

@@ -14,19 +14,24 @@ exports[`<TicketSnooze/> rendering should render an icon with a tooltip 1`] = `
   </div>
   <div>
     <div
-      class="tooltip show bs-tooltip-bottom"
-      data-placement="bottom"
-      style="position: absolute; transform: translate3d(NaNpx, NaNpx, 0); top: 0px; left: 0px; will-change: transform;"
+      class="fade"
     >
       <div
-        class="tooltip-inner"
+        class="tooltip show bs-tooltip-auto"
+        style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
+        x-placement="bottom"
       >
-        Snooze 
-        12/22/2017
+        <div
+          class="tooltip-inner"
+          role="tooltip"
+        >
+          Snooze 
+          12/22/2017
+        </div>
+        <span
+          class="arrow"
+        />
       </div>
-      <span
-        class="arrow"
-      />
     </div>
   </div>
 </body>

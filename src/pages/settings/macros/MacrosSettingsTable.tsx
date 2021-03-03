@@ -219,6 +219,7 @@ export function MacrosSettingsTableContainer({
                                         toggle={() =>
                                             toggleVisiblePopover(deleteButtonId)
                                         }
+                                        trigger="legacy"
                                     >
                                         <PopoverHeader>
                                             Are you sure?

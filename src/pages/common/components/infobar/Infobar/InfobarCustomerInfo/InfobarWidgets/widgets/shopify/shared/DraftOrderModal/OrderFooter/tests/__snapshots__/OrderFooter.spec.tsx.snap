@@ -8,6 +8,15 @@ exports[`<DuplicateOrderFooterComponent/> render() should render 1`] = `
 >
   <Row
     tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
   >
     <Col
       lg={
@@ -106,6 +115,15 @@ exports[`<DuplicateOrderFooterComponent/> render() should render with tags 1`] =
 >
   <Row
     tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
   >
     <Col
       lg={

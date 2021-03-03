@@ -26,7 +26,9 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
     <PageHeader
       title={
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
           <BreadcrumbItem
             tag="li"
@@ -50,39 +52,47 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
         className="d-flex align-items-center justify-content-between flex-wrap page-header"
       >
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
-          <ol
-            className="breadcrumb"
+          <nav
+            aria-label="breadcrumb"
+            className=""
           >
-            <BreadcrumbItem
-              tag="li"
+            <ol
+              className="breadcrumb"
             >
-              <li
-                className="breadcrumb-item"
+              <BreadcrumbItem
+                tag="li"
               >
-                <Link
-                  to="/app/settings/macros"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <a
+                  <Link
                     to="/app/settings/macros"
                   >
-                    Macros
-                  </a>
-                </Link>
-              </li>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              <li
-                className="active breadcrumb-item"
+                    <a
+                      to="/app/settings/macros"
+                    >
+                      Macros
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
               >
-                Edit
-              </li>
-            </BreadcrumbItem>
-          </ol>
+                <li
+                  aria-current="page"
+                  className="active breadcrumb-item"
+                >
+                  Edit
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </nav>
         </Breadcrumb>
       </div>
     </PageHeader>
@@ -170,7 +180,9 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
     <PageHeader
       title={
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
           <BreadcrumbItem
             tag="li"
@@ -194,39 +206,47 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
         className="d-flex align-items-center justify-content-between flex-wrap page-header"
       >
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
-          <ol
-            className="breadcrumb"
+          <nav
+            aria-label="breadcrumb"
+            className=""
           >
-            <BreadcrumbItem
-              tag="li"
+            <ol
+              className="breadcrumb"
             >
-              <li
-                className="breadcrumb-item"
+              <BreadcrumbItem
+                tag="li"
               >
-                <Link
-                  to="/app/settings/macros"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <a
+                  <Link
                     to="/app/settings/macros"
                   >
-                    Macros
-                  </a>
-                </Link>
-              </li>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              <li
-                className="active breadcrumb-item"
+                    <a
+                      to="/app/settings/macros"
+                    >
+                      Macros
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
               >
-                Edit
-              </li>
-            </BreadcrumbItem>
-          </ol>
+                <li
+                  aria-current="page"
+                  className="active breadcrumb-item"
+                >
+                  Edit
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </nav>
         </Breadcrumb>
       </div>
     </PageHeader>
@@ -485,7 +505,9 @@ Sincerely,
     <PageHeader
       title={
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
           <BreadcrumbItem
             tag="li"
@@ -509,39 +531,47 @@ Sincerely,
         className="d-flex align-items-center justify-content-between flex-wrap page-header"
       >
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
-          <ol
-            className="breadcrumb"
+          <nav
+            aria-label="breadcrumb"
+            className=""
           >
-            <BreadcrumbItem
-              tag="li"
+            <ol
+              className="breadcrumb"
             >
-              <li
-                className="breadcrumb-item"
+              <BreadcrumbItem
+                tag="li"
               >
-                <Link
-                  to="/app/settings/macros"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <a
+                  <Link
                     to="/app/settings/macros"
                   >
-                    Macros
-                  </a>
-                </Link>
-              </li>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              <li
-                className="active breadcrumb-item"
+                    <a
+                      to="/app/settings/macros"
+                    >
+                      Macros
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                active={true}
+                tag="li"
               >
-                Edit: Waive Fee
-              </li>
-            </BreadcrumbItem>
-          </ol>
+                <li
+                  aria-current="page"
+                  className="active breadcrumb-item"
+                >
+                  Edit: Waive Fee
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </nav>
         </Breadcrumb>
       </div>
     </PageHeader>
@@ -616,6 +646,7 @@ Sincerely,
                   type="submit"
                 >
                   <button
+                    aria-label={null}
                     className="mr-2 btn btn-success"
                     disabled={false}
                     onClick={[Function]}
@@ -633,6 +664,7 @@ Sincerely,
                   type="button"
                 >
                   <button
+                    aria-label={null}
                     className="btn btn-secondary"
                     disabled={false}
                     onClick={[Function]}
@@ -678,7 +710,9 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"

@@ -12,7 +12,9 @@ exports[`BillingDetailsForm component should display loader 1`] = `
     <PageHeader
       title={
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
           <BreadcrumbItem
             tag="li"
@@ -36,40 +38,47 @@ exports[`BillingDetailsForm component should display loader 1`] = `
         className="d-flex align-items-center justify-content-between flex-wrap page-header"
       >
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
-          <ol
-            className="breadcrumb"
+          <nav
+            aria-label="breadcrumb"
+            className=""
           >
-            <BreadcrumbItem
-              tag="li"
+            <ol
+              className="breadcrumb"
             >
-              <li
-                className="breadcrumb-item"
+              <BreadcrumbItem
+                tag="li"
               >
-                <Link
-                  className="section"
-                  to="/app/settings/billing/"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <a
+                  <Link
                     className="section"
                     to="/app/settings/billing/"
                   >
-                    Billing & Usage
-                  </a>
-                </Link>
-              </li>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              <li
-                className="breadcrumb-item"
+                    <a
+                      className="section"
+                      to="/app/settings/billing/"
+                    >
+                      Billing & Usage
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
               >
-                Billing details
-              </li>
-            </BreadcrumbItem>
-          </ol>
+                <li
+                  className="breadcrumb-item"
+                >
+                  Billing details
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </nav>
         </Breadcrumb>
       </div>
     </PageHeader>
@@ -86,6 +95,15 @@ exports[`BillingDetailsForm component should display loader 1`] = `
         </p>
         <Row
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
           <div
             className="row"
@@ -155,7 +173,9 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
     <PageHeader
       title={
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
           <BreadcrumbItem
             tag="li"
@@ -179,40 +199,47 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
         className="d-flex align-items-center justify-content-between flex-wrap page-header"
       >
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
-          <ol
-            className="breadcrumb"
+          <nav
+            aria-label="breadcrumb"
+            className=""
           >
-            <BreadcrumbItem
-              tag="li"
+            <ol
+              className="breadcrumb"
             >
-              <li
-                className="breadcrumb-item"
+              <BreadcrumbItem
+                tag="li"
               >
-                <Link
-                  className="section"
-                  to="/app/settings/billing/"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <a
+                  <Link
                     className="section"
                     to="/app/settings/billing/"
                   >
-                    Billing & Usage
-                  </a>
-                </Link>
-              </li>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              <li
-                className="breadcrumb-item"
+                    <a
+                      className="section"
+                      to="/app/settings/billing/"
+                    >
+                      Billing & Usage
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
               >
-                Billing details
-              </li>
-            </BreadcrumbItem>
-          </ol>
+                <li
+                  className="breadcrumb-item"
+                >
+                  Billing details
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </nav>
         </Breadcrumb>
       </div>
     </PageHeader>
@@ -229,6 +256,15 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
         </p>
         <Row
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
           <div
             className="row"
@@ -286,7 +322,9 @@ exports[`BillingDetailsForm component should display the form with billing conta
     <PageHeader
       title={
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
           <BreadcrumbItem
             tag="li"
@@ -310,40 +348,47 @@ exports[`BillingDetailsForm component should display the form with billing conta
         className="d-flex align-items-center justify-content-between flex-wrap page-header"
       >
         <Breadcrumb
-          tag="ol"
+          aria-label="breadcrumb"
+          listTag="ol"
+          tag="nav"
         >
-          <ol
-            className="breadcrumb"
+          <nav
+            aria-label="breadcrumb"
+            className=""
           >
-            <BreadcrumbItem
-              tag="li"
+            <ol
+              className="breadcrumb"
             >
-              <li
-                className="breadcrumb-item"
+              <BreadcrumbItem
+                tag="li"
               >
-                <Link
-                  className="section"
-                  to="/app/settings/billing/"
+                <li
+                  className="breadcrumb-item"
                 >
-                  <a
+                  <Link
                     className="section"
                     to="/app/settings/billing/"
                   >
-                    Billing & Usage
-                  </a>
-                </Link>
-              </li>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              <li
-                className="breadcrumb-item"
+                    <a
+                      className="section"
+                      to="/app/settings/billing/"
+                    >
+                      Billing & Usage
+                    </a>
+                  </Link>
+                </li>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
               >
-                Billing details
-              </li>
-            </BreadcrumbItem>
-          </ol>
+                <li
+                  className="breadcrumb-item"
+                >
+                  Billing details
+                </li>
+              </BreadcrumbItem>
+            </ol>
+          </nav>
         </Breadcrumb>
       </div>
     </PageHeader>
@@ -360,6 +405,15 @@ exports[`BillingDetailsForm component should display the form with billing conta
         </p>
         <Row
           tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
         >
           <div
             className="row"
@@ -711,6 +765,15 @@ exports[`BillingDetailsForm component should display the form with billing conta
                     </InputField>
                     <Row
                       tag="div"
+                      widths={
+                        Array [
+                          "xs",
+                          "sm",
+                          "md",
+                          "lg",
+                          "xl",
+                        ]
+                      }
                     >
                       <div
                         className="row"
@@ -1008,7 +1071,6 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                 className="form-control"
                                 id="id-country"
                                 onChange={[Function]}
-                                type="select"
                                 value="United States"
                               >
                                 <option
@@ -2530,6 +2592,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                         tag="button"
                       >
                         <button
+                          aria-label={null}
                           className="btn btn-success"
                           disabled={false}
                           onClick={[Function]}

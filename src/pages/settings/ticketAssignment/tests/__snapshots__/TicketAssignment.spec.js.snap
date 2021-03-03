@@ -112,6 +112,15 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"
@@ -332,6 +341,15 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"
@@ -552,6 +570,15 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"
@@ -772,6 +799,15 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"
@@ -992,6 +1028,15 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"
@@ -1212,6 +1257,15 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"
@@ -1432,6 +1486,15 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
       <Row
         className="mb-2"
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="5"

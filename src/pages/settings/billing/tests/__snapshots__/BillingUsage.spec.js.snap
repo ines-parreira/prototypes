@@ -145,6 +145,15 @@ exports[`BillingUsage component should display price 1`] = `
               >
                 <Row
                   tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
                 >
                   <div
                     className="row"
@@ -189,40 +198,61 @@ exports[`BillingUsage component should display price 1`] = `
                           >
                             <Tooltip
                               autohide={true}
-                              delay={
-                                Object {
-                                  "hide": 250,
-                                  "show": 0,
-                                }
-                              }
-                              hideArrow={false}
                               isOpen={false}
                               placement="top"
                               placementPrefix="bs-tooltip"
                               target="current-period"
                               toggle={[Function]}
-                            />
+                              trigger="hover focus"
+                            >
+                              <TooltipPopoverWrapper
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 50,
+                                    "show": 0,
+                                  }
+                                }
+                                fade={true}
+                                hideArrow={false}
+                                innerClassName="tooltip-inner"
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                popperClassName="tooltip show"
+                                target="current-period"
+                                toggle={[Function]}
+                                trigger="hover focus"
+                              />
+                            </Tooltip>
                           </UncontrolledTooltip>
                           <Progress
+                            barStyle={Object {}}
                             className="usage-progress"
                             max={100}
+                            min={0}
                             multi={true}
+                            style={Object {}}
                             tag="div"
                             value={0}
                           >
                             <div
                               className="usage-progress progress"
+                              style={Object {}}
                             >
                               <Progress
                                 bar={true}
+                                barStyle={Object {}}
                                 color="primary"
                                 max={100}
+                                min={0}
+                                style={Object {}}
                                 tag="div"
                                 value={50}
                               >
                                 <div
                                   aria-valuemax={100}
-                                  aria-valuemin="0"
+                                  aria-valuemin={0}
                                   aria-valuenow={50}
                                   className="progress-bar bg-primary"
                                   role="progressbar"
@@ -235,14 +265,17 @@ exports[`BillingUsage component should display price 1`] = `
                               </Progress>
                               <Progress
                                 bar={true}
+                                barStyle={Object {}}
                                 color="danger"
                                 max={100}
+                                min={0}
+                                style={Object {}}
                                 tag="div"
                                 value={50}
                               >
                                 <div
                                   aria-valuemax={100}
-                                  aria-valuemin="0"
+                                  aria-valuemin={0}
                                   aria-valuenow={50}
                                   className="progress-bar bg-danger"
                                   role="progressbar"
@@ -311,41 +344,62 @@ exports[`BillingUsage component should display price 1`] = `
                             >
                               <Tooltip
                                 autohide={true}
-                                delay={
-                                  Object {
-                                    "hide": 250,
-                                    "show": 0,
-                                  }
-                                }
-                                hideArrow={false}
                                 isOpen={false}
                                 placement="top"
                                 placementPrefix="bs-tooltip"
                                 target="integrations-consumed"
                                 toggle={[Function]}
-                              />
+                                trigger="hover focus"
+                              >
+                                <TooltipPopoverWrapper
+                                  autohide={true}
+                                  delay={
+                                    Object {
+                                      "hide": 50,
+                                      "show": 0,
+                                    }
+                                  }
+                                  fade={true}
+                                  hideArrow={false}
+                                  innerClassName="tooltip-inner"
+                                  isOpen={false}
+                                  placement="top"
+                                  placementPrefix="bs-tooltip"
+                                  popperClassName="tooltip show"
+                                  target="integrations-consumed"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
+                                />
+                              </Tooltip>
                             </UncontrolledTooltip>
                           </div>
                           <Progress
+                            barStyle={Object {}}
                             className="usage-numbers"
                             max={100}
+                            min={0}
                             multi={true}
+                            style={Object {}}
                             tag="div"
                             value={0}
                           >
                             <div
                               className="usage-numbers progress"
+                              style={Object {}}
                             >
                               <Progress
                                 bar={true}
+                                barStyle={Object {}}
                                 color="primary"
                                 max={100}
+                                min={0}
+                                style={Object {}}
                                 tag="div"
                                 value={100}
                               >
                                 <div
                                   aria-valuemax={100}
-                                  aria-valuemin="0"
+                                  aria-valuemin={0}
                                   aria-valuenow={100}
                                   className="progress-bar bg-primary"
                                   role="progressbar"
@@ -411,6 +465,7 @@ exports[`BillingUsage component should display price 1`] = `
                           tag="button"
                         >
                           <button
+                            aria-label={null}
                             className="btn btn-secondary"
                             onClick={[Function]}
                             type="button"
@@ -558,6 +613,15 @@ exports[`BillingUsage component should load with empty props 1`] = `
               >
                 <Row
                   tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
                 >
                   <div
                     className="row"
@@ -602,40 +666,61 @@ exports[`BillingUsage component should load with empty props 1`] = `
                           >
                             <Tooltip
                               autohide={true}
-                              delay={
-                                Object {
-                                  "hide": 250,
-                                  "show": 0,
-                                }
-                              }
-                              hideArrow={false}
                               isOpen={false}
                               placement="top"
                               placementPrefix="bs-tooltip"
                               target="current-period"
                               toggle={[Function]}
-                            />
+                              trigger="hover focus"
+                            >
+                              <TooltipPopoverWrapper
+                                autohide={true}
+                                delay={
+                                  Object {
+                                    "hide": 50,
+                                    "show": 0,
+                                  }
+                                }
+                                fade={true}
+                                hideArrow={false}
+                                innerClassName="tooltip-inner"
+                                isOpen={false}
+                                placement="top"
+                                placementPrefix="bs-tooltip"
+                                popperClassName="tooltip show"
+                                target="current-period"
+                                toggle={[Function]}
+                                trigger="hover focus"
+                              />
+                            </Tooltip>
                           </UncontrolledTooltip>
                           <Progress
+                            barStyle={Object {}}
                             className="usage-progress"
                             max={100}
+                            min={0}
                             multi={true}
+                            style={Object {}}
                             tag="div"
                             value={0}
                           >
                             <div
                               className="usage-progress progress"
+                              style={Object {}}
                             >
                               <Progress
                                 bar={true}
+                                barStyle={Object {}}
                                 color="primary"
                                 max={100}
+                                min={0}
+                                style={Object {}}
                                 tag="div"
                                 value={100}
                               >
                                 <div
                                   aria-valuemax={100}
-                                  aria-valuemin="0"
+                                  aria-valuemin={0}
                                   aria-valuenow={100}
                                   className="progress-bar bg-primary"
                                   role="progressbar"
@@ -704,41 +789,62 @@ exports[`BillingUsage component should load with empty props 1`] = `
                             >
                               <Tooltip
                                 autohide={true}
-                                delay={
-                                  Object {
-                                    "hide": 250,
-                                    "show": 0,
-                                  }
-                                }
-                                hideArrow={false}
                                 isOpen={false}
                                 placement="top"
                                 placementPrefix="bs-tooltip"
                                 target="integrations-consumed"
                                 toggle={[Function]}
-                              />
+                                trigger="hover focus"
+                              >
+                                <TooltipPopoverWrapper
+                                  autohide={true}
+                                  delay={
+                                    Object {
+                                      "hide": 50,
+                                      "show": 0,
+                                    }
+                                  }
+                                  fade={true}
+                                  hideArrow={false}
+                                  innerClassName="tooltip-inner"
+                                  isOpen={false}
+                                  placement="top"
+                                  placementPrefix="bs-tooltip"
+                                  popperClassName="tooltip show"
+                                  target="integrations-consumed"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
+                                />
+                              </Tooltip>
                             </UncontrolledTooltip>
                           </div>
                           <Progress
+                            barStyle={Object {}}
                             className="usage-numbers"
                             max={100}
+                            min={0}
                             multi={true}
+                            style={Object {}}
                             tag="div"
                             value={0}
                           >
                             <div
                               className="usage-numbers progress"
+                              style={Object {}}
                             >
                               <Progress
                                 bar={true}
+                                barStyle={Object {}}
                                 color="primary"
                                 max={100}
+                                min={0}
+                                style={Object {}}
                                 tag="div"
                                 value={100}
                               >
                                 <div
                                   aria-valuemax={100}
-                                  aria-valuemin="0"
+                                  aria-valuemin={0}
                                   aria-valuenow={100}
                                   className="progress-bar bg-primary"
                                   role="progressbar"
@@ -804,6 +910,7 @@ exports[`BillingUsage component should load with empty props 1`] = `
                           tag="button"
                         >
                           <button
+                            aria-label={null}
                             className="btn btn-secondary"
                             onClick={[Function]}
                             type="button"

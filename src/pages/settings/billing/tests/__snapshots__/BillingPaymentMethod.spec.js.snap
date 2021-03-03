@@ -60,6 +60,7 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
                 tag="a"
               >
                 <a
+                  aria-label={null}
                   className="btn btn-success"
                   disabled={false}
                   href="/integrations/shopify/billing/activate/"
@@ -263,6 +264,15 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
           >
             <Row
               tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
               <div
                 className="row"
@@ -331,12 +341,14 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                         to="/app/settings/billing/add-credit-card"
                       >
                         <Link
+                          aria-label={null}
                           className="btn btn-success"
                           disabled={false}
                           onClick={[Function]}
                           to="/app/settings/billing/add-credit-card"
                         >
                           <a
+                            aria-label={null}
                             className="btn btn-success"
                             disabled={false}
                             onClick={[Function]}
@@ -405,6 +417,15 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
           >
             <Row
               tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
               <div
                 className="row"
@@ -481,11 +502,13 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                       to="/app/settings/billing/update-credit-card"
                     >
                       <Link
+                        aria-label={null}
                         className="btn btn-secondary"
                         onClick={[Function]}
                         to="/app/settings/billing/update-credit-card"
                       >
                         <a
+                          aria-label={null}
                           className="btn btn-secondary"
                           onClick={[Function]}
                           to="/app/settings/billing/update-credit-card"
@@ -526,6 +549,15 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
     >
       <Row
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           sm={4}

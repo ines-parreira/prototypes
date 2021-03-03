@@ -3,6 +3,7 @@
 exports[`QuickSelectionOption should display label to deselect all content 1`] = `
 <button
   class="component dropdown-item"
+  role="menuitem"
   tabindex="0"
   type="button"
 >
@@ -20,6 +21,7 @@ exports[`QuickSelectionOption should display label to deselect all content 1`] =
 exports[`QuickSelectionOption should display label to deselect one item 1`] = `
 <button
   class="component dropdown-item"
+  role="menuitem"
   tabindex="0"
   type="button"
 >
@@ -37,6 +39,7 @@ exports[`QuickSelectionOption should display label to deselect one item 1`] = `
 exports[`QuickSelectionOption should display label to select content 1`] = `
 <button
   class="component dropdown-item"
+  role="menuitem"
   tabindex="0"
   type="button"
 >

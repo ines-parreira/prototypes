@@ -85,6 +85,15 @@ exports[`YourProfileView render should render current user profile form 1`] = `
     >
       <Row
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           md="9"

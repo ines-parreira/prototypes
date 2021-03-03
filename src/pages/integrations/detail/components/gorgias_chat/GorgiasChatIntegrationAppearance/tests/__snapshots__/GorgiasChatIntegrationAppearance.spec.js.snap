@@ -7,7 +7,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -42,6 +44,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -309,7 +320,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -362,6 +375,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -662,7 +684,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -715,6 +739,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -1015,7 +1048,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -1072,6 +1107,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -1390,7 +1434,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -1447,6 +1493,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -1747,7 +1802,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -1804,6 +1861,15 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"

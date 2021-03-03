@@ -309,6 +309,7 @@ export function Plan(props: Props) {
                                             !isConfirmationDisplayed
                                         )
                                     }
+                                    trigger="legacy"
                                 >
                                     <PopoverHeader>Are you sure?</PopoverHeader>
                                     <PopoverBody>

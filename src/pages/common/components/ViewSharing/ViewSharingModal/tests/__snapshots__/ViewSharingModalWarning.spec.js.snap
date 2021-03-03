@@ -11,6 +11,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing team 1`] 
   <Alert
     closeAriaLabel="Close"
     color="warning"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={
@@ -52,6 +53,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user 1`] 
   <Alert
     closeAriaLabel="Close"
     color="warning"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={
@@ -93,6 +95,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
   <Alert
     closeAriaLabel="Close"
     color="warning"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={
@@ -154,6 +157,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing teams 1`]
   <Alert
     closeAriaLabel="Close"
     color="warning"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={
@@ -202,6 +206,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users 1`]
   <Alert
     closeAriaLabel="Close"
     color="warning"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={
@@ -250,6 +255,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users and
   <Alert
     closeAriaLabel="Close"
     color="warning"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={

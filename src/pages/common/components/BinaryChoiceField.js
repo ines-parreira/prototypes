@@ -19,7 +19,7 @@ type Props = {
  * ex: used in merge customers feature for merging names
  */
 export default class BinaryChoiceField extends React.Component<Props> {
-    defaultProps = {
+    static defaultProps = {
         onChange: _noop,
     }
 

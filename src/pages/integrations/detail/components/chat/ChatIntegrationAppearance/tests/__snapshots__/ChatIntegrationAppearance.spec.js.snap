@@ -7,7 +7,9 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -42,6 +44,15 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -299,7 +310,9 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -352,6 +365,15 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -642,7 +664,9 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -695,6 +719,15 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -985,7 +1018,9 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -1042,6 +1077,15 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -1350,7 +1394,9 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -1407,6 +1453,15 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"
@@ -1697,7 +1752,9 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -1754,6 +1811,15 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
   >
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         tag="div"

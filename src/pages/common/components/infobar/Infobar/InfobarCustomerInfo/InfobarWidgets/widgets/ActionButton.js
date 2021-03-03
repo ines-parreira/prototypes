@@ -338,6 +338,7 @@ export default class ActionButton extends React.Component<Props, State> {
                         {to: 'window', attachment: 'together none', pin: true},
                     ],
                 }}
+                trigger="legacy"
             >
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>

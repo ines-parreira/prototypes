@@ -309,18 +309,12 @@ exports[`TicketListActions component should display options for agents assignati
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -350,18 +344,12 @@ exports[`TicketListActions component should display options for agents assignati
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -705,18 +693,12 @@ exports[`TicketListActions component should display options for teams assignatio
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -746,18 +728,12 @@ exports[`TicketListActions component should display options for teams assignatio
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1069,18 +1045,12 @@ exports[`TicketListActions component should display special actions for trash vi
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1109,18 +1079,12 @@ exports[`TicketListActions component should display special actions for trash vi
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1429,18 +1393,12 @@ exports[`TicketListActions component should display the export tickets button fo
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1469,18 +1427,12 @@ exports[`TicketListActions component should display the export tickets button fo
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1781,18 +1733,12 @@ exports[`TicketListActions component should display when nothing is selected 1`]
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1821,18 +1767,12 @@ exports[`TicketListActions component should display when nothing is selected 1`]
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -2133,18 +2073,12 @@ exports[`TicketListActions component should display when some tickets are select
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -2174,18 +2108,12 @@ exports[`TicketListActions component should display when some tickets are select
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -2487,18 +2415,12 @@ exports[`TicketListActions component should not display the export tickets butto
       </DropdownMenu>
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -2527,18 +2449,12 @@ exports[`TicketListActions component should not display the export tickets butto
       </PopoverBody>
     </Popover>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"

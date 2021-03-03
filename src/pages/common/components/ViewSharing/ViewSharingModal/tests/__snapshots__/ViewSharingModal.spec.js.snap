@@ -11,6 +11,7 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
     }
   }
   centered={false}
+  container="body"
   fade={true}
   isOpen={true}
   keyboard={true}
@@ -21,11 +22,16 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
   }
   onClosed={[Function]}
   onOpened={[Function]}
+  returnFocusAfterClose={true}
   role="dialog"
+  scrollable={false}
   toggle={[MockFunction]}
+  trapFocus={false}
+  unmountOnClose={true}
   zIndex={1050}
 >
   <ModalHeader
+    charCode={215}
     closeAriaLabel="Close"
     tag="h5"
     toggle={[MockFunction]}
@@ -89,6 +95,7 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
     }
   }
   centered={false}
+  container="body"
   fade={true}
   isOpen={true}
   keyboard={true}
@@ -99,11 +106,16 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
   }
   onClosed={[Function]}
   onOpened={[Function]}
+  returnFocusAfterClose={true}
   role="dialog"
+  scrollable={false}
   toggle={[MockFunction]}
+  trapFocus={false}
+  unmountOnClose={true}
   zIndex={1050}
 >
   <ModalHeader
+    charCode={215}
     closeAriaLabel="Close"
     tag="h5"
     toggle={[MockFunction]}
@@ -167,6 +179,7 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
     }
   }
   centered={false}
+  container="body"
   fade={true}
   isOpen={true}
   keyboard={true}
@@ -177,11 +190,16 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
   }
   onClosed={[Function]}
   onOpened={[Function]}
+  returnFocusAfterClose={true}
   role="dialog"
+  scrollable={false}
   toggle={[MockFunction]}
+  trapFocus={false}
+  unmountOnClose={true}
   zIndex={1050}
 >
   <ModalHeader
+    charCode={215}
     closeAriaLabel="Close"
     tag="h5"
     toggle={[MockFunction]}
@@ -251,6 +269,7 @@ exports[`<ViewSharingModal/> render() should render the paywall modal informatio
     }
   }
   centered={false}
+  container="body"
   fade={true}
   isOpen={true}
   keyboard={true}
@@ -261,11 +280,16 @@ exports[`<ViewSharingModal/> render() should render the paywall modal informatio
   }
   onClosed={[Function]}
   onOpened={[Function]}
+  returnFocusAfterClose={true}
   role="dialog"
+  scrollable={false}
   toggle={[MockFunction]}
+  trapFocus={false}
+  unmountOnClose={true}
   zIndex={1050}
 >
   <ModalHeader
+    charCode={215}
     closeAriaLabel="Close"
     tag="h5"
     toggle={[MockFunction]}

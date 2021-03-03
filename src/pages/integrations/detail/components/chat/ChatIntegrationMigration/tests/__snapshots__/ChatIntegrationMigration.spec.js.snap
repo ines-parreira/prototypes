@@ -8,38 +8,44 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
     <div
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <ol
-        class="breadcrumb"
+      <nav
+        aria-label="breadcrumb"
+        class=""
       >
-        <li
-          class="breadcrumb-item"
+        <ol
+          class="breadcrumb"
         >
-          <a
-            to="/app/settings/integrations"
+          <li
+            class="breadcrumb-item"
           >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/smooch_inside"
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
           >
-            Chat (Deprecated)
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          hellosmoochintegration
-        </li>
-        <li
-          class="active breadcrumb-item"
-        >
-          Migration
-        </li>
-      </ol>
+            <a
+              to="/app/settings/integrations/smooch_inside"
+            >
+              Chat (Deprecated)
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            hellosmoochintegration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Migration
+          </li>
+        </ol>
+      </nav>
     </div>
     <nav
       class="navbar navbar"
