@@ -820,6 +820,7 @@ helping customers through the purchasing journey.`,
         filters: [
             {type: 'integrations', options: STORE_INTEGRATION_TYPES},
             {type: 'channels'},
+            {type: 'tags'},
             {type: 'period'},
         ],
         link: 'revenue',
