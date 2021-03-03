@@ -96,6 +96,7 @@ type NavbarProps = {
 
 type NavbarState = {
     bottomDropdownOpen: boolean,
+    noticeableWidgetRendered: boolean,
     title: ?string,
 }
 
@@ -119,6 +120,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     state = {
         bottomDropdownOpen: false,
+        noticeableWidgetRendered: false,
         title: null,
     }
 
@@ -134,6 +136,44 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                 ? _capitalize(this.props.activeContent)
                 : null,
         })
+    }
+
+    componentDidUpdate(prevProps: NavbarProps, prevState: NavbarState) {
+        // render and update the noticeable widget and notification
+        if (this.state.bottomDropdownOpen) {
+            if (
+                prevState.bottomDropdownOpen ||
+                this.state.noticeableWidgetRendered
+            ) {
+                return
+            }
+
+            window.noticeable
+                .render('widget', window.noticeableWidgetId)
+                .then(() => {
+                    this.setState({noticeableWidgetRendered: true})
+                })
+
+            window.noticeable.on(
+                'widget:publication:unread_count:changed',
+                window.noticeableWidgetId,
+                (e) => {
+                    const element = document.getElementById(
+                        'noticeable-widget-notification'
+                    )
+                    if (element) {
+                        element.style.visibility =
+                            e.detail.value === 0 ? 'hidden' : 'visible'
+                    }
+                }
+            )
+        } else if (this.state.noticeableWidgetRendered) {
+            window.noticeable
+                .destroy('widget', window.noticeableWidgetId)
+                .then(() => {
+                    this.setState({noticeableWidgetRendered: false})
+                })
+        }
     }
 
     _closePanel = () => {
@@ -294,21 +334,14 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                             <i className="material-icons mr-2">map</i>
                             Roadmap
                         </DropdownItem>
-                        <DropdownItem tag="div" toggle={false}>
-                            {this.state.bottomDropdownOpen && (
-                                <noticeable-widget
-                                    id="custom-eye-catching-animation"
-                                    access-token={
-                                        window.NOTICEABLE_ACCESS_TOKEN
-                                    }
-                                    project-id={window.NOTICEABLE_PROJECT_ID}
-                                    white-label="true"
-                                >
-                                    <a title="New features, bug-fixes, scheduled maintenance and other announcements.">
-                                        What's new?
-                                    </a>
-                                </noticeable-widget>
-                            )}
+                        <DropdownItem
+                            tag="div"
+                            id="noticeable-widget"
+                            toggle={false}
+                        >
+                            <i className="material-icons mr-2">new_releases</i>
+                            Latest updates
+                            <span id="noticeable-widget-notification" />
                         </DropdownItem>
                         <DropdownItem
                             onClick={() => {
