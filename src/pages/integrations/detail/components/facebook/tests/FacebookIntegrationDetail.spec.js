@@ -27,6 +27,7 @@ const defaultFacebookIntegrationSettings = {
     messenger_enabled: true,
     import_history_enabled: true,
     instagram_comments_enabled: false,
+    instagram_direct_message_enabled: false,
     instagram_mentions_enabled: false,
     instagram_ads_enabled: false,
 }
@@ -60,6 +61,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                 import_history_enabled: false,
                 instagram_comments_enabled: true,
                 instagram_ads_enabled: false,
+                instagram_direct_message_enabled: false,
+                instagram_mentions_enabled: undefined,
             }
 
             const component = shallow(
@@ -104,6 +107,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                 import_history_enabled: false,
                 instagram_comments_enabled: true,
                 instagram_ads_enabled: false,
+                instagram_direct_message_enabled: false,
+                instagram_mentions_enabled: undefined,
+                recommendations_enabled: undefined,
             }
 
             const component = shallow(
@@ -181,11 +187,14 @@ describe('<FacebookIntegrationDetail/>', () => {
                     language: SPANISH_LANGUAGE,
                     name: 'My facebook page',
                     settings: {
-                        posts_enabled: true,
-                        messenger_enabled: true,
                         import_history_enabled: true,
-                        instagram_comments_enabled: false,
                         instagram_ads_enabled: false,
+                        instagram_comments_enabled: false,
+                        instagram_direct_message_enabled: false,
+                        instagram_mentions_enabled: undefined,
+                        messenger_enabled: true,
+                        posts_enabled: true,
+                        recommendations_enabled: undefined,
                     },
                 },
             })
@@ -194,11 +203,14 @@ describe('<FacebookIntegrationDetail/>', () => {
                 .setIn(
                     ['meta', 'settings'],
                     fromJS({
-                        posts_enabled: false,
-                        messenger_enabled: true,
                         import_history_enabled: false,
-                        instagram_comments_enabled: true,
                         instagram_ads_enabled: true,
+                        instagram_comments_enabled: true,
+                        instagram_direct_message_enabled: false,
+                        instagram_mentions_enabled: undefined,
+                        messenger_enabled: true,
+                        posts_enabled: false,
+                        recommendations_enabled: undefined,
                     })
                 )
                 .setIn(['meta', 'language'], DANISH_LANGUAGE)
@@ -251,11 +263,14 @@ describe('<FacebookIntegrationDetail/>', () => {
                     language: SPANISH_LANGUAGE,
                     name: 'My facebook page',
                     settings: {
-                        posts_enabled: postsEnabled,
-                        messenger_enabled: true,
                         import_history_enabled: true,
-                        instagram_comments_enabled: false,
                         instagram_ads_enabled: false,
+                        instagram_comments_enabled: false,
+                        instagram_direct_message_enabled: false,
+                        instagram_mentions_enabled: undefined,
+                        messenger_enabled: true,
+                        posts_enabled: postsEnabled,
+                        recommendations_enabled: undefined,
                     },
                 },
             })

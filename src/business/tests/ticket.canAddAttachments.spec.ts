@@ -10,7 +10,7 @@ describe('Business', () => {
 
             it('should not allow to add when facebook-messenger has already text', () => {
                 // Given
-                messageType = TicketMessageSourceType.FacebookMessenger
+                messageType = TicketMessageSourceType.InstagramDirectMessage
                 newMessage = 'Hello'
                 attachmentCount = 1
 
@@ -23,7 +23,7 @@ describe('Business', () => {
 
                 // Then
                 expect(result?.message).toEqual(
-                    'When using Facebook messenger, you can either send a text message, or an attachment, but not both at the same time.'
+                    'When using Instagram direct message, you can either send a text message, or an image attachment, but not both at the same time.'
                 )
             })
 
@@ -31,23 +31,6 @@ describe('Business', () => {
                 beforeEach(() => {
                     attachmentCount = 2
                     newMessage = ''
-                })
-
-                it('should not allow to add when chat', () => {
-                    // Given
-                    messageType = TicketMessageSourceType.Chat
-
-                    // When
-                    const result = canAddAttachments(
-                        messageType,
-                        newMessage,
-                        attachmentCount
-                    )
-
-                    // Then
-                    expect(result?.message).toEqual(
-                        'When using Chat, you can only send attachments one by one.'
-                    )
                 })
 
                 it('should not allow to add when facebook-comment', () => {
@@ -69,7 +52,7 @@ describe('Business', () => {
 
                 it('should not allow to add when facebook-messenger', () => {
                     // Given
-                    messageType = TicketMessageSourceType.FacebookMessenger
+                    messageType = TicketMessageSourceType.InstagramDirectMessage
 
                     // When
                     const result = canAddAttachments(
@@ -80,7 +63,7 @@ describe('Business', () => {
 
                     // Then
                     expect(result?.message).toEqual(
-                        'When using Facebook messenger, you can only send attachments one by one.'
+                        'When using Instagram direct message, you can only send attachments one by one.'
                     )
                 })
             })

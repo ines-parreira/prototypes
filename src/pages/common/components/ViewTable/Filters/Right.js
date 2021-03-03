@@ -248,6 +248,15 @@ export default class Right extends React.Component {
                 )
             }
         }
+        //TODO(@Mehdi): change this after Facebook app review
+        let filteredField = field
+        if (field.get('name') === 'channel') {
+            filteredField = field.updateIn(['filter', 'enum'], (channels) =>
+                channels.filter(
+                    (channel) => channel !== 'instagram-direct-message'
+                )
+            )
+        }
 
         return (
             <div>
@@ -265,13 +274,13 @@ export default class Right extends React.Component {
                 {this.state.dropdownOpen && (
                     <FilterDropdown
                         viewConfig={config}
-                        field={field}
+                        field={filteredField}
                         updateFieldFilter={(value) =>
                             updateFieldFilter(index, value)
                         }
                         toggleDropdown={this._toggleDropdown}
                         menu={
-                            field.get('name') === 'tags'
+                            filteredField.get('name') === 'tags'
                                 ? TagDropdownMenu
                                 : undefined
                         }

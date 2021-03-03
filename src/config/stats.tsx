@@ -188,6 +188,10 @@ export const stats = fromJS({
                 label: 'Instagram mention comment',
                 color: '#64A7D0',
             },
+            'instagram-direct-message': {
+                label: 'Instagram direct message',
+                color: '#249ae0',
+            },
             facebook: {
                 label: 'Facebook',
                 color: '#4872db',

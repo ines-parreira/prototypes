@@ -20,7 +20,10 @@ import {
 } from '../../../../../utils/file.ts'
 import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors.ts'
-import {TicketMessageSourceTypes} from '../../../../../business/ticket.ts'
+import {
+    TicketMessageSourceTypes,
+    canAddAttachments,
+} from '../../../../../business/ticket.ts'
 
 import css from './TicketReplyEditor.less'
 
@@ -138,7 +141,20 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     _canAddAttachments = (fileList: filesType = []) => {
         // FileList does not have map
         const files = Array.from(fileList)
-        const {attachments} = this.props
+        const {attachments, newMessage, newMessageType} = this.props
+
+        const notification = canAddAttachments(
+            newMessageType,
+            newMessage.getIn(['newMessage', 'body_text']),
+            attachments.size + files.length
+        )
+        if (notification) {
+            this.props.notify({
+                status: notification.status,
+                message: notification.message,
+            })
+            return false
+        }
 
         // check total attachments size.
         const currentSize = this._getFilesSize(files)

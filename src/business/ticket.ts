@@ -2,15 +2,21 @@ import {humanize} from './format'
 import {Notification} from './types/notification'
 import {TicketMessageSourceType} from './types/ticket'
 
-// Public functions
-export function canAddAttachments(
+//TODO(@Mehdi) Instagram DM specific, Remove this when we do https://github.com/gorgias/gorgias/issues/7516
+export function canReply(
     messageType: TicketMessageSourceType,
-    newMessage: string,
-    attachmentCount: number
+    attachmentCount: number,
+    explicitReason: Maybe<string>
 ): Maybe<Notification> {
-    let isInvalid =
-        messageType === TicketMessageSourceType.FacebookMessenger &&
-        !!newMessage &&
+    if (!!explicitReason) {
+        return {
+            message: explicitReason,
+            status: 'warning',
+        }
+    }
+
+    const isInvalid =
+        messageType === TicketMessageSourceType.InstagramDirectMessage &&
         attachmentCount > 0
 
     if (isInvalid) {
@@ -18,7 +24,37 @@ export function canAddAttachments(
             message:
                 `When using ${humanize(
                     messageType
-                )}, you can either send a text message, or an attachment, ` +
+                )}, you can either send a text message, or an image attachment, ` +
+                'but not both at the same time. If you want to write a message, remove the attachment first.',
+            status: 'warning',
+        }
+    }
+
+    return null
+}
+
+// Public functions
+export function canAddAttachments(
+    messageType: TicketMessageSourceType,
+    newMessage: string,
+    attachmentCount: number
+): Maybe<Notification> {
+    const messagePlusAttachmentInvalidSources = [
+        TicketMessageSourceType.InstagramDirectMessage,
+    ]
+
+    let isInvalid =
+        messagePlusAttachmentInvalidSources.includes(messageType) &&
+        !!newMessage &&
+        attachmentCount > 0
+
+    if (isInvalid) {
+        //TODO(@Mehdi) Instagram DM specific, Remove this when we do https://github.com/gorgias/gorgias/issues/7516
+        return {
+            message:
+                `When using ${humanize(
+                    messageType
+                )}, you can either send a text message, or an image attachment, ` +
                 'but not both at the same time.',
             status: 'warning',
         }
@@ -26,10 +62,9 @@ export function canAddAttachments(
 
     isInvalid =
         [
-            TicketMessageSourceType.Chat,
             TicketMessageSourceType.FacebookComment,
             TicketMessageSourceType.FacebookReviewComment,
-            TicketMessageSourceType.FacebookMessenger,
+            TicketMessageSourceType.InstagramDirectMessage,
         ].includes(messageType) && attachmentCount > 1
 
     if (isInvalid) {
@@ -63,6 +98,7 @@ export const TicketMessageSourceTypes = Object.freeze({
     INSTAGRAM_MEDIA: 'instagram-media',
     INSTAGRAM_MENTION_MEDIA: 'instagram-mention-media',
     INSTAGRAM_MENTION_COMMENT: 'instagram-mention-comment',
+    INSTAGRAM_DIRECT_MESSAGE: 'instagram-direct-message',
     INTERNAL_NOTE: 'internal-note',
     OTTSPOTT_CALL: 'ottspott-call',
     PHONE: 'phone',
@@ -88,6 +124,7 @@ export const TicketChannels = Object.freeze({
     INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
     INSTAGRAM_COMMENT: 'instagram-comment',
     INSTAGRAM_MENTION: 'instagram-mention',
+    INSTAGRAM_DIRECT_MESSAGE: 'instagram-direct-message',
     PHONE: 'phone',
     SMS: 'sms',
     TWITTER: 'twitter',

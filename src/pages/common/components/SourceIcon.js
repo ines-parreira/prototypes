@@ -32,6 +32,7 @@ import {
     INSTAGRAM_MEDIA_SOURCE,
     INSTAGRAM_MENTION_MEDIA_SOURCE,
     INSTAGRAM_MENTION_COMMENT_SOURCE,
+    INSTAGRAM_DM_SOURCE,
     INTERNAL_NOTE_SOURCE,
     OTTSPOTT_CALL_SOURCE,
     PHONE_SOURCE,
@@ -106,6 +107,7 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
         case INSTAGRAM_MEDIA_SOURCE:
         case INSTAGRAM_MENTION_MEDIA_SOURCE:
         case INSTAGRAM_MENTION_COMMENT_SOURCE:
+        case INSTAGRAM_DM_SOURCE:
             icon.custom = true
             icon.name = 'instagram'
             break

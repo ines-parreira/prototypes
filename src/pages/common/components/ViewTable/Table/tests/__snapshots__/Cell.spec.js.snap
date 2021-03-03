@@ -274,6 +274,7 @@ Object {
             "instagram-ad-comment",
             "instagram-comment",
             "instagram-mention",
+            "instagram-direct-message",
             "phone",
             "sms",
             "twitter",

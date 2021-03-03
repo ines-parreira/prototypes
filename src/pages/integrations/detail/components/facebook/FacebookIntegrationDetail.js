@@ -44,6 +44,7 @@ type State = {
         instagram_comments_enabled: boolean,
         instagram_mentions_enabled: boolean,
         instagram_ads_enabled: boolean,
+        instagram_direct_message_enabled: boolean,
     },
     language: string,
     askDisableConfirmation: boolean,
@@ -62,6 +63,7 @@ export default class FacebookIntegrationDetail extends React.Component<
             instagram_comments_enabled: false,
             instagram_mentions_enabled: false,
             instagram_ads_enabled: false,
+            instagram_direct_message_enabled: false,
         },
         language: FACEBOOK_LANGUAGE_DEFAULT,
         askDisableConfirmation: false,
@@ -89,6 +91,10 @@ export default class FacebookIntegrationDetail extends React.Component<
                 ),
                 instagram_ads_enabled: settings.get(
                     'instagram_ads_enabled',
+                    false
+                ),
+                instagram_direct_message_enabled: settings.get(
+                    'instagram_direct_message_enabled',
                     false
                 ),
             }
@@ -151,6 +157,35 @@ export default class FacebookIntegrationDetail extends React.Component<
             'instagram',
             'id',
         ])
+
+        //Todo(@Mehdi): change this when the feature is available for all accounts
+        const isNotAllowedToInstagramDM = !integration.getIn([
+            'meta',
+            'instagram',
+            'instagram_direct_message_allowed',
+        ])
+
+        let instagram_direct_message_setting
+
+        if (!isNotAllowedToInstagramDM) {
+            instagram_direct_message_setting = (
+                <BooleanField
+                    name="instagram_direct_message_enabled"
+                    type="checkbox"
+                    label="Enable Instagram direct message"
+                    value={this.state.settings.instagram_direct_message_enabled}
+                    onChange={(value) =>
+                        this._onSettingChange(
+                            value,
+                            'instagram_direct_message_enabled'
+                        )
+                    }
+                    disabled={
+                        doesntHaveInstagramPermissions || doesntHaveInstagramId
+                    }
+                />
+            )
+        }
 
         let alertComponent = null
 
@@ -346,6 +381,7 @@ export default class FacebookIntegrationDetail extends React.Component<
                                     doesntHaveInstagramId
                                 }
                             />
+                            {instagram_direct_message_setting}
                             <BooleanField
                                 name="import_history_enabled"
                                 type="checkbox"

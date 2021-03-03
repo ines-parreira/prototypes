@@ -8,17 +8,38 @@ export function clearMacroBeforeApply(
     messageType: TicketMessageSourceType,
     macro: Map<any, any>
 ): MacroClearingResult {
-    const isInvalid =
+    const isChatAndMoreThanOneAttachment =
         messageType === TicketMessageSourceType.Chat &&
         getAttachmentsCount(macro) > 1
+    const isInstagramDMAndTextPlusAttachment =
+        messageType === TicketMessageSourceType.InstagramDirectMessage &&
+        hasText(macro) &&
+        getAttachmentsCount(macro) > 0
+
+    //TODO(@Mehdi) Remove `isInstagramDMAndTextPlusAttachment` when we do https://github.com/gorgias/gorgias/issues/7516
+    const isInvalid =
+        isChatAndMoreThanOneAttachment || isInstagramDMAndTextPlusAttachment
 
     if (isInvalid) {
+        let notificationMessage =
+            'We have removed the attachments from this message'
+
+        if (isChatAndMoreThanOneAttachment) {
+            notificationMessage =
+                notificationMessage +
+                ', because you cannot send multiple attachments at the same time on Chat.'
+        }
+
+        if (isInstagramDMAndTextPlusAttachment) {
+            notificationMessage =
+                notificationMessage +
+                ', because you can either send a text message, or an image attachment as an Instagram direct message.'
+        }
+
         return {
             macro: removeAttachmentsFromActions(macro),
             notification: {
-                message:
-                    'We have removed the attachments from this message, because you cannot send multiple ' +
-                    'attachments at the same time on Chat.',
+                message: notificationMessage,
                 status: 'warning',
             },
         }
@@ -51,4 +72,13 @@ function removeAttachmentsFromActions(macro: Map<any, any>): Map<any, any> {
                 action.get('name') !== MacroActionName.AddAttachments
         )
     )
+}
+
+function hasText(macro: Map<any, any>): boolean {
+    return !(macro.get('actions', fromJS([])) as List<any>)
+        .filter(
+            (action: Map<any, any>) =>
+                action.get('name') === MacroActionName.SetResponseText
+        )
+        .isEmpty()
 }

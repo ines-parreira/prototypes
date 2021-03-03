@@ -112,6 +112,7 @@ export const SOURCE_VALUE_PROP = {
     'instagram-comment': 'address',
     'instagram-ad-media': 'address',
     'instagram-ad-comment': 'address',
+    'instagram-direct-message': 'address',
     'instagram-mention-media': 'address',
     'instagram-mention-comment': 'address',
 }

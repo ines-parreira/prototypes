@@ -365,10 +365,13 @@ const mapStateToProps = (state: Object, props: Props) => {
     return {
         tags: state.entities.tags,
         integrations: getIntegrations(state).toJS(),
-        channels: (CHANNELS: any).map((channel) => ({
-            label: _upperFirst(channel.replace('-', ' ')),
-            value: channel,
-        })),
+        // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
+        channels: (CHANNELS: any)
+            .filter((channel) => channel !== 'instagram-direct-message')
+            .map((channel) => ({
+                label: _upperFirst(channel.replace('-', ' ')),
+                value: channel,
+            })),
         agents: getAgents(state)
             .map((agent) => ({
                 label: getDisplayName(agent),

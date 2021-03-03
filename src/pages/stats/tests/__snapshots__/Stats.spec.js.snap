@@ -283,6 +283,10 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
               "label": "Email",
               "color": "#ff5eab",
             },
+            "instagram-direct-message": Immutable.Map {
+              "label": "Instagram direct message",
+              "color": "#249ae0",
+            },
           },
           "options": [Function],
         }

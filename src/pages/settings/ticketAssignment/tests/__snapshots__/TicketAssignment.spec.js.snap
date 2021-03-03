@@ -276,6 +276,10 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
                     "value": "instagram-mention",
                   },
                   Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
+                  },
+                  Object {
                     "label": "phone",
                     "value": "phone",
                   },
@@ -503,6 +507,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                   Object {
                     "label": "instagram-mention",
                     "value": "instagram-mention",
+                  },
+                  Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
                   },
                   Object {
                     "label": "phone",
@@ -734,6 +742,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                     "value": "instagram-mention",
                   },
                   Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
+                  },
+                  Object {
                     "label": "phone",
                     "value": "phone",
                   },
@@ -961,6 +973,10 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                   Object {
                     "label": "instagram-mention",
                     "value": "instagram-mention",
+                  },
+                  Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
                   },
                   Object {
                     "label": "phone",
@@ -1192,6 +1208,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "value": "instagram-mention",
                   },
                   Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
+                  },
+                  Object {
                     "label": "phone",
                     "value": "phone",
                   },
@@ -1421,6 +1441,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "value": "instagram-mention",
                   },
                   Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
+                  },
+                  Object {
                     "label": "phone",
                     "value": "phone",
                   },
@@ -1648,6 +1672,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                   Object {
                     "label": "instagram-mention",
                     "value": "instagram-mention",
+                  },
+                  Object {
+                    "label": "instagram-direct-message",
+                    "value": "instagram-direct-message",
                   },
                   Object {
                     "label": "phone",

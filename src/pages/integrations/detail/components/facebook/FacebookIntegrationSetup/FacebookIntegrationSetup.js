@@ -102,31 +102,48 @@ export default class FacebookIntegrationSetup extends React.Component<
         const id = integration.get('id')
 
         if (enable) {
+            const basicSettings = {
+                messenger_enabled: true,
+                posts_enabled: true,
+                recommendations_enabled: true,
+                instagram_comments_enabled: !!integration.getIn([
+                    'meta',
+                    'instagram',
+                    'id',
+                ]),
+                instagram_mentions_enabled: !!integration.getIn([
+                    'meta',
+                    'instagram',
+                    'id',
+                ]),
+                instagram_ads_enabled: !!integration.getIn([
+                    'meta',
+                    'instagram',
+                    'id',
+                ]),
+            }
+            // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
+            let additionalSettings = {}
+            const isAllowedToInstagramDM = !!integration.getIn([
+                'meta',
+                'instagram',
+                'instagram_direct_message_allowed',
+            ])
+            if (isAllowedToInstagramDM) {
+                additionalSettings = {
+                    instagram_direct_message_enabled: !!integration.getIn([
+                        'meta',
+                        'instagram',
+                        'id',
+                    ]),
+                }
+            }
+
+            const settings = {...basicSettings, ...additionalSettings}
+
             selectedIntegrations = selectedIntegrations.set(
                 id,
-                integration.setIn(
-                    ['meta', 'settings'],
-                    fromJS({
-                        messenger_enabled: true,
-                        posts_enabled: true,
-                        recommendations_enabled: true,
-                        instagram_comments_enabled: !!integration.getIn([
-                            'meta',
-                            'instagram',
-                            'id',
-                        ]),
-                        instagram_mentions_enabled: !!integration.getIn([
-                            'meta',
-                            'instagram',
-                            'id',
-                        ]),
-                        instagram_ads_enabled: !!integration.getIn([
-                            'meta',
-                            'instagram',
-                            'id',
-                        ]),
-                    })
-                )
+                integration.setIn(['meta', 'settings'], fromJS(settings))
             )
         } else {
             selectedIntegrations = selectedIntegrations.delete(id)
@@ -197,6 +214,15 @@ export default class FacebookIntegrationSetup extends React.Component<
                                 'id',
                             ])
                             const pageEnabled = selectedIntegrations.has(id)
+
+                            // Todo(@Mehdi): change this when the feature will be available to all accounts
+                            const isNotAllowedToInstagramDM = !integration.getIn(
+                                [
+                                    'meta',
+                                    'instagram',
+                                    'instagram_direct_message_allowed',
+                                ]
+                            )
 
                             return (
                                 <div
@@ -375,6 +401,25 @@ export default class FacebookIntegrationSetup extends React.Component<
                                                         }
                                                     />
                                                 )}
+                                                {!instagramIsDisabled &&
+                                                    !isNotAllowedToInstagramDM && (
+                                                        <BooleanField
+                                                            name={`${id}.instagram_direct_message_enabled`}
+                                                            type="checkbox"
+                                                            label="Enable Instagram direct message"
+                                                            value={this._getSettingValue(
+                                                                id,
+                                                                'instagram_direct_message_enabled'
+                                                            )}
+                                                            onChange={(value) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'instagram_direct_message_enabled',
+                                                                    value
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
                                             </FormGroup>
                                             {instagramIsDisabled && (
                                                 <div>

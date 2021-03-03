@@ -21,6 +21,7 @@ import {
 export const CHAT_CHANNEL = TicketChannel.Chat
 export const EMAIL_CHANNEL = TicketChannel.Email
 export const FACEBOOK_MESSENGER_CHANNEL = TicketChannel.FacebookMessenger
+export const INSTAGRAM_DM_CHANNEL = TicketChannel.InstagramDirectMessage
 export const CHANNELS = Object.values(TicketChannel)
 
 export const DEFAULT_CHANNEL = TicketChannel.Email
@@ -56,6 +57,8 @@ export const INSTAGRAM_MENTION_MEDIA_SOURCE =
     TicketMessageSourceType.InstagramMentionMedia
 export const INSTAGRAM_MENTION_COMMENT_SOURCE =
     TicketMessageSourceType.InstagramMentionComment
+export const INSTAGRAM_DM_SOURCE =
+    TicketMessageSourceType.InstagramDirectMessage
 export const INTERNAL_NOTE_SOURCE = TicketMessageSourceType.InternalNote
 export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceType.OttspottCall
 export const PHONE_SOURCE = TicketMessageSourceType.Phone
@@ -78,6 +81,7 @@ export const USABLE_SOURCE_TYPES = [
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MENTION_MEDIA_SOURCE,
     INSTAGRAM_MENTION_COMMENT_SOURCE,
+    INSTAGRAM_DM_SOURCE,
     INTERNAL_NOTE_SOURCE,
 ]
 
@@ -284,6 +288,10 @@ export function sourceTypeToChannel(
 
     if (sourceType.startsWith('instagram-mention')) {
         return TicketChannel.InstagramMention
+    }
+
+    if (sourceType.startsWith('instagram-direct')) {
+        return TicketChannel.InstagramDirectMessage
     }
 
     if (sourceType.startsWith('instagram')) {

@@ -31,6 +31,7 @@ import {
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
+    INSTAGRAM_DM_SOURCE,
     INTERNAL_NOTE_SOURCE,
     FACEBOOK_REVIEW_COMMENT_SOURCE,
     INSTAGRAM_MENTION_COMMENT_SOURCE,
@@ -195,6 +196,7 @@ export default class ReplyMessageChannel extends React.Component {
             INSTAGRAM_AD_MEDIA_SOURCE,
             INSTAGRAM_COMMENT_SOURCE,
             INSTAGRAM_MEDIA_SOURCE,
+            INSTAGRAM_DM_SOURCE, // TODO(check if we need this)
         ]
 
         const isInputEnabled =
@@ -247,6 +249,8 @@ export default class ReplyMessageChannel extends React.Component {
             isTicketExisting && !!replyOptions.get('instagram-comment')
         const suggestInstagramAd =
             isTicketExisting && !!replyOptions.get('instagram-ad-comment')
+        const suggestInstagramDM =
+            isTicketExisting && !!replyOptions.get('instagram-direct-message')
         const suggestInstagramMention =
             isTicketExisting && !!replyOptions.get('instagram-mention-comment')
         const suggestForwardByEmail = isTicketExisting
@@ -347,6 +351,17 @@ export default class ReplyMessageChannel extends React.Component {
                                         type={FACEBOOK_MESSENGER_SOURCE}
                                     />
                                     Reply via Messenger
+                                </DropdownItem>
+                            )}
+                            {suggestInstagramDM && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(INSTAGRAM_DM_SOURCE)
+                                    }}
+                                >
+                                    <SourceIcon type={INSTAGRAM_DM_SOURCE} />
+                                    Reply via Instagram direct message
                                 </DropdownItem>
                             )}
                             {suggestInstagram && (
