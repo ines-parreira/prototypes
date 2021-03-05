@@ -1,13 +1,11 @@
-//@flow
-import React, {type Node as ReactNode} from 'react'
+import React, {HTMLProps, ReactNode} from 'react'
 
 import css from './BodyCell.less'
 
-type Props = $Exact<{
-    ...HTMLTableCellElement,
-    children: ReactNode,
-    className?: string,
-}>
+type Props = HTMLProps<HTMLTableDataCellElement> & {
+    children: ReactNode
+    className?: string
+}
 
 export default function BodyCell({children, className, ...otherProps}: Props) {
     return (

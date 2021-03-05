@@ -1,21 +1,19 @@
-//@flow
 import classnames from 'classnames'
-import React, {type Node as ReactNode} from 'react'
+import React, {HTMLProps, ReactNode} from 'react'
 
-import {ORDER_DIRECTION, type OrderDirection} from '../../../../../models/api'
+import {OrderDirection} from '../../../../../models/api/types'
 
 import HeaderCell from './HeaderCell'
 import css from './HeaderCellProperty.less'
 
-type Props = $Exact<{
-    ...HTMLTableCellElement,
-    children?: ReactNode,
-    className?: string,
-    direction?: OrderDirection,
-    isOrderedBy?: boolean,
-    onClick?: () => void,
-    title: string,
-}>
+type Props = HTMLProps<HTMLTableCellElement> & {
+    children?: ReactNode
+    className?: string
+    direction?: Maybe<OrderDirection>
+    isOrderedBy?: boolean
+    onClick?: () => void
+    title: string
+}
 
 export default function HeaderCellProperty({
     children,
@@ -33,7 +31,7 @@ export default function HeaderCellProperty({
             onClick={onClick}
         >
             <div className={css.content}>
-                {(children: any)}
+                {children}
                 <div>
                     <span className={css.title}>{title}</span>
                     <i
@@ -45,7 +43,7 @@ export default function HeaderCellProperty({
                             }
                         )}
                     >
-                        {direction === ORDER_DIRECTION.ASC
+                        {direction === OrderDirection.Asc
                             ? 'arrow_drop_down'
                             : 'arrow_drop_up'}
                     </i>

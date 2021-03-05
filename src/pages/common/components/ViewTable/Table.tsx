@@ -15,7 +15,7 @@ import {ViewImmutable, ViewNavDirection} from '../../../../state/views/types'
 import history from '../../../history'
 
 import css from './Table.less'
-import HeaderCell from './Table/HeaderCell.js'
+import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row.js'
 import ViewSelection from './Table/ViewSelection.js'
 

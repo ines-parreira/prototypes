@@ -7,7 +7,7 @@ import {
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-import {Map} from 'immutable'
+import {Map, List} from 'immutable'
 
 import {setFieldVisibility} from '../../../../state/views/actions'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
@@ -19,8 +19,8 @@ import {NotificationStatus} from '../../../../state/notifications/types'
 
 type OwnProps = {
     config: Map<any, any>
-    fields: Map<any, any>
-    visibleFields: Map<any, any>
+    fields: List<any>
+    visibleFields: List<any>
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>

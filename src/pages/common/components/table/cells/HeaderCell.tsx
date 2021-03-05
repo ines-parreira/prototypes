@@ -1,15 +1,13 @@
-//@flow
 import classnames from 'classnames'
-import React, {type Node as ReactNode} from 'react'
+import React, {HTMLProps, ReactNode} from 'react'
 
 import css from './HeaderCell.less'
 
-type Props = $Exact<{
-    ...HTMLTableCellElement,
-    children?: ReactNode,
-    className?: string,
-    onClick?: () => void,
-}>
+type Props = HTMLProps<HTMLTableDataCellElement> & {
+    children?: ReactNode
+    className?: string
+    onClick?: () => void
+}
 
 export default function HeaderCell({
     children,
@@ -25,7 +23,7 @@ export default function HeaderCell({
             })}
             onClick={onClick}
         >
-            {(children: any)}
+            {children}
         </td>
     )
 }

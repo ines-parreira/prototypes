@@ -1,8 +1,7 @@
-//@flow
 import {shallow} from 'enzyme'
 import React from 'react'
 
-import {ORDER_DIRECTION} from '../../../../../../models/api'
+import {OrderDirection} from '../../../../../../models/api/types'
 import HeaderCell from '../HeaderCell'
 import HeaderCellProperty from '../HeaderCellProperty'
 
@@ -31,7 +30,7 @@ describe('<HeaderCellProperty/>', () => {
         const component = shallow(
             <HeaderCellProperty
                 {...minProps}
-                direction={ORDER_DIRECTION.ASC}
+                direction={OrderDirection.Asc}
                 isOrderedBy
             />
         )

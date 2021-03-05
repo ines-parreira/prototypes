@@ -1,52 +1,32 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import React, {ComponentType, Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import {fieldPath as getFieldPath} from '../../../../../utils.ts'
+import {fieldPath as getFieldPath} from '../../../../../utils'
 
-import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown.tsx'
+import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 
-import * as viewsActions from '../../../../../state/views/actions.ts'
-import * as viewsSelectors from '../../../../../state/views/selectors.ts'
+import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsSelectors from '../../../../../state/views/selectors'
 
-import * as viewsConfig from '../../../../../config/views.tsx'
+import * as viewsConfig from '../../../../../config/views'
+import {OrderDirection} from '../../../../../models/api/types'
+import {RootState} from '../../../../../state/types'
 
-@connect(
-    (state, ownProps) => {
-        return {
-            activeView: viewsSelectors.getActiveView(state),
-            config: viewsConfig.getConfigByName(ownProps.type),
-            orderBy: viewsSelectors.getActiveViewOrderBy(state),
-            orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
-            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-        }
-    },
-    {
-        fetchViewItems: viewsActions.fetchViewItems,
-        setOrderDirection: viewsActions.setOrderDirection,
-    }
-)
-export default class HeaderCell extends React.Component {
-    static propTypes = {
-        ActionsComponent: PropTypes.func,
-        activeView: ImmutablePropTypes.map.isRequired,
-        config: ImmutablePropTypes.map.isRequired,
-        fetchViewItems: PropTypes.func.isRequired,
-        field: ImmutablePropTypes.map.isRequired,
-        fields: ImmutablePropTypes.list.isRequired,
-        isLast: PropTypes.bool.isRequired,
-        isSearch: PropTypes.bool.isRequired,
-        orderBy: PropTypes.string.isRequired,
-        orderDirection: PropTypes.string.isRequired,
-        selectedItemsIds: ImmutablePropTypes.list.isRequired,
-        setOrderDirection: PropTypes.func.isRequired,
-        type: PropTypes.string.isRequired,
-    }
+type OwnProps = {
+    ActionsComponent: Maybe<ComponentType<any>>
+    field: Map<any, any>
+    fields: List<any>
+    isLast: boolean
+    isSearch: boolean
+    type: string
+}
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export class HeaderCell extends Component<Props> {
     _renderOrderIcon = (isOrderingField = false) => {
         const {orderDirection} = this.props
 
@@ -91,9 +71,11 @@ export default class HeaderCell extends React.Component {
             if (action === 'sort') {
                 onClick = () => {
                     const newOrderDirection =
-                        orderDirection === 'desc' ? 'asc' : 'desc'
+                        orderDirection === OrderDirection.Desc
+                            ? OrderDirection.Asc
+                            : OrderDirection.Desc
                     setOrderDirection(fieldPath, newOrderDirection)
-                    fetchViewItems()
+                    void fetchViewItems()
                 }
             }
         }
@@ -138,3 +120,21 @@ export default class HeaderCell extends React.Component {
         )
     }
 }
+
+const connector = connect(
+    (state: RootState, ownProps: OwnProps) => {
+        return {
+            activeView: viewsSelectors.getActiveView(state),
+            config: viewsConfig.getConfigByName(ownProps.type),
+            orderBy: viewsSelectors.getActiveViewOrderBy(state),
+            orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
+            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+        }
+    },
+    {
+        fetchViewItems: viewsActions.fetchViewItems,
+        setOrderDirection: viewsActions.setOrderDirection,
+    }
+)
+
+export default connector(HeaderCell)

@@ -15,7 +15,7 @@ import * as viewsActions from '../../../../../state/views/actions.ts'
 
 import * as viewsUtils from '../../../../../state/views/utils.ts'
 
-import Cell from './Cell'
+import Cell from './Cell.tsx'
 
 type Props = {
     onItemClick: ?(number) => void,

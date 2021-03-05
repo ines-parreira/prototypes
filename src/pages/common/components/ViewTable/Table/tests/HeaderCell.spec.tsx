@@ -1,12 +1,20 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+import {Store} from 'redux'
+import {Map, List} from 'immutable'
 
-import configureStore from '../../../../../../store/configureStore'
-import * as viewsConfig from '../../../../../../config/views.tsx'
+import untypedConfigureStore from '../../../../../../store/configureStore.js'
+import * as viewsConfig from '../../../../../../config/views'
 import HeaderCell from '../HeaderCell'
+import {RootState} from '../../../../../../state/types'
+
+// $TsFixMe: Remove on store/configureStore migration
+const configureStore = (untypedConfigureStore as unknown) as (
+    store: Partial<RootState>
+) => Store<RootState>
 
 describe('ViewTable::Table::HeaderCell', () => {
-    const viewConfig = viewsConfig.views.first()
+    const viewConfig = viewsConfig.views.first() as Map<any, any>
 
     class ActionsComponent extends React.Component {
         render() {
@@ -14,14 +22,16 @@ describe('ViewTable::Table::HeaderCell', () => {
         }
     }
 
+    const viewConfigFields = viewConfig.get('fields') as List<any>
+
     const minProps = {
         type: viewConfig.get('name'),
-        field: viewConfig.get('fields').first(),
-        fields: viewConfig.get('fields').take(3),
+        field: viewConfigFields.first(),
+        fields: viewConfigFields.take(3) as List<any>,
         isLast: false,
         isSearch: false,
         ActionsComponent,
-        store: configureStore(),
+        store: configureStore({}),
     }
 
     it('default cell', () => {
@@ -32,7 +42,7 @@ describe('ViewTable::Table::HeaderCell', () => {
 
     it('not main field cell', () => {
         const component = shallow(
-            <HeaderCell {...minProps} field={viewConfig.get('fields').get(1)} />
+            <HeaderCell {...minProps} field={viewConfigFields.get(1)} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -41,9 +51,9 @@ describe('ViewTable::Table::HeaderCell', () => {
         const component = shallow(
             <HeaderCell
                 {...minProps}
-                field={viewConfig
-                    .get('fields')
-                    .find((field) => field.get('name') === 'created')}
+                field={viewConfigFields.find(
+                    (field: Map<any, any>) => field.get('name') === 'created'
+                )}
             />
         ).dive()
         expect(component).toMatchSnapshot()
