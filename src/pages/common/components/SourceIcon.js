@@ -39,6 +39,7 @@ import {
     SYSTEM_MESSAGE_SOURCE,
     TWITTER_SOURCE,
 } from '../../../config/ticket.ts'
+import {TicketChannel} from '../../../business/types/ticket.ts'
 
 type Props = {
     type?: SourceType,
@@ -85,6 +86,7 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
         case FACEBOOK_INTEGRATION_TYPE:
         case FACEBOOK_REVIEW_SOURCE:
         case FACEBOOK_POST_SOURCE:
+        case TicketChannel.FacebookRecommendations:
             icon.custom = true
             icon.name = 'facebook'
             break
@@ -105,6 +107,7 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
         case INSTAGRAM_AD_MEDIA_SOURCE:
         case INSTAGRAM_COMMENT_SOURCE:
         case INSTAGRAM_MEDIA_SOURCE:
+        case TicketChannel.InstagramMention:
         case INSTAGRAM_MENTION_MEDIA_SOURCE:
         case INSTAGRAM_MENTION_COMMENT_SOURCE:
         case INSTAGRAM_DM_SOURCE:
