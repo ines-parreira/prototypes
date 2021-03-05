@@ -237,7 +237,8 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                     ) : (
                         <span>
                             We will import {importDescription} from{' '}
-                            <b>{email}</b> into Gorgias.
+                            <b>{email}</b> into Gorgias <b>as closed tickets</b>
+                            .
                         </span>
                     )}
                 </p>
