@@ -216,6 +216,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/smile.svg',
     },
     {
+        title: 'Klaviyo',
+        type: IntegrationType.KlaviyoIntegrationType,
+        description:
+            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
+        image: 'integrations/klaviyo.png',
+    },
+    {
         type: IntegrationType.YotpoIntegrationType,
         title: 'Yotpo',
         description:
@@ -416,14 +423,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
             'Real-time visibility on shipping status so you can be proactive with your customers',
         url: 'https://docs.gorgias.com/shipping/late-shipment',
         image: 'integrations/lateshipment.png',
-    },
-    {
-        title: 'Klaviyo',
-        type: IntegrationType.KlaviyoIntegrationType,
-        description:
-            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
-        image: 'integrations/klaviyo.png',
-        hide: true,
     },
 ]
 
