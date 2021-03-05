@@ -1195,6 +1195,5 @@ export const shopifyAvailableShippingRate = () => ({
     title: 'Standard Shipping',
     price: {
         amount: '10.0',
-        currencyCode: 'USD',
     },
 })
