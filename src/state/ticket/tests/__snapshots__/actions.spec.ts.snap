@@ -1689,26 +1689,6 @@ Array [
 ]
 `;
 
-exports[`ticket actions setSnooze() should snooze ticket 1`] = `
-Array [
-  Object {
-    "snooze_datetime": "2017-12-21T07:00:00.000Z",
-    "status": "closed",
-    "type": "setSnooze",
-  },
-]
-`;
-
-exports[`ticket actions setSnooze() should snooze ticket and call the callback 1`] = `
-Array [
-  Object {
-    "snooze_datetime": "2017-12-21T07:00:00.000Z",
-    "status": "closed",
-    "type": "setSnooze",
-  },
-]
-`;
-
 exports[`ticket actions setSpam() fails because same status 1`] = `Array []`;
 
 exports[`ticket actions setSpam() should undo when clicking on notification button 1`] = `
@@ -1896,6 +1876,26 @@ Array [
       "trashed_datetime": null,
     },
     "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+]
+`;
+
+exports[`ticket actions snoozeTicket() should snooze ticket 1`] = `
+Array [
+  Object {
+    "snooze_datetime": "2017-12-21T07:00:00.000Z",
+    "status": "closed",
+    "type": "snoozeTicket",
+  },
+]
+`;
+
+exports[`ticket actions snoozeTicket() should snooze ticket and call the callback 1`] = `
+Array [
+  Object {
+    "snooze_datetime": "2017-12-21T07:00:00.000Z",
+    "status": "closed",
+    "type": "snoozeTicket",
   },
 ]
 `;

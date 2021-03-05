@@ -1,4 +1,5 @@
 import {fromJS, Map, List} from 'immutable'
+import moment from 'moment'
 
 import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
 import * as customerTypes from '../customers/constants.js'
@@ -7,7 +8,7 @@ import * as newMessageTypes from '../newMessage/constants'
 import {compare} from '../../utils'
 import {GorgiasAction} from '../types'
 
-import {getPendingMessageIndex} from './utils.js'
+import {getPendingMessageIndex, parseTimedelta} from './utils.js'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
@@ -266,7 +267,16 @@ export default function reducer(
             return state.set('customer', customer)
         }
 
-        case types.SET_SNOOZE: {
+        case types.SNOOZE_TICKET: {
+            const snoozeDuration = action.args?.get('snooze_timedelta')
+            if (snoozeDuration) {
+                return state
+                    .set(
+                        'snooze_datetime',
+                        moment().add(parseTimedelta(snoozeDuration)).format()
+                    )
+                    .set('status', 'closed')
+            }
             return state
                 .set('snooze_datetime', action.snooze_datetime)
                 .set('status', action.status)

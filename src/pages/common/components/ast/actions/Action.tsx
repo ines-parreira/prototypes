@@ -230,7 +230,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     },
     snoozeTicket: {
         compact: true,
-        name: 'Snooze for ',
+        name: 'Snooze ticket',
         args: {
             snooze_timedelta: {
                 widget: 'snooze-picker',

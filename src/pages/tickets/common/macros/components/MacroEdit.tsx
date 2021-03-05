@@ -35,6 +35,7 @@ import AddTagsAction from './actions/AddTagsAction.js'
 import HttpAction from './actions/HttpAction.js'
 import AddAttachmentsAction from './actions/AddAttachmentsAction.js'
 import IntegrationAction from './actions/IntegrationAction.js'
+import SnoozeTicketAction from './actions/SnoozeTicketAction'
 
 import css from './MacroEdit.less'
 
@@ -357,6 +358,20 @@ export class MacroEdit extends React.Component<
                                         title: 'Set ticket subject',
                                         content: (
                                             <SetSubjectAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.SNOOZE_TICKET:
+                                    config = {
+                                        title: 'Snooze ticket for...',
+                                        content: (
+                                            <SnoozeTicketAction
                                                 index={index}
                                                 action={action}
                                                 updateActionArgs={

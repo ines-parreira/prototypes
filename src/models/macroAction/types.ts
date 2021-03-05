@@ -21,6 +21,8 @@ export enum MacroActionName {
     ShopifyFullRefundLastOrder = 'shopifyFullRefundLastOrder',
     ShopifyPartialRefundLastOrder = 'shopifyPartialRefundLastOrder',
     ShopifyEditNoteLastOrder = 'shopifyEditNoteOfLastOrder',
+    SnoozeTicket = 'snoozeTicket',
+    SnoozeTicketDuration = 'snoozeTicketDuration',
 }
 
 export enum MacroActionType {

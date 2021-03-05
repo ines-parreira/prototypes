@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
@@ -287,11 +288,18 @@ export function buildPartialUpdateFromAction(actionNames, state) {
 
     return formattedActionNames
         .map((actionName) => getActionTemplate(actionName))
-        .filter((config) => !!config.partialUpdateKey)
+        .filter((config) => !!config.partialUpdateKeys)
         .reduce((result, config) => {
-            result[config.partialUpdateKey] = getProperty(
-                config.partialUpdateValue
-            )(state)
+            const keys = config.partialUpdateKeys
+            const values = config.partialUpdateValues
+            if (Array.isArray(keys)) {
+                config.partialUpdateKeys.forEach(
+                    (key, idx) =>
+                        (result[key] = getProperty(values[idx])(state))
+                )
+            } else {
+                result[keys] = getProperty(values)(state)
+            }
             return result
         }, {})
 }
@@ -615,4 +623,14 @@ export const nestedReplace = (obj, ticketState, currentUserState, notify) => {
     }
 
     return obj
+}
+
+export const parseTimedelta = (timedelta: string): moment.Duration => {
+    const timedeltaRegex = /^(?<value>\d+)(?<unit>[mhd])$/
+    const groups = timedelta.match(timedeltaRegex)?.groups
+    if (groups) {
+        const {value, unit} = groups
+        return moment.duration(Number(value), unit)
+    }
+    throw new Error(`${timedelta} is not a properly formatted timedelta`)
 }

@@ -34,6 +34,7 @@ import SourceIcon from '../components/SourceIcon'
 import type {SourceType} from '../../../models/ticket/types'
 import {getAgents} from '../../../state/agents/selectors.ts'
 import {getTeams} from '../../../state/teams/selectors.ts'
+import {parseTimedelta} from '../../../state/ticket/utils'
 
 import css from './labels.less'
 
@@ -215,6 +216,31 @@ TagLabel.defaultProps = {
 }
 TagLabel.displayName = 'TagLabel'
 
+/**
+ * TIMEDELTA LABEL
+ */
+type TimedeltaLabelParamType = {
+    duration: string,
+}
+export const TimedeltaLabel = ({duration}: TimedeltaLabelParamType) => {
+    const durationMoment = parseTimedelta(duration)
+    const durationArray = []
+    durationMoment.days()
+        ? durationArray.push(`${durationMoment.days()} day(s)`)
+        : null
+    durationMoment.hours()
+        ? durationArray.push(`${durationMoment.hours()} hour(s)`)
+        : null
+    durationMoment.minutes()
+        ? durationArray.push(`${durationMoment.minutes()} minute(s)`)
+        : null
+
+    return (
+        <Badge className="text-center" color={'secondary'} pill>
+            {durationArray.join(',')}
+        </Badge>
+    )
+}
 /**
  * STATUS
  */

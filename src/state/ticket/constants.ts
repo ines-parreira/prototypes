@@ -39,7 +39,7 @@ export const SET_STATUS = 'setStatus'
 export const SET_AGENT = 'setAssignee'
 export const SET_TEAM = 'setTeamAssignee'
 export const SET_SUBJECT = 'setSubject'
-export const SET_SNOOZE = 'setSnooze'
+export const SNOOZE_TICKET = 'snoozeTicket'
 
 export const SET_CUSTOMER = 'setCustomer'
 

@@ -475,22 +475,22 @@ export const ACTION_TEMPLATES = [
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.AddTags,
         title: 'Add tags',
-        partialUpdateKey: 'tags',
-        partialUpdateValue: 'tags',
+        partialUpdateKeys: 'tags',
+        partialUpdateValues: 'tags',
     },
     {
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.SetStatus,
         title: 'Set status',
-        partialUpdateKey: 'status',
-        partialUpdateValue: 'status',
+        partialUpdateKeys: 'status',
+        partialUpdateValues: 'status',
     },
     {
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.SetAssignee,
         title: 'Assign an agent',
-        partialUpdateKey: 'assignee_user',
-        partialUpdateValue: 'assignee_user',
+        partialUpdateKeys: 'assignee_user',
+        partialUpdateValues: 'assignee_user',
         arguments: {
             assignee_user: {
                 type: 'dict',
@@ -502,8 +502,8 @@ export const ACTION_TEMPLATES = [
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.SetTeamAssignee,
         title: 'Assign a team',
-        partialUpdateKey: 'assignee_team',
-        partialUpdateValue: 'assignee_team',
+        partialUpdateKeys: 'assignee_team',
+        partialUpdateValues: 'assignee_team',
         arguments: {
             assignee_team: {
                 type: 'dict',
@@ -515,8 +515,15 @@ export const ACTION_TEMPLATES = [
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.SetSubject,
         title: 'Set subject',
-        partialUpdateKey: 'subject',
-        partialUpdateValue: 'subject',
+        partialUpdateKeys: 'subject',
+        partialUpdateValues: 'subject',
+    },
+    {
+        execution: ActionTemplateExecution.Front,
+        name: MacroActionName.SnoozeTicket,
+        title: 'Snooze ticket',
+        partialUpdateKeys: ['snooze_datetime', 'status'],
+        partialUpdateValues: ['snooze_datetime', 'status'],
     },
     {
         execution: ActionTemplateExecution.Back,

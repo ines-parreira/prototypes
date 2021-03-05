@@ -1,5 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
+import {Moment} from 'moment'
 
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
@@ -41,7 +42,12 @@ jest.mock('../helpers', () => {
     }
 })
 
-jest.mock('moment', () => (date: Date) => date)
+jest.mock('moment', () => {
+    const moment: jest.Mock<Moment> = jest.requireActual('moment')
+    const fn: jest.Mock<Moment> = jest.fn(() => moment(new Date()))
+    Object.assign(fn, moment)
+    return fn
+})
 
 jest.addMatchers(immutableMatchers)
 
@@ -367,9 +373,9 @@ describe('ticket reducers', () => {
         )
     })
 
-    it('should handle SET_SNOOZE', () => {
+    it('should handle SNOOZE_TICKET', () => {
         const action = ({
-            type: types.SET_SNOOZE,
+            type: types.SNOOZE_TICKET,
             snooze_datetime: '2017-01-21 18:20:02',
             status: 'closed',
         } as unknown) as GorgiasAction
@@ -380,6 +386,19 @@ describe('ticket reducers', () => {
         )
     })
 
+    it('should handle SNOOZE_TICKET on timedelta', () => {
+        const action = ({
+            type: types.SNOOZE_TICKET,
+            args: fromJS({
+                snooze_timedelta: '1d',
+            }),
+        } as unknown) as GorgiasAction
+        expect(reducer(initialState, action)).toEqualImmutable(
+            initialState
+                .set('snooze_datetime', '2017-01-01T17:00:00-07:00')
+                .set('status', 'closed')
+        )
+    })
     it('should handle SET_AGENT', () => {
         expect(
             reducer(initialState, {

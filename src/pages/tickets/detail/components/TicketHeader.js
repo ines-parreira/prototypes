@@ -135,8 +135,8 @@ export default class TicketHeader extends React.Component<Props, State> {
         return this.props.setTrashed(null)
     }
 
-    _setSnooze = (event: Object, picker: Object) => {
-        return this.props.actions.ticket.setSnooze(
+    _snoozeTicket = (event: Object, picker: Object) => {
+        return this.props.actions.ticket.snoozeTicket(
             picker.endDate.format(),
             () => {
                 this._goToNextTicket()
@@ -273,7 +273,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                 timezone={timezone}
                                 isOpen={showSnoozePicker}
                                 toggle={this._toggleSnoozePicker}
-                                onApply={this._setSnooze}
+                                onApply={this._snoozeTicket}
                             />
                             <DropdownMenu right className={css.actionsDropdown}>
                                 <DropdownItem

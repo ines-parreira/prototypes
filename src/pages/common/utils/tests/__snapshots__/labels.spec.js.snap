@@ -184,6 +184,39 @@ exports[`components utils : labels <TeamLabel/> render() should render without a
 </div>
 `;
 
+exports[`components utils : labels <TimedeltaLabel/> render() should render with day duration 1`] = `
+<Badge
+  className="text-center"
+  color="secondary"
+  pill={true}
+  tag="span"
+>
+  1 day(s)
+</Badge>
+`;
+
+exports[`components utils : labels <TimedeltaLabel/> render() should render with hour duration 1`] = `
+<Badge
+  className="text-center"
+  color="secondary"
+  pill={true}
+  tag="span"
+>
+  1 hour(s)
+</Badge>
+`;
+
+exports[`components utils : labels <TimedeltaLabel/> render() should render with minute duration 1`] = `
+<Badge
+  className="text-center"
+  color="secondary"
+  pill={true}
+  tag="span"
+>
+  1 minute(s)
+</Badge>
+`;
+
 exports[`components utils : labels RenderLabel ValueRendered should display name and address formatted as aircall eg: with address into parenthesis 1`] = `
 <IntegrationsDetailLabel
   integration={

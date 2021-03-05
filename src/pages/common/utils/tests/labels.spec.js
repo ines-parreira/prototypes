@@ -321,4 +321,27 @@ describe('components utils : labels', () => {
             })
         })
     })
+
+    describe('<TimedeltaLabel/>', () => {
+        describe('render()', () => {
+            it('should render with hour duration', () => {
+                const component = shallow(
+                    <labels.TimedeltaLabel duration={'1h'} />
+                )
+                expect(component).toMatchSnapshot()
+            })
+            it('should render with minute duration', () => {
+                const component = shallow(
+                    <labels.TimedeltaLabel duration={'1m'} />
+                )
+                expect(component).toMatchSnapshot()
+            })
+            it('should render with day duration', () => {
+                const component = shallow(
+                    <labels.TimedeltaLabel duration={'1d'} />
+                )
+                expect(component).toMatchSnapshot()
+            })
+        })
+    })
 })

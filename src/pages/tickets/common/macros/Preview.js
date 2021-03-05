@@ -8,7 +8,12 @@ import {
     fileIconFromContentType,
     getSortedIntegrationActions,
 } from '../../common/utils'
-import {TagLabel, AgentLabel, StatusLabel} from '../../../common/utils/labels'
+import {
+    TagLabel,
+    AgentLabel,
+    StatusLabel,
+    TimedeltaLabel,
+} from '../../../common/utils/labels'
 import RichField from '../../../common/forms/RichField'
 
 import {isRichType} from '../../../../config/ticket.ts'
@@ -102,6 +107,21 @@ class Preview extends React.Component {
                     <StatusLabel
                         status={setStatusAction.getIn(['arguments', 'status'])}
                     />
+                </div>
+            )
+        }
+    }
+
+    renderSnoozeTicket(snoozeTicketAction) {
+        if (snoozeTicketAction) {
+            const duration = snoozeTicketAction.getIn([
+                'arguments',
+                'snooze_timedelta',
+            ])
+            return (
+                <div className={css.macroData}>
+                    <strong className="text-muted">Snooze ticket for </strong>
+                    <TimedeltaLabel duration={duration} />
                 </div>
             )
         }
@@ -218,6 +238,9 @@ class Preview extends React.Component {
         const setStatusAction = macro
             .get('actions')
             .find((action) => action.get('name') === 'setStatus')
+        const snoozeTicketAction = macro
+            .get('actions')
+            .find((action) => action.get('name') === 'snoozeTicket')
         const setAssigneeAction = macro
             .get('actions')
             .find((action) => action.get('name') === 'setAssignee')
@@ -240,6 +263,7 @@ class Preview extends React.Component {
         return (
             <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(setStatusAction)}
+                {this.renderSnoozeTicket(snoozeTicketAction)}
                 {this.renderAddTags(addTagsActions)}
                 {this.renderSetAssignee(setAssigneeAction)}
                 {this.renderSetSubject(setSubjectAction)}

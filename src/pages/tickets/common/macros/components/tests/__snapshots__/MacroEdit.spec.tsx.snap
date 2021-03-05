@@ -616,6 +616,22 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                         </button>
                       </DropdownItem>
                       <DropdownItem
+                        key="snoozeTicket"
+                        onClick={[Function]}
+                        tag="button"
+                        toggle={true}
+                        type="button"
+                      >
+                        <button
+                          className="dropdown-item"
+                          onClick={[Function]}
+                          tabIndex="0"
+                          type="button"
+                        >
+                          Snooze ticket
+                        </button>
+                      </DropdownItem>
+                      <DropdownItem
                         divider={true}
                         tag="button"
                         toggle={true}

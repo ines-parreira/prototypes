@@ -397,16 +397,17 @@ export const setSubject = (subject: string) => (
     )
 }
 
-export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
-    dispatch: StoreDispatch
-): Promise<ReturnType<StoreDispatch>> => {
+export const snoozeTicket = (
+    datetime: Moment,
+    callback: () => void = _noop
+) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
     const data = {
         snooze_datetime: datetime,
         status: 'closed',
     }
 
     dispatch({
-        type: types.SET_SNOOZE,
+        type: types.SNOOZE_TICKET,
         ...data,
     })
 

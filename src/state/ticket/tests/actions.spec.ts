@@ -301,14 +301,14 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('setSnooze()', () => {
+    describe('snoozeTicket()', () => {
         it('should snooze ticket', () => {
             store = mockStore({
                 ticket: initialState.set('snooze_datetime', null),
             })
 
             return store
-                .dispatch(actions.setSnooze(moment('2017-12-21')))
+                .dispatch(actions.snoozeTicket(moment('2017-12-21')))
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -321,7 +321,9 @@ describe('ticket actions', () => {
             })
 
             return store
-                .dispatch(actions.setSnooze(moment('2017-12-21'), callbackSpy))
+                .dispatch(
+                    actions.snoozeTicket(moment('2017-12-21'), callbackSpy)
+                )
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                     expect(callbackSpy).toHaveBeenCalled()
