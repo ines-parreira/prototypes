@@ -12,6 +12,7 @@ import css from './RuleSelect.less'
 type Props = {
     children?: ReactNode | null
     className?: string
+    dropdownClassName?: string
     placeholder?: string
     valueLabel: ReactNode | string | null
 }
@@ -19,6 +20,7 @@ type Props = {
 export default function RuleSelect({
     children,
     className,
+    dropdownClassName,
     placeholder = 'Select an option',
     valueLabel,
 }: Props) {
@@ -36,23 +38,34 @@ export default function RuleSelect({
                         {valueLabel || placeholder}
                     </span>
                 </DropdownToggle>
-                <DropdownMenu className={css.options}>{children}</DropdownMenu>
+                <DropdownMenu
+                    className={classnames(dropdownClassName, css.options)}
+                >
+                    {children}
+                </DropdownMenu>
             </UncontrolledButtonDropdown>
         </div>
     )
 }
 
 type OptionProps = {
+    className?: string
     children: ReactNode
     onClick: () => void
     value: string | number
     toggle?: boolean
 }
 
-export function Option({children, onClick, value, toggle = true}: OptionProps) {
+export function Option({
+    className,
+    children,
+    onClick,
+    value,
+    toggle = true,
+}: OptionProps) {
     return (
         <DropdownItem
-            className={classnames(css.option)}
+            className={classnames(css.option, className)}
             key={value}
             onClick={onClick}
             toggle={toggle}

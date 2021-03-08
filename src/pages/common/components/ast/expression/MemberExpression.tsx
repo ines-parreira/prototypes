@@ -122,6 +122,9 @@ export function MemberExpressionContainer({
     return (
         <RuleSelect
             className="IdentifierDropdown"
+            dropdownClassName={classnames(css.dropdown, {
+                [css.isCategorySelected]: selectedCategory != null,
+            })}
             placeholder="Add variables..."
             valueLabel={valueLabel}
         >
@@ -134,15 +137,19 @@ export function MemberExpressionContainer({
                             toggle={false}
                             value={category.value}
                         >
-                            {category.label}
-                            <i
-                                className={classnames(
-                                    css.optionArrow,
-                                    'material-icons md-2'
-                                )}
-                            >
-                                keyboard_arrow_right
-                            </i>
+                            <span className={css.optionContent}>
+                                <span className={css.categoryLabel}>
+                                    {category.label}
+                                </span>
+                                <i
+                                    className={classnames(
+                                        css.optionArrow,
+                                        'material-icons'
+                                    )}
+                                >
+                                    keyboard_arrow_right
+                                </i>
+                            </span>
                         </RuleSelect.Option>
                     )
                 })
@@ -152,13 +159,22 @@ export function MemberExpressionContainer({
                         className={css.backOption}
                         onClick={() => setSelectedCategory(null)}
                     >
-                        <i className="material-icons mr-1">arrow_back</i>
-                        {
-                            IDENTIFIER_CATEGORIES.find(
-                                (category) =>
-                                    category.value === selectedCategory
-                            )?.label
-                        }
+                        <span className={css.optionContent}>
+                            <i
+                                className={classnames(
+                                    css.backArrow,
+                                    'material-icons mr-1'
+                                )}
+                            >
+                                arrow_back
+                            </i>
+                            {
+                                IDENTIFIER_CATEGORIES.find(
+                                    (category) =>
+                                        category.value === selectedCategory
+                                )?.label
+                            }
+                        </span>
                     </div>
                     <div className={css.subOptions}>
                         {IDENTIFIER_VARIABLES_BY_CATEGORY[selectedCategory].map(
@@ -171,6 +187,7 @@ export function MemberExpressionContainer({
                                         {subcategory.children.map((element) => {
                                             return (
                                                 <RuleSelect.Option
+                                                    className={css.subOption}
                                                     key={element.value}
                                                     onClick={() =>
                                                         handleSelect(
@@ -186,6 +203,7 @@ export function MemberExpressionContainer({
                                     </Fragment>
                                 ) : (
                                     <RuleSelect.Option
+                                        className={css.subOption}
                                         key={subcategory.value}
                                         onClick={() =>
                                             handleSelect(subcategory.value)

@@ -1,8 +1,29 @@
 @import '~css/new/colors';
 
 :local {
+    .dropdown {
+        &.isCategorySelected {
+            overflow: hidden;
+            padding: 0;
+        }
+    }
+
+    .optionContent {
+        vertical-align: middle;
+    }
+
+    .categoryLabel {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 90%;
+    }
+
     .optionArrow {
         float: right;
+        font-size: 20px;
     }
 
     .logo {
@@ -15,34 +36,47 @@
     }
 
     .backOption {
-        background: @neutral0;
+        background: @neutral1;
         border-bottom: 1px solid @neutral3;
         box-sizing: border-box;
-        color: @neutral7;
-        font-weight: 500;
-        height: 39px;
-        padding: 11px 11px 0 11px;
-        position: relative;
+        color: @neutral8;
+        font-size: 14px;
+        font-weight: 600;
+        height: 44px;
+        padding: 12px;
+        position: absolute;
+        left: 4px;
         margin: -7px -4px 6px -4px;
+        top: 7px;
+        width: 100%;
+    }
+
+    .backArrow {
+        font-size: 16px;
     }
 
     .subcategoryLabel {
         border-top: 1px solid @neutral3;
         box-sizing: border-box;
         color: @blue;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
         letter-spacing: 0.1em;
-        margin: 6px -4px 0 -4px;
-        padding: 5px 12px 0 12px;
+        margin: 16px 12px 0 12px;
+        padding: 8px 0;
         text-transform: uppercase;
     }
 
     .subOptions {
         box-sizing: border-box;
         max-height: 205px;
+        margin-top: 44px;
         overflow-x: hidden;
         overflow-y: scroll;
-        padding-bottom: 6px;
+        padding: 8px;
+    }
+
+    .subOption {
+        font-weight: 400;
     }
 }

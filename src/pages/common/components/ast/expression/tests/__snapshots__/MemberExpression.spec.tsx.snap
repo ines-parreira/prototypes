@@ -21,7 +21,7 @@ exports[`<MemberExpression/> should render 1`] = `
     </button>
     <div
       aria-hidden="true"
-      class="options dropdown-menu"
+      class="dropdown options dropdown-menu"
       role="menu"
       tabindex="-1"
     >
@@ -30,120 +30,200 @@ exports[`<MemberExpression/> should render 1`] = `
         tabindex="0"
         type="button"
       >
-        Message
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Message
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Ticket
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Ticket
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Customer
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Customer
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Shopify Last Order
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Shopify Last Order
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Shopify Customer
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Shopify Customer
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Magento2 Last Order
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Magento2 Last Order
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Magento2 Customer
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Magento2 Customer
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Recharge Last Subscription
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Recharge Last Subscription
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Recharge Customer
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Recharge Customer
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
       <button
         class="option dropdown-item"
         tabindex="0"
         type="button"
       >
-        Smile Customer
-        <i
-          class="optionArrow material-icons md-2"
+        <span
+          class="optionContent"
         >
-          keyboard_arrow_right
-        </i>
+          <span
+            class="categoryLabel"
+          >
+            Smile Customer
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
       </button>
     </div>
   </div>
@@ -171,53 +251,57 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
     </button>
     <div
       aria-hidden="true"
-      class="options dropdown-menu"
+      class="dropdown isCategorySelected options dropdown-menu"
       role="menu"
       tabindex="-1"
     >
       <div
         class="backOption"
       >
-        <i
-          class="material-icons mr-1"
+        <span
+          class="optionContent"
         >
-          arrow_back
-        </i>
-        Shopify Last Order
+          <i
+            class="backArrow material-icons mr-1"
+          >
+            arrow_back
+          </i>
+          Shopify Last Order
+        </span>
       </div>
       <div
         class="subOptions"
       >
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           created date
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           financial status
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           fulfillment status
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           tags
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
@@ -229,28 +313,28 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
           Last Fulfillement
         </div>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           created date
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           shipment status
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           status
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
@@ -262,14 +346,14 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
           Shipping Address
         </div>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
           country
         </button>
         <button
-          class="option dropdown-item"
+          class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
