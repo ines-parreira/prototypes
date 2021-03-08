@@ -14,8 +14,7 @@ import {
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import AmountInput from '../../../AmountInput/AmountInput'
 import ShippingPopover from '../ShippingPopover'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
@@ -44,7 +43,7 @@ describe('<ShippingPopover/>', () => {
             const component = shallow(
                 <ShippingPopover
                     id="shipping-lines"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     currencyCode="USD"
                     value={null}
@@ -64,7 +63,7 @@ describe('<ShippingPopover/>', () => {
             const component = shallow(
                 <ShippingPopover
                     id="shipping-lines"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     currencyCode="USD"
                     value={shippingLine}
@@ -82,12 +81,12 @@ describe('<ShippingPopover/>', () => {
     describe('_onSubmit()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN,
                 EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY,
             ],
@@ -157,7 +156,7 @@ describe('<ShippingPopover/>', () => {
             const component = shallow(
                 <ShippingPopover
                     id="shipping-lines"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     currencyCode="USD"
                     value={shippingLine}
@@ -202,7 +201,7 @@ describe('<ShippingPopover/>', () => {
             const component = shallow(
                 <ShippingPopover
                     id="shipping-lines"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     currencyCode="USD"
                     value={null}
@@ -245,11 +244,11 @@ describe('<ShippingPopover/>', () => {
     describe('_onRemove', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE,
             ],
         ])('should call onChange() with no shipping line', () => {
@@ -258,7 +257,7 @@ describe('<ShippingPopover/>', () => {
             const component = shallow(
                 <ShippingPopover
                     id="shipping-lines"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     currencyCode="USD"
                     value={shippingLine}
@@ -284,11 +283,11 @@ describe('<ShippingPopover/>', () => {
     describe('_onClose()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE,
             ],
         ])('should track', (actionName, event) => {

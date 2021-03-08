@@ -23,14 +23,13 @@ import {formatPrice} from '../../../../../../../../../../../../business/shopify/
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import MoneyAmount from '../../../../MoneyAmount.js'
 import AmountInput from '../../AmountInput/AmountInput'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import css from './ShippingPopover.less'
 
 type Props = {
     id: string
-    actionName: string
+    actionName: ShopifyActionType
     children: ReactNode
     placement: ComponentProps<typeof Popover>['placement']
     editable: boolean
@@ -110,7 +109,7 @@ export default class ShippingPopover extends Component<Props, State> {
         if (onOpen) {
             focusElement(() => this._firstInputElement as HTMLInputElement)
             segmentTracker.logEvent(
-                actionName === ShopifyAction.CREATE_ORDER
+                actionName === ShopifyActionType.CreateOrder
                     ? segmentTracker.EVENTS
                           .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN
                     : segmentTracker.EVENTS
@@ -214,7 +213,7 @@ export default class ShippingPopover extends Component<Props, State> {
         }
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY
                 : segmentTracker.EVENTS
@@ -236,7 +235,7 @@ export default class ShippingPopover extends Component<Props, State> {
         })
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE
                 : segmentTracker.EVENTS
@@ -250,7 +249,7 @@ export default class ShippingPopover extends Component<Props, State> {
         this._toggle()
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE
                 : segmentTracker.EVENTS

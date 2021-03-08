@@ -9,8 +9,7 @@ import {
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import AddCustomItemPopover from '../AddCustomItemPopover'
-//$TsFixMe replace with enum once migrated
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
@@ -38,7 +37,7 @@ describe('<AddCustomItemPopover/>', () => {
             const component = shallow(
                 <AddCustomItemPopover
                     currencyCode="USD"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     id="add-custom-line-popover"
                     onSubmit={onSubmit}
                 />
@@ -51,12 +50,12 @@ describe('<AddCustomItemPopover/>', () => {
     describe('_onSubmit()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN,
                 EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE,
             ],
@@ -116,11 +115,11 @@ describe('<AddCustomItemPopover/>', () => {
     describe('_onCancel()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL,
             ],
         ])('should track', (actionName, event) => {

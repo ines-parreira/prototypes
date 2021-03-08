@@ -19,14 +19,13 @@ import {
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import css from './TaxesPopover.less'
 
 type Props = {
     id: string
-    actionName: string
+    actionName: ShopifyActionType
     children: ReactNode
     placement: ComponentProps<typeof Popover>['placement']
     editable: boolean
@@ -63,7 +62,7 @@ export default class TaxesPopover extends Component<Props, State> {
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
-                actionName === ShopifyAction.CREATE_ORDER
+                actionName === ShopifyActionType.CreateOrder
                     ? segmentTracker.EVENTS
                           .SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN
                     : segmentTracker.EVENTS
@@ -110,7 +109,7 @@ export default class TaxesPopover extends Component<Props, State> {
         onChange(taxExempt)
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY
                 : segmentTracker.EVENTS
                       .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY
@@ -123,7 +122,7 @@ export default class TaxesPopover extends Component<Props, State> {
         this._toggle()
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE
                 : segmentTracker.EVENTS
                       .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE

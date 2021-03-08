@@ -1,7 +1,7 @@
-import Customer from './Customer'
+import Customer from './Customer.tsx'
 import Item from './Item'
 import Order from './Order'
-import Fulfillment from './Fulfillment'
+import Fulfillment from './Fulfillment.tsx'
 
 const shopify = (args) => {
     const path = args.template.get('absolutePath', []).join('.')

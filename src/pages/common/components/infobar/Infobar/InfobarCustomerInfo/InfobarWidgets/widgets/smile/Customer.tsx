@@ -1,12 +1,11 @@
-// @flow
-import React, {type Node} from 'react'
-import type {Map} from 'immutable'
+import React, {Component, ReactNode} from 'react'
+import {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/infobar/smile.svg'
-import {renderTemplate} from '../../../../../../../utils/template'
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {renderTemplate} from '../../../../../../../utils/template.js'
+import {CardHeaderTitle} from '../CardHeaderTitle.js'
+import {CardHeaderIcon} from '../CardHeaderIcon.js'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
 
 export default function Customer() {
     return {
@@ -15,12 +14,12 @@ export default function Customer() {
 }
 
 type Props = {
-    children: ?Node,
-    source: Map<*, *>,
-    template: Map<*, *>,
+    children: ReactNode
+    source: Map<any, any>
+    template: Map<any, any>
 }
 
-export class TitleWrapper extends React.Component<Props> {
+export class TitleWrapper extends Component<Props> {
     render() {
         const {children, source, template} = this.props
         const customerHash = source.get('hash')

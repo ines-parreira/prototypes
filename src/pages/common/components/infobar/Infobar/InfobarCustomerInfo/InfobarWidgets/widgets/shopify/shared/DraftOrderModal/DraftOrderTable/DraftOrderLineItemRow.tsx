@@ -15,14 +15,13 @@ import {formatPrice} from '../../../../../../../../../../../../business/shopify/
 import {ProductStockQuantity} from '../../StockQuantity'
 import DiscountPopover from '../DiscountPopover/DiscountPopover'
 import MoneyAmount from '../../../../MoneyAmount.js'
-// $TsFixMe replace with ShopifyAction enum
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import css from './DraftOrderLineItemRow.less'
 
 type Props = {
     id: string
-    actionName: string
+    actionName: ShopifyActionType
     lineItem: Map<any, any>
     product?: Map<any, any> | null
     shopName: string
@@ -69,7 +68,7 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
         const {actionName} = this.props
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
                 : segmentTracker.EVENTS

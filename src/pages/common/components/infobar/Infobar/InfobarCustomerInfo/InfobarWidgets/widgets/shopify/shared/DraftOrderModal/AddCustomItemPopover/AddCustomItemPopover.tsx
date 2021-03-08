@@ -21,15 +21,14 @@ import * as segmentTracker from '../../../../../../../../../../../../store/middl
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import AmountInput from '../../AmountInput/AmountInput'
-// $TsFixMe replace with ShopifyAction enum
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import css from './AddCustomItemPopover.less'
 
 type Props = {
     id: string
     placement: ComponentProps<typeof Popover>['placement']
-    actionName: string
+    actionName: ShopifyActionType
     className: string | null
     currencyCode: string
     onSubmit: (record: Map<any, any>) => void
@@ -73,7 +72,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
-                actionName === ShopifyAction.CREATE_ORDER
+                actionName === ShopifyActionType.CreateOrder
                     ? segmentTracker.EVENTS
                           .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
                     : segmentTracker.EVENTS
@@ -150,7 +149,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         )
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
                 : segmentTracker.EVENTS
@@ -165,7 +164,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         this._resetValues()
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
                 : segmentTracker.EVENTS

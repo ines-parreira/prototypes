@@ -8,7 +8,7 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import ActionButton from './ActionButton'
+import ActionButton from './ActionButton.tsx'
 
 import type {ActionType} from './types'
 

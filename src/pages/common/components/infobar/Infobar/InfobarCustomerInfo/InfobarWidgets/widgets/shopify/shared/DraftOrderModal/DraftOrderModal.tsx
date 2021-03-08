@@ -1,14 +1,12 @@
-// @flow
-
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Button, ModalFooter} from 'reactstrap'
-import {fromJS, type List, type Map, type Record} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
-import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
+import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
 import {
     addCustomRow,
     addRow,
@@ -18,82 +16,41 @@ import {
     onInit,
     onPayloadChange,
     onReset,
-} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration.ts'
-import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'
-import type {
-    DraftOrder,
+} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../../../../../../state/types'
+import {
+    IntegrationDataItem,
+    IntegrationType,
+} from '../../../../../../../../../../../models/integration/types'
+import {
     Product,
-    Customer,
-    Order,
-    LineItem,
     Variant,
-    DraftOrderInvoice,
 } from '../../../../../../../../../../../constants/integrations/types/shopify'
-import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput'
-import {DatetimeLabel} from '../../../../../../../../../utils/labels'
-import Loader from '../../../../../../../../Loader/Loader'
-import type {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal'
-import type {ShopifyActionType} from '../../types'
+import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
+import {DatetimeLabel} from '../../../../../../../../../utils/labels.js'
+import Loader from '../../../../../../../../Loader/Loader.js'
+import {InfobarModalProps} from '../../../types'
+import Modal from '../../../../../../../../Modal.js'
+import {ShopifyActionType} from '../../types'
 
-import AddCustomItemPopover from './AddCustomItemPopover'
-import EmailInvoicePopover from './EmailInvoicePopover'
-import DraftOrderFooter from './OrderFooter'
-import DraftOrderTable from './DraftOrderTable'
+import AddCustomItemPopover from './AddCustomItemPopover/AddCustomItemPopover'
+import EmailInvoicePopover from './EmailInvoicePopover/EmailInvoicePopover'
+import DraftOrderFooter from './OrderFooter/OrderFooter'
+import DraftOrderTable from './DraftOrderTable/DraftOrderTable'
 import css from './DraftOrderModal.less'
 
-type Props = InfobarModalProps & {
-    integrations: List<*>,
-    loading: boolean,
-    loadingMessage: ?string,
-    draftOrder: Record<$Shape<DraftOrder>>,
-    payload: Record<$Shape<DraftOrder>>,
-    products: window.Map<number, Record<Product>>,
+type Props = Omit<InfobarModalProps, 'data'> & {
+    draftOrder: Map<any, any>
     data: {
-        actionName: ?ShopifyActionType,
-        order?: Record<Order>,
-        customer: Record<$Shape<Customer>>,
-    },
-    addCustomRow: (
-        integrationId: number,
-        lineItem: Record<$Shape<LineItem>>
-    ) => void,
-    addRow: (
-        actionName: string,
-        integrationId: number,
-        product: Product,
-        variant: Variant
-    ) => void,
-    onCancel: (actionName: string, integrationId: number, via: string) => void,
-    onEmailInvoice: (
-        integrationId: number,
-        customerId: number,
-        orderId: number | null,
-        invoicePayload: Record<DraftOrderInvoice>,
-        onDone: () => void
-    ) => void,
-    onInit: (
-        integrationId: number,
-        order: ?Record<Order>,
-        customer: Record<$Shape<Customer>>,
-        currencyCode: string,
-        onError: () => void
-    ) => void,
-    onPayloadChange: (
-        integrationId: number,
-        payload: Record<$Shape<DraftOrder>>
-    ) => void,
-    onCreateDraftOrder: (
-        integrationId: number,
-        orderId: ?number
-    ) => Promise<?Map<any, any>>,
-    onReset: () => void,
-}
+        actionName: ShopifyActionType
+        order?: Map<any, any>
+        customer: Map<any, any>
+    }
+} & ConnectedProps<typeof connector>
 
-export class DraftOrderModalComponent extends React.PureComponent<Props> {
+export class DraftOrderModalContainer extends Component<Props> {
     static _DEFAULT_CURRENCY = 'USD'
 
     static contextTypes = {
@@ -106,7 +63,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         data: {
             actionName: null,
             order: null,
-        },
+        } as any,
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -121,15 +78,15 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         const hasScope = this._hasScope()
 
         if (!isOpen && nextProps.isOpen) {
-            const integration = this._getIntegration()
+            const integration = this._getIntegration() as Map<any, any> | null
             const currencyCode = integration
                 ? integration.getIn(
                       ['meta', 'currency'],
-                      DraftOrderModalComponent._DEFAULT_CURRENCY
+                      DraftOrderModalContainer._DEFAULT_CURRENCY
                   )
-                : DraftOrderModalComponent._DEFAULT_CURRENCY
+                : DraftOrderModalContainer._DEFAULT_CURRENCY
 
-            onOpen(actionName)
+            onOpen(actionName as string)
             hasScope &&
                 onInit(
                     integrationId,
@@ -151,17 +108,20 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         const {integrationId} = this.context
 
         return integrations.find(
-            (integration) => integration.get('id') === integrationId
-        )
+            (integration: Map<any, any>) =>
+                integration.get('id') === integrationId
+        ) as Map<any, any>
     }
 
     _hasScope() {
         const integration = this._getIntegration()
 
         return !!integration
-            ? integration
-                  .getIn(['meta', 'oauth', 'scope'])
-                  .includes('write_draft_orders')
+            ? (integration.getIn([
+                  'meta',
+                  'oauth',
+                  'scope',
+              ]) as string).includes('write_draft_orders')
             : false
     }
 
@@ -183,25 +143,25 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         } = this.props
         const {data: product} = item
 
-        addRow(actionName, integrationId, product, variant)
+        void addRow(actionName, integrationId, product, variant)
     }
 
-    _onAddCustomItem = (lineItem: Record<$Shape<LineItem>>) => {
+    _onAddCustomItem = (lineItem: Map<any, any>) => {
         const {addCustomRow} = this.props
         const {integrationId} = this.context
 
-        addCustomRow(integrationId, lineItem)
+        void addCustomRow(integrationId, lineItem)
     }
 
-    _onLineItemsChange = (lineItems: List<$Shape<LineItem>>) => {
+    _onLineItemsChange = (lineItems: List<any>) => {
         const {payload, onPayloadChange} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('line_items', lineItems)
 
-        onPayloadChange(integrationId, newPayload)
+        void onPayloadChange(integrationId, newPayload)
     }
 
-    _onEmailInvoice = (invoicePayload: Record<DraftOrderInvoice>) => {
+    _onEmailInvoice = (invoicePayload: Map<any, any>) => {
         const {
             onEmailInvoice,
             onClose,
@@ -210,7 +170,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         const {integrationId, customerId} = this.context
         const orderId = order ? order.get('id') : null
 
-        onEmailInvoice(
+        void onEmailInvoice(
             integrationId,
             customerId,
             orderId,
@@ -230,9 +190,9 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
             onSubmit,
         } = this.props
         const {integrationId} = this.context
-        const orderId: ?number = order ? order.get('id') : null
+        const orderId: number | null = order ? order.get('id') : null
 
-        onCreateDraftOrder(integrationId, orderId).then((draftOrder) => {
+        void onCreateDraftOrder(integrationId, orderId).then((draftOrder) => {
             const draftOrderId: string = !!draftOrder
                 ? draftOrder.get('id')
                 : ''
@@ -303,7 +263,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
             draftOrder,
         } = this.props
         const {integrationId} = this.context
-        const lineItems = payload
+        const lineItems: List<any> = payload
             ? payload.get('line_items', fromJS([]))
             : fromJS([])
         const empty = !lineItems.size
@@ -316,7 +276,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         const shopName = integration.getIn(['meta', 'shop_name'])
         const currencyCode = integration.getIn(
             ['meta', 'currency'],
-            DraftOrderModalComponent._DEFAULT_CURRENCY
+            DraftOrderModalContainer._DEFAULT_CURRENCY
         )
         const hasScope = this._hasScope()
 
@@ -332,7 +292,9 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                         Missing Shopify permissions. To use this new feature,
                         please go to the{' '}
                         <Link
-                            to={`/app/settings/integrations/shopify/${integrationId}`}
+                            to={`/app/settings/integrations/shopify/${
+                                integrationId as string
+                            }`}
                         >
                             settings page of your Shopify integration
                         </Link>{' '}
@@ -472,26 +434,26 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    integrations: getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state),
-    loading: getCreateOrderState(state).get('loading'),
-    loadingMessage: getCreateOrderState(state).get('loadingMessage'),
-    payload: getCreateOrderState(state).get('payload'),
-    products: getCreateOrderState(state).get('products'),
-})
+const connector = connect(
+    (state: RootState) => ({
+        integrations: getIntegrationsByTypes([
+            IntegrationType.ShopifyIntegrationType,
+        ])(state),
+        loading: getCreateOrderState(state).get('loading'),
+        loadingMessage: getCreateOrderState(state).get('loadingMessage'),
+        payload: getCreateOrderState(state).get('payload') as Map<any, any>,
+        products: getCreateOrderState(state).get('products'),
+    }),
+    {
+        addCustomRow,
+        addRow,
+        onCancel,
+        onEmailInvoice,
+        onInit,
+        onPayloadChange,
+        onCreateDraftOrder,
+        onReset,
+    }
+)
 
-const mapDispatchToProps = {
-    addCustomRow,
-    addRow,
-    onCancel,
-    onEmailInvoice,
-    onInit,
-    onPayloadChange,
-    onCreateDraftOrder,
-    onReset,
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DraftOrderModalComponent)
+export default connector(DraftOrderModalContainer)

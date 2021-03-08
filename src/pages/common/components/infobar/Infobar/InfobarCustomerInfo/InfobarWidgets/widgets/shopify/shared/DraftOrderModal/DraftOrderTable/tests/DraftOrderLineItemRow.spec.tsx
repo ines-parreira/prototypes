@@ -13,8 +13,7 @@ import {
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {DraftOrderLineItemRow} from '../DraftOrderLineItemRow'
-// $TsFixMe replace with ShopifyAction enum
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
@@ -44,7 +43,7 @@ describe('<DraftOrderLineItemRow/>', () => {
 
         props = ({
             id: 'line-item',
-            actionName: ShopifyAction.DUPLICATE_ORDER,
+            actionName: ShopifyActionType.DuplicateOrder,
             shopName: 'storegorgias3',
             currencyCode: 'USD',
             removable: true,
@@ -202,11 +201,11 @@ describe('<DraftOrderLineItemRow/>', () => {
     describe('_onQuantityChange()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED,
             ],
         ])(

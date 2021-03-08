@@ -1,5 +1,4 @@
-// @flow
-
+//$TsFixMe remove once js files are migrated
 export const ShopifyAction = Object.freeze({
     PARTIAL_REFUND_ORDER: 'shopifyPartialRefundOrder',
     FULL_REFUND_ORDER: 'shopifyFullRefundOrder',

@@ -13,8 +13,7 @@ import {
     DiscountType,
 } from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 import DiscountPopover from '../DiscountPopover'
-//$TsFixMe replace with enum once migrated
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
@@ -42,7 +41,7 @@ describe('<DiscountPopover/>', () => {
             const component = shallow(
                 <DiscountPopover
                     label="order"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     max={10}
                     value={null}
@@ -68,7 +67,7 @@ describe('<DiscountPopover/>', () => {
             const component = shallow(
                 <DiscountPopover
                     label="order"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     max={10}
                     value={fromJS(appliedDiscount)}
@@ -87,12 +86,12 @@ describe('<DiscountPopover/>', () => {
     describe('_onSubmit()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN,
                 EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY,
             ],
@@ -149,7 +148,7 @@ describe('<DiscountPopover/>', () => {
             const component = shallow<DiscountPopover>(
                 <DiscountPopover
                     label="order"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     max={10}
                     value={null}
@@ -197,11 +196,11 @@ describe('<DiscountPopover/>', () => {
     describe('_onRemove', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE,
             ],
         ])('should call prop `onChange` with `null`', (actionName, event) => {
@@ -243,11 +242,11 @@ describe('<DiscountPopover/>', () => {
     describe('_onClose()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE,
             ],
         ])('should track', (actionName, event) => {

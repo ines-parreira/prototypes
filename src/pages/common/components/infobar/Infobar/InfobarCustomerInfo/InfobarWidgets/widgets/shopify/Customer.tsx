@@ -1,24 +1,24 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component, ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type List, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration.ts'
+import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../../../../state/types'
+import {IntegrationType} from '../../../../../../../../../models/integration/types'
 import logo from '../../../../../../../../../../img/infobar/shopify.svg'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
-import ActionButtonsGroup from '../ActionButtonsGroup'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import type {ActionType} from '../types'
-import MoneyAmount from '../MoneyAmount'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
+import ActionButtonsGroup from '../ActionButtonsGroup.js'
+import {CardHeaderDetails} from '../CardHeaderDetails.js'
+import {CardHeaderValue} from '../CardHeaderValue.js'
+import {CardHeaderTitle} from '../CardHeaderTitle.js'
+import {CardHeaderIcon} from '../CardHeaderIcon.js'
+import ExpandAllButton from '../ExpandAllButton.js'
+import {InfobarAction} from '../types'
+import MoneyAmount from '../MoneyAmount.js'
 
-import DraftOrderModal from './shared/DraftOrderModal'
-import {ShopifyAction} from './constants'
+import DraftOrderModal from './shared/DraftOrderModal/DraftOrderModal'
+import {ShopifyActionType} from './types'
 
 export default function Customer() {
     return {
@@ -29,16 +29,12 @@ export default function Customer() {
 }
 
 type AfterTitleProps = {
-    source: Map<string, *>,
-    integrations: List<*>,
+    source: Map<any, any>
 }
 
-@connect((state) => ({
-    integrations: integrationsSelectors.getIntegrationsByTypes([
-        SHOPIFY_INTEGRATION_TYPE,
-    ])(state),
-}))
-class AfterTitle extends React.Component<AfterTitleProps> {
+class AfterTitleContainer extends Component<
+    AfterTitleProps & ConnectedProps<typeof connector>
+> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
@@ -46,48 +42,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
     render() {
         const {source, integrations} = this.props
 
-        const actions: Array<ActionType> = [
-            // {
-            //     key: 'creategiftcard',
-            //     options: [{
-            //         value: 'shopifyCreateGiftCard',
-            //         label: 'Create gift card',
-            //         parameters: [{
-            //             name: 'value',
-            //             type: 'number',
-            //             defaultValue: 10.00,
-            //             placeholder: 'Value',
-            //             required: true,
-            //             step: 0.01,
-            //             min: 0.01
-            //         }, {
-            //             name: 'code',
-            //             type: 'text',
-            //             defaultValue: 'HELLO123' // {{ticket.customer.name}}{{ticket.id}}
-            //         }]
-            //     }],
-            //     title: (
-            //         <div>
-            //             <i className="material-icons mr-2">
-            //                 card_giftcard
-            //             </i>
-            //             Create gift card
-            //         </div>
-            //     ),
-            //     child: (
-            //         <div>
-            //             <i className="material-icons mr-2">
-            //                 card_giftcard
-            //             </i>
-            //             Create gift card
-            //         </div>
-            //     )
-            // }
+        const actions: Array<InfobarAction> = [
             {
                 key: 'createOrder',
                 options: [
                     {
-                        value: ShopifyAction.CREATE_ORDER,
+                        value: ShopifyActionType.CreateOrder,
                         label: 'Create order',
                         parameters: [
                             {name: 'draft_order_id', type: 'hidden'},
@@ -103,7 +63,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 ),
                 modal: DraftOrderModal,
                 modalData: {
-                    actionName: ShopifyAction.CREATE_ORDER,
+                    actionName: ShopifyActionType.CreateOrder,
                     customer: fromJS({
                         id: source.get('id'),
                         admin_graphql_api_id: source.get(
@@ -117,10 +77,9 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             },
         ]
 
-        const shopName: string = this.context.integration.getIn([
-            'meta',
-            'shop_name',
-        ])
+        const shopName: string = (this.context as {
+            integration: Map<any, any>
+        }).integration.getIn(['meta', 'shop_name'])
         const payload = {
             customer_id: source.get('id'),
         }
@@ -149,24 +108,31 @@ class AfterTitle extends React.Component<AfterTitleProps> {
     }
 }
 
+const connector = connect((state: RootState) => ({
+    integrations: integrationsSelectors.getIntegrationsByTypes([
+        IntegrationType.ShopifyIntegrationType,
+    ])(state),
+}))
+
+const AfterTitle = connector(AfterTitleContainer)
+
 type TitleWrapperProps = {
-    children: Object,
-    source: Map<string, *>,
+    children: ReactNode
+    source: Map<any, any>
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapper extends Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {children, source} = this.props
-        const shopName: string = this.context.integration.getIn([
-            'meta',
-            'shop_name',
-        ])
+        const shopName: string = (this.context as {
+            integration: Map<any, any>
+        }).integration.getIn(['meta', 'shop_name'])
         const href = `https://${shopName}.myshopify.com/admin/customers/${(
-            source.get('id') || ''
+            (source.get('id') as string) || ''
         ).toString()}`
 
         return (

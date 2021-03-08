@@ -1,5 +1,3 @@
-// @flow
-
 const DEFAULT_SYMBOL = '$'
 
 /**
@@ -8,14 +6,13 @@ const DEFAULT_SYMBOL = '$'
  */
 export default function getShopifyMoneySymbol(
     currencyCode: string,
-    short: boolean = false
+    short = false
 ): string {
     const formatter = new Intl.NumberFormat(window.navigator.language, {
         style: 'currency',
         currency: currencyCode,
         currencyDisplay: 'symbol',
     })
-    //$FlowFixMe
     const parts = formatter.formatToParts(1)
     const currencyPart = parts.find((part) => part.type === 'currency')
     const symbol = currencyPart ? currencyPart.value : DEFAULT_SYMBOL

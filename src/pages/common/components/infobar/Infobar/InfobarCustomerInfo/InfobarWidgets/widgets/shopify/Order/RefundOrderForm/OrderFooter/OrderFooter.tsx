@@ -15,7 +15,7 @@ import {
     getTotalAvailableToRefund,
     getTotalQuantities,
 } from '../../../../../../../../../../../../business/shopify/refund'
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 import AmountInput from '../../../shared/AmountInput/AmountInput'
 
 import OrderTotals from './OrderTotals/OrderTotals'
@@ -69,7 +69,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
     _renderReason() {
         const {actionName, reason, onReasonChange} = this.props
 
-        if (actionName === ShopifyAction.CANCEL_ORDER) {
+        if (actionName === ShopifyActionType.CancelOrder) {
             return (
                 <FormGroup>
                     <Label for="reason">Reason for canceling this order</Label>

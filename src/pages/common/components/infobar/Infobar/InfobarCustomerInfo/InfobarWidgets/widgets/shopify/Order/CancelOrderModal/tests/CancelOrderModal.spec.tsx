@@ -20,7 +20,7 @@ import {
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../fixtures/shopify'
 import CancelOrderModal, {CancelOrderModalComponent} from '../CancelOrderModal'
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 import {
     getFinalCancelOrderPayload,
     initRefundOrderLineItems,
@@ -77,7 +77,7 @@ describe('<CancelOrderModal/>', () => {
                     header="Cancel order"
                     isOpen={false}
                     data={{
-                        actionName: ShopifyAction.CANCEL_ORDER,
+                        actionName: ShopifyActionType.CancelOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -99,7 +99,7 @@ describe('<CancelOrderModal/>', () => {
                     header="Cancel order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.CANCEL_ORDER,
+                        actionName: ShopifyActionType.CancelOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -145,7 +145,7 @@ describe('<CancelOrderModalComponent/>', () => {
                     header="Cancel order"
                     isOpen={false}
                     data={{
-                        actionName: ShopifyAction.CANCEL_ORDER,
+                        actionName: ShopifyActionType.CancelOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -179,7 +179,7 @@ describe('<CancelOrderModalComponent/>', () => {
                     header="Cancel order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.CANCEL_ORDER,
+                        actionName: ShopifyActionType.CancelOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -221,7 +221,7 @@ describe('<CancelOrderModalComponent/>', () => {
                     header="Cancel order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.CANCEL_ORDER,
+                        actionName: ShopifyActionType.CancelOrder,
                         order,
                     }}
                     {...actions}
@@ -277,7 +277,7 @@ describe('<CancelOrderModalComponent/>', () => {
                     header="Cancel order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.CANCEL_ORDER,
+                        actionName: ShopifyActionType.CancelOrder,
                         order,
                     }}
                     {...actions}

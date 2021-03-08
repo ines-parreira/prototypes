@@ -31,7 +31,7 @@ export const createOrderStateFixture = ({
     payload = null,
     calculatedDraftOrder = null,
     products = new Map(),
-} = {}) =>
+}: Record<string, any> = {}) =>
     fromJS({
         loading,
         loadingMessage,

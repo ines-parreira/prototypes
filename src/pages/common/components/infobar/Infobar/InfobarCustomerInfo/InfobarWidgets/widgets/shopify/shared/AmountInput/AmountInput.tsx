@@ -5,7 +5,7 @@ import _noop from 'lodash/noop'
 
 import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../business/shopify/number'
-import getShopifyMoneySymbol from '../helpers.js'
+import getShopifyMoneySymbol from '../helpers'
 
 import css from './AmountInput.less'
 

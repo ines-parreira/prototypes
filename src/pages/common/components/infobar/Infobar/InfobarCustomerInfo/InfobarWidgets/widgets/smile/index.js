@@ -1,4 +1,4 @@
-import Customer from './Customer'
+import Customer from './Customer.tsx'
 
 const smile = (args) => {
     const path = args.template.get('absolutePath', []).join('.')

@@ -26,7 +26,7 @@ import {integrationsStateWithShopify} from '../../../../../../../../../../../../
 import {RootState} from '../../../../../../../../../../../../state/types'
 import {IntegrationType} from '../../../../../../../../../../../../models/integration/types'
 import RefundOrderModal, {RefundOrderModalContainer} from '../RefundOrderModal'
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 function initActions() {
     return {
@@ -78,7 +78,7 @@ describe('<RefundOrderModal/>', () => {
                     header="Refund order"
                     isOpen={false}
                     data={{
-                        actionName: ShopifyAction.REFUND_ORDER,
+                        actionName: ShopifyActionType.RefundOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -100,7 +100,7 @@ describe('<RefundOrderModal/>', () => {
                     header="Refund order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.REFUND_ORDER,
+                        actionName: ShopifyActionType.RefundOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -146,7 +146,7 @@ describe('<RefundOrderModalComponent/>', () => {
                     header="Refund order"
                     isOpen={false}
                     data={{
-                        actionName: ShopifyAction.REFUND_ORDER,
+                        actionName: ShopifyActionType.RefundOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -180,7 +180,7 @@ describe('<RefundOrderModalComponent/>', () => {
                     header="Refund order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.REFUND_ORDER,
+                        actionName: ShopifyActionType.RefundOrder,
                         order: fromJS(shopifyOrderFixture()),
                     }}
                     {...actions}
@@ -222,7 +222,7 @@ describe('<RefundOrderModalComponent/>', () => {
                     header="Refund order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.REFUND_ORDER,
+                        actionName: ShopifyActionType.RefundOrder,
                         order,
                     }}
                     {...actions}
@@ -278,7 +278,7 @@ describe('<RefundOrderModalComponent/>', () => {
                     header="Refund order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.REFUND_ORDER,
+                        actionName: ShopifyActionType.RefundOrder,
                         order,
                     }}
                     {...actions}

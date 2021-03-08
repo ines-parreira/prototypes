@@ -8,8 +8,7 @@ import {
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
 import {DuplicateOrderFooterComponent} from '../OrderFooter'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
@@ -41,7 +40,7 @@ describe('<DuplicateOrderFooterComponent/>', () => {
             const component = shallow(
                 <DuplicateOrderFooterComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     payload={fromJS(shopifyDraftOrderPayloadFixture())}
                     onPayloadChange={onPayloadChange}
@@ -59,7 +58,7 @@ describe('<DuplicateOrderFooterComponent/>', () => {
             const component = shallow(
                 <DuplicateOrderFooterComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     payload={fromJS(payload)}
                     onPayloadChange={onPayloadChange}
@@ -74,11 +73,11 @@ describe('<DuplicateOrderFooterComponent/>', () => {
     describe('_onNoteChange()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_NOTES_CHANGED,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_NOTES_CHANGED,
             ],
         ])(
@@ -121,11 +120,11 @@ describe('<DuplicateOrderFooterComponent/>', () => {
     describe('_onTagsChange()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_TAGS_CHANGED,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_TAGS_CHANGED,
             ],
         ])(

@@ -1,10 +1,8 @@
-// @flow
-
 import React from 'react'
-import {shallow} from 'enzyme'
+import {shallow, ShallowWrapper} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS, type Map, type Record} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
 import {
     integrationDataItemProductFixture,
@@ -14,20 +12,20 @@ import {
     shopifyOrderFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../fixtures/shopify'
 import {
     createOrderStateFixture,
     infobarActionsStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions.ts'
-import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
-import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations.ts'
-import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
-import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import DraftOrderModal, {DraftOrderModalComponent} from '../DraftOrderModal'
-import {ShopifyAction} from '../../../constants'
+} from '../../../../../../../../../../../../fixtures/infobarActions'
+import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../../../../../../../state/types'
+import {IntegrationType} from '../../../../../../../../../../../../models/integration/types'
+import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
+import {DraftOrderModalContainer} from '../DraftOrderModal'
+import {ShopifyActionType} from '../../../types'
 
 function initActions() {
     return {
@@ -36,8 +34,8 @@ function initActions() {
         onBulkChange: jest.fn().mockImplementation(
             (
                 values: Array<{
-                    name: string,
-                    value: string | number | boolean | Object,
+                    name: string
+                    value: string | number | boolean | Record<string, unknown>
                 }>,
                 callback?: () => void
             ) => {
@@ -56,7 +54,7 @@ function initActions() {
                     integrationId: number,
                     customerId: number,
                     orderId: number | null,
-                    invoicePayload: Record<DraftOrderInvoice>,
+                    invoicePayload: Map<any, any>,
                     onSuccess: () => void
                 ) => {
                     onSuccess()
@@ -73,36 +71,38 @@ function initActions() {
     }
 }
 
-function getProducts(order) {
+function getProducts(order: Map<any, any>) {
     const products = new window.Map()
 
-    order.get('line_items', []).forEach((lineItem) => {
-        const productId = lineItem.get('product_id')
-        const variant = fromJS(
-            shopifyVariantFixture({
-                id: lineItem.get('variant_id'),
-                title: lineItem.get('variant_title'),
-            })
-        )
-        let product: Map<*, *>
-
-        if (products.has(productId)) {
-            product = products.get(productId)
-            product = product.update('variants', (variants) =>
-                variants.push(variant)
-            )
-        } else {
-            product = fromJS(
-                shopifyProductFixture({
-                    id: productId,
-                    title: lineItem.get('title'),
-                    variants: [variant],
+    ;(order.get('line_items', []) as List<any>).forEach(
+        (lineItem: Map<any, any>) => {
+            const productId = lineItem.get('product_id')
+            const variant = fromJS(
+                shopifyVariantFixture({
+                    id: lineItem.get('variant_id'),
+                    title: lineItem.get('variant_title'),
                 })
             )
-        }
+            let product: Map<any, any>
 
-        products.set(productId, product)
-    })
+            if (products.has(productId)) {
+                product = products.get(productId)
+                product = product.update('variants', (variants: List<any>) =>
+                    variants.push(variant)
+                )
+            } else {
+                product = fromJS(
+                    shopifyProductFixture({
+                        id: productId,
+                        title: lineItem.get('title'),
+                        variants: [variant],
+                    })
+                )
+            }
+
+            products.set(productId, product)
+        }
+    )
 
     return products
 }
@@ -110,66 +110,8 @@ function getProducts(order) {
 describe('<DraftOrderModal/>', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
-    let actions
-
-    beforeEach(() => {
-        actions = initActions()
-    })
-
-    describe('render()', () => {
-        it('should render as closed', () => {
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(),
-            })
-
-            const component = shallow(
-                <DraftOrderModal
-                    store={store}
-                    header="Duplicate order"
-                    isOpen={false}
-                    data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
-                        order: fromJS(shopifyOrderFixture()),
-                        customer: fromJS(shopifyCustomerFixture()),
-                    }}
-                    {...actions}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render as open', () => {
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(),
-            })
-
-            const component = shallow(
-                <DraftOrderModal
-                    store={store}
-                    header="Duplicate order"
-                    isOpen
-                    data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
-                        order: fromJS(shopifyOrderFixture()),
-                        customer: fromJS(shopifyCustomerFixture()),
-                    }}
-                    {...actions}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-    })
-})
-
-describe('<DraftOrderModalComponent/>', () => {
-    const middlewares = [thunk]
-    const mockStore = configureMockStore(middlewares)
     const context = {integrationId: 1, customerId: 2}
-    let actions
+    let actions: ReturnType<typeof initActions>
 
     beforeEach(() => {
         actions = initActions()
@@ -182,12 +124,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture(),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -198,7 +140,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen={false}
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order: fromJS(shopifyOrderFixture()),
                         customer: fromJS(shopifyCustomerFixture()),
                     }}
@@ -216,12 +158,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture(),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -232,7 +174,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order: fromJS(shopifyOrderFixture()),
                         customer: fromJS(shopifyCustomerFixture()),
                     }}
@@ -259,12 +201,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({createOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -275,7 +217,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order,
                         customer,
                     }}
@@ -288,7 +230,10 @@ describe('<DraftOrderModalComponent/>', () => {
         })
 
         it('should render as open, with empty order table', () => {
-            const order = fromJS(shopifyOrderFixture()).set('line_items', [])
+            const order = (fromJS(shopifyOrderFixture()) as Map<any, any>).set(
+                'line_items',
+                []
+            )
             const customer = fromJS(shopifyCustomerFixture())
             const products = new window.Map()
             const draftOrder = initDraftOrderPayload(customer, order, products)
@@ -302,12 +247,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({createOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -318,7 +263,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order,
                         customer,
                     }}
@@ -350,12 +295,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({createOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -366,7 +311,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order,
                         customer,
                     }}
@@ -395,12 +340,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({createOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -412,7 +357,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order,
                         customer,
                     }}
@@ -428,8 +373,11 @@ describe('<DraftOrderModalComponent/>', () => {
     describe('on open', () => {
         describe('componentWillReceiveProps()', () => {
             it.each([
-                [ShopifyAction.CREATE_ORDER, undefined],
-                [ShopifyAction.DUPLICATE_ORDER, fromJS(shopifyOrderFixture())],
+                [ShopifyActionType.CreateOrder, undefined],
+                [
+                    ShopifyActionType.DuplicateOrder,
+                    fromJS(shopifyOrderFixture()),
+                ],
             ])('should call onInit()', (actionName, order) => {
                 const currencyCode = 'USD'
                 const customer = fromJS(shopifyCustomerFixture())
@@ -442,12 +390,12 @@ describe('<DraftOrderModalComponent/>', () => {
                     }),
                 })
 
-                const state = store.getState()
+                const state = store.getState() as RootState
 
-                const component = shallow(
-                    <DraftOrderModalComponent
+                const component = shallow<DraftOrderModalContainer>(
+                    <DraftOrderModalContainer
                         integrations={getIntegrationsByTypes([
-                            SHOPIFY_INTEGRATION_TYPE,
+                            IntegrationType.ShopifyIntegrationType,
                         ])(state)}
                         loading={getCreateOrderState(state).get('loading')}
                         loadingMessage={getCreateOrderState(state).get(
@@ -481,8 +429,8 @@ describe('<DraftOrderModalComponent/>', () => {
     })
 
     describe('actions', () => {
-        let order
-        let component
+        let order: Map<any, any>
+        let component: ShallowWrapper<any, any, DraftOrderModalContainer>
 
         beforeEach(() => {
             order = fromJS(shopifyOrderFixture())
@@ -500,12 +448,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({createOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             component = shallow(
-                <DraftOrderModalComponent
+                <DraftOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
                     loadingMessage={getCreateOrderState(state).get(
@@ -516,7 +464,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     header="Duplicate order"
                     isOpen
                     data={{
-                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        actionName: ShopifyActionType.DuplicateOrder,
                         order,
                         customer,
                     }}
@@ -534,7 +482,7 @@ describe('<DraftOrderModalComponent/>', () => {
 
                 component.instance()._onVariantClicked(item, variant)
 
-                const actionName = ShopifyAction.DUPLICATE_ORDER
+                const actionName = ShopifyActionType.DuplicateOrder
                 expect(actions.addRow).toHaveBeenCalledWith(
                     actionName,
                     context.integrationId,
@@ -577,34 +525,38 @@ describe('<DraftOrderModalComponent/>', () => {
         })
 
         describe('_onSubmitPaid()', () => {
-            it('should call onCreateDraftOrder() then onSubmit()', async () => {
-                await component.instance()._onSubmitPaid()
-
-                expect(actions.onBulkChange).toHaveBeenCalledWith(
-                    [
-                        {name: 'draft_order_id', value: 1},
-                        {name: 'payment_pending', value: false},
-                    ],
-                    expect.any(Function)
-                )
-                expect(actions.onSubmit).toHaveBeenCalled()
-                expect(actions.onReset).toHaveBeenCalled()
+            it('should call onCreateDraftOrder() then onSubmit()', (done) => {
+                component.instance()._onSubmitPaid()
+                setImmediate(() => {
+                    expect(actions.onBulkChange).toHaveBeenCalledWith(
+                        [
+                            {name: 'draft_order_id', value: 1},
+                            {name: 'payment_pending', value: false},
+                        ],
+                        expect.any(Function)
+                    )
+                    expect(actions.onSubmit).toHaveBeenCalled()
+                    expect(actions.onReset).toHaveBeenCalled()
+                    done()
+                })
             })
         })
 
         describe('_onSubmitPending()', () => {
-            it('should call onCreateDraftOrder() then onSubmit()', async () => {
-                await component.instance()._onSubmitPending()
-
-                expect(actions.onBulkChange).toHaveBeenCalledWith(
-                    [
-                        {name: 'draft_order_id', value: 1},
-                        {name: 'payment_pending', value: true},
-                    ],
-                    expect.any(Function)
-                )
-                expect(actions.onSubmit).toHaveBeenCalled()
-                expect(actions.onReset).toHaveBeenCalled()
+            it('should call onCreateDraftOrder() then onSubmit()', (done) => {
+                component.instance()._onSubmitPending()
+                setImmediate(() => {
+                    expect(actions.onBulkChange).toHaveBeenCalledWith(
+                        [
+                            {name: 'draft_order_id', value: 1},
+                            {name: 'payment_pending', value: true},
+                        ],
+                        expect.any(Function)
+                    )
+                    expect(actions.onSubmit).toHaveBeenCalled()
+                    expect(actions.onReset).toHaveBeenCalled()
+                    done()
+                })
             })
         })
 
@@ -612,7 +564,7 @@ describe('<DraftOrderModalComponent/>', () => {
             it('should call onCancel()', () => {
                 component.instance()._onCancel('foo')
 
-                const actionName = ShopifyAction.DUPLICATE_ORDER
+                const actionName = ShopifyActionType.DuplicateOrder
                 expect(actions.onCancel).toHaveBeenCalledWith(
                     actionName,
                     context.integrationId,
@@ -627,7 +579,7 @@ describe('<DraftOrderModalComponent/>', () => {
             it('should call onCancel()', () => {
                 component.instance()._onCancelViaHeader()
 
-                const actionName = ShopifyAction.DUPLICATE_ORDER
+                const actionName = ShopifyActionType.DuplicateOrder
                 expect(actions.onCancel).toHaveBeenCalledWith(
                     actionName,
                     context.integrationId,
@@ -642,7 +594,7 @@ describe('<DraftOrderModalComponent/>', () => {
             it('should call onCancel()', () => {
                 component.instance()._onCancelViaFooter()
 
-                const actionName = ShopifyAction.DUPLICATE_ORDER
+                const actionName = ShopifyActionType.DuplicateOrder
                 expect(actions.onCancel).toHaveBeenCalledWith(
                     actionName,
                     context.integrationId,

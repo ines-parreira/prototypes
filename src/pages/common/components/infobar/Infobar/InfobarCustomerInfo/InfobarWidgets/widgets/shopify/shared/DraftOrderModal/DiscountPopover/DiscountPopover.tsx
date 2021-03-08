@@ -32,17 +32,16 @@ import {
     formatPrice,
 } from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
-import getShopifyMoneySymbol from '../../helpers.js'
+import getShopifyMoneySymbol from '../../helpers'
 import AmountInput from '../../AmountInput/AmountInput'
-//$TsFixMe replace with enum once migrated
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import css from './DiscountPopover.less'
 
 type Props = {
     id: string
     label: string
-    actionName: string
+    actionName: ShopifyActionType
     children: ReactNode
     placement: ComponentProps<typeof Popover>['placement']
     editable: boolean
@@ -89,7 +88,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
-                actionName === ShopifyAction.CREATE_ORDER
+                actionName === ShopifyActionType.CreateOrder
                     ? //$TsFixMe use enum once migrated
                       segmentTracker.EVENTS
                           .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN
@@ -178,7 +177,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         onChange(fromJS(newValue))
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? //$TsFixMe use enum once migrated
                   segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY
@@ -201,7 +200,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         })
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? //$TsFixMe use enum once migrated
                   segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE
@@ -217,7 +216,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
         this._toggle()
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? //$TsFixMe use enum once migrated
                   segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE

@@ -1,0 +1,657 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DraftOrderModal/> render() should render as closed 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={false}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+      searchOnFocus={false}
+    />
+    <AddCustomItemPopover
+      actionName="shopifyDuplicateOrder"
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <Loader
+    inline={false}
+    minHeight="500px"
+    size="40px"
+  />
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<DraftOrderModal/> render() should render as open, with empty order table 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={true}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+      searchOnFocus={false}
+    />
+    <AddCustomItemPopover
+      actionName="shopifyDuplicateOrder"
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <div>
+    <DraftOrderTable
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      lineItems={Immutable.List []}
+      onChange={[Function]}
+      products={Map {}}
+      shopName="gorgiastest"
+    />
+    <Connect(DuplicateOrderFooterComponent)
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      editable={true}
+    />
+    <div
+      className="emailInvoiceContainer"
+    >
+      <h4
+        className="mr-auto"
+      >
+        Email invoice
+      </h4>
+      <EmailInvoicePopover
+        actionName="shopifyDuplicateOrder"
+        color="primary"
+        customerEmail="apu@gorgias.com"
+        disabled={true}
+        id="email-invoice"
+        onSubmit={[Function]}
+        placement="bottom"
+      >
+        Email invoice
+      </EmailInvoicePopover>
+    </div>
+  </div>
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<DraftOrderModal/> render() should render as open, with invoice sent 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={true}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+      searchOnFocus={false}
+    />
+    <AddCustomItemPopover
+      actionName="shopifyDuplicateOrder"
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <div>
+    <DraftOrderTable
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      lineItems={
+        Immutable.List [
+          Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
+            "applied_discount": null,
+            "taxable": true,
+            "price": "9.99",
+            "quantity": 1,
+            "product_id": 8345093387,
+            "product_exists": true,
+            "properties": Immutable.List [],
+            "variant_id": 31128766316567,
+            "title": "Acidulous candy",
+            "sku": "11111",
+            "variant_title": "Red / A",
+            "requires_shipping": true,
+          },
+          Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
+            "applied_discount": null,
+            "taxable": true,
+            "price": "9.99",
+            "quantity": 4,
+            "product_id": 8345093387,
+            "product_exists": true,
+            "properties": Immutable.List [],
+            "variant_id": 31128766349335,
+            "title": "Acidulous candy",
+            "sku": "11111",
+            "variant_title": "Red / B",
+            "requires_shipping": true,
+          },
+        ]
+      }
+      onChange={[Function]}
+      products={Map {}}
+      shopName="gorgiastest"
+    />
+    <Connect(DuplicateOrderFooterComponent)
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      editable={true}
+    />
+    <div
+      className="emailInvoiceContainer"
+    >
+      <h4
+        className="mr-auto"
+      >
+        Invoice sent
+      </h4>
+      <span
+        className="mr-4"
+      >
+        Sent on
+         
+        <Connect(DatetimeLabel)
+          dateTime="2020-02-26T21:31:34-05:00"
+          hasTooltip={false}
+          labelFormat="L LT"
+        />
+      </span>
+      <EmailInvoicePopover
+        actionName="shopifyDuplicateOrder"
+        color="link"
+        customerEmail="apu@gorgias.com"
+        disabled={false}
+        id="email-invoice"
+        onSubmit={[Function]}
+        placement="bottom"
+      >
+        Email new invoice
+      </EmailInvoicePopover>
+    </div>
+  </div>
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<DraftOrderModal/> render() should render as open, with order table 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={true}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+      searchOnFocus={false}
+    />
+    <AddCustomItemPopover
+      actionName="shopifyDuplicateOrder"
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <div>
+    <DraftOrderTable
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      lineItems={
+        Immutable.List [
+          Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
+            "applied_discount": null,
+            "taxable": true,
+            "price": "9.99",
+            "quantity": 1,
+            "product_id": 8345093387,
+            "product_exists": true,
+            "properties": Immutable.List [],
+            "variant_id": 31128766316567,
+            "title": "Acidulous candy",
+            "sku": "11111",
+            "variant_title": "Red / A",
+            "requires_shipping": true,
+          },
+          Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
+            "applied_discount": null,
+            "taxable": true,
+            "price": "9.99",
+            "quantity": 4,
+            "product_id": 8345093387,
+            "product_exists": true,
+            "properties": Immutable.List [],
+            "variant_id": 31128766349335,
+            "title": "Acidulous candy",
+            "sku": "11111",
+            "variant_title": "Red / B",
+            "requires_shipping": true,
+          },
+        ]
+      }
+      onChange={[Function]}
+      products={Map {}}
+      shopName="gorgiastest"
+    />
+    <Connect(DuplicateOrderFooterComponent)
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      editable={true}
+    />
+    <div
+      className="emailInvoiceContainer"
+    >
+      <h4
+        className="mr-auto"
+      >
+        Email invoice
+      </h4>
+      <EmailInvoicePopover
+        actionName="shopifyDuplicateOrder"
+        color="primary"
+        customerEmail="apu@gorgias.com"
+        disabled={false}
+        id="email-invoice"
+        onSubmit={[Function]}
+        placement="bottom"
+      >
+        Email invoice
+      </EmailInvoicePopover>
+    </div>
+  </div>
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<DraftOrderModal/> render() should render as open, with order table and default currency, when its missing 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={true}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+      searchOnFocus={false}
+    />
+    <AddCustomItemPopover
+      actionName="shopifyDuplicateOrder"
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <div>
+    <DraftOrderTable
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      lineItems={
+        Immutable.List [
+          Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
+            "applied_discount": null,
+            "taxable": true,
+            "price": "9.99",
+            "quantity": 1,
+            "product_id": 8345093387,
+            "product_exists": true,
+            "properties": Immutable.List [],
+            "variant_id": 31128766316567,
+            "title": "Acidulous candy",
+            "sku": "11111",
+            "variant_title": "Red / A",
+            "requires_shipping": true,
+          },
+          Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
+            "applied_discount": null,
+            "taxable": true,
+            "price": "9.99",
+            "quantity": 4,
+            "product_id": 8345093387,
+            "product_exists": true,
+            "properties": Immutable.List [],
+            "variant_id": 31128766349335,
+            "title": "Acidulous candy",
+            "sku": "11111",
+            "variant_title": "Red / B",
+            "requires_shipping": true,
+          },
+        ]
+      }
+      onChange={[Function]}
+      products={Map {}}
+      shopName="gorgiastest"
+    />
+    <Connect(DuplicateOrderFooterComponent)
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      editable={true}
+    />
+    <div
+      className="emailInvoiceContainer"
+    >
+      <h4
+        className="mr-auto"
+      >
+        Email invoice
+      </h4>
+      <EmailInvoicePopover
+        actionName="shopifyDuplicateOrder"
+        color="primary"
+        customerEmail="apu@gorgias.com"
+        disabled={false}
+        id="email-invoice"
+        onSubmit={[Function]}
+        placement="bottom"
+      >
+        Email invoice
+      </EmailInvoicePopover>
+    </div>
+  </div>
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<DraftOrderModal/> render() should render as open, without order table 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={true}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+      searchOnFocus={false}
+    />
+    <AddCustomItemPopover
+      actionName="shopifyDuplicateOrder"
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <Loader
+    inline={false}
+    minHeight="500px"
+    size="40px"
+  />
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={true}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;

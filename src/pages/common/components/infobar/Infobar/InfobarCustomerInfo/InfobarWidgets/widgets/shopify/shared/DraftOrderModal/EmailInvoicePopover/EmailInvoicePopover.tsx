@@ -21,14 +21,13 @@ import classnames from 'classnames'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
-//$TsFixMe replace with enum once constants is migrated
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import css from './EmailInvoicePopover.less'
 
 type Props = {
     id: string
-    actionName: string
+    actionName: ShopifyActionType
     children: ReactNode
     placement: ComponentProps<typeof Popover>['placement']
     color: string
@@ -68,7 +67,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
         if (onOpen) {
             focusElement(() => this._inputElement as HTMLInputElement)
             segmentTracker.logEvent(
-                actionName === ShopifyAction.CREATE_ORDER
+                actionName === ShopifyActionType.CreateOrder
                     ? segmentTracker.EVENTS
                           .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
                     : segmentTracker.EVENTS
@@ -126,7 +125,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
         onSubmit(fromJS(newValue))
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
                 : segmentTracker.EVENTS
@@ -140,7 +139,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
         this._toggle()
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS
                       .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
                 : segmentTracker.EVENTS

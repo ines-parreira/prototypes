@@ -9,8 +9,7 @@ import {
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import EmailInvoicePopover from '../EmailInvoicePopover'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker.js',
@@ -40,7 +39,7 @@ describe('<EmailInvoicePopover/>', () => {
             const component = shallow(
                 <EmailInvoicePopover
                     id="email-invoice"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     color="primary"
                     customerEmail={customerEmail}
                     disabled={false}
@@ -57,12 +56,12 @@ describe('<EmailInvoicePopover/>', () => {
     describe('_onSubmit()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN,
                 EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND,
             ],
@@ -117,11 +116,11 @@ describe('<EmailInvoicePopover/>', () => {
     describe('_onCancel()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL,
             ],
         ])('should track', (actionName, event) => {

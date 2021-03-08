@@ -8,8 +8,7 @@ import {
     shopifyShippingLineFixture,
 } from '../../../../../../../../../../../../../../fixtures/shopify'
 import {OrderTotalsComponent} from '../OrderTotals'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../../../constants.js'
+import {ShopifyActionType} from '../../../../../types'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
@@ -32,7 +31,7 @@ describe('<OrderTotalsComponent/>', () => {
             const component = shallow(
                 <OrderTotalsComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     loading
                     payload={payload}
@@ -49,7 +48,7 @@ describe('<OrderTotalsComponent/>', () => {
             const component = shallow(
                 <OrderTotalsComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
@@ -71,7 +70,7 @@ describe('<OrderTotalsComponent/>', () => {
             const component = shallow(
                 <OrderTotalsComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     loading
                     payload={payload}
@@ -90,7 +89,7 @@ describe('<OrderTotalsComponent/>', () => {
             const component = shallow<OrderTotalsComponent>(
                 <OrderTotalsComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
@@ -115,7 +114,7 @@ describe('<OrderTotalsComponent/>', () => {
             const component = shallow<OrderTotalsComponent>(
                 <OrderTotalsComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
@@ -141,7 +140,7 @@ describe('<OrderTotalsComponent/>', () => {
             const component = shallow<OrderTotalsComponent>(
                 <OrderTotalsComponent
                     editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     loading={false}
                     payload={payload}

@@ -19,7 +19,7 @@ type Props = {
     selectedOptions: Option[],
     className?: string,
     caseInsensitive?: boolean,
-    onChange: (Option[]) => void,
+    onChange: (options: Option[]) => void,
     onInputChange?: (string) => void,
     loading?: boolean,
     dropdownMenu?: ComponentType<*>,

@@ -1,11 +1,14 @@
-// @flow
-
-import React, {type ComponentType, type Node} from 'react'
+import React, {
+    Component,
+    ComponentType,
+    ReactNode,
+    ComponentProps,
+    FormEvent,
+} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import type {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 import _omit from 'lodash/omit'
@@ -20,63 +23,43 @@ import {
     PopoverHeader,
 } from 'reactstrap'
 
-import SelectField from '../../../../../../forms/SelectField'
-import BooleanField from '../../../../../../forms/BooleanField'
-import InputField from '../../../../../../forms/InputField'
+import SelectField from '../../../../../../forms/SelectField/SelectField.js'
+import BooleanField from '../../../../../../forms/BooleanField.js'
+import InputField from '../../../../../../forms/InputField.js'
 
-import * as infobarActions from '../../../../../../../../state/infobar/actions.ts'
-import * as infobarSelectors from '../../../../../../../../state/infobar/selectors.ts'
-import * as infobarUtils from '../../../../../../../../state/infobar/utils.ts'
+import * as infobarActions from '../../../../../../../../state/infobar/actions'
+import * as infobarSelectors from '../../../../../../../../state/infobar/selectors'
+import * as infobarUtils from '../../../../../../../../state/infobar/utils'
+import {RootState} from '../../../../../../../../state/types'
 
 import css from './ActionButton.less'
-import type {InfobarModalProps, OptionType, ParameterType} from './types'
+import {InfobarModalProps, Option, Parameter} from './types'
 
 type Props = {
-    options: Array<OptionType>,
+    options: Array<Option>
     payload: {
-        order_id?: string,
-        customer_id?: string,
-    },
-    children: Node,
-    tag: Object,
-    modal?: ComponentType<InfobarModalProps>,
-    modalData?: Object,
-    tagOptions?: Object,
-    popover?: string,
-    title: Node,
-
-    getPendingActionCallback: (string) => Map<*, *>,
-    executeAction: (
-        string,
-        number,
-        number,
-        Object,
-        callback?: () => void
-    ) => void,
-}
+        order_id?: string
+        customer_id?: string
+    }
+    children: ReactNode
+    tag: ComponentType<ComponentProps<typeof Button>>
+    modal?: ComponentType<InfobarModalProps>
+    modalData?: Record<string, unknown>
+    tagOptions?: Record<string, unknown>
+    popover?: string
+    title: ReactNode
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isUiOpen: boolean,
-    isLoading: boolean,
-    actionName: string,
-    parameters: Object,
-    actionId: ?string,
+    isUiOpen: boolean
+    isLoading: boolean
+    actionName: string
+    parameters: Record<string, unknown>
+    actionId: string | null
 }
 
-@connect(
-    (state) => ({
-        getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(
-            state
-        ),
-    }),
-    {
-        executeAction: infobarActions.executeAction,
-    }
-)
-// todo(@martin): remove this flow-fix-me when flow support decorators and props injection
-// $FlowFixMe
-export default class ActionButton extends React.Component<Props, State> {
-    id: string = ''
+export class ActionButtonContainer extends Component<Props, State> {
+    id = ''
     state = {
         isUiOpen: false,
         isLoading: false,
@@ -105,11 +88,11 @@ export default class ActionButton extends React.Component<Props, State> {
 
         const actionId = this._generateActionId(this.props, this.context, {
             actionName: this.props.options[0].value,
-        })
+        } as any)
         this.setState({actionId})
 
-        const defaultParameters = {}
-        const parameters: ?Array<*> = options[0].parameters
+        const defaultParameters: Record<string, unknown> = {}
+        const parameters = options[0].parameters
 
         // Here we initialize the component's state with the default values of the action parameters.
         // This state will then be updated whenever input values are changed, and then sent to the server when
@@ -149,17 +132,11 @@ export default class ActionButton extends React.Component<Props, State> {
      * Generate a unique actionId to identify this action with its parameters. Useful to retrieve the current state
      * of the action once it has been sent to the server, and to identify in a unique fashion the target of the popover,
      * displayed to customize the action's parameters.
-     *
-     * @param props: the properties object of the component
-     * @param context: the context object of the component
-     * @param state: the state object of the component
-     * @returns {string}: the unique id
-     * @private
      */
     _generateActionId = (
         props: Props,
-        context: Object,
-        state: State | Object
+        context: Record<string, unknown>,
+        state: State
     ) => {
         const data = {
             action_name: state.actionName,
@@ -172,10 +149,10 @@ export default class ActionButton extends React.Component<Props, State> {
             },
         }
 
-        return infobarUtils.actionButtonHashForData(data)
+        return infobarUtils.actionButtonHashForData(data as any)
     }
 
-    _confirmAction = (event: ?Event = null) => {
+    _confirmAction = (event: FormEvent | null = null) => {
         if (event) {
             event.preventDefault()
         }
@@ -185,11 +162,11 @@ export default class ActionButton extends React.Component<Props, State> {
             ...this.state.parameters,
         }
 
-        this.props.executeAction(
+        void this.props.executeAction(
             this.state.actionName,
-            this.context.integrationId,
-            this.context.customerId,
-            payload
+            (this.context as {integrationId: string}).integrationId,
+            (this.context as {customerId: string}).customerId,
+            payload as any
         )
 
         this._toggleUi()
@@ -212,7 +189,7 @@ export default class ActionButton extends React.Component<Props, State> {
         const currentOption = this.props.options.find(
             (option) => option.value === actionName
         )
-        const parameters = {}
+        const parameters: Record<string, unknown> = {}
 
         if (currentOption && currentOption.parameters) {
             currentOption.parameters.forEach((parameter) => {
@@ -225,7 +202,7 @@ export default class ActionButton extends React.Component<Props, State> {
 
     _updateActionParameter = (
         name: string,
-        value: string | number | boolean | Object,
+        value: string | number | boolean | Record<string, unknown>,
         callback: () => void = _noop
     ) => {
         this.setState(
@@ -241,25 +218,25 @@ export default class ActionButton extends React.Component<Props, State> {
 
     _updateActionParameters = (
         values: Array<{
-            name: string,
-            value: string | number | boolean | Object,
+            name: string
+            value: string | number | boolean | Record<string, unknown>
         }>,
         callback: () => void = _noop
     ) => {
         const {parameters} = this.state
 
         values.forEach(({name, value}) => {
-            parameters[name] = value
+            ;(parameters as Record<string, unknown>)[name] = value
         })
 
         this.setState({parameters}, callback)
     }
 
-    _renderActionParameters = (): Array<Object> | null => {
+    _renderActionParameters = () => {
         const {options} = this.props
         const {actionName, parameters: actionParameters} = this.state
 
-        let currentOption: ?OptionType = options.find(
+        let currentOption = options.find(
             (option) => option.value === actionName
         )
 
@@ -271,8 +248,8 @@ export default class ActionButton extends React.Component<Props, State> {
             return null
         }
 
-        return currentOption.parameters.map((parameter: ParameterType) => {
-            let InputTag: Object = InputField
+        return currentOption.parameters.map((parameter: Parameter) => {
+            let InputTag: ComponentType<any> = InputField
 
             if (parameter.type === 'checkbox') {
                 InputTag = BooleanField
@@ -281,13 +258,19 @@ export default class ActionButton extends React.Component<Props, State> {
             }
 
             // we don't need the defaultValue as it's set in the state as current value of the parameter
-            const inputAttributes: Object = _omit(parameter, ['defaultValue'])
+            const inputAttributes: Record<string, unknown> = _omit(parameter, [
+                'defaultValue',
+            ])
 
             return (
                 <InputTag
                     key={parameter.name}
                     className="mb-2"
-                    value={actionParameters[parameter.name]}
+                    value={
+                        (actionParameters as Record<string, unknown>)[
+                            parameter.name
+                        ]
+                    }
                     {...inputAttributes}
                     onChange={(value: string | number | boolean) => {
                         this._updateActionParameter(parameter.name, value)
@@ -352,7 +335,7 @@ export default class ActionButton extends React.Component<Props, State> {
                                       onChange={this._updateActionName}
                                       value={actionName}
                                       options={options.map(
-                                          (option: OptionType) => ({
+                                          (option: Option) => ({
                                               value: option.value,
                                               label: option.label,
                                           })
@@ -392,3 +375,16 @@ export default class ActionButton extends React.Component<Props, State> {
         )
     }
 }
+
+const connector = connect(
+    (state: RootState) => ({
+        getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(
+            state
+        ),
+    }),
+    {
+        executeAction: infobarActions.executeAction,
+    }
+)
+
+export default connector(ActionButtonContainer)

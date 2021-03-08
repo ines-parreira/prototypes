@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './DraftOrderModal'
+export {default} from './DraftOrderModal.tsx'

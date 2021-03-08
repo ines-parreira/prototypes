@@ -10,11 +10,10 @@ import {
 import {DatetimeLabel} from '../../../../../../../../utils/labels.js'
 import ActionButtonsGroup from '../../ActionButtonsGroup.js'
 import {CardHeaderDetails} from '../../CardHeaderDetails.js'
-import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal.js'
+import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal'
 import {CardHeaderValue} from '../../CardHeaderValue.js'
 import {InfobarAction} from '../../types'
-//$TsFixMe replace with enum once migrated
-import {ShopifyAction} from '../constants.js'
+import {ShopifyActionType} from '../types'
 import MoneyAmount from '../../MoneyAmount.js'
 
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
@@ -58,7 +57,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 key: 'refund',
                 options: [
                     {
-                        value: ShopifyAction.REFUND_ORDER,
+                        value: ShopifyActionType.RefundOrder,
                         label: 'Refund order',
                         parameters: [
                             {name: 'order_id', type: 'hidden'},
@@ -74,7 +73,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 ),
                 modal: RefundOrderModal,
                 modalData: {
-                    actionName: ShopifyAction.REFUND_ORDER,
+                    actionName: ShopifyActionType.RefundOrder,
                     order: source,
                 },
             },
@@ -82,7 +81,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 key: 'cancel',
                 options: [
                     {
-                        value: ShopifyAction.CANCEL_ORDER,
+                        value: ShopifyActionType.CancelOrder,
                         label: 'Cancel order',
                         parameters: [
                             {name: 'order_id', type: 'hidden'},
@@ -98,7 +97,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 ),
                 modal: CancelOrderModal,
                 modalData: {
-                    actionName: ShopifyAction.CANCEL_ORDER,
+                    actionName: ShopifyActionType.CancelOrder,
                     order: source,
                 },
             },
@@ -106,7 +105,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 key: 'duplicate',
                 options: [
                     {
-                        value: ShopifyAction.DUPLICATE_ORDER,
+                        value: ShopifyActionType.DuplicateOrder,
                         label: 'Duplicate',
                         parameters: [
                             {name: 'order_id', type: 'hidden'},
@@ -123,7 +122,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 ),
                 modal: DraftOrderModal,
                 modalData: {
-                    actionName: ShopifyAction.DUPLICATE_ORDER,
+                    actionName: ShopifyActionType.DuplicateOrder,
                     order: source,
                     customer: fromJS({
                         id: source.getIn(['customer', 'id']),

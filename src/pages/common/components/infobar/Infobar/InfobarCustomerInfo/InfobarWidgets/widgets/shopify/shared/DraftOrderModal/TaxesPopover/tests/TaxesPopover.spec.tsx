@@ -8,8 +8,7 @@ import {
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import TaxesPopover from '../TaxesPopover'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 jest.mock(
     '../../../../../../../../../../../../../store/middlewares/segmentTracker',
@@ -40,7 +39,7 @@ describe('<TaxesPopover/>', () => {
             const component = shallow(
                 <TaxesPopover
                     id="taxes"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     value={taxExempt}
                     onChange={onChange}
@@ -58,7 +57,7 @@ describe('<TaxesPopover/>', () => {
             const component = shallow(
                 <TaxesPopover
                     id="taxes"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     editable
                     value={taxExempt}
                     onChange={onChange}
@@ -74,12 +73,12 @@ describe('<TaxesPopover/>', () => {
     describe('_onSubmit()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN,
                 EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY,
             ],
@@ -128,11 +127,11 @@ describe('<TaxesPopover/>', () => {
     describe('_onClose()', () => {
         it.each([
             [
-                ShopifyAction.CREATE_ORDER,
+                ShopifyActionType.CreateOrder,
                 EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE,
             ],
             [
-                ShopifyAction.DUPLICATE_ORDER,
+                ShopifyActionType.DuplicateOrder,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE,
             ],
         ])('should track', (actionName, event) => {

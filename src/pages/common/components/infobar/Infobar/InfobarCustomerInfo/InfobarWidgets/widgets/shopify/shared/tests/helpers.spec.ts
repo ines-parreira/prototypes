@@ -1,5 +1,3 @@
-// @flow
-
 import getShopifyMoneySymbol from '../helpers'
 
 describe('getShopifyMoneySymbol()', () => {

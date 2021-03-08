@@ -6,7 +6,7 @@ import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 import OrderFooter from '../OrderFooter'
 
 jest.mock('lodash/debounce', () => {
@@ -35,7 +35,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     reason={null}
                     notify={true}
                     loading={false}
@@ -57,7 +57,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.REFUND_ORDER}
+                    actionName={ShopifyActionType.RefundOrder}
                     reason={null}
                     notify={true}
                     loading={false}
@@ -86,7 +86,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     reason={null}
                     notify={true}
                     loading={false}
@@ -117,7 +117,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     reason={null}
                     notify={true}
                     loading={false}
@@ -150,7 +150,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     reason={null}
                     notify={true}
                     loading={false}
@@ -188,7 +188,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     reason={null}
                     notify={true}
                     loading={false}
@@ -221,7 +221,7 @@ describe('<OrderFooter/>', () => {
                     editable
                     hasShippingLine
                     currencyCode="USD"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     reason={null}
                     notify={true}
                     loading={false}

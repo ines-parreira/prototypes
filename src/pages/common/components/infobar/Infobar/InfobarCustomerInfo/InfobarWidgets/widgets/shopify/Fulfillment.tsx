@@ -1,9 +1,9 @@
 import React from 'react'
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
-import {humanizeString} from '../../../../../../../../../utils.ts'
+import {humanizeString} from '../../../../../../../../../utils'
 
 export default function Fulfillment() {
     return {
@@ -12,7 +12,7 @@ export default function Fulfillment() {
 }
 
 type AfterTitleProps = {
-    source: Map<string, string | number | boolean>,
+    source: Map<any, any>
 }
 
 const shipmentStatusColors = {
@@ -28,8 +28,12 @@ const shipmentStatusColors = {
 }
 
 function AfterTitle({source}: AfterTitleProps) {
-    const shipmentStatus = source.get('shipment_status')
-    const color = shipmentStatus ? shipmentStatusColors[shipmentStatus] : null
+    const shipmentStatus = source.get('shipment_status') as
+        | undefined
+        | keyof typeof shipmentStatusColors
+    const color = shipmentStatus
+        ? shipmentStatusColors[shipmentStatus]
+        : undefined
 
     return (
         <>

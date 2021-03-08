@@ -11,15 +11,14 @@ import {onPayloadChange} from '../../../../../../../../../../../../state/infobar
 import MultiSelectOptionsField from '../../../../../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField.js'
 import {Option} from '../../../../../../../../../../forms/MultiSelectOptionsField/types'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
-//$TsFixMe replace with enum when constants is migrated
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 import OrderTotals from './OrderTotals/OrderTotals'
 import css from './OrderFooter.less'
 
 type Props = {
     editable: boolean
-    actionName: string
+    actionName: ShopifyActionType
     currencyCode: string
     payload: Map<any, any>
     onPayloadChange: (
@@ -82,7 +81,7 @@ export class DuplicateOrderFooterComponent extends Component<Props, State> {
         const {actionName} = this.props
 
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_NOTES_CHANGED
                 : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_NOTES_CHANGED
         )
@@ -97,7 +96,7 @@ export class DuplicateOrderFooterComponent extends Component<Props, State> {
 
         onPayloadChange(integrationId, newPayload, false)
         segmentTracker.logEvent(
-            actionName === ShopifyAction.CREATE_ORDER
+            actionName === ShopifyActionType.CreateOrder
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAGS_CHANGED
                 : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_TAGS_CHANGED
         )

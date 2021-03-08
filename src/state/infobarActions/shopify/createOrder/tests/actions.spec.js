@@ -14,7 +14,7 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from '../../../../../fixtures/shopify.ts'
-import {ShopifyAction} from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
+import {ShopifyAction} from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants.ts'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     SHOPIFY_INTEGRATION_TYPE,

@@ -14,12 +14,13 @@ import DiscountPopover from '../../DiscountPopover/DiscountPopover'
 import ShippingPopover from '../../ShippingPopover/ShippingPopover'
 import MoneyAmount from '../../../../../MoneyAmount.js'
 import TaxesPopover from '../../TaxesPopover/TaxesPopover'
+import {ShopifyActionType} from '../../../../types'
 
 import css from './OrderTotals.less'
 
 type Props = {
     editable: boolean
-    actionName: string
+    actionName: ShopifyActionType
     currencyCode: string
     loading: boolean
     payload: Map<any, any>

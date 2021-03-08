@@ -3,12 +3,14 @@ import {Table} from 'reactstrap'
 import {fromJS, List, Map as ImmutableMap} from 'immutable'
 import hash from 'object-hash'
 
+import {ShopifyActionType} from '../../../types'
+
 import {DraftOrderLineItemRow} from './DraftOrderLineItemRow'
 import css from './DraftOrderTable.less'
 
 type Props = {
     shopName: string
-    actionName: string
+    actionName: ShopifyActionType
     currencyCode: string
     lineItems: List<any>
     products: Map<number, ImmutableMap<any, any>>

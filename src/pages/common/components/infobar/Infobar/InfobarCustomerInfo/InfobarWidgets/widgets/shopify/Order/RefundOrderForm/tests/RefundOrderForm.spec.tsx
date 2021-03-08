@@ -10,7 +10,7 @@ import {
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../fixtures/shopify'
 import RefundOrderForm from '../RefundOrderForm'
-import {ShopifyAction} from '../../../constants.js'
+import {ShopifyActionType} from '../../../types'
 
 describe('<RefundOrderForm/>', () => {
     const order = fromJS(shopifyOrderFixture())
@@ -35,7 +35,7 @@ describe('<RefundOrderForm/>', () => {
             const component = shallow(
                 <RefundOrderForm
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     loading={false}
                     reason=""
                     order={order}
@@ -62,7 +62,7 @@ describe('<RefundOrderForm/>', () => {
             const component = shallow(
                 <RefundOrderForm
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.CANCEL_ORDER}
+                    actionName={ShopifyActionType.CancelOrder}
                     loading={false}
                     reason=""
                     order={multiCurrencyOrder}

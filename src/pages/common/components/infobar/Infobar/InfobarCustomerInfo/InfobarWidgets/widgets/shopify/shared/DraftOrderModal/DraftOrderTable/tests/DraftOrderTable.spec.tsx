@@ -7,8 +7,7 @@ import {
     shopifyProductFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import DraftOrderTable from '../DraftOrderTable'
-// $TsFixMe replace with ShopifyAction enum
-import {ShopifyAction} from '../../../../constants.js'
+import {ShopifyActionType} from '../../../../types'
 
 describe('<DraftOrderTable/>', () => {
     let onChange: jest.MockedFunction<any>
@@ -34,7 +33,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow(
                 <DraftOrderTable
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
                     products={products}
@@ -49,7 +48,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow(
                 <DraftOrderTable
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
                     products={fromJS({})}
@@ -64,7 +63,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow(
                 <DraftOrderTable
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={fromJS([])}
                     products={products}
@@ -81,7 +80,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow<DraftOrderTable>(
                 <DraftOrderTable
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
                     products={products}
@@ -108,7 +107,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow<DraftOrderTable>(
                 <DraftOrderTable
                     shopName="storegorgias3"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
                     products={products}
