@@ -171,7 +171,9 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should call 
         >
           <img
             alt="Self-service Mock"
+            height="689"
             src="test-file-stub"
+            width="442"
           />
         </div>
       </div>
@@ -300,7 +302,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the default
       >
         <img
           alt="Self-service Mock"
+          height="689"
           src="test-file-stub"
+          width="442"
         />
       </div>
     </div>
@@ -478,7 +482,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
       >
         <img
           alt="Self-service Mock"
+          height="689"
           src="test-file-stub"
+          width="442"
         />
       </div>
     </div>
@@ -656,7 +662,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
       >
         <img
           alt="Self-service Mock"
+          height="689"
           src="test-file-stub"
+          width="442"
         />
       </div>
     </div>
@@ -834,7 +842,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
       >
         <img
           alt="Self-service Mock"
+          height="689"
           src="test-file-stub"
+          width="442"
         />
       </div>
     </div>
@@ -1012,7 +1022,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of
       >
         <img
           alt="Self-service Mock"
+          height="689"
           src="test-file-stub"
+          width="442"
         />
       </div>
     </div>

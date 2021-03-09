@@ -30,7 +30,7 @@ type OwnProps = {
     shopifyIntegrations: Immutable.List<any>
 }
 
-const selfServiceMock = getIconFromUrl('integrations/ssp_mock.png')
+const selfServiceMock = getIconFromUrl('integrations/self_service.png')
 const SHOPIFY_DOMAIN_SUFFIX = '.myshopify.com'
 
 interface SelfServiceConfiguration {
@@ -319,7 +319,12 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                     </Col>
 
                     <Col>
-                        <img src={selfServiceMock} alt="Self-service Mock" />
+                        <img
+                            src={selfServiceMock}
+                            width="442"
+                            height="689"
+                            alt="Self-service Mock"
+                        />
                     </Col>
                 </Row>
             </Container>
