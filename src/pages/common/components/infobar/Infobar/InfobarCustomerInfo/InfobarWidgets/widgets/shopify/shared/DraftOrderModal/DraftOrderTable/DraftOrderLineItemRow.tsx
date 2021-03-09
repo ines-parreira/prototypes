@@ -14,7 +14,7 @@ import * as segmentTracker from '../../../../../../../../../../../../store/middl
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {ProductStockQuantity} from '../../StockQuantity'
 import DiscountPopover from '../DiscountPopover/DiscountPopover'
-import MoneyAmount from '../../../../MoneyAmount.js'
+import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyActionType} from '../../../types'
 
 import css from './DraftOrderLineItemRow.less'

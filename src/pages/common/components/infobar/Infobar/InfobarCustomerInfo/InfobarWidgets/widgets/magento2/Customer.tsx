@@ -4,12 +4,12 @@ import type {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/infobar/magento.svg'
 import {DatetimeLabel} from '../../../../../../../utils/labels.js'
-import {CardHeaderDetails} from '../CardHeaderDetails.js'
-import {CardHeaderValue} from '../CardHeaderValue.js'
-import {CardHeaderTitle} from '../CardHeaderTitle.js'
-import {CardHeaderIcon} from '../CardHeaderIcon.js'
-import ExpandAllButton from '../ExpandAllButton.js'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
+import {CardHeaderDetails} from '../CardHeaderDetails'
+import {CardHeaderValue} from '../CardHeaderValue'
+import {CardHeaderTitle} from '../CardHeaderTitle'
+import {CardHeaderIcon} from '../CardHeaderIcon'
+import ExpandAllButton from '../ExpandAllButton'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 
 export default function Customer() {
     return {

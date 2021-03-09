@@ -12,7 +12,7 @@ import {getSourcePathFromContext} from '../../../../../../../state/widgets/utils
 import * as integrationsSelectors from '../../../../../../../state/integrations/selectors.ts'
 
 import InfobarWidget from './InfobarWidget'
-import PlaceholderWidget from './widgets/PlaceholderWidget'
+import PlaceholderWidget from './widgets/PlaceholderWidget.tsx'
 import {infobarWidgetShouldRender} from './predicates'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'

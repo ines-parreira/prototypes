@@ -1,11 +1,9 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 
 import css from './CardHeaderSubtitle.less'
 
 type Props = {
-    children: Node,
+    children: ReactNode
 }
 
 export function CardHeaderSubtitle({children}: Props) {

@@ -4178,7 +4178,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   </WrapperInfobarWidget>
                 </Connect(WrapperInfobarWidget)>
               </InfobarWidget>
-              <Connect(PlaceholderWidget)
+              <Connect(PlaceholderWidgetContainer)
                 editing={
                   Object {
                     "actions": Object {
@@ -4261,7 +4261,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   }
                 }
               >
-                <PlaceholderWidget
+                <PlaceholderWidgetContainer
                   dispatch={[Function]}
                   editing={
                     Object {
@@ -4378,8 +4378,8 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                       </CardBody>
                     </div>
                   </Card>
-                </PlaceholderWidget>
-              </Connect(PlaceholderWidget)>
+                </PlaceholderWidgetContainer>
+              </Connect(PlaceholderWidgetContainer)>
             </div>
           </ReactSortable>
         </DragWrapper>

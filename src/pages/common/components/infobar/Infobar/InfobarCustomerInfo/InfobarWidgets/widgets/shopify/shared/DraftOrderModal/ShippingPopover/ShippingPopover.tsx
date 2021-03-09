@@ -21,7 +21,7 @@ import classnames from 'classnames'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
-import MoneyAmount from '../../../../MoneyAmount.js'
+import MoneyAmount from '../../../../MoneyAmount'
 import AmountInput from '../../AmountInput/AmountInput'
 import {ShopifyActionType} from '../../../types'
 

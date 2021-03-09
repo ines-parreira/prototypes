@@ -2,10 +2,10 @@ import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/integrations/http.png'
-import {CardHeaderTitle} from '../CardHeaderTitle.js'
-import {CardHeaderIcon} from '../CardHeaderIcon.js'
+import {CardHeaderTitle} from '../CardHeaderTitle'
+import {CardHeaderIcon} from '../CardHeaderIcon'
 import {renderTemplate} from '../../../../../../../utils/template.js'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 
 export default function Root() {
     return {

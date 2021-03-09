@@ -12,7 +12,7 @@ import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../..
 import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
 import DiscountPopover from '../../DiscountPopover/DiscountPopover'
 import ShippingPopover from '../../ShippingPopover/ShippingPopover'
-import MoneyAmount from '../../../../../MoneyAmount.js'
+import MoneyAmount from '../../../../../MoneyAmount'
 import TaxesPopover from '../../TaxesPopover/TaxesPopover'
 import {ShopifyActionType} from '../../../../types'
 

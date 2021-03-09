@@ -8,13 +8,13 @@ import {
     FinancialStatus,
 } from '../../../../../../../../../../constants/integrations/types/shopify'
 import {DatetimeLabel} from '../../../../../../../../utils/labels.js'
-import ActionButtonsGroup from '../../ActionButtonsGroup.js'
-import {CardHeaderDetails} from '../../CardHeaderDetails.js'
+import ActionButtonsGroup from '../../ActionButtonsGroup'
+import {CardHeaderDetails} from '../../CardHeaderDetails'
 import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal'
-import {CardHeaderValue} from '../../CardHeaderValue.js'
+import {CardHeaderValue} from '../../CardHeaderValue'
 import {InfobarAction} from '../../types'
 import {ShopifyActionType} from '../types'
-import MoneyAmount from '../../MoneyAmount.js'
+import MoneyAmount from '../../MoneyAmount'
 
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'

@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import ExpandAllButton from '../ExpandAllButton'
+import ExpandAllButton from '../ExpandAllButton.tsx'
 
 describe('<ExpandAllButton/>', () => {
     describe('render()', () => {

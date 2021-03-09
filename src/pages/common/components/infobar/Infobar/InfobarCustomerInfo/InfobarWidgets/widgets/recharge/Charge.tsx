@@ -19,7 +19,7 @@ import {renderTemplate} from '../../../../../../../utils/template.js'
 import {LineItem} from '../../../../../../../../../constants/integrations/types/shopify'
 import {RootState} from '../../../../../../../../../state/types'
 
-import ActionButtonsGroup from '../ActionButtonsGroup.js'
+import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default function Charge() {
     return {

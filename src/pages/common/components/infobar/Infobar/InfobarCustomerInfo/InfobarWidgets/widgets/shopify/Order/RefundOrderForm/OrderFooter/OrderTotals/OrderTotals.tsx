@@ -11,7 +11,7 @@ import {
     getTotalCartDiscountAmount,
     getTotalTax,
 } from '../../../../../../../../../../../../../business/shopify/refund'
-import MoneyAmount from '../../../../../MoneyAmount.js'
+import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput/AmountInput'
 
 import css from './OrderTotals.less'

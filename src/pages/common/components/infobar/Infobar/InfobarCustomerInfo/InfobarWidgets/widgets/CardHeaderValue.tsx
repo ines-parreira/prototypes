@@ -1,12 +1,10 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 
 import css from './CardHeaderValue.less'
 
 type Props = {
-    children: Node,
-    label?: string,
+    children: ReactNode
+    label?: string
 }
 
 export function CardHeaderValue({children, label}: Props) {

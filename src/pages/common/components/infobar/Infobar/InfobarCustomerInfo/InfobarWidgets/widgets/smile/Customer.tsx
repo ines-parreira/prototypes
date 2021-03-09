@@ -3,9 +3,9 @@ import {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/infobar/smile.svg'
 import {renderTemplate} from '../../../../../../../utils/template.js'
-import {CardHeaderTitle} from '../CardHeaderTitle.js'
-import {CardHeaderIcon} from '../CardHeaderIcon.js'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
+import {CardHeaderTitle} from '../CardHeaderTitle'
+import {CardHeaderIcon} from '../CardHeaderIcon'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 
 export default function Customer() {
     return {

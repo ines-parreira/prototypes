@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import PlaceholderWidget from '../PlaceholderWidget'
+import PlaceholderWidget from '../PlaceholderWidget.tsx'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

@@ -1,11 +1,9 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 
 import css from './CardHeaderDetails.less'
 
 type Props = {
-    children: Node,
+    children: ReactNode
 }
 
 export function CardHeaderDetails({children}: Props) {

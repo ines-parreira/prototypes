@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import {
     ButtonDropdown,
@@ -8,17 +7,17 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import ActionButton from './ActionButton.tsx'
+import ActionButton from './ActionButton'
 
-import type {ActionType} from './types'
+import {InfobarAction} from './types'
 
 type Props = {
-    actions: Array<ActionType>,
-    payload: Object, // the arguments which need to be passed to execute any action
+    actions: InfobarAction[]
+    payload: Record<string, unknown> // the arguments which need to be passed to execute any action
 }
 
 type State = {
-    actionDropdownIsOpen: boolean,
+    actionDropdownIsOpen: boolean
 }
 
 // The maximum number of actions we can display before adding the dropdown

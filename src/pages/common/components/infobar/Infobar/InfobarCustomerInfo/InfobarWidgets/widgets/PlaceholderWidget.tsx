@@ -1,34 +1,31 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component, MouseEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
-
-import type {Map} from 'immutable'
-
+import {Map} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
-import * as integrationSelectors from '../../../../../../../../state/integrations/selectors.ts'
+import * as integrationSelectors from '../../../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../../../state/types'
 
 import css from './CardInfobarWidget.less'
 
-type Props = {
-    widget: Map<string, *>,
-    template: Map<string, *>,
-    editing: Object,
-    integration: ?Map<string, *>,
+type OwnProps = {
+    widget: Map<any, any>
+    template: Map<any, any>
+    editing: {
+        actions: {
+            removeEditedWidget: (
+                templatePath: string,
+                absolutePath: Array<string | number>
+            ) => void
+        }
+    }
 }
 
-@connect((state, ownProps) => {
-    const integrationId = ownProps.widget.get('integration_id')
-
-    return {
-        integration: integrationId
-            ? integrationSelectors.getIntegrationById(integrationId)(state)
-            : null,
-    }
-})
-export default class PlaceholderWidget extends React.Component<Props> {
+export class PlaceholderWidgetContainer extends Component<
+    OwnProps & ConnectedProps<typeof connector>
+> {
     _renderWidgetType = (widgetType: string): string => {
         if (widgetType === 'smooch_inside') {
             return 'chat'
@@ -37,7 +34,7 @@ export default class PlaceholderWidget extends React.Component<Props> {
         return widgetType
     }
 
-    _deleteWidget = (evt: Object) => {
+    _deleteWidget = (evt: MouseEvent) => {
         const {template, editing} = this.props
 
         const absolutePath: Array<string | number> = template.get('path')
@@ -72,7 +69,9 @@ export default class PlaceholderWidget extends React.Component<Props> {
                     </span>
                     <h5 className={classnames(css.title)}>
                         {integration
-                            ? `Widget for ${integration.get('name')} data`
+                            ? `Widget for ${
+                                  integration.get('name') as string
+                              } data`
                             : `Widget for ${_capitalize(
                                   this._renderWidgetType(widget.get('type'))
                               )} data`}
@@ -82,3 +81,15 @@ export default class PlaceholderWidget extends React.Component<Props> {
         )
     }
 }
+
+const connector = connect((state: RootState, ownProps: OwnProps) => {
+    const integrationId = ownProps.widget.get('integration_id')
+
+    return {
+        integration: integrationId
+            ? integrationSelectors.getIntegrationById(integrationId)(state)
+            : null,
+    }
+})
+
+export default connector(PlaceholderWidgetContainer)

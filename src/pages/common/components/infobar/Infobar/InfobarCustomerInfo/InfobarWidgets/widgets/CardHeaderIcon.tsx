@@ -1,12 +1,10 @@
-// @flow
-
 import React from 'react'
 
 import css from './CardHeaderIcon.less'
 
 type Props = {
-    src: string,
-    alt: string,
+    src: string
+    alt: string
 }
 
 export function CardHeaderIcon({src, alt}: Props) {

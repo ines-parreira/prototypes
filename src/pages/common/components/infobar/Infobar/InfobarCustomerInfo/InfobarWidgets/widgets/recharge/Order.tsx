@@ -15,9 +15,9 @@ import {getIntegrationDataByIntegrationId} from '../../../../../../../../../stat
 import {renderTemplate} from '../../../../../../../utils/template.js'
 import {DatetimeLabel} from '../../../../../../../utils/labels.js'
 import {RootState} from '../../../../../../../../../state/types'
-import ActionButtonsGroup from '../ActionButtonsGroup.js'
-import {CardHeaderDetails} from '../CardHeaderDetails.js'
-import {CardHeaderValue} from '../CardHeaderValue.js'
+import ActionButtonsGroup from '../ActionButtonsGroup'
+import {CardHeaderDetails} from '../CardHeaderDetails'
+import {CardHeaderValue} from '../CardHeaderValue'
 
 const makeGetIntegrationData = (state: RootState) => {
     return {

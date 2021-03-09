@@ -21,9 +21,9 @@ import * as ticketSelectors from '../../../../../../../../../state/ticket/select
 import {RootState} from '../../../../../../../../../state/types'
 
 import {DatetimeLabel} from '../../../../../../../utils/labels.js'
-import ActionButtonsGroup from '../ActionButtonsGroup.js'
-import {CardHeaderDetails} from '../CardHeaderDetails.js'
-import {CardHeaderValue} from '../CardHeaderValue.js'
+import ActionButtonsGroup from '../ActionButtonsGroup'
+import {CardHeaderDetails} from '../CardHeaderDetails'
+import {CardHeaderValue} from '../CardHeaderValue'
 
 export default function Subscription() {
     return {

@@ -1,15 +1,13 @@
-// @flow
-
-import React from 'react'
+import React, {Component} from 'react'
 
 type Props = {
-    amount: string,
-    currencyCode: ?string,
-    negative: boolean,
-    renderIfZero: boolean,
+    amount: string
+    currencyCode: string | null
+    negative: boolean
+    renderIfZero: boolean
 }
 
-export default class MoneyAmount extends React.PureComponent<Props> {
+export default class MoneyAmount extends Component<Props> {
     static defaultProps = {
         negative: false,
         renderIfZero: false,

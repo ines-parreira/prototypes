@@ -9,7 +9,7 @@ import {
     getOrderLineItemPrice,
 } from '../../../../../../../../../../../../business/shopify/lineItem'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import MoneyAmount from '../../../../MoneyAmount.js'
+import MoneyAmount from '../../../../MoneyAmount'
 
 import css from './OrderLineItemRow.less'
 
