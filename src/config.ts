@@ -424,6 +424,33 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         url: 'https://docs.gorgias.com/shipping/late-shipment',
         image: 'integrations/lateshipment.png',
     },
+    {
+        title: 'JustCall',
+        description: 'Make and receive calls directly on Gorgias',
+        url: 'https://docs.gorgias.com/voice-and-phone/just-call',
+        image: 'integrations/justcall.png',
+    },
+    {
+        title: 'Textline',
+        description:
+            'Create tickets in Gorgias that match your Textline conversations',
+        url: 'https://docs.gorgias.com/sms-integration/textline',
+        image: 'integrations/textline.png',
+    },
+    {
+        title: 'ShippingChimp',
+        description:
+            'Track your orders in real-time and communicate delivery issues and delays',
+        url: 'https://help.shippingchimp.com/kb/en/article/gorgias-integration',
+        image: 'integrations/shippingchimp.png',
+    },
+    {
+        title: 'TXTFi',
+        description:
+            'Create SMS tickets inside Gorgias to accept orders via SMS',
+        url: 'https://docs.gorgias.com/sms-integration/txtfi',
+        image: 'integrations/txtfi.png',
+    },
 ]
 
 // Import period for tickets
