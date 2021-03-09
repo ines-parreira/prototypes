@@ -1,22 +1,22 @@
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import ViewSharingButton from '../ViewSharingButton'
-import {user} from '../../../../../fixtures/users.ts'
-import {BASIC_AGENT_ROLE} from '../../../../../config/user.ts'
+import {user} from '../../../../../fixtures/users'
+import {BASIC_AGENT_ROLE} from '../../../../../config/user'
 import {
     SYSTEM_VIEW_CATEGORY,
     ViewVisibility,
-} from '../../../../../constants/view.ts'
-import {AccountFeatures} from '../../../../../state/currentAccount/types.ts'
+} from '../../../../../constants/view'
+import {AccountFeatures} from '../../../../../state/currentAccount/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-const getState = (currentUser) => ({
+const getState = (currentUser: Map<any, any>) => ({
     currentUser,
     agents: fromJS({
         all: [
@@ -45,7 +45,11 @@ describe('<ViewSharingButton/>', () => {
             const store = mockStore(getState(admin))
 
             const component = shallow(
-                <ViewSharingButton store={store} className="foo" view={view} />
+                <ViewSharingButton
+                    {...({store} as any)}
+                    className="foo"
+                    view={view}
+                />
             )
 
             expect(component.dive()).toMatchSnapshot()
@@ -57,7 +61,11 @@ describe('<ViewSharingButton/>', () => {
             const store = mockStore(getState(admin))
 
             const component = shallow(
-                <ViewSharingButton store={store} className="foo" view={view} />
+                <ViewSharingButton
+                    {...({store} as any)}
+                    className="foo"
+                    view={view}
+                />
             )
 
             expect(component.dive()).toMatchSnapshot()
@@ -69,7 +77,11 @@ describe('<ViewSharingButton/>', () => {
             const store = mockStore(getState(admin))
 
             const component = shallow(
-                <ViewSharingButton store={store} className="foo" view={view} />
+                <ViewSharingButton
+                    {...({store} as any)}
+                    className="foo"
+                    view={view}
+                />
             )
 
             expect(component.dive()).toMatchSnapshot()
@@ -84,7 +96,11 @@ describe('<ViewSharingButton/>', () => {
             const store = mockStore(getState(admin))
 
             const component = shallow(
-                <ViewSharingButton store={store} className="foo" view={view} />
+                <ViewSharingButton
+                    {...({store} as any)}
+                    className="foo"
+                    view={view}
+                />
             )
 
             expect(component.dive()).toMatchSnapshot()
@@ -93,11 +109,18 @@ describe('<ViewSharingButton/>', () => {
         it('should render as disabled because user is not allowed', () => {
             const view = fromJS({visibility: ViewVisibility.PUBLIC})
             const roles = fromJS([{name: BASIC_AGENT_ROLE}])
-            const basicAgent = fromJS(user).set('roles', roles)
+            const basicAgent = (fromJS(user) as Map<any, any>).set(
+                'roles',
+                roles
+            )
             const store = mockStore(getState(basicAgent))
 
             const component = shallow(
-                <ViewSharingButton store={store} className="foo" view={view} />
+                <ViewSharingButton
+                    {...({store} as any)}
+                    className="foo"
+                    view={view}
+                />
             )
 
             expect(component.dive()).toMatchSnapshot()

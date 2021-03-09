@@ -1,11 +1,20 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
+import {Store} from 'redux'
+import _noop from 'lodash/noop'
 
-import * as viewsConfig from '../../../../../../config/views.tsx'
+import * as viewsConfig from '../../../../../../config/views'
 import ViewSelection from '../ViewSelection'
-import * as viewsFixtures from '../../../../../../fixtures/views.ts'
-import configureStore from '../../../../../../store/configureStore'
+import * as viewsFixtures from '../../../../../../fixtures/views'
+import untypedConfigureStore from '../../../../../../store/configureStore.js'
+
+import {RootState} from '../../../../../../state/types'
+
+// $TsFixMe: Remove on store/configureStore migration
+const configureStore = (untypedConfigureStore as unknown) as (
+    store: Partial<RootState>
+) => Store<RootState>
 
 describe('<ViewSelection/>', () => {
     const minStore = {
@@ -17,13 +26,12 @@ describe('<ViewSelection/>', () => {
             dirtyView: true,
         }),
     }
-    const viewConfig = viewsConfig.views.first()
-
+    const viewConfig = viewsConfig.views.first() as Map<any, any>
     const minProps = {
         colSize: 5,
         selectedCount: 30,
         viewSelected: false,
-        onSelectViewClick: () => {},
+        onSelectViewClick: _noop,
         type: viewConfig.get('name'),
         activeView: {},
         store: configureStore(minStore),

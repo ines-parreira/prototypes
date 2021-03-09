@@ -1,47 +1,45 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
 
-import type {Map, List} from 'immutable'
-
-import {scrollToReactNode} from '../../../utils/keyboard.ts'
+import {scrollToReactNode} from '../../../utils/keyboard'
 
 import css from '../Table.less'
 
-import * as agentSelectors from '../../../../../state/agents/selectors.ts'
-import * as viewsActions from '../../../../../state/views/actions.ts'
+import * as agentSelectors from '../../../../../state/agents/selectors'
+import * as viewsActions from '../../../../../state/views/actions'
 
-import * as viewsUtils from '../../../../../state/views/utils.ts'
+import * as viewsUtils from '../../../../../state/views/utils'
 
-import Cell from './Cell.tsx'
+import {RootState} from '../../../../../state/types'
 
-type Props = {
-    onItemClick: ?(number) => void,
-    itemUrl: ?string,
-    fields: List<*>,
-    item: Map<*, *>,
-    isSelected: boolean,
-    hasCursor: boolean,
-    selectable: ?boolean,
-    type: string,
+import Cell from './Cell'
 
-    toggleIdInSelectedItemsIds: typeof viewsActions.toggleIdInSelectedItemsIds,
-    getAgentsViewing: typeof agentSelectors.makeGetOtherAgentsOnTicket,
+type OwnProps = {
+    onItemClick: (item: Map<any, any>) => void
+    itemUrl: string | null | undefined
+    fields: List<any>
+    item: Map<any, any>
+    isSelected: boolean
+    hasCursor: boolean
+    selectable: boolean | null | undefined
+    type: string
 }
 
-class Row extends React.Component<Props> {
-    static defaultProps = {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export class Row extends Component<Props> {
+    static defaultProps: Partial<Props> = {
         item: fromJS({}),
         selectable: true,
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: Props) {
         // only if it just got the cursor.
         // to prevent focusing on the cursor item when a different one updates.
         if (this.props.hasCursor && !prevProps.hasCursor) {
-            scrollToReactNode(this)
+            scrollToReactNode((this as unknown) as HTMLElement)
         }
     }
 
@@ -94,9 +92,11 @@ class Row extends React.Component<Props> {
                         <input type="checkbox" checked={isSelected} readOnly />
                     </td>
                 ) : null}
-                {fields.map((field) => (
+                {fields.map((field: Map<any, any>) => (
                     <Cell
-                        key={`${item.get('id')}-${field.get('name')}`}
+                        key={`${item.get('id') as number}-${
+                            field.get('name') as string
+                        }`}
                         item={item}
                         field={field}
                         type={type}
@@ -109,8 +109,8 @@ class Row extends React.Component<Props> {
     }
 }
 
-export default connect(
-    (state) => {
+const connector = connect(
+    (state: RootState) => {
         return {
             getAgentsViewing: agentSelectors.makeGetOtherAgentsOnTicket(state),
         }
@@ -118,4 +118,6 @@ export default connect(
     {
         toggleIdInSelectedItemsIds: viewsActions.toggleIdInSelectedItemsIds,
     }
-)(Row)
+)
+
+export default connector(Row)

@@ -16,8 +16,8 @@ import history from '../../../history'
 
 import css from './Table.less'
 import HeaderCell from './Table/HeaderCell'
-import Row from './Table/Row.js'
-import ViewSelection from './Table/ViewSelection.js'
+import Row from './Table/Row'
+import ViewSelection from './Table/ViewSelection'
 
 type OwnProps = {
     view: ViewImmutable
@@ -286,7 +286,6 @@ class Table extends React.Component<Props, State> {
                             <ViewSelection
                                 colSize={fields.size + 1}
                                 selectedCount={items.size}
-                                viewName={view.get('name')}
                                 viewSelected={this.props.viewSelected}
                                 onSelectViewClick={
                                     this.props.toggleViewSelection

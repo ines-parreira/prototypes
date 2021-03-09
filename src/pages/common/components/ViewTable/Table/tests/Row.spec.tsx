@@ -1,0 +1,57 @@
+import React, {ComponentProps} from 'react'
+import {shallow, ShallowWrapper} from 'enzyme'
+import {fromJS, Map, List} from 'immutable'
+
+import * as viewsConfig from '../../../../../../config/views'
+import * as ticketFixtures from '../../../../../../fixtures/ticket'
+import * as agentsFixtures from '../../../../../../fixtures/agents'
+import {Row} from '../Row'
+
+describe('ViewTable::Table::Row', () => {
+    const viewConfig = viewsConfig.views.first() as Map<any, any>
+
+    const minProps = {
+        type: viewConfig.get('name'),
+        fields: (viewConfig.get('fields') as List<any>).take(3) as List<any>,
+        item: fromJS(ticketFixtures.ticket),
+        isSelected: false,
+        getAgentsViewing: jest.fn().mockReturnValue(fromJS([])),
+        toggleIdInSelectedItemsIds: jest.fn(),
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    describe('default row', () => {
+        let component: ShallowWrapper<ComponentProps<typeof Row>, any, Row>
+        beforeEach(() => {
+            component = shallow(<Row {...minProps} />)
+        })
+
+        it('displays', () => {
+            expect(component).toMatchSnapshot()
+        })
+
+        it('toggle delete confirmation', () => {
+            component.instance()._toggleSelection()
+            expect(minProps.toggleIdInSelectedItemsIds).toBeCalled()
+        })
+    })
+
+    it('display agents viewing', () => {
+        ;(minProps.getAgentsViewing as jest.MockedFunction<
+            typeof minProps.getAgentsViewing
+        >).mockReturnValueOnce(fromJS(agentsFixtures.agents))
+        const component = shallow(
+            <Row
+                {...minProps}
+                item={(fromJS(ticketFixtures.ticket) as Map<any, any>).set(
+                    'id',
+                    1
+                )}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+})

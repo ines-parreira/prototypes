@@ -79,7 +79,7 @@ jest.mock('../Filters/index.js', () => {
     )
 })
 
-jest.mock('../../ViewSharing/index.js', () => () => null)
+jest.mock('../../ViewSharing/ViewSharingButton', () => () => null)
 
 jest.mock(
     '../../ConfirmButton',

@@ -13,8 +13,8 @@ import {ViewVisibility} from '../../../../../constants/view.ts'
 import Loader from '../../Loader'
 
 import SharedBody from './SharedBody'
-import PublicBody from './PublicBody'
-import PrivateBody from './PrivateBody'
+import PublicBody from './PublicBody.tsx'
+import PrivateBody from './PrivateBody.tsx'
 import ViewSharingModalWarning from './ViewSharingModalWarning'
 
 type Props = {

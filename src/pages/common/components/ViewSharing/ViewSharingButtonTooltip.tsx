@@ -1,11 +1,9 @@
-// @flow
-
 import React from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
 
 type Props = {
-    isSystem: boolean,
-    isAllowed: boolean,
+    isSystem: boolean
+    isAllowed: boolean
 }
 
 export default function ViewSharingButtonTooltip({isSystem, isAllowed}: Props) {

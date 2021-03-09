@@ -1,26 +1,24 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 
-import * as viewsConfig from '../../../../../config/views.tsx'
+import * as viewsConfig from '../../../../../config/views'
 import {
     getActiveView,
     makeGetViewCount,
     isDirty,
-} from '../../../../../state/views/selectors.ts'
+} from '../../../../../state/views/selectors'
+import {RootState} from '../../../../../state/types'
 
-class ViewSelection extends React.Component {
-    static propTypes = {
-        colSize: PropTypes.number.isRequired,
-        selectedCount: PropTypes.number.isRequired,
-        viewSelected: PropTypes.bool.isRequired,
-        onSelectViewClick: PropTypes.func.isRequired,
+type OwnProps = {
+    colSize: number
+    selectedCount: number
+    viewSelected: boolean
+    onSelectViewClick: () => void
+}
 
-        activeView: PropTypes.object.isRequired,
-        getViewCount: PropTypes.func.isRequired,
-        dirtyView: PropTypes.bool.isRequired,
-    }
+type Props = OwnProps & ConnectedProps<typeof connector>
 
+class ViewSelection extends Component<Props> {
     render() {
         const {
             activeView,
@@ -44,14 +42,14 @@ class ViewSelection extends React.Component {
                             <b>
                                 {dirtyView || !currentViewCount
                                     ? ''
-                                    : currentViewCount + ' '}
+                                    : `${currentViewCount} `}
                             </b>
                             {viewConfig.get('plural')}
                             {dirtyView ? ' of this custom' : ' of '}
                             <b>
                                 {dirtyView
                                     ? ''
-                                    : '"' + activeView.get('name') + '"'}
+                                    : `"${activeView.get('name') as string}"`}
                             </b>{' '}
                             view are selected.
                             <span
@@ -80,7 +78,7 @@ class ViewSelection extends React.Component {
                                 <b>
                                     {dirtyView || !currentViewCount
                                         ? ''
-                                        : currentViewCount + ' '}
+                                        : `${currentViewCount} `}
                                 </b>
                                 {viewConfig.get('plural')}
                             </span>{' '}
@@ -88,7 +86,7 @@ class ViewSelection extends React.Component {
                             <b>
                                 {dirtyView
                                     ? ''
-                                    : '"' + activeView.get('name') + '"'}
+                                    : `"${activeView.get('name') as string}"`}
                             </b>{' '}
                             view
                         </span>
@@ -99,12 +97,12 @@ class ViewSelection extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const connector = connect((state: RootState) => {
     return {
         activeView: getActiveView(state),
         getViewCount: makeGetViewCount(state),
         dirtyView: isDirty(state),
     }
-}
+})
 
-export default connect(mapStateToProps)(ViewSelection)
+export default connector(ViewSelection)

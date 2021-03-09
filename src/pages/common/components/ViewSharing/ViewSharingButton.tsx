@@ -1,30 +1,27 @@
-// @flow
-
-// $FlowFixMe
 import React, {useState} from 'react'
 import {Button} from 'reactstrap'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
+import {Map} from 'immutable'
 
-import type {viewType} from '../../../../state/views/types'
-import type {currentUserType} from '../../../../state/types'
-import {hasRole} from '../../../../utils.ts'
-import {AGENT_ROLE} from '../../../../config/user.ts'
-import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view.ts'
+import {RootState} from '../../../../state/types'
+import {hasRole} from '../../../../utils'
+import {AGENT_ROLE} from '../../../../config/user'
+import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 
-import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
+import {AccountFeatures} from '../../../../state/currentAccount/types'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
-import ViewSharingModal from './ViewSharingModal'
+import ViewSharingModal from './ViewSharingModal/index.js'
 import css from './ViewSharingButton.less'
 
-type Props = {
-    className: string,
-    currentUser: currentUserType,
-    view: viewType,
-    hasViewSharingFeature: boolean,
+type OwnProps = {
+    className: string
+    view: Map<any, any>
 }
+
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 function ViewSharingButton({
     currentUser,
@@ -68,12 +65,13 @@ function ViewSharingButton({
     )
 }
 
-const mapStateToProps = (state) => {
-    const features = state.currentAccount.get('features')
+const connector = connect((state: RootState) => {
+    const features = state.currentAccount.get('features') as Map<any, any>
     const hasViewSharingFeature = features.get(AccountFeatures.ViewSharing)
     return {
         currentUser: state.currentUser,
         hasViewSharingFeature,
     }
-}
-export default connect(mapStateToProps)(ViewSharingButton)
+})
+
+export default connector(ViewSharingButton)
