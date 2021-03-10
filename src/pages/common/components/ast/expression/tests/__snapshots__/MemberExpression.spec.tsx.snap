@@ -277,35 +277,35 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
           tabindex="0"
           type="button"
         >
-          created date
+          Created date
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          financial status
+          Financial status
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          fulfillment status
+          Fulfillment status
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          tags
+          Tags
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          total price
+          Total price
         </button>
         <div
           class="subcategoryLabel"
@@ -317,28 +317,28 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
           tabindex="0"
           type="button"
         >
-          created date
+          Created date
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          shipment status
+          Shipment status
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          status
+          Status
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          tracking number
+          Tracking number
         </button>
         <div
           class="subcategoryLabel"
@@ -350,14 +350,14 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
           tabindex="0"
           type="button"
         >
-          country
+          Country
         </button>
         <button
           class="option subOption dropdown-item"
           tabindex="0"
           type="button"
         >
-          state
+          State
         </button>
       </div>
     </div>

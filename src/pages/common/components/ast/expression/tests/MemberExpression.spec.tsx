@@ -120,7 +120,7 @@ describe('<MemberExpression/>', () => {
         const {getByText} = render(<MemberExpressionContainer {...minProps} />)
 
         fireEvent.click(getByText('Shopify Last Order'))
-        fireEvent.click(getByText('fulfillment status'))
+        fireEvent.click(getByText('Fulfillment status'))
         expect(
             (minProps.ruleUpdated as jest.MockedFunction<
                 typeof minProps.ruleUpdated

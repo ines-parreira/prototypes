@@ -63,52 +63,52 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
 } = {
     [IdentifierCategoryKey.Message]: [
         {
-            label: 'channel',
+            label: 'Channel',
             text: 'message channel',
             value: 'message.channel',
         },
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'message created date',
             value: 'message.created_datetime',
         },
         {
-            label: 'from agent',
+            label: 'From agent',
             text: 'message from agent',
             value: 'message.from_agent',
         },
         {
-            label: 'integration',
+            label: 'Integration',
             text: 'message integration',
             value: 'message.integration_id',
         },
         {
-            label: 'intents',
+            label: 'Intents',
             text: 'message intents',
             value: 'message.intents.name',
         },
         {
-            label: 'public',
+            label: 'Public',
             text: 'message public',
             value: 'message.public',
         },
         {
-            label: 'sent date',
+            label: 'Sent date',
             text: 'sent date of message',
             value: 'message.sent_datetime',
         },
         {
-            label: 'sentiments',
+            label: 'Sentiments',
             text: 'message sentiments',
             value: 'message.sentiments.name',
         },
         {
-            label: 'body',
+            label: 'Body',
             text: 'message body',
             value: 'message.text',
         },
         {
-            label: 'via',
+            label: 'Via',
             text: 'message via',
             value: 'message.via',
         },
@@ -116,7 +116,7 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: IdentifierSubCategoryValue.Receiver,
             children: [
                 {
-                    label: 'receiver email',
+                    label: 'Receiver email',
                     text: 'message receiver email',
                     value: 'message.receiver.email',
                 },
@@ -126,12 +126,12 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: IdentifierSubCategoryValue.Sender,
             children: [
                 {
-                    label: 'sender customer',
+                    label: 'Sender customer',
                     text: 'message sender customer',
                     value: 'message.sender.customer',
                 },
                 {
-                    label: 'sender email',
+                    label: 'Sender email',
                     text: 'message sender email',
                     value: 'message.sender.email',
                 },
@@ -141,12 +141,12 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: IdentifierSubCategoryValue.Source,
             children: [
                 {
-                    label: 'from address',
+                    label: 'From address',
                     text: 'message source from address',
                     value: 'message.source.from.address',
                 },
                 {
-                    label: 'from name',
+                    label: 'From name',
                     text: 'message source from name',
                     value: 'message.source.from.name',
                 },
@@ -155,118 +155,118 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
     ],
     [IdentifierCategoryKey.Ticket]: [
         {
-            label: 'assignee user',
+            label: 'Assignee user',
             text: 'ticket assignee user',
             value: 'ticket.assignee_user_id',
         },
         {
-            label: 'assignee team',
+            label: 'Assignee team',
             text: 'ticket assignee team',
             value: 'ticket.assignee_team_id',
         },
         {
-            label: 'assignee user email',
+            label: 'Assignee user email',
             text: 'ticket assignee user email',
             value: 'ticket.assignee_user.email',
         },
         {
-            label: 'channel',
+            label: 'Channel',
             text: 'ticket channel',
             value: 'ticket.channel',
         },
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'created date of ticket',
             value: 'ticket.created_datetime',
         },
         {
-            label: 'from agent',
+            label: 'From agent',
             text: 'ticket from agent',
             value: 'ticket.from_agent',
         },
         {
-            label: 'language',
+            label: 'Language',
             text: 'ticket language',
             value: 'ticket.language',
         },
         {
-            label: 'last message date',
+            label: 'Last message date',
             text: 'date of last message in ticket',
             value: 'ticket.last_message_datetime',
         },
         {
-            label: 'last received message date',
+            label: 'Last received message date',
             text: 'date of last received message in ticket',
             value: 'ticket.last_received_message_datetime',
         },
         {
-            label: 'spam',
+            label: 'Spam',
             text: 'ticket spam',
             value: 'ticket.spam',
         },
         {
-            label: 'status',
+            label: 'Status',
             text: 'ticket status',
             value: 'ticket.status',
         },
         {
-            label: 'subject',
+            label: 'Subject',
             text: 'ticket subject',
             value: 'ticket.subject',
         },
         {
-            label: 'tags',
+            label: 'Tags',
             text: 'ticket tags',
             value: 'ticket.tags.name',
         },
         {
-            label: 'via',
+            label: 'Via',
             text: 'ticket via',
             value: 'ticket.via',
         },
     ],
     [IdentifierCategoryKey.Customer]: [
         {
-            label: 'data',
+            label: 'Data',
             text: 'customer data',
             value: 'ticket.customer.data',
         },
         {
-            label: 'email',
+            label: 'Email',
             text: 'customer email',
             value: 'ticket.customer.email',
         },
         {
-            label: 'other integrations',
+            label: 'Other integrations',
             text: 'customer other integrations',
             value: 'ticket.customer.integrations.other',
         },
     ],
     [IdentifierCategoryKey.ShopifyLastOrder]: [
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'date of last order',
             value: 'ticket.customer.integrations.shopify.last_order.created_at',
         },
         {
-            label: 'financial status',
+            label: 'Financial status',
             text: 'last order financial status',
             value:
                 'ticket.customer.integrations.shopify.last_order.financial_status',
         },
         {
-            label: 'fulfillment status',
+            label: 'Fulfillment status',
             text: 'last order fulfillment status',
             value:
                 'ticket.customer.integrations.shopify.last_order.fulfillment_status',
         },
         {
-            label: 'tags',
+            label: 'Tags',
             text: 'last order tags',
             value: 'ticket.customer.integrations.shopify.last_order.tags',
         },
         {
-            label: 'total price',
+            label: 'Total price',
             text: 'total price of last order',
             value:
                 'ticket.customer.integrations.shopify.last_order.total_price',
@@ -275,25 +275,25 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: IdentifierSubCategoryValue.LastFulfillment,
             children: [
                 {
-                    label: 'created date',
+                    label: 'Created date',
                     text: 'shipping date of last order',
                     value:
                         'ticket.customer.integrations.shopify.last_order.last_fulfillment.created_at',
                 },
                 {
-                    label: 'shipment status',
+                    label: 'Shipment status',
                     text: 'last order shipment status',
                     value:
                         'ticket.customer.integrations.shopify.last_order.last_fulfillment.shipment_status',
                 },
                 {
-                    label: 'status',
+                    label: 'Status',
                     text: 'last fulfillment status',
                     value:
                         'ticket.customer.integrations.shopify.last_order.last_fulfillment.status',
                 },
                 {
-                    label: 'tracking number',
+                    label: 'Tracking number',
                     text: 'last order tracking numbner',
                     value:
                         'ticket.customer.integrations.shopify.last_order.last_fulfillment.tracking_number',
@@ -304,13 +304,13 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: IdentifierSubCategoryValue.ShippingAddress,
             children: [
                 {
-                    label: 'country',
+                    label: 'Country',
                     text: 'destination country of last order',
                     value:
                         'ticket.customer.integrations.shopify.last_order.shipping_address.country',
                 },
                 {
-                    label: 'state',
+                    label: 'State',
                     text: 'destination state of last order',
                     value: 'message.source.from.address',
                 },
@@ -319,73 +319,73 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
     ],
     [IdentifierCategoryKey.ShopifyCustomer]: [
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'customer created date',
             value: 'ticket.customer.integrations.shopify.customer.created_at',
         },
         {
-            label: 'orders count',
+            label: 'Orders count',
             text: 'customer order count',
             value: 'ticket.customer.integrations.shopify.customer.orders_count',
         },
         {
-            label: 'tags',
+            label: 'Tags',
             text: 'customer tags',
             value: 'ticket.customer.integrations.shopify.customer.tags',
         },
         {
-            label: 'total spent',
+            label: 'Total spent',
             text: 'customer total spent',
             value: 'ticket.customer.integrations.shopify.customer.total_spent',
         },
     ],
     [IdentifierCategoryKey.Magento2LastOrder]: [
         {
-            label: 'date of last order',
+            label: 'Date of last order',
             text: 'date of last order',
             value:
                 'ticket.customer.integrations.magento2.last_order.created_at',
         },
         {
-            label: 'grand total',
+            label: 'Grand total',
             text: 'last order grand total',
             value:
                 'ticket.customer.integrations.magento2.last_order.grand_total',
         },
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'shipping date of last order',
             value:
                 'ticket.customer.integrations.magento2.last_order.last_shipment.created_at',
         },
         {
-            label: 'state',
+            label: 'State',
             text: 'last order state',
             value: 'ticket.customer.integrations.magento2.last_order.state',
         },
     ],
     [IdentifierCategoryKey.Magento2Customer]: [
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'created date of customer',
             value: 'ticket.customer.integrations.magento2.customer.created_at',
         },
     ],
     [IdentifierCategoryKey.RechargeLastSubscription]: [
         {
-            label: 'created date',
+            label: 'Created date',
             text: 'created date of last subscription',
             value:
                 'ticket.customer.integrations.recharge.last_subscription.created_at',
         },
         {
-            label: 'date of next scheduled charge',
+            label: 'Date of next scheduled charge',
             text: 'next scheduled charge date of last subscription',
             value:
                 'ticket.customer.integrations.recharge.last_subscription.next_charge_scheduled_at',
         },
         {
-            label: 'product title',
+            label: 'Product title',
             text: 'last subscription product title',
             value:
                 'ticket.customer.integrations.recharge.last_subscription.product_title',
@@ -393,24 +393,24 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
     ],
     [IdentifierCategoryKey.RechargeCustomer]: [
         {
-            label: 'status',
+            label: 'Status',
             text: 'customer status',
             value: 'ticket.customer.integrations.recharge.customer.status',
         },
     ],
     [IdentifierCategoryKey.SmileCustomer]: [
         {
-            label: 'point balance',
+            label: 'Point balance',
             text: 'customer point balance',
             value: 'ticket.customer.integrations.smile.customer.point_balance',
         },
         {
-            label: 'state',
+            label: 'State',
             text: 'customer state',
             value: 'ticket.customer.integrations.smile.customer.state',
         },
         {
-            label: 'vip tier',
+            label: 'Vip tier',
             text: 'customer vip tier',
             value: 'ticket.customer.integrations.smile.customer.vip_tier.name',
         },
