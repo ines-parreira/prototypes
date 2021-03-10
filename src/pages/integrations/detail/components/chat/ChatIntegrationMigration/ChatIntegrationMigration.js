@@ -55,6 +55,10 @@ export class ChatIntegrationMigration extends React.Component<Props, State> {
         ])
         payload.type = 'gorgias_chat'
 
+        if (payload.meta.language === 'fr') {
+            payload.meta.language = 'fr-FR'
+        }
+
         return this.props.actions
             .updateOrCreateIntegration(fromJS(payload))
             .then(() => {

@@ -11,7 +11,10 @@ import {
 } from '../../../../../../../config/integrations/smooch_inside.ts'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages.ts'
+import {
+    FRENCH_LANGUAGE,
+    SPANISH_LANGUAGE,
+} from '../../../../../../../constants/languages.ts'
 
 import {ChatIntegrationMigration} from '../ChatIntegrationMigration'
 
@@ -123,17 +126,40 @@ describe('ChatIntegrationMigration component', () => {
         expect(parameters.get('decoration')).toEqual(
             integration.get('decoration')
         )
-        expect(parameters.get('meta.quick_replies')).toEqual(
-            integration.get('meta.quick_replies')
+        expect(parameters.getIn(['meta', 'quick_replies'])).toEqual(
+            integration.getIn(['meta', 'quick_replies'])
         )
-        expect(parameters.get('meta.preferences')).toEqual(
-            integration.get('meta.preferences')
+        expect(parameters.getIn(['meta', 'preferences'])).toEqual(
+            integration.getIn(['meta', 'preferences'])
         )
-        expect(parameters.get('meta.campaigns')).toEqual(
-            integration.get('meta.campaigns')
+        expect(parameters.getIn(['meta', 'campaigns'])).toEqual(
+            integration.getIn(['meta', 'campaigns'])
         )
-        expect(parameters.get('meta.language')).toEqual(
-            integration.get('meta.language')
+        expect(parameters.getIn(['meta', 'language'])).toEqual(
+            integration.getIn(['meta', 'language'])
         )
+    })
+
+    it('should create a new gorgias_chat integration with the default french locale', () => {
+        const actions = {
+            updateOrCreateIntegration: jest.fn(),
+        }
+
+        const frenchIntegration = integration.setIn(
+            ['meta', 'language'],
+            FRENCH_LANGUAGE
+        )
+
+        const {container} = render(
+            <ChatIntegrationMigration
+                actions={actions}
+                integration={frenchIntegration}
+            />
+        )
+        const btn = container.querySelector('button.btn-success')
+        userEvent.click(btn)
+
+        const parameters = actions.updateOrCreateIntegration.mock.calls[0][0]
+        expect(parameters.getIn(['meta', 'language'])).toEqual('fr-FR')
     })
 })
