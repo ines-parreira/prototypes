@@ -331,6 +331,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                 allowCustomValue={false}
                                 fixedWidth={true}
                                 fullWidth={false}
+                                id={null}
                                 onChange={[Function]}
                                 onSearchChange={[Function]}
                                 options={
@@ -387,6 +388,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   ]
                                 }
                                 placeholder="Select an option"
+                                required={false}
                                 singular="option"
                                 style={Object {}}
                                 value="2"
@@ -447,11 +449,14 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                       Tuesday
                                                     </span>
                                                     <input
+                                                      autoComplete="chrome-off"
                                                       className="input"
+                                                      id={null}
                                                       onBlur={[Function]}
                                                       onChange={[Function]}
                                                       onFocus={[Function]}
                                                       onKeyDown={[Function]}
+                                                      required={false}
                                                       style={
                                                         Object {
                                                           "minWidth": 82,
@@ -741,6 +746,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                 allowCustomValue={false}
                                 fixedWidth={true}
                                 fullWidth={false}
+                                id={null}
                                 onChange={[Function]}
                                 onSearchChange={[Function]}
                                 options={
@@ -797,6 +803,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   ]
                                 }
                                 placeholder="Select an option"
+                                required={false}
                                 singular="option"
                                 style={Object {}}
                                 value="4"
@@ -857,11 +864,14 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                       Thursday
                                                     </span>
                                                     <input
+                                                      autoComplete="chrome-off"
                                                       className="input"
+                                                      id={null}
                                                       onBlur={[Function]}
                                                       onChange={[Function]}
                                                       onFocus={[Function]}
                                                       onKeyDown={[Function]}
+                                                      required={false}
                                                       style={
                                                         Object {
                                                           "minWidth": 82,

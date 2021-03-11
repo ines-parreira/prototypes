@@ -346,10 +346,12 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               allowCustomValue={false}
               fixedWidth={false}
               fullWidth={true}
+              id={null}
               onChange={[Function]}
               onSearchChange={[Function]}
               options={Array []}
               placeholder="Select an email integration"
+              required={false}
               singular="option"
               style={Object {}}
               value={null}
@@ -637,10 +639,12 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               allowCustomValue={false}
               fixedWidth={false}
               fullWidth={true}
+              id={null}
               onChange={[Function]}
               onSearchChange={[Function]}
               options={Array []}
               placeholder="Select an email integration"
+              required={false}
               singular="option"
               style={Object {}}
               value={null}

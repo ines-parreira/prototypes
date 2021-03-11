@@ -5,6 +5,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
   allowCustomValue={false}
   fixedWidth={false}
   fullWidth={false}
+  id={null}
   onChange={[Function]}
   onSearchChange={[Function]}
   options={
@@ -54,6 +55,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
     ]
   }
   placeholder="Select an integration"
+  required={false}
   singular="option"
   style={
     Object {

@@ -143,6 +143,20 @@ export const DEFAULT_SOURCE_PATHS = {
  * Integration-related
  */
 
+export function shouldHidePhoneIntegration() {
+    const isProd =
+        location.hostname.endsWith('.gorgias.io') ||
+        location.hostname.endsWith('.gorgias.com')
+    const phoneAllowedHostnames = [
+        'test-samy.gorgias.com',
+        'illiatststore.gorgias.com',
+        'zachbanov.gorgias.com',
+        'test-martin.gorgias.com',
+    ]
+
+    return isProd && !phoneAllowedHostnames.includes(location.hostname)
+}
+
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
@@ -155,6 +169,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Email',
         description:
             'Connect your support email addresses and respond to your customers from Gorgias',
+    },
+    {
+        type: IntegrationType.PhoneIntegrationType,
+        title: 'Phone',
+        description: 'Chat with your customers over the phone from Gorgias.',
+        image: 'integrations/phone.png',
+        hide: shouldHidePhoneIntegration(),
     },
     {
         type: IntegrationType.GorgiasChatIntegrationType,

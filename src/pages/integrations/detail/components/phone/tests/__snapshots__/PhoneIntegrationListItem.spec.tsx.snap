@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
+<tr>
+  <td
+    class="link-full-td"
+  >
+    <a
+      to="/app/settings/integrations/phone/1/preferences"
+    >
+      <div>
+        <b
+          class="mr-2"
+        >
+          <span
+            class="mr-3"
+          >
+            🍏
+          </span>
+          Fake phone integration
+        </b>
+        <span
+          class="text-faded"
+        >
+          (415) 111-2222
+        </span>
+      </div>
+    </a>
+  </td>
+</tr>
+`;

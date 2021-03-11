@@ -189,6 +189,8 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
         nextStep = '/installation'
     } else if (resp.type === IntegrationType.SmoochIntegrationType) {
         nextStep = '/overview'
+    } else if (resp.type === IntegrationType.PhoneIntegrationType) {
+        nextStep = '/preferences'
     }
 
     history.push(

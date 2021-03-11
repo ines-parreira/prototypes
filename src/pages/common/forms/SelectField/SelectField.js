@@ -20,6 +20,7 @@ const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
 
 type Props = {
+    id: ?string,
     allowCustomValue: boolean,
     options: Option[],
     placeholder: string,
@@ -27,6 +28,7 @@ type Props = {
     style: {},
     rightAddon?: string,
     value?: Value,
+    required: boolean,
     onChange: (Value) => void,
     onSearchChange: (string) => void,
     className?: string,
@@ -45,6 +47,7 @@ type State = {
 
 export default class SelectField extends Component<Props, State> {
     static defaultProps = {
+        id: null,
         allowCustomValue: false,
         options: [],
         placeholder: 'Select an option',
@@ -53,6 +56,7 @@ export default class SelectField extends Component<Props, State> {
         onSearchChange: _noop,
         fixedWidth: false,
         fullWidth: false,
+        required: false,
     }
     inputRef: ?HTMLInputElement
 
@@ -226,8 +230,10 @@ export default class SelectField extends Component<Props, State> {
 
     render() {
         const {
+            id,
             allowCustomValue,
             value,
+            required,
             singular,
             style,
             placeholder,
@@ -320,14 +326,17 @@ export default class SelectField extends Component<Props, State> {
                                 style={{
                                     minWidth: selectMinWidth,
                                 }}
+                                id={id}
                                 className={css.input}
                                 ref={(ref) => (this.inputRef = ref)}
                                 value={input}
+                                required={required && !value}
                                 onChange={this._onSearchChange}
                                 onKeyDown={this._onSearchKeyDown}
                                 onFocus={this._onFocus}
                                 onBlur={this._onBlur}
                                 type="text"
+                                autoComplete="chrome-off"
                             />
                         </div>
                     </DropdownToggle>

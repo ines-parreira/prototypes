@@ -5,6 +5,7 @@ exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`
   allowCustomValue={true}
   fixedWidth={false}
   fullWidth={false}
+  id={null}
   onChange={[Function]}
   onSearchChange={[Function]}
   options={
@@ -24,6 +25,7 @@ exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`
     ]
   }
   placeholder="Add a tag"
+  required={false}
   singular="tag"
   style={
     Object {
@@ -84,6 +86,7 @@ exports[`ast widgets TagsSelect should render a SelectField 1`] = `
   allowCustomValue={true}
   fixedWidth={false}
   fullWidth={false}
+  id={null}
   onChange={[Function]}
   onSearchChange={[Function]}
   options={
@@ -103,6 +106,7 @@ exports[`ast widgets TagsSelect should render a SelectField 1`] = `
     ]
   }
   placeholder="Add a tag"
+  required={false}
   singular="tag"
   style={
     Object {

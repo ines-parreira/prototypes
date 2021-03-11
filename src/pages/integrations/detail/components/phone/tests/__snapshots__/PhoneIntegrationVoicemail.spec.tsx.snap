@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationVoicemail/> render() should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/phone"
+          >
+            Phone
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          🍏
+           
+          Fake phone integration
+          <small
+            class="text-muted ml-2"
+          >
+            (415) 111-2222
+          </small>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Voicemail
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/phone/1/preferences"
+    >
+      Preferences
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6 col-xl-4"
+      >
+        <form
+          class=""
+        >
+          <p>
+            TODO - WIP
+          </p>
+          <button
+            class="mt-3 btn btn-success"
+            type="submit"
+          >
+            Save changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -257,6 +257,7 @@ exports[`ActionButton component should display a single option with a select par
           className="mb-2"
           fixedWidth={false}
           fullWidth={false}
+          id={null}
           key="param"
           label="Execute the action for real"
           name="param"
@@ -275,6 +276,7 @@ exports[`ActionButton component should display a single option with a select par
             ]
           }
           placeholder="Select an option"
+          required={false}
           singular="option"
           style={Object {}}
           type="select"
@@ -552,6 +554,7 @@ exports[`ActionButton component should display multiple options with a common pa
           allowCustomValue={false}
           fixedWidth={false}
           fullWidth={false}
+          id={null}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -568,6 +571,7 @@ exports[`ActionButton component should display multiple options with a common pa
             ]
           }
           placeholder="Select an option"
+          required={false}
           singular="option"
           style={
             Object {
@@ -686,6 +690,7 @@ exports[`ActionButton component should display multiple options with different p
           allowCustomValue={false}
           fixedWidth={false}
           fullWidth={false}
+          id={null}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -702,6 +707,7 @@ exports[`ActionButton component should display multiple options with different p
             ]
           }
           placeholder="Select an option"
+          required={false}
           singular="option"
           style={
             Object {
@@ -820,6 +826,7 @@ exports[`ActionButton component should display multiple options without paramete
           allowCustomValue={false}
           fixedWidth={false}
           fullWidth={false}
+          id={null}
           key="input"
           onChange={[Function]}
           onSearchChange={[Function]}
@@ -836,6 +843,7 @@ exports[`ActionButton component should display multiple options without paramete
             ]
           }
           placeholder="Select an option"
+          required={false}
           singular="option"
           style={
             Object {

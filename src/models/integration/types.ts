@@ -22,6 +22,7 @@ export enum IntegrationType {
     ZendeskIntegrationType = 'zendesk',
     YotpoIntegrationType = 'yotpo',
     KlaviyoIntegrationType = 'klaviyo',
+    PhoneIntegrationType = 'phone',
 }
 
 export enum IntegrationDataItemType {

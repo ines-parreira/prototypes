@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationNavigation/> render() should render 1`] = `
+<nav
+  class="navbar navbar"
+>
+  <a
+    activeclassname="disabled"
+    class="nav-link"
+    to="/app/settings/integrations/phone/1/preferences"
+  >
+    Preferences
+  </a>
+</nav>
+`;

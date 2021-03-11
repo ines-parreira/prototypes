@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationList/> render() should render 1`] = `
+<div
+  class="w-100"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Phone
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <button
+        class="btn btn-success"
+        type="submit"
+      >
+        Add Phone Number
+      </button>
+    </div>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="mb-3"
+    >
+      Chat with your customers over the phone from Gorgias.
+    </div>
+  </div>
+  <table
+    class="table-integrations mt-3 table table-hover"
+  >
+    <tbody>
+      <tr>
+        <td
+          class="link-full-td"
+        >
+          <a
+            to="/app/settings/integrations/phone/1/preferences"
+          >
+            <div>
+              <b
+                class="mr-2"
+              />
+              <span
+                class="text-faded"
+              />
+            </div>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

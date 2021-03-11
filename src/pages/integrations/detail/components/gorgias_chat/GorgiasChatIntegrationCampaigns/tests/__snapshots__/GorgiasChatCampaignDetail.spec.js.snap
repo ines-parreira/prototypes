@@ -175,6 +175,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                           is
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -330,6 +331,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                           Random agent
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -840,6 +842,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                           contains
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -955,6 +958,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                           is greater than
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1099,6 +1103,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                           </div>
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1608,6 +1613,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                           contains
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1723,6 +1729,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                           is greater than
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1867,6 +1874,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                           </div>
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"

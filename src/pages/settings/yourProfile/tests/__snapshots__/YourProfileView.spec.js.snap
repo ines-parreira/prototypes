@@ -166,6 +166,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               allowCustomValue={false}
               fixedWidth={false}
               fullWidth={true}
+              id={null}
               label="Timezone"
               name="timezone"
               onChange={[Function]}
@@ -2543,6 +2544,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 ]
               }
               placeholder="Select an option"
+              required={false}
               singular="option"
               style={Object {}}
               value="EST"
@@ -2570,6 +2572,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               allowCustomValue={false}
               fixedWidth={false}
               fullWidth={true}
+              id={null}
               name="language"
               onChange={[Function]}
               onSearchChange={[Function]}
@@ -2586,6 +2589,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 ]
               }
               placeholder="Select an option"
+              required={false}
               singular="option"
               style={Object {}}
               value="en"

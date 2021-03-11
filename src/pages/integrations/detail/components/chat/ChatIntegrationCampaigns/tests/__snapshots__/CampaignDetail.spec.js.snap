@@ -175,6 +175,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           is
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -330,6 +331,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           Random agent
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -822,6 +824,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           contains
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -937,6 +940,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           is greater than
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1081,6 +1085,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           </div>
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1572,6 +1577,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           contains
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1687,6 +1693,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           is greater than
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"
@@ -1831,6 +1838,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           </div>
                         </span>
                         <input
+                          autocomplete="chrome-off"
                           class="input"
                           style="min-width: 10px;"
                           type="text"

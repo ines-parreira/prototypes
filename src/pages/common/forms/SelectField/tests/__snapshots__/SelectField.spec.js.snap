@@ -138,11 +138,14 @@ exports[`SelectField should render a select input with custom props 1`] = `
           First
         </span>
         <input
+          autoComplete="chrome-off"
           className="input"
+          id={null}
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
+          required={false}
           style={
             Object {
               "minWidth": 10,
@@ -204,11 +207,14 @@ exports[`SelectField should render a select input with default props 1`] = `
           Select an option
         </span>
         <input
+          autoComplete="chrome-off"
           className="input"
+          id={null}
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
+          required={false}
           style={
             Object {
               "minWidth": 10,
@@ -286,11 +292,14 @@ exports[`SelectField should set the minWidth of the input according to the lengt
           First
         </span>
         <input
+          autoComplete="chrome-off"
           className="input"
+          id={null}
           onBlur={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
+          required={false}
           style={
             Object {
               "minWidth": 58,
@@ -395,6 +404,7 @@ Object {
   "allowCustomValue": false,
   "fixedWidth": false,
   "fullWidth": false,
+  "id": null,
   "onChange": [Function],
   "onSearchChange": [Function],
   "options": Array [
@@ -410,6 +420,7 @@ Object {
     },
   ],
   "placeholder": "placeholder",
+  "required": false,
   "singular": "option",
   "style": Object {
     "background": "red",
@@ -423,10 +434,12 @@ Object {
   "allowCustomValue": false,
   "fixedWidth": false,
   "fullWidth": false,
+  "id": null,
   "onChange": [Function],
   "onSearchChange": [Function],
   "options": Array [],
   "placeholder": "Select an option",
+  "required": false,
   "singular": "option",
   "style": Object {},
 }

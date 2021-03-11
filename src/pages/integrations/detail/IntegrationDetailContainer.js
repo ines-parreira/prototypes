@@ -21,6 +21,7 @@ import {
     SMOOCH_INTEGRATION_TYPE,
     YOTPO_INTEGRATION_TYPE,
     KLAVIYO_INTEGRATION_TYPE,
+    PHONE_INTEGRATION_TYPE,
 } from '../../../constants/integration.ts'
 
 import {compare} from '../../../utils.ts'
@@ -47,6 +48,7 @@ import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChat
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
+import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService.tsx'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
@@ -77,6 +79,7 @@ import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/in
 import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/index'
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/index'
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification'
+import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
@@ -91,8 +94,32 @@ import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/H
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents'
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
-import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
-import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService.tsx'
+
+import PhoneIntegrationList from './components/phone/PhoneIntegrationList.tsx'
+import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate.tsx'
+import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences.tsx'
+import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail.tsx'
+
+const TAB_EMAIL_FORWARDING = 'forwarding'
+const TAB_EMAIL_VERIFICATION = 'verification'
+const TAB_EMAIL_CUSTOM = 'custom'
+const TAB_FACEBOOK_CUSTOMER_CHAT = 'customer_chat'
+const TAB_FACEBOOK_PREFERENCES = 'preferences'
+const TAB_FACEBOOK_ADS = 'ads'
+const TAB_HTTP_EVENTS = 'events'
+const TAB_CHAT_INSTALLATION = 'installation'
+const TAB_CHAT_PREFERENCES = 'preferences'
+const TAB_CHAT_QUICK_REPLIES = 'quick_replies'
+const TAB_CHAT_SELF_SERVICE = 'self_service'
+const TAB_CHAT_CAMPAIGNS = 'campaigns'
+const TAB_PHONE_PREFERENCES = 'preferences'
+const TAB_PHONE_VOICEMAIL = 'voicemail'
+const TAB_SMOOCH_INSIDE_MIGRATION = 'migration'
+const TAB_SMOOCH_INSIDE_INSTALLATION = 'installation'
+const TAB_SMOOCH_INSIDE_PREFERENCES = 'preferences'
+const TAB_SMOOCH_INSIDE_CAMPAIGNS = 'campaigns'
+const TAB_SMOOCH_INSIDE_QUICK_REPLIES = 'quick-replies'
+const TAB_SMOOCH_PREFERENCES = 'preferences'
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -191,7 +218,7 @@ class IntegrationDetailContainer extends React.Component {
                     }
 
                     if (isUpdate) {
-                        if (params.extra === 'forwarding') {
+                        if (params.extra === TAB_EMAIL_FORWARDING) {
                             return (
                                 <EmailIntegrationCreateForwarding
                                     actions={actions}
@@ -200,7 +227,7 @@ class IntegrationDetailContainer extends React.Component {
                             )
                         }
 
-                        if (params.extra === 'verification') {
+                        if (params.extra === TAB_EMAIL_VERIFICATION) {
                             return (
                                 <EmailIntegrationCreateVerification
                                     actions={actions}
@@ -218,7 +245,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'custom') {
+                    if (params.extra === TAB_EMAIL_CUSTOM) {
                         return (
                             <EmailIntegrationCreateCustom
                                 actions={actions}
@@ -260,7 +287,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'customer_chat') {
+                    if (params.extra === TAB_FACEBOOK_CUSTOMER_CHAT) {
                         return (
                             <FacebookIntegrationCustomerChat
                                 actions={actions}
@@ -270,7 +297,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'preferences') {
+                    if (params.extra === TAB_FACEBOOK_PREFERENCES) {
                         return (
                             <FacebookIntegrationPreferences
                                 actions={actions}
@@ -280,7 +307,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'ads') {
+                    if (params.extra === TAB_FACEBOOK_ADS) {
                         return (
                             <FacebookIntegrationInstagramAds
                                 integrations={commonProps.integrations}
@@ -308,7 +335,7 @@ class IntegrationDetailContainer extends React.Component {
 
             case HTTP_INTEGRATION_TYPE:
                 if (isDetail) {
-                    if (params.extra === 'events') {
+                    if (params.extra === TAB_HTTP_EVENTS) {
                         if (params.subId) {
                             return (
                                 <HTTPIntegrationLayout
@@ -363,7 +390,7 @@ class IntegrationDetailContainer extends React.Component {
 
             case GORGIAS_CHAT_INTEGRATION_TYPE:
                 if (isDetail) {
-                    if (params.extra === 'installation') {
+                    if (params.extra === TAB_CHAT_INSTALLATION) {
                         return (
                             <GorgiasChatIntegrationInstall
                                 actions={actions}
@@ -373,7 +400,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'preferences') {
+                    if (params.extra === TAB_CHAT_PREFERENCES) {
                         return (
                             <GorgiasChatIntegrationPreferences
                                 actions={actions}
@@ -383,7 +410,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'quick_replies') {
+                    if (params.extra === TAB_CHAT_QUICK_REPLIES) {
                         return (
                             <GorgiasChatIntegrationQuickReplies
                                 integration={commonProps.integration}
@@ -391,7 +418,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'self_service') {
+                    if (params.extra === TAB_CHAT_SELF_SERVICE) {
                         return (
                             <GorgiasChatIntegrationSelfService
                                 integration={commonProps.integration}
@@ -399,7 +426,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'campaigns') {
+                    if (params.extra === TAB_CHAT_CAMPAIGNS) {
                         if (params.subId) {
                             return (
                                 <GorgiasChatCampaignDetail
@@ -435,9 +462,43 @@ class IntegrationDetailContainer extends React.Component {
                     />
                 )
 
+            case PHONE_INTEGRATION_TYPE:
+                if (isDetail) {
+                    if (!isUpdate) {
+                        return <PhoneIntegrationCreate actions={actions} />
+                    }
+
+                    if (params.extra === TAB_PHONE_PREFERENCES) {
+                        return (
+                            <PhoneIntegrationPreferences
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === TAB_PHONE_VOICEMAIL) {
+                        return (
+                            <PhoneIntegrationVoicemail
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+                }
+
+                return (
+                    <PhoneIntegrationList
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
             case SMOOCH_INSIDE_INTEGRATION_TYPE:
                 if (isDetail) {
-                    if (params.extra === 'migration') {
+                    if (params.extra === TAB_SMOOCH_INSIDE_MIGRATION) {
                         return (
                             <ChatIntegrationMigration
                                 actions={actions}
@@ -447,7 +508,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'installation') {
+                    if (params.extra === TAB_SMOOCH_INSIDE_INSTALLATION) {
                         return (
                             <ChatIntegrationInstall
                                 actions={actions}
@@ -457,7 +518,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'preferences') {
+                    if (params.extra === TAB_SMOOCH_INSIDE_PREFERENCES) {
                         return (
                             <ChatIntegrationPreferences
                                 actions={actions}
@@ -467,7 +528,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'campaigns') {
+                    if (params.extra === TAB_SMOOCH_INSIDE_CAMPAIGNS) {
                         if (params.subId) {
                             return (
                                 <CampaignDetail
@@ -484,7 +545,7 @@ class IntegrationDetailContainer extends React.Component {
                         )
                     }
 
-                    if (params.extra === 'quick-replies') {
+                    if (params.extra === TAB_SMOOCH_INSIDE_QUICK_REPLIES) {
                         return (
                             <ChatIntegrationQuickReplies
                                 integration={commonProps.integration}
@@ -513,7 +574,7 @@ class IntegrationDetailContainer extends React.Component {
 
             case SMOOCH_INTEGRATION_TYPE:
                 if (isDetail) {
-                    if (params.extra === 'preferences') {
+                    if (params.extra === TAB_SMOOCH_PREFERENCES) {
                         return (
                             <SmoochIntegrationPreferences
                                 actions={actions}

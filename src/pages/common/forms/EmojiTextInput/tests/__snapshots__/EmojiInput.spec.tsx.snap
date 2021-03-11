@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmojiTextInput/> render() should render 1`] = `
+<div
+  className="container"
+>
+  <EmojiSelect
+    className="emojiPicker"
+    emoji="🍔"
+    onEmojiClear={[Function]}
+    onEmojiSelect={[Function]}
+  />
+  <Input
+    className="input"
+    id="foo"
+    onChange={[Function]}
+    placeholder="Placeholder..."
+    required={true}
+    tabIndex={0}
+    type="text"
+    value="Foo"
+  />
+</div>
+`;
