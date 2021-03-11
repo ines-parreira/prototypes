@@ -228,8 +228,16 @@ export default class Right extends React.Component {
             }
         } else if (field.get('name') === 'channel') {
             if (node.type === 'ArrayExpression') {
+                const filteredField = field.updateIn(
+                    ['filter', 'enum'],
+                    (channels) =>
+                        channels.filter(
+                            (channel) => channel !== 'instagram-direct-message'
+                        )
+                )
+
                 const selectedOptions = node.elements.map((opt) => opt.value)
-                const options = field
+                const options = filteredField
                     .getIn(['filter', 'enum'])
                     .map((val) => ({
                         label: val,
