@@ -179,9 +179,12 @@ export class TicketMacros extends React.Component<Props, State> {
                             <DropdownToggle
                                 caret
                                 className={classnames(css.manageMacros)}
-                                id="deleteMacroTarget"
                             >
                                 <i className="material-icons">settings</i>
+                                <div
+                                    className={css['deletePopoverTarget']}
+                                    id="deleteMacroTarget"
+                                />
                             </DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem
@@ -225,6 +228,8 @@ export class TicketMacros extends React.Component<Props, State> {
                             target="deleteMacroTarget"
                             isOpen={this.state.isDeleteConfirmOpen}
                             toggle={this._toggleMacroDeleteConfirmOpen}
+                            trigger="legacy"
+                            fade={false}
                         >
                             <PopoverBody>
                                 <p>

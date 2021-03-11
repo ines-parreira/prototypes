@@ -73,7 +73,6 @@ exports[`JsonField should render input 1`] = `
                   id="id-input-1"
                   onChange={[Function]}
                   rows="6"
-                  type="textarea"
                   value="\\"value\\""
                 />
               </Input>

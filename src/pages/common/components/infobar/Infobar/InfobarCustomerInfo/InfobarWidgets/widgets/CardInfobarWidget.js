@@ -133,6 +133,7 @@ export default class CardInfobarWidget extends React.Component {
                 isOpen={this.state.displayPopup}
                 target={this.uniqueId}
                 toggle={this._togglePopup}
+                trigger="legacy"
             >
                 <PopoverBody>
                     <PopoverWidgetEditCard

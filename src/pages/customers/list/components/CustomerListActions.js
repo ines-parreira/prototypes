@@ -19,9 +19,12 @@ import shortcutManager from '../../../../services/shortcutManager/index.ts'
 import * as customersActions from '../../../../state/customers/actions.ts'
 import * as viewsSelectors from '../../../../state/views/selectors.ts'
 
+import css from './CustomerListActions.less'
+
 class CustomerListActions extends React.Component {
     state = {
         popoverOpen: '',
+        displayDeleteConfirmation: false,
     }
 
     componentDidMount() {
@@ -39,7 +42,7 @@ class CustomerListActions extends React.Component {
                     if (!this._hasChecked()) {
                         return
                     }
-                    this._toggleDeleteConfirmation()
+                    this.toggleDeleteConfirmation()
                 },
             },
             HIDE_POPOVER: {
@@ -65,15 +68,22 @@ class CustomerListActions extends React.Component {
 
     _bulkDelete = () => {
         const {actions, selectedItemsIds} = this.props
-        this._toggleDeleteConfirmation(false)
+        this.toggleDeleteConfirmation(false)
         return actions.customers.bulkDeleteCustomer(selectedItemsIds)
     }
 
-    _toggleDeleteConfirmation = (visible) => {
+    toggleActionsDropdown = (visible) => {
         const opens = !_isUndefined(visible)
             ? visible
             : !this._isPopoverOpen('delete')
         this._togglePopover(opens ? 'delete' : '')
+        this.toggleDeleteConfirmation()
+    }
+
+    toggleDeleteConfirmation = () => {
+        this.setState({
+            displayDeleteConfirmation: !this.state.displayDeleteConfirmation,
+        })
     }
 
     _renderBulkActions = () => {
@@ -94,7 +104,6 @@ class CustomerListActions extends React.Component {
             <div className="d-inline-flex align-items-center">
                 <UncontrolledButtonDropdown size="sm">
                     <DropdownToggle
-                        id="bulk-more-button"
                         color="secondary"
                         type="button"
                         caret
@@ -106,17 +115,22 @@ class CustomerListActions extends React.Component {
                         <DropdownItem
                             type="button"
                             className="text-danger"
-                            onClick={this._toggleDeleteConfirmation}
+                            onClick={this.toggleActionsDropdown}
                         >
                             Delete customers
                         </DropdownItem>
                     </DropdownMenu>
+                    <div
+                        className={css['delete-popover-target']}
+                        id="bulk-more-button"
+                    />
                 </UncontrolledButtonDropdown>
                 <Popover
                     placement="bottom"
-                    isOpen={this._isPopoverOpen('delete')}
+                    isOpen={this.state.displayDeleteConfirmation}
                     target="bulk-more-button"
-                    toggle={this._toggleDeleteConfirmation}
+                    toggle={this.toggleDeleteConfirmation}
+                    trigger="legacy"
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>

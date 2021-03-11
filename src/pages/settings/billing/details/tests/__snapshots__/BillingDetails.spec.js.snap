@@ -23,6 +23,15 @@ exports[`BillingDetails component should display billing contact information 1`]
     >
       <Row
         tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
       >
         <Col
           sm={4}

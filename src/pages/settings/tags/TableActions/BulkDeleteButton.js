@@ -37,6 +37,7 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
                 isOpen={askRemoveConfirmation}
                 target="bulk-remove-button"
                 toggle={toggleRemoveConfirmation}
+                trigger="legacy"
             >
                 <PopoverHeader>Are you sure?</PopoverHeader>
                 <PopoverBody>

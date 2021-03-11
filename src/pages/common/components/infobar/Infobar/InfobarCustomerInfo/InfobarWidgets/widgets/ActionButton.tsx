@@ -321,6 +321,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                         {to: 'window', attachment: 'together none', pin: true},
                     ],
                 }}
+                trigger="legacy"
             >
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>
@@ -369,8 +370,8 @@ export class ActionButtonContainer extends Component<Props, State> {
                     {...tagOptions}
                 >
                     {children}
-                    {modal ? this._renderModal(modal) : this._renderPopover()}
                 </Tag>
+                {modal ? this._renderModal(modal) : this._renderPopover()}
             </>
         )
     }

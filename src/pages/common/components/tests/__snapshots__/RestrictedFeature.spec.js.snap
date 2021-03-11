@@ -7,6 +7,7 @@ exports[`RestrictedFeature component should render image carusel and Lightbox 1`
   <Alert
     closeAriaLabel="Close"
     color="danger"
+    fade={true}
     isOpen={true}
     tag="div"
     transition={

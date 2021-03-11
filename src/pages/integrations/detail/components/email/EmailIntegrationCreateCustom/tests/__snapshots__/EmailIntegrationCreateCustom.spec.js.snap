@@ -7,33 +7,39 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/email"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Email
-        </a>
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Add an email address
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add an email address
+        </li>
+      </ol>
+    </nav>
   </div>
   <div
     class="page-container container-fluid"
@@ -120,33 +126,39 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
   <div
     class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
-    <ol
-      class="breadcrumb"
+    <nav
+      aria-label="breadcrumb"
+      class=""
     >
-      <li
-        class="breadcrumb-item"
+      <ol
+        class="breadcrumb"
       >
-        <a
-          to="/app/settings/integrations"
+        <li
+          class="breadcrumb-item"
         >
-          Integrations
-        </a>
-      </li>
-      <li
-        class="breadcrumb-item"
-      >
-        <a
-          to="/app/settings/integrations/email"
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          Email
-        </a>
-      </li>
-      <li
-        class="active breadcrumb-item"
-      >
-        Add an email address
-      </li>
-    </ol>
+          <a
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add an email address
+        </li>
+      </ol>
+    </nav>
   </div>
   <div
     class="page-container container-fluid"

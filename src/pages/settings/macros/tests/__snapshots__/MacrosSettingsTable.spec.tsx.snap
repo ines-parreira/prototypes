@@ -76,48 +76,42 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             delete
           </i>
         </Button>
-        <Popover
-          delay={
-            Object {
-              "hide": 0,
-              "show": 0,
-            }
-          }
-          hideArrow={false}
-          isOpen={false}
-          placement="left"
-          placementPrefix="bs-popover"
-          target="delete-button-1"
-          toggle={[Function]}
-        >
-          <PopoverHeader
-            tag="h3"
-          >
-            Are you sure?
-          </PopoverHeader>
-          <PopoverBody
-            tag="div"
-          >
-            <p>
-              You are about to delete
-               
-              <b>
-                Waive Fee
-              </b>
-               macro.
-            </p>
-            <Button
-              color="danger"
-              onClick={[Function]}
-              tag="button"
-              type="submit"
-            >
-              Confirm
-            </Button>
-          </PopoverBody>
-        </Popover>
       </BodyCell>
     </TableBodyRow>
+    <Popover
+      isOpen={false}
+      placement="left"
+      placementPrefix="bs-popover"
+      target="delete-button-1"
+      toggle={[Function]}
+      trigger="legacy"
+    >
+      <PopoverHeader
+        tag="h3"
+      >
+        Are you sure?
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p>
+          You are about to delete
+           
+          <b>
+            Waive Fee
+          </b>
+           macro.
+        </p>
+        <Button
+          color="danger"
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Confirm
+        </Button>
+      </PopoverBody>
+    </Popover>
     <TableBodyRow
       className="tableBodyRow"
       key="2"
@@ -168,48 +162,42 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             delete
           </i>
         </Button>
-        <Popover
-          delay={
-            Object {
-              "hide": 0,
-              "show": 0,
-            }
-          }
-          hideArrow={false}
-          isOpen={false}
-          placement="left"
-          placementPrefix="bs-popover"
-          target="delete-button-2"
-          toggle={[Function]}
-        >
-          <PopoverHeader
-            tag="h3"
-          >
-            Are you sure?
-          </PopoverHeader>
-          <PopoverBody
-            tag="div"
-          >
-            <p>
-              You are about to delete
-               
-              <b>
-                Do Not Waive Fee
-              </b>
-               macro.
-            </p>
-            <Button
-              color="danger"
-              onClick={[Function]}
-              tag="button"
-              type="submit"
-            >
-              Confirm
-            </Button>
-          </PopoverBody>
-        </Popover>
       </BodyCell>
     </TableBodyRow>
+    <Popover
+      isOpen={false}
+      placement="left"
+      placementPrefix="bs-popover"
+      target="delete-button-2"
+      toggle={[Function]}
+      trigger="legacy"
+    >
+      <PopoverHeader
+        tag="h3"
+      >
+        Are you sure?
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p>
+          You are about to delete
+           
+          <b>
+            Do Not Waive Fee
+          </b>
+           macro.
+        </p>
+        <Button
+          color="danger"
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Confirm
+        </Button>
+      </PopoverBody>
+    </Popover>
   </TableBody>
 </TableWrapper>
 `;

@@ -199,6 +199,8 @@ export class ManageTags extends Component<Props, State> {
                                 isOpen={this.state.showCreationPopup}
                                 target="create-tag-button"
                                 toggle={this._toggleCreationPopup}
+                                trigger="legacy"
+                                fade={false}
                             >
                                 <PopoverHeader>Create a new tag</PopoverHeader>
                                 <PopoverBody>

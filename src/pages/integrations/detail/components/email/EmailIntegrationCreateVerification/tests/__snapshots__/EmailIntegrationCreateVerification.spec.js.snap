@@ -7,7 +7,9 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -58,6 +60,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         className="mb-4"
         closeAriaLabel="Close"
         color="warning"
+        fade={true}
         isOpen={true}
         tag="div"
         transition={
@@ -109,7 +112,9 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -160,6 +165,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         className="mb-4"
         closeAriaLabel="Close"
         color="info"
+        fade={true}
         isOpen={true}
         tag="div"
         transition={

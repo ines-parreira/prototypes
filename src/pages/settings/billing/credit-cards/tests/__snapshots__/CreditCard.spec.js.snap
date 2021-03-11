@@ -7,7 +7,9 @@ exports[`CreditCard component should display credit card form 1`] = `
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -38,6 +40,15 @@ exports[`CreditCard component should display credit card form 1`] = `
     </p>
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         sm={4}
@@ -77,6 +88,15 @@ exports[`CreditCard component should display credit card form 1`] = `
           />
           <Row
             tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
           >
             <Col
               tag="div"
@@ -165,7 +185,9 @@ exports[`CreditCard component should render nothing if loaded, but no current su
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -196,6 +218,15 @@ exports[`CreditCard component should render nothing if loaded, but no current su
     </p>
     <Row
       tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
     >
       <Col
         sm={4}
@@ -235,6 +266,15 @@ exports[`CreditCard component should render nothing if loaded, but no current su
           />
           <Row
             tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
           >
             <Col
               tag="div"

@@ -38,6 +38,7 @@ exports[`<SharedBody/> render() should render 1`] = `
     </h6>
   </div>
   <ListGroup
+    horizontal={false}
     tag="ul"
   >
     <ListGroupItem
@@ -99,6 +100,7 @@ exports[`<SharedBody/> render() should render 1`] = `
     </h6>
   </div>
   <ListGroup
+    horizontal={false}
     tag="ul"
   >
     <ListGroupItem

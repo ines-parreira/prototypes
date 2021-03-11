@@ -7,7 +7,9 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -89,7 +91,9 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"
@@ -210,7 +214,9 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
   <PageHeader
     title={
       <Breadcrumb
-        tag="ol"
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
       >
         <BreadcrumbItem
           tag="li"

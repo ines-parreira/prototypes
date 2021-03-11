@@ -38,6 +38,8 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         isLoading: false,
     }
 
+    buttonsRef = React.createRef()
+
     componentDidUpdate(prevProps: Props) {
         if (prevProps.isOpen && !this.props.isOpen) {
             shortcutManager.bind('TicketDetailContainer')
@@ -152,7 +154,10 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                     Back
                                 </Button>
                             </div>
-                            <div className="float-right buttons-bar">
+                            <div
+                                className="float-right buttons-bar"
+                                ref={this.buttonsRef}
+                            >
                                 <Button
                                     color="secondary"
                                     type="button"
@@ -168,6 +173,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                     content="This action is irreversible. Are you sure you want to merge these tickets?"
                                     loading={isLoading}
                                     disabled={isLoading}
+                                    containerElement={this.buttonsRef}
                                 >
                                     Merge tickets
                                 </ConfirmButton>

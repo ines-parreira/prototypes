@@ -47,6 +47,7 @@ type State = {
 
 export default class MergeCustomersModal extends React.Component<Props, State> {
     state = _clone(defaultContent)
+    buttonsRef = React.createRef()
 
     componentDidMount = () => {
         const {sourceCustomer} = this.props
@@ -344,7 +345,10 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         />
                     </div>
 
-                    <div className="float-right buttons-bar">
+                    <div
+                        className="float-right buttons-bar"
+                        ref={this.buttonsRef}
+                    >
                         <Button
                             color="secondary"
                             type="button"
@@ -359,6 +363,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                             type="submit"
                             loading={isLoading}
                             content="This action is irreversible. Are you sure you want to merge these customers?"
+                            containerElement={this.buttonsRef}
                         >
                             Merge customers
                         </ConfirmButton>

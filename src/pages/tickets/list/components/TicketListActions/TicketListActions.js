@@ -338,6 +338,7 @@ class TicketListActions extends React.Component<Props, State> {
             ? visible
             : !this._isPopoverOpen('trash')
         this._togglePopover(opens ? 'trash' : '')
+        this._toggleDeleteConfirmation()
     }
 
     _toggleDeleteConfirmation = () => {
@@ -670,7 +671,6 @@ class TicketListActions extends React.Component<Props, State> {
                 </ButtonDropdown>
                 <UncontrolledButtonDropdown size="sm">
                     <DropdownToggle
-                        id="bulk-more-button"
                         color="secondary"
                         type="button"
                         caret
@@ -723,45 +723,34 @@ class TicketListActions extends React.Component<Props, State> {
                             </DropdownItem>
                         )}
                     </DropdownMenu>
+                    <div
+                        className={css['delete-popover-target']}
+                        id="bulk-more-button"
+                    />
                 </UncontrolledButtonDropdown>
-                <Popover
-                    placement="bottom"
-                    isOpen={this._isPopoverOpen('trash')}
-                    target="bulk-more-button"
-                    toggle={this._toggleTrashConfirmation}
-                >
-                    <PopoverHeader>Are you sure?</PopoverHeader>
-                    <PopoverBody>
-                        <p>
-                            Are you sure you want to delete {selectedCount}{' '}
-                            ticket{selectedCount > 1 && 's'}?
-                        </p>
-                        <Button
-                            type="submit"
-                            color="success"
-                            onClick={this._bulkTrash}
-                            autoFocus
-                        >
-                            Confirm
-                        </Button>
-                    </PopoverBody>
-                </Popover>
                 <Popover
                     placement="bottom"
                     isOpen={askDeleteConfirmation}
                     target="bulk-more-button"
                     toggle={this._toggleDeleteConfirmation}
+                    trigger="legacy"
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
                     <PopoverBody>
                         <p>
                             Are you sure you want to delete {selectedCount}{' '}
-                            ticket{selectedCount > 1 && 's'} forever?
+                            ticket{selectedCount > 1 && 's'}
+                            {isActiveViewTrashView && ' forever'}?
                         </p>
                         <Button
                             type="submit"
                             color="success"
-                            onClick={this._bulkDelete}
+                            onClick={
+                                isActiveViewTrashView
+                                    ? this._bulkDelete
+                                    : this._bulkTrash
+                            }
+                            autoFocus
                         >
                             Confirm
                         </Button>

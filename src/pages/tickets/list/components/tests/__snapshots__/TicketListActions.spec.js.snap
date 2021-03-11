@@ -275,7 +275,6 @@ exports[`TicketListActions component should display options for agents assignati
         caret={true}
         color="secondary"
         disabled={false}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -307,20 +306,18 @@ exports[`TicketListActions component should display options for agents assignati
           Delete
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -340,46 +337,6 @@ exports[`TicketListActions component should display options for agents assignati
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          5
-           
-          ticket
-          s
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"
@@ -671,7 +628,6 @@ exports[`TicketListActions component should display options for teams assignatio
         caret={true}
         color="secondary"
         disabled={false}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -703,20 +659,18 @@ exports[`TicketListActions component should display options for teams assignatio
           Delete
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -736,46 +690,6 @@ exports[`TicketListActions component should display options for teams assignatio
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          5
-           
-          ticket
-          s
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"
@@ -1025,7 +939,6 @@ exports[`TicketListActions component should display special actions for trash vi
         caret={true}
         color="secondary"
         disabled={true}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -1067,20 +980,18 @@ exports[`TicketListActions component should display special actions for trash vi
           Delete forever
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1095,49 +1006,11 @@ exports[`TicketListActions component should display special actions for trash vi
           0
            
           ticket
+           forever
           ?
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"
@@ -1387,7 +1260,6 @@ exports[`TicketListActions component should display the export tickets button fo
         caret={true}
         color="secondary"
         disabled={true}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -1427,20 +1299,18 @@ exports[`TicketListActions component should display the export tickets button fo
           Delete
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1459,45 +1329,6 @@ exports[`TicketListActions component should display the export tickets button fo
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"
@@ -1747,7 +1578,6 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         caret={true}
         color="secondary"
         disabled={true}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -1779,20 +1609,18 @@ exports[`TicketListActions component should display when nothing is selected 1`]
           Delete
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -1811,45 +1639,6 @@ exports[`TicketListActions component should display when nothing is selected 1`]
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"
@@ -2099,7 +1888,6 @@ exports[`TicketListActions component should display when some tickets are select
         caret={true}
         color="secondary"
         disabled={false}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -2131,20 +1919,18 @@ exports[`TicketListActions component should display when some tickets are select
           Delete
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -2164,46 +1950,6 @@ exports[`TicketListActions component should display when some tickets are select
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          5
-           
-          ticket
-          s
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"
@@ -2453,7 +2199,6 @@ exports[`TicketListActions component should not display the export tickets butto
         caret={true}
         color="secondary"
         disabled={true}
-        id="bulk-more-button"
         type="button"
       >
         More
@@ -2485,20 +2230,18 @@ exports[`TicketListActions component should not display the export tickets butto
           Delete
         </DropdownItem>
       </DropdownMenu>
+      <div
+        className="delete-popover-target"
+        id="bulk-more-button"
+      />
     </UncontrolledButtonDropdown>
     <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
       isOpen={false}
       placement="bottom"
       placementPrefix="bs-popover"
       target="bulk-more-button"
       toggle={[Function]}
+      trigger="legacy"
     >
       <PopoverHeader
         tag="h3"
@@ -2517,45 +2260,6 @@ exports[`TicketListActions component should not display the export tickets butto
         </p>
         <Button
           autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-    <Popover
-      delay={
-        Object {
-          "hide": 0,
-          "show": 0,
-        }
-      }
-      hideArrow={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-           forever?
-        </p>
-        <Button
           color="success"
           onClick={[Function]}
           tag="button"

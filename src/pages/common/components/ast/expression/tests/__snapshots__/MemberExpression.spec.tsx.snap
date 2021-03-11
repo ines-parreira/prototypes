@@ -27,6 +27,7 @@ exports[`<MemberExpression/> should render 1`] = `
     >
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -47,6 +48,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -67,6 +69,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -87,6 +90,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -107,6 +111,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -127,6 +132,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -147,6 +153,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -167,6 +174,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -187,6 +195,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -207,6 +216,7 @@ exports[`<MemberExpression/> should render 1`] = `
       </button>
       <button
         class="option dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -274,6 +284,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
       >
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -281,6 +292,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -288,6 +300,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -295,6 +308,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -302,6 +316,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -314,6 +329,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </div>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -321,6 +337,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -328,6 +345,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -335,6 +353,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -347,6 +366,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </div>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >
@@ -354,6 +374,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         </button>
         <button
           class="option subOption dropdown-item"
+          role="menuitem"
           tabindex="0"
           type="button"
         >

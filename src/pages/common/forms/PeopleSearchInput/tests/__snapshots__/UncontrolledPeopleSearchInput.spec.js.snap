@@ -47,6 +47,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
     >
       <button
         class="item dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -75,6 +76,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
       </button>
       <button
         class="item dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -117,6 +119,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
     >
       <button
         class="item dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >
@@ -145,6 +148,7 @@ exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
       </button>
       <button
         class="item dropdown-item"
+        role="menuitem"
         tabindex="0"
         type="button"
       >

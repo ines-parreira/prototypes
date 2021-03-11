@@ -17,6 +17,7 @@ type Props = {
     color?: string
     confirm: () => void | Promise<any>
     confirmColor?: string
+    containerElement?: HTMLElement
     content?: ReactNode
     disabled?: boolean
     id?: string
@@ -33,6 +34,7 @@ const ConfirmButton = ({
     children = null,
     confirm = _noop,
     confirmColor = 'success',
+    containerElement,
     content = null,
     disabled = false,
     id = '',
@@ -51,6 +53,14 @@ const ConfirmButton = ({
     const isMounted = useMountedState()
     const dateId = useMemo(() => Date.now().toString(), [])
     const uid = useMemo(() => `confirm-button-${id || dateId}`, [id, dateId])
+    const container = useMemo(() => {
+        if (type === 'submit' && ref.current) {
+            // keep submit popovers in form
+            return containerElement || ref.current.closest('form') || 'body'
+        }
+
+        return 'body'
+    }, [containerElement, ref.current, type])
 
     const showConfirmation = (e: MouseEvent) => {
         if (type === 'submit') {
@@ -87,15 +97,6 @@ const ConfirmButton = ({
         Promise.resolve(confirm()).then(hideLoading).catch(hideLoading)
     }
 
-    const popoverContainer = () => {
-        if (type === 'submit' && ref.current) {
-            // keep submit popovers in form
-            return ref.current.closest('form') || 'body'
-        }
-
-        return 'body'
-    }
-
     const isLoading = isLoadingInternal || loading
 
     return (
@@ -121,7 +122,8 @@ const ConfirmButton = ({
                 isOpen={isConfirmationDisplayed}
                 target={uid}
                 toggle={hideConfirmation}
-                container={popoverContainer()}
+                container={container}
+                trigger="legacy"
             >
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>

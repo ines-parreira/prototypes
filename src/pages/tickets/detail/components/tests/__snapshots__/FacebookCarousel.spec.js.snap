@@ -221,22 +221,22 @@ exports[`FacebookCarousel component render generic template 1`] = `
                           className="card-body"
                         >
                           <CardTitle
-                            tag="h5"
+                            tag="div"
                           >
-                            <h5
+                            <div
                               className="card-title"
                             >
                               Leather saddle
-                            </h5>
+                            </div>
                           </CardTitle>
                           <CardSubtitle
-                            tag="h6"
+                            tag="div"
                           >
-                            <h6
+                            <div
                               className="card-subtitle"
                             >
                               $75.00
-                            </h6>
+                            </div>
                           </CardSubtitle>
                         </div>
                       </CardBody>
@@ -258,6 +258,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                             target="_blank"
                           >
                             <a
+                              aria-label={null}
                               className="btn btn-secondary"
                               href="https://sfbicycles.myshopify.com/"
                               onClick={[Function]}
@@ -273,6 +274,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                             tag="button"
                           >
                             <button
+                              aria-label={null}
                               className="btn btn-secondary disabled"
                               disabled={true}
                               onClick={[Function]}
@@ -288,6 +290,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                             target="_blank"
                           >
                             <a
+                              aria-label={null}
                               className="btn btn-secondary"
                               href="https://messenger-commerce.shopifyapps.com/"
                               onClick={[Function]}

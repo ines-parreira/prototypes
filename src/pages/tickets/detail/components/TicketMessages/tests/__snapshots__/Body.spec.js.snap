@@ -276,22 +276,22 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                               className="card-body"
                             >
                               <CardTitle
-                                tag="h5"
+                                tag="div"
                               >
-                                <h5
+                                <div
                                   className="card-title"
                                 >
                                   Fixie bike
-                                </h5>
+                                </div>
                               </CardTitle>
                               <CardSubtitle
-                                tag="h6"
+                                tag="div"
                               >
-                                <h6
+                                <div
                                   className="card-subtitle"
                                 >
                                   $200.00
-                                </h6>
+                                </div>
                               </CardSubtitle>
                             </div>
                           </CardBody>
@@ -313,6 +313,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                                 target="_blank"
                               >
                                 <a
+                                  aria-label={null}
                                   className="btn btn-secondary"
                                   href="https://sfbicycles.myshopify.com/products/fixie-bike"
                                   onClick={[Function]}
@@ -328,6 +329,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                                 tag="button"
                               >
                                 <button
+                                  aria-label={null}
                                   className="btn btn-secondary disabled"
                                   disabled={true}
                                   onClick={[Function]}
@@ -343,6 +345,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                                 target="_blank"
                               >
                                 <a
+                                  aria-label={null}
                                   className="btn btn-secondary"
                                   href="https://messenger-commerce.shopifyapps.com/redirect_to_cart"
                                   onClick={[Function]}

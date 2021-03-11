@@ -158,89 +158,94 @@ export function MacrosSettingsTableContainer({
                         const deleteButtonId = `delete-button-${macroId}`
 
                         return (
-                            <TableBodyRow
-                                className={css.tableBodyRow}
-                                key={macroId}
-                                onClick={() => {
-                                    history.push(
-                                        `/app/settings/macros/${macroId}`
-                                    )
-                                }}
-                            >
-                                <BodyCell className={css.macroTitle}>
-                                    {name}
-                                </BodyCell>
-                                <BodyCell>{usage}</BodyCell>
-                                <BodyCell className={css.dateCell}>
-                                    {moment(updated_datetime).format(
-                                        'YYYY-MM-DD'
-                                    )}
-                                </BodyCell>
-                                <BodyCell
-                                    className={classnames(
-                                        'smallest',
-                                        css.actions
-                                    )}
+                            <>
+                                <TableBodyRow
+                                    className={css.tableBodyRow}
+                                    key={macroId}
+                                    onClick={() => {
+                                        history.push(
+                                            `/app/settings/macros/${macroId}`
+                                        )
+                                    }}
                                 >
-                                    <Button
-                                        className="mr-1 btn-transparent"
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            void handleMacroDuplicate(macroId)
-                                        }}
-                                        title="Duplicate macro"
-                                        type="button"
-                                    >
-                                        <i className="material-icons">
-                                            file_copy
-                                        </i>
-                                    </Button>
-                                    <Button
-                                        className={classnames(
-                                            'mr-1 btn-transparent',
-                                            css.deleteButton
+                                    <BodyCell className={css.macroTitle}>
+                                        {name}
+                                    </BodyCell>
+                                    <BodyCell>{usage}</BodyCell>
+                                    <BodyCell className={css.dateCell}>
+                                        {moment(updated_datetime).format(
+                                            'YYYY-MM-DD'
                                         )}
-                                        id={deleteButtonId}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            toggleVisiblePopover(deleteButtonId)
-                                        }}
-                                        title="Delete macro"
-                                        type="button"
+                                    </BodyCell>
+                                    <BodyCell
+                                        className={classnames(
+                                            'smallest',
+                                            css.actions
+                                        )}
                                     >
-                                        <i className="material-icons">delete</i>
-                                    </Button>
-                                    <Popover
-                                        isOpen={
-                                            deleteButtonId === visiblePopoverId
-                                        }
-                                        placement="left"
-                                        target={deleteButtonId}
-                                        toggle={() =>
-                                            toggleVisiblePopover(deleteButtonId)
-                                        }
-                                    >
-                                        <PopoverHeader>
-                                            Are you sure?
-                                        </PopoverHeader>
-                                        <PopoverBody>
-                                            <p>
-                                                You are about to delete{' '}
-                                                <b>{name || 'this'}</b> macro.
-                                            </p>
-                                            <Button
-                                                color="danger"
-                                                onClick={() =>
-                                                    handleMacroDelete(macroId)
-                                                }
-                                                type="submit"
-                                            >
-                                                Confirm
-                                            </Button>
-                                        </PopoverBody>
-                                    </Popover>
-                                </BodyCell>
-                            </TableBodyRow>
+                                        <Button
+                                            className="mr-1 btn-transparent"
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                void handleMacroDuplicate(
+                                                    macroId
+                                                )
+                                            }}
+                                            title="Duplicate macro"
+                                            type="button"
+                                        >
+                                            <i className="material-icons">
+                                                file_copy
+                                            </i>
+                                        </Button>
+                                        <Button
+                                            className={classnames(
+                                                'mr-1 btn-transparent',
+                                                css.deleteButton
+                                            )}
+                                            id={deleteButtonId}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                toggleVisiblePopover(
+                                                    deleteButtonId
+                                                )
+                                            }}
+                                            title="Delete macro"
+                                            type="button"
+                                        >
+                                            <i className="material-icons">
+                                                delete
+                                            </i>
+                                        </Button>
+                                    </BodyCell>
+                                </TableBodyRow>
+                                <Popover
+                                    isOpen={deleteButtonId === visiblePopoverId}
+                                    placement="left"
+                                    target={deleteButtonId}
+                                    toggle={() =>
+                                        toggleVisiblePopover(deleteButtonId)
+                                    }
+                                    trigger="legacy"
+                                >
+                                    <PopoverHeader>Are you sure?</PopoverHeader>
+                                    <PopoverBody>
+                                        <p>
+                                            You are about to delete{' '}
+                                            <b>{name || 'this'}</b> macro.
+                                        </p>
+                                        <Button
+                                            color="danger"
+                                            onClick={() =>
+                                                handleMacroDelete(macroId)
+                                            }
+                                            type="submit"
+                                        >
+                                            Confirm
+                                        </Button>
+                                    </PopoverBody>
+                                </Popover>
+                            </>
                         )
                     })
                 )}

@@ -88,19 +88,17 @@ exports[`MultiSelectField should render a multi select input with custom props 1
             isOpen={false}
           >
             <Dropdown
+              a11y={true}
               active={false}
               addonType={false}
               direction="down"
               inNavbar={false}
               isOpen={false}
               nav={false}
+              setActiveFromChild={false}
               toggle={[Function]}
             >
-              <Manager
-                className="dropdown"
-                onKeyDown={[Function]}
-                tag="div"
-              >
+              <Manager>
                 <div
                   className="dropdown"
                   onKeyDown={[Function]}
@@ -111,45 +109,42 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                     data-toggle="dropdown"
                     tag="div"
                   >
-                    <Target
-                      aria-expanded={false}
-                      aria-haspopup={true}
-                      className=""
-                      component="div"
-                      data-toggle="dropdown"
-                      onClick={[Function]}
-                    >
-                      <div
-                        aria-expanded={false}
-                        aria-haspopup={true}
-                        className=""
-                        data-toggle="dropdown"
-                        onClick={[Function]}
+                    <Reference>
+                      <InnerReference
+                        setReferenceNode={[Function]}
                       >
-                        <Input
-                          isFocused={false}
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onDelete={[Function]}
-                          onDown={[Function]}
-                          onFocus={[Function]}
-                          onSubmit={[Function]}
-                          onUp={[Function]}
-                          placeholder="Add tags..."
-                          value=""
+                        <div
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className=""
+                          data-toggle="dropdown"
+                          onClick={[Function]}
                         >
-                          <input
-                            className="input ml-2"
+                          <Input
+                            isFocused={false}
                             onBlur={[Function]}
                             onChange={[Function]}
+                            onDelete={[Function]}
+                            onDown={[Function]}
                             onFocus={[Function]}
-                            onKeyDown={[Function]}
+                            onSubmit={[Function]}
+                            onUp={[Function]}
                             placeholder="Add tags..."
                             value=""
-                          />
-                        </Input>
-                      </div>
-                    </Target>
+                          >
+                            <input
+                              className="input ml-2"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              onKeyDown={[Function]}
+                              placeholder="Add tags..."
+                              value=""
+                            />
+                          </Input>
+                        </div>
+                      </InnerReference>
+                    </Reference>
                   </DropdownToggle>
                   <DropdownMenu
                     className="options"
@@ -202,6 +197,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                               onClick={[Function]}
                               onMouseDown={[Function]}
                               onMouseEnter={[Function]}
+                              role="menuitem"
                               tabIndex="0"
                               type="button"
                             >
@@ -228,6 +224,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                               onClick={[Function]}
                               onMouseDown={[Function]}
                               onMouseEnter={[Function]}
+                              role="menuitem"
                               tabIndex="0"
                               type="button"
                             >
@@ -254,6 +251,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                               onClick={[Function]}
                               onMouseDown={[Function]}
                               onMouseEnter={[Function]}
+                              role="menuitem"
                               tabIndex="0"
                               type="button"
                             >
@@ -312,19 +310,17 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
             isOpen={false}
           >
             <Dropdown
+              a11y={true}
               active={false}
               addonType={false}
               direction="down"
               inNavbar={false}
               isOpen={false}
               nav={false}
+              setActiveFromChild={false}
               toggle={[Function]}
             >
-              <Manager
-                className="dropdown"
-                onKeyDown={[Function]}
-                tag="div"
-              >
+              <Manager>
                 <div
                   className="dropdown"
                   onKeyDown={[Function]}
@@ -335,45 +331,42 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
                     data-toggle="dropdown"
                     tag="div"
                   >
-                    <Target
-                      aria-expanded={false}
-                      aria-haspopup={true}
-                      className=""
-                      component="div"
-                      data-toggle="dropdown"
-                      onClick={[Function]}
-                    >
-                      <div
-                        aria-expanded={false}
-                        aria-haspopup={true}
-                        className=""
-                        data-toggle="dropdown"
-                        onClick={[Function]}
+                    <Reference>
+                      <InnerReference
+                        setReferenceNode={[Function]}
                       >
-                        <Input
-                          isFocused={false}
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onDelete={[Function]}
-                          onDown={[Function]}
-                          onFocus={[Function]}
-                          onSubmit={[Function]}
-                          onUp={[Function]}
-                          placeholder="Add items..."
-                          value=""
+                        <div
+                          aria-expanded={false}
+                          aria-haspopup={true}
+                          className=""
+                          data-toggle="dropdown"
+                          onClick={[Function]}
                         >
-                          <input
-                            className="input ml-2"
+                          <Input
+                            isFocused={false}
                             onBlur={[Function]}
                             onChange={[Function]}
+                            onDelete={[Function]}
+                            onDown={[Function]}
                             onFocus={[Function]}
-                            onKeyDown={[Function]}
+                            onSubmit={[Function]}
+                            onUp={[Function]}
                             placeholder="Add items..."
                             value=""
-                          />
-                        </Input>
-                      </div>
-                    </Target>
+                          >
+                            <input
+                              className="input ml-2"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              onKeyDown={[Function]}
+                              placeholder="Add items..."
+                              value=""
+                            />
+                          </Input>
+                        </div>
+                      </InnerReference>
+                    </Reference>
                   </DropdownToggle>
                   <DropdownMenu
                     className="options"

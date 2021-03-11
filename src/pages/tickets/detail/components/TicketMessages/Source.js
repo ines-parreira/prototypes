@@ -87,6 +87,7 @@ export default class Source extends React.Component<Props, State> {
                     target={id}
                     isOpen={this.state.isDropdownOpen}
                     toggle={this._toggleDropdown}
+                    trigger="legacy"
                 >
                     <PopoverBody>
                         <div className={css.details}>

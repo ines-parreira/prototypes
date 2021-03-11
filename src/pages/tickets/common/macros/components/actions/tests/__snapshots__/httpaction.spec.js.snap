@@ -16,6 +16,15 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
   <Row
     className="form-row"
     tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
   >
     <Col
       tag="div"

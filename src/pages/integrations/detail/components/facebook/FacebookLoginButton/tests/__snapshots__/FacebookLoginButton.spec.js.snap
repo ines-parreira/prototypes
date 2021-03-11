@@ -75,6 +75,7 @@ exports[`FacebookLoginButton component should render a reconnect button 1`] = `
       tag="a"
     >
       <a
+        aria-label={null}
         className="btn btn-success"
         href="https://.../?reconnect"
         onClick={[Function]}

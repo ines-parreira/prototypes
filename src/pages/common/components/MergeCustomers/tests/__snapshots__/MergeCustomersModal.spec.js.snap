@@ -273,6 +273,11 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       </Button>
       <ConfirmButton
         color="success"
+        containerElement={
+          Object {
+            "current": null,
+          }
+        }
         content="This action is irreversible. Are you sure you want to merge these customers?"
         type="submit"
       >
