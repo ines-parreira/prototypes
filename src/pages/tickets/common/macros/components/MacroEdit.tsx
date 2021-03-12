@@ -107,7 +107,6 @@ export class MacroEdit extends React.Component<
             Object.keys(intents).reduce(
                 (acc: {[key: string]: OptionGroup}, intent) => {
                     const [intentCategory, intentName] = intent.split('/')
-
                     if (acc[intentCategory]) {
                         acc[intentCategory].options.push({
                             description: intents[intent],
