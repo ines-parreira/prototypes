@@ -5,7 +5,11 @@ import {fromJS} from 'immutable'
 
 import {TicketBody} from '../TicketBody'
 import {message} from '../../../../../models/ticket/tests/mocks.ts'
-import {TICKET_ASSIGNED} from '../../../../../constants/event.ts'
+import {
+    INCOMING_PHONE_CALL,
+    OUTGOING_PHONE_CALL,
+    TICKET_ASSIGNED,
+} from '../../../../../constants/event.ts'
 import type {TicketMessage} from '../../../../../models/ticket'
 import TicketMessages from '../TicketMessages/TicketMessages'
 import Event from '../Event'
@@ -50,6 +54,40 @@ describe('TicketBody', () => {
                         isMessage: false,
                         isEvent: true,
                         created_datetime: '2017-07-01T19:00:00',
+                    },
+                ])}
+                lastReadMessage={fromJS({
+                    id: 1,
+                })}
+                loadingState={fromJS([])}
+                ticket={fromJS({id: 1})}
+                setStatus={() => {}}
+                currentUser={fromJS({
+                    timezone: 'UTC',
+                })}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display phone events', () => {
+        const component = shallow(
+            <TicketBody
+                elements={fromJS([
+                    {
+                        id: 1,
+                        isMessage: false,
+                        isEvent: true,
+                        created_datetime: '2017-07-01T19:00:00',
+                        type: INCOMING_PHONE_CALL,
+                    },
+                    {
+                        id: 2,
+                        isMessage: false,
+                        isEvent: true,
+                        created_datetime: '2017-07-01T19:05:00',
+                        type: OUTGOING_PHONE_CALL,
                     },
                 ])}
                 lastReadMessage={fromJS({

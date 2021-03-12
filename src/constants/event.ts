@@ -19,6 +19,11 @@ export const TICKET_UNTRASHED = 'ticket-untrashed'
 export const TICKET_UPDATED = 'ticket-updated'
 export const TICKET_MESSAGE_SUMMARY_CREATED = 'ticket-message-summary-created'
 
+export const INCOMING_PHONE_CALL = 'incoming-phone-call'
+export const OUTGOING_PHONE_CALL = 'outgoing-phone-call'
+export const COMPLETED_PHONE_CALL = 'completed-phone-call'
+export const MISSED_PHONE_CALL = 'missed-phone-call'
+
 //$TsFixMe fallback value for js, use TicketAuditLogEvent enum instead
 export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     RULE_EXECUTED,
@@ -44,3 +49,13 @@ export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
 export const TICKET_AUDIT_LOG_EVENTS = Object.freeze(
     Object.values(TICKET_AUDIT_LOG_EVENTS_MAP)
 )
+
+//$TsFixMe fallback value for js, use PhoneIntegrationEvent enum instead
+export const PHONE_EVENTS_MAP = Object.freeze({
+    INCOMING_PHONE_CALL,
+    OUTGOING_PHONE_CALL,
+    COMPLETED_PHONE_CALL,
+    MISSED_PHONE_CALL,
+})
+
+export const PHONE_EVENTS = Object.freeze(Object.values(PHONE_EVENTS_MAP))

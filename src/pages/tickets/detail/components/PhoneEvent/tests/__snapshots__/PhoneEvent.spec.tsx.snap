@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneEvent/> render() should render 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="Incoming call"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Incoming call
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render 2`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="Outgoing call"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Outgoing call
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render 3`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="Call ended"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Call ended
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render 4`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="Missed call"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Missed call
+      </span>
+    </div>
+  </div>
+</div>
+`;

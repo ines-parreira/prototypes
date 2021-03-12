@@ -26,13 +26,17 @@ import {
     isTicketSatisfactionSurvey,
 } from '../../../../models/ticket'
 import {TicketChannels} from '../../../../business/ticket.ts'
-import {TICKET_AUDIT_LOG_EVENTS} from '../../../../constants/event.ts'
+import {
+    PHONE_EVENTS,
+    TICKET_AUDIT_LOG_EVENTS,
+} from '../../../../constants/event.ts'
 
 import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
 import AuditLogEvent from './AuditLogEvent'
 import type {HighlightedElements} from './AuditLogEvent'
 import Event from './Event'
+import PhoneEvent from './PhoneEvent/PhoneEvent.tsx'
 
 type Props = {
     currentUser: Map<*, *>,
@@ -147,8 +151,61 @@ export class TicketBody extends React.Component<Props, State> {
         return true
     }
 
+    _getGroupedElements() {
+        const {elements} = this.props
+
+        return elements
+            .toJS()
+            .reduce((acc: TicketElement[], element: TicketElement) => {
+                if (!isTicketMessage(element)) {
+                    return acc.concat([element])
+                }
+
+                const message = ((element: any): TicketMessage)
+
+                if (!acc.length) {
+                    return acc.concat([[message]])
+                }
+
+                const prevGroup = acc[acc.length - 1]
+                if (!Array.isArray(prevGroup)) {
+                    return acc.concat([[message]])
+                }
+
+                const firstInPrevGroup = prevGroup[0]
+                if (this._shouldMessagesBeGrouped(firstInPrevGroup, message)) {
+                    prevGroup.push(message)
+                    return acc
+                }
+
+                return acc.concat([[message]])
+            }, [])
+    }
+
+    _renderMessages(messages: TicketMessage[], index: number) {
+        const {ticket, setStatus, lastReadMessage} = this.props
+        const id = `message-${index}`
+
+        return (
+            <TicketMessages
+                id={id}
+                key={id}
+                messages={messages}
+                ticketId={ticket.get('id')}
+                timezone={this.props.currentUser.get('timezone')}
+                lastMessageDatetimeAfterMount={
+                    this.lastMessageDatetimeAfterMount
+                }
+                setStatus={setStatus}
+                lastReadMessageId={lastReadMessage.get('id')}
+                hasCursor={this.state.messageCursor === index}
+                highlightedElements={this.state.highlightedElements}
+            />
+        )
+    }
+
     render() {
-        const {elements, ticket, setStatus, lastReadMessage} = this.props
+        const {elements, ticket} = this.props
 
         if (elements.size === 0) {
             return null
@@ -156,110 +213,71 @@ export class TicketBody extends React.Component<Props, State> {
 
         return (
             <div className="TicketMessages">
-                {elements
-                    .toJS()
-                    .reduce((acc: TicketElement[], element: TicketElement) => {
-                        if (!isTicketMessage(element)) {
-                            return acc.concat([element])
+                {this._getGroupedElements().map(
+                    (
+                        element:
+                            | TicketEvent
+                            | TicketSatisfactionSurvey
+                            | TicketMessage[],
+                        index: number
+                    ) => {
+                        if (Array.isArray(element)) {
+                            return this._renderMessages(element, index)
                         }
 
-                        const message = ((element: any): TicketMessage)
+                        const elementMap: Map<*, *> = fromJS(element)
+                        const elementType = elementMap.get('type')
+                        const elementId = elementMap.get('id')
+                        const isLast = index === elements.size - 1
+                        const key = `event-${elementId}`
 
-                        if (!acc.length) {
-                            return acc.concat([[message]])
-                        }
-
-                        const prevGroup = acc[acc.length - 1]
-                        if (!Array.isArray(prevGroup)) {
-                            return acc.concat([[message]])
-                        }
-
-                        const firstInPrevGroup = prevGroup[0]
-                        if (
-                            this._shouldMessagesBeGrouped(
-                                firstInPrevGroup,
-                                message
+                        if (isTicketSatisfactionSurvey(element)) {
+                            return (
+                                <SatisfactionSurvey
+                                    key={`survey-${index}`}
+                                    satisfactionSurvey={elementMap}
+                                    customer={ticket.get('customer')}
+                                    isLast={isLast}
+                                />
                             )
-                        ) {
-                            prevGroup.push(message)
-                            return acc
                         }
 
-                        return acc.concat([[message]])
-                    }, [])
-                    .map(
-                        (
-                            element:
-                                | TicketEvent
-                                | TicketSatisfactionSurvey
-                                | TicketMessage[],
-                            index: number
-                        ) => {
-                            if (Array.isArray(element)) {
-                                const id = `message-${index}`
+                        if (isTicketEvent(element)) {
+                            if (TICKET_AUDIT_LOG_EVENTS.includes(elementType)) {
                                 return (
-                                    <TicketMessages
-                                        id={id}
-                                        key={id}
-                                        messages={element}
-                                        ticketId={ticket.get('id')}
-                                        timezone={this.props.currentUser.get(
-                                            'timezone'
-                                        )}
-                                        lastMessageDatetimeAfterMount={
-                                            this.lastMessageDatetimeAfterMount
-                                        }
-                                        setStatus={setStatus}
-                                        lastReadMessageId={lastReadMessage.get(
-                                            'id'
-                                        )}
-                                        hasCursor={
-                                            this.state.messageCursor === index
-                                        }
-                                        highlightedElements={
-                                            this.state.highlightedElements
-                                        }
-                                    />
-                                )
-                            }
-
-                            const elementMap: Map<*, *> = fromJS(element)
-
-                            if (isTicketSatisfactionSurvey(element)) {
-                                return (
-                                    <SatisfactionSurvey
-                                        key={`survey-${index}`}
-                                        satisfactionSurvey={elementMap}
-                                        customer={ticket.get('customer')}
-                                        isLast={index === elements.size - 1}
-                                    />
-                                )
-                            }
-
-                            if (isTicketEvent(element)) {
-                                return TICKET_AUDIT_LOG_EVENTS.includes(
-                                    elementMap.get('type')
-                                ) ? (
                                     <AuditLogEvent
-                                        key={`event-${elementMap.get('id')}`}
+                                        key={key}
                                         event={elementMap}
-                                        isLast={index === elements.size - 1}
+                                        isLast={isLast}
                                         setHighlightedElements={
                                             this.setHighlightedElements
                                         }
                                     />
-                                ) : (
-                                    <Event
-                                        key={`event-${elementMap.get('id')}`}
+                                )
+                            }
+
+                            if (PHONE_EVENTS.includes(elementType)) {
+                                return (
+                                    <PhoneEvent
+                                        key={key}
                                         event={elementMap}
-                                        isLast={index === elements.size - 1}
+                                        isLast={isLast}
                                     />
                                 )
                             }
 
-                            return null
+                            return (
+                                <Event
+                                    key={key}
+                                    event={elementMap}
+                                    isLast={isLast}
+                                />
+                            )
                         }
-                    )}
+
+                        return null
+                    }
+                )}
             </div>
         )
     }

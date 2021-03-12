@@ -525,3 +525,36 @@ exports[`TicketBody should display messages 1`] = `
   />
 </div>
 `;
+
+exports[`TicketBody should display phone events 1`] = `
+<div
+  className="TicketMessages"
+>
+  <PhoneEvent
+    event={
+      Immutable.Map {
+        "id": 1,
+        "isMessage": false,
+        "isEvent": true,
+        "created_datetime": "2017-07-01T19:00:00",
+        "type": "incoming-phone-call",
+      }
+    }
+    isLast={false}
+    key="event-1"
+  />
+  <PhoneEvent
+    event={
+      Immutable.Map {
+        "id": 2,
+        "isMessage": false,
+        "isEvent": true,
+        "created_datetime": "2017-07-01T19:05:00",
+        "type": "outgoing-phone-call",
+      }
+    }
+    isLast={true}
+    key="event-2"
+  />
+</div>
+`;

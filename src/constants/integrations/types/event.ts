@@ -19,3 +19,10 @@ export enum TicketAuditLogEvent {
     TicketUntrashed = 'ticket-untrashed',
     TicketUpdated = 'ticket-updated',
 }
+
+export enum PhoneIntegrationEvent {
+    IncomingPhoneCall = 'incoming-phone-call',
+    OutgoingPhoneCall = 'outgoing-phone-call',
+    CompletedPhoneCall = 'completed-phone-call',
+    MissedPhoneCall = 'missed-phone-call',
+}
