@@ -198,6 +198,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
         const isLoading = false
         const isActive = !integration.get('deactivated_datetime')
         const isExporting = false
+        const isShowing = false
 
         return (
             <div className="full-width">
@@ -240,7 +241,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                     or contact us.
                                 </p>
                             ) : null}
-                            {isUpdate && (
+                            {isShowing && (
                                 <div>
                                     <h3>Historical data sync</h3>
                                     <p>
