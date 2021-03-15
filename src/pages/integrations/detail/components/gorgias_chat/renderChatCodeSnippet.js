@@ -104,12 +104,12 @@ export function renderChatCodeSnippet({
         },
         staging: {
             // TODO: make it available in the helpdesk env variables instead of hardcoding it here?
-            bundleUrl: `https://storage.googleapis.com/gorgias-chat-staging-client-builds/${replaceText}/static/js/main.js`,
+            bundleUrl: `https://client-builds.staging.gorgias.chat/${replaceText}/static/js/main.js`,
             chatUrl: 'us-east1-b39a.staging.gorgias.chat',
             wsUrl: 'us-east1-b39a.staging.gorgias.chat',
         },
         production: {
-            bundleUrl: `https://storage.googleapis.com/gorgias-chat-production-client-builds/${replaceText}/static/js/main.js`,
+            bundleUrl: `https://client-builds.production.gorgias.chat/${replaceText}/static/js/main.js`,
             chatUrl: 'config.gorgias.chat',
             wsUrl: 'us-east1-898b.production.gorgias.chat',
         },
