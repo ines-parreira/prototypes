@@ -317,13 +317,21 @@ export default class RuleItem extends React.Component<Props, State> {
                                 />
                             </FormGroup>
                         </div>
-                        <div className={classnames(css.col, css['right-col'])}>
-                            <div id={toggleId}>
-                                <ToggleButton
-                                    value={!rule.get('deactivated_datetime')}
-                                    onChange={this._toggleItemStatus}
-                                />
-                            </div>
+                        <div
+                            className={classnames(
+                                css.col,
+                                css['right-col'],
+                                'position-relative'
+                            )}
+                        >
+                            <ToggleButton
+                                value={!rule.get('deactivated_datetime')}
+                                onChange={this._toggleItemStatus}
+                            />
+                            <div
+                                className={css['confirmation-popover']}
+                                id={toggleId}
+                            />
                             <Popover
                                 placement="left"
                                 isOpen={showConfirmation}

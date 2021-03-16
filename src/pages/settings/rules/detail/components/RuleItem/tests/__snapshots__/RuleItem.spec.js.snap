@@ -58,24 +58,24 @@ exports[`<RuleItem /> rendering should not render an error message when there is
         </div>
       </div>
       <div
-        class="col right-col"
+        class="col right-col position-relative"
       >
-        <div
-          id="rule-toggle-17"
+        <label
+          class="switch"
         >
-          <label
-            class="switch"
-          >
-            <input
-              checked=""
-              readonly=""
-              type="checkbox"
-            />
-            <div
-              class="slider"
-            />
-          </label>
-        </div>
+          <input
+            checked=""
+            readonly=""
+            type="checkbox"
+          />
+          <div
+            class="slider"
+          />
+        </label>
+        <div
+          class="confirmation-popover"
+          id="rule-toggle-17"
+        />
       </div>
     </div>
     <div
@@ -342,24 +342,24 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
         </div>
       </div>
       <div
-        class="col right-col"
+        class="col right-col position-relative"
       >
-        <div
-          id="rule-toggle-17"
+        <label
+          class="switch"
         >
-          <label
-            class="switch"
-          >
-            <input
-              checked=""
-              readonly=""
-              type="checkbox"
-            />
-            <div
-              class="slider"
-            />
-          </label>
-        </div>
+          <input
+            checked=""
+            readonly=""
+            type="checkbox"
+          />
+          <div
+            class="slider"
+          />
+        </label>
+        <div
+          class="confirmation-popover"
+          id="rule-toggle-17"
+        />
       </div>
     </div>
     <div

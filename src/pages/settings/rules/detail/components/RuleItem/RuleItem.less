@@ -1,141 +1,149 @@
 @import '~css/new/colors';
 
 :local {
-  .container {
-    background: @lightQuartz !important;
-    box-shadow: inset 0 -1px 0 0 @darkQuartz2, inset 0 1px 0 0 @darkQuartz2;
+    .container {
+        background: @lightQuartz !important;
+        box-shadow: inset 0 -1px 0 0 @darkQuartz2, inset 0 1px 0 0 @darkQuartz2;
 
-    td {
-      border: none !important;
-      padding: 0 !important;
-    }
-  }
-
-  .row {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .col {
-    padding: .75rem;
-  }
-
-  .left-col {
-    .closeRuleIcon {
-      font-size: large;
-      margin-left: 10px;
-      padding-top: 8px;
-      cursor: pointer;
-    }
-  }
-
-  .center-col {
-    width: 100%;
-
-    .name {
-      color: inherit;
-      background: none;
-      padding-left: 5px !important;
-      margin-left: -5px;
-
-      &:hover {
-        background: white;
-        padding-left: 5px;
-      }
-    }
-  }
-
-  .right-col {
-    padding-top: 15px !important;
-  }
-
-  .rule-description {
-    margin-bottom: 0;
-
-    textarea {
-      color: inherit;
-      font-size: 13px;
-      background: transparent;
-      border: 1px solid transparent;
-      padding-left: 5px;
-      margin-left: -5px;
-      transition: background .2s, border-color .2s;
-
-      &:hover, &:focus {
-        color: inherit;
-        background: white;
-        border: 1px solid #e8e8ec;
-        transition: background .2s, border-color .2s;
-
-        &:focus {
-          border-color: #80bdff;
+        td {
+            border: none !important;
+            padding: 0 !important;
         }
-      }
-    }
-  }
-
-  .when-container {
-    display: flex;
-    align-items: center;
-    padding-left: 59px; // == indent-0 of ast.less
-    font-size: 12px;
-
-    .when-btn {
-      margin-right: .25rem;
-      border-radius: 15px;
-      background-color: @whenEventsButtonBackground;
-      color: @blue;
-      border: none;
-      font-weight: bold;
-      padding: 3px 8px;
     }
 
-    .when-events > div {
-      background: none;
-      border: none;
-
-      input {
-        background: none;
-      }
-
-      :global(.dropdown-menu) {
-        font-size: 13px;
-      }
+    .row {
+        display: flex;
+        justify-content: space-between;
     }
 
-    .when-events :global(.badge.badge-secondary),
-    input, input:focus {
-      margin-right: .25rem !important;
-      border-radius: 15px !important;
-      border: none !important;
-      font-size: 12px !important;
-      padding: 3px 8px;
-
-      background-color: @whenEventsInputBackground;
-      color: @violet !important;
-
-      font-weight: 500;
-
-      &::after {
-        margin-left: 3px !important;
-        opacity: .3 !important;
-      }
+    .col {
+        padding: 0.75rem;
     }
-  }
 
-  .buttons-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px 15px 59px;
-    width: 100%;
-  }
-
-  .delete-button {
-    :global .material-icons {
-      color: @red;
-      font-size: large;
-      margin-right: 7px;
-      vertical-align: middle;
+    .left-col {
+        .closeRuleIcon {
+            font-size: large;
+            margin-left: 10px;
+            padding-top: 8px;
+            cursor: pointer;
+        }
     }
-  }
+
+    .center-col {
+        width: 100%;
+
+        .name {
+            color: inherit;
+            background: none;
+            padding-left: 5px !important;
+            margin-left: -5px;
+
+            &:hover {
+                background: white;
+                padding-left: 5px;
+            }
+        }
+    }
+
+    .right-col {
+        padding-top: 15px !important;
+    }
+
+    .rule-description {
+        margin-bottom: 0;
+
+        textarea {
+            color: inherit;
+            font-size: 13px;
+            background: transparent;
+            border: 1px solid transparent;
+            padding-left: 5px;
+            margin-left: -5px;
+            transition: background 0.2s, border-color 0.2s;
+
+            &:hover,
+            &:focus {
+                color: inherit;
+                background: white;
+                border: 1px solid #e8e8ec;
+                transition: background 0.2s, border-color 0.2s;
+
+                &:focus {
+                    border-color: #80bdff;
+                }
+            }
+        }
+    }
+
+    .when-container {
+        display: flex;
+        align-items: center;
+        padding-left: 59px; // == indent-0 of ast.less
+        font-size: 12px;
+
+        .when-btn {
+            margin-right: 0.25rem;
+            border-radius: 15px;
+            background-color: @whenEventsButtonBackground;
+            color: @blue;
+            border: none;
+            font-weight: bold;
+            padding: 3px 8px;
+        }
+
+        .when-events > div {
+            background: none;
+            border: none;
+
+            input {
+                background: none;
+            }
+
+            :global(.dropdown-menu) {
+                font-size: 13px;
+            }
+        }
+
+        .when-events :global(.badge.badge-secondary),
+        input,
+        input:focus {
+            margin-right: 0.25rem !important;
+            border-radius: 15px !important;
+            border: none !important;
+            font-size: 12px !important;
+            padding: 3px 8px;
+
+            background-color: @whenEventsInputBackground;
+            color: @violet !important;
+
+            font-weight: 500;
+
+            &::after {
+                margin-left: 3px !important;
+                opacity: 0.3 !important;
+            }
+        }
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px 15px 59px;
+        width: 100%;
+    }
+
+    .delete-button {
+        :global .material-icons {
+            color: @red;
+            font-size: large;
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+    }
+
+    .confirmation-popover {
+        visibility: hidden;
+        position: absolute;
+        top: 25px;
+    }
 }

@@ -104,15 +104,12 @@ class RuleRow extends React.Component<Props, State> {
                     </a>
                 </td>
 
-                <td className="smallest align-middle">
-                    <div id={toggleId}>
-                        <ToggleButton
-                            value={!rule.get('deactivated_datetime')}
-                            onChange={
-                                this._toggleItemStatus as () => Promise<any>
-                            }
-                        />
-                    </div>
+                <td className="smallest align-middle position-relative">
+                    <ToggleButton
+                        value={!rule.get('deactivated_datetime')}
+                        onChange={this._toggleItemStatus as () => Promise<any>}
+                    />
+                    <div className={css.confirmationPopover} id={toggleId} />
                     <Popover
                         placement="left"
                         isOpen={showConfirmation}
