@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
 import {fromJS, type Map} from 'immutable'
+import type {EditorState} from 'draft-js'
 
 import {
     Container,
@@ -73,7 +74,10 @@ type State = {
     signature_html: string,
 }
 
-class EmailIntegrationUpdate extends React.Component<Props, State> {
+export class EmailIntegrationUpdateContainer extends React.Component<
+    Props,
+    State
+> {
     isInitialized: boolean = false
 
     state = {
@@ -104,6 +108,19 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         if (!this.isInitialized && !loading.get('integration')) {
             this.setState(this._getIntegrationValues(integration))
             this.isInitialized = true
+        }
+    }
+
+    componentDidUpdate() {
+        const currentFormValues = this._getFormValues()
+        const {integration} = this.props
+        const {dirty: dirtyState} = this.state
+
+        const dirty =
+            JSON.stringify(integration) !== JSON.stringify(currentFormValues)
+
+        if (dirty !== dirtyState) {
+            this.setState({dirty})
         }
     }
 
@@ -148,7 +165,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         return form
     }
 
-    _clipboardCopy = (button) => {
+    _clipboardCopy = (button: HTMLButtonElement) => {
         if (!button) {
             return
         }
@@ -162,7 +179,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         })
     }
 
-    _handleSubmit = (e) => {
+    _handleSubmit = (e: SyntheticEvent<*>) => {
         e.preventDefault()
         const {updateOrCreateIntegration} = this.props.actions
 
@@ -404,16 +421,14 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         }
 
         this.setState({
-            dirty: true,
             name,
             errors,
         })
     }
 
-    _updateSignature = (editorState) => {
+    _updateSignature = (editorState: EditorState) => {
         const contentState = editorState.getCurrentContent()
         this.setState({
-            dirty: true,
             signature_text: contentState.getPlainText(),
             signature_html: convertToHTML(contentState),
         })
@@ -497,7 +512,6 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                                 value={use_gmail_categories}
                                 onChange={(value) =>
                                     this.setState({
-                                        dirty: true,
                                         use_gmail_categories: value,
                                     })
                                 }
@@ -537,7 +551,6 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                                 value={enable_gmail_sending}
                                 onChange={(value) =>
                                     this.setState({
-                                        dirty: true,
                                         enable_gmail_sending: value,
                                     })
                                 }
@@ -555,7 +568,6 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                                 value={import_spam}
                                 onChange={(value) =>
                                     this.setState({
-                                        dirty: true,
                                         import_spam: value,
                                     })
                                 }
@@ -670,5 +682,8 @@ const mapDispatchToProps = {
 }
 
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(EmailIntegrationUpdate)
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(EmailIntegrationUpdateContainer)
 )
