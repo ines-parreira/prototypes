@@ -10,6 +10,9 @@ import * as integrationHelpers from '../../../../state/integrations/helpers.ts'
 import ToggleButton from '../../../common/components/ToggleButton'
 import history from '../../../history.ts'
 
+import {notify} from '../../../../state/notifications/actions.ts'
+import {store} from '../../../../init.ts'
+
 import css from './InstallOnIntegrations.less'
 
 function getMetaField(integrationType: string): string {
@@ -43,6 +46,18 @@ export default class InstallOnIntegrationsCard extends React.Component<
             integrationType,
             updateOrCreateIntegration,
         } = this.props
+
+        if (integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE) {
+            store.dispatch(
+                notify({
+                    status: 'error',
+                    message:
+                        'This version of the chat is no longer supported. Please use the new chat integration to add ' +
+                        'a chat to your online store.',
+                })
+            )
+            return
+        }
 
         this.setState({integrationLoading: targetIntegration.get('id')})
 

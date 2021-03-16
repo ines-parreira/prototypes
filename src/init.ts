@@ -1,11 +1,14 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import moment from 'moment-timezone'
 import {Store} from 'redux'
 
 import './polyfills.js'
 import {EditableUserProfile} from './config/types/user'
 import {resendVerificationEmail} from './state/currentAccount/actions'
-import {getBaseEmailIntegration} from './state/integrations/selectors'
+import {
+    getActiveIntegrations,
+    getBaseEmailIntegration,
+} from './state/integrations/selectors'
 import {recentViewsStorage} from './state/views/utils'
 import {notify} from './state/notifications/actions'
 import configureStore from './store/configureStore.js'
@@ -16,6 +19,7 @@ import {GorgiasInitialState, InitialRootState} from './types'
 import {initDatadogLogger} from './utils/datadog'
 import {Tag} from './models/tag/types'
 import {View} from './models/view/types'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from './constants/integration'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -148,6 +152,35 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
 }
 
 notifyAccountNotVerified(store)
+
+export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
+    const integrations = getActiveIntegrations(reduxStore.getState())
+    const hasActiveSmoochInsideIntegrations = integrations.find(
+        (integration: Map<any, any>) =>
+            integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+    )
+
+    if (hasActiveSmoochInsideIntegrations) {
+        reduxStore.dispatch(
+            notify({
+                allowHTML: true,
+                id: 'has-deprecated-chat-integrations',
+                style: 'banner',
+                status: NotificationStatus.Warning,
+                dismissible: false,
+                onClick: () =>
+                    window.open(
+                        'https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version'
+                    ),
+                message:
+                    'You are currently using a deprecated version of the chat integration. ' +
+                    'Please migrate to the new chat integration by 03/31.',
+            }) as any
+        )
+    }
+}
+
+notifyChatIntegrationDeprecated(store)
 
 // Dispatch system messages as notifications
 transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(

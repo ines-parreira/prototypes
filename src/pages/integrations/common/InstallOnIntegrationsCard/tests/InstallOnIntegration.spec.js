@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 import {
     SHOPIFY_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
+    GORGIAS_CHAT_INTEGRATION_TYPE,
 } from '../../../../../constants/integration.ts'
 import history from '../../../../history.ts'
 import InstallOnIntegrationsCard from '../InstallOnIntegrationsCard'
@@ -41,7 +41,7 @@ const defaultProps = {
     ]),
     integration: fromJS({
         id: 5,
-        type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+        type: GORGIAS_CHAT_INTEGRATION_TYPE,
         name: 'my chat',
     }),
     updateOrCreateIntegration: () => {},
@@ -91,7 +91,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
                 const chatIntegration = fromJS({
                     id: 5,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     name: 'my chat',
                     meta: {shopify_integration_ids: []},
                 })
@@ -135,7 +135,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
                 const chatIntegration = fromJS({
                     id: 5,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     name: 'my chat',
                     meta: {
                         shopify_integration_ids: [targetIntegration.get('id')],
@@ -183,7 +183,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
                 const chatIntegration = fromJS({
                     id: 5,
-                    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     name: 'my chat',
                     meta: {
                         shopify_integration_ids: [targetIntegration.get('id')],

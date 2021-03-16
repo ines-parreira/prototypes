@@ -73,18 +73,33 @@ export default class IntegrationList extends React.Component<Props> {
     }
 
     _deprecatedChatWarning = () => {
-        const deadline = new Date(Date.UTC(2021, 2, 1))
-        const isBeforeDeadline = new Date(Date.now()) < deadline
+        const smoochInsideIntegrations = this.props.integrations.filter(
+            (integration) =>
+                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+        )
+
+        if (smoochInsideIntegrations.size === 0) {
+            return null
+        }
+
+        // active means that the integration is either enabled or installed on a shopify store
+        const hasActiveSmoochInsideIntegrations = smoochInsideIntegrations.find(
+            (integration) =>
+                integration.get('deactivated_datetime') === null ||
+                integration.getIn(['meta', 'shopify_integration_ids', 'size'])
+        )
 
         return (
-            <Alert color={isBeforeDeadline ? 'warning' : 'danger'}>
+            <Alert color="danger">
                 <span>
-                    You are currently using a deprecated version of the chat
-                    integration. Please migrate to the{' '}
+                    {hasActiveSmoochInsideIntegrations
+                        ? 'You are currently using a deprecated version of the chat integration. '
+                        : 'You currently have inactive old chat integrations set up in your account. '}
+                    If applicable, please migrate to the{' '}
                     <Link to="/app/settings/integrations/gorgias_chat">
                         new chat integration
-                    </Link>
-                    {isBeforeDeadline ? ' ' : ' by 03/31 '}following these{' '}
+                    </Link>{' '}
+                    by 03/31 following these{' '}
                     <a
                         href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
                         target="_blank"
@@ -92,10 +107,8 @@ export default class IntegrationList extends React.Component<Props> {
                     >
                         instructions
                     </a>
-                    .
-                    {isBeforeDeadline
-                        ? ''
-                        : ' Past this date, your integration will be automatically disabled.'}
+                    . Past this date, any remaining active integrations will be
+                    automatically removed.
                 </span>
             </Alert>
         )
@@ -150,10 +163,10 @@ export default class IntegrationList extends React.Component<Props> {
                             </p>
 
                             {this._limitWarning()}
-                            {hasSmoochInsideIntegration
-                                ? this._deprecatedChatWarning()
-                                : null}
                         </Col>
+                    </Row>
+                    <Row>
+                        <Col>{this._deprecatedChatWarning()}</Col>
                     </Row>
                     <Row>
                         <Col>

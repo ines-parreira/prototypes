@@ -37,7 +37,7 @@ export default class ChatIntegrationList extends React.Component<Props> {
             return (
                 <div>
                     {hasActiveSmoochInsideIntegration ? (
-                        <Alert color="warning">
+                        <Alert color="danger">
                             <span role="img" aria-label="warning">
                                 ⚠️
                             </span>{' '}
@@ -55,7 +55,8 @@ export default class ChatIntegrationList extends React.Component<Props> {
                             >
                                 this article
                             </a>
-                            .
+                            . On 03/31, any remaining active integrations will
+                            be automatically removed.
                         </Alert>
                     ) : null}
                     <span>

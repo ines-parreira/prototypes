@@ -25,7 +25,7 @@ exports[`<InstallOnIntegrationsCard/> render() should render all integrations be
       </h3>
       <p>
         Install the 
-        chat
+        customer chat
          widget on your
          
         Shopify
@@ -127,7 +127,7 @@ exports[`<InstallOnIntegrationsCard/> render() should render first three passed 
       </h3>
       <p>
         Install the 
-        chat
+        customer chat
          widget on your
          
         Shopify

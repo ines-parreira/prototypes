@@ -9,6 +9,8 @@ import {getIntegrationConfig} from '../../../../state/integrations/helpers.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
+
 import NoIntegration from './NoIntegration'
 
 /**
@@ -45,6 +47,16 @@ class IntegrationList extends React.Component {
     }
 
     onButtonClick = () => {
+        if (this.props.integrationType === SMOOCH_INSIDE_INTEGRATION_TYPE) {
+            this.props.notify({
+                status: 'error',
+                message:
+                    'Cannot create a chat integration because it is deprecated. ' +
+                    'Please use the new chat integration instead.',
+            })
+            return
+        }
+
         if (this.props.createIntegrationButtonOnClick) {
             this.props.createIntegrationButtonOnClick()
         }
