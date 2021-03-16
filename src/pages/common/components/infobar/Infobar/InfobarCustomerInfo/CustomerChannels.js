@@ -2,6 +2,8 @@ import React, {type Node} from 'react'
 import {fromJS, type List, type Map} from 'immutable'
 import classnames from 'classnames'
 
+import {connect} from 'react-redux'
+
 import {
     CHAT_CUSTOMER_CHANNEL_TYPE,
     EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -15,23 +17,35 @@ import {
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
-import {getLocalTime} from '../../utils'
+import {getDisplayCustomerLastSeenOnChat, getLocalTime} from '../../utils'
+import {getCurrentUser} from '../../../../../../state/currentUser/selectors.ts'
 
 import CustomerInfoWrapper from './CustomerInfoWrapper.tsx'
 
 type Props = {
+    currentUser: Map<*, *>,
     channels: List<Map<*, *>>,
     customerLocationInfo: Map<any, any>,
+    customerLastSeenOnChat: string,
     children: Node,
 }
 
-export default class CustomerChannels extends React.Component<Props> {
+export class CustomerChannels extends React.Component<Props> {
     static defaultProps = {
         customerLocationInfo: fromJS({}),
+        customerLastSeenOnChat: null,
     }
 
     render() {
-        const {channels, children, customerLocationInfo} = this.props
+        const {
+            channels,
+            children,
+            customerLocationInfo,
+            customerLastSeenOnChat,
+            currentUser,
+        } = this.props
+
+        const userSettingTimezone = currentUser.get('timezone')
 
         let filteredChannels = channels
             .filter((channel) => {
@@ -169,8 +183,29 @@ export default class CustomerChannels extends React.Component<Props> {
                             {`Local time: ${getLocalTime(timezoneOffset)}`}
                         </p>
                     )}
+                    {customerLastSeenOnChat && (
+                        <p className={css.customerChannel}>
+                            <i
+                                className={classnames(
+                                    'icon d-inline-block',
+                                    'material-icons',
+                                    'uncolored mr-2'
+                                )}
+                            >
+                                event
+                            </i>
+                            {`Last seen on chat: ${getDisplayCustomerLastSeenOnChat(
+                                customerLastSeenOnChat,
+                                userSettingTimezone
+                            )}`}
+                        </p>
+                    )}
                 </CustomerInfoWrapper>
             </>
         )
     }
 }
+
+export default connect((state) => ({
+    currentUser: getCurrentUser(state),
+}))(CustomerChannels)

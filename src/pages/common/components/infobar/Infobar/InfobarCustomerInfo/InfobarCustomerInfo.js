@@ -25,6 +25,8 @@ import Avatar from '../../../Avatar'
 import css from '../../Infobar.less'
 import {areSourcesReady, canDrop, jsonToWidgets} from '../../utils'
 
+import {IntegrationType} from '../../../../../../models/integration/types.ts'
+
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote'
 import InfobarWidgets from './InfobarWidgets'
@@ -267,6 +269,26 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
             return null
         }
 
+        const customerIntegrationsData = customer.get('integrations')
+        let chatIntegrationData
+        if (customerIntegrationsData) {
+            chatIntegrationData = customerIntegrationsData.find(
+                (customerIntegrationData) => {
+                    return (
+                        customerIntegrationData.get('__integration_type__') ===
+                        IntegrationType.GorgiasChatIntegrationType
+                    )
+                }
+            )
+        }
+
+        let lastSeenOnChat
+        if (chatIntegrationData) {
+            lastSeenOnChat = chatIntegrationData.get(
+                'chat_recent_activity_timestamp'
+            )
+        }
+
         return (
             <div className={classnames(css.widgetsList, 'd-flex flex-column')}>
                 <div className={css.customerInfo}>
@@ -294,6 +316,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
                                 'meta',
                                 'location_info',
                             ])}
+                            customerLastSeenOnChat={lastSeenOnChat}
                         >
                             <CustomerNote customer={customer} />
                         </CustomerChannels>

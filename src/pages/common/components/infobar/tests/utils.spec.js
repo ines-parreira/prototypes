@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
+import momentTimezone from 'moment-timezone'
 
 import * as utils from '../utils'
 
@@ -338,6 +339,63 @@ describe('widgets infobar utils', () => {
 
                 const result = utils.getLocalTime(timezoneOffset)
                 expect(result).toBe(expectedLocalTime)
+            }
+        )
+    })
+
+    describe('getDisplayCustomerLastSeenOnChat()', () => {
+        const lastSeenDatetimeStamps = [
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-26T13:23:00.000Z',
+                'Europe/Paris',
+                'now',
+            ],
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-26T12:44:00.000Z',
+                'Europe/Paris',
+                '40 minutes ago',
+            ],
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-26T11:34:00.000Z',
+                'Europe/Paris',
+                'Today at 12:34 PM',
+            ],
+            [
+                '2021-02-27T13:24:00.000Z',
+                '2021-02-26T11:34:00.000Z',
+                'Europe/Paris',
+                'Yesterday at 12:34 PM',
+            ],
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-17T23:44:00.000Z',
+                'Europe/Paris',
+                '02/18/2021',
+            ],
+        ]
+
+        it.each(lastSeenDatetimeStamps)(
+            'should construct the best displayable string from the datetime string',
+            (
+                mockedNow,
+                lastSeenOnChat,
+                timezone,
+                expectedDisplayLastSeenOnChat
+            ) => {
+                const fixedUtcDate = momentTimezone.utc(mockedNow)
+                jest.spyOn(momentTimezone, 'utc').mockImplementationOnce(
+                    () => fixedUtcDate
+                )
+
+                const result = utils.getDisplayCustomerLastSeenOnChat(
+                    lastSeenOnChat,
+                    timezone,
+                    fixedUtcDate
+                )
+                expect(result).toBe(expectedDisplayLastSeenOnChat)
             }
         )
     })

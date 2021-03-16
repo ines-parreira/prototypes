@@ -22,6 +22,7 @@ import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
 
+import momentTimezone from 'moment-timezone'
 import moment from 'moment'
 
 import {DatetimeLabel} from '../../utils/labels'
@@ -691,4 +692,41 @@ export function getLocalTime(timezoneOffset) {
     const localTime = moment.utc().utcOffset(timezoneDifference)
 
     return localTime.format('HH:mm')
+}
+
+/**
+ * Return the prettified last seen on chat string, based on the UTC timestamp received from the chat
+ * @param customerLastSeenOnChatUtcDateTimeStamp {string}
+ * @param timezone {string}
+ * @param referenceDay {datetime || null}
+ * @returns {string}
+ */
+export function getDisplayCustomerLastSeenOnChat(
+    customerLastSeenOnChatUtcDateTimeStamp,
+    timezone,
+    referenceDay = null
+) {
+    const now = momentTimezone.utc()
+    const customerLastSeenOnChatUtcDateTime = momentTimezone.utc(
+        customerLastSeenOnChatUtcDateTimeStamp
+    )
+
+    const diff = now.diff(customerLastSeenOnChatUtcDateTime)
+    const diffDuration = momentTimezone.duration(diff)
+    const minusDiffDuration = momentTimezone.duration(diff * -1)
+
+    if (diffDuration.asSeconds() < 125) {
+        // 2 minutes and 5 seconds
+        return 'now'
+    }
+    if (diffDuration.asMinutes() < 59) {
+        return minusDiffDuration.humanize(true)
+    }
+
+    // the same way we display it on the ticket messages
+    return customerLastSeenOnChatUtcDateTime
+        .tz(timezone)
+        .calendar(referenceDay, {
+            lastWeek: 'dddd', // Tuesday, Friday, etc.. The default is: [Last] dddd
+        })
 }

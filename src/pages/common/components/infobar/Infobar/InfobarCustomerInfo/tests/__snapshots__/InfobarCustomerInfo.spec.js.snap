@@ -268,9 +268,8 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
     <div
       className="detail"
     >
-      <CustomerChannels
+      <Connect(CustomerChannels)
         channels={Immutable.List []}
-        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -280,7 +279,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
             }
           }
         />
-      </CustomerChannels>
+      </Connect(CustomerChannels)>
     </div>
   </div>
   <GenerateButton
@@ -348,9 +347,8 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
     <div
       className="detail"
     >
-      <CustomerChannels
+      <Connect(CustomerChannels)
         channels={Immutable.List []}
-        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -360,7 +358,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
             }
           }
         />
-      </CustomerChannels>
+      </Connect(CustomerChannels)>
     </div>
   </div>
   <Connect(InfobarWidgets)
@@ -469,9 +467,8 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
     <div
       className="detail"
     >
-      <CustomerChannels
+      <Connect(CustomerChannels)
         channels={Immutable.List []}
-        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -481,7 +478,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
             }
           }
         />
-      </CustomerChannels>
+      </Connect(CustomerChannels)>
     </div>
   </div>
   <AddIntegrationSuggestion
@@ -523,9 +520,8 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
     <div
       className="detail"
     >
-      <CustomerChannels
+      <Connect(CustomerChannels)
         channels={Immutable.List []}
-        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -535,7 +531,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
             }
           }
         />
-      </CustomerChannels>
+      </Connect(CustomerChannels)>
     </div>
   </div>
 </div>
@@ -569,9 +565,8 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
     <div
       className="detail"
     >
-      <CustomerChannels
+      <Connect(CustomerChannels)
         channels={Immutable.List []}
-        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -581,7 +576,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
             }
           }
         />
-      </CustomerChannels>
+      </Connect(CustomerChannels)>
     </div>
   </div>
 </div>
@@ -615,9 +610,8 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
     <div
       className="detail"
     >
-      <CustomerChannels
+      <Connect(CustomerChannels)
         channels={Immutable.List []}
-        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -627,7 +621,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
             }
           }
         />
-      </CustomerChannels>
+      </Connect(CustomerChannels)>
     </div>
   </div>
   <Connect(InfobarWidgets)
