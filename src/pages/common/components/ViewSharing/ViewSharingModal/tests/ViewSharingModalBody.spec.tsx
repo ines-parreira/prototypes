@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import ViewSharingModalBody from '../ViewSharingModalBody'
-import {ViewVisibility} from '../../../../../../constants/view.ts'
+import {ViewVisibility} from '../../../../../../constants/view'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -21,11 +21,11 @@ describe('<ViewSharingModalBody/>', () => {
     })
 
     const store = mockStore(getState())
-    let setVisibility
-    let onTeamClick
-    let onUserClick
-    let onRemoveTeam
-    let onRemoveUser
+    let setVisibility: jest.MockedFunction<any>
+    let onTeamClick: jest.MockedFunction<any>
+    let onUserClick: jest.MockedFunction<any>
+    let onRemoveTeam: jest.MockedFunction<any>
+    let onRemoveUser: jest.MockedFunction<any>
 
     beforeEach(() => {
         setVisibility = jest.fn()
@@ -42,13 +42,11 @@ describe('<ViewSharingModalBody/>', () => {
                     visibility={ViewVisibility.PUBLIC}
                     isLoading
                     error={null}
-                    teams={fromJS([])}
-                    users={fromJS([])}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                    store={store}
+                    {...({store} as any)}
                     setVisibility={setVisibility}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -66,13 +64,11 @@ describe('<ViewSharingModalBody/>', () => {
                     visibility={ViewVisibility.PUBLIC}
                     isLoading={false}
                     error={new Error('foo bar')}
-                    teams={fromJS([])}
-                    users={fromJS([])}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                    store={store}
+                    {...({store} as any)}
                     setVisibility={setVisibility}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -90,13 +86,11 @@ describe('<ViewSharingModalBody/>', () => {
                     visibility={ViewVisibility.PUBLIC}
                     isLoading={false}
                     error={null}
-                    teams={fromJS([])}
-                    users={fromJS([])}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                    store={store}
+                    {...({store} as any)}
                     setVisibility={setVisibility}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -114,13 +108,11 @@ describe('<ViewSharingModalBody/>', () => {
                     visibility={ViewVisibility.SHARED}
                     isLoading={false}
                     error={null}
-                    teams={fromJS([])}
-                    users={fromJS([])}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                    store={store}
+                    {...({store} as any)}
                     setVisibility={setVisibility}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -138,13 +130,11 @@ describe('<ViewSharingModalBody/>', () => {
                     visibility={ViewVisibility.PRIVATE}
                     isLoading={false}
                     error={null}
-                    teams={fromJS([])}
-                    users={fromJS([])}
                     initialTeams={fromJS([])}
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                    store={store}
+                    {...({store} as any)}
                     setVisibility={setVisibility}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}

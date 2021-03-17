@@ -4,7 +4,7 @@ import {Form, Button} from 'reactstrap'
 
 import {SectionDraft} from '../../../models/section/types'
 import Modal from '../../common/components/Modal.js'
-import EmojiSelect from '../../common/components/ViewTable/EmojiSelect/EmojiSelect.js'
+import EmojiSelect from '../../common/components/ViewTable/EmojiSelect/EmojiSelect'
 import InputField from '../../common/forms/InputField.js'
 
 import css from './SectionFormModal.less'

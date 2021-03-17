@@ -3,7 +3,7 @@
 // $FlowFixMe
 import React, {useState} from 'react'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {type Map} from 'immutable'
+import {type Map, List} from 'immutable'
 
 import css from './UncontrolledPeopleSearchInput.less'
 
@@ -13,8 +13,8 @@ import PeopleSearchResults from './PeopleSearchResults'
 type Props = {
     className?: string,
     autoFocus?: boolean,
-    teams: Map<*, *>,
-    users: Map<*, *>,
+    teams: List<Map<*, *>>,
+    users: List<Map<*, *>>,
     onTeamClick: (team: Map<*, *>) => void,
     onUserClick: (user: Map<*, *>) => void,
 }

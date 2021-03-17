@@ -1,25 +1,22 @@
-// @flow
-
 import React from 'react'
-import type {List} from 'immutable'
+import {List, Map} from 'immutable'
 import {Button, ListGroup, ListGroupItem} from 'reactstrap'
 import classnames from 'classnames'
 
-import {UncontrolledPeopleSearchInput} from '../../../forms/PeopleSearchInput'
-import {AgentLabel, TeamLabel} from '../../../utils/labels'
-import type {teamType} from '../../../../../state/teams/types'
+import {UncontrolledPeopleSearchInput} from '../../../forms/PeopleSearchInput/index.js'
+import {AgentLabel, TeamLabel} from '../../../utils/labels.js'
 
 import css from './SharedBody.less'
 
 type Props = {
-    availableTeams: List<teamType>,
-    availableUsers: List<any>,
-    selectedTeams: List<teamType>,
-    selectedUsers: List<any>,
-    onTeamClick: (team: teamType) => void,
-    onUserClick: (user: any) => void,
-    onRemoveTeam: (team: teamType) => void,
-    onRemoveUser: (user: any) => void,
+    availableTeams: List<any>
+    availableUsers: List<any>
+    selectedTeams: List<any>
+    selectedUsers: List<any>
+    onTeamClick: (team: Map<any, any>) => void
+    onUserClick: (user: Map<any, any>) => void
+    onRemoveTeam: (team: Map<any, any>) => void
+    onRemoveUser: (user: Map<any, any>) => void
 }
 
 export default function SharedBody({
@@ -53,7 +50,7 @@ export default function SharedBody({
                         No team selected
                     </ListGroupItem>
                 ) : (
-                    selectedTeams.map((team) => (
+                    selectedTeams.map((team: Map<any, any>) => (
                         <ListGroupItem
                             key={team.get('id')}
                             className={css.listGroupItem}
@@ -88,7 +85,7 @@ export default function SharedBody({
                         No user selected
                     </ListGroupItem>
                 ) : (
-                    selectedUsers.map((user) => (
+                    selectedUsers.map((user: Map<any, any>) => (
                         <ListGroupItem
                             key={user.get('id')}
                             className={classnames(

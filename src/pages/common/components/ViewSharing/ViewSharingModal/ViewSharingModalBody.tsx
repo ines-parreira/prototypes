@@ -1,43 +1,41 @@
-// flow
-
 import React, {useMemo} from 'react'
-import {connect} from 'react-redux'
-import {type List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {Map, List} from 'immutable'
 import {Alert} from 'reactstrap'
 
-import * as agentSelectors from '../../../../../state/agents/selectors.ts'
-import * as teamsSelectors from '../../../../../state/teams/selectors.ts'
-import type {teamType} from '../../../../../state/teams/types'
-import RadioChoiceField from '../../../forms/RadioChoiceField'
-import {ViewVisibility} from '../../../../../constants/view.ts'
-import Loader from '../../Loader'
+import * as agentSelectors from '../../../../../state/agents/selectors'
+import * as teamsSelectors from '../../../../../state/teams/selectors'
+import RadioChoiceField from '../../../forms/RadioChoiceField.js'
+import {ViewVisibility} from '../../../../../models/view/types'
+import {RootState} from '../../../../../state/types'
+import Loader from '../../Loader/index.js'
 
 import SharedBody from './SharedBody'
-import PublicBody from './PublicBody.tsx'
-import PrivateBody from './PrivateBody.tsx'
+import PublicBody from './PublicBody'
+import PrivateBody from './PrivateBody'
 import ViewSharingModalWarning from './ViewSharingModalWarning'
 
-type Props = {
-    visibility: string,
-    isLoading: boolean,
-    error: Error,
-    teams: List<teamType>,
-    users: List<any>,
-    initialTeams: List<teamType>,
-    initialUsers: List<any>,
-    selectedTeams: List<teamType>,
-    selectedUsers: List<any>,
-    setVisibility: (visibility: string) => void,
-    onTeamClick: (team: teamType) => void,
-    onUserClick: (user: any) => void,
-    onRemoveTeam: (team: teamType) => void,
-    onRemoveUser: (user: any) => void,
+type OwnProps = {
+    visibility: string
+    isLoading: boolean
+    error: Error | null
+    initialTeams: List<any>
+    initialUsers: List<any>
+    selectedTeams: List<any>
+    selectedUsers: List<any>
+    setVisibility: (visibility: ViewVisibility) => void
+    onTeamClick: (team: Map<any, any>) => void
+    onUserClick: (user: Map<any, any>) => void
+    onRemoveTeam: (team: Map<any, any>) => void
+    onRemoveUser: (user: Map<any, any>) => void
 }
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 const choices = [
-    {value: ViewVisibility.PUBLIC, label: 'Public'},
-    {value: ViewVisibility.SHARED, label: 'Shared'},
-    {value: ViewVisibility.PRIVATE, label: 'Private'},
+    {value: ViewVisibility.Public, label: 'Public'},
+    {value: ViewVisibility.Shared, label: 'Shared'},
+    {value: ViewVisibility.Private, label: 'Private'},
 ]
 
 function ViewSharingModalBody({
@@ -56,27 +54,29 @@ function ViewSharingModalBody({
     onRemoveTeam,
     onRemoveUser,
 }: Props) {
-    const isPublic = visibility === ViewVisibility.PUBLIC
-    const isShared = visibility === ViewVisibility.SHARED
-    const isPrivate = visibility === ViewVisibility.PRIVATE
+    const isPublic = visibility === ViewVisibility.Public
+    const isShared = visibility === ViewVisibility.Shared
+    const isPrivate = visibility === ViewVisibility.Private
 
     const availableTeams = useMemo(
         () =>
-            teams.filter((team) =>
+            teams.filter((team: Map<any, any>) =>
                 selectedTeams.every(
-                    (selectedTeam) => selectedTeam.get('id') !== team.get('id')
+                    (selectedTeam: Map<any, any>) =>
+                        selectedTeam.get('id') !== team.get('id')
                 )
-            ),
+            ) as List<any>,
         [teams, selectedTeams]
     )
 
     const availableUsers = useMemo(
         () =>
-            users.filter((user) =>
+            users.filter((user: Map<any, any>) =>
                 selectedUsers.every(
-                    (selectedUser) => selectedUser.get('id') !== user.get('id')
+                    (selectedUser: Map<any, any>) =>
+                        selectedUser.get('id') !== user.get('id')
                 )
-            ),
+            ) as List<any>,
         [users, selectedUsers]
     )
 
@@ -104,7 +104,7 @@ function ViewSharingModalBody({
                 <RadioChoiceField
                     choices={choices}
                     value={visibility}
-                    onChange={setVisibility}
+                    onChange={setVisibility as (visibility: string) => void}
                 />
             </div>
             {isPublic && <PublicBody />}
@@ -118,7 +118,6 @@ function ViewSharingModalBody({
                         Lead agents and admins see all the shared views.
                     </Alert>
                     <ViewSharingModalWarning
-                        visibility={visibility}
                         initialTeams={initialTeams}
                         initialUsers={initialUsers}
                         selectedTeams={selectedTeams}
@@ -141,7 +140,9 @@ function ViewSharingModalBody({
     )
 }
 
-export default connect((state) => ({
+const connector = connect((state: RootState) => ({
     users: agentSelectors.getAgents(state),
     teams: teamsSelectors.getTeams(state).toList(),
-}))(ViewSharingModalBody)
+}))
+
+export default connector(ViewSharingModalBody)

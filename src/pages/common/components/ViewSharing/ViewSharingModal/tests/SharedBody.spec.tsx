@@ -5,17 +5,19 @@ import {fromJS} from 'immutable'
 import SharedBody from '../SharedBody'
 
 describe('<SharedBody/>', () => {
-    let onTeamClick
-    let onUserClick
-    let onRemoveTeam
-    let onRemoveUser
+    let onTeamClick: jest.MockedFunction<any>
+    let onUserClick: jest.MockedFunction<any>
+    let onRemoveTeam: jest.MockedFunction<any>
+    let onRemoveUser: jest.MockedFunction<any>
 
-    const getTeam = (id) => ({id, name: `Team ${id}`})
-    const getUser = (id) => ({id, name: `User ${id}`})
+    const getTeam = (id: number) => ({id, name: `Team ${id}`})
+    const getUser = (id: number) => ({id, name: `User ${id}`})
 
     beforeEach(() => {
         onTeamClick = jest.fn()
         onUserClick = jest.fn()
+        onRemoveTeam = jest.fn()
+        onRemoveUser = jest.fn()
     })
 
     describe('render()', () => {

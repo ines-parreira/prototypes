@@ -1,22 +1,26 @@
-// @flow
-import React, {type ElementProps} from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _noop from 'lodash/noop'
+import {EmojiData} from 'emoji-mart'
 
-import EmojiPicker from '../../../EmojiPicker'
+import EmojiPicker from '../../../EmojiPicker/EmojiPicker'
 import EmojiSelect from '../EmojiSelect'
 import css from '../EmojiSelect.less'
 
 const POPOVER_SELECTOR = '.popover'
 
 jest.mock(
-    '../../../EmojiPicker',
-    () => ({children, onClick}: ElementProps<typeof EmojiPicker>) => {
+    '../../../EmojiPicker/EmojiPicker.tsx',
+    () => ({onClick}: ComponentProps<typeof EmojiPicker>) => {
         return (
             <div data-testid="EmojiPicker">
-                <div data-testid="EmojiPicker-new-emoji" onClick={onClick} />
-                {children}
+                <div
+                    data-testid="EmojiPicker-new-emoji"
+                    onClick={() => {
+                        onClick!({native: '1'} as EmojiData)
+                    }}
+                />
             </div>
         )
     }
@@ -37,7 +41,7 @@ afterEach(() => {
 afterEach(() => {
     const popover = global.document.querySelector(POPOVER_SELECTOR)
     if (popover) {
-        global.document.querySelector('.' + css.icon).click()
+        ;(global.document.querySelector('.' + css.icon) as HTMLElement).click()
     }
 })
 
@@ -77,7 +81,9 @@ describe('<EmojiSelect/>', () => {
             const {getByText} = render(<EmojiSelect {...defaultProps} />)
             userEvent.click(getByText('1'))
             userEvent.click(
-                global.document.querySelector('.' + css.clearButton)
+                global.document.querySelector(
+                    '.' + css.clearButton
+                ) as HTMLElement
             )
             expect(onEmojiClear).toHaveBeenLastCalledWith()
         })

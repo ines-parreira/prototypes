@@ -1,18 +1,14 @@
-// @flow
-
 import React from 'react'
 import {Alert, UncontrolledTooltip} from 'reactstrap'
-import type {List} from 'immutable'
-
-import type {teamType} from '../../../../../state/teams/types'
+import {List} from 'immutable'
 
 import css from './ViewSharingModalWarning.less'
 
 type Props = {
-    initialTeams: List<teamType>,
-    initialUsers: List<any>,
-    selectedTeams: List<teamType>,
-    selectedUsers: List<any>,
+    initialTeams: List<any>
+    initialUsers: List<any>
+    selectedTeams: List<any>
+    selectedUsers: List<any>
 }
 
 export default function ViewSharingModalWarning({
@@ -21,15 +17,17 @@ export default function ViewSharingModalWarning({
     selectedTeams,
     selectedUsers,
 }: Props) {
-    const missingTeams = initialTeams.filter((team) =>
+    const missingTeams = initialTeams.filter((team: Map<any, any>) =>
         selectedTeams.every(
-            (selectedTeam) => selectedTeam.get('id') !== team.get('id')
+            (selectedTeam: Map<any, any>) =>
+                selectedTeam.get('id') !== team.get('id')
         )
     )
 
-    const missingUsers = initialUsers.filter((user) =>
+    const missingUsers = initialUsers.filter((user: Map<any, any>) =>
         selectedUsers.every(
-            (selectedUser) => selectedUser.get('id') !== user.get('id')
+            (selectedUser: Map<any, any>) =>
+                selectedUser.get('id') !== user.get('id')
         )
     )
 
@@ -46,7 +44,6 @@ export default function ViewSharingModalWarning({
                         <span
                             id="missing-teams-tooltip"
                             className={css.totalItems}
-                            href="#"
                         >
                             {missingTeams.size} team
                             {missingTeams.size > 1 ? 's' : ''}
@@ -55,7 +52,7 @@ export default function ViewSharingModalWarning({
                             placement="top"
                             target="missing-teams-tooltip"
                         >
-                            {missingTeams.map((team) => (
+                            {missingTeams.map((team: Map<any, any>) => (
                                 <span key={team.get('id')} className="d-block">
                                     {team.get('name')}
                                 </span>
@@ -69,7 +66,6 @@ export default function ViewSharingModalWarning({
                         <span
                             id="missing-users-tooltip"
                             className={css.totalItems}
-                            href="#"
                         >
                             {missingUsers.size} user
                             {missingUsers.size > 1 ? 's' : ''}
@@ -78,7 +74,7 @@ export default function ViewSharingModalWarning({
                             placement="top"
                             target="missing-users-tooltip"
                         >
-                            {missingUsers.map((user) => (
+                            {missingUsers.map((user: Map<any, any>) => (
                                 <span key={user.get('id')} className="d-block">
                                     {user.get('name')}
                                 </span>

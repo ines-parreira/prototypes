@@ -6,17 +6,22 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import ViewSharingModal from '../ViewSharingModal'
-import {ViewVisibility} from '../../../../../../constants/view.ts'
-import GorgiasApi from '../../../../../../services/gorgiasApi.ts'
-import {view as viewFixture} from '../../../../../../fixtures/views.ts'
-import {viewUpdated} from '../../../../../../state/entities/views/actions.ts'
+import {ViewVisibility} from '../../../../../../constants/view'
+import {view as mockViewFixture} from '../../../../../../fixtures/views'
+import {viewUpdated} from '../../../../../../state/entities/views/actions'
 import {
     advancedPlan,
     basicPlan,
     proPlan,
-} from '../../../../../../fixtures/subscriptionPlan.ts'
+} from '../../../../../../fixtures/subscriptionPlan'
 
-jest.mock('../../../../../../services/gorgiasApi')
+jest.mock('../../../../../../services/gorgiasApi.ts', () => () => {
+    return {
+        getViewSharing: jest.fn().mockRejectedValue(new Error()),
+        setViewSharing: jest.fn().mockResolvedValue(mockViewFixture),
+    }
+})
+
 jest.mock('../../../../../../state/entities/views/actions.ts')
 
 const middlewares = [thunk]
@@ -39,17 +44,13 @@ describe('<ViewSharingModal/>', () => {
         }),
     })
     const store = mockStore(getState())
-    let toggle
-    let notify
+    let toggle: jest.MockedFunction<any>
+    let notify: jest.MockedFunction<any>
 
     beforeEach(() => {
         jest.clearAllMocks()
         toggle = jest.fn()
         notify = jest.fn()
-        GorgiasApi.mockImplementation(() => ({
-            getViewSharing: jest.fn().mockRejectedValue(),
-            setViewSharing: jest.fn().mockResolvedValue(viewFixture),
-        }))
     })
 
     describe('render()', () => {
@@ -59,7 +60,7 @@ describe('<ViewSharingModal/>', () => {
                 <ViewSharingModal
                     view={view}
                     isOpen
-                    store={store}
+                    {...({store} as any)}
                     toggle={toggle}
                     notify={notify}
                     showPaywall={true}
@@ -76,7 +77,7 @@ describe('<ViewSharingModal/>', () => {
                 <ViewSharingModal
                     view={view}
                     isOpen
-                    store={store}
+                    {...({store} as any)}
                     toggle={toggle}
                     notify={notify}
                     showPaywall={false}
@@ -93,7 +94,7 @@ describe('<ViewSharingModal/>', () => {
                 <ViewSharingModal
                     view={view}
                     isOpen
-                    store={store}
+                    {...({store} as any)}
                     toggle={toggle}
                     notify={notify}
                     showPaywall={false}
@@ -110,7 +111,7 @@ describe('<ViewSharingModal/>', () => {
                 <ViewSharingModal
                     view={view}
                     isOpen
-                    store={store}
+                    {...({store} as any)}
                     toggle={toggle}
                     notify={notify}
                     showPaywall={false}
@@ -126,7 +127,7 @@ describe('<ViewSharingModal/>', () => {
                 <ViewSharingModal
                     view={view}
                     isOpen
-                    store={store}
+                    {...({store} as any)}
                     toggle={toggle}
                     notify={notify}
                     viewUpdated={viewUpdated}
@@ -136,7 +137,7 @@ describe('<ViewSharingModal/>', () => {
 
             component.dive().find(Button).first().simulate('click')
             setImmediate(() => {
-                expect(viewUpdated).toHaveBeenNthCalledWith(1, viewFixture)
+                expect(viewUpdated).toHaveBeenNthCalledWith(1, mockViewFixture)
                 done()
             })
         })

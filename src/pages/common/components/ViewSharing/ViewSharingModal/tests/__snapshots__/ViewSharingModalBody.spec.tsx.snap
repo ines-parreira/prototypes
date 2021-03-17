@@ -168,7 +168,6 @@ exports[`<ViewSharingModalBody/> render() should render shared body 1`] = `
     initialUsers={Immutable.List []}
     selectedTeams={Immutable.List []}
     selectedUsers={Immutable.List []}
-    visibility="shared"
   />
   <SharedBody
     availableTeams={Immutable.List []}

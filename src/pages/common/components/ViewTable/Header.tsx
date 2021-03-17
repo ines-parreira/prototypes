@@ -16,7 +16,7 @@ import Tooltip from '../Tooltip.js'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
 
-import EmojiSelect from './EmojiSelect/index.js'
+import EmojiSelect from './EmojiSelect/EmojiSelect'
 import css from './Header.less'
 
 type OwnProps = {

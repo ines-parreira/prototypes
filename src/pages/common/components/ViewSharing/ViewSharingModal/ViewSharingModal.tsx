@@ -1,5 +1,3 @@
-// flow
-
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {
     Button,
@@ -9,36 +7,34 @@ import {
     ModalHeader,
     UncontrolledTooltip,
 } from 'reactstrap'
-import {fromJS} from 'immutable'
-import {connect} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {AxiosError} from 'axios'
 
-import type {viewType} from '../../../../../state/views/types'
-import GorgiasApi from '../../../../../services/gorgiasApi.ts'
-import type {notificationType} from '../../../../../state/notifications/actions.ts'
-import {notify} from '../../../../../state/notifications/actions.ts'
-import type {currentUserType} from '../../../../../state/types'
-import {ViewVisibility} from '../../../../../constants/view.ts'
-import {viewUpdated} from '../../../../../state/entities/views/actions.ts'
-import type {View} from '../../../../../models/view/types'
-import {AccountFeatures} from '../../../../../state/currentAccount/types.ts'
-import {getCheaperPlanForFeature} from '../../../../../utils/paywalls.ts'
-import {toJS} from '../../../../../utils.ts'
+import GorgiasApi from '../../../../../services/gorgiasApi'
+import {notify} from '../../../../../state/notifications/actions'
+import {RootState} from '../../../../../state/types'
+import {ViewVisibility, View} from '../../../../../models/view/types'
+import {Plan} from '../../../../../models/billing/types'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {viewUpdated} from '../../../../../state/entities/views/actions'
+import {AccountFeatures} from '../../../../../state/currentAccount/types'
+import {getCheaperPlanForFeature} from '../../../../../utils/paywalls'
+import {toJS} from '../../../../../utils'
 
-import UpgradeButton from '../../UpgradeButton/UpgradeButton.tsx'
+import UpgradeButton from '../../UpgradeButton/UpgradeButton'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'
 
-type Props = {
-    view: viewType,
-    isOpen: boolean,
-    currentUser: currentUserType,
-    plans: Object,
-    showPaywall: boolean,
-    toggle: () => void,
-    notify: (message: notificationType) => void,
-    viewUpdated: (data: View) => void,
+type OwnProps = {
+    view: Map<any, any>
+    isOpen: boolean
+    showPaywall: boolean
+    toggle: () => void
 }
+
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 function ViewSharingModal({
     view,
@@ -67,14 +63,14 @@ function ViewSharingModal({
         save,
     } = useViewSharing(view, currentUser)
 
-    const isShared = visibility === ViewVisibility.SHARED
+    const isShared = visibility === ViewVisibility.Shared
     const shouldSelectSomething =
         isShared && !selectedTeams.size && !selectedUsers.size
     const disabled = isLoading || isSaving || shouldSelectSomething
 
     const onSaveSuccess = (data: View) => {
-        notify({
-            status: 'success',
+        void notify({
+            status: NotificationStatus.Success,
             message: "View's sharing options saved",
         })
         viewUpdated(data)
@@ -160,7 +156,7 @@ function ViewSharingModal({
                         className="mb-3"
                         label={`Upgrade to ${getCheaperPlanForFeature(
                             AccountFeatures.ViewSharing,
-                            plans
+                            plans as Record<string, Plan>
                         )}`}
                     />
                 </ModalBody>
@@ -170,32 +166,36 @@ function ViewSharingModal({
 }
 
 // TODO(@samy): when we can use `useDispatch`, directly do `dispatch(notify(...))` in the hook (same with `useStore`)
-export default connect(
-    (state) => ({
+const connector = connect(
+    (state: RootState) => ({
         currentUser: state.currentUser,
         plans: toJS(state.billing.get('plans')),
     }),
     {notify, viewUpdated}
-)(ViewSharingModal)
+)
 
-function useViewSharing(view: viewType, currentUser: currentUserType) {
+export default connector(ViewSharingModal)
+
+function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
     const user = useRef(currentUser)
     const viewId = useRef(view.get('id'))
-    const [error, setError] = useState(null)
-    const [isSaving, setSaving] = useState(false)
-    const [isLoading, setLoading] = useState(true)
-    const [visibility, setVisibility] = useState(view.get('visibility'))
-    const [initialTeams, setInitialTeams] = useState(fromJS([]))
-    const [initialUsers, setInitialUsers] = useState(fromJS([]))
-    const [selectedTeams, setSelectedTeams] = useState(fromJS([]))
-    const [selectedUsers, setSelectedUsers] = useState(fromJS([]))
+    const [error, setError] = useState<Error | null>(null)
+    const [isSaving, setSaving] = useState<boolean>(false)
+    const [isLoading, setLoading] = useState<boolean>(true)
+    const [visibility, setVisibility] = useState<ViewVisibility>(
+        view.get('visibility')
+    )
+    const [initialTeams, setInitialTeams] = useState<List<any>>(fromJS([]))
+    const [initialUsers, setInitialUsers] = useState<List<any>>(fromJS([]))
+    const [selectedTeams, setSelectedTeams] = useState<List<any>>(fromJS([]))
+    const [selectedUsers, setSelectedUsers] = useState<List<any>>(fromJS([]))
 
     useEffect(() => {
         const api = new GorgiasApi()
         api.getViewSharing(viewId.current)
             .then((data) => {
-                const teams = data.get('shared_with_teams')
-                let users = data.get('shared_with_users')
+                const teams = data.get('shared_with_teams') as List<any>
+                let users = data.get('shared_with_users') as List<any>
                 const isEmpty = !teams.size && !users.size
                 if (isEmpty) {
                     users = fromJS([user.current])
@@ -211,31 +211,33 @@ function useViewSharing(view: viewType, currentUser: currentUserType) {
     }, [])
 
     const onTeamClick = useCallback(
-        (team) => setSelectedTeams(selectedTeams.push(team)),
+        (team: Map<any, any>) => setSelectedTeams(selectedTeams.push(team)),
         [selectedTeams, setSelectedTeams]
     )
 
     const onUserClick = useCallback(
-        (user) => setSelectedUsers(selectedUsers.push(user)),
+        (user: Map<any, any>) => setSelectedUsers(selectedUsers.push(user)),
         [selectedUsers, setSelectedUsers]
     )
 
     const onRemoveTeam = useCallback(
-        (team) =>
+        (team: Map<any, any>) =>
             setSelectedTeams(
                 selectedTeams.filter(
-                    (selectedTeam) => selectedTeam.get('id') !== team.get('id')
-                )
+                    (selectedTeam: Map<any, any>) =>
+                        selectedTeam.get('id') !== team.get('id')
+                ) as List<any>
             ),
         [selectedTeams, setSelectedTeams]
     )
 
     const onRemoveUser = useCallback(
-        (user) =>
+        (user: Map<any, any>) =>
             setSelectedUsers(
                 selectedUsers.filter(
-                    (selectedUser) => selectedUser.get('id') !== user.get('id')
-                )
+                    (selectedUser: Map<any, any>) =>
+                        selectedUser.get('id') !== user.get('id')
+                ) as List<any>
             ),
         [selectedUsers, setSelectedUsers]
     )
@@ -246,26 +248,25 @@ function useViewSharing(view: viewType, currentUser: currentUserType) {
             setError(null)
 
             const api = new GorgiasApi()
-            const isShared = visibility === ViewVisibility.SHARED
-            const teams = isShared ? selectedTeams : []
-            let users = isShared ? selectedUsers : []
+            const isShared = visibility === ViewVisibility.Shared
+            const teams = isShared ? selectedTeams : fromJS([])
+            let users = isShared ? selectedUsers : fromJS([])
 
-            if (visibility === ViewVisibility.PRIVATE) {
+            if (visibility === ViewVisibility.Private) {
                 users = [currentUser]
             }
 
             api.setViewSharing(viewId.current, visibility, teams, users)
                 .then(onSuccess)
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     if (!error.response) {
                         return setError(error)
                     }
 
-                    const errorMessage = fromJS(error.response).getIn([
-                        'data',
-                        'error',
-                        'msg',
-                    ])
+                    const errorMessage = (fromJS(error.response) as Map<
+                        any,
+                        any
+                    >).getIn(['data', 'error', 'msg'])
 
                     if (!errorMessage) {
                         return setError(error)

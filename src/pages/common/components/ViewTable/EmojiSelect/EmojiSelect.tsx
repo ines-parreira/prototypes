@@ -1,24 +1,23 @@
-// @flow
-//$FlowFixMe
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, RefObject} from 'react'
 import {Button, Popover} from 'reactstrap'
+import {EmojiData, BaseEmoji} from 'emoji-mart'
 import classNames from 'classnames'
 
-import EmojiPicker from '../../EmojiPicker'
+import EmojiPicker from '../../EmojiPicker/EmojiPicker'
 
 import css from './EmojiSelect.less'
 
 type Props = {
-    emoji: ?string,
-    className?: string,
-    onEmojiSelect: (string) => void,
-    onEmojiClear: () => void,
+    emoji: Maybe<string>
+    className?: string
+    onEmojiSelect: (emoji: BaseEmoji['native']) => void
+    onEmojiClear: () => void
 }
 
 const EmojiSelect = (props: Props) => {
     const {emoji, className, onEmojiSelect, onEmojiClear} = props
     const [isOpen, setIsOpen] = useState(false)
-    const iconRef = useRef()
+    const iconRef: RefObject<HTMLSpanElement> = useRef(null)
     const toggle = () => setIsOpen(!isOpen)
     return (
         <div className={classNames(css.picker, className)}>
@@ -47,9 +46,11 @@ const EmojiSelect = (props: Props) => {
                     <div className={css.popover}>
                         <EmojiPicker
                             style={{border: 'none'}}
-                            onClick={({native}) => {
+                            onClick={(emoji: EmojiData) => {
                                 setIsOpen(false)
-                                onEmojiSelect(native)
+                                if ('native' in emoji) {
+                                    onEmojiSelect(emoji.native)
+                                }
                             }}
                         />
                         {emoji && (

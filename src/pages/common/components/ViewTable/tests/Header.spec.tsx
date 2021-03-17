@@ -11,7 +11,7 @@ import {View} from '../../../../../models/view/types'
 import {RootState} from '../../../../../state/types'
 import history from '../../../../history'
 import Header, {HeaderContainer} from '../Header'
-import EmojiSelect from '../EmojiSelect/index.js'
+import EmojiSelect from '../EmojiSelect/EmojiSelect'
 
 // $TsFixMe: Remove on store/configureStore migration
 const configureStore = (untypedConfigureStore as unknown) as (

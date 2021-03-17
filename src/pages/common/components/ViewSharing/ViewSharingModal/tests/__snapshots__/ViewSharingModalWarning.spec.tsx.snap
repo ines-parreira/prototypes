@@ -23,7 +23,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing team 1`] 
   >
     <span
       className="totalItems"
-      href="#"
       id="missing-teams-tooltip"
     >
       1
@@ -65,7 +64,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user 1`] 
   >
     <span
       className="totalItems"
-      href="#"
       id="missing-users-tooltip"
     >
       1
@@ -107,7 +105,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
   >
     <span
       className="totalItems"
-      href="#"
       id="missing-teams-tooltip"
     >
       1
@@ -127,7 +124,6 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
      and 
     <span
       className="totalItems"
-      href="#"
       id="missing-users-tooltip"
     >
       1
@@ -169,7 +165,6 @@ exports[`<ViewSharingModalWarning/> render() should render two missing teams 1`]
   >
     <span
       className="totalItems"
-      href="#"
       id="missing-teams-tooltip"
     >
       2
@@ -218,7 +213,6 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users 1`]
   >
     <span
       className="totalItems"
-      href="#"
       id="missing-users-tooltip"
     >
       2
@@ -267,7 +261,6 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users and
   >
     <span
       className="totalItems"
-      href="#"
       id="missing-teams-tooltip"
     >
       2
@@ -294,7 +287,6 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users and
      and 
     <span
       className="totalItems"
-      href="#"
       id="missing-users-tooltip"
     >
       2

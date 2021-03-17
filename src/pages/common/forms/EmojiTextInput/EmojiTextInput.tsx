@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {Input} from 'reactstrap'
 
-import EmojiSelect from '../../components/ViewTable/EmojiSelect/EmojiSelect.js'
+import EmojiSelect from '../../components/ViewTable/EmojiSelect/EmojiSelect'
 
 import css from './EmojiTextInput.less'
 

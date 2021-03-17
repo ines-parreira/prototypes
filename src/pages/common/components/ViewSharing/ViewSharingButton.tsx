@@ -13,7 +13,7 @@ import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
-import ViewSharingModal from './ViewSharingModal/index.js'
+import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
 import css from './ViewSharingButton.less'
 
 type OwnProps = {
