@@ -150,7 +150,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
         if (integration.get('type') !== OUTLOOK_INTEGRATION_TYPE) {
-            form.setIn(['meta', 'import_spam'], this.state.import_spam)
+            form = form.setIn(['meta', 'import_spam'], this.state.import_spam)
         }
 
         if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
