@@ -15,33 +15,11 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
-        "fetchWidgets": [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-          "results": Array [
-            Object {
-              "type": "return",
-              "value": undefined,
-            },
-          ],
-        },
+        "fetchWidgets": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
-        "selectContext": [MockFunction] {
-          "calls": Array [
-            Array [
-              "ticket",
-            ],
-          ],
-          "results": Array [
-            Object {
-              "type": "return",
-              "value": undefined,
-            },
-          ],
-        },
+        "selectContext": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
         "startEditionMode": [MockFunction],

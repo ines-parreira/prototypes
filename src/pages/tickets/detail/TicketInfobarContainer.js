@@ -1,5 +1,4 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {useEffect, useMemo} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
@@ -9,55 +8,60 @@ import Infobar from '../../common/components/infobar/Infobar'
 
 import * as WidgetActions from '../../../state/widgets/actions.ts'
 import * as InfobarActions from '../../../state/infobar/actions.ts'
+import {InfobarState} from '../../../state/infobar/types.ts'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors.ts'
+import {WidgetsState} from '../../../state/widgets/types.ts'
 
-export class TicketInfobarContainer extends React.Component {
-    componentWillMount() {
-        const {actions} = this.props
-
-        actions.widgets.selectContext('ticket')
-        actions.widgets.fetchWidgets()
-    }
-
-    render() {
-        const {
-            actions,
-            widgets,
-            isEditingWidgets,
-            infobar,
-            ticket,
-            sources,
-            match: {params},
-        } = this.props
-
-        // the || is used to replace null
-        const customer = sources.getIn(['ticket', 'customer']) || fromJS({})
-
-        return (
-            <Infobar
-                actions={actions}
-                infobar={infobar}
-                sources={sources}
-                isRouteEditingWidgets={!!isEditingWidgets}
-                identifier={ticket.get('id', params.ticketId || '').toString()}
-                customer={customer}
-                widgets={widgets}
-                context="ticket"
-            />
-        )
-    }
+type Props = {
+    actions: {
+        infobar: typeof InfobarActions,
+        widgets: typeof WidgetActions,
+    },
+    infobar: InfobarState,
+    isEditingWidgets?: boolean,
+    match: {
+        params: {
+            ticketId?: string,
+        },
+    },
+    sources: Map<any, any>,
+    ticket: Map<any, any>,
+    widgets: WidgetsState,
 }
 
-TicketInfobarContainer.propTypes = {
-    actions: PropTypes.object.isRequired,
-    infobar: PropTypes.object.isRequired,
-    isEditingWidgets: PropTypes.bool,
-    ticket: PropTypes.object.isRequired,
-    widgets: PropTypes.object.isRequired,
-    sources: PropTypes.object.isRequired,
+export const TicketInfobarContainer = ({
+    actions,
+    infobar,
+    isEditingWidgets,
+    match: {
+        params: {ticketId},
+    },
+    sources,
+    ticket,
+    widgets,
+}: Props) => {
+    useEffect(() => {
+        actions.widgets.selectContext('ticket')
+        actions.widgets.fetchWidgets()
+    }, [])
 
-    // react-router
-    match: PropTypes.object.isRequired,
+    const customer = useMemo(
+        () => sources.getIn(['ticket', 'customer']) || fromJS({}),
+        [sources]
+    )
+
+    return (
+        <Infobar
+            actions={actions}
+            infobar={infobar}
+            sources={sources}
+            isRouteEditingWidgets={!!isEditingWidgets}
+            identifier={ticket.get('id', ticketId || '').toString()}
+            customer={customer}
+            widgets={widgets}
+            context="ticket"
+        />
+    )
 }
 
 function mapStateToProps(state) {
