@@ -12,21 +12,21 @@ import css from './Table.less'
 import TableActions from './TableActions'
 
 type Props = {
-    meta: Map<*, *>,
-    getSelectedTagMeta: (number) => Map<*, *>,
-    selectAll: boolean,
-    tags: List<*>,
-    columns: Array<*>,
-    onSort: (string, boolean) => void,
-    onSelectAll: () => void,
-    refresh: () => void,
-    sort: string,
-    reverse: boolean,
-    onMerge: () => any,
+    columns: Array<any>,
+    getSelectedTagMeta: (number) => Map<any, any>,
+    meta: Map<any, any>,
     onBulkDelete: () => any,
+    onMerge: () => any,
+    onSelectAll: () => void,
+    onSort: (string, boolean) => void,
+    refresh: () => void,
+    reverse: boolean,
+    selectAll: boolean,
+    sort: string,
+    tags: List<any>,
 }
 
-class Table extends Component<Props> {
+export class TableContainer extends Component<Props> {
     static defaultProps = {
         columns: [
             {
@@ -160,4 +160,4 @@ export default connect((state) => {
         getSelectedTagMeta: tagsSelectors.makeGetSelectedTagMeta(state),
         meta: tagsSelectors.getMeta(state),
     }
-})(Table)
+})(TableContainer)

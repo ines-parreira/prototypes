@@ -1,29 +1,23 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import IntegrationSelect from '../IntegrationSelect'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {IntegrationSelectContainer} from '../IntegrationSelect'
 
 describe('ast', () => {
     describe('widgets', () => {
         describe('IntegrationSelect', () => {
             it('should render a loading imput (no integrations)', () => {
-                const store = mockStore({})
                 const component = shallow(
-                    <IntegrationSelect
-                        store={store}
+                    <IntegrationSelectContainer
                         actions={{
                             fetchIntegrations: jest.fn(),
                         }}
                         onChange={jest.fn()}
+                        integrations={fromJS([])}
                     />
                 )
-                expect(component.dive()).toMatchSnapshot()
+                expect(component).toMatchSnapshot()
             })
 
             it('should render a SelectField', () => {
@@ -45,15 +39,9 @@ describe('ast', () => {
                         },
                     },
                 ])
-                const store = mockStore({
-                    integrations: fromJS({
-                        integrations,
-                    }),
-                })
                 const component = shallow(
-                    <IntegrationSelect
+                    <IntegrationSelectContainer
                         value={1}
-                        store={store}
                         actions={{
                             fetchIntegrations: jest.fn(),
                         }}
@@ -61,7 +49,7 @@ describe('ast', () => {
                         onChange={jest.fn()}
                     />
                 )
-                expect(component.dive()).toMatchSnapshot()
+                expect(component).toMatchSnapshot()
             })
         })
     })

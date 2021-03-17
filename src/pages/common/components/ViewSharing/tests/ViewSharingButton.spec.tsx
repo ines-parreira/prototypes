@@ -1,23 +1,16 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 
-import ViewSharingButton from '../ViewSharingButton'
+import {ViewSharingButtonContainer} from '../ViewSharingButton'
 import {user} from '../../../../../fixtures/users'
 import {BASIC_AGENT_ROLE} from '../../../../../config/user'
-import {
-    SYSTEM_VIEW_CATEGORY,
-    ViewVisibility,
-} from '../../../../../constants/view'
+import {SYSTEM_VIEW_CATEGORY} from '../../../../../constants/view'
+import {ViewVisibility} from '../../../../../models/view/types'
 import {AccountFeatures} from '../../../../../state/currentAccount/types'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
-const getState = (currentUser: Map<any, any>) => ({
-    currentUser,
+const minProps = {
+    currentUser: fromJS(user),
     agents: fromJS({
         all: [
             {id: 1, name: 'User 1'},
@@ -35,95 +28,78 @@ const getState = (currentUser: Map<any, any>) => ({
     currentAccount: fromJS({
         features: fromJS({[AccountFeatures.ViewSharing]: true}),
     }),
-})
+    hasViewSharingFeature: true,
+    dispatch: jest.fn(),
+}
 
 describe('<ViewSharingButton/>', () => {
     describe('render()', () => {
         it('should render as public', () => {
-            const view = fromJS({visibility: ViewVisibility.PUBLIC})
-            const admin = fromJS(user)
-            const store = mockStore(getState(admin))
-
             const component = shallow(
-                <ViewSharingButton
-                    {...({store} as any)}
+                <ViewSharingButtonContainer
+                    {...minProps}
                     className="foo"
-                    view={view}
+                    view={fromJS({visibility: ViewVisibility.Public})}
                 />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as shared', () => {
-            const view = fromJS({visibility: ViewVisibility.SHARED})
-            const admin = fromJS(user)
-            const store = mockStore(getState(admin))
-
             const component = shallow(
-                <ViewSharingButton
-                    {...({store} as any)}
+                <ViewSharingButtonContainer
+                    {...minProps}
                     className="foo"
-                    view={view}
+                    view={fromJS({visibility: ViewVisibility.Shared})}
                 />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as private', () => {
-            const view = fromJS({visibility: ViewVisibility.PRIVATE})
-            const admin = fromJS(user)
-            const store = mockStore(getState(admin))
-
             const component = shallow(
-                <ViewSharingButton
-                    {...({store} as any)}
+                <ViewSharingButtonContainer
+                    {...minProps}
                     className="foo"
-                    view={view}
+                    view={fromJS({visibility: ViewVisibility.Private})}
                 />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as disabled because this is a system view', () => {
-            const view = fromJS({
-                visibility: ViewVisibility.PUBLIC,
-                category: SYSTEM_VIEW_CATEGORY,
-            })
-            const admin = fromJS(user)
-            const store = mockStore(getState(admin))
-
             const component = shallow(
-                <ViewSharingButton
-                    {...({store} as any)}
+                <ViewSharingButtonContainer
+                    {...minProps}
                     className="foo"
-                    view={view}
+                    view={fromJS({
+                        visibility: ViewVisibility.Public,
+                        category: SYSTEM_VIEW_CATEGORY,
+                    })}
                 />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as disabled because user is not allowed', () => {
-            const view = fromJS({visibility: ViewVisibility.PUBLIC})
             const roles = fromJS([{name: BASIC_AGENT_ROLE}])
-            const basicAgent = (fromJS(user) as Map<any, any>).set(
-                'roles',
-                roles
-            )
-            const store = mockStore(getState(basicAgent))
-
             const component = shallow(
-                <ViewSharingButton
-                    {...({store} as any)}
+                <ViewSharingButtonContainer
+                    {...minProps}
+                    currentUser={(fromJS(user) as Map<any, any>).set(
+                        'roles',
+                        roles
+                    )}
                     className="foo"
-                    view={view}
+                    view={fromJS({visibility: ViewVisibility.Public})}
                 />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
     })
 })

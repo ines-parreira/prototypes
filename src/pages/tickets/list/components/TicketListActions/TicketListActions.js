@@ -82,7 +82,7 @@ type State = {
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
-class TicketListActions extends React.Component<Props, State> {
+export class TicketListActionsContainer extends React.Component<Props, State> {
     state = {
         popoverOpen: '',
         teamsSearch: '',
@@ -169,7 +169,7 @@ class TicketListActions extends React.Component<Props, State> {
         return this.state.popoverOpen === popoverOpen
     }
 
-    _togglePopover = (popoverOpen = '') => {
+    _togglePopover = (popoverOpen: string = '') => {
         return this.setState({popoverOpen})
     }
 
@@ -202,7 +202,7 @@ class TicketListActions extends React.Component<Props, State> {
         }
     }
 
-    _addTag = (name) => {
+    _addTag = (name: string) => {
         if (!name) {
             return
         }
@@ -211,12 +211,12 @@ class TicketListActions extends React.Component<Props, State> {
         this.setState({tagsSearch: ''})
     }
 
-    _searchTags = (search) => {
+    _searchTags = (search: string) => {
         this.setState({tagsSearch: search})
         this._queryTagsOnSearch(search)
     }
 
-    _queryTags = (search) => {
+    _queryTags = (search: string) => {
         const {fieldEnumSearchCancellable} = this.props
         this.setState({isLoadingTags: true})
 
@@ -256,7 +256,7 @@ class TicketListActions extends React.Component<Props, State> {
         }
     }
 
-    _bulkUpdate = (key, value) => {
+    _bulkUpdate = (key: string, value: any) => {
         if (!this._hasChecked()) {
             return
         }
@@ -333,7 +333,7 @@ class TicketListActions extends React.Component<Props, State> {
         return options
     }
 
-    _toggleTrashConfirmation = (visible) => {
+    _toggleTrashConfirmation = (visible: ?any) => {
         const opens = !_isUndefined(visible)
             ? visible
             : !this._isPopoverOpen('trash')
@@ -797,4 +797,4 @@ function mapDispatchToProps(dispatch) {
 export default withCancellableRequest(
     'fieldEnumSearchCancellable',
     viewsActions.fieldEnumSearch
-)(connect(mapStateToProps, mapDispatchToProps)(TicketListActions))
+)(connect(mapStateToProps, mapDispatchToProps)(TicketListActionsContainer))

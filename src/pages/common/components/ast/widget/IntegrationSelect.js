@@ -7,17 +7,10 @@ import {Input} from 'reactstrap'
 import SelectField from '../../../forms/SelectField'
 import {RenderLabel} from '../../../utils/labels'
 
-import * as integrationsSelectors from './../../../../../state/integrations/selectors.ts'
-import * as integrationsActions from './../../../../../state/integrations/actions.ts'
+import {getMessagingIntegrations} from './../../../../../state/integrations/selectors.ts'
+import {fetchIntegrations} from './../../../../../state/integrations/actions.ts'
 
-const mapStateToProps = (state) => ({
-    integrations: integrationsSelectors.getMessagingIntegrations(state),
-})
-
-@connect(mapStateToProps, {
-    fetchIntegrations: integrationsActions.fetchIntegrations,
-})
-export default class IntegrationSelect extends Component {
+export class IntegrationSelectContainer extends Component {
     static propTypes = {
         actions: PropTypes.object,
         onChange: PropTypes.func.isRequired,
@@ -70,3 +63,13 @@ export default class IntegrationSelect extends Component {
         )
     }
 }
+
+const connector = connect(
+    (state) => ({
+        integrations: getMessagingIntegrations(state),
+    }),
+    {
+        fetchIntegrations,
+    }
+)
+export default connector(IntegrationSelectContainer)

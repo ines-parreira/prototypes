@@ -29,7 +29,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export class Row extends Component<Props> {
+export class RowContainer extends Component<Props> {
     static defaultProps: Partial<Props> = {
         item: fromJS({}),
         selectable: true,
@@ -120,4 +120,4 @@ const connector = connect(
     }
 )
 
-export default connector(Row)
+export default connector(RowContainer)

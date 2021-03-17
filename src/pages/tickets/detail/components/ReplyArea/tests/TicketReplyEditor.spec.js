@@ -5,10 +5,7 @@ import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
 
-import configureStore from '../../../../../../store/configureStore'
-import ConnectedTicketReplyEditor, {
-    TicketReplyEditor,
-} from '../TicketReplyEditor'
+import {TicketReplyEditorContainer} from '../TicketReplyEditor'
 import {
     convertFromHTML,
     convertToHTML,
@@ -33,12 +30,28 @@ describe('TicketReplyEditor component', () => {
 
     it('should render empty ticket', () => {
         const component = shallow(
-            <ConnectedTicketReplyEditor
-                store={configureStore()}
+            <TicketReplyEditorContainer
                 actions={{}}
                 ticket={fromJS({})}
+                newMessage={fromJS({
+                    state: {
+                        contentState: ContentState.createFromText(''),
+                    },
+                    _internal: {
+                        loading: {
+                            submitMessage: false,
+                        },
+                    },
+                    newMessage: {
+                        body_text: '',
+                        body_html: '',
+                    },
+                })}
+                newMessageType={TicketChannel.Email}
+                agents={fromJS([])}
+                notify={jest.fn()}
             />
-        ).dive() // dive in connect()ed component
+        )
         expect(component).toMatchSnapshot()
     })
 
@@ -77,7 +90,7 @@ describe('TicketReplyEditor component', () => {
         let newMessageText = ''
 
         let component = shallow(
-            <TicketReplyEditor
+            <TicketReplyEditorContainer
                 newMessageType="email"
                 newMessage={newMessage}
                 agents={[]}
@@ -144,7 +157,7 @@ describe('TicketReplyEditor component', () => {
         })
 
         let component = shallow(
-            <TicketReplyEditor
+            <TicketReplyEditorContainer
                 newMessageType={TicketMessageSourceType.FacebookMessenger}
                 newMessage={newMessage}
                 agents={[]}
@@ -199,7 +212,7 @@ describe('TicketReplyEditor component', () => {
         let newEditorState = ''
 
         let component = shallow(
-            <TicketReplyEditor
+            <TicketReplyEditorContainer
                 newMessageType={TicketMessageSourceType.Aircall}
                 newMessage={newMessage}
                 agents={[]}

@@ -2,18 +2,17 @@ import React from 'react'
 import {Button} from 'reactstrap'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 
-import ViewSharingModal from '../ViewSharingModal'
-import {ViewVisibility} from '../../../../../../constants/view'
-import {view as mockViewFixture} from '../../../../../../fixtures/views'
-import {viewUpdated} from '../../../../../../state/entities/views/actions'
 import {
     advancedPlan,
     basicPlan,
     proPlan,
 } from '../../../../../../fixtures/subscriptionPlan'
+import {user as currentUserFixture} from '../../../../../../fixtures/users'
+import {view as mockViewFixture} from '../../../../../../fixtures/views'
+import {ViewVisibility} from '../../../../../../models/view/types'
+import {viewUpdated} from '../../../../../../state/entities/views/actions'
+import {ViewSharingModalContainer} from '../ViewSharingModal'
 
 jest.mock('../../../../../../services/gorgiasApi.ts', () => () => {
     return {
@@ -24,118 +23,76 @@ jest.mock('../../../../../../services/gorgiasApi.ts', () => () => {
 
 jest.mock('../../../../../../state/entities/views/actions.ts')
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
 describe('<ViewSharingModal/>', () => {
-    const getState = () => ({
-        agents: fromJS({
-            all: [],
-        }),
-        teams: fromJS({
-            all: {},
-        }),
-        billing: fromJS({
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [proPlan.id]: proPlan,
-                [advancedPlan.id]: advancedPlan,
-            }),
-        }),
-    })
-    const store = mockStore(getState())
-    let toggle: jest.MockedFunction<any>
-    let notify: jest.MockedFunction<any>
+    const minProps = {
+        currentUser: fromJS(currentUserFixture),
+        isOpen: true,
+        plans: {
+            [basicPlan.id]: basicPlan,
+            [proPlan.id]: proPlan,
+            [advancedPlan.id]: advancedPlan,
+        },
+        showPaywall: false,
+        viewUpdated,
+        toggle: jest.fn(),
+        notify: jest.fn(),
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
-        toggle = jest.fn()
-        notify = jest.fn()
     })
 
     describe('render()', () => {
         it('should render the paywall modal information when view sharing feature is missing', () => {
-            const view = fromJS({visibility: ViewVisibility.PUBLIC})
+            const view = fromJS({visibility: ViewVisibility.Public})
             const component = shallow(
-                <ViewSharingModal
+                <ViewSharingModalContainer
+                    {...minProps}
                     view={view}
-                    isOpen
-                    {...({store} as any)}
-                    toggle={toggle}
-                    notify={notify}
                     showPaywall={true}
                 />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as public', () => {
-            const view = fromJS({visibility: ViewVisibility.PUBLIC})
+            const view = fromJS({visibility: ViewVisibility.Public})
 
             const component = shallow(
-                <ViewSharingModal
-                    view={view}
-                    isOpen
-                    {...({store} as any)}
-                    toggle={toggle}
-                    notify={notify}
-                    showPaywall={false}
-                />
+                <ViewSharingModalContainer {...minProps} view={view} />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as shared', () => {
-            const view = fromJS({visibility: ViewVisibility.SHARED})
+            const view = fromJS({visibility: ViewVisibility.Shared})
 
             const component = shallow(
-                <ViewSharingModal
-                    view={view}
-                    isOpen
-                    {...({store} as any)}
-                    toggle={toggle}
-                    notify={notify}
-                    showPaywall={false}
-                />
+                <ViewSharingModalContainer {...minProps} view={view} />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should render as private', () => {
-            const view = fromJS({visibility: ViewVisibility.PRIVATE})
+            const view = fromJS({visibility: ViewVisibility.Private})
 
             const component = shallow(
-                <ViewSharingModal
-                    view={view}
-                    isOpen
-                    {...({store} as any)}
-                    toggle={toggle}
-                    notify={notify}
-                    showPaywall={false}
-                />
+                <ViewSharingModalContainer {...minProps} view={view} />
             )
 
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('should update the view on save', (done) => {
-            const view = fromJS({visibility: ViewVisibility.PRIVATE})
+            const view = fromJS({visibility: ViewVisibility.Private})
             const component = shallow(
-                <ViewSharingModal
-                    view={view}
-                    isOpen
-                    {...({store} as any)}
-                    toggle={toggle}
-                    notify={notify}
-                    viewUpdated={viewUpdated}
-                    showPaywall={false}
-                />
+                <ViewSharingModalContainer {...minProps} view={view} />
             )
 
-            component.dive().find(Button).first().simulate('click')
+            component.find(Button).first().simulate('click')
             setImmediate(() => {
                 expect(viewUpdated).toHaveBeenNthCalledWith(1, mockViewFixture)
                 done()

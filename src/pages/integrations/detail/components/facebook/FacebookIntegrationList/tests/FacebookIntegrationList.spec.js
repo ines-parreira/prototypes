@@ -1,12 +1,41 @@
-import React from 'react'
+import React, {type Node} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import {createBrowserHistory, History} from 'history'
+import {Router, Route} from 'react-router-dom'
 
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-import FacebookIntegrationList from '../'
+import {FacebookIntegrationListContainer} from '../FacebookIntegrationList'
+
+const RouterWrapper = ({
+    history,
+    children,
+}: {
+    history?: History,
+    children?: Node,
+}) => {
+    let historyInstance = history
+    if (!historyInstance) {
+        historyInstance = createBrowserHistory()
+        historyInstance.push('/foo/facebook')
+    }
+    return (
+        <Router
+            history={{
+                ...historyInstance,
+                location: {
+                    ...historyInstance.location,
+                    key: 'KEY',
+                },
+            }}
+        >
+            <Route path="/foo/:integrationType">{children}</Route>
+        </Router>
+    )
+}
 
 describe('FacebookIntegrationList component', () => {
     const middlewares = [thunk]
@@ -36,15 +65,18 @@ describe('FacebookIntegrationList component', () => {
 
     it('should render', () => {
         const component = shallow(
-            <Provider store={store}>
-                <FacebookIntegrationList
-                    loading={{}}
-                    actions={{}}
-                    redirectUri="https://.../"
-                />
-            </Provider>
-        ).dive()
+            <RouterWrapper>
+                <Provider store={store}>
+                    <FacebookIntegrationListContainer
+                        loading={{}}
+                        actions={{}}
+                        redirectUri="https://.../"
+                        integrations={fromJS([])}
+                    />
+                </Provider>
+            </RouterWrapper>
+        )
 
-        expect(component.dive()).toMatchSnapshot()
+        expect(component).toMatchSnapshot()
     })
 })

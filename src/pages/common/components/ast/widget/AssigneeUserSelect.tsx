@@ -17,7 +17,7 @@ type OwnProps = {
     allowUnassign?: boolean
 }
 
-class AssigneeUserSelect extends React.Component<
+export class AssigneeUserSelectContainer extends React.Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
     componentDidMount() {
@@ -77,4 +77,4 @@ const connector = connect(
     })
 )
 
-export default connector(AssigneeUserSelect)
+export default connector(AssigneeUserSelectContainer)

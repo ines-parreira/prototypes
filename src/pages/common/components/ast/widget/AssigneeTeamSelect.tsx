@@ -14,7 +14,7 @@ type OwnProps = {
     allowUnassign?: boolean
 }
 
-class AssigneeTeamSelect extends React.Component<
+export class AssigneeTeamSelectContainer extends React.Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
     static defaultProps = {
@@ -49,4 +49,4 @@ const connector = connect((state: RootState) => ({
     teams: selectors.getTeams(state),
 }))
 
-export default connector(AssigneeTeamSelect)
+export default connector(AssigneeTeamSelectContainer)

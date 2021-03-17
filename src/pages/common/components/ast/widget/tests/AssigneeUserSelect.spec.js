@@ -1,13 +1,8 @@
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import {shallow} from 'enzyme'
 import React from 'react'
 
-import AssigneeUserSelect from '../AssigneeUserSelect.tsx'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {AssigneeUserSelectContainer} from '../AssigneeUserSelect.tsx'
 
 describe('ast', () => {
     describe('widgets', () => {
@@ -26,60 +21,44 @@ describe('ast', () => {
 
                 it('should render a loading message because agents have not been fetched yet', () => {
                     const component = shallow(
-                        <AssigneeUserSelect
-                            store={mockStore({
-                                agents: fromJS({
-                                    all: [],
-                                }),
-                            })}
+                        <AssigneeUserSelectContainer
+                            agents={fromJS([])}
                             actions={actions}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should render a dropdown without selected value', () => {
                     const component = shallow(
-                        <AssigneeUserSelect
-                            store={mockStore({
-                                agents: fromJS({
-                                    all: agents,
-                                }),
-                            })}
+                        <AssigneeUserSelectContainer
+                            agents={fromJS(agents)}
                             actions={actions}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should render a dropdown with selected value', () => {
                     const component = shallow(
-                        <AssigneeUserSelect
+                        <AssigneeUserSelectContainer
                             value={1}
-                            store={mockStore({
-                                agents: fromJS({
-                                    all: agents,
-                                }),
-                            })}
+                            agents={fromJS(agents)}
                             actions={actions}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should render a dropdown without "Unassign" option', () => {
                     const component = shallow(
-                        <AssigneeUserSelect
+                        <AssigneeUserSelectContainer
                             value={1}
-                            store={mockStore({
-                                agents: fromJS({
-                                    all: agents,
-                                }),
-                            })}
+                            agents={fromJS(agents)}
                             allowUnassign={false}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
             })
         })

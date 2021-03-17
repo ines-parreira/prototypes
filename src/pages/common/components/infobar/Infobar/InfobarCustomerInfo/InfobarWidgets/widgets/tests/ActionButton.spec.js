@@ -1,17 +1,10 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import ActionButton from '../ActionButton.tsx'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {ActionButtonContainer} from '../ActionButton.tsx'
 
 describe('ActionButton component', () => {
-    let store
-
     const commonAttributes = {
         key: 'foo',
         popover: 'This action is little, but it is powerful.',
@@ -34,15 +27,6 @@ describe('ActionButton component', () => {
         customerId: 1,
     }
 
-    beforeEach(() => {
-        // set execute action callbacks
-        store = mockStore({
-            infobar: fromJS({
-                pendingActionsCallbacks: [],
-            }),
-        })
-    })
-
     it('should display a single option with no parameters', () => {
         const action = {
             options: [{value: 'myLittleAction', label: 'My little action'}],
@@ -54,21 +38,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -98,21 +82,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -145,21 +129,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -188,21 +172,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -235,21 +219,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -274,21 +258,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -331,21 +315,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -387,21 +371,21 @@ describe('ActionButton component', () => {
         }
 
         const component = shallow(
-            <ActionButton
-                store={store}
+            <ActionButtonContainer
                 key={action.key}
                 options={action.options}
                 payload={payload}
                 popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
+                getPendingActionCallback={() => null}
             >
                 {action.child}
-            </ActionButton>,
+            </ActionButtonContainer>,
             {
                 context: defaultContext,
             }
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })

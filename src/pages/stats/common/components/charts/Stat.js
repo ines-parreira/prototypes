@@ -38,7 +38,7 @@ type State = {
     isDownloading: boolean,
 }
 
-export class Stat extends Component<Props, State> {
+export class StatContainer extends Component<Props, State> {
     static defaultProps = {
         downloadable: false,
         isLoading: false,
@@ -190,4 +190,4 @@ export default connect(
         }
     },
     {notify}
-)(Stat)
+)(StatContainer)

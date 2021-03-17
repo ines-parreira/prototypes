@@ -5,18 +5,19 @@ import {noop as _noop} from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import BusinessHours from '../BusinessHours'
+import BusinessHours, {BusinessHoursContainer} from '../BusinessHours'
 import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants'
 
 const mockStore = configureMockStore([thunk])
 
 describe('BusinessHours component', () => {
-    let store = mockStore({})
-
     it('should render default values', () => {
         const component = shallow(
-            <BusinessHours store={store} submitSetting={_noop} />
-        ).dive()
+            <BusinessHoursContainer
+                submitSetting={_noop}
+                businessHoursSettings={fromJS({})}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })

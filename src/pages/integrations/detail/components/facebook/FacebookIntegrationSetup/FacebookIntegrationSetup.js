@@ -42,18 +42,7 @@ type State = {
     isLoading: boolean,
 }
 
-@connect((state) => {
-    // Here we only want the DELETED integrations of the current_user
-    return {
-        integrations: integrationsSelectors.getOnboardingIntegrations(
-            FACEBOOK_INTEGRATION_TYPE
-        )(state),
-        pagination: integrationsSelectors.getOnboardingMeta(
-            FACEBOOK_INTEGRATION_TYPE
-        )(state),
-    }
-})
-export default class FacebookIntegrationSetup extends React.Component<
+export class FacebookIntegrationSetupContainer extends React.Component<
     Props,
     State
 > {
@@ -538,3 +527,14 @@ export default class FacebookIntegrationSetup extends React.Component<
         )
     }
 }
+
+const connector = connect((state) => ({
+    integrations: integrationsSelectors.getOnboardingIntegrations(
+        FACEBOOK_INTEGRATION_TYPE
+    )(state),
+    pagination: integrationsSelectors.getOnboardingMeta(
+        FACEBOOK_INTEGRATION_TYPE
+    )(state),
+}))
+
+export default connector(FacebookIntegrationSetupContainer)

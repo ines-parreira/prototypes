@@ -18,7 +18,7 @@ exports[`TicketHeader component should render existing ticket 1`] = `
     />
     <TicketSnooze
       className="headerIcon"
-      timezone={null}
+      timezone="America/Los_Angeles"
     />
     <TicketTrash
       className="headerIcon"
@@ -46,7 +46,7 @@ exports[`TicketHeader component should render existing ticket 1`] = `
       <TicketSnoozePicker
         isOpen={false}
         onApply={[Function]}
-        timezone={null}
+        timezone="America/Los_Angeles"
         toggle={[Function]}
       />
       <DropdownMenu
@@ -236,7 +236,7 @@ exports[`TicketHeader component should render new ticket 1`] = `
     />
     <TicketSnooze
       className="headerIcon"
-      timezone={null}
+      timezone="America/Los_Angeles"
     />
     <TicketTrash
       className="headerIcon"
@@ -298,7 +298,7 @@ exports[`TicketHeader component should render spam ticket 1`] = `
     />
     <TicketSnooze
       className="headerIcon"
-      timezone={null}
+      timezone="America/Los_Angeles"
     />
     <TicketTrash
       className="headerIcon"
@@ -326,7 +326,7 @@ exports[`TicketHeader component should render spam ticket 1`] = `
       <TicketSnoozePicker
         isOpen={false}
         onApply={[Function]}
-        timezone={null}
+        timezone="America/Los_Angeles"
         toggle={[Function]}
       />
       <DropdownMenu
@@ -517,7 +517,7 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
     />
     <TicketSnooze
       className="headerIcon"
-      timezone={null}
+      timezone="America/Los_Angeles"
     />
     <TicketTrash
       className="headerIcon"
@@ -545,7 +545,7 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
       <TicketSnoozePicker
         isOpen={false}
         onApply={[Function]}
-        timezone={null}
+        timezone="America/Los_Angeles"
         toggle={[Function]}
       />
       <DropdownMenu

@@ -2,14 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import HTTPIntegrationEventsContainer, {
-    HTTPIntegrationEvents,
-} from '../HTTPIntegrationEvents'
-import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers.ts'
-import {
-    mockStore,
-    shallowWithStore,
-} from '../../../../../../../utils/testing.ts'
+import {HTTPIntegrationEventsContainer} from '../HTTPIntegrationEvents'
 import {getMomentNow} from '../../../../../../../utils/date.ts'
 
 const events = fromJS([
@@ -26,13 +19,13 @@ const events = fromJS([
     },
 ])
 
-describe('HTTPIntegrationEvents', () => {
+describe('<HTTPIntegrationEvents />', () => {
     describe('component', () => {
         it('should fetch events when the component will mount', (done) => {
             const fetchEvents = jest.fn(() => Promise.resolve())
             const integrationId = 1
             const component = shallow(
-                <HTTPIntegrationEvents
+                <HTTPIntegrationEventsContainer
                     integrationId={integrationId}
                     fetchEvents={fetchEvents}
                 />
@@ -51,7 +44,10 @@ describe('HTTPIntegrationEvents', () => {
 
         it('should render a loader while the component is fetching events', () => {
             const component = shallow(
-                <HTTPIntegrationEvents integationId="1" events={events} />
+                <HTTPIntegrationEventsContainer
+                    integationId="1"
+                    events={events}
+                />
             )
             component.setState({isFetching: true})
 
@@ -60,7 +56,7 @@ describe('HTTPIntegrationEvents', () => {
 
         it('should render a loader because the component has no events', () => {
             const component = shallow(
-                <HTTPIntegrationEvents integationId="1" />
+                <HTTPIntegrationEventsContainer integationId="1" />
             )
             component.setState({isFetching: false})
 
@@ -69,22 +65,12 @@ describe('HTTPIntegrationEvents', () => {
 
         it('should render events', () => {
             const component = shallow(
-                <HTTPIntegrationEvents integationId="1" events={events} />
+                <HTTPIntegrationEventsContainer
+                    integationId="1"
+                    events={events}
+                />
             )
             expect(component).toMatchSnapshot()
-        })
-    })
-
-    describe('container', () => {
-        it('should render a HTTPIntegrationEvents component with props from the Redux store', () => {
-            const state = initialState.set('events', events)
-            const store = mockStore({HTTPIntegrationEvents: state})
-            const container = shallowWithStore(
-                <HTTPIntegrationEventsContainer integrationId="1" />,
-                store
-            )
-
-            expect(container).toMatchSnapshot()
         })
     })
 })

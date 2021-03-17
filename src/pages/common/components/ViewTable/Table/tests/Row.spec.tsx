@@ -5,7 +5,7 @@ import {fromJS, Map, List} from 'immutable'
 import * as viewsConfig from '../../../../../../config/views'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
 import * as agentsFixtures from '../../../../../../fixtures/agents'
-import {Row} from '../Row'
+import {RowContainer} from '../Row'
 
 describe('ViewTable::Table::Row', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
@@ -24,9 +24,13 @@ describe('ViewTable::Table::Row', () => {
     })
 
     describe('default row', () => {
-        let component: ShallowWrapper<ComponentProps<typeof Row>, any, Row>
+        let component: ShallowWrapper<
+            ComponentProps<typeof RowContainer>,
+            any,
+            RowContainer
+        >
         beforeEach(() => {
-            component = shallow(<Row {...minProps} />)
+            component = shallow(<RowContainer {...minProps} />)
         })
 
         it('displays', () => {
@@ -44,7 +48,7 @@ describe('ViewTable::Table::Row', () => {
             typeof minProps.getAgentsViewing
         >).mockReturnValueOnce(fromJS(agentsFixtures.agents))
         const component = shallow(
-            <Row
+            <RowContainer
                 {...minProps}
                 item={(fromJS(ticketFixtures.ticket) as Map<any, any>).set(
                     'id',

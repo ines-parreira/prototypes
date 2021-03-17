@@ -177,7 +177,7 @@ exports[`Subscription TitleWrapper should not render any link because no custome
 />
 `;
 
-exports[`Subscription TitleWrapper should not render any link because no customer hash is available 2`] = `
+exports[`Subscription TitleWrapper should not render any provided link when no customer hash is available 1`] = `
 <a
   rel="noopener noreferrer"
   target="_blank"

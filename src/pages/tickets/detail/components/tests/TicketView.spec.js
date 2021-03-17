@@ -1,10 +1,9 @@
 import React from 'react'
+import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import configureStore from '../../../../../store/configureStore'
-
-import TicketView from '../TicketView'
+import {TicketViewContainer} from '../TicketView'
 
 describe('TicketView component', () => {
     const minProps = {
@@ -18,18 +17,24 @@ describe('TicketView component', () => {
         isTicketHidden: false,
         submit: _noop,
         setStatus: _noop,
-        store: configureStore(),
+        currentUser: fromJS({}),
+        customers: fromJS({}),
+        ticket: fromJS({}),
+        ticketBody: fromJS([]),
+        customersIsLoading: jest.fn,
     }
 
     it('should not have the hidden classes', () => {
         expect(
-            shallow(<TicketView {...minProps} isTicketHidden={false} />).dive()
+            shallow(
+                <TicketViewContainer {...minProps} isTicketHidden={false} />
+            )
         ).not.toHaveClassName('transition')
     })
 
     it('should have the hidden classes', () => {
         expect(
-            shallow(<TicketView {...minProps} isTicketHidden />).dive()
+            shallow(<TicketViewContainer {...minProps} isTicketHidden />)
         ).toHaveClassName('transition out fade right')
     })
 })

@@ -180,7 +180,7 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
             ],
           ]
         }
-        userTimezone={null}
+        userTimezone=""
       />
     </tbody>
   </Table>
@@ -353,7 +353,7 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
             ],
           ]
         }
-        userTimezone={null}
+        userTimezone=""
       />
     </tbody>
   </Table>

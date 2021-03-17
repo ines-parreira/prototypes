@@ -2,14 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import HTTPIntegrationEventContainer, {
-    HTTPIntegrationEvent,
-} from '../HTTPIntegrationEvent'
-import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers.ts'
-import {
-    mockStore,
-    shallowWithStore,
-} from '../../../../../../../utils/testing.ts'
+import {HTTPIntegrationEventContainer} from '../HTTPIntegrationEvent'
 import {getMomentNow} from '../../../../../../../utils/date.ts'
 
 const HTTPEventWithHTMLResp = fromJS({
@@ -84,28 +77,34 @@ const httpEventWithoutRequest = fromJS({
     },
 })
 
-describe('<HTTPIntegrationEvent/>', () => {
+describe('<HTTPIntegrationEvent />', () => {
     describe('component', () => {
         it('should fetch an event when the component will mount', (done) => {
-            const fetchHTTPIntegrationEvent = jest.fn(() => Promise.resolve())
+            const fetchHTTPIntegrationEventContainer = jest.fn(() =>
+                Promise.resolve()
+            )
             const integrationId = 1
             const eventId = 2
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     integrationId={integrationId}
                     eventId={eventId}
-                    fetchHTTPIntegrationEvent={fetchHTTPIntegrationEvent}
+                    fetchHTTPIntegrationEvent={
+                        fetchHTTPIntegrationEventContainer
+                    }
                 />
             )
             jest.clearAllMocks()
             component.instance().componentWillMount()
 
             setTimeout(() => {
-                expect(fetchHTTPIntegrationEvent).toHaveBeenCalledWith(
+                expect(fetchHTTPIntegrationEventContainer).toHaveBeenCalledWith(
                     integrationId,
                     eventId
                 )
-                expect(fetchHTTPIntegrationEvent).toHaveBeenCalledTimes(1)
+                expect(
+                    fetchHTTPIntegrationEventContainer
+                ).toHaveBeenCalledTimes(1)
                 component.update()
                 expect(component.state()).toEqual({isFetching: false})
                 done()
@@ -114,7 +113,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render a loader while the component is fetching an event', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithHTMLResp}
@@ -127,7 +126,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render a loader because the component has no event', () => {
             const component = shallow(
-                <HTTPIntegrationEvent eventId="2" integationId="1" />
+                <HTTPIntegrationEventContainer eventId="2" integationId="1" />
             )
             component.setState({isFetching: false})
 
@@ -136,7 +135,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render a loader because the component has an empty event', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={fromJS({})}
@@ -149,7 +148,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render the data of a HTTP request (html response)', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithHTMLResp}
@@ -160,7 +159,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render the data of HTTP request (JSON bodies)', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithJSONResp}
@@ -171,7 +170,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render the data of HTTP request (Empty bodies)', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithEmptyBodies}
@@ -182,7 +181,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render the data of the HTTP request when there was an error making the request', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithErrorInResponse}
@@ -199,7 +198,7 @@ describe('<HTTPIntegrationEvent/>', () => {
                     'There was an error while making this request. Foo bar. There is an error.'
 
                 const component = shallow(
-                    <HTTPIntegrationEvent
+                    <HTTPIntegrationEventContainer
                         eventId="2"
                         integationId="1"
                         event={HTTPEventWithErrorInResponse.setIn(
@@ -214,7 +213,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render the error that occurred before we could send the request', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
+                <HTTPIntegrationEventContainer
                     eventId="2"
                     integationId="1"
                     event={httpEventWithoutRequest}
@@ -222,22 +221,6 @@ describe('<HTTPIntegrationEvent/>', () => {
             )
 
             expect(component).toMatchSnapshot()
-        })
-    })
-
-    describe('container', () => {
-        it('should render a HTTPIntegrationEvent component with props from the Redux store', () => {
-            const state = initialState.set(
-                'event',
-                fromJS(HTTPEventWithHTMLResp)
-            )
-            const store = mockStore({HTTPIntegrationEvents: state})
-            const container = shallowWithStore(
-                <HTTPIntegrationEventContainer integrationId="1" eventId="2" />,
-                store
-            )
-
-            expect(container).toMatchSnapshot()
         })
     })
 })

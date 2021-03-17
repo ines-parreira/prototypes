@@ -2,15 +2,12 @@
 import {fromJS} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import PerHourPerWeekTableStat, {
+import {
+    PerHourPerWeekTableStatContainer,
     TableCells,
 } from '../PerHourPerWeekTableStat/PerHourPerWeekTableStat'
 import {account} from '../../../../../../fixtures/account.ts'
-
-const mockStore = configureMockStore([thunk])
 
 const statPerHourPerWeekData = {
     axes: {
@@ -90,41 +87,41 @@ const statPerHourPerWeekEmptyData = {axes: {}, lines: []}
 
 describe('PerHourPerWeekTableStat', () => {
     describe('Table', () => {
-        const initialState = fromJS({
-            currentAccount: account,
-            currentUser: {
-                timezone: 'Europe/Berlin',
-            },
-        })
+        const minProps = {
+            businessHoursSettings: fromJS({}),
+            currentUserTimezone: '',
+            config: fromJS({}),
+            meta: fromJS({}),
+        }
 
         it('Should render the table with intervals', () => {
             const component = shallow(
-                <PerHourPerWeekTableStat
+                <PerHourPerWeekTableStatContainer
                     data={fromJS(statPerHourPerWeekData)}
-                    store={mockStore(initialState)}
+                    {...minProps}
                 />
             )
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('Should render the table with no interval in the legend', () => {
             const component = shallow(
-                <PerHourPerWeekTableStat
+                <PerHourPerWeekTableStatContainer
                     data={fromJS(statPerHourPerWeekZeroCountsData)}
-                    store={mockStore(initialState)}
+                    {...minProps}
                 />
             )
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
 
         it('Should render a message indicating we no data is present', () => {
             const component = shallow(
-                <PerHourPerWeekTableStat
+                <PerHourPerWeekTableStatContainer
                     data={fromJS(statPerHourPerWeekEmptyData)}
-                    store={mockStore(initialState)}
+                    {...minProps}
                 />
             )
-            expect(component.dive()).toMatchSnapshot()
+            expect(component).toMatchSnapshot()
         })
     })
 

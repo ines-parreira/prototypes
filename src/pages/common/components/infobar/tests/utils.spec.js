@@ -1,8 +1,13 @@
+import React from 'react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
 import * as utils from '../utils'
+
+jest.mock('../../../utils/labels', () => ({
+    DatetimeLabel: () => <div>DatetimeLabel</div>,
+}))
 
 describe('widgets infobar utils', () => {
     describe('is array of objects', () => {

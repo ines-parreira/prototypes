@@ -31,7 +31,7 @@ type State = {
     stats: Map<*, *>,
 }
 
-export class Stats extends React.Component<Props, State> {
+export class StatsContainer extends React.Component<Props, State> {
     gorgiasApi = new GorgiasApi()
     state = {
         fetchingStates: fromJS({}), // Store fetching state of each stat on the view.
@@ -193,4 +193,4 @@ const mapStateToProps = (state: Object, props: Props) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, {notify})(Stats))
+export default withRouter(connect(mapStateToProps, {notify})(StatsContainer))

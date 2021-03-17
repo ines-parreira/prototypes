@@ -159,7 +159,7 @@ exports[`BusinessHours component should render default values 1`] = `
 `;
 
 exports[`BusinessHours component should render values from state 1`] = `
-<Connect(BusinessHours)
+<Connect(BusinessHoursContainer)
   store={
     Object {
       "clearActions": [Function],
@@ -171,7 +171,7 @@ exports[`BusinessHours component should render values from state 1`] = `
     }
   }
 >
-  <BusinessHours
+  <BusinessHoursContainer
     businessHoursSettings={
       Immutable.Map {
         "type": "business-hours",
@@ -1265,6 +1265,6 @@ exports[`BusinessHours component should render values from state 1`] = `
         </div>
       </Container>
     </div>
-  </BusinessHours>
-</Connect(BusinessHours)>
+  </BusinessHoursContainer>
+</Connect(BusinessHoursContainer)>
 `;

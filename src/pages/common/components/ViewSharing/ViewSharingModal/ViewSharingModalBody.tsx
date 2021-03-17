@@ -38,7 +38,7 @@ const choices = [
     {value: ViewVisibility.Private, label: 'Private'},
 ]
 
-function ViewSharingModalBody({
+export function ViewSharingModalBodyContainer({
     visibility,
     isLoading,
     error,
@@ -145,4 +145,4 @@ const connector = connect((state: RootState) => ({
     teams: teamsSelectors.getTeams(state).toList(),
 }))
 
-export default connector(ViewSharingModalBody)
+export default connector(ViewSharingModalBodyContainer)

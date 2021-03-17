@@ -46,7 +46,7 @@ export type HighlightedElements = {
     last: number,
 }
 
-class AuditLogEventComponent extends React.Component<Props> {
+export class AuditLogEventContainer extends React.Component<Props> {
     static defaultProps = {
         isLast: false,
     }
@@ -109,7 +109,7 @@ class AuditLogEventComponent extends React.Component<Props> {
     _getIcon() {
         const {event} = this.props
         const type = event.get('type')
-        const iconConfig = AuditLogEventComponent._ICONS[type] || ['info']
+        const iconConfig = AuditLogEventContainer._ICONS[type] || ['info']
         const [icon, className] = iconConfig
 
         return (
@@ -346,7 +346,7 @@ const mapStateToProps = (state) => ({
     events: getEvents(state),
 })
 
-export default connect(mapStateToProps)(AuditLogEventComponent)
+export default connect(mapStateToProps)(AuditLogEventContainer)
 
 // Internal helper components
 type HelperProps = {children: Node}

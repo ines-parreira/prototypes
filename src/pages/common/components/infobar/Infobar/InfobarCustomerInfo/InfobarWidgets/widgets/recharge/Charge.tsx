@@ -283,7 +283,7 @@ type TitleWrapperProps = {
     template: Map<any, any>
 } & ConnectedProps<typeof connectorTitleWrapper>
 
-class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
+export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }

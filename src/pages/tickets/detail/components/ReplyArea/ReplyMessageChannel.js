@@ -10,8 +10,8 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
-import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
+import {getChannelsByType} from '../../../../../state/integrations/selectors.ts'
+import {prepare} from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {getMessages} from '../../../../../state/ticket/selectors.ts'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
@@ -41,28 +41,7 @@ import MessageSourceFields from './MessageSourceFields/'
 
 import css from './ReplyMessageChannel.less'
 
-@connect(
-    (state) => {
-        const ticket = state.ticket
-        const sourceType = newMessageSelectors.getNewMessageType(state)
-        return {
-            accountChannels: integrationSelectors.getChannelsByType(sourceType)(
-                state
-            ),
-            channel: newMessageSelectors.getNewMessageChannel(state),
-            hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
-            isForward: newMessageSelectors.isForward(state),
-            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            messages: getMessages(state),
-            sourceType,
-            ticket,
-        }
-    },
-    {
-        prepareNewMessage: newMessageActions.prepare,
-    }
-)
-export default class ReplyMessageChannel extends React.Component {
+export class ReplyMessageChannelContainer extends React.Component {
     static propTypes = {
         accountChannels: PropTypes.object.isRequired,
         channel: PropTypes.string.isRequired,
@@ -434,3 +413,25 @@ export default class ReplyMessageChannel extends React.Component {
         )
     }
 }
+
+const connector = connect(
+    (state) => {
+        const ticket = state.ticket
+        const sourceType = newMessageSelectors.getNewMessageType(state)
+        return {
+            accountChannels: getChannelsByType(sourceType)(state),
+            channel: newMessageSelectors.getNewMessageChannel(state),
+            hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
+            isForward: newMessageSelectors.isForward(state),
+            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
+            messages: getMessages(state),
+            sourceType,
+            ticket,
+        }
+    },
+    {
+        prepareNewMessage: prepare,
+    }
+)
+
+export default connector(ReplyMessageChannelContainer)

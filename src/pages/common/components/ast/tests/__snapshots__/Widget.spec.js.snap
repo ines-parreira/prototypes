@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ast Widget TagsSelect should render case sensitive TagsSelect field (tags properties) 1`] = `
-<Connect(TagsSelect)
+<Connect(TagsSelectContainer)
   caseInsensitive={false}
   description="Name of the tag. Keep it simple, a short 1 word tag is the best. The tag names are case sensitive."
   multiple={true}
@@ -13,7 +13,7 @@ exports[`ast Widget TagsSelect should render case sensitive TagsSelect field (ta
 `;
 
 exports[`ast Widget TagsSelect should render component AssigneeTeamSelect 1`] = `
-<Connect(AssigneeTeamSelect)
+<Connect(AssigneeTeamSelectContainer)
   allowUnassign={false}
   description=""
   onChange={[Function]}
@@ -23,7 +23,7 @@ exports[`ast Widget TagsSelect should render component AssigneeTeamSelect 1`] = 
 `;
 
 exports[`ast Widget TagsSelect should render component AssigneeUserSelect 1`] = `
-<Connect(AssigneeUserSelect)
+<Connect(AssigneeUserSelectContainer)
   allowUnassign={false}
   description=""
   onChange={[Function]}
@@ -33,7 +33,7 @@ exports[`ast Widget TagsSelect should render component AssigneeUserSelect 1`] = 
 `;
 
 exports[`ast Widget TagsSelect should render multi TagsSelect field (addTags action) 1`] = `
-<Connect(TagsSelect)
+<Connect(TagsSelectContainer)
   caseInsensitive={false}
   description=""
   multiple={true}

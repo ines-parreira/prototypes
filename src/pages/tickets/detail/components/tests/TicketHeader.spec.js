@@ -1,13 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 
-import TicketHeader from '../TicketHeader'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {TicketHeaderContainer} from '../TicketHeader'
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
@@ -29,35 +24,33 @@ describe('TicketHeader component', () => {
         status: 'open',
     }
 
-    beforeEach(() => {
-        commonProps.store = mockStore()
-    })
-
     it('should render new ticket', () => {
         const component = shallow(
-            <TicketHeader {...commonProps} ticket={fromJS(commonTicketProps)} />
-        ).dive()
-
+            <TicketHeaderContainer
+                {...commonProps}
+                ticket={fromJS(commonTicketProps)}
+            />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render existing ticket', () => {
         const component = shallow(
-            <TicketHeader
+            <TicketHeaderContainer
                 {...commonProps}
                 ticket={fromJS({
                     id: 1,
                     ...commonTicketProps,
                 })}
             />
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render spam ticket', () => {
         const component = shallow(
-            <TicketHeader
+            <TicketHeaderContainer
                 {...commonProps}
                 ticket={fromJS({
                     id: 1,
@@ -65,14 +58,14 @@ describe('TicketHeader component', () => {
                     ...commonTicketProps,
                 })}
             />
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render trashed ticket', () => {
         const component = shallow(
-            <TicketHeader
+            <TicketHeaderContainer
                 {...commonProps}
                 ticket={fromJS({
                     id: 1,
@@ -80,7 +73,7 @@ describe('TicketHeader component', () => {
                     ...commonTicketProps,
                 })}
             />
-        ).dive()
+        )
 
         expect(component).toMatchSnapshot()
     })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HTTPIntegrationEvent/> component should render a loader because the component has an empty event 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render a loader because the component has an empty event 1`] = `
 <Loader
   inline={false}
   minHeight="500px"
@@ -8,7 +8,7 @@ exports[`<HTTPIntegrationEvent/> component should render a loader because the co
 />
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render a loader because the component has no event 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render a loader because the component has no event 1`] = `
 <Loader
   inline={false}
   minHeight="500px"
@@ -16,7 +16,7 @@ exports[`<HTTPIntegrationEvent/> component should render a loader because the co
 />
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render a loader while the component is fetching an event 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render a loader while the component is fetching an event 1`] = `
 <Loader
   inline={false}
   minHeight="500px"
@@ -24,7 +24,7 @@ exports[`<HTTPIntegrationEvent/> component should render a loader while the comp
 />
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render the data of HTTP request (Empty bodies) 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render the data of HTTP request (Empty bodies) 1`] = `
 <Container
   className="page-container"
   fluid={true}
@@ -161,7 +161,7 @@ exports[`<HTTPIntegrationEvent/> component should render the data of HTTP reques
 </Container>
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render the data of HTTP request (JSON bodies) 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render the data of HTTP request (JSON bodies) 1`] = `
 <Container
   className="page-container"
   fluid={true}
@@ -328,7 +328,7 @@ exports[`<HTTPIntegrationEvent/> component should render the data of HTTP reques
 </Container>
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render the data of a HTTP request (html response) 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP request (html response) 1`] = `
 <Container
   className="page-container"
   fluid={true}
@@ -492,7 +492,7 @@ exports[`<HTTPIntegrationEvent/> component should render the data of a HTTP requ
 </Container>
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP request when there was an error making the request 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP request when there was an error making the request 1`] = `
 <Container
   className="page-container"
   fluid={true}
@@ -645,7 +645,7 @@ There is an error
 </Container>
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP request when there was an error making the request and the default message is already in the event 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP request when there was an error making the request and the default message is already in the event 1`] = `
 <Container
   className="page-container"
   fluid={true}
@@ -789,7 +789,7 @@ exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP re
 </Container>
 `;
 
-exports[`<HTTPIntegrationEvent/> component should render the error that occurred before we could send the request 1`] = `
+exports[`<HTTPIntegrationEvent /> component should render the error that occurred before we could send the request 1`] = `
 <Container
   className="page-container"
   fluid={true}
@@ -834,38 +834,4 @@ exports[`<HTTPIntegrationEvent/> component should render the error that occurred
     </Col>
   </Row>
 </Container>
-`;
-
-exports[`<HTTPIntegrationEvent/> container should render a HTTPIntegrationEvent component with props from the Redux store 1`] = `
-<HTTPIntegrationEvent
-  event={
-    Immutable.Map {
-      "created_datetime": "nowTimestamp",
-      "status": 200,
-      "request": Immutable.Map {
-        "method": "GET",
-        "url": "https://api.gorgias.io",
-        "status": 200,
-        "headers": Immutable.Map {
-          "headersKey1": "headersValue1",
-        },
-        "params": Immutable.Map {
-          "paramKey1": "paramValue1",
-        },
-        "body": Immutable.Map {
-          "bodyKey1": "bodyValue1",
-        },
-      },
-      "response": Immutable.Map {
-        "headers": Immutable.Map {
-          "headersKey1": "headersValue1",
-        },
-        "body": "<html><body>Hello world!</body></html>",
-      },
-    }
-  }
-  eventId="2"
-  fetchHTTPIntegrationEvent={[Function]}
-  integrationId="1"
-/>
 `;

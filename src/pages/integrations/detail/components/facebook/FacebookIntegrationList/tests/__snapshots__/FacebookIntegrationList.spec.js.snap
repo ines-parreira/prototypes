@@ -1,42 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FacebookIntegrationList component should render 1`] = `
-<withRouter(Connect(IntegrationList))
-  createIntegration={[Function]}
-  createIntegrationButtonClassName="createIntegrationButton"
-  createIntegrationButtonContent={
-    <div>
-      <img
-        alt="facebook-logo"
-        className="facebookLogo"
-        src="test-file-stub"
-      />
-      Login with Facebook
-    </div>
-  }
-  integrationToItemDisplay={[Function]}
-  integrationType="facebook"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "mylittleintegration",
-        "type": "facebook",
-        "created_datetime": "2018-01-01 00:00:00",
-        "facebook": Immutable.Map {
-          "name": "My Page",
-          "picture": Immutable.Map {
-            "data": Immutable.Map {
-              "url": "https://fake.url/picture.jpg",
-            },
-          },
-          "category": "Category",
-        },
+<Router
+  history={
+    Object {
+      "action": "PUSH",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 2,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "key": "KEY",
+        "pathname": "/foo/facebook",
+        "search": "",
+        "state": undefined,
       },
-    ]
+      "push": [Function],
+      "replace": [Function],
+    }
   }
-  loading={Object {}}
-  longTypeDescription="Facebook is a popular social network where customers can interact with companies.
-This integration creates tickets when customers post on your Facebook page or send you a message on Messenger."
-/>
+>
+  <Route
+    path="/foo/:integrationType"
+  >
+    <Provider
+      store={
+        Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        }
+      }
+    >
+      <FacebookIntegrationListContainer
+        actions={Object {}}
+        integrations={Immutable.List []}
+        loading={Object {}}
+        redirectUri="https://.../"
+      />
+    </Provider>
+  </Route>
+</Router>
 `;

@@ -21,7 +21,7 @@ exports[`SelectTargetTicket component should render 1`] = `
   <div
     className="table-wrapper"
   >
-    <Connect(Table)
+    <Connect(TableContainer)
       config={
         Immutable.Map {
           "mainField": "details",

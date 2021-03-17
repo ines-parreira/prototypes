@@ -17,8 +17,7 @@ type OwnProps = {
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
-
-class ViewSelection extends Component<Props> {
+export class ViewSelectionContainer extends Component<Props> {
     render() {
         const {
             activeView,
@@ -105,4 +104,4 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(ViewSelection)
+export default connector(ViewSelectionContainer)

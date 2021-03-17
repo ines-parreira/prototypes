@@ -58,22 +58,7 @@ type State = {
     isMergeTicketModalOpen: boolean,
 }
 
-@connect(
-    (state) => ({
-        timezone: getTimezone(state),
-        shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
-    }),
-    {
-        setTrashed: ticketActions.setTrashed,
-        setSpam: ticketActions.setSpam,
-        clearTicket: ticketActions.clearTicket,
-        goToNextTicket: ticketActions.goToNextTicket,
-        displayAuditLogEvents: ticketActions.displayAuditLogEvents,
-        hideAuditLogEvents: ticketActions.hideAuditLogEvents,
-        notify,
-    }
-)
-export default class TicketHeader extends React.Component<Props, State> {
+export class TicketHeaderContainer extends React.Component<Props, State> {
     state = {
         askTrashConfirmation: false,
         showSnoozePicker: false,
@@ -442,3 +427,21 @@ export default class TicketHeader extends React.Component<Props, State> {
         )
     }
 }
+
+const connector = connect(
+    (state) => ({
+        timezone: getTimezone(state),
+        shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
+    }),
+    {
+        setTrashed: ticketActions.setTrashed,
+        setSpam: ticketActions.setSpam,
+        clearTicket: ticketActions.clearTicket,
+        goToNextTicket: ticketActions.goToNextTicket,
+        displayAuditLogEvents: ticketActions.displayAuditLogEvents,
+        hideAuditLogEvents: ticketActions.hideAuditLogEvents,
+        notify,
+    }
+)
+
+export default connector(TicketHeaderContainer)

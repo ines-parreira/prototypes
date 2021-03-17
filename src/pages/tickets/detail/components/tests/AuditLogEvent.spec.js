@@ -3,11 +3,9 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import * as constants from '../../../../../constants/event.ts'
-import Component from '../AuditLogEvent'
+import {AuditLogEventContainer} from '../AuditLogEvent'
 
 import {
     type AuditLogEvent,
@@ -16,38 +14,26 @@ import {
     TAGS_ADDED_KEY,
 } from '../../../../../models/event'
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
 describe('<AuditLogEvent/>', () => {
-    const getState = () => ({
-        agents: fromJS({
-            all: [
-                {id: 1, name: 'User 1'},
-                {id: 2, name: 'User 2'},
-                {id: 3, name: 'User 3'},
-            ],
-        }),
-        teams: fromJS({
-            all: {
-                '1': {id: 1, name: 'Team 1'},
-                '2': {id: 2, name: 'Team 2'},
-                '3': {id: 3, name: 'Team 3'},
-            },
-        }),
-        tags: fromJS({
-            items: [
-                {id: 1, name: 'tag-1'},
-                {id: 2, name: 'tag-2'},
-                {id: 3, name: 'tag-3'},
-            ],
-        }),
-        ticket: fromJS({
-            events: [],
-        }),
-    })
-
-    const store = mockStore(getState())
+    const minProps = {
+        users: fromJS([
+            {id: 1, name: 'User 1'},
+            {id: 2, name: 'User 2'},
+            {id: 3, name: 'User 3'},
+        ]),
+        teams: fromJS([
+            {id: 1, name: 'Team 1'},
+            {id: 2, name: 'Team 2'},
+            {id: 3, name: 'Team 3'},
+        ]),
+        tags: fromJS([
+            {id: 1, name: 'tag-1'},
+            {id: 2, name: 'tag-2'},
+            {id: 3, name: 'tag-3'},
+        ]),
+        events: fromJS([]),
+        setHighlightedElements: jest.fn(),
+    }
 
     const getEvent = (eventType: AuditLogEventType): AuditLogEvent => ({
         id: 1,
@@ -92,12 +78,12 @@ describe('<AuditLogEvent/>', () => {
                     }
 
                     const component = shallow(
-                        <Component
-                            store={store}
+                        <AuditLogEventContainer
+                            {...minProps}
                             event={fromJS(event)}
                             isLast={false}
                         />
-                    ).dive()
+                    )
 
                     expect(component).toMatchSnapshot()
                 }
@@ -118,12 +104,12 @@ describe('<AuditLogEvent/>', () => {
                             : {tags_removed: [1, 2]}
 
                     const component = shallow(
-                        <Component
-                            store={store}
+                        <AuditLogEventContainer
+                            {...minProps}
                             event={fromJS(event)}
                             isLast={false}
                         />
-                    ).dive()
+                    )
 
                     expect(component).toMatchSnapshot()
                 }
@@ -144,12 +130,12 @@ describe('<AuditLogEvent/>', () => {
                             : {assignee_team_id: 9}
 
                     const component = shallow(
-                        <Component
-                            store={store}
+                        <AuditLogEventContainer
+                            {...minProps}
                             event={fromJS(event)}
                             isLast={false}
                         />
-                    ).dive()
+                    )
 
                     expect(component).toMatchSnapshot()
                 }
@@ -160,12 +146,12 @@ describe('<AuditLogEvent/>', () => {
                 event.user_id = null
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -174,12 +160,12 @@ describe('<AuditLogEvent/>', () => {
                 const event = getEvent(constants.TICKET_REOPENED)
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={true}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -193,20 +179,13 @@ describe('<AuditLogEvent/>', () => {
                 event.created_datetime = '2019-11-15 19:00:00.500000'
 
                 const component = shallow(
-                    <Component
-                        store={mockStore({
-                            ...getState(),
-                            ticket: fromJS({
-                                events: [
-                                    fromJS(ruleExecutedEvent),
-                                    fromJS(event),
-                                ],
-                            }),
-                        })}
+                    <AuditLogEventContainer
+                        {...minProps}
+                        events={fromJS([ruleExecutedEvent, event])}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -225,12 +204,12 @@ describe('<AuditLogEvent/>', () => {
                 }
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -249,12 +228,12 @@ describe('<AuditLogEvent/>', () => {
                 }
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -265,12 +244,12 @@ describe('<AuditLogEvent/>', () => {
                 const event = getEvent('invalid')
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -280,12 +259,12 @@ describe('<AuditLogEvent/>', () => {
                 event.data = {type: SYSTEM_RULE_TYPE}
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -295,12 +274,12 @@ describe('<AuditLogEvent/>', () => {
                 event.data = {[TAGS_ADDED_KEY]: [999]}
 
                 const component = shallow(
-                    <Component
-                        store={store}
+                    <AuditLogEventContainer
+                        {...minProps}
                         event={fromJS(event)}
                         isLast={false}
                     />
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })

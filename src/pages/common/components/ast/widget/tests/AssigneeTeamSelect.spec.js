@@ -1,13 +1,8 @@
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import {shallow} from 'enzyme'
 import React from 'react'
 
-import AssigneeTeamSelect from '../AssigneeTeamSelect.tsx'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {AssigneeTeamSelectContainer} from '../AssigneeTeamSelect.tsx'
 
 describe('ast', () => {
     describe('widgets', () => {
@@ -21,44 +16,30 @@ describe('ast', () => {
 
                 it('should render a dropdown without selected value', () => {
                     const component = shallow(
-                        <AssigneeTeamSelect
-                            store={mockStore({
-                                teams: fromJS({
-                                    all: teams,
-                                }),
-                            })}
-                        />
+                        <AssigneeTeamSelectContainer teams={fromJS(teams)} />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should render a dropdown with selected value', () => {
                     const component = shallow(
-                        <AssigneeTeamSelect
+                        <AssigneeTeamSelectContainer
                             value={1}
-                            store={mockStore({
-                                teams: fromJS({
-                                    all: teams,
-                                }),
-                            })}
+                            teams={fromJS(teams)}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should render a dropdown without "Unassign" option', () => {
                     const component = shallow(
-                        <AssigneeTeamSelect
+                        <AssigneeTeamSelectContainer
                             value={1}
-                            store={mockStore({
-                                teams: fromJS({
-                                    all: teams,
-                                }),
-                            })}
+                            teams={fromJS(teams)}
                             allowUnassign={false}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
             })
         })

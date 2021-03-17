@@ -28,17 +28,7 @@ type State = {
     filter: string,
 }
 
-@connect((state) => {
-    return {
-        integrations: integrationsSelectors.getOnboardingIntegrations(
-            OUTLOOK_INTEGRATION_TYPE
-        )(state),
-        pagination: integrationsSelectors.getOnboardingMeta(
-            OUTLOOK_INTEGRATION_TYPE
-        )(state),
-    }
-})
-export default class OutlookIntegrationSetup extends React.Component<
+export class OutlookIntegrationSetupContainer extends React.Component<
     Props,
     State
 > {
@@ -273,3 +263,14 @@ export default class OutlookIntegrationSetup extends React.Component<
         )
     }
 }
+
+const connector = connect((state) => ({
+    integrations: integrationsSelectors.getOnboardingIntegrations(
+        OUTLOOK_INTEGRATION_TYPE
+    )(state),
+    pagination: integrationsSelectors.getOnboardingMeta(
+        OUTLOOK_INTEGRATION_TYPE
+    )(state),
+}))
+
+export default connector(OutlookIntegrationSetupContainer)

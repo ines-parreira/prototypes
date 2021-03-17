@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import axios from 'axios'
 
-import {Stats} from '../Stats'
+import {StatsContainer} from '../Stats'
 import {views as statsViewsConfig} from '../../../config/stats.tsx'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
 
@@ -38,7 +38,7 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
 
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />
@@ -59,7 +59,7 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(400, {error: {msg: 'Invalid filters'}})
 
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />
@@ -78,7 +78,7 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(500)
 
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />
@@ -99,7 +99,7 @@ describe('<Stats/>', () => {
             apiMock = new MockAdapter(axios, {delayResponse: 2000})
 
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />
@@ -115,7 +115,7 @@ describe('<Stats/>', () => {
     describe('render()', () => {
         it('should render stats', () => {
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />
@@ -132,7 +132,7 @@ describe('<Stats/>', () => {
 
         it('should render stats as loading', () => {
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />
@@ -151,7 +151,7 @@ describe('<Stats/>', () => {
 
         it("should not render stats because there is no stat to render and it's not fetching stats", () => {
             const componentWrapper = shallow(
-                <Stats
+                <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}}}
                 />

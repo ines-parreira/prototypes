@@ -1,13 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import TagsSelectContainer, {TagsSelect} from '../TagsSelect'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {TagsSelectContainer} from '../TagsSelect'
 
 describe('ast', () => {
     describe('widgets', () => {
@@ -23,47 +18,38 @@ describe('ast', () => {
                     name: 'question',
                 },
             ])
-            let store = null
             const actions = {
                 create: jest.fn(),
             }
-
-            beforeEach(() => {
-                store = mockStore({
-                    tags: fromJS({
-                        items: tags,
-                    }),
-                })
-            })
 
             describe('MultiSelectField', () => {
                 it('should render array as value', () => {
                     const component = shallow(
                         <TagsSelectContainer
+                            tags={tags}
                             value={['billing', 'bugs']}
-                            store={store}
                             onChange={jest.fn()}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should render string as value', () => {
                     const component = shallow(
                         <TagsSelectContainer
+                            tags={tags}
                             value={'billing, bugs'}
-                            store={store}
                             multiple={true}
                             onChange={jest.fn()}
                         />
                     )
-                    expect(component.dive()).toMatchSnapshot()
+                    expect(component).toMatchSnapshot()
                 })
 
                 it('should handle change (array as value)', () => {
                     const onChangeSpy = jest.fn()
                     const component = shallow(
-                        <TagsSelect
+                        <TagsSelectContainer
                             tags={tags}
                             value={['billing', 'bugs']}
                             multiple={true}
@@ -81,7 +67,7 @@ describe('ast', () => {
                 it('should handle change (string as value)', () => {
                     const onChangeSpy = jest.fn()
                     const component = shallow(
-                        <TagsSelect
+                        <TagsSelectContainer
                             tags={tags}
                             value={'billing, bugs'}
                             multiple={true}
@@ -99,17 +85,17 @@ describe('ast', () => {
                 const component = shallow(
                     <TagsSelectContainer
                         value={'billing'}
-                        store={store}
+                        tags={tags}
                         onChange={jest.fn()}
                     />
                 )
-                expect(component.dive()).toMatchSnapshot()
+                expect(component).toMatchSnapshot()
             })
 
             it('should handle change', () => {
                 const onChange = jest.fn()
                 const component = shallow(
-                    <TagsSelect
+                    <TagsSelectContainer
                         tags={tags}
                         value={'billing'}
                         multiple={false}

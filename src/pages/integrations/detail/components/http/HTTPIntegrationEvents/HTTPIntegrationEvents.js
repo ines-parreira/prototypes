@@ -25,7 +25,7 @@ type State = {
     isFetching: boolean,
 }
 
-export class HTTPIntegrationEvents extends Component<Props, State> {
+export class HTTPIntegrationEventsContainer extends Component<Props, State> {
     state = {
         isFetching: false,
     }
@@ -155,4 +155,4 @@ const mapStateToProps = (state) => {
 }
 export default connect(mapStateToProps, {
     fetchEvents: fetchHTTPIntegrationEvents,
-})(HTTPIntegrationEvents)
+})(HTTPIntegrationEventsContainer)

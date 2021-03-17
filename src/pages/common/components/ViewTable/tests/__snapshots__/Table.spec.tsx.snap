@@ -17,7 +17,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
             type="checkbox"
           />
         </td>
-        <Connect(HeaderCell)
+        <Component
           ActionsComponent={null}
           field={
             Immutable.Map {
@@ -53,7 +53,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
           key="details"
           type="ticket"
         />
-        <Connect(HeaderCell)
+        <Component
           ActionsComponent={null}
           field={
             Immutable.Map {
@@ -89,7 +89,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
           key="subject"
           type="ticket"
         />
-        <Connect(HeaderCell)
+        <Component
           ActionsComponent={null}
           field={
             Immutable.Map {
@@ -135,7 +135,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
       </tr>
     </thead>
     <tbody>
-      <Connect(Row)
+      <Component
         fields={
           Immutable.List [
             Immutable.Map {
@@ -708,7 +708,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
 
 exports[`ViewTable::Table should display a default view with no items 1`] = `
 <div>
-  <Connect(BlankStateContainer) />
+  <Component />
   <Navigation
     fetchNextItems={[Function]}
     fetchPrevItems={[Function]}
@@ -725,7 +725,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
   >
     <thead>
       <tr>
-        <Connect(HeaderCell)
+        <Component
           ActionsComponent={null}
           field={
             Immutable.Map {
@@ -761,7 +761,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
           key="details"
           type="ticket"
         />
-        <Connect(HeaderCell)
+        <Component
           ActionsComponent={null}
           field={
             Immutable.Map {
@@ -797,7 +797,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
           key="subject"
           type="ticket"
         />
-        <Connect(HeaderCell)
+        <Component
           ActionsComponent={null}
           field={
             Immutable.Map {
@@ -843,7 +843,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
       </tr>
     </thead>
     <tbody>
-      <Connect(Row)
+      <Component
         fields={
           Immutable.List [
             Immutable.Map {
@@ -1416,7 +1416,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
 
 exports[`ViewTable::Table should display a modified view with no items, should reset the view and fetch first items  1`] = `
 <div>
-  <Connect(BlankStateContainer)
+  <Component
     message={
       <p>
         No 
@@ -1460,7 +1460,7 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
       </tr>
     </thead>
     <tbody>
-      <Connect(Row)
+      <Component
         fields={Immutable.List []}
         hasCursor={true}
         isSelected={false}

@@ -18,7 +18,7 @@ type Props = {
     caseInsensitive: ?boolean,
 }
 
-export class TagsSelect extends Component<Props> {
+export class TagsSelectContainer extends Component<Props> {
     static defaultProps = {
         value: '',
         multiple: false,
@@ -107,4 +107,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TagsSelect)
+export default connect(mapStateToProps, mapDispatchToProps)(TagsSelectContainer)

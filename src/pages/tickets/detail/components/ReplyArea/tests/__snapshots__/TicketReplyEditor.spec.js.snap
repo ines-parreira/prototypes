@@ -157,8 +157,8 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
           "replaceData": [Function],
         },
         "blockMap": Immutable.OrderedMap {
-          "mock-key": Immutable.Record {
-            "key": "mock-key",
+          "mock-key-1": Immutable.Record {
+            "key": "mock-key-1",
             "type": "unstyled",
             "text": "",
             "characterList": Immutable.List [],
@@ -167,17 +167,17 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
           },
         },
         "selectionBefore": Immutable.Record {
-          "anchorKey": "mock-key",
+          "anchorKey": "mock-key-1",
           "anchorOffset": 0,
-          "focusKey": "mock-key",
+          "focusKey": "mock-key-1",
           "focusOffset": 0,
           "isBackward": false,
           "hasFocus": false,
         },
         "selectionAfter": Immutable.Record {
-          "anchorKey": "mock-key",
+          "anchorKey": "mock-key-1",
           "anchorOffset": 0,
-          "focusKey": "mock-key",
+          "focusKey": "mock-key-1",
           "focusOffset": 0,
           "isBackward": false,
           "hasFocus": false,
@@ -186,28 +186,9 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     }
     emailExtraEnabled={true}
     mentionSuggestions={Immutable.List []}
-    notify={[Function]}
+    notify={[MockFunction]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
-    predictionContext={
-      Immutable.Map {
-        "current_user": Immutable.Map {
-          "id": "",
-          "email": "",
-          "firstname": "",
-          "lastname": "",
-        },
-        "customer": Immutable.Map {
-          "firstname": "",
-          "lastname": "",
-          "name": "",
-          "email": "",
-        },
-        "account": Immutable.Map {
-          "domain": undefined,
-        },
-      }
-    }
     readOnly={false}
     spellCheck={true}
     tabIndex="4"

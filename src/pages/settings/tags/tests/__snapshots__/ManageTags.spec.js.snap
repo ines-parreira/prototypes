@@ -117,7 +117,7 @@ exports[`ManageTags component mounts correctly 1`] = `
       />
     </div>
   </Container>
-  <Connect(Table)
+  <Connect(TableContainer)
     onBulkDelete={[Function]}
     onMerge={[Function]}
     onSelectAll={[Function]}

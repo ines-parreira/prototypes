@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 
 import {canReply} from '../../../../../business/ticket.ts'
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
-import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
+import {deleteAttachment} from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {getActionTemplate} from '../../../../../utils.ts'
 
@@ -26,23 +26,7 @@ type Props = {
     isNewMessagePublic: boolean,
     richAreaRef: () => void,
 }
-
-@connect(
-    (state) => {
-        return {
-            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            newMessageType: newMessageSelectors.getNewMessageType(state),
-            newMessageAttachments: newMessageSelectors.getNewMessageAttachments(
-                state
-            ),
-        }
-    },
-    {
-        deleteAttachment: newMessageActions.deleteAttachment,
-    }
-)
-// $FlowFixMe
-export default class TicketReply extends React.Component<Props> {
+export class TicketReplyContainer extends React.Component<Props> {
     _renderAttachments = () => {
         const {newMessageAttachments, deleteAttachment} = this.props
 
@@ -125,3 +109,20 @@ export default class TicketReply extends React.Component<Props> {
         )
     }
 }
+
+const connector = connect(
+    (state) => {
+        return {
+            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
+            newMessageType: newMessageSelectors.getNewMessageType(state),
+            newMessageAttachments: newMessageSelectors.getNewMessageAttachments(
+                state
+            ),
+        }
+    },
+    {
+        deleteAttachment,
+    }
+)
+
+export default connector(TicketReplyContainer)

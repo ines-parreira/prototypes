@@ -29,7 +29,7 @@ type State = {
     loading: boolean,
 }
 
-class BusinessHours extends React.Component<Props, State> {
+export class BusinessHoursContainer extends React.Component<Props, State> {
     state = {
         items: fromJS([DEFAULT_BUSINESS_HOUR]),
         timezone: 'UTC',
@@ -205,4 +205,4 @@ export default connect(
     {
         submitSetting: currentAccountActions.submitSetting,
     }
-)(BusinessHours)
+)(BusinessHoursContainer)

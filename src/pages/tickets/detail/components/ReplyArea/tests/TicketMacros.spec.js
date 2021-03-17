@@ -2,31 +2,13 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
-import _assign from 'lodash/assign'
 
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
-import TicketMacros from '../TicketMacros'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {TicketMacrosContainer} from '../TicketMacros'
 
 describe('TicketMacros component', () => {
-    let store
     let defaultProps
-    const defaultState = {
-        newMessage: fromJS({
-            newMessage: {
-                source: {
-                    type: 'email',
-                },
-            },
-        }),
-    }
 
     beforeEach(() => {
-        store = mockStore(defaultState)
         defaultProps = {
             currentMacro: fromJS({}),
             newMessageType: 'email',
@@ -38,7 +20,6 @@ describe('TicketMacros component', () => {
             notify: _noop,
             onClearMacro: _noop,
             selectMacro: _noop,
-            store,
         }
     })
 
@@ -63,22 +44,21 @@ describe('TicketMacros component', () => {
     ]
 
     it("should display an empty state if there's no macros", () => {
-        const component = shallow(<TicketMacros {...defaultProps} />)
+        const component = shallow(<TicketMacrosContainer {...defaultProps} />)
 
-        expect(component.dive().find('MacroNoResults')).toHaveLength(1)
+        expect(component.find('MacroNoResults')).toHaveLength(1)
     })
 
     it('should display macros list, and selected macro', () => {
         const macros = fromJS(baseMacros)
         const component = shallow(
-            <TicketMacros
-                {..._assign(defaultProps, {
-                    currentMacro: macros.get(1),
-                    macros,
-                })}
+            <TicketMacrosContainer
+                {...defaultProps}
+                macros={macros}
+                currentMacro={macros.get(1)}
             />
         )
 
-        expect(component.dive()).toMatchSnapshot()
+        expect(component).toMatchSnapshot()
     })
 })

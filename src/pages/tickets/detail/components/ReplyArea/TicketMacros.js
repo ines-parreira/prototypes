@@ -54,7 +54,7 @@ type State = {
     isCreatingMacro: boolean,
 }
 
-export class TicketMacros extends React.Component<Props, State> {
+export class TicketMacrosContainer extends React.Component<Props, State> {
     static defaultProps = {
         currentTicket: fromJS({}),
         macros: fromJS([]),
@@ -300,4 +300,4 @@ export default connect(
         notify,
         deleteMacro,
     }
-)(TicketMacros)
+)(TicketMacrosContainer)

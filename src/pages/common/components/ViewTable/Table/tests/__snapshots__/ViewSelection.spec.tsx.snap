@@ -9,7 +9,9 @@ exports[`<ViewSelection/> render() should render the component for an entire vie
     <span>
       All the
        
-      <b />
+      <b>
+        100 
+      </b>
       tickets
        of 
       <b>
@@ -55,7 +57,9 @@ exports[`<ViewSelection/> render() should render the component when only element
          
         Select all
          
-        <b />
+        <b>
+          100 
+        </b>
         tickets
       </span>
        

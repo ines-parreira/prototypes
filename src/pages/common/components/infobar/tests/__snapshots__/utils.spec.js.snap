@@ -91,7 +91,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 `;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should return a datetime label because passed type is \`date\` 1`] = `
-<Connect(DatetimeLabel)
+<DatetimeLabel
   dateTime="foo"
 />
 `;

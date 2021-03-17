@@ -345,7 +345,7 @@ exports[`TicketBody should display audit log events with messages 1`] = `
     ticketId={1}
     timezone="UTC"
   />
-  <Connect(AuditLogEventComponent)
+  <Connect(AuditLogEventContainer)
     event={
       Immutable.Map {
         "data": null,
@@ -422,7 +422,7 @@ exports[`TicketBody should display events with messages 1`] = `
     ticketId={1}
     timezone="UTC"
   />
-  <Connect(Event)
+  <Connect(EventContainer)
     event={
       Immutable.Map {
         "channel": "email",

@@ -13,30 +13,14 @@ import {getActionByName} from '../../../../config/actions.ts'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 
-import * as integrationsSelectors from '../../../../state/integrations/selectors.ts'
-import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
+import {getIntegrationById} from '../../../../state/integrations/selectors.ts'
+import {getIntegrationDataByIntegrationId} from '../../../../state/ticket/selectors.ts'
 
 import facebookMessengerEvent from '../../../../../img/integrations/facebook-messenger-blue-icon.svg'
 
 import css from './Event.less'
 
-@connect((state, ownProps) => {
-    const {event} = ownProps
-
-    const integration = integrationsSelectors.getIntegrationById(
-        event.getIn(['data', 'integration_id'])
-    )(state)
-
-    const integrationData = ticketSelectors.getIntegrationDataByIntegrationId(
-        integration.get('id', '').toString()
-    )(state)
-
-    return {
-        integrationData,
-        integration,
-    }
-})
-export default class Event extends React.Component {
+export class EventContainer extends React.Component {
     static propTypes = {
         integrationData: ImmutablePropTypes.map.isRequired,
         event: ImmutablePropTypes.map.isRequired,
@@ -342,3 +326,20 @@ export default class Event extends React.Component {
         )
     }
 }
+
+const connector = connect((state, ownProps) => {
+    const {event} = ownProps
+
+    const integration = getIntegrationById(
+        event.getIn(['data', 'integration_id'])
+    )(state)
+
+    return {
+        integrationData: getIntegrationDataByIntegrationId(
+            integration.get('id', '').toString()
+        )(state),
+        integration,
+    }
+})
+
+export default connector(EventContainer)

@@ -1,33 +1,20 @@
-import React, {ComponentProps, ComponentType} from 'react'
+import React from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map} from 'immutable'
-import {Store} from 'redux'
 
 import Search from '../../Search.js'
-import untypedConfigureStore from '../../../../../store/configureStore.js'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as viewsActions from '../../../../../state/views/actions'
-import {View} from '../../../../../models/view/types'
-import {RootState} from '../../../../../state/types'
 import history from '../../../../history'
-import Header, {HeaderContainer} from '../Header'
+import {HeaderContainer} from '../Header'
 import EmojiSelect from '../EmojiSelect/EmojiSelect'
-
-// $TsFixMe: Remove on store/configureStore migration
-const configureStore = (untypedConfigureStore as unknown) as (
-    store: Partial<RootState>
-) => Store<RootState>
+import {getConfigByName} from '../../../../../config/views'
 
 jest.mock('../../../../../state/views/actions.ts', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const _identity: <T>(arg: T) => T = require('lodash/identity')
 
     return {
-        deleteView: jest.fn(() => _identity),
-        fetchPage: jest.fn(() => _identity),
-        removeFieldFilter: jest.fn(() => _identity),
-        toggleSelection: jest.fn(() => _identity),
-        updateView: jest.fn(() => _identity),
         fetchViewItems: jest.fn(() => _identity),
     }
 })
@@ -36,27 +23,22 @@ jest.mock('react-router-dom')
 
 jest.mock('../../../../history')
 
-const HeaderMock = (Header as unknown) as ComponentType<
-    ComponentProps<typeof Header> & {store?: any}
->
-
 describe('ViewTable::Header', () => {
     const fixtureView = viewsFixtures.view
-
-    const storeWithActiveView = (activeView: View | Map<any, any>) => ({
-        views: fromJS({
-            active: activeView,
-        }),
-    })
-
-    const minStore = storeWithActiveView((fixtureView as unknown) as View)
 
     const minProps = {
         type: 'ticket',
         isSearch: false,
         isUpdate: true,
-        store: configureStore(minStore),
+        activeView: fromJS(fixtureView),
+        lastViewId: 0,
+        deleteView: jest.fn(),
+        removeFieldFilter: jest.fn(),
+        updateView: jest.fn(),
+        setViewEditMode: jest.fn(),
     }
+
+    const config = getConfigByName(minProps.type)
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -64,38 +46,37 @@ describe('ViewTable::Header', () => {
 
     it('empty view', () => {
         const component = shallow(
-            <HeaderMock
+            <HeaderContainer
                 {...minProps}
-                store={configureStore({
-                    ...minStore,
-                    views: fromJS({}),
-                })}
+                config={config}
+                activeView={fromJS({})}
                 isUpdate={false}
             />
-        ).dive()
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('search view', () => {
         const component = shallow(
-            <HeaderMock
+            <HeaderContainer
                 {...minProps}
+                config={config}
                 isSearch
-                store={configureStore(
-                    storeWithActiveView(({
-                        ...fixtureView,
-                        search: 'term1',
-                    } as unknown) as View)
-                )}
+                activeView={fromJS({
+                    ...fixtureView,
+                    search: 'term1',
+                })}
             />
-        ).dive()
+        )
         expect(component).toMatchSnapshot()
     })
 
     describe('default view', () => {
         let component: ShallowWrapper
         beforeEach(() => {
-            component = shallow(<HeaderMock {...minProps} />).dive()
+            component = shallow(
+                <HeaderContainer {...minProps} config={config} />
+            )
         })
 
         it('displays', () => {
@@ -108,7 +89,7 @@ describe('ViewTable::Header', () => {
                 onChange: (search: string) => void
             }).onChange
             searchOnChange(searchTerm)
-            expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+            expect(minProps.updateView).toHaveBeenLastCalledWith(
                 (fromJS(fixtureView) as Map<any, any>).set(
                     'search',
                     searchTerm
@@ -128,24 +109,27 @@ describe('ViewTable::Header', () => {
 
         it('should not go to the search mode focusing the search input when already in search mode', () => {
             const component = shallow(
-                <HeaderMock {...minProps} isSearch={true} />
-            ).dive()
+                <HeaderContainer
+                    {...minProps}
+                    config={config}
+                    isSearch={true}
+                />
+            )
             ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
             expect(history.push).not.toHaveBeenCalled()
         })
 
         it('get search query from active view', () => {
             const component = shallow(
-                <HeaderMock
+                <HeaderContainer
                     {...minProps}
-                    store={configureStore(
-                        storeWithActiveView(({
-                            ...fixtureView,
-                            search: 'term1',
-                        } as unknown) as View)
-                    )}
+                    config={config}
+                    activeView={fromJS({
+                        ...fixtureView,
+                        search: 'term1',
+                    })}
                 />
-            ).dive()
+            )
             expect(component).toMatchSnapshot()
         })
 
@@ -153,7 +137,7 @@ describe('ViewTable::Header', () => {
             ;(component.instance() as InstanceType<
                 typeof HeaderContainer
             >)._updateViewName('new name')
-            expect(viewsActions.updateView).toBeCalled()
+            expect(minProps.updateView).toBeCalled()
         })
 
         it('toggle delete confirmation', () => {
@@ -179,11 +163,12 @@ describe('ViewTable::Header', () => {
                     decoration: {emoji: 'foo'},
                 })
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
                 expect(component).toMatchSnapshot()
             })
 
@@ -192,11 +177,12 @@ describe('ViewTable::Header', () => {
                     decoration: 'foo',
                 })
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
                 expect(component).toMatchSnapshot()
             })
 
@@ -207,11 +193,12 @@ describe('ViewTable::Header', () => {
                     },
                 })
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
                 expect(component).toMatchSnapshot()
             })
         })
@@ -222,18 +209,19 @@ describe('ViewTable::Header', () => {
                     decoration: null,
                 })
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiSelect: (emoji: string) => void
                 }).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {emoji},
                 })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                expect(minProps.updateView).toHaveBeenLastCalledWith(
                     expectedActiveView
                 )
             })
@@ -242,11 +230,12 @@ describe('ViewTable::Header', () => {
                 const decoration = {foo: 'bar'}
                 const activeView = editModeActiveView.merge({decoration})
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiSelect: (emoji: string) => void
                 }).onEmojiSelect(emoji)
@@ -256,7 +245,7 @@ describe('ViewTable::Header', () => {
                         emoji,
                     },
                 })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                expect(minProps.updateView).toHaveBeenLastCalledWith(
                     expectedActiveView
                 )
             })
@@ -268,11 +257,12 @@ describe('ViewTable::Header', () => {
                     decoration: {emoji},
                 })
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
 
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiClear: () => void
@@ -280,7 +270,7 @@ describe('ViewTable::Header', () => {
                 const expectedActiveView = activeView.merge({
                     decoration: {},
                 })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                expect(minProps.updateView).toHaveBeenLastCalledWith(
                     expectedActiveView
                 )
             })
@@ -290,16 +280,17 @@ describe('ViewTable::Header', () => {
                     decoration: null,
                 })
                 const component = shallow(
-                    <HeaderMock
+                    <HeaderContainer
                         {...minProps}
-                        store={configureStore(storeWithActiveView(activeView))}
+                        config={config}
+                        activeView={activeView}
                     />
-                ).dive()
+                )
 
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiClear: () => void
                 }).onEmojiClear()
-                expect(viewsActions.updateView).not.toHaveBeenCalled()
+                expect(minProps.updateView).not.toHaveBeenCalled()
             })
         })
     })

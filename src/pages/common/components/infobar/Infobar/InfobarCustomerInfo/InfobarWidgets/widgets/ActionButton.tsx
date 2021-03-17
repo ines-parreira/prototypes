@@ -27,9 +27,9 @@ import SelectField from '../../../../../../forms/SelectField/SelectField.js'
 import BooleanField from '../../../../../../forms/BooleanField.js'
 import InputField from '../../../../../../forms/InputField.js'
 
-import * as infobarActions from '../../../../../../../../state/infobar/actions'
-import * as infobarSelectors from '../../../../../../../../state/infobar/selectors'
-import * as infobarUtils from '../../../../../../../../state/infobar/utils'
+import {executeAction} from '../../../../../../../../state/infobar/actions'
+import {makeGetPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'
+import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
 import {RootState} from '../../../../../../../../state/types'
 
 import css from './ActionButton.less'
@@ -149,7 +149,7 @@ export class ActionButtonContainer extends Component<Props, State> {
             },
         }
 
-        return infobarUtils.actionButtonHashForData(data as any)
+        return actionButtonHashForData(data as any)
     }
 
     _confirmAction = (event: FormEvent | null = null) => {
@@ -379,12 +379,10 @@ export class ActionButtonContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(
-            state
-        ),
+        getPendingActionCallback: makeGetPendingActionCallbacks(state),
     }),
     {
-        executeAction: infobarActions.executeAction,
+        executeAction,
     }
 )
 

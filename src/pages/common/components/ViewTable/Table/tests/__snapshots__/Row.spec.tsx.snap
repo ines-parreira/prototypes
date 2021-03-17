@@ -14,7 +14,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
       type="checkbox"
     />
   </td>
-  <Connect(Cell)
+  <Connect(CellContainer)
     field={
       Immutable.Map {
         "name": "details",
@@ -552,7 +552,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     key="152-details"
     type="ticket"
   />
-  <Connect(Cell)
+  <Connect(CellContainer)
     field={
       Immutable.Map {
         "name": "subject",
@@ -1090,7 +1090,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
     key="152-subject"
     type="ticket"
   />
-  <Connect(Cell)
+  <Connect(CellContainer)
     field={
       Immutable.Map {
         "name": "integrations",
@@ -1662,7 +1662,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
       type="checkbox"
     />
   </td>
-  <Connect(Cell)
+  <Connect(CellContainer)
     field={
       Immutable.Map {
         "name": "details",
@@ -2200,7 +2200,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     key="1-details"
     type="ticket"
   />
-  <Connect(Cell)
+  <Connect(CellContainer)
     field={
       Immutable.Map {
         "name": "subject",
@@ -2738,7 +2738,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     key="1-subject"
     type="ticket"
   />
-  <Connect(Cell)
+  <Connect(CellContainer)
     field={
       Immutable.Map {
         "name": "integrations",

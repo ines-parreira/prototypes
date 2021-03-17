@@ -224,7 +224,7 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
       }
     }
   >
-    <Connect(Stat)
+    <Connect(StatContainer)
       config={
         Immutable.Map {
           "helpText": "Number of tickets created per channel per day",
@@ -311,7 +311,7 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
       }
     }
   >
-    <Connect(Stat)
+    <Connect(StatContainer)
       config={
         Immutable.Map {
           "helpText": "Number of tickets created per channel",

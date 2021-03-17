@@ -38,7 +38,7 @@ const DEFAULT_ERROR_MESSAGE =
     "Please double check that the request you're trying to make should work, using tools like cURL or " +
     'Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:\n\n'
 
-export class HTTPIntegrationEvent extends Component<Props, State> {
+export class HTTPIntegrationEventContainer extends Component<Props, State> {
     state = {}
 
     _fetchEvent = (integrationId: number, eventId: number) => {
@@ -214,5 +214,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {fetchHTTPIntegrationEvent})(
-    HTTPIntegrationEvent
+    HTTPIntegrationEventContainer
 )

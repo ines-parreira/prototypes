@@ -24,30 +24,9 @@ import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import TicketBody from './TicketBody'
 import TicketHeader from './TicketHeader'
 
-@connect((state) => {
-    return {
-        agents: agentSelectors.getAgents(state),
-        agentsViewing: agentSelectors.getOtherAgentsOnTicket(
-            state.ticket.get('id')
-        )(state),
-        agentsTyping: agentSelectors.getOtherAgentsTypingOnTicket(
-            state.ticket.get('id')
-        )(state),
-        currentUser: state.currentUser,
-        routing: state.routing,
-        tags: tagsSelectors.getTags(state),
-        ticket: state.ticket,
-        ticketBody: ticketSelectors.getBody(state),
-        customers: customersSelectors.getCustomersState(state),
-        customersIsLoading: customersSelectors.makeIsLoading(state),
-        views: state.views,
-        isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
-    }
-})
-export default class TicketView extends React.Component {
+export class TicketViewContainer extends React.Component {
     static propTypes = {
         actions: PropTypes.object.isRequired,
-        agents: PropTypes.object.isRequired,
         agentsViewing: PropTypes.object.isRequired,
         agentsTyping: PropTypes.object.isRequired,
         currentUser: PropTypes.object.isRequired,
@@ -380,3 +359,23 @@ export default class TicketView extends React.Component {
         )
     }
 }
+
+const connector = connect((state) => ({
+    agentsTyping: agentSelectors.getOtherAgentsTypingOnTicket(
+        state.ticket.get('id')
+    )(state),
+    agentsViewing: agentSelectors.getOtherAgentsOnTicket(
+        state.ticket.get('id')
+    )(state),
+    currentUser: state.currentUser,
+    customers: customersSelectors.getCustomersState(state),
+    customersIsLoading: customersSelectors.makeIsLoading(state),
+    isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
+    routing: state.routing,
+    tags: tagsSelectors.getTags(state),
+    ticket: state.ticket,
+    ticketBody: ticketSelectors.getBody(state),
+    views: state.views,
+}))
+
+export default connector(TicketViewContainer)

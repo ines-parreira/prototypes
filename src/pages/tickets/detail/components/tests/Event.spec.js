@@ -1,13 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import Event from '../Event'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {EventContainer} from '../Event'
 
 describe('Event component', () => {
     const rechargeIntegrationId = 2
@@ -18,8 +13,6 @@ describe('Event component', () => {
     const shopifyIntegrationId = 1
     const orderId = 3
     const itemId = 5
-
-    let store
 
     const baseEventFixture = {
         created_datetime: '2017-12-07T01:01:34.502206+00:00',
@@ -34,10 +27,8 @@ describe('Event component', () => {
         },
     }
 
-    beforeEach(() => {
-        const integrationsData = {}
-
-        integrationsData[shopifyIntegrationId.toString()] = {
+    const integrationsData = {
+        [shopifyIntegrationId.toString()]: {
             orders: [
                 {
                     id: orderId,
@@ -50,9 +41,8 @@ describe('Event component', () => {
                     ],
                 },
             ],
-        }
-
-        integrationsData[rechargeIntegrationId.toString()] = {
+        },
+        [rechargeIntegrationId.toString()]: {
             customer: {
                 hash: rechargeCustomerHash,
             },
@@ -66,35 +56,31 @@ describe('Event component', () => {
                     id: chargeId,
                 },
             ],
-        }
+        },
+    }
 
-        store = mockStore({
-            ticket: fromJS({
-                customer: {
-                    integrations: integrationsData,
-                },
-            }),
-            integrations: fromJS({
-                integrations: [
-                    {
-                        id: rechargeIntegrationId,
-                        type: 'recharge',
-                        name: 'my-store',
-                        meta: {
-                            store_name: 'my-store',
-                        },
-                    },
-                    {
-                        id: shopifyIntegrationId,
-                        type: 'shopify',
-                        name: 'my-store',
-                        meta: {
-                            shop_name: 'my-store',
-                        },
-                    },
-                ],
-            }),
-        })
+    const integrations = {
+        [rechargeIntegrationId.toString()]: {
+            id: rechargeIntegrationId,
+            type: 'recharge',
+            name: 'my-store',
+            meta: {
+                store_name: 'my-store',
+            },
+        },
+        [shopifyIntegrationId.toString()]: {
+            id: shopifyIntegrationId,
+            type: 'shopify',
+            name: 'my-store',
+            meta: {
+                shop_name: 'my-store',
+            },
+        },
+    }
+
+    const getProps = (integrationId) => ({
+        integrationData: fromJS(integrationsData[integrationId]),
+        integration: fromJS(integrations[integrationId]),
     })
 
     it('should display correctly a successful event for a Recharge Subscription action', () => {
@@ -111,8 +97,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(rechargeIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -132,8 +122,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(rechargeIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -153,8 +147,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(rechargeIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -175,8 +173,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(rechargeIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -195,8 +197,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(shopifyIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -216,8 +222,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(shopifyIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })
@@ -237,8 +247,12 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <Event store={store} event={event} isLast={false} />
-        ).dive()
+            <EventContainer
+                {...getProps(shopifyIntegrationId)}
+                event={event}
+                isLast={false}
+            />
+        )
 
         expect(component).toMatchSnapshot()
     })

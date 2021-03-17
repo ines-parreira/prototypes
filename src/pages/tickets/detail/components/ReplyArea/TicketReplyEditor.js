@@ -73,7 +73,7 @@ type State = {
     editorState: EditorState,
 }
 
-export class TicketReplyEditor extends React.Component<Props, State> {
+export class TicketReplyEditorContainer extends React.Component<Props, State> {
     richArea: richAreaType
 
     static defaultProps = {
@@ -380,4 +380,7 @@ const mapDispatchToProps = {
     setResponseText: newMessageActions.setResponseText,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketReplyEditor)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TicketReplyEditorContainer)

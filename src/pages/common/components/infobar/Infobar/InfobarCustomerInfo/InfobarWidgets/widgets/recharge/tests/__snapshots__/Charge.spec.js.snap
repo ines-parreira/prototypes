@@ -500,7 +500,7 @@ exports[`Charge TitleWrapper should not render any link because no customer hash
 />
 `;
 
-exports[`Charge TitleWrapper should not render any link because no customer hash is available 2`] = `
+exports[`Charge TitleWrapper should not render any provided link when no customer hash is available 1`] = `
 <a
   rel="noopener noreferrer"
   target="_blank"

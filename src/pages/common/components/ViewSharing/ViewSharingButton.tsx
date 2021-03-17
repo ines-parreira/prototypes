@@ -23,7 +23,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-function ViewSharingButton({
+export function ViewSharingButtonContainer({
     currentUser,
     view,
     className,
@@ -74,4 +74,4 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(ViewSharingButton)
+export default connector(ViewSharingButtonContainer)

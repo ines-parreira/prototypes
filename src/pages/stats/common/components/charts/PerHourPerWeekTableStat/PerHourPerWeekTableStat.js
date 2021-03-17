@@ -12,14 +12,14 @@ import Legend from '../../Legend'
 import css from './PerHourPerWeekTableStat.less'
 
 type Props = {
-    data: Map<*, *>,
-    config: Map<*, *>,
-    meta: Map<*, *>,
+    data: Map<any, any>,
+    config: Map<any, any>,
+    meta: Map<any, any>,
     name?: string,
     context?: {
-        tagColors: Map<*, *>,
+        tagColors: Map<any, any>,
     },
-    businessHoursSettings: Map<*, *>,
+    businessHoursSettings: Map<any, any>,
     currentUserTimezone: string,
 }
 
@@ -40,7 +40,7 @@ const colors = {
     white: '#FFFFFF',
 }
 
-const getDataIntervals = (lines: Map<*, *>): Limits => {
+const getDataIntervals = (lines: Map<any, any>): Limits => {
     const allCounts = lines
         .map((row) => {
             return row
@@ -78,7 +78,7 @@ const getValueColor = (limits: Limits, value: number) => {
     return colors.white
 }
 
-const getLegendLabels = (lines: Map<*, *>) => {
+const getLegendLabels = (lines: Map<any, any>) => {
     const limits = getDataIntervals(lines)
     const bHoursLegend = {
         name: 'Business Hours',
@@ -183,9 +183,9 @@ const isInBusinessHour = (
 }
 
 type TableCellsProps = {
-    lines: Map<*, *>,
+    lines: Map<any, any>,
     userTimezone: string,
-    businessHoursSettings: Map<*, *>,
+    businessHoursSettings: Map<any, any>,
 }
 
 export function TableCells(props: TableCellsProps) {
@@ -235,7 +235,7 @@ export function TableCells(props: TableCellsProps) {
     )
 }
 
-function PerHourPerWeekTableStat(props: Props) {
+export function PerHourPerWeekTableStatContainer(props: Props) {
     const {data, currentUserTimezone, businessHoursSettings} = props
 
     return data.get('lines').isEmpty() ? (
@@ -277,4 +277,4 @@ export default connect((state) => {
         businessHoursSettings: getBusinessHoursSettings(state),
         currentUserTimezone: getTimezone(state),
     }
-}, {})(PerHourPerWeekTableStat)
+}, {})(PerHourPerWeekTableStatContainer)

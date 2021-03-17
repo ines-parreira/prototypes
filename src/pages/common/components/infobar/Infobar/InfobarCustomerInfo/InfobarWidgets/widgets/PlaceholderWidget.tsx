@@ -5,7 +5,7 @@ import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
-import * as integrationSelectors from '../../../../../../../../state/integrations/selectors'
+import {getIntegrationById} from '../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../state/types'
 
 import css from './CardInfobarWidget.less'
@@ -87,7 +87,7 @@ const connector = connect((state: RootState, ownProps: OwnProps) => {
 
     return {
         integration: integrationId
-            ? integrationSelectors.getIntegrationById(integrationId)(state)
+            ? getIntegrationById(integrationId)(state)
             : null,
     }
 })

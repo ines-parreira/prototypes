@@ -11,12 +11,7 @@ import FacebookPageRow from './FacebookPageRow'
 
 import css from './FacebookIntegrationList.less'
 
-@connect((state) => {
-    return {
-        integrations: integrationsSelectors.getFacebookIntegrations(state),
-    }
-})
-export default class FacebookIntegrationList extends React.Component {
+export class FacebookIntegrationListContainer extends React.Component {
     static propTypes = {
         integrations: ImmutablePropsTypes.list.isRequired,
         loading: PropTypes.object.isRequired,
@@ -66,3 +61,11 @@ This integration creates tickets when customers post on your Facebook page or se
         )
     }
 }
+
+const connector = connect((state) => {
+    return {
+        integrations: integrationsSelectors.getFacebookIntegrations(state),
+    }
+})
+
+export default connector(FacebookIntegrationListContainer)

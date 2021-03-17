@@ -44,7 +44,7 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
     className="p-0"
     tag="div"
   >
-    <Connect(ViewSharingModalBody)
+    <Connect(ViewSharingModalBodyContainer)
       error={null}
       initialTeams={Immutable.List []}
       initialUsers={Immutable.List []}
@@ -128,7 +128,7 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
     className="p-0"
     tag="div"
   >
-    <Connect(ViewSharingModalBody)
+    <Connect(ViewSharingModalBodyContainer)
       error={null}
       initialTeams={Immutable.List []}
       initialUsers={Immutable.List []}
@@ -212,7 +212,7 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
     className="p-0"
     tag="div"
   >
-    <Connect(ViewSharingModalBody)
+    <Connect(ViewSharingModalBodyContainer)
       error={null}
       initialTeams={Immutable.List []}
       initialUsers={Immutable.List []}

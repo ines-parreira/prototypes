@@ -36,7 +36,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-function ViewSharingModal({
+export function ViewSharingModalContainer({
     view,
     isOpen,
     currentUser,
@@ -174,7 +174,7 @@ const connector = connect(
     {notify, viewUpdated}
 )
 
-export default connector(ViewSharingModal)
+export default connector(ViewSharingModalContainer)
 
 function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
     const user = useRef(currentUser)

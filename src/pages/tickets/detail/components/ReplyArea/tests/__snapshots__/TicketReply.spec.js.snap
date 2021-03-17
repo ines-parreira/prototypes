@@ -4,7 +4,7 @@ exports[`<TicketReply/> should render the editor 1`] = `
 <div
   className="component"
 >
-  <Connect(TicketReplyEditor)
+  <Connect(TicketReplyEditorContainer)
     actions={Object {}}
     richAreaRef={[Function]}
     ticket={

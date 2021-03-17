@@ -13,9 +13,7 @@ import {
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
 } from '../../../../../../config/ticket.ts'
-
-import configureStore from '../../../../../../store/configureStore'
-import ReplyMessageChannel from '../ReplyMessageChannel'
+import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
 
 const baseReply = {
     email: {answerable: true},
@@ -23,23 +21,45 @@ const baseReply = {
 }
 
 describe('ReplyMessageChannel component', () => {
+    const minProps = {
+        accountChannels: fromJS([]),
+        channel: '',
+        hasRecipients: false,
+        isForward: false,
+        isNewMessagePublic: false,
+        messages: fromJS({}),
+        sourceType: 'email',
+        prepareNewMessage: () => {},
+    }
+
     it('new ticket', () => {
         const component = shallow(
-            <ReplyMessageChannel store={configureStore()} ticket={fromJS({})} />
-        ).dive() // dive in connect()ed component
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    reply_options: {
+                        'internal-note': {
+                            answerable: true,
+                        },
+                    },
+                })}
+                isNewMessagePublic
+            />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('existing ticket without messages', () => {
         const component = shallow(
-            <ReplyMessageChannel
-                store={configureStore({
-                    ticket: fromJS({
-                        id: 12,
-                    }),
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 12,
+                    reply_options: {},
                 })}
+                messages={fromJS([])}
             />
-        ).dive() // dive in connect()ed component
+        )
         expect(component).toMatchSnapshot()
     })
 
@@ -73,73 +93,57 @@ describe('ReplyMessageChannel component', () => {
             }
 
             const component = shallow(
-                <ReplyMessageChannel
-                    store={configureStore({
-                        ticket: fromJS({
-                            id: 12,
-                            reply_options: replyOptions,
-                            messages: [
-                                {
-                                    id: 1,
-                                    source: {
-                                        type: type,
-                                    },
-                                },
-                            ],
-                        }),
-                        newMessage: fromJS({
-                            newMessage: {
-                                source: {
-                                    type: newMessageType,
-                                },
-                            },
-                        }),
+                <ReplyMessageChannelContainer
+                    {...minProps}
+                    ticket={fromJS({
+                        id: 12,
+                        reply_options: replyOptions,
                     })}
+                    messages={fromJS([
+                        {
+                            id: 1,
+                            source: {
+                                type: type,
+                            },
+                        },
+                    ])}
+                    sourceType={newMessageType}
                 />
-            ).dive() // dive in connect()ed component
+            )
             expect(component).toMatchSnapshot()
         })
     })
 
     it('existing ticket with last message as chat message', () => {
         const component = shallow(
-            <ReplyMessageChannel
-                store={configureStore({
-                    ticket: fromJS({
-                        id: 12,
-                        reply_options: {
-                            ...baseReply,
-                            chat: {answerable: true},
-                        },
-                        messages: [
-                            {
-                                id: 2,
-                                source: {
-                                    type: 'chat',
-                                },
-                                created_datetime:
-                                    '2017-07-27T22:03:30.656613+00:00',
-                            },
-                            {
-                                id: 1,
-                                source: {
-                                    type: 'email',
-                                },
-                                created_datetime:
-                                    '2017-07-26T22:03:30.656613+00:00',
-                            },
-                        ],
-                    }),
-                    newMessage: fromJS({
-                        newMessage: {
-                            source: {
-                                type: 'chat',
-                            },
-                        },
-                    }),
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 12,
+                    reply_options: {
+                        ...baseReply,
+                        chat: {answerable: true},
+                    },
                 })}
+                messages={fromJS([
+                    {
+                        id: 2,
+                        source: {
+                            type: 'chat',
+                        },
+                        created_datetime: '2017-07-27T22:03:30.656613+00:00',
+                    },
+                    {
+                        id: 1,
+                        source: {
+                            type: 'email',
+                        },
+                        created_datetime: '2017-07-26T22:03:30.656613+00:00',
+                    },
+                ])}
+                sourceType={'chat'}
             />
-        ).dive() // dive in connect()ed component
+        )
         expect(component).toMatchSnapshot()
     })
 })

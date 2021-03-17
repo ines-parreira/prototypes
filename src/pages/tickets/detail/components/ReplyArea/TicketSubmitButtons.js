@@ -7,11 +7,13 @@ import classnames from 'classnames'
 import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 import keymap from '../../../../../config/shortcuts.ts'
 
-import * as currentUserActions from '../../../../../state/currentUser/actions.ts'
-
-import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors.ts'
-import * as currentUserSelectors from '../../../../../state/currentUser/selectors.ts'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
+import {isAccountActive} from '../../../../../state/currentAccount/selectors.ts'
+import {submitSetting} from '../../../../../state/currentUser/actions.ts'
+import {
+    getPreferences,
+    isHidingTips,
+} from '../../../../../state/currentUser/selectors.ts'
+import {isReady} from '../../../../../state/newMessage/selectors.ts'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
@@ -49,22 +51,7 @@ const TIPS = [
 ]
 /* eslint-enable */
 
-@connect(
-    (state) => {
-        return {
-            canSendMessage:
-                currentAccountSelectors.isAccountActive(state) &&
-                newMessageSelectors.isReady(state),
-            currentUserPreferences: currentUserSelectors.getPreferences(state),
-            newMessage: state.newMessage,
-            isHidingTips: currentUserSelectors.isHidingTips(state),
-        }
-    },
-    {
-        submitSetting: currentUserActions.submitSetting,
-    }
-)
-export default class TicketSubmitButtons extends React.Component {
+export class TicketSubmitButtonsContainer extends React.Component {
     static propTypes = {
         canSendMessage: PropTypes.bool.isRequired,
         currentUserPreferences: PropTypes.object.isRequired,
@@ -192,3 +179,17 @@ export default class TicketSubmitButtons extends React.Component {
         )
     }
 }
+
+export default connect(
+    (state) => {
+        return {
+            canSendMessage: isAccountActive(state) && isReady(state),
+            currentUserPreferences: getPreferences(state),
+            newMessage: state.newMessage,
+            isHidingTips: isHidingTips(state),
+        }
+    },
+    {
+        submitSetting,
+    }
+)(TicketSubmitButtonsContainer)

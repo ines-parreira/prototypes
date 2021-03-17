@@ -1,13 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
 
-import {AfterTitle, TitleWrapper} from '../Subscription.tsx'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+import {AfterTitle, TitleWrapperContainer} from '../Subscription.tsx'
 
 describe('Subscription', () => {
     describe('AfterTitle', () => {
@@ -41,22 +36,16 @@ describe('Subscription', () => {
     })
 
     describe('TitleWrapper', () => {
-        let store
         let integrationId = 12
         let customerId = 456
-        const customerData = {
-            integrations: {
-                [integrationId]: {
-                    customer: {
-                        id: customerId,
-                        hash: 'asd1as2d3',
-                    },
+        const getIntegrationData = () =>
+            fromJS({
+                customer: {
+                    id: customerId,
+                    hash: 'asd1as2d3',
                 },
-            },
-        }
+            })
 
-        const ticketState = {ticket: fromJS({customer: customerData})}
-        const customerState = {customers: fromJS({active: customerData})}
         const subscriptionData = fromJS({
             id: 789,
             customer_id: customerId,
@@ -72,53 +61,62 @@ describe('Subscription', () => {
             window.location.pathname = ''
 
             let component = shallow(
-                <TitleWrapper
-                    store={mockStore({})}
+                <TitleWrapperContainer
+                    getIntegrationData={() =>
+                        fromJS({
+                            customer: {},
+                        })
+                    }
                     source={subscriptionData}
                     template={fromJS({})}
                 />,
                 {context}
-            ).dive()
+            )
 
             expect(component).toMatchSnapshot()
+        })
 
-            component = shallow(
-                <TitleWrapper
-                    store={mockStore({})}
+        it('should not render any provided link when no customer hash is available', () => {
+            const component = shallow(
+                <TitleWrapperContainer
+                    getIntegrationData={() =>
+                        fromJS({
+                            customer: {},
+                        })
+                    }
                     source={subscriptionData}
                     template={fromJS({
                         meta: {link: 'https://gorgias.io/{{customerHash}}/'},
                     })}
                 />,
                 {context}
-            ).dive()
+            )
 
             expect(component).toMatchSnapshot()
         })
 
         describe('ticket context', () => {
             beforeEach(() => {
-                store = mockStore(ticketState)
                 window.location.pathname = '/app/ticket/'
             })
 
             it('should render default link because no custom link is set', () => {
                 const component = shallow(
-                    <TitleWrapper
-                        store={store}
+                    <TitleWrapperContainer
+                        getIntegrationData={getIntegrationData}
                         source={subscriptionData}
                         template={fromJS({})}
                     />,
                     {context}
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
                 const component = shallow(
-                    <TitleWrapper
-                        store={store}
+                    <TitleWrapperContainer
+                        getIntegrationData={getIntegrationData}
                         source={subscriptionData}
                         template={fromJS({
                             meta: {
@@ -127,7 +125,7 @@ describe('Subscription', () => {
                         })}
                     />,
                     {context}
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -135,27 +133,26 @@ describe('Subscription', () => {
 
         describe('customer context', () => {
             beforeEach(() => {
-                store = mockStore(customerState)
                 window.location.pathname = '/app/customer/'
             })
 
             it('should render default link because no custom link is set', () => {
                 const component = shallow(
-                    <TitleWrapper
-                        store={store}
+                    <TitleWrapperContainer
+                        getIntegrationData={getIntegrationData}
                         source={subscriptionData}
                         template={fromJS({})}
                     />,
                     {context}
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
                 const component = shallow(
-                    <TitleWrapper
-                        store={store}
+                    <TitleWrapperContainer
+                        getIntegrationData={getIntegrationData}
                         source={subscriptionData}
                         template={fromJS({
                             meta: {
@@ -164,7 +161,7 @@ describe('Subscription', () => {
                         })}
                     />,
                     {context}
-                ).dive()
+                )
 
                 expect(component).toMatchSnapshot()
             })

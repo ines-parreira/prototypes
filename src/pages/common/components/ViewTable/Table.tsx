@@ -44,7 +44,7 @@ type State = {
     rowCursor: number
 }
 
-class Table extends React.Component<Props, State> {
+export class TableContainer extends React.Component<Props, State> {
     static defaultProps = {
         items: fromJS([]),
         type: 'ticket',
@@ -348,4 +348,4 @@ const connector = connect(
     }
 )
 
-export default connector(Table)
+export default connector(TableContainer)

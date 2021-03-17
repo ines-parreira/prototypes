@@ -20,7 +20,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-class Cell extends React.Component<Props> {
+export class CellContainer extends React.Component<Props> {
     static defaultProps: Partial<Props> = {
         item: fromJS({}),
     }
@@ -69,4 +69,4 @@ const connector = connect((state: RootState, ownProps: OwnProps) => {
     }
 })
 
-export default connector(Cell)
+export default connector(CellContainer)

@@ -26,7 +26,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export class HeaderCell extends Component<Props> {
+export class HeaderCellContainer extends Component<Props> {
     _renderOrderIcon = (isOrderingField = false) => {
         const {orderDirection} = this.props
 
@@ -137,4 +137,4 @@ const connector = connect(
     }
 )
 
-export default connector(HeaderCell)
+export default connector(HeaderCellContainer)
