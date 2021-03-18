@@ -44,4 +44,19 @@ describe('IntegrationListRow', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should display an early access integration link', () => {
+        const integrationConfig = fromJS({
+            title: 'an integration',
+            displayUpgrade: false,
+            description: 'this is a cool integration',
+            url: 'http://www.foo.bar',
+            isEarlyAccess: true,
+        })
+
+        const {container} = render(
+            <IntegrationListRow integrationConfig={integrationConfig} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })

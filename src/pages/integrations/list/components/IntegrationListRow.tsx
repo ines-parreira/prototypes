@@ -22,6 +22,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
     }`
 
     const isExternalLink = !!integrationConfig.get('url')
+    const isEarlyAccess = integrationConfig.get('isEarlyAccess')
 
     const linkHref = isExternalLink ? integrationConfig.get('url') : nextUrl
     const LinkComponent: FC<ComponentProps<typeof Link>> = isExternalLink
@@ -77,6 +78,12 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                         {hasAnIntegration && (
                             <span className={css.count}>
                                 {integrationConfig.get('count')} active
+                            </span>
+                        )}
+
+                        {isEarlyAccess && (
+                            <span className={css.earlyAccess}>
+                                Register for early access
                             </span>
                         )}
 

@@ -1,5 +1,54 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`IntegrationListRow should display an early access integration link 1`] = `
+<a
+  class="component link card d-flex flex-row align-items-center mb-3"
+  href="http://www.foo.bar"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <div
+    class="icon d-flex align-items-center justify-content-center"
+  >
+    <i
+      class="icon d-inline-block material-icons"
+    >
+      live_help
+    </i>
+  </div>
+  <div
+    class="flex-grow mr-1"
+  >
+    <div
+      class="d-flex align-items-start"
+    >
+      <h5
+        class="title"
+      >
+        an integration
+      </h5>
+    </div>
+    this is a cool integration
+  </div>
+  <div>
+    <div
+      class="action"
+    >
+      <span
+        class="earlyAccess"
+      >
+        Register for early access
+      </span>
+      <i
+        class="material-icons md-1"
+      >
+        open_in_new
+      </i>
+    </div>
+  </div>
+</a>
+`;
+
 exports[`IntegrationListRow should display an external integration 1`] = `
 <a
   class="component link card d-flex flex-row align-items-center mb-3"

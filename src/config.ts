@@ -160,6 +160,16 @@ export function shouldHidePhoneIntegration() {
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
+        type: 'native_phone_early_access',
+        title: 'Native Phone - Early Access',
+        description:
+            'Create a new number or forward an existing one to Gorgias. Be the first to try our built-in solution!',
+        url:
+            'https://gorgias.typeform.com/to/IbJV4T8S?utm_source=in_app_settings_integrations',
+        image: 'integrations/phone.png',
+        isEarlyAccess: true,
+    },
+    {
         type: IntegrationType.EmailIntegrationType,
         subTypes: [
             IntegrationType.EmailIntegrationType,
