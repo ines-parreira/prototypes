@@ -11,6 +11,18 @@ exports[`ActionButton component should display a single option with a checkbox p
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-4-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -101,6 +113,18 @@ exports[`ActionButton component should display a single option with a number par
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-3-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -195,6 +219,18 @@ exports[`ActionButton component should display a single option with a select par
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-5-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -306,6 +342,18 @@ exports[`ActionButton component should display a single option with a text param
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-2-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -397,6 +445,18 @@ exports[`ActionButton component should display a single option with no parameter
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-1-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -478,6 +538,18 @@ exports[`ActionButton component should display multiple options with a common pa
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-7-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -614,6 +686,18 @@ exports[`ActionButton component should display multiple options with different p
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-8-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"
@@ -750,6 +834,18 @@ exports[`ActionButton component should display multiple options without paramete
     size="sm"
     tag="button"
   >
+    <span
+      id="action-button-6-tooltip-target"
+      style={
+        Object {
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+        }
+      }
+    />
     <div>
       <i
         className="material-icons mr-2"

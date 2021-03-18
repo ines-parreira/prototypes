@@ -1,8 +1,42 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
+import {render, cleanup} from '@testing-library/react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PropTypes from 'prop-types'
 
-import {ActionButtonContainer} from '../ActionButton.tsx'
+import {
+    ActionButtonContainer,
+    ActionButtonContext,
+    withActionButtonContext,
+} from '../ActionButton.tsx'
+
+type Props = {
+    integration: Map<*, *>,
+    integrationId: number,
+    customerId: number,
+    children: ReactNode,
+}
+
+class ActionButtonContextProvider extends React.Component<Props> {
+    getChildContext() {
+        return {
+            integration: this.props.integration,
+            integrationId: this.props.integrationId,
+            customerId: this.props.customerId,
+        }
+    }
+
+    render() {
+        return this.props.children
+    }
+}
+
+ActionButtonContextProvider.childContextTypes = {
+    integration: ImmutablePropTypes.map.isRequired,
+    integrationId: PropTypes.number.isRequired,
+    customerId: PropTypes.number.isRequired,
+}
 
 describe('ActionButton component', () => {
     const commonAttributes = {
@@ -26,6 +60,20 @@ describe('ActionButton component', () => {
         integrationId: 1,
         customerId: 1,
     }
+
+    // TODO(context-migration): Should be removed.
+    const ActionButtonWithContext = (props) => (
+        <ActionButtonContextProvider {...defaultContext}>
+            <ActionButtonContainer options={[]} {...props} />
+        </ActionButtonContextProvider>
+    )
+
+    // TODO(context-migration): Should be removed.
+    const ActionButtonWithContextAdapter = withActionButtonContext(
+        ActionButtonWithContext
+    )
+
+    afterEach(cleanup)
 
     it('should display a single option with no parameters', () => {
         const action = {
@@ -388,5 +436,63 @@ describe('ActionButton component', () => {
         )
 
         expect(component).toMatchSnapshot()
+    })
+
+    it('should display disabled button based on context', () => {
+        const action = {
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                },
+            ],
+            ...commonAttributes,
+        }
+
+        const {getByRole} = render(
+            <ActionButtonContext.Provider
+                value={{actionError: 'Some error message'}}
+            >
+                <ActionButtonWithContextAdapter
+                    key={action.key}
+                    options={action.options}
+                    popover={action.popover}
+                    tooltip={action.tooltip}
+                    title={action.title}
+                >
+                    {action.child}
+                </ActionButtonWithContextAdapter>
+            </ActionButtonContext.Provider>
+        )
+
+        expect(getByRole('button').hasAttribute('disabled')).toBeTruthy()
+    })
+
+    it('should display enabled button based on context', () => {
+        const action = {
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                },
+            ],
+            ...commonAttributes,
+        }
+
+        const {getByRole} = render(
+            <ActionButtonContext.Provider value={{actionError: null}}>
+                <ActionButtonWithContextAdapter
+                    key={action.key}
+                    options={action.options}
+                    popover={action.popover}
+                    tooltip={action.tooltip}
+                    title={action.title}
+                >
+                    {action.child}
+                </ActionButtonWithContextAdapter>
+            </ActionButtonContext.Provider>
+        )
+
+        expect(getByRole('button').hasAttribute('disabled')).toBeFalsy()
     })
 })

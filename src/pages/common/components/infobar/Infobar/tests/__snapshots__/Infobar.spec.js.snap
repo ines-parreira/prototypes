@@ -121,57 +121,66 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
               Merge
             </Button>
           </div>
-          <Connect(InfobarCustomerInfo)
-            actions={
+          <ContextProvider
+            value={
               Object {
-                "startEditionMode": [MockFunction],
-                "stopEditionMode": [MockFunction],
-                "submitWidgets": [MockFunction],
+                "actionError": "You can only edit orders of the customer associated with this ticket.
+To edit this order, merge both customers or change the customer associated with this ticket.",
               }
             }
-            customer={
-              Immutable.Map {
-                "id": 10,
+          >
+            <Connect(InfobarCustomerInfo)
+              actions={
+                Object {
+                  "startEditionMode": [MockFunction],
+                  "stopEditionMode": [MockFunction],
+                  "submitWidgets": [MockFunction],
+                }
               }
-            }
-            displayTabs={false}
-            isEditing={false}
-            sources={
-              Immutable.Map {
-                "ticket": Immutable.Map {
+              customer={
+                Immutable.Map {
+                  "id": 10,
+                }
+              }
+              displayTabs={false}
+              isEditing={false}
+              sources={
+                Immutable.Map {
+                  "ticket": Immutable.Map {
+                    "customer": Immutable.Map {
+                      "id": 10,
+                    },
+                  },
                   "customer": Immutable.Map {
                     "id": 10,
                   },
-                },
-                "customer": Immutable.Map {
+                }
+              }
+              widgets={
+                Immutable.Map {
+                  "_internal": Immutable.Map {
+                    "isEditing": false,
+                  },
+                }
+              }
+            />
+            <Connect(MergeCustomersContainer)
+              destinationCustomer={
+                Immutable.Map {
+                  "id": 2,
+                }
+              }
+              display={false}
+              isTicketContext={true}
+              onClose={[Function]}
+              onSuccess={[Function]}
+              sourceCustomer={
+                Immutable.Map {
                   "id": 10,
-                },
+                }
               }
-            }
-            widgets={
-              Immutable.Map {
-                "_internal": Immutable.Map {
-                  "isEditing": false,
-                },
-              }
-            }
-          />
-          <Connect(MergeCustomersContainer)
-            destinationCustomer={
-              Immutable.Map {
-                "id": 2,
-              }
-            }
-            display={false}
-            isTicketContext={true}
-            onClose={[Function]}
-            onSuccess={[Function]}
-            sourceCustomer={
-              Immutable.Map {
-                "id": 10,
-              }
-            }
-          />
+            />
+          </ContextProvider>
         </div>
       </div>
     </div>
@@ -564,57 +573,66 @@ exports[`<Infobar/> should render selected customer 1`] = `
           toggleMergeCustomerModal={[Function]}
         />
       </div>
-      <Connect(InfobarCustomerInfo)
-        actions={
+      <ContextProvider
+        value={
           Object {
-            "startEditionMode": [MockFunction],
-            "stopEditionMode": [MockFunction],
-            "submitWidgets": [MockFunction],
+            "actionError": "You can only edit orders of the customer associated with this ticket.
+To edit this order, merge both customers or change the customer associated with this ticket.",
           }
         }
-        customer={
-          Immutable.Map {
-            "id": 7,
+      >
+        <Connect(InfobarCustomerInfo)
+          actions={
+            Object {
+              "startEditionMode": [MockFunction],
+              "stopEditionMode": [MockFunction],
+              "submitWidgets": [MockFunction],
+            }
           }
-        }
-        displayTabs={true}
-        isEditing={false}
-        sources={
-          Immutable.Map {
-            "ticket": Immutable.Map {
+          customer={
+            Immutable.Map {
+              "id": 7,
+            }
+          }
+          displayTabs={true}
+          isEditing={false}
+          sources={
+            Immutable.Map {
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 7,
+                },
+              },
               "customer": Immutable.Map {
                 "id": 7,
               },
-            },
-            "customer": Immutable.Map {
+            }
+          }
+          widgets={
+            Immutable.Map {
+              "_internal": Immutable.Map {
+                "isEditing": false,
+              },
+            }
+          }
+        />
+        <Connect(MergeCustomersContainer)
+          destinationCustomer={
+            Immutable.Map {
+              "id": 2,
+            }
+          }
+          display={false}
+          isTicketContext={true}
+          onClose={[Function]}
+          onSuccess={[Function]}
+          sourceCustomer={
+            Immutable.Map {
               "id": 7,
-            },
+            }
           }
-        }
-        widgets={
-          Immutable.Map {
-            "_internal": Immutable.Map {
-              "isEditing": false,
-            },
-          }
-        }
-      />
-      <Connect(MergeCustomersContainer)
-        destinationCustomer={
-          Immutable.Map {
-            "id": 2,
-          }
-        }
-        display={false}
-        isTicketContext={true}
-        onClose={[Function]}
-        onSuccess={[Function]}
-        sourceCustomer={
-          Immutable.Map {
-            "id": 7,
-          }
-        }
-      />
+        />
+      </ContextProvider>
     </div>
   </div>
 </Connect(InfobarLayout)>

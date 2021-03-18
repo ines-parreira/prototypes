@@ -35,6 +35,7 @@ import InfobarSearchResultsList from './InfobarSearchResultsList'
 import InfobarCustomerInfo from './InfobarCustomerInfo'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
+import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton.tsx'
 
 type Props = {
     actions: {
@@ -74,6 +75,9 @@ type State = {
     suggestedCustomer: Map<*, *>,
     searchErrorMessage: ?string,
 }
+
+const MERGE_ERROR_MESSAGE = `You can only edit orders of the customer associated with this ticket.
+To edit this order, merge both customers or change the customer associated with this ticket.`
 
 export class Infobar extends React.Component<Props, State> {
     static defaultProps = {
@@ -362,22 +366,28 @@ export class Infobar extends React.Component<Props, State> {
                             setCustomer={this._setCustomer}
                         />
                     </div>
-                    {this._renderCustomerInfo(this.state.selectedCustomer)}
-                    <MergeCustomersContainer
-                        isTicketContext={
-                            !sources.get('ticket', fromJS({})).isEmpty()
-                        }
-                        display={this.state.showMergeCustomerModal}
-                        destinationCustomer={customer}
-                        sourceCustomer={this.state.selectedCustomer}
-                        onSuccess={() => {
-                            this._fetchCustomerHistory()
-                            this._returnToCurrentCustomerProfile()
+                    <ActionButtonContext.Provider
+                        value={{
+                            actionError: MERGE_ERROR_MESSAGE,
                         }}
-                        onClose={() => {
-                            this.setState({showMergeCustomerModal: false})
-                        }}
-                    />
+                    >
+                        {this._renderCustomerInfo(this.state.selectedCustomer)}
+                        <MergeCustomersContainer
+                            isTicketContext={
+                                !sources.get('ticket', fromJS({})).isEmpty()
+                            }
+                            display={this.state.showMergeCustomerModal}
+                            destinationCustomer={customer}
+                            sourceCustomer={this.state.selectedCustomer}
+                            onSuccess={() => {
+                                this._fetchCustomerHistory()
+                                this._returnToCurrentCustomerProfile()
+                            }}
+                            onClose={() => {
+                                this.setState({showMergeCustomerModal: false})
+                            }}
+                        />
+                    </ActionButtonContext.Provider>
                 </>
             )
         }
@@ -458,24 +468,34 @@ export class Infobar extends React.Component<Props, State> {
                                     Merge
                                 </Button>
                             </div>
-                            {this._renderCustomerInfo(
-                                this.state.suggestedCustomer,
-                                false
-                            )}
-                            <MergeCustomersContainer
-                                isTicketContext={
-                                    !sources.get('ticket', fromJS({})).isEmpty()
-                                }
-                                display={this.state.showMergeCustomerModal}
-                                destinationCustomer={customer}
-                                sourceCustomer={this.state.suggestedCustomer}
-                                onSuccess={this._fetchCustomerHistory}
-                                onClose={() => {
-                                    this.setState({
-                                        showMergeCustomerModal: false,
-                                    })
+                            <ActionButtonContext.Provider
+                                value={{
+                                    actionError: MERGE_ERROR_MESSAGE,
                                 }}
-                            />
+                            >
+                                {this._renderCustomerInfo(
+                                    this.state.suggestedCustomer,
+                                    false
+                                )}
+                                <MergeCustomersContainer
+                                    isTicketContext={
+                                        !sources
+                                            .get('ticket', fromJS({}))
+                                            .isEmpty()
+                                    }
+                                    display={this.state.showMergeCustomerModal}
+                                    destinationCustomer={customer}
+                                    sourceCustomer={
+                                        this.state.suggestedCustomer
+                                    }
+                                    onSuccess={this._fetchCustomerHistory}
+                                    onClose={() => {
+                                        this.setState({
+                                            showMergeCustomerModal: false,
+                                        })
+                                    }}
+                                />
+                            </ActionButtonContext.Provider>
                         </div>
                     </div>
                 )}

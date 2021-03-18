@@ -6,7 +6,7 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   role="group"
   tag="div"
 >
-  <Connect(ActionButtonContainer)
+  <Connect(Component)
     key="action1"
     options={
       Array [
@@ -26,8 +26,8 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     <div>
       Option 1
     </div>
-  </Connect(ActionButtonContainer)>
-  <Connect(ActionButtonContainer)
+  </Connect(Component)>
+  <Connect(Component)
     key="action2"
     options={
       Array [
@@ -47,8 +47,8 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     <div>
       Option 1
     </div>
-  </Connect(ActionButtonContainer)>
-  <Connect(ActionButtonContainer)
+  </Connect(Component)>
+  <Connect(Component)
     key="action3"
     options={
       Array [
@@ -68,7 +68,7 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     <div>
       Option 1
     </div>
-  </Connect(ActionButtonContainer)>
+  </Connect(Component)>
 </ButtonGroup>
 `;
 
@@ -80,7 +80,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   role="group"
   tag="div"
 >
-  <Connect(ActionButtonContainer)
+  <Connect(Component)
     key="action1"
     options={
       Array [
@@ -100,8 +100,8 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     <div>
       Option 1
     </div>
-  </Connect(ActionButtonContainer)>
-  <Connect(ActionButtonContainer)
+  </Connect(Component)>
+  <Connect(Component)
     key="action2"
     options={
       Array [
@@ -121,8 +121,8 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     <div>
       Option 1
     </div>
-  </Connect(ActionButtonContainer)>
-  <Connect(ActionButtonContainer)
+  </Connect(Component)>
+  <Connect(Component)
     key="action3"
     options={
       Array [
@@ -142,7 +142,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     <div>
       Option 1
     </div>
-  </Connect(ActionButtonContainer)>
+  </Connect(Component)>
   <ButtonDropdown
     className="action-dropdown"
     isOpen={false}
@@ -161,7 +161,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       right={true}
       tag="div"
     >
-      <Connect(ActionButtonContainer)
+      <Connect(Component)
         key="action4"
         options={
           Array [
@@ -187,7 +187,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
         <div>
           Option 1
         </div>
-      </Connect(ActionButtonContainer)>
+      </Connect(Component)>
     </DropdownMenu>
   </ButtonDropdown>
 </ButtonGroup>

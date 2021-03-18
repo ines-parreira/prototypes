@@ -31,9 +31,14 @@ import {executeAction} from '../../../../../../../../state/infobar/actions'
 import {makeGetPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'
 import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
 import {RootState} from '../../../../../../../../state/types'
+import Tooltip from '../../../../../Tooltip.js'
 
 import css from './ActionButton.less'
 import {InfobarModalProps, Option, Parameter} from './types'
+
+export const ActionButtonContext = React.createContext({
+    actionError: null,
+})
 
 type Props = {
     options: Array<Option>
@@ -48,6 +53,7 @@ type Props = {
     tagOptions?: Record<string, unknown>
     popover?: string
     title: ReactNode
+    actionError?: string
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -355,8 +361,10 @@ export class ActionButtonContainer extends Component<Props, State> {
     }
 
     render() {
-        const {children, tag: Tag, tagOptions, modal} = this.props
+        const {children, tag: Tag, tagOptions, modal, actionError} = this.props
         const {isLoading} = this.state
+        const hasError = !!actionError
+        const tooltipTargetID = `${this.id}-tooltip-target`
 
         return (
             <>
@@ -365,15 +373,38 @@ export class ActionButtonContainer extends Component<Props, State> {
                     color="secondary"
                     size="sm"
                     className={classnames(css.button, 'action-button')}
-                    disabled={isLoading}
+                    disabled={isLoading || hasError}
                     onClick={this._toggleUi}
                     {...tagOptions}
                 >
+                    <span
+                        id={tooltipTargetID}
+                        style={{
+                            position: 'absolute',
+                            height: '100%',
+                            width: '100%',
+                            top: '0',
+                            left: '0',
+                        }}
+                    />
                     {children}
                 </Tag>
                 {modal ? this._renderModal(modal) : this._renderPopover()}
+                {hasError && (
+                    <Tooltip placement="top" target={tooltipTargetID}>
+                        {actionError}
+                    </Tooltip>
+                )}
             </>
         )
+    }
+}
+
+export const withActionButtonContext = (Component: any) => {
+    return (props: any) => {
+        const {actionError} = React.useContext(ActionButtonContext)
+
+        return <Component actionError={actionError} {...props} />
     }
 }
 
@@ -386,4 +417,4 @@ const connector = connect(
     }
 )
 
-export default connector(ActionButtonContainer)
+export default connector(withActionButtonContext(ActionButtonContainer))
