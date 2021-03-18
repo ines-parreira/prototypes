@@ -425,6 +425,7 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
                     size="sm"
                     isOpen={this._isPopoverOpen('agents')}
                     toggle={this._toggleAgentsDropdown}
+                    a11y={false}
                 >
                     <Button
                         type="button"
@@ -534,6 +535,7 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
                     isOpen={this._isPopoverOpen('teams')}
                     toggle={this._toggleTeamsDropdown}
                     size="sm"
+                    a11y={false}
                 >
                     <DropdownToggle
                         caret
@@ -626,6 +628,7 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
                     isOpen={this._isPopoverOpen('tags')}
                     toggle={this._toggleTagsDropdown}
                     size="sm"
+                    a11y={false}
                 >
                     <DropdownToggle
                         caret

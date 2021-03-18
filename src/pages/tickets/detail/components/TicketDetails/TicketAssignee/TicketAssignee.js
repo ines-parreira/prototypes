@@ -321,6 +321,7 @@ export class TicketAssignee extends React.Component<Props, State> {
                 className={className}
                 isOpen={dropdownOpen}
                 toggle={this._toggle}
+                a11y={false}
             >
                 {this._renderDropdownToggle()}
                 <DropdownMenu
