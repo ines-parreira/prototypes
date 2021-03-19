@@ -354,31 +354,57 @@ describe('widgets infobar utils', () => {
                 '2021-02-26T13:24:00.000Z',
                 '2021-02-26T13:23:00.000Z',
                 'Europe/Paris',
+                '2021-02-26T13:24:00.000Z',
                 'now',
             ],
             [
                 '2021-02-26T13:24:00.000Z',
                 '2021-02-26T12:44:00.000Z',
                 'Europe/Paris',
+                '2021-02-26T13:24:00.000Z',
                 '40 minutes ago',
             ],
             [
                 '2021-02-26T13:24:00.000Z',
                 '2021-02-26T11:34:00.000Z',
                 'Europe/Paris',
+                '2021-02-26T13:24:00.000Z',
                 'Today at 12:34 PM',
             ],
             [
                 '2021-02-27T13:24:00.000Z',
                 '2021-02-26T11:34:00.000Z',
                 'Europe/Paris',
+                '2021-02-27T13:24:00.000Z',
                 'Yesterday at 12:34 PM',
             ],
             [
                 '2021-02-26T13:24:00.000Z',
                 '2021-02-17T23:44:00.000Z',
                 'Europe/Paris',
+                '2021-02-26T13:24:00.000Z',
                 '02/18/2021',
+            ],
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-17T23:44:00.000Z',
+                null,
+                '2021-02-26T13:24:00.000Z',
+                '02/17/2021',
+            ],
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-17T23:44:00.000Z',
+                'Europe/Paris',
+                null,
+                '02/18/2021',
+            ],
+            [
+                '2021-02-26T13:24:00.000Z',
+                '2021-02-17T23:44:00.000Z',
+                null,
+                null,
+                '02/17/2021',
             ],
         ]
 
@@ -388,9 +414,11 @@ describe('widgets infobar utils', () => {
                 mockedNow,
                 lastSeenOnChat,
                 timezone,
+                referenceDay,
                 expectedDisplayLastSeenOnChat
             ) => {
                 const fixedUtcDate = momentTimezone.utc(mockedNow)
+                const mockedReference = momentTimezone.utc(referenceDay)
                 jest.spyOn(momentTimezone, 'utc').mockImplementationOnce(
                     () => fixedUtcDate
                 )
@@ -398,7 +426,7 @@ describe('widgets infobar utils', () => {
                 const result = utils.getDisplayCustomerLastSeenOnChat(
                     lastSeenOnChat,
                     timezone,
-                    fixedUtcDate
+                    referenceDay ? mockedReference : null
                 )
                 expect(result).toBe(expectedDisplayLastSeenOnChat)
             }

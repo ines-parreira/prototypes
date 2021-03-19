@@ -724,9 +724,13 @@ export function getDisplayCustomerLastSeenOnChat(
     }
 
     // the same way we display it on the ticket messages
-    return customerLastSeenOnChatUtcDateTime
-        .tz(timezone)
-        .calendar(referenceDay, {
-            lastWeek: 'dddd', // Tuesday, Friday, etc.. The default is: [Last] dddd
-        })
+    return timezone
+        ? customerLastSeenOnChatUtcDateTime
+              .tz(timezone)
+              .calendar(referenceDay, {
+                  lastWeek: 'dddd', // Tuesday, Friday, etc.. The default is: [Last] dddd
+              })
+        : customerLastSeenOnChatUtcDateTime.calendar(referenceDay, {
+              lastWeek: 'dddd',
+          })
 }
