@@ -2,6 +2,7 @@
 import classnames from 'classnames'
 import React, {type Node} from 'react'
 import {Link} from 'react-router-dom'
+import moment from 'moment'
 
 import {TicketVias} from '../../../../../business/ticket.ts'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types.ts'
@@ -14,6 +15,7 @@ import {
     INSTAGRAM_MENTION_MEDIA_SOURCE,
     FACEBOOK_REVIEW_COMMENT_SOURCE,
     FACEBOOK_REVIEW_SOURCE,
+    INSTAGRAM_DM_SOURCE,
 } from '../../../../../config/ticket.ts'
 
 import css from './Meta.less'
@@ -25,6 +27,7 @@ type Props = {
     ruleId?: string | null,
     meta?: MetaType | null,
     source?: Source,
+    messageCreatedDatetime?: string,
 }
 
 const From = ({label, children}: {label: string, children?: Node}) => (
@@ -35,7 +38,14 @@ const From = ({label, children}: {label: string, children?: Node}) => (
 )
 
 export default function Meta(props: Props) {
-    const {meta, source, messageId, via} = props
+    const {
+        meta,
+        source,
+        messageId,
+        via,
+        integrationId,
+        messageCreatedDatetime,
+    } = props
     const widgets = []
 
     if (meta && meta.current_page) {
@@ -63,6 +73,27 @@ export default function Meta(props: Props) {
         FACEBOOK_REVIEW_COMMENT_SOURCE,
     ]
 
+    const isStoryMentionDirectMessage =
+        source &&
+        source.type &&
+        source.type === INSTAGRAM_DM_SOURCE &&
+        meta &&
+        meta.is_story_mention
+
+    let type
+    let link
+
+    if (!!messageId && !!integrationId && isStoryMentionDirectMessage) {
+        // We don't want to display a `go to story` link after 24h
+        const limit = moment().subtract(24, 'hour') // 24 hours ago
+        const isMessageTooOld = moment(messageCreatedDatetime).isBefore(limit)
+
+        if (!isMessageTooOld) {
+            type = 'story'
+            link = `/integrations/facebook/redirect/instagramstory?message_id=${messageId}&integration_id=${integrationId}`
+        }
+    }
+
     if (
         source &&
         source.type &&
@@ -87,9 +118,6 @@ export default function Meta(props: Props) {
 
         const getId = (input) =>
             input && input.includes('_') ? input.split('_')[1] : ''
-
-        let type
-        let link
 
         if (isFacebookPost) {
             const postId = isFacebookPost ? getId(fullPostId) : fullPostId
@@ -124,41 +152,41 @@ export default function Meta(props: Props) {
             type = 'reply'
             link = `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
         }
+    }
 
-        if (type && link) {
-            widgets.push(
-                <From label="go to" key="ref-widget">
+    if (type && link) {
+        widgets.push(
+            <From label="go to" key="ref-widget">
+                <a
+                    target="_blank"
+                    href={link}
+                    title={link}
+                    rel="noopener noreferrer"
+                >
+                    {type}
+                </a>
+            </From>
+        )
+    }
+
+    if (
+        meta?.private_reply?.sent_datetime &&
+        meta?.private_reply?.messenger_ticket_id
+    ) {
+        widgets.push(
+            <span className={css.repliedViaMessenger}>
+                <From label="replied via" key="ref-widget">
                     <a
                         target="_blank"
-                        href={link}
-                        title={link}
+                        href={meta?.private_reply?.messenger_ticket_id}
+                        title={meta?.private_reply?.messenger_ticket_id}
                         rel="noopener noreferrer"
                     >
-                        {type}
+                        Messenger
                     </a>
                 </From>
-            )
-        }
-
-        if (
-            meta?.private_reply?.sent_datetime &&
-            meta?.private_reply?.messenger_ticket_id
-        ) {
-            widgets.push(
-                <span className={css.repliedViaMessenger}>
-                    <From label="replied via" key="ref-widget">
-                        <a
-                            target="_blank"
-                            href={meta?.private_reply?.messenger_ticket_id}
-                            title={meta?.private_reply?.messenger_ticket_id}
-                            rel="noopener noreferrer"
-                        >
-                            Messenger
-                        </a>
-                    </From>
-                </span>
-            )
-        }
+            </span>
+        )
     }
 
     let sentViaLabel

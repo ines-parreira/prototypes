@@ -46,6 +46,7 @@ export default function Header(props: Props) {
             source={message.source}
             integrationId={message.integration_id}
             ruleId={message.rule_id}
+            messageCreatedDatetime={message.created_datetime}
         />
     )
 

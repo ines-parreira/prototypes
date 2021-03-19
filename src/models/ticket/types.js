@@ -157,6 +157,7 @@ export type Meta = {
     deleted_datetime?: string,
     private_reply?: FacebookPrivateReply,
     is_duplicated?: boolean,
+    is_story_mention?: boolean,
 }
 
 export type FacebookPrivateReply = {

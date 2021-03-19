@@ -24,6 +24,7 @@ exports[`Header should display header 1`] = `
     </div>
     <Meta
       integrationId={null}
+      messageCreatedDatetime=""
       meta={null}
       ruleId={null}
       via="email"
@@ -271,6 +272,7 @@ exports[`Header should not display header with metaContent = "Message hidden" be
       }
     />
     <Meta
+      messageCreatedDatetime=""
       meta={
         Object {
           "hidden_datetime": "2020-06-18T14:10:14.291746",
