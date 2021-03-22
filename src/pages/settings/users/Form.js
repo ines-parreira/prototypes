@@ -17,6 +17,8 @@ import {
     Label,
 } from 'reactstrap'
 
+import {getCheaperPlanForFeature} from '../../../utils/paywalls.ts'
+import {getBillingState} from '../../../state/billing/selectors.ts'
 import {toJS} from '../../../utils.ts'
 import Loader from '../../common/components/Loader'
 import ConfirmButton from '../../common/components/ConfirmButton.tsx'
@@ -55,10 +57,11 @@ type Props = {
     updateAgent: (number, Object) => Promise<Object>,
     updateAccountOwner: Function,
     hasUserRolesFeature: boolean,
+    plans: Map<any, any>,
 }
 
 type State = {
-    agent: Map<*, *>,
+    agent: Map<any, any>,
     email: string,
     errors: Object,
     isInviting: boolean,
@@ -78,6 +81,7 @@ type State = {
             hasUserRolesFeature: state.currentAccount
                 .get('features')
                 .get(AccountFeatures.UserRoles),
+            plans: getBillingState(state).get('plans'),
         }
     },
     {
@@ -176,7 +180,11 @@ export default class Form extends Component<Props, State> {
     )
 
     render() {
-        const {hasUserRolesFeature, orderedRoleMetaByUserRole} = this.props
+        const {
+            hasUserRolesFeature,
+            orderedRoleMetaByUserRole,
+            plans,
+        } = this.props
         const {agent, role} = this.state
 
         if (this.state.isFetching) {
@@ -190,6 +198,10 @@ export default class Form extends Component<Props, State> {
         const isAgentAccountOwner =
             this.props.agentId === this.props.accountOwnerId
         const paywallConfig = paywallConfigs[AccountFeatures.UserRoles]
+        const requiredPlanName = getCheaperPlanForFeature(
+            AccountFeatures.UserRoles,
+            toJS(plans)
+        )
 
         return (
             <div className="full-width">
@@ -292,7 +304,10 @@ export default class Form extends Component<Props, State> {
                                 {paywallConfig.description}
                                 <UpgradeButton
                                     className="mt-3"
-                                    label={`Upgrade to ${paywallConfig.upgradeType}`}
+                                    label={`Upgrade to ${requiredPlanName}`}
+                                    state={{
+                                        openedPlanPopover: requiredPlanName,
+                                    }}
                                 />
                             </div>
                         )}

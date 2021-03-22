@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {
     Button,
     Card,
@@ -26,6 +26,7 @@ type Props = {
     isUpdating?: boolean,
     onClick?: Function,
     className?: string,
+    isPopoverDisplayed?: boolean,
 }
 
 type FeatureDetail = {
@@ -194,11 +195,13 @@ export function Plan(props: Props) {
         isFeatured,
         showFooter,
         showProductFeatures,
+        isPopoverDisplayed,
     } = props
     const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
-        false
+        isPopoverDisplayed
     )
-    const buttonRef = useRef(null)
+    const buttonRef = useRef()
+    const [displayPopover, setDisplayPopover] = useState(false)
     const isEnterprisePlan = plan.get('id') === 'enterprise'
     const isCurrentPlan = currentPlan.get('id') === plan.get('id')
     const isDowngrade = currentPlan.isEmpty()
@@ -206,6 +209,10 @@ export function Plan(props: Props) {
         : countFeatures(plan) < countFeatures(currentPlan)
     const features = getFeatures(plan, cheaperPlan, showProductFeatures)
     const canChoosePlan = !isCurrentPlan && !isUpdating
+
+    useEffect(() => {
+        setDisplayPopover(true)
+    }, [buttonRef])
 
     return (
         <Card
@@ -299,7 +306,7 @@ export function Plan(props: Props) {
                                     ? 'Your current Plan'
                                     : `Switch to ${plan.get('name')} Plan`}
                             </Button>
-                            {buttonRef.current && (
+                            {displayPopover && (
                                 <Popover
                                     placement="top"
                                     isOpen={isConfirmationDisplayed}

@@ -1,58 +1,59 @@
 @import '~css/new/colors';
 
 :local {
-    .upgradeButton {
-        border-color: rgba(239, 108, 14, 0.5);
+    .upgradeLink {
         font-weight: bold;
 
-        .upgradeLink {
+        .upgradeButton {
             color: @orange2;
-            transition: color 0.2s linear;
+            border-color: rgba(239, 108, 14, 0.5);
+
+            &.sm {
+                font-size: 11px;
+                padding: 0.1rem 0.3rem;
+            }
+
+            &:hover,
+            &:not(:disabled):active {
+                color: @white;
+                background-color: @orange2 !important;
+                border-color: @orange2 !important;
+            }
+
+            &:focus:not(:disabled):active {
+                box-shadow: none;
+            }
 
             .upgradeLabel {
                 line-height: 1.6em;
+
+                &.sm {
+                    margin-right: 0.3rem !important;
+                }
             }
 
             .upgradeIcon {
-                &.small {
+                &.sm {
+                    font-size: 11px;
                     width: 13px;
                     height: 13px;
                 }
             }
-        }
 
-        &:hover {
-            background-color: @orange2;
-            border-color: @orange2;
-
-            .upgradeLink {
+            &.invertedColors {
+                background-color: @orange2;
+                border-color: @orange2;
                 color: @white;
-
+    
                 .upgradeIcon {
                     filter: brightness(0) invert(1);
                 }
-            }
-        }
-
-        &.invertedColors {
-            background-color: @orange2;
-            border-color: @orange2;
-
-            .upgradeLink {
-                color: @white;
-
-                .upgradeIcon {
-                    filter: brightness(0) invert(1);
-                }
-            }
-
-            &:hover {
-                background-color: @white;
-                border-color: rgba(239, 108, 14, 0.5);
-
-                .upgradeLink {
+    
+                &:hover {
+                    background-color: @white !important;
+                    border-color: rgba(239, 108, 14, 0.5) !important;
                     color: @orange2;
-
+    
                     .upgradeIcon {
                         filter: none;
                         fill: @orange2;
@@ -60,9 +61,15 @@
                 }
             }
         }
-    }
 
-    .sm {
-        font-size: 11px;
+        &:hover {
+            .upgradeButton {
+                color: @white;
+
+                .upgradeIcon {
+                    filter: brightness(0) invert(1);
+                }
+            }
+        }
     }
 }

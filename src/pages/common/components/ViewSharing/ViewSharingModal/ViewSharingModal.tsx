@@ -78,6 +78,11 @@ export function ViewSharingModalContainer({
         toggle()
     }
 
+    const requiredPlanName = getCheaperPlanForFeature(
+        AccountFeatures.ViewSharing,
+        plans as Record<string, Plan>
+    )
+
     return (
         <Modal isOpen={isOpen} toggle={toggle}>
             <ModalHeader toggle={toggle}>
@@ -154,10 +159,10 @@ export function ViewSharingModalContainer({
                     </p>
                     <UpgradeButton
                         className="mb-3"
-                        label={`Upgrade to ${getCheaperPlanForFeature(
-                            AccountFeatures.ViewSharing,
-                            plans as Record<string, Plan>
-                        )}`}
+                        label={`Upgrade to ${requiredPlanName}`}
+                        state={{
+                            openedPlanPopover: requiredPlanName,
+                        }}
                     />
                 </ModalBody>
             )}

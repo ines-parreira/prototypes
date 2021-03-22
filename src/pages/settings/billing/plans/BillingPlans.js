@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {
     Breadcrumb,
@@ -40,6 +40,7 @@ type Props = {
     isAllowedToChangePlan: Function,
     updateSubscription: Function,
     setFutureSubscriptionPlan: (string) => void,
+    location: Object,
 }
 
 type State = {
@@ -55,6 +56,7 @@ export class BillingPlans extends React.Component<Props, State> {
             isUpdating: false,
             selectedInterval: currentPlan.get('interval') || 'month',
         }
+        window.history.replaceState({}, '')
     }
 
     _updateSubscription = (planId: string) => {
@@ -161,7 +163,12 @@ export class BillingPlans extends React.Component<Props, State> {
     )
 
     _renderPlans = () => {
-        const {currentAccount, currentPlan, subscription} = this.props
+        const {
+            currentAccount,
+            currentPlan,
+            subscription,
+            location: {state},
+        } = this.props
         const {selectedInterval} = this.state
         const enterprisePlan = fromJS({
             id: 'enterprise',
@@ -217,7 +224,7 @@ export class BillingPlans extends React.Component<Props, State> {
                             return [
                                 planId,
                                 <Plan
-                                    key={planId}
+                                    key={planId.split('-')[0]}
                                     className="mt-4"
                                     cheaperPlan={cheaperPlan}
                                     plan={plan}
@@ -233,6 +240,11 @@ export class BillingPlans extends React.Component<Props, State> {
                                     isFeatured={planId.includes('pro')}
                                     onClick={() =>
                                         this._updateSubscription(planId)
+                                    }
+                                    isPopoverDisplayed={
+                                        state &&
+                                        state.openedPlanPopover ===
+                                            plan.get('name')
                                     }
                                 />,
                             ]
@@ -276,21 +288,25 @@ export class BillingPlans extends React.Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => {
-        return {
-            currentAccount: state.currentAccount,
-            currentPlan: billingSelectors.currentPlan(state),
-            isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(
-                state
-            ),
-            isTrialing: currentAccountSelectors.isTrialing(state),
-            plans: billingSelectors.plans(state),
-            shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(
-                state
-            ),
-            subscription: currentAccountSelectors.getCurrentSubscription(state),
-        }
-    },
-    {notify, updateSubscription, setFutureSubscriptionPlan}
-)(BillingPlans)
+export default withRouter(
+    connect(
+        (state) => {
+            return {
+                currentAccount: state.currentAccount,
+                currentPlan: billingSelectors.currentPlan(state),
+                isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(
+                    state
+                ),
+                isTrialing: currentAccountSelectors.isTrialing(state),
+                plans: billingSelectors.plans(state),
+                shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(
+                    state
+                ),
+                subscription: currentAccountSelectors.getCurrentSubscription(
+                    state
+                ),
+            }
+        },
+        {notify, updateSubscription, setFutureSubscriptionPlan}
+    )(BillingPlans)
+)

@@ -117,25 +117,29 @@ exports[`IntegrationListRow should display an integration section 1`] = `
       >
         an integration
       </h5>
-      <button
-        class="ml-3 py-0 px-1 upgradeButton sm invertedColors btn btn-outline-warning"
+      <div
+        class="ml-3 py-0 px-1"
       >
         <a
           class="d-flex align-items-center upgradeLink"
-          to="/app/settings/billing/plans"
+          to="[object Object]"
         >
-          <span
-            class="mr-2 upgradeLabel"
+          <button
+            class="upgradeButton sm invertedColors btn btn-outline-warning"
           >
-            Upgrade
-          </span>
-          <img
-            alt="upgrade-icon"
-            class="upgradeIcon sm"
-            src="test-file-stub"
-          />
+            <span
+              class="mr-2 upgradeLabel sm"
+            >
+              Upgrade
+            </span>
+            <img
+              alt="upgrade-icon"
+              class="upgradeIcon sm"
+              src="test-file-stub"
+            />
+          </button>
         </a>
-      </button>
+      </div>
     </div>
     this is a cool integration
   </div>

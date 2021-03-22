@@ -12,47 +12,59 @@ type Size = 'sm'
 type Props = {
     className?: string
     hasInvertedColors?: boolean
-    size?: Size
     label?: string
+    size?: Size
+    state?: any
 }
 
 const UpgradeButton = ({
     className = '',
     hasInvertedColors = false,
-    size,
     label = 'Upgrade',
+    size,
+    state = {},
 }: Props) => {
     return (
-        <Button
-            outline
-            color="warning"
-            className={classnames(
-                className,
-                css.upgradeButton,
-                size && css[size],
-                {
-                    [css.invertedColors]: hasInvertedColors,
-                }
-            )}
-        >
+        <div className={className}>
             <Link
-                to="/app/settings/billing/plans"
+                to={{pathname: '/app/settings/billing/plans', state}}
                 className={classnames(
                     'd-flex',
                     'align-items-center',
                     css.upgradeLink
                 )}
             >
-                <span className={classnames('mr-2', css.upgradeLabel)}>
-                    {label}
-                </span>
-                <img
-                    src={upgradeIcon}
-                    alt="upgrade-icon"
-                    className={classnames(css.upgradeIcon, size && css[size])}
-                />
+                <Button
+                    outline
+                    color="warning"
+                    className={classnames(
+                        css.upgradeButton,
+                        size && css[size],
+                        {
+                            [css.invertedColors]: hasInvertedColors,
+                        }
+                    )}
+                >
+                    <span
+                        className={classnames(
+                            'mr-2',
+                            css.upgradeLabel,
+                            size && css[size]
+                        )}
+                    >
+                        {label}
+                    </span>
+                    <img
+                        src={upgradeIcon}
+                        alt="upgrade-icon"
+                        className={classnames(
+                            css.upgradeIcon,
+                            size && css[size]
+                        )}
+                    />
+                </Button>
             </Link>
-        </Button>
+        </div>
     )
 }
 

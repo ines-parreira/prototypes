@@ -5,20 +5,22 @@ import {Alert, Container, Row, Col} from 'reactstrap'
 
 import type {List, Map} from 'immutable'
 
-import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
-import {IntegrationType} from '../../../../models/integration/types.ts'
-import PageHeader from '../../../common/components/PageHeader.tsx'
-
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
+import {IntegrationType} from '../../../../models/integration/types.ts'
+import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
+import {getCheaperPlanForFeature} from '../../../../utils/paywalls.ts'
+import {toJS} from '../../../../utils.ts'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 
 import IntegrationListRow from './IntegrationListRow.tsx'
 
 type Props = {
     integrations: List<Map<string, any>>,
     integrationsConfig: List<Map<string, any>>,
-    currentPlan: Map<*, *>,
+    currentPlan: Map<any, any>,
     allowedIntegrations: number,
     activeIntegrations: number,
+    plans: Map<any, any>,
 }
 
 export default class IntegrationList extends React.Component<Props> {
@@ -115,7 +117,12 @@ export default class IntegrationList extends React.Component<Props> {
     }
 
     render() {
-        const {currentPlan, integrations, integrationsConfig} = this.props
+        const {
+            currentPlan,
+            integrations,
+            integrationsConfig,
+            plans,
+        } = this.props
         const hasSmoochInsideIntegration = integrations.find(
             (integration) =>
                 integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
@@ -141,7 +148,11 @@ export default class IntegrationList extends React.Component<Props> {
                             .get('features')
                             .get(AccountFeatures.MagentoIntegration))
                 ) {
-                    return integration.set('displayUpgrade', true)
+                    const requiredPlanName = getCheaperPlanForFeature(
+                        AccountFeatures.MagentoIntegration,
+                        toJS(plans)
+                    )
+                    return integration.set('requiredPlanName', requiredPlanName)
                 }
                 return integration
             })

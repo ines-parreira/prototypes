@@ -6,7 +6,7 @@ import {Map} from 'immutable'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
 import SourceIcon from '../../../common/components/SourceIcon.js'
-import UpgradeButton from '../../../common/components/UpgradeButton/UpgradeButton'
+import UpgradeButton from '../../../common/components/UpgradeButton'
 
 import css from './IntegrationListRow.less'
 
@@ -62,17 +62,22 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                     <h5 className={css.title}>
                         {integrationConfig.get('title')}
                     </h5>
-                    {integrationConfig.get('displayUpgrade') && (
+                    {integrationConfig.get('requiredPlanName') && (
                         <UpgradeButton
                             className="ml-3 py-0 px-1"
                             hasInvertedColors
                             size="sm"
+                            state={{
+                                openedPlanPopover: integrationConfig.get(
+                                    'requiredPlanName'
+                                ),
+                            }}
                         />
                     )}
                 </div>
                 {integrationConfig.get('description')}
             </div>
-            {!integrationConfig.get('displayUpgrade') && (
+            {!integrationConfig.get('requiredPlanName') && (
                 <div>
                     <div className={css.action}>
                         {hasAnIntegration && (
@@ -96,7 +101,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
         </>
     )
 
-    return integrationConfig.get('displayUpgrade') ? (
+    return integrationConfig.get('requiredPlanName') ? (
         <div
             className={classnames(
                 css.component,

@@ -60,8 +60,11 @@ export const withPaywall = (
                                             {paywallData.description}
                                         </p>
                                         <UpgradeButton
-                                            className="mt-3 mb-5"
+                                            className="mt-3 mb-5 d-inline-block"
                                             label={`Upgrade to ${requiredPlanName}`}
+                                            state={{
+                                                openedPlanPopover: requiredPlanName,
+                                            }}
                                         />
                                         {paywallData.testimonial && (
                                             <>

@@ -41,6 +41,7 @@ describe('<BillingPlans/>', () => {
                 plans={fromJS(publicPlans)}
                 subscription={fromJS({plan: basicPlan.id})}
                 currentPlan={fromJS(basicPlan)}
+                location={{}}
                 {...props}
             />
         )

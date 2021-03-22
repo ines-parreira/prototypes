@@ -8,6 +8,7 @@ import type {List, Map} from 'immutable'
 
 import * as IntegrationsActions from '../../../state/integrations/actions.ts'
 import {
+    getBillingState,
     planIntegrations,
     currentPlan,
 } from '../../../state/billing/selectors.ts'
@@ -26,6 +27,7 @@ type Props = {
     allowedIntegrations: number,
     activeIntegrations: number,
     currentPlan: Object,
+    plans: Map<any, any>,
 }
 
 class IntegrationListContainer extends React.Component<Props> {
@@ -45,6 +47,7 @@ function mapStateToProps(state) {
         allowedIntegrations: planIntegrations(state),
         activeIntegrations: getActiveIntegrations(state).size,
         currentPlan: currentPlan(state),
+        plans: getBillingState(state).get('plans'),
     }
 }
 

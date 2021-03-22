@@ -28,25 +28,29 @@ exports[`withPaywall should not render the passed component when the feature is 
               As your team grows, free for all doesn’t work anymore. You waste time manually assigning tickets and cherry picking becomes an issue. 
 Start using teams to automatically assign tickets to agents.
             </p>
-            <button
-              class="mt-3 mb-5 upgradeButton btn btn-outline-warning"
+            <div
+              class="mt-3 mb-5 d-inline-block"
             >
               <a
                 class="d-flex align-items-center upgradeLink"
-                to="/app/settings/billing/plans"
+                to="[object Object]"
               >
-                <span
-                  class="mr-2 upgradeLabel"
+                <button
+                  class="upgradeButton btn btn-outline-warning"
                 >
-                  Upgrade to Advanced
-                </span>
-                <img
-                  alt="upgrade-icon"
-                  class="upgradeIcon"
-                  src="test-file-stub"
-                />
+                  <span
+                    class="mr-2 upgradeLabel"
+                  >
+                    Upgrade to Advanced
+                  </span>
+                  <img
+                    alt="upgrade-icon"
+                    class="upgradeIcon"
+                    src="test-file-stub"
+                  />
+                </button>
               </a>
-            </button>
+            </div>
             <p
               class="testimonialText"
             >
