@@ -110,9 +110,12 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
         case TicketChannel.InstagramMention:
         case INSTAGRAM_MENTION_MEDIA_SOURCE:
         case INSTAGRAM_MENTION_COMMENT_SOURCE:
-        case INSTAGRAM_DM_SOURCE:
             icon.custom = true
             icon.name = 'instagram'
+            break
+        case INSTAGRAM_DM_SOURCE:
+            icon.custom = true
+            icon.name = 'instagram-dm'
             break
     }
 

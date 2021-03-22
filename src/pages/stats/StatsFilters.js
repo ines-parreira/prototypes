@@ -12,7 +12,7 @@ import {DropdownItem} from 'reactstrap'
 import {CancelToken} from 'axios'
 
 import {views as statViewsConfig} from '../../config/stats.tsx'
-import {CHANNELS} from '../../config/ticket.ts'
+import {CHANNELS, INSTAGRAM_DM_CHANNEL} from '../../config/ticket.ts'
 import useCancellableRequest from '../../hooks/useCancellableRequest.ts'
 import useDelayedAsyncFn from '../../hooks/useDelayedAsyncFn.ts'
 import {ORDER_DIRECTION} from '../../models/api'
@@ -33,6 +33,8 @@ import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
 import Popover from '../common/components/Popover'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
+
+import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../state/integrations/constants'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'
@@ -358,6 +360,22 @@ const StatsFiltersContainer = ({
     )
 }
 
+function getChannels(currentAccountDomain) {
+    if (!INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)) {
+        return (CHANNELS: any)
+            .filter((channel) => channel !== INSTAGRAM_DM_CHANNEL)
+            .map((channel) => ({
+                label: _upperFirst(channel.replaceAll('-', ' ')),
+                value: channel,
+            }))
+    }
+
+    return (CHANNELS: any).map((channel) => ({
+        label: _upperFirst(channel.replaceAll('-', ' ')),
+        value: channel,
+    }))
+}
+
 const mapStateToProps = (state: Object, props: Props) => {
     const view = props.match.params.view
     const config = statViewsConfig.get(view)
@@ -366,12 +384,7 @@ const mapStateToProps = (state: Object, props: Props) => {
         tags: state.entities.tags,
         integrations: getIntegrations(state).toJS(),
         // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
-        channels: (CHANNELS: any)
-            .filter((channel) => channel !== 'instagram-direct-message')
-            .map((channel) => ({
-                label: _upperFirst(channel.replace('-', ' ')),
-                value: channel,
-            })),
+        channels: getChannels(state.currentAccount.get('domain')),
         agents: getAgents(state)
             .map((agent) => ({
                 label: getDisplayName(agent),

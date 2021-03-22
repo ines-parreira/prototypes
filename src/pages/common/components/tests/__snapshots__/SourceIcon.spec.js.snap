@@ -82,7 +82,7 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 10`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 11`] = `
 <i
-  className="icon d-inline-block icon-custom icon-instagram"
+  className="icon d-inline-block icon-custom icon-instagram-dm"
 />
 `;
 

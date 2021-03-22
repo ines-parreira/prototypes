@@ -45,3 +45,14 @@ export const UPDATE_INTEGRATION_ERROR = 'UPDATE_INTEGRATION_ERROR'
 export const DELETE_INTEGRATION_START = 'DELETE_INTEGRATION_START'
 export const DELETE_INTEGRATION_SUCCESS = 'DELETE_INTEGRATION_SUCCESS'
 export const DELETE_INTEGRATION_ERROR = 'DELETE_INTEGRATION_ERROR'
+
+//Todo(@Mehdi): remove this when instagram DM is available for all accounts
+export const INSTAGRAM_DM_ALLOWED_DOMAINS = [
+    'gorgias',
+    'facebooktest',
+    'princesspolly',
+    'bedthreads',
+    'goodamerican',
+    'angelus-direct',
+    'love-wellness',
+]

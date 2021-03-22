@@ -18,12 +18,15 @@ import DatetimePicker from '../../../forms/DatetimePicker'
 import TimedeltaPicker from '../../../forms/TimedeltaPicker'
 import MultiSelectField from '../../../forms/MultiSelectField'
 import FilterMultiSelectField from '../FilterMultiSelectField.tsx'
+import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants'
+import {INSTAGRAM_DM_CHANNEL} from '../../../../../config/ticket.ts'
 
 @connect((state) => {
     return {
         integrations: getMessagingIntegrations(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state),
+        currentAccountDomain: state.currentAccount.get('domain'),
     }
 })
 export default class Right extends React.Component {
@@ -43,6 +46,7 @@ export default class Right extends React.Component {
         objectPath: PropTypes.string.isRequired,
         empty: PropTypes.bool.isRequired,
         tags: PropTypes.object.isRequired,
+        currentAccountDomain: PropTypes.string.isRequired,
     }
 
     static defaultProps = {
@@ -104,6 +108,7 @@ export default class Right extends React.Component {
             updateFieldFilter,
             index,
             empty,
+            currentAccountDomain,
         } = this.props
 
         if (empty) {
@@ -228,13 +233,19 @@ export default class Right extends React.Component {
             }
         } else if (field.get('name') === 'channel') {
             if (node.type === 'ArrayExpression') {
-                const filteredField = field.updateIn(
-                    ['filter', 'enum'],
-                    (channels) =>
-                        channels.filter(
-                            (channel) => channel !== 'instagram-direct-message'
-                        )
-                )
+                //Todo(@Mehdi): remove this when instagram DM is available for all accounts
+                let filteredField = field
+                if (
+                    !INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)
+                ) {
+                    filteredField = field.updateIn(
+                        ['filter', 'enum'],
+                        (channels) =>
+                            channels.filter(
+                                (channel) => channel !== INSTAGRAM_DM_CHANNEL
+                            )
+                    )
+                }
 
                 const selectedOptions = node.elements.map((opt) => opt.value)
                 const options = filteredField
@@ -256,13 +267,14 @@ export default class Right extends React.Component {
                 )
             }
         }
-        //TODO(@Mehdi): change this after Facebook app review
+        //Todo(@Mehdi): remove this when instagram DM is available for all accounts
         let filteredField = field
-        if (field.get('name') === 'channel') {
+        if (
+            field.get('name') === 'channel' &&
+            !INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)
+        ) {
             filteredField = field.updateIn(['filter', 'enum'], (channels) =>
-                channels.filter(
-                    (channel) => channel !== 'instagram-direct-message'
-                )
+                channels.filter((channel) => channel !== INSTAGRAM_DM_CHANNEL)
             )
         }
 
