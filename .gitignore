@@ -95,3 +95,6 @@ transaction.yaml
 
 # V8 compile cache
 v8-compile-cache-*
+
+# local eggs
+src/
