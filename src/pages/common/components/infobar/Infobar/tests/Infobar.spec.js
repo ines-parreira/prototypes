@@ -29,7 +29,9 @@ const commonProps = {
             stopEditionMode: jest.fn(stopEditionMode),
             submitWidgets: jest.fn(submitWidgets),
         },
-        fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
+        infobar: {
+            fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
+        },
     },
     context: 'ticket',
     identifier: '1',
@@ -173,14 +175,17 @@ describe('<Infobar/>', () => {
                     {...commonProps}
                     actions={{
                         ...commonProps.actions,
-                        fetchPreviewCustomer: jest.fn(() =>
-                            Promise.resolve({
-                                type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
-                                resp: {
-                                    id: customerId,
-                                },
-                            })
-                        ),
+                        infobar: {
+                            ...commonProps.infobar,
+                            fetchPreviewCustomer: jest.fn(() =>
+                                Promise.resolve({
+                                    type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                                    resp: {
+                                        id: customerId,
+                                    },
+                                })
+                            ),
+                        },
                     }}
                 />
             )
@@ -199,11 +204,14 @@ describe('<Infobar/>', () => {
                     {...commonProps}
                     actions={{
                         ...commonProps.actions,
-                        fetchPreviewCustomer: jest.fn(() =>
-                            Promise.resolve({
-                                type: FETCH_PREVIEW_CUSTOMER_ERROR,
-                            })
-                        ),
+                        infobar: {
+                            ...commonProps.infobar,
+                            fetchPreviewCustomer: jest.fn(() =>
+                                Promise.resolve({
+                                    type: FETCH_PREVIEW_CUSTOMER_ERROR,
+                                })
+                            ),
+                        },
                     }}
                 />
             )

@@ -64,22 +64,16 @@ describe('TicketInfobarContainer component', () => {
     it('should disable widget editing new tickets without customer', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />)
 
-        expect(component.prop('customer')).toEqualImmutable(fromJS({}))
+        expect(component.prop('customer')).toBeImmutable(fromJS({}))
     })
 
     it('should allow widget editing new tickets with customer', () => {
-        const sources = fromJS({
-            ticket: fromJS({
-                customer: {name: 'Pizza Pepperoni'},
-            }),
-            customer: fromJS({}),
+        const ticket = fromJS({
+            customer: {name: 'Pizza Pepperoni'},
         })
-        const component = shallow(
-            <TicketInfobarContainer {...minProps} sources={sources} />
-        )
+        const component = shallow(<TicketInfobarContainer {...minProps} />)
+        component.setProps({ticket})
 
-        expect(component.prop('customer')).toEqualImmutable(
-            sources.getIn(['ticket', 'customer'])
-        )
+        expect(component.prop('customer')).toBeImmutable(ticket.get('customer'))
     })
 })
