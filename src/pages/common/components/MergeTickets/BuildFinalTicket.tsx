@@ -1,14 +1,14 @@
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import BinaryChoiceField from '../BinaryChoiceField'
-import Avatar from '../Avatar'
+import BinaryChoiceField from '../BinaryChoiceField.js'
+import Avatar from '../Avatar/Avatar'
 
 type Props = {
-    sourceTicket: Map<*, *>,
-    targetTicket: Map<*, *>,
-    finalTicket: Map<*, *>,
-    updateFinalTicket: (Map<*, *>) => null,
+    sourceTicket: Map<any, any>
+    targetTicket: Map<any, any>
+    finalTicket: Map<any, any>
+    updateFinalTicket: (map: Map<any, any>) => void
 }
 
 export default class BuildFinalTicket extends React.Component<Props> {
@@ -26,8 +26,10 @@ export default class BuildFinalTicket extends React.Component<Props> {
             sourceTicket.getIn(['customer', 'id']) !==
             targetTicket.getIn(['customer', 'id'])
 
-        const sourceAssignee = sourceTicket.get('assignee_user') || fromJS({})
-        const targetAssignee = targetTicket.get('assignee_user') || fromJS({})
+        const sourceAssignee: Map<any, any> =
+            sourceTicket.get('assignee_user') || fromJS({})
+        const targetAssignee: Map<any, any> =
+            targetTicket.get('assignee_user') || fromJS({})
 
         const assigneesAreDifferent =
             sourceAssignee.get('id') !== targetAssignee.get('id')
@@ -57,7 +59,6 @@ export default class BuildFinalTicket extends React.Component<Props> {
                 {subjectsAreDifferent ? (
                     <BinaryChoiceField
                         label="Subject"
-                        name="ticket.subject"
                         options={[
                             {
                                 label: sourceTicket.get('subject'),
@@ -68,8 +69,8 @@ export default class BuildFinalTicket extends React.Component<Props> {
                                 value: targetTicket.get('subject') || '',
                             },
                         ]}
-                        value={finalTicket.get('subject')}
-                        onChange={(subject) =>
+                        value={finalTicket.get('subject') as string}
+                        onChange={(subject: string) =>
                             updateFinalTicket(
                                 finalTicket.set('subject', subject)
                             )
@@ -79,7 +80,6 @@ export default class BuildFinalTicket extends React.Component<Props> {
                 {customersAreDifferent ? (
                     <BinaryChoiceField
                         label="Customer"
-                        name="ticket.customer"
                         options={[
                             {
                                 label: (
@@ -111,7 +111,7 @@ export default class BuildFinalTicket extends React.Component<Props> {
                             },
                         ]}
                         value={finalTicket.getIn(['customer', 'id'])}
-                        onChange={(customerId) =>
+                        onChange={(customerId: number) =>
                             updateFinalTicket(
                                 finalTicket.set(
                                     'customer',
@@ -124,13 +124,16 @@ export default class BuildFinalTicket extends React.Component<Props> {
                 {assigneesAreDifferent && !oneAssigneeIsEmpty ? (
                     <BinaryChoiceField
                         label="Assignee"
-                        name="ticket.assignee_user"
                         options={[
                             {
                                 label: (
                                     <span>
                                         <Avatar
-                                            name={sourceAssignee.get('name')}
+                                            name={
+                                                sourceAssignee.get(
+                                                    'name'
+                                                ) as string
+                                            }
                                             url={sourceAssignee.getIn([
                                                 'meta',
                                                 'profile_picture_url',
@@ -147,7 +150,11 @@ export default class BuildFinalTicket extends React.Component<Props> {
                                 label: (
                                     <span>
                                         <Avatar
-                                            name={targetAssignee.get('name')}
+                                            name={
+                                                targetAssignee.get(
+                                                    'name'
+                                                ) as string
+                                            }
                                             url={targetAssignee.getIn([
                                                 'meta',
                                                 'profile_picture_url',
@@ -162,7 +169,7 @@ export default class BuildFinalTicket extends React.Component<Props> {
                             },
                         ]}
                         value={finalTicket.getIn(['assignee_user', 'id'])}
-                        onChange={(assigneeUserId) =>
+                        onChange={(assigneeUserId: number) =>
                             updateFinalTicket(
                                 finalTicket.set(
                                     'assignee_user',

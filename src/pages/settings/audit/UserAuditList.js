@@ -5,7 +5,7 @@ import {Alert, Button, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
 import moment from 'moment'
 
-import Loader from '../../common/components/Loader/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import DatePicker from '../../common/forms/DatePicker'
 import SelectFilter from '../../stats/common/SelectFilter.tsx'

@@ -7,7 +7,6 @@ exports[`BuildFinalTicket component should display all fields because everything
   </p>
   <BinaryChoiceField
     label="Subject"
-    name="ticket.subject"
     onChange={[Function]}
     options={
       Array [
@@ -25,7 +24,6 @@ exports[`BuildFinalTicket component should display all fields because everything
   />
   <BinaryChoiceField
     label="Customer"
-    name="ticket.customer"
     onChange={[Function]}
     options={
       Array [
@@ -57,7 +55,6 @@ exports[`BuildFinalTicket component should display all fields because everything
   />
   <BinaryChoiceField
     label="Assignee"
-    name="ticket.assignee_user"
     onChange={[Function]}
     options={
       Array [
@@ -103,7 +100,6 @@ exports[`BuildFinalTicket component should display the assignee field because th
   </p>
   <BinaryChoiceField
     label="Assignee"
-    name="ticket.assignee_user"
     onChange={[Function]}
     options={
       Array [
@@ -149,7 +145,6 @@ exports[`BuildFinalTicket component should display the customer field because th
   </p>
   <BinaryChoiceField
     label="Customer"
-    name="ticket.customer"
     onChange={[Function]}
     options={
       Array [
@@ -189,7 +184,6 @@ exports[`BuildFinalTicket component should display the subject field because the
   </p>
   <BinaryChoiceField
     label="Subject"
-    name="ticket.subject"
     onChange={[Function]}
     options={
       Array [

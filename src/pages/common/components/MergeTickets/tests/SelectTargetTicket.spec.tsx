@@ -2,17 +2,20 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 
 import SelectTargetTicket from '../SelectTargetTicket'
+import {StoreDispatch} from '../../../../../state/types'
+
+type MockedRootState = Record<string, unknown>
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
-const _noop = () => {}
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
 describe('SelectTargetTicket component', () => {
-    let store
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
     const baseTicket = fromJS({
         subject: 'foo',
         assignee_user: {
@@ -32,10 +35,9 @@ describe('SelectTargetTicket component', () => {
     it('should render', () => {
         const component = shallow(
             <SelectTargetTicket
-                store={store}
+                {...{store}}
                 sourceTicket={baseTicket}
                 updateTargetTicket={baseTicket}
-                search={_noop}
                 customerId={123}
             />
         ).dive()

@@ -17,7 +17,7 @@ import type {List, Map} from 'immutable'
 import InputField from '../../common/forms/InputField'
 
 import Pagination from '../../common/components/Pagination'
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import Video from '../../common/components/Video'
 import Search from '../../common/components/Search'

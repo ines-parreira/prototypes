@@ -5,7 +5,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 import {parse, stringify} from 'query-string'
 
-import Loader from '../Loader/index.js'
+import Loader from '../Loader/Loader'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../../common/utils/withCancellableRequest'

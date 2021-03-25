@@ -17,7 +17,7 @@ import PageHeader from '../../../common/components/PageHeader.tsx'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import * as actions from '../../../../state/teams/actions.ts'
 import Pagination from '../../../common/components/Pagination'
-import Loader from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader/Loader.tsx'
 import Search from '../../../common/components/Search'
 
 import {type teamType} from '../../../../state/teams/types'

@@ -13,7 +13,7 @@ import {parse} from 'query-string'
 import {fromJS, Map} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
-import Loader from '../../../../common/components/Loader/index.js'
+import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField.js'
 import PageHeader from '../../../../common/components/PageHeader'

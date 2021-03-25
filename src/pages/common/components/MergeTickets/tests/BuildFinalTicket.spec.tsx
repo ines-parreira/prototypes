@@ -1,10 +1,9 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
+import _noop from 'lodash/noop'
 
 import BuildFinalTicket from '../BuildFinalTicket'
-
-const _noop = () => {}
 
 describe('BuildFinalTicket component', () => {
     const baseTicket = fromJS({
@@ -17,7 +16,8 @@ describe('BuildFinalTicket component', () => {
             id: 22,
             name: 'Maria Curie',
         },
-    })
+    }) as Map<any, any>
+    const updateFinalTicket = _noop
 
     it('should not display any fields because they are all identical', () => {
         const component = shallow(
@@ -25,7 +25,7 @@ describe('BuildFinalTicket component', () => {
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket}
                 finalTicket={baseTicket}
-                updateFinalTicket={_noop}
+                updateFinalTicket={updateFinalTicket}
             />
         )
 
@@ -38,7 +38,7 @@ describe('BuildFinalTicket component', () => {
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket.set('subject', 'bar')}
                 finalTicket={baseTicket}
-                updateFinalTicket={_noop}
+                updateFinalTicket={updateFinalTicket}
             />
         )
 
@@ -57,7 +57,7 @@ describe('BuildFinalTicket component', () => {
                     })
                 )}
                 finalTicket={baseTicket}
-                updateFinalTicket={_noop}
+                updateFinalTicket={updateFinalTicket}
             />
         )
 
@@ -76,7 +76,7 @@ describe('BuildFinalTicket component', () => {
                     })
                 )}
                 finalTicket={baseTicket}
-                updateFinalTicket={_noop}
+                updateFinalTicket={updateFinalTicket}
             />
         )
 
@@ -89,7 +89,7 @@ describe('BuildFinalTicket component', () => {
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket.set('assignee_user', fromJS({}))}
                 finalTicket={baseTicket}
-                updateFinalTicket={_noop}
+                updateFinalTicket={updateFinalTicket}
             />
         )
 
@@ -117,7 +117,7 @@ describe('BuildFinalTicket component', () => {
                         })
                     )}
                 finalTicket={baseTicket}
-                updateFinalTicket={_noop}
+                updateFinalTicket={updateFinalTicket}
             />
         )
 

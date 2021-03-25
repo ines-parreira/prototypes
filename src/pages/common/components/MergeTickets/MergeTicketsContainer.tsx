@@ -1,34 +1,35 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import {fromJS, Map} from 'immutable'
+import React, {FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
 import {Button, Form} from 'reactstrap'
 
-import Modal from '../Modal'
-import ConfirmButton from '../ConfirmButton.tsx'
-
-import {mergeTickets} from '../../../../state/mergeTickets/actions.ts'
-import shortcutManager from '../../../../services/shortcutManager/shortcutManager.ts'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import history from '../../../history.ts'
+import Modal from '../Modal.js'
+import ConfirmButton from '../ConfirmButton'
+import {mergeTickets} from '../../../../state/mergeTickets/actions'
+import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import history from '../../../history'
 
 import css from './MergeTicketsContainer.less'
 import BuildFinalTicket from './BuildFinalTicket'
 import SelectTargetTicket from './SelectTargetTicket'
 
-const EDITABLE_FIELDS = fromJS(['subject', 'customer', 'assignee_user'])
+const EDITABLE_FIELDS = fromJS([
+    'subject',
+    'customer',
+    'assignee_user',
+]) as List<string>
 
-type Props = {
-    sourceTicket: Map<*, *>,
-    isOpen: boolean,
-    toggleModal: () => null,
-    mergeTickets: (number, number, Map<*, *>) => Promise<*>,
+type Props = ConnectedProps<typeof connector> & {
+    sourceTicket: Map<any, any>
+    isOpen: boolean
+    toggleModal: () => void
 }
 
 type State = {
-    targetTicket: ?Map<*, *>,
-    finalTicket: ?Map<*, *>,
-    isLoading: boolean,
+    targetTicket: Maybe<Map<any, any>>
+    finalTicket: Maybe<Map<any, any>>
+    isLoading: boolean
 }
 
 class MergeTicketsContainer extends React.Component<Props, State> {
@@ -38,7 +39,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         isLoading: false,
     }
 
-    buttonsRef = React.createRef()
+    buttonsRef = React.createRef<HTMLDivElement>()
 
     componentDidUpdate(prevProps: Props) {
         if (prevProps.isOpen && !this.props.isOpen) {
@@ -54,10 +55,10 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         }
     }
 
-    _updateTargetTicket = (targetTicket) => {
+    _updateTargetTicket = (targetTicket: Map<any, any>) => {
         const {sourceTicket} = this.props
 
-        let finalTicket = fromJS({})
+        let finalTicket = fromJS({}) as Map<any, any>
 
         EDITABLE_FIELDS.forEach((fieldName) => {
             let value = targetTicket.get(fieldName)
@@ -71,14 +72,16 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             }
         })
 
-        finalTicket = finalTicket.update('customer', (customer) =>
-            fromJS({id: customer.get('id')})
+        finalTicket = finalTicket.update(
+            'customer',
+            (customer: Map<any, any>) =>
+                fromJS({id: customer.get('id')}) as Map<any, any>
         )
 
         this.setState({targetTicket, finalTicket})
     }
 
-    _handleSubmit = (evt: Event) => {
+    _handleSubmit = (evt: FormEvent) => {
         evt.preventDefault()
         this.setState({isLoading: true})
 
@@ -92,10 +95,12 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         this.props
             .mergeTickets(
                 sourceTicket.get('id'),
-                targetTicket.get('id'),
-                finalTicket.toJS()
+                ((targetTicket as unknown) as Map<any, any>).get('id'),
+                ((finalTicket as unknown) as Map<any, any>).toJS()
             )
-            .then((data) => history.push(`/app/ticket/${data.id}`))
+            .then((data) =>
+                history.push(`/app/ticket/${(data as {id: string}).id}`)
+            )
             .catch(() => this.setState({isLoading: false}))
     }
 
@@ -106,8 +111,8 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         let content = (
             <BuildFinalTicket
                 sourceTicket={sourceTicket}
-                targetTicket={targetTicket}
-                finalTicket={finalTicket}
+                targetTicket={(targetTicket as unknown) as Map<any, any>}
+                finalTicket={(finalTicket as unknown) as Map<any, any>}
                 updateFinalTicket={(finalTicket) =>
                     this.setState({finalTicket})
                 }
@@ -188,6 +193,8 @@ class MergeTicketsContainer extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
+const connector = connect(null, {
     mergeTickets,
-})(MergeTicketsContainer)
+})
+
+export default connector(MergeTicketsContainer)

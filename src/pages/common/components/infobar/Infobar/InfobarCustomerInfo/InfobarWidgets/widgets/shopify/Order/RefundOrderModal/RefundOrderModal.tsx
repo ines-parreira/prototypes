@@ -19,7 +19,7 @@ import {getIntegrationsByTypes} from '../../../../../../../../../../../state/int
 import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
 import {RootState} from '../../../../../../../../../../../state/types'
-import Loader from '../../../../../../../../Loader/Loader.js'
+import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal.js'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'

@@ -18,7 +18,7 @@ import {
 
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import history from '../../../../../history.ts'
-import Loader from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import Pagination from '../../../../../common/components/Pagination'

@@ -22,10 +22,10 @@ import history from '../../../../history.ts'
 import type {reactRouterLocation} from '../../../../../types'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
-import Loader from '../../Loader'
+import Loader from '../../Loader/Loader.tsx'
 import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
-import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
+import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer.tsx'
 import Search from '../../Search'
 
 import {areSourcesReady} from '../utils'

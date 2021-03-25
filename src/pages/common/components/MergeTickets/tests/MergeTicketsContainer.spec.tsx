@@ -1,15 +1,14 @@
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import _noop from 'lodash/noop'
 
 import MergeTicketsContainer from '../MergeTicketsContainer'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
-
-const _noop = () => {}
 
 describe('MergeTicketsContainer component', () => {
     const baseTicket = fromJS({
@@ -22,15 +21,15 @@ describe('MergeTicketsContainer component', () => {
             id: 22,
             name: 'Maria Curie',
         },
-    })
+    }) as Map<any, any>
 
-    const commonProps = {
+    let commonProps = {
         isOpen: true,
         toggleModal: _noop,
     }
 
     beforeEach(() => {
-        commonProps.store = mockStore({})
+        commonProps = {...commonProps, ...{store: mockStore({})}}
     })
 
     it('should render a closed modal because isOpen==false', () => {

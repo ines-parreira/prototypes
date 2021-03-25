@@ -3,8 +3,8 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import {shallow} from 'enzyme'
 
-import {EMAIL_CHANNEL} from '../../../../../config/ticket.ts'
-import {mergeCustomers} from '../../../../../state/customers/actions.ts'
+import {EMAIL_CHANNEL} from '../../../../../config/ticket'
+import {mergeCustomers} from '../../../../../state/customers/actions'
 import MergeCustomersModal from '../MergeCustomersModal'
 
 const address1 = 'pierre@gorgias.io'
@@ -55,12 +55,11 @@ describe('<MergeCustomersModal/>', () => {
                 <MergeCustomersModal
                     destinationCustomer={customer1}
                     sourceCustomer={customer2}
-                    mergeCustomers={mergeCustomers}
+                    mergeCustomers={mergeCustomers as any}
                     toggleModal={_noop}
                     onSuccess={_noop}
                     isOpen={true}
-                    isLoadin={false}
-                    primaryEmail={address1}
+                    isLoading={false}
                     requiredAddresses={fromJS([address1])}
                 />
             )

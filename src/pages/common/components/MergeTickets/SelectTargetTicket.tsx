@@ -1,27 +1,25 @@
-// @flow
 import React from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
-import Search from '../Search'
-import Table from '../ViewTable/Table.tsx'
-import {searchTickets} from '../../../../state/mergeTickets/actions.ts'
-import * as viewsConfig from '../../../../config/views.tsx'
+import Search from '../Search.js'
+import Table from '../ViewTable/Table'
+import {searchTickets} from '../../../../state/mergeTickets/actions'
+import * as viewsConfig from '../../../../config/views'
 
 import css from './SelectTargetTicket.less'
 
-type Props = {
-    sourceTicket: Map<*, *>,
-    search: typeof searchTickets,
-    updateTargetTicket: (number) => void,
-    customerId: ?number,
+type Props = ConnectedProps<typeof connector> & {
+    sourceTicket: Map<any, any>
+    updateTargetTicket: (ticket: Map<any, any>) => void
+    customerId: Maybe<number>
 }
 
 type State = {
-    query: string,
-    navigation: Map<*, *>,
-    tickets: List<Map<*, *>>,
-    listIsLoading: boolean,
+    query: string
+    navigation: Map<any, any>
+    tickets: List<Map<any, any>>
+    listIsLoading: boolean
 }
 
 class SelectTargetTicket extends React.Component<Props, State> {
@@ -36,21 +34,21 @@ class SelectTargetTicket extends React.Component<Props, State> {
         this.setState({listIsLoading: true}, () => this._search())
     }
 
-    _search = (direction: ?string = null) => {
+    _search = (direction: string | null = null) => {
         const {query, navigation} = this.state
 
         this.props
             .search(
                 query,
-                this.props.sourceTicket.get('id'),
+                this.props.sourceTicket.get('id') as number,
                 query ? null : this.props.customerId,
                 direction,
                 navigation
             )
             .then((data) => {
                 this.setState({
-                    tickets: fromJS(data.data),
-                    navigation: fromJS(data.meta),
+                    tickets: fromJS((data as {data: unknown}).data),
+                    navigation: fromJS((data as {meta: unknown}).meta),
                     listIsLoading: false,
                 })
             })
@@ -73,7 +71,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
         )
     }
 
-    _onPageChange = (direction: ?string = null) => {
+    _onPageChange = (direction: string | null = null) => {
         this.setState(
             {
                 listIsLoading: true,
@@ -87,19 +85,23 @@ class SelectTargetTicket extends React.Component<Props, State> {
         const {tickets, navigation} = this.state
 
         const baseView = viewsConfig.defaultMergeTicketsView(
-            sourceTicket.get('id')
+            sourceTicket.get('id') as number
         )
 
         const config = viewsConfig.getConfigByName('ticket')
-        const fields = config.get('fields').filter((field) => {
-            return baseView.get('fields').includes(field.get('name'))
-        })
+        const fields = (config.get('fields') as List<Map<any, any>>).filter(
+            (field) => {
+                return (baseView.get('fields') as List<any>).includes(
+                    (field as Map<any, any>).get('name') as string
+                )
+            }
+        )
 
         return (
             <div>
                 <p>
                     Select the ticket you want to merge{' '}
-                    <b>{sourceTicket.get('subject')}</b> with:
+                    <b>{sourceTicket.get('subject') as string}</b> with:
                 </p>
                 <Search
                     onChange={this._updateQuery}
@@ -113,7 +115,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
                         isLoading={() => this.state.listIsLoading}
                         type="ticket"
                         items={tickets}
-                        fields={fields}
+                        fields={fields as List<Map<any, any>>}
                         selectable={false}
                         isSearch
                         onItemClick={updateTargetTicket}
@@ -126,6 +128,8 @@ class SelectTargetTicket extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
+const connector = connect(null, {
     search: searchTickets,
-})(SelectTargetTicket)
+})
+
+export default connector(SelectTargetTicket)

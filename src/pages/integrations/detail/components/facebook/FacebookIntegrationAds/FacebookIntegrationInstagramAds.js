@@ -27,7 +27,7 @@ import {
 } from '../../../../../../state/facebookAds/selectors'
 import type {Dispatch} from '../../../../../../state/types'
 
-import Loader from '../../../../../common/components/Loader/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 

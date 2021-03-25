@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 
-import Loader from '../Loader/index.js'
+import Loader from '../Loader/Loader'
 import BlankState from '../BlankState/index.js'
 import Navigation from '../Navigation/index.js'
 import {RootState} from '../../../../state/types'
@@ -26,15 +26,15 @@ type OwnProps = {
     isSearch: boolean
     selectable: boolean
     navigation: Map<any, any>
-    selectedItemsIds: List<any>
+    selectedItemsIds?: List<any>
     type: string
     items: List<any>
     fields: List<any>
-    ActionsComponent: Maybe<React.ComponentType>
-    getItemUrl: (item: Map<any, any>) => string
+    ActionsComponent?: Maybe<React.ComponentType>
+    getItemUrl?: (item: Map<any, any>) => string
     fetchViewItems: (
         ...args: Parameters<typeof viewsActions.fetchViewItems>
-    ) => ReturnType<ReturnType<typeof viewsActions.fetchViewItems>>
+    ) => Promise<unknown> | void
     onItemClick?: (item: Map<any, any>) => void
 }
 

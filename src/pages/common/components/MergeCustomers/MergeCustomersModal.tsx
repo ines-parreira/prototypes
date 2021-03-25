@@ -1,21 +1,24 @@
-// @flow
 import React from 'react'
-import {fromJS, type Map, type List} from 'immutable'
+import {fromJS, List, Set, Map} from 'immutable'
 import {Button, Form} from 'reactstrap'
 import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
-import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils.js'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 
-import SourceIcon from '../SourceIcon'
-import Modal from '../Modal'
-import ConfirmButton from '../ConfirmButton.tsx'
-import Tooltip from '../Tooltip'
-import {JSONTree} from '../JSONTree'
-import BinaryChoiceField from '../BinaryChoiceField'
-import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
+import SourceIcon from '../SourceIcon.js'
+import Modal from '../Modal.js'
+import ConfirmButton from '../ConfirmButton'
+import Tooltip from '../Tooltip.js'
+import {JSONTree} from '../JSONTree.js'
+import BinaryChoiceField from '../BinaryChoiceField.js'
+import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField.js'
+import {CustomerChannel} from '../../../../models/customerChannel/types'
+import {SourceType} from '../../../../models/ticket/types'
+import {TicketMessageSourceType} from '../../../../business/types/ticket'
+import {Customer} from '../../../../state/customers/types'
 
 const defaultContent = {
     name: '',
@@ -26,46 +29,49 @@ const defaultContent = {
 }
 
 type Props = {
-    destinationCustomer: Map<*, *>,
-    sourceCustomer: Map<*, *>,
-    mergeCustomers: (number, number, Object) => Promise<*>,
-    toggleModal: (boolean) => void,
-    onSuccess: ?() => void,
-    isOpen: boolean,
-    isLoading: boolean,
-    primaryEmail: ?string,
-    requiredAddresses: List<Map<*, *>>,
+    destinationCustomer: Map<any, any>
+    sourceCustomer: Map<any, any>
+    mergeCustomers: (
+        destinationCustomerId: number,
+        sourceCustomerId: number,
+        customerData: Customer
+    ) => Promise<unknown>
+    toggleModal: (isShown: boolean) => void
+    onSuccess?: () => void
+    isOpen: boolean
+    isLoading: boolean
+    requiredAddresses: Set<string>
 }
 
 type State = {
-    name: string,
-    email: string,
-    note: string,
-    data: Object,
-    channels: Array<Object>,
+    name: string
+    email: string
+    note: string
+    data: Record<string, unknown>
+    channels: CustomerChannel[]
 }
 
 export default class MergeCustomersModal extends React.Component<Props, State> {
     state = _clone(defaultContent)
-    buttonsRef = React.createRef()
+    buttonsRef = React.createRef<HTMLDivElement>()
 
     componentDidMount = () => {
         const {sourceCustomer} = this.props
         const initData = this.props.destinationCustomer
             .map((v, k) => {
                 if (!v) {
-                    return sourceCustomer.get(k)
+                    return sourceCustomer.get(k as string) as unknown
                 }
 
-                return v
+                return v as unknown
             })
-            .toJS()
+            .toJS() as Customer
 
         initData.channels = initData.channels.concat(
-            sourceCustomer.get('channels').toJS()
+            (sourceCustomer.get('channels') as List<any>).toJS()
         )
 
-        this.setState(_pick(initData, Object.keys(defaultContent)))
+        this.setState(_pick(initData, Object.keys(defaultContent)) as State)
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -78,18 +84,18 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         }
     }
 
-    _handleSubmit = async (event: SyntheticEvent<HTMLInputElement>) => {
+    _handleSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault()
 
         const data = {
             customer: _pick(this.state, Object.keys(defaultContent)),
         }
 
-        const {error} = await this.props.mergeCustomers(
-            this.props.destinationCustomer.get('id'),
-            this.props.sourceCustomer.get('id'),
-            data.customer
-        )
+        const {error} = (await this.props.mergeCustomers(
+            this.props.destinationCustomer.get('id') as number,
+            this.props.sourceCustomer.get('id') as number,
+            (data.customer as any) as Customer
+        )) as {error: unknown}
 
         this._toggle()
 
@@ -98,24 +104,32 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         }
     }
 
-    _generateChannelOptions = (customer: Map<*, *>): Node => {
-        return customer
-            .get('channels', fromJS([]))
-            .filter((channel) => !!channel) // removing falsey values
+    _generateChannelOptions = (customer: Map<any, any>) => {
+        const channels = (customer.get('channels', fromJS([])) as List<
+            Map<any, any> | undefined
+        >).filter((channel: unknown) => !!channel) as List<Map<any, any>>
+        return channels
             .map((channel, idx) => ({
                 label: (
                     <div key={idx}>
                         <SourceIcon
                             className="mr-2"
-                            type={channel.get('type')}
+                            type={
+                                (channel as Map<any, any>).get(
+                                    'type'
+                                ) as SourceType
+                            }
                         />
-                        {channel.get('address')}
+                        {(channel as Map<any, any>).get('address') as string}
                     </div>
                 ),
-                value: channel.toJS(),
+                value: (channel as Map<any, any>).toJS(),
             }))
             .toList()
-            .toJS()
+            .toJS() as Array<{
+            label: React.ReactElement
+            value: CustomerChannel
+        }>
     }
 
     _toggle = () => {
@@ -131,7 +145,8 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         } = this.props
         const primaryEmail = this.state.email
 
-        let baseCustomerData = destinationCustomer.get('data') || fromJS({})
+        let baseCustomerData: Map<any, any> =
+            destinationCustomer.get('data') || fromJS({})
 
         if (isCustomerDataValid(baseCustomerData)) {
             baseCustomerData = baseCustomerData.delete('_shopify')
@@ -140,7 +155,8 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         baseCustomerData = isCustomerDataPresent(baseCustomerData)
             ? baseCustomerData.toJS()
             : {}
-        let mergeCustomerData = sourceCustomer.get('data') || fromJS({})
+        let mergeCustomerData: Map<any, any> =
+            sourceCustomer.get('data') || fromJS({})
 
         if (isCustomerDataValid(mergeCustomerData)) {
             mergeCustomerData = mergeCustomerData.delete('_shopify')
@@ -150,16 +166,20 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
             ? mergeCustomerData.toJS()
             : {}
 
-        const allChannels = destinationCustomer
-            .get('channels')
-            .toJS()
-            .concat(sourceCustomer.get('channels').toJS())
+        const allChannels = ((destinationCustomer.get('channels') as List<
+            any
+        >).toJS() as CustomerChannel[]).concat(
+            (sourceCustomer.get('channels') as List<
+                any
+            >).toJS() as CustomerChannel[]
+        )
 
-        const allRequiredAddresses = requiredAddresses.toJS()
+        const allRequiredAddresses = requiredAddresses.toJS() as string[]
         allRequiredAddresses.push(primaryEmail)
 
-        const requiredChannelValues = allChannels.filter((channel) =>
-            allRequiredAddresses.includes(channel.address)
+        const requiredChannelValues = allChannels.filter(
+            (channel: CustomerChannel) =>
+                allRequiredAddresses.includes(channel.address)
         )
 
         return (
@@ -178,7 +198,6 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         </p>
                         <BinaryChoiceField
                             label="Name"
-                            name="customer.name"
                             options={[
                                 {
                                     label: (
@@ -205,11 +224,10 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                 },
                             ]}
                             value={this.state.name}
-                            onChange={(name) => this.setState({name})}
+                            onChange={(name: string) => this.setState({name})}
                         />
                         <BinaryChoiceField
                             label="Note"
-                            name="customer.note"
                             options={[
                                 {
                                     label: (
@@ -236,11 +254,10 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                 },
                             ]}
                             value={this.state.note}
-                            onChange={(note) => this.setState({note})}
+                            onChange={(note: string) => this.setState({note})}
                         />
                         <BinaryChoiceField
                             label="Primary email"
-                            name="customer.email"
                             tooltip={
                                 <span>
                                     <i
@@ -264,7 +281,9 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                         <span>
                                             <SourceIcon
                                                 className="mr-2"
-                                                type="email"
+                                                type={
+                                                    TicketMessageSourceType.Email
+                                                }
                                             />
                                             {destinationCustomer.get('email')}
                                         </span>
@@ -277,7 +296,9 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                         <span>
                                             <SourceIcon
                                                 className="mr-2"
-                                                type="email"
+                                                type={
+                                                    TicketMessageSourceType.Email
+                                                }
                                             />
                                             {sourceCustomer.get('email')}
                                         </span>
@@ -286,7 +307,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                 },
                             ]}
                             value={this.state.email}
-                            onChange={(email) => this.setState({email})}
+                            onChange={(email: string) => this.setState({email})}
                         />
                         <MultiSelectBinaryChoiceField
                             label="Contact info"
@@ -317,11 +338,12 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                             ]}
                             propertiesToCompare={['address', 'type']}
                             value={this.state.channels}
-                            onChange={(channels) => this.setState({channels})}
+                            onChange={(channels: CustomerChannel[]) =>
+                                this.setState({channels})
+                            }
                         />
                         <BinaryChoiceField
                             label="Customer data"
-                            name="customer.data"
                             options={[
                                 {
                                     label: (
@@ -341,7 +363,9 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                 },
                             ]}
                             value={_omit(this.state.data, ['_shopify'])}
-                            onChange={(data) => this.setState({data})}
+                            onChange={(data: Record<string, unknown>) =>
+                                this.setState({data})
+                            }
                         />
                     </div>
 

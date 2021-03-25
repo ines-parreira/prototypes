@@ -1,15 +1,14 @@
-// @flow
 import React, {Component} from 'react'
 import classnames from 'classnames'
 
 import css from './Loader.less'
 
 type Props = {
-    inline: boolean,
-    message?: Object | string,
-    minHeight?: string,
-    size?: string,
-    className?: string,
+    inline: boolean
+    message?: Record<string, unknown> | string
+    minHeight?: string
+    size?: string
+    className?: string
 }
 
 export default class Loader extends Component<Props> {

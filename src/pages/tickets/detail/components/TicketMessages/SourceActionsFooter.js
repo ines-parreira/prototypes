@@ -26,7 +26,7 @@ import sadIcon from '../../../../../../img/integrations/facebook-reaction-sad.sv
 import prideIcon from '../../../../../../img/integrations/facebook-reaction-pride.png'
 import careIcon from '../../../../../../img/integrations/facebook-reaction-care.svg'
 
-import Loader from '../../../../common/components/Loader/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 
 import type {FacebookReaction} from '../../../../../models/ticket'
 

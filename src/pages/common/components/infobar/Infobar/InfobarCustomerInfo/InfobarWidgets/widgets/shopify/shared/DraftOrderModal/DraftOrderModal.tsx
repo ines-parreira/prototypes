@@ -30,7 +30,7 @@ import {
 } from '../../../../../../../../../../../constants/integrations/types/shopify'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
 import {DatetimeLabel} from '../../../../../../../../../utils/labels.js'
-import Loader from '../../../../../../../../Loader/Loader.js'
+import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal.js'
 import {ShopifyActionType} from '../../types'

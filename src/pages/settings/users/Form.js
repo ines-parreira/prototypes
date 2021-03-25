@@ -20,7 +20,7 @@ import {
 import {getCheaperPlanForFeature} from '../../../utils/paywalls.ts'
 import {getBillingState} from '../../../state/billing/selectors.ts'
 import {toJS} from '../../../utils.ts'
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import ConfirmButton from '../../common/components/ConfirmButton.tsx'
 import RichDropdown, {type Option} from '../../common/components/RichDropdown'
 import UpgradeButton from '../../common/components/UpgradeButton/UpgradeButton.tsx'

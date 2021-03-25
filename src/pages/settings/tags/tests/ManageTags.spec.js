@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {ManageTags} from '../ManageTags'
-import Loader from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader/Loader.tsx'
 import Pagination from '../../../common/components/Pagination'
 
 describe('ManageTags component', () => {

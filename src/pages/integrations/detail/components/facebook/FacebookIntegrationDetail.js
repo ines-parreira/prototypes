@@ -20,7 +20,7 @@ import {
 
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 

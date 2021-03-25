@@ -15,7 +15,7 @@ import {
 
 import * as integrationHelpers from '../../../../../state/integrations/helpers.ts'
 
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 
 import InputField from '../../../../common/forms/InputField'

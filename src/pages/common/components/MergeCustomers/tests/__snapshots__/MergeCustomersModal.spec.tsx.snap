@@ -22,7 +22,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       </p>
       <BinaryChoiceField
         label="Name"
-        name="customer.name"
         onChange={[Function]}
         options={
           Array [
@@ -54,7 +53,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       />
       <BinaryChoiceField
         label="Note"
-        name="customer.note"
         onChange={[Function]}
         options={
           Array [
@@ -84,7 +82,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       />
       <BinaryChoiceField
         label="Primary email"
-        name="customer.email"
         onChange={[Function]}
         options={
           Array [
@@ -238,7 +235,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       />
       <BinaryChoiceField
         label="Customer data"
-        name="customer.data"
         onChange={[Function]}
         options={
           Array [
@@ -279,6 +275,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           }
         }
         content="This action is irreversible. Are you sure you want to merge these customers?"
+        loading={false}
         type="submit"
       >
         Merge customers

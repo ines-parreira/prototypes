@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Loader from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader/Loader.tsx'
 
 export default class NoIntegration extends React.Component {
     render() {

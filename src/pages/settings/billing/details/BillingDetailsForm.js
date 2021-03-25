@@ -15,7 +15,7 @@ import classNames from 'classnames'
 
 import {fetchContact, updateContact} from '../../../../state/billing/actions.ts'
 import {getContact} from '../../../../state/billing/selectors.ts'
-import Loader from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import InputField from '../../../common/forms/InputField'
 

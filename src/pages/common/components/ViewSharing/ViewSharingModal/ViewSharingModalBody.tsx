@@ -8,7 +8,7 @@ import * as teamsSelectors from '../../../../../state/teams/selectors'
 import RadioChoiceField from '../../../forms/RadioChoiceField.js'
 import {ViewVisibility} from '../../../../../models/view/types'
 import {RootState} from '../../../../../state/types'
-import Loader from '../../Loader/index.js'
+import Loader from '../../Loader/Loader'
 
 import SharedBody from './SharedBody'
 import PublicBody from './PublicBody'

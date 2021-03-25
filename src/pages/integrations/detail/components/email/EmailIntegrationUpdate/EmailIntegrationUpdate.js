@@ -37,7 +37,7 @@ import {
     displayRestrictedSymbols,
 } from '../../../../../../utils.ts'
 import {convertToHTML} from '../../../../../../utils/editor.tsx'
-import Loader from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'
 import {

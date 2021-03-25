@@ -1,21 +1,20 @@
-// @flow
 import React from 'react'
 import {Badge} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 import classnames from 'classnames'
 
-import Modal from '../../components/Modal'
+import Modal from '../../components/Modal.js'
 
-import shortcutManager from '../../../../services/shortcutManager/index.ts'
-import keymap from '../../../../config/shortcuts.ts'
+import shortcutManager from '../../../../services/shortcutManager/index'
+import keymap from '../../../../config/shortcuts'
 
 import css from './KeyboardHelp.less'
 
 type State = {
-    isOpen: boolean,
+    isOpen: boolean
 }
 
-export default class KeyboardHelp extends React.Component<{}, State> {
+export default class KeyboardHelp extends React.Component<void, State> {
     state = {
         isOpen: false,
     }

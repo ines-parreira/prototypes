@@ -11,7 +11,7 @@ import {
     fetchPaymentMethod,
     fetchCreditCard,
 } from '../../../state/billing/actions.ts'
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 export class BillingPaymentMethod extends Component {

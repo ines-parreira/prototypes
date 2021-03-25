@@ -8,7 +8,7 @@ import {Link, withRouter} from 'react-router-dom'
 
 import * as customersActions from '../../../state/customers/actions.ts'
 
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import CustomerForm from '../common/components/CustomerForm'
 import Timeline from '../../common/components/timeline/Timeline.tsx'
 import Modal from '../../common/components/Modal'

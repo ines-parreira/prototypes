@@ -19,7 +19,7 @@ import * as newMessageSelectors from '../../../../../state/newMessage/selectors.
 import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions.ts'
 import Preview from '../../../common/macros/Preview'
 import Tooltip from '../../../../common/components/Tooltip'
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import MacroList from '../../../common/macros/components/MacroList'
 import MacroNoResults from '../../../common/macros/components/MacroNoResults'
 import MacroContainer from '../../../common/macros/MacroContainer'

@@ -44,7 +44,7 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import ColorField from '../../../../../common/forms/ColorField'
 import FileField from '../../../../../common/forms/FileField'
 import InputField from '../../../../../common/forms/InputField'
-import Loader from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import RadioField from '../../../../../common/forms/RadioField'
 

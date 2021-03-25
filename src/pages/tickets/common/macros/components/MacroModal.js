@@ -7,7 +7,7 @@ import {Button, Container, Row, Col} from 'reactstrap'
 
 import type {Map, List} from 'immutable'
 
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import Modal from '../../../../common/components/Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config.ts'
 import {APPLY_MACRO_JOB_TYPE} from '../../../../../constants/job.ts'

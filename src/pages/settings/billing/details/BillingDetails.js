@@ -6,7 +6,7 @@ import {Button, Card, CardBody, Row, Col} from 'reactstrap'
 
 import {fetchContact} from '../../../../state/billing/actions.ts'
 import {getContact} from '../../../../state/billing/selectors.ts'
-import Loader from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader/Loader.tsx'
 
 import {type billingContactType} from '../../../../state/billing/types'
 

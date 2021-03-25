@@ -22,7 +22,7 @@ import {RootState, StoreDispatch} from '../../../../state/types'
 import {ZENDESK_INTEGRATION_TYPE} from '../../../../constants/integration'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
-import Loader from '../../../common/components/Loader/Loader.js'
+import Loader from '../../../common/components/Loader/Loader'
 import Tooltip from '../../../common/components/Tooltip.js'
 
 import {ImportStatus} from './types'

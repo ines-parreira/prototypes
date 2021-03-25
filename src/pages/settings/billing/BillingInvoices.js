@@ -14,7 +14,7 @@ import {
     fetchInvoices,
     updateInvoiceInList,
 } from '../../../state/billing/actions.ts'
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import GorgiasApi from '../../../services/gorgiasApi.ts'
 import {notify} from '../../../state/notifications/actions.ts'
 

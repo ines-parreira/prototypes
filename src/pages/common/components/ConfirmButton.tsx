@@ -15,9 +15,9 @@ type Props = {
     children?: ReactNode
     className?: string
     color?: string
-    confirm: () => void | Promise<any>
+    confirm?: () => void | Promise<any>
     confirmColor?: string
-    containerElement?: HTMLElement
+    containerElement?: string | HTMLElement | React.RefObject<HTMLElement>
     content?: ReactNode
     disabled?: boolean
     id?: string

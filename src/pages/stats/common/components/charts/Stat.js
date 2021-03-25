@@ -9,7 +9,7 @@ import * as tagsSelectors from '../../../../../state/tags/selectors.ts'
 import {TICKETS_PER_TAG} from '../../../../../config/stats.tsx'
 import css from '../../../style.less'
 import Tooltip from '../../../../common/components/Tooltip'
-import Loader from '../../../../common/components/Loader/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import GorgiasApi from '../../../../../services/gorgiasApi.ts'
 

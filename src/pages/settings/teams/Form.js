@@ -20,7 +20,7 @@ import {Link, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
 import * as actions from '../../../state/teams/actions.ts'
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import InputField from '../../common/forms/InputField'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'

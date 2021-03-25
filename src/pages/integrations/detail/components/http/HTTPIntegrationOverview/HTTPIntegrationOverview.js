@@ -23,7 +23,7 @@ import {
     validateWebhookURLToPattern,
 } from '../../../../../../utils.ts'
 
-import Loader from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import ObjectListField from '../ObjectListField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import InputField from '../../../../../common/forms/InputField'

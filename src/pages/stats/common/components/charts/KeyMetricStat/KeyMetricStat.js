@@ -13,7 +13,7 @@ import {
     formatPercent,
     renderDifference,
 } from '../../../utils'
-import Loader from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 
 import statsCss from '../../../../style.less'
 import {isImmutable} from '../../../../../../utils.ts'

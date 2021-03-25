@@ -13,18 +13,18 @@ import {getModifier, isButton, closest} from './utils'
 
 const mousetrap = new Mousetrap()
 
-type KeyboardAction = {
+export type KeyboardAction = {
     key: string | string[]
     action?: (e: Event) => void
     description?: string
     component?: string
 }
 
-type KeymapActions = {
+export type KeymapActions = {
     [key: string]: KeyboardAction
 }
 
-type KeyMap = {
+export type KeyMap = {
     description?: string
     actions: KeymapActions
 }

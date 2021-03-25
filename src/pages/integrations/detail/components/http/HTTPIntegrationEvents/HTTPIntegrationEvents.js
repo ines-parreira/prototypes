@@ -7,7 +7,7 @@ import _truncate from 'lodash/truncate'
 
 import {HTTP_METHOD_GET} from '../../../../../../config.ts'
 
-import Loader from '../../../../../common/components/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import ForwardIcon from '../../ForwardIcon'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'

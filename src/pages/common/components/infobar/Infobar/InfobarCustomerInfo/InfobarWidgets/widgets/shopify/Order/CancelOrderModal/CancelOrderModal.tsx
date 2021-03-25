@@ -19,7 +19,7 @@ import shortcutManager from '../../../../../../../../../../../services/shortcutM
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../../../state/types'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
-import Loader from '../../../../../../../../Loader/Loader.js'
+import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal.js'
 import RefundOrderForm from '../RefundOrderForm/index.js'

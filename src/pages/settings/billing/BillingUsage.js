@@ -16,7 +16,7 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import LegacyTag from '../../common/components/LegacyTag.tsx'
 import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
 import {openChat} from '../../../utils.ts'

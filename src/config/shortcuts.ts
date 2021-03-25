@@ -1,6 +1,7 @@
 import history from '../pages/history'
+import {KeyMap} from '../services/shortcutManager/shortcutManager'
 
-export default {
+const shortcuts: Record<string, KeyMap> = {
     App: {
         description: 'Global navigation',
         actions: {
@@ -224,3 +225,5 @@ export default {
         },
     },
 }
+
+export default shortcuts

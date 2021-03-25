@@ -1,7 +1,7 @@
 import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
 import classnames from 'classnames'
 
-import Loader from '../Loader/Loader.js'
+import Loader from '../Loader/Loader'
 
 import css from './InfiniteScroll.less'
 

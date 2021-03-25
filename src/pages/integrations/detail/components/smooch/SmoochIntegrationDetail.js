@@ -21,7 +21,7 @@ import {
 
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 import InputField from '../../../../common/forms/InputField'
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'

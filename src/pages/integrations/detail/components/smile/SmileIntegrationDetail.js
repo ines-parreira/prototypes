@@ -16,7 +16,7 @@ import {parse} from 'query-string'
 import {fromJS} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader.tsx'

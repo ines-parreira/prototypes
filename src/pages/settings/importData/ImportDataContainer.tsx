@@ -8,7 +8,7 @@ import PageHeader from '../../common/components/PageHeader'
 import history from '../../history'
 import {RootState, StoreDispatch} from '../../../state/types'
 import {IntegrationType} from '../../../models/integration/types'
-import Loader from '../../common/components/Loader/Loader.js'
+import Loader from '../../common/components/Loader/Loader'
 import * as integrationSelectors from '../../../state/integrations/selectors'
 import * as integrationActions from '../../../state/integrations/actions'
 

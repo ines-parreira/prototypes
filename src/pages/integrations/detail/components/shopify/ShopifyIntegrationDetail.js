@@ -18,7 +18,7 @@ import {
 } from 'reactstrap'
 import {parse} from 'query-string'
 
-import Loader from '../../../../common/components/Loader'
+import Loader from '../../../../common/components/Loader/Loader.tsx'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 import BooleanField from '../../../../common/forms/BooleanField'
 import InputField from '../../../../common/forms/InputField'

@@ -7,7 +7,7 @@ import {Button, Container} from 'reactstrap'
 
 import type {List, Map} from 'immutable'
 
-import Loader from '../../common/components/Loader'
+import Loader from '../../common/components/Loader/Loader.tsx'
 import Pagination from '../../common/components/Pagination'
 
 import * as actions from '../../../state/agents/actions.ts'

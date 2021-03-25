@@ -20,7 +20,7 @@ import {fromJS} from 'immutable'
 import {setCreditCard} from '../../../../state/billing/actions.ts'
 import {currentPlan as currentPlanSelector} from '../../../../state/billing/selectors.ts'
 
-import Loader from '../../../common/components/Loader'
+import Loader from '../../../common/components/Loader/Loader.tsx'
 import {loadScript} from '../../../../utils.ts'
 
 import Errors from '../../../common/forms/Errors'

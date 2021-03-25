@@ -6,7 +6,7 @@ import {Col, Container, Row} from 'reactstrap'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
 import InputField from '../../../../../common/forms/InputField'
-import Loader from '../../../../../common/components/Loader/Loader'
+import Loader from '../../../../../common/components/Loader/Loader.tsx'
 
 import {countLines} from '../../../../../../utils/string.ts'
 import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions.ts'
