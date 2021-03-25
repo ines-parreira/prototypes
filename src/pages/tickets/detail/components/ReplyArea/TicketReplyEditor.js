@@ -244,8 +244,16 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
     }
 
     _getButtons = (): Node[] => {
-        const {newMessage} = this.props
-
+        const {attachments, newMessage, newMessageType} = this.props
+        if (
+            canAddAttachments(
+                newMessageType,
+                newMessage.getIn(['newMessage', 'body_text']),
+                attachments.size + 1
+            ) != null
+        ) {
+            return []
+        }
         const attachmentLoading = newMessage.getIn([
             '_internal',
             'loading',

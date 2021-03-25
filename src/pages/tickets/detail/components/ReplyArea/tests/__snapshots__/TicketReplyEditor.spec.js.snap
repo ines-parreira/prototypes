@@ -104,6 +104,189 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
 </div>
 `;
 
+exports[`TicketReplyEditor component should not allow attachments for instagram comments 1`] = `
+<div
+  className="component"
+>
+  <RichField
+    attachFiles={[Function]}
+    attachments={Immutable.List []}
+    buttons={Array []}
+    canAddMention={false}
+    canDropFiles={true}
+    canInsertInlineImages={false}
+    defaultContentState={
+      Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "mock-key-1": Immutable.Record {
+            "key": "mock-key-1",
+            "type": "unstyled",
+            "text": "",
+            "characterList": Immutable.List [],
+            "depth": 0,
+            "data": Immutable.Map {},
+          },
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "mock-key-1",
+          "anchorOffset": 0,
+          "focusKey": "mock-key-1",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "mock-key-1",
+          "anchorOffset": 0,
+          "focusKey": "mock-key-1",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      }
+    }
+    displayedActions={
+      Array [
+        "EMOJI",
+      ]
+    }
+    emailExtraEnabled={true}
+    mentionSuggestions={Immutable.List []}
+    notify={[MockFunction]}
+    onChange={[Function]}
+    placeholder="Click here to reply, or press r."
+    readOnly={false}
+    spellCheck={true}
+    tabIndex="4"
+    type="text"
+    value={
+      Object {
+        "html": "",
+        "text": "",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`TicketReplyEditor component should not allow attachments for instagram mentions 1`] = `
+<div
+  className="component"
+>
+  <RichField
+    attachFiles={[Function]}
+    attachments={Immutable.List []}
+    buttons={
+      Array [
+        <div
+          className="attachment"
+        >
+          <label
+            className="m-0"
+            htmlFor="attachments-input"
+            title="Add attachment"
+          >
+            <i
+              className="material-icons"
+            >
+              attach_file
+            </i>
+          </label>
+          <input
+            id="attachments-input"
+            multiple={true}
+            onChange={[Function]}
+            onClick={[Function]}
+            type="file"
+          />
+        </div>,
+      ]
+    }
+    canAddMention={false}
+    canDropFiles={true}
+    canInsertInlineImages={false}
+    defaultContentState={
+      Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "mock-key-1": Immutable.Record {
+            "key": "mock-key-1",
+            "type": "unstyled",
+            "text": "",
+            "characterList": Immutable.List [],
+            "depth": 0,
+            "data": Immutable.Map {},
+          },
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "mock-key-1",
+          "anchorOffset": 0,
+          "focusKey": "mock-key-1",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "mock-key-1",
+          "anchorOffset": 0,
+          "focusKey": "mock-key-1",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      }
+    }
+    displayedActions={
+      Array [
+        "EMOJI",
+      ]
+    }
+    emailExtraEnabled={true}
+    mentionSuggestions={Immutable.List []}
+    notify={[MockFunction]}
+    onChange={[Function]}
+    placeholder="Click here to reply, or press r."
+    readOnly={false}
+    spellCheck={true}
+    tabIndex="4"
+    type="text"
+    value={
+      Object {
+        "html": "",
+        "text": "",
+      }
+    }
+  />
+</div>
+`;
+
 exports[`TicketReplyEditor component should render empty ticket 1`] = `
 <div
   className="component"

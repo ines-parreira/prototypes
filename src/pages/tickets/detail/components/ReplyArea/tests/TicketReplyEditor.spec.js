@@ -55,6 +55,60 @@ describe('TicketReplyEditor component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should not allow attachments for instagram comments', () => {
+        const component = shallow(
+            <TicketReplyEditorContainer
+                actions={{}}
+                ticket={fromJS({})}
+                newMessage={fromJS({
+                    state: {
+                        contentState: ContentState.createFromText(''),
+                    },
+                    _internal: {
+                        loading: {
+                            submitMessage: false,
+                        },
+                    },
+                    newMessage: {
+                        body_text: '',
+                        body_html: '',
+                    },
+                })}
+                newMessageType={TicketChannel.InstagramComment}
+                agents={fromJS([])}
+                notify={jest.fn()}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not allow attachments for instagram mentions', () => {
+        const component = shallow(
+            <TicketReplyEditorContainer
+                actions={{}}
+                ticket={fromJS({})}
+                newMessage={fromJS({
+                    state: {
+                        contentState: ContentState.createFromText(''),
+                    },
+                    _internal: {
+                        loading: {
+                            submitMessage: false,
+                        },
+                    },
+                    newMessage: {
+                        body_text: '',
+                        body_html: '',
+                    },
+                })}
+                newMessageType={TicketChannel.InstagramMention}
+                agents={fromJS([])}
+                notify={jest.fn()}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
     // test for debouncer bug
     // https://github.com/gorgias/gorgias/issues/2510
     it('should not set newMessage value after component is unmounted', (done) => {

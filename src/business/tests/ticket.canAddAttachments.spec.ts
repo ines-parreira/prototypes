@@ -8,7 +8,7 @@ describe('Business', () => {
             let newMessage: string
             let attachmentCount: number
 
-            it('should not allow to add when facebook-messenger has already text', () => {
+            it('should not allow to add when Instagram DM has already text', () => {
                 // Given
                 messageType = TicketMessageSourceType.InstagramDirectMessage
                 newMessage = 'Hello'
@@ -24,6 +24,61 @@ describe('Business', () => {
                 // Then
                 expect(result?.message).toEqual(
                     'When using Instagram direct message, you can either send a text message, or an image attachment, but not both at the same time.'
+                )
+            })
+
+            it('should allow to add when Instagram DM has no text', () => {
+                // Given
+                messageType = TicketMessageSourceType.InstagramDirectMessage
+                newMessage = ''
+                attachmentCount = 1
+
+                // When
+                const result = canAddAttachments(
+                    messageType,
+                    newMessage,
+                    attachmentCount
+                )
+
+                // Then
+                expect(result).toBeNull()
+            })
+
+            it('should not allow to add attachments to Instagram comments, even with no text', () => {
+                // Given
+                messageType = TicketMessageSourceType.InstagramComment
+                newMessage = ''
+                attachmentCount = 1
+
+                // When
+                const result = canAddAttachments(
+                    messageType,
+                    newMessage,
+                    attachmentCount
+                )
+
+                // Then
+                expect(result?.message).toEqual(
+                    'When using Instagram comment, you can not send attachments.'
+                )
+            })
+
+            it('should not allow to add attachments to Instagram mentions, even with no text', () => {
+                // Given
+                messageType = TicketMessageSourceType.InstagramMentionComment
+                newMessage = ''
+                attachmentCount = 1
+
+                // When
+                const result = canAddAttachments(
+                    messageType,
+                    newMessage,
+                    attachmentCount
+                )
+
+                // Then
+                expect(result?.message).toEqual(
+                    'When using Instagram mention comment, you can not send attachments.'
                 )
             })
 

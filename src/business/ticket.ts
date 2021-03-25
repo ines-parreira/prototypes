@@ -45,8 +45,7 @@ export function canAddAttachments(
 
     let isInvalid =
         messagePlusAttachmentInvalidSources.includes(messageType) &&
-        !!newMessage &&
-        attachmentCount > 0
+        !!newMessage
 
     if (isInvalid) {
         //TODO(@Mehdi) Instagram DM specific, Remove this when we do https://github.com/gorgias/gorgias/issues/7516
@@ -60,22 +59,35 @@ export function canAddAttachments(
         }
     }
 
+    const maxAttachmentsCount = new Map([
+        [TicketMessageSourceType.FacebookComment, 1],
+        [TicketMessageSourceType.FacebookReviewComment, 1],
+        [TicketMessageSourceType.InstagramDirectMessage, 1],
+        [TicketMessageSourceType.InstagramComment, 0],
+        [TicketMessageSourceType.InstagramMentionComment, 0],
+    ]).get(messageType)
+
     isInvalid =
-        [
-            TicketMessageSourceType.FacebookComment,
-            TicketMessageSourceType.FacebookReviewComment,
-            TicketMessageSourceType.InstagramDirectMessage,
-        ].includes(messageType) && attachmentCount > 1
+        typeof maxAttachmentsCount !== 'undefined' &&
+        attachmentCount > maxAttachmentsCount
 
     if (isInvalid) {
-        return {
-            message: `When using ${humanize(
-                messageType
-            )}, you can only send attachments one by one.`,
-            status: 'warning',
+        if (maxAttachmentsCount === 1) {
+            return {
+                message: `When using ${humanize(
+                    messageType
+                )}, you can only send attachments one by one.`,
+                status: 'warning',
+            }
+        } else if (maxAttachmentsCount === 0) {
+            return {
+                message: `When using ${humanize(
+                    messageType
+                )}, you can not send attachments.`,
+                status: 'warning',
+            }
         }
     }
-
     return null
 }
 
