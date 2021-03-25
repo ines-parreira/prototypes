@@ -1,49 +1,36 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 
 import {fromJS, Map} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {GorgiasChatIntegrationSelfServiceComponent} from '../GorgiasChatIntegrationSelfService'
 import {IntegrationType} from '../../../../../../models/integration/types'
 
 const SHOP_NAME_1 = 'myshop1'
 const SHOP_NAME_2 = 'myshop2'
+const SHOPIFY_DOMAIN_SUFFIX = '.myshopify.com'
 
 const shopifyIntegrationsSample = fromJS([
     {
         id: 1,
+        name: 'My shop 1',
         meta: {
             shop_name: SHOP_NAME_1,
         },
     },
     {
         id: 2,
+        name: 'My shop 2',
         meta: {
             shop_name: SHOP_NAME_2,
         },
     },
 ])
 
-const selfServiceConfigurationsSample = [
-    {
-        id: 1,
-        type: 'shopify',
-        shop_name: SHOP_NAME_1,
-        created_datetime: new Date().toISOString(),
-        updated_datetime: new Date().toISOString(),
-        deactivated_datetime: null,
-    },
-    {
-        id: 2,
-        type: 'shopify',
-        shop_name: SHOP_NAME_2,
-        created_datetime: new Date().toISOString(),
-        updated_datetime: new Date().toISOString(),
-        deactivated_datetime: new Date().toISOString(),
-    },
-]
-
 type Props = ComponentProps<typeof GorgiasChatIntegrationSelfServiceComponent>
+const mockStore = configureMockStore([thunk])
 jest.mock('../../../../../common/components/ToggleButton', () => {
     return ({value, onChange}: {value: string; onChange: () => void}) => {
         return (
@@ -72,18 +59,17 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
         },
     }) as Map<any, any>
 
+    let mockUpdateOrCreateIntegration = jest.fn(() => Promise.resolve())
+
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUpdateOrCreateIntegration = jest.fn(() => Promise.resolve())
     })
 
     const props = ({
-        // store: mockStore({}),
+        store: mockStore({}),
         integration: integration,
-        isLoadingConfigurations: false,
-        selfServiceConfigurations: fromJS([]),
-        actions: {
-            fetchSelfServiceConfigurations: jest.fn(),
-        },
+        updateOrCreateIntegration: mockUpdateOrCreateIntegration,
         shopifyIntegrations: fromJS([]),
     } as any) as Props
 
@@ -93,23 +79,159 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
                 <GorgiasChatIntegrationSelfServiceComponent
                     {...props}
                     shopifyIntegrations={fromJS([])}
-                    isLoadingConfigurations={false}
-                    selfServiceConfigurations={fromJS([])}
                 />
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render the 1 feature enabled and 1 disabled', () => {
+        it('should render the list of shopify integrations with 1/2 that has the SSP enabled because the shopify id is present in shopify_integration_ids and the old self service config is enabled', () => {
+            const testProps = ({
+                store: mockStore({}),
+                integration: integration.setIn(
+                    ['meta'],
+                    fromJS({
+                        self_service: {
+                            enabled: true,
+                        },
+                        shopify_integration_ids: [1],
+                    })
+                ),
+                updateOrCreateIntegration: mockUpdateOrCreateIntegration,
+                shopifyIntegrations: shopifyIntegrationsSample,
+            } as any) as Props
+
             const {container} = render(
-                <GorgiasChatIntegrationSelfServiceComponent
-                    {...props}
-                    shopifyIntegrations={shopifyIntegrationsSample}
-                    isLoadingConfigurations={false}
-                    selfServiceConfigurations={selfServiceConfigurationsSample}
-                />
+                <GorgiasChatIntegrationSelfServiceComponent {...testProps} />
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render the list of shopify integrations with 1/2 that has the SSP enabled (with self_service.enabled: false)', () => {
+            const testProps = ({
+                store: mockStore({}),
+                integration: integration.setIn(
+                    ['meta', 'self_service'],
+                    fromJS({
+                        enabled: false,
+                        configurations: [
+                            {
+                                base_url: `${SHOP_NAME_1}${SHOPIFY_DOMAIN_SUFFIX}`,
+                                enabled: true,
+                                integration_id: 1,
+                            },
+                            {
+                                base_url: `${SHOP_NAME_2}${SHOPIFY_DOMAIN_SUFFIX}`,
+                                enabled: false,
+                                integration_id: 2,
+                            },
+                        ],
+                    })
+                ),
+                updateOrCreateIntegration: mockUpdateOrCreateIntegration,
+                shopifyIntegrations: shopifyIntegrationsSample,
+            } as any) as Props
+
+            const {container} = render(
+                <GorgiasChatIntegrationSelfServiceComponent {...testProps} />
+            )
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it.each([true, false])(
+            'should render the list of shopify integrations with the value taken from the meta configuration (ignoring the self_service.enabled value) - enabled = %s',
+            (enabled) => {
+                const testProps = ({
+                    store: mockStore({}),
+                    integration: integration.setIn(
+                        ['meta', 'self_service'],
+                        fromJS({
+                            enabled,
+                            configurations: [
+                                {
+                                    base_url: `${SHOP_NAME_1}${SHOPIFY_DOMAIN_SUFFIX}`,
+                                    enabled: false,
+                                    integration_id: 1,
+                                },
+                                {
+                                    base_url: `${SHOP_NAME_2}${SHOPIFY_DOMAIN_SUFFIX}`,
+                                    enabled: true,
+                                    integration_id: 2,
+                                },
+                            ],
+                        })
+                    ),
+                    updateOrCreateIntegration: mockUpdateOrCreateIntegration,
+                    shopifyIntegrations: shopifyIntegrationsSample,
+                } as any) as Props
+
+                const {container} = render(
+                    <GorgiasChatIntegrationSelfServiceComponent
+                        {...testProps}
+                    />
+                )
+                expect(container.firstChild).toMatchSnapshot()
+            }
+        )
+    })
+
+    describe('onToggleSelfService()', () => {
+        it('should call the updateOrCreateIntegration with the right values and set self_service.enabled to false', () => {
+            const testProps = ({
+                store: mockStore({}),
+                integration: integration.setIn(
+                    ['meta', 'self_service'],
+                    fromJS({
+                        enabled: true,
+                        configurations: [
+                            {
+                                base_url: `${SHOP_NAME_1}${SHOPIFY_DOMAIN_SUFFIX}`,
+                                enabled: false,
+                                integration_id: 1,
+                            },
+                            {
+                                base_url: `${SHOP_NAME_2}${SHOPIFY_DOMAIN_SUFFIX}`,
+                                enabled: true,
+                                integration_id: 2,
+                            },
+                        ],
+                    })
+                ),
+                updateOrCreateIntegration: mockUpdateOrCreateIntegration,
+                shopifyIntegrations: shopifyIntegrationsSample,
+            } as any) as Props
+
+            const {container, getAllByTestId} = render(
+                <GorgiasChatIntegrationSelfServiceComponent {...testProps} />
+            )
+
+            expect(container).toMatchSnapshot()
+
+            fireEvent.click(getAllByTestId('toggle-button')[0])
+            expect(mockUpdateOrCreateIntegration.mock.calls[0])
+                .toMatchInlineSnapshot(`
+                Array [
+                  Immutable.Map {
+                    "id": 7,
+                    "meta": Immutable.Map {
+                      "self_service": Immutable.Map {
+                        "enabled": false,
+                        "configurations": Immutable.List [
+                          Immutable.Map {
+                            "base_url": "myshop1.myshopify.com",
+                            "integration_id": 1,
+                            "enabled": true,
+                          },
+                          Immutable.Map {
+                            "base_url": "myshop2.myshopify.com",
+                            "integration_id": 2,
+                            "enabled": true,
+                          },
+                        ],
+                      },
+                    },
+                  },
+                ]
+            `)
         })
     })
 })

@@ -19,7 +19,6 @@ import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbar from './tickets/navbar/TicketNavbar.tsx'
 import TicketListContainer from './tickets/list/TicketListContainer'
 import RuleContainer from './settings/rules/list/RuleContainer.ts'
-import SelfServiceContainer from './settings/selfService/SelfServiceContainer.ts'
 import CustomerListContainer from './customers/list/CustomerListContainer'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
@@ -355,14 +354,6 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: UserRoleRequired(RuleContainer, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/self-service`}
-                exact
-                render={appRender({
-                    content: UserRoleRequired(SelfServiceContainer, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />

@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useReducer} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {Map} from 'immutable'
-
+import {fromJS, Map, List} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -13,25 +12,16 @@ import {
     Alert,
 } from 'reactstrap'
 
-import {bindActionCreators} from 'redux'
+import classnames from 'classnames'
 
 import PageHeader from '../../../../common/components/PageHeader'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import ToggleButton from '../../../../common/components/ToggleButton.js'
 import {getIconFromUrl} from '../../../../../state/integrations/helpers'
 
 import {RootState} from '../../../../../state/types'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../models/integration/types'
-
-import {
-    getLoading,
-    getSelfServiceConfigurations,
-} from '../../../../../state/self_service/selectors'
-import {MigratedIntegrationRow} from '../../../../settings/selfService/components/MigratedIntegrationRow'
-
-import {GorgiasThunkDispatch} from '../../../../../../../../../types/redux-thunk'
-import * as SelfServiceActions from '../../../../../state/self_service/actions'
-
-import {SelfServiceConfiguration} from '../../../../../state/self_service/types'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation.js'
 
@@ -41,36 +31,160 @@ type OwnProps = {
 }
 
 const selfServiceMock = getIconFromUrl('integrations/self_service.png')
+const SHOPIFY_DOMAIN_SUFFIX = '.myshopify.com'
 
-const _findConfiguration = (
-    selfServiceConfigurations: SelfServiceConfiguration[],
+interface SelfServiceConfiguration {
+    base_url: string
+    enabled: boolean
+    integration_id: number
+}
+
+const initialState = {
+    isUpdating: false,
+    isInitialized: false,
+    outdatedSSPEnabled: false,
+}
+
+type ActionTypes =
+    | {type: 'toggle'; shopDomain: string}
+    | {type: 'ready'}
+    | {type: 'updating'}
+    | {type: 'updated'}
+type States = typeof initialState
+
+function reducer(state: States, action: ActionTypes): States {
+    switch (action.type) {
+        case 'updating':
+            return {
+                ...state,
+                isUpdating: true,
+            }
+        case 'updated':
+            return {
+                ...state,
+                isUpdating: false,
+            }
+        case 'ready':
+            return {
+                ...state,
+                isInitialized: true,
+            }
+        default:
+            throw new Error()
+    }
+}
+
+function computeToggleValue(
+    integration: Map<any, any>,
     shopifyIntegration: Map<any, any>
-): SelfServiceConfiguration | undefined => {
-    return selfServiceConfigurations.find((configuration) => {
-        return (
-            configuration.shop_name ===
-            shopifyIntegration.getIn(['meta', 'shop_name'])
-        )
-    })
+): boolean {
+    const configurations: List<Map<any, any>> = integration.getIn(
+        ['meta', 'self_service', 'configurations'],
+        []
+    )
+    const hasNewConfigurations = configurations.size > 0
+
+    if (hasNewConfigurations) {
+        const shopName = shopifyIntegration.getIn([
+            'meta',
+            'shop_name',
+        ]) as string
+        const permanentDomain = `${shopName}${SHOPIFY_DOMAIN_SUFFIX}`
+
+        return configurations.some((config) => {
+            const isEnabled = config?.get('enabled')
+            const baseUrl = config?.get('base_url')
+            return isEnabled && baseUrl === permanentDomain
+        })
+    }
+
+    const isOldConfigurationActive = !!integration.getIn(
+        ['meta', 'self_service', 'enabled'],
+        false
+    )
+    if (!isOldConfigurationActive) {
+        return false
+    }
+    const shopify_integration_ids: number[] = integration.getIn(
+        ['meta', 'shopify_integration_ids'],
+        []
+    )
+    return shopify_integration_ids.includes(shopifyIntegration.get('id'))
 }
 
 export function GorgiasChatIntegrationSelfServiceComponent({
-    actions,
-    isLoadingConfigurations,
-    selfServiceConfigurations,
+    updateOrCreateIntegration,
     integration,
     shopifyIntegrations,
 }: OwnProps & ConnectedProps<typeof connector>) {
-    useEffect(() => {
-        actions.fetchSelfServiceConfigurations()
-    }, [])
-
     const shopNames = shopifyIntegrations
         .map(
             (integration: Map<any, any>) =>
                 integration.getIn(['meta', 'shop_name']) as string
         )
         .toArray()
+
+    const [states, dispatch] = useReducer(reducer, initialState)
+    const {isUpdating, isInitialized} = states
+
+    const initState = () => {
+        dispatch({type: 'ready'})
+    }
+
+    useEffect(() => {
+        if (!integration.isEmpty() && !isInitialized) {
+            initState()
+        }
+    }, [initState, integration, isInitialized])
+
+    const onToggleSelfService = async (toggledShopDomain: string) => {
+        dispatch({type: 'updating'})
+        const existingMeta: Map<any, any> =
+            integration.get('meta') || fromJS({})
+
+        const newMeta = existingMeta.set(
+            'self_service',
+            fromJS({
+                enabled: false, // need to explicitly set it to false since it's being replaced by the new config
+                configurations: shopNames.map((shopName) => {
+                    const permanentDomain = `${shopName}${SHOPIFY_DOMAIN_SUFFIX}`
+                    const shopifyIntegration = shopifyIntegrations.find(
+                        (shopInt: Map<any, any>) => {
+                            return (
+                                shopInt.getIn(['meta', 'shop_name']) ===
+                                shopName
+                            )
+                        }
+                    ) as Map<any, any>
+
+                    const currentToggleValue = computeToggleValue(
+                        integration,
+                        shopifyIntegration
+                    )
+
+                    return {
+                        base_url: permanentDomain,
+                        integration_id: shopifyIntegration.get('id'),
+                        enabled:
+                            toggledShopDomain === permanentDomain
+                                ? !currentToggleValue
+                                : currentToggleValue,
+                    } as SelfServiceConfiguration
+                }),
+            })
+        )
+
+        const payload: Map<any, any> = fromJS({
+            id: integration.get('id'),
+            meta: newMeta,
+        })
+
+        try {
+            await updateOrCreateIntegration(payload)
+        } finally {
+            dispatch({type: 'updated'})
+        }
+    }
 
     const integrationType: string = integration.get('type')
 
@@ -143,30 +257,61 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                                     hover
                                 >
                                     <tbody>
-                                        {shopifyIntegrations
-                                            .valueSeq()
-                                            .map(
-                                                (
-                                                    integration: Map<any, any>
-                                                ) => (
-                                                    <MigratedIntegrationRow
-                                                        key={integration.get(
+                                        {shopifyIntegrations.map(
+                                            (
+                                                shopifyIntegration: Map<
+                                                    any,
+                                                    any
+                                                >
+                                            ) => {
+                                                const shopName = shopifyIntegration.getIn(
+                                                    ['meta', 'shop_name']
+                                                ) as string
+                                                const permanentDomain = `${shopName}${SHOPIFY_DOMAIN_SUFFIX}`
+
+                                                const toggleValue = computeToggleValue(
+                                                    integration,
+                                                    shopifyIntegration
+                                                )
+
+                                                return (
+                                                    <tr
+                                                        key={shopifyIntegration.get(
                                                             'id'
                                                         )}
-                                                        integration={
-                                                            integration
-                                                        }
-                                                        configuration={_findConfiguration(
-                                                            selfServiceConfigurations,
-                                                            integration
-                                                        )}
-                                                        isLoadingConfigurations={
-                                                            isLoadingConfigurations
-                                                        }
-                                                        actions={actions}
-                                                    />
+                                                    >
+                                                        <td className="pl-0">
+                                                            <b>
+                                                                {shopifyIntegration.get(
+                                                                    'name'
+                                                                )}
+                                                            </b>
+                                                        </td>
+                                                        <td className="smallest align-middle">
+                                                            <ToggleButton
+                                                                className={classnames(
+                                                                    {
+                                                                        'btn-loading': isUpdating,
+                                                                    }
+                                                                )}
+                                                                disabled={
+                                                                    isUpdating
+                                                                }
+                                                                label={`Enable Self-service for ${shopName}`}
+                                                                value={
+                                                                    toggleValue
+                                                                }
+                                                                onChange={() =>
+                                                                    onToggleSelfService(
+                                                                        permanentDomain
+                                                                    )
+                                                                }
+                                                            />
+                                                        </td>
+                                                    </tr>
                                                 )
-                                            )}
+                                            }
+                                        )}
                                     </tbody>
                                 </Table>
                             </>
@@ -192,18 +337,11 @@ const mapStateToProps = (state: RootState) => {
         shopifyIntegrations: getIntegrationsByTypes(
             IntegrationType.ShopifyIntegrationType
         )(state),
-        selfServiceConfigurations: getSelfServiceConfigurations(state),
-        isLoadingConfigurations: getLoading(state),
     }
 }
 
-const connector = connect(
-    mapStateToProps,
-    (dispatch: GorgiasThunkDispatch<any, any, any>) => {
-        return {
-            actions: bindActionCreators(SelfServiceActions, dispatch),
-        }
-    }
-)
+const connector = connect(mapStateToProps, {
+    updateOrCreateIntegration,
+})
 
 export default connector(GorgiasChatIntegrationSelfServiceComponent)

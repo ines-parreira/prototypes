@@ -18,7 +18,6 @@ import layoutReducer from './layout/reducers'
 import macrosReducer from './macro/reducer'
 import newMessageReducer from './newMessage/reducers'
 import rulesReducer from './rules/reducers'
-import selfServiceReducer from './self_service/reducers'
 import schemasReducer from './schemas/reducers'
 import statsReducer from './stats/reducers'
 import tagsReducer from './tags/reducers'
@@ -51,7 +50,6 @@ const rootReducer = combineReducers<StoreState>({
     //eslint-disable-next-line @typescript-eslint/no-unsafe-call
     notifications: notificationsReducer(),
     rules: rulesReducer,
-    selfService: selfServiceReducer,
     schemas: schemasReducer,
     stats: statsReducer,
     tags: tagsReducer,
