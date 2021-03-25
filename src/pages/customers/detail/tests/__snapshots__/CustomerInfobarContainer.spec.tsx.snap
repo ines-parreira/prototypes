@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomerInfobarContainer /> should not render anything without a customer id 1`] = `null`;
+
+exports[`<CustomerInfobarContainer /> should render infobar for active customer 1`] = `
+<div>
+  <div>
+    Infobar
+  </div>
+  <div>
+    actions: 
+    {"widgets":{}}
+  </div>
+  <div>
+    infobar: 
+    {}
+  </div>
+  <div>
+    sources: 
+    {"ticket":{"customer":{}},"customer":{}}
+  </div>
+  <div>
+    isRouteEditingWidgets: 
+  </div>
+  <div>
+    identifier: 
+    1
+  </div>
+  <div>
+    customer: 
+    name
+    Don Draper
+  </div>
+  <div>
+    widgets: 
+    {}
+  </div>
+  <div>
+    context: 
+    customer
+  </div>
+</div>
+`;

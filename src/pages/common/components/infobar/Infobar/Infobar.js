@@ -44,9 +44,7 @@ type Props = {
             stopEditionMode: typeof stopEditionMode,
             submitWidgets: typeof submitWidgets,
         },
-        infobar: {
-            fetchPreviewCustomer: typeof infobarActions.fetchPreviewCustomer,
-        },
+        fetchPreviewCustomer: typeof infobarActions.fetchPreviewCustomer,
     },
     context: string,
     identifier: string,
@@ -218,7 +216,7 @@ export class Infobar extends React.Component<Props, State> {
 
     _onSearchResultClick = async (customer: Map<*, *>) => {
         this.setState({isFetchingCustomer: true})
-        const result = await this.props.actions.infobar.fetchPreviewCustomer(
+        const result = await this.props.actions.fetchPreviewCustomer(
             customer.get('id')
         )
         if (result.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
