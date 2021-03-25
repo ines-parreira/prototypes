@@ -158,6 +158,7 @@ export type Meta = {
     private_reply?: FacebookPrivateReply
     is_duplicated?: boolean
     is_story_mention?: boolean
+    is_story_reply?: boolean
 }
 
 export type FacebookPrivateReply = {

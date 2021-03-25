@@ -80,10 +80,21 @@ export default function Meta(props: Props) {
         meta &&
         meta.is_story_mention
 
+    const isStoryReplyDirectMessage =
+        source &&
+        source.type &&
+        source.type === INSTAGRAM_DM_SOURCE &&
+        meta &&
+        meta.is_story_reply
+
     let type
     let link
 
-    if (!!messageId && !!integrationId && isStoryMentionDirectMessage) {
+    if (
+        !!messageId &&
+        !!integrationId &&
+        (isStoryMentionDirectMessage || isStoryReplyDirectMessage)
+    ) {
         // We don't want to display a `go to story` link after 24h
         const limit = moment().subtract(24, 'hour') // 24 hours ago
         const isMessageTooOld = moment(messageCreatedDatetime).isBefore(limit)
