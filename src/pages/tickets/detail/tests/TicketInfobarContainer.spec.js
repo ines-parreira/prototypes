@@ -28,13 +28,7 @@ describe('TicketInfobarContainer component', () => {
                 fetchWidgets: jest.fn(),
                 selectContext: jest.fn(),
             },
-            infobar: {
-                executeAction: jest.fn(),
-                fetchPreviewCustomer: jest.fn(),
-                handleExecutedAction: jest.fn(),
-                search: jest.fn(),
-                similarCustomer: jest.fn(),
-            },
+            fetchPreviewCustomer: jest.fn(),
         },
         infobar: fromJS({}),
         ticket: fromJS({}),
@@ -64,16 +58,22 @@ describe('TicketInfobarContainer component', () => {
     it('should disable widget editing new tickets without customer', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />)
 
-        expect(component.prop('customer')).toBeImmutable(fromJS({}))
+        expect(component.prop('customer')).toEqualImmutable(fromJS({}))
     })
 
     it('should allow widget editing new tickets with customer', () => {
-        const ticket = fromJS({
-            customer: {name: 'Pizza Pepperoni'},
+        const sources = fromJS({
+            ticket: fromJS({
+                customer: {name: 'Pizza Pepperoni'},
+            }),
+            customer: fromJS({}),
         })
-        const component = shallow(<TicketInfobarContainer {...minProps} />)
-        component.setProps({ticket})
+        const component = shallow(
+            <TicketInfobarContainer {...minProps} sources={sources} />
+        )
 
-        expect(component.prop('customer')).toBeImmutable(ticket.get('customer'))
+        expect(component.prop('customer')).toEqualImmutable(
+            sources.getIn(['ticket', 'customer'])
+        )
     })
 })

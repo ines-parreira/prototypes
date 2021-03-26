@@ -7,14 +7,14 @@ import {withRouter} from 'react-router-dom'
 import Infobar from '../../common/components/infobar/Infobar'
 
 import * as WidgetActions from '../../../state/widgets/actions.ts'
-import * as InfobarActions from '../../../state/infobar/actions.ts'
+import {fetchPreviewCustomer} from '../../../state/infobar/actions.ts'
 import {InfobarState} from '../../../state/infobar/types.ts'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors.ts'
 import {WidgetsState} from '../../../state/widgets/types.ts'
 
 type Props = {
     actions: {
-        infobar: typeof InfobarActions,
+        fetchPreviewCustomer: typeof fetchPreviewCustomer,
         widgets: typeof WidgetActions,
     },
     infobar: InfobarState,
@@ -76,7 +76,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
-            infobar: bindActionCreators(InfobarActions, dispatch),
+            fetchPreviewCustomer: bindActionCreators(
+                fetchPreviewCustomer,
+                dispatch
+            ),
             widgets: bindActionCreators(WidgetActions, dispatch),
         },
     }

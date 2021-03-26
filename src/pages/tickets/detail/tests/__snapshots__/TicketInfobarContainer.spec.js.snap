@@ -4,13 +4,7 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
 <Connect(Component)
   actions={
     Object {
-      "infobar": Object {
-        "executeAction": [MockFunction],
-        "fetchPreviewCustomer": [MockFunction],
-        "handleExecutedAction": [MockFunction],
-        "search": [MockFunction],
-        "similarCustomer": [MockFunction],
-      },
+      "fetchPreviewCustomer": [MockFunction],
       "widgets": Object {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
