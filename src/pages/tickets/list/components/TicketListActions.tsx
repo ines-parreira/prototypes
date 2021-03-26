@@ -1,8 +1,7 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component, ReactElement} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {fromJS, type List, type Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
 import {
@@ -20,75 +19,59 @@ import {
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../../../services/shortcutManager/index.ts'
-
-import * as viewsActions from '../../../../../state/views/actions.ts'
-import * as ticketsActions from '../../../../../state/tickets/actions'
-import * as viewsSelectors from '../../../../../state/views/selectors.ts'
-
-import {getAgents} from '../../../../../state/agents/selectors.ts'
-import {getTeams} from '../../../../../state/teams/selectors.ts'
-
-import type {currentUserType} from '../../../../../state/types'
-import type {teamsType} from '../../../../../state/teams/types'
-import type {agentsType} from '../../../../../state/agents/types'
-import type {viewType} from '../../../../../state/views/types'
-import {AGENT_ROLE} from '../../../../../config/user.ts'
-import {
-    DELETE_TICKET_JOB_TYPE,
-    EXPORT_TICKET_JOB_TYPE,
-    UPDATE_TICKET_JOB_TYPE,
-} from '../../../../../constants/job.ts'
-import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
-import {hasRole} from '../../../../../utils.ts'
-import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
-import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
-import history from '../../../../history.ts'
+import shortcutManager from '../../../../services/shortcutManager'
+import * as viewsActions from '../../../../state/views/actions'
+import * as ticketsActions from '../../../../state/tickets/actions.js'
+import * as viewsSelectors from '../../../../state/views/selectors'
+import {getAgents} from '../../../../state/agents/selectors'
+import {getTeams} from '../../../../state/teams/selectors'
+import {RootState} from '../../../../state/types'
+import {AGENT_ROLE} from '../../../../config/user'
+import {AgentLabel, TeamLabel} from '../../../common/utils/labels.js'
+import {hasRole} from '../../../../utils'
+import TagDropdownMenu from '../../../common/components/TagDropdownMenu/TagDropdownMenu'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../../common/utils/withCancellableRequest'
+import history from '../../../history'
+import {JobType} from '../../../../models/job/types'
 
 import css from './TicketListActions.less'
 
-type Props = {
-    view: viewType,
-    actions: {
-        views: typeof viewsActions,
-        tickets: typeof ticketsActions,
-    },
-    selectedItemsIds: List<Map<*, *>>,
-    fieldEnumSearchCancellable: (
-        field: Map<*, *>,
-        query: string
-    ) => Promise<?List<*>>,
-    currentUser: currentUserType,
-    teams: teamsType,
-    agents: agentsType,
-    areFiltersValid: boolean,
-    isActiveViewTrashView: boolean,
-    openMacroModal: () => void,
-    activeView: viewType,
-    allViewItemsSelected: boolean,
-    getViewCount: (id: number) => number,
+type OwnProps = {
+    view: Map<any, any>
+    selectedItemsIds: List<number>
+    openMacroModal: () => void
 }
 
+type Props = OwnProps &
+    ConnectedProps<typeof connector> &
+    CancellableRequestInjectedProps<
+        'fieldEnumSearchCancellable',
+        'cancelFieldEnumSearchCancellable',
+        typeof viewsActions.fieldEnumSearch
+    >
+
 type State = {
-    popoverOpen: string,
-    teamsSearch: string,
-    agentsSearch: string,
-    tagsSearch: string,
-    tags: List<Map<*, *>>,
-    isLoadingTags: boolean,
-    askTrashConfirmation: boolean,
-    askDeleteConfirmation: boolean,
-    isLaunchingJob: boolean,
+    popoverOpen: string
+    teamsSearch: string
+    agentsSearch: string
+    tagsSearch: string
+    tags: List<Map<any, any>>
+    isLoadingTags: boolean
+    askTrashConfirmation: boolean
+    askDeleteConfirmation: boolean
+    isLaunchingJob: boolean
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
-export class TicketListActionsContainer extends React.Component<Props, State> {
+export class TicketListActionsContainer extends Component<Props, State> {
     state = {
         popoverOpen: '',
         teamsSearch: '',
         agentsSearch: '',
         tagsSearch: '',
-        tags: fromJS([]),
+        tags: fromJS([]) as List<Map<any, any>>,
         isLoadingTags: false,
         askTrashConfirmation: false,
         askDeleteConfirmation: false,
@@ -169,7 +152,7 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
         return this.state.popoverOpen === popoverOpen
     }
 
-    _togglePopover = (popoverOpen: string = '') => {
+    _togglePopover = (popoverOpen = '') => {
         return this.setState({popoverOpen})
     }
 
@@ -224,7 +207,7 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
             filter: {type: 'tag'},
         })
 
-        fieldEnumSearchCancellable(field, search).then((data) => {
+        void fieldEnumSearchCancellable(field, search).then((data) => {
             if (!data) {
                 return
             }
@@ -237,7 +220,10 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
 
     _queryTagsOnSearch = _debounce(this._queryTags, 300)
 
-    _createJob = async (jobType: string, jobParams: Object) => {
+    _createJob = async (
+        jobType: string,
+        jobParams: Record<string, unknown>
+    ) => {
         this.setState({isLaunchingJob: true})
         const actionsToUse = this.props.allViewItemsSelected
             ? this.props.actions.views
@@ -260,29 +246,29 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
         if (!this._hasChecked()) {
             return
         }
-        this._createJob(UPDATE_TICKET_JOB_TYPE, {updates: {[key]: value}})
+        void this._createJob(JobType.UpdateTicket, {updates: {[key]: value}})
     }
 
     _bulkExport = () => {
-        this._createJob(EXPORT_TICKET_JOB_TYPE, {})
+        void this._createJob(JobType.ExportTicket, {})
     }
 
     _bulkTrash = () => {
         this._toggleTrashConfirmation(false)
-        this._createJob(UPDATE_TICKET_JOB_TYPE, {
+        void this._createJob(JobType.UpdateTicket, {
             updates: {trashed_datetime: moment.utc()},
         })
     }
 
     _bulkUnTrash = () => {
-        this._createJob(UPDATE_TICKET_JOB_TYPE, {
+        void this._createJob(JobType.UpdateTicket, {
             updates: {trashed_datetime: null},
         })
     }
 
     _bulkDelete = () => {
         this.setState({askDeleteConfirmation: false})
-        this._createJob(DELETE_TICKET_JOB_TYPE, {})
+        void this._createJob(JobType.DeleteTicket, {})
     }
 
     _renderTagsMenu = () => {
@@ -298,20 +284,20 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
         }
 
         let options = this.state.tags.map((tag) => {
-            const name = tag.get('name')
+            const name = tag!.get('name')
             return (
                 <DropdownItem
                     key={name}
                     type="button"
-                    onClick={() => this._bulkUpdate('tags', [tag.get('name')])}
+                    onClick={() => this._bulkUpdate('tags', [tag!.get('name')])}
                 >
                     {name}
                 </DropdownItem>
             )
-        })
+        }) as List<ReactElement>
 
         const isInEnum = !!this.state.tags.find(
-            (tag) => tag.get('name') === tagsSearch
+            (tag) => tag!.get('name') === tagsSearch
         )
 
         if (!isInEnum && tagsSearch) {
@@ -333,7 +319,7 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
         return options
     }
 
-    _toggleTrashConfirmation = (visible: ?any) => {
+    _toggleTrashConfirmation = (visible?: any) => {
         const opens = !_isUndefined(visible)
             ? visible
             : !this._isPopoverOpen('trash')
@@ -372,13 +358,17 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
         const areItemsSelected = !selectedItemsIds.isEmpty()
 
         const filteredTeams = teams.filter((team) =>
-            team.get('name').toLowerCase().includes(teamsSearch.toLowerCase())
-        )
+            (team!.get('name') as string)
+                .toLowerCase()
+                .includes(teamsSearch.toLowerCase())
+        ) as List<Map<any, any>>
 
         const filteredAgents = agents.filter((agent) => {
-            const agentLabel = agent.get('name') || agent.get('email')
+            const agentLabel =
+                (agent!.get('name') as string) ||
+                (agent!.get('email') as string)
             return agentLabel.toLowerCase().includes(agentsSearch.toLowerCase())
-        })
+        }) as List<Map<any, any>>
 
         const selectedCount = allViewItemsSelected
             ? getViewCount(activeView.get('id'))
@@ -487,21 +477,21 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
                             <div className={css['agents-dropdown-list']}>
                                 {filteredAgents.map((agent) => (
                                     <DropdownItem
-                                        key={agent.get('id')}
+                                        key={agent!.get('id')}
                                         type="button"
                                         onClick={() => {
                                             this._bulkUpdate('assignee_user', {
-                                                id: agent.get('id'),
-                                                name: agent.get('name'),
+                                                id: agent!.get('id'),
+                                                name: agent!.get('name'),
                                             })
                                         }}
                                     >
                                         <AgentLabel
                                             name={
-                                                agent.get('name') ||
-                                                agent.get('email')
+                                                agent!.get('name') ||
+                                                agent!.get('email')
                                             }
-                                            profilePictureUrl={agent.getIn([
+                                            profilePictureUrl={agent!.getIn([
                                                 'meta',
                                                 'profile_picture_url',
                                             ])}
@@ -582,19 +572,19 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
                             <div className={css['teams-dropdown-list']}>
                                 {filteredTeams.map((team) => (
                                     <DropdownItem
-                                        key={team.get('id')}
+                                        key={team!.get('id')}
                                         type="button"
                                         className={css['teams-dropdown-item']}
                                         onClick={() => {
                                             this._bulkUpdate(
                                                 'assignee_team_id',
-                                                team.get('id')
+                                                team!.get('id')
                                             )
                                         }}
                                     >
                                         <TeamLabel
-                                            name={team.get('name')}
-                                            emoji={team.getIn([
+                                            name={team!.get('name')}
+                                            emoji={team!.getIn([
                                                 'decoration',
                                                 'emoji',
                                             ])}
@@ -772,32 +762,32 @@ export class TicketListActionsContainer extends React.Component<Props, State> {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        currentUser: state.currentUser,
-        teams: getTeams(state),
-        agents: getAgents(state),
-        isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
-            state
-        ),
-        areFiltersValid: viewsSelectors.areFiltersValid(state),
-        activeView: viewsSelectors.getActiveView(state),
-        getViewCount: viewsSelectors.makeGetViewCount(state),
+const connector = connect(
+    (state: RootState) => {
+        return {
+            currentUser: state.currentUser,
+            teams: getTeams(state) as List<Map<any, any>>,
+            agents: getAgents(state) as List<Map<any, any>>,
+            isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
+            allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
+                state
+            ),
+            areFiltersValid: viewsSelectors.areFiltersValid(state),
+            activeView: viewsSelectors.getActiveView(state),
+            getViewCount: viewsSelectors.makeGetViewCount(state),
+        }
+    },
+    (dispatch) => {
+        return {
+            actions: {
+                views: bindActionCreators(viewsActions, dispatch),
+                tickets: bindActionCreators(ticketsActions, dispatch),
+            },
+        }
     }
-}
+)
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            views: bindActionCreators(viewsActions, dispatch),
-            tickets: bindActionCreators(ticketsActions, dispatch),
-        },
-    }
-}
-
-//$FlowFixMe
 export default withCancellableRequest(
     'fieldEnumSearchCancellable',
     viewsActions.fieldEnumSearch
-)(connect(mapStateToProps, mapDispatchToProps)(TicketListActionsContainer))
+)(connector(TicketListActionsContainer))

@@ -1,7 +1,7 @@
-import React, {CSSProperties} from 'react'
+import React, {ComponentProps, CSSProperties} from 'react'
 import {DropdownMenu} from 'reactstrap'
 
-type Props = {
+type Props = ComponentProps<typeof DropdownMenu> & {
     style?: CSSProperties
 }
 

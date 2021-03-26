@@ -1,52 +1,36 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component, ComponentProps, ComponentType} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import DocumentTitle from 'react-document-title'
-import {Link, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Button} from 'reactstrap'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
-import type {Map, List} from 'immutable'
-
-import MacroContainer from '../common/macros/MacroContainer'
-import {compactInteger} from '../../../utils.ts'
-import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
-
-import * as tagsActions from '../../../state/tags/actions.ts'
-
-import * as ticketsSelectors from '../../../state/tickets/selectors.ts'
-import * as viewsSelectors from '../../../state/views/selectors.ts'
-
-import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
-
-import type {reactRouterLocation, reactRouterRoute} from '../../../types'
+import MacroContainer from '../common/macros/MacroContainer.js'
+import {compactInteger} from '../../../utils'
+import {isCreationUrl, isSearchUrl} from '../../common/utils/url.js'
+import * as tagsActions from '../../../state/tags/actions'
+import * as ticketsSelectors from '../../../state/tickets/selectors'
+import * as viewsSelectors from '../../../state/views/selectors'
+import ViewTable from '../../common/components/ViewTable/ViewTable'
+import {RootState} from '../../../state/types'
 
 import TicketListActions from './components/TicketListActions'
-
 import css from './TicketListContainer.less'
 
-type Props = {
-    activeView: Map<*, *>,
-    hasActiveView: boolean,
-    fetchTags: typeof tagsActions.fetchTags,
-    selectedItemsIds: List<*>,
-    views: {},
-    tickets: {},
-
-    route: reactRouterRoute,
-    location: reactRouterLocation,
-    params?: {},
-    urlViewId?: string,
+type Params = {
+    viewId?: string
 }
+
+type Props = ConnectedProps<typeof connector> & RouteComponentProps<Params>
 
 type State = {
-    isSearch: boolean,
-    isUpdate: boolean,
-    isMacroModalOpen: boolean,
-    actionsComponent: ?Object,
+    isSearch: boolean
+    isUpdate: boolean
+    isMacroModalOpen: boolean
+    actionsComponent: Maybe<ComponentType>
 }
 
-class TicketListContainer extends React.Component<Props, State> {
+class TicketListContainer extends Component<Props, State> {
     state = {
         isSearch: false,
         isUpdate: true,
@@ -54,7 +38,7 @@ class TicketListContainer extends React.Component<Props, State> {
         actionsComponent: null,
     }
 
-    _setInitialState = (props) => {
+    _setInitialState = (props: Props) => {
         this.setState({
             isSearch: isSearchUrl(props.location.pathname, 'tickets'),
             isUpdate: !isCreationUrl(props.location.pathname, 'tickets'),
@@ -62,19 +46,22 @@ class TicketListContainer extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this.props.fetchTags()
+        void this.props.fetchTags()
         this._setInitialState(this.props)
     }
 
     componentDidMount() {
         this.setState({
-            actionsComponent: decorateComponentWithProps(TicketListActions, {
+            actionsComponent: decorateComponentWithProps<
+                ComponentProps<typeof TicketListActions>,
+                {openMacroModal: () => void}
+            >(TicketListActions, {
                 openMacroModal: this._openMacroModal,
             }),
         })
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         this._setInitialState(nextProps)
     }
 
@@ -146,23 +133,22 @@ class TicketListContainer extends React.Component<Props, State> {
     }
 }
 
-function mapStateToProps(state, ownProps) {
-    const urlViewId = ownProps.match.params.viewId
+const connector = connect(
+    (state: RootState, ownProps: RouteComponentProps<Params>) => {
+        const urlViewId = ownProps.match.params.viewId
 
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        hasActiveView: viewsSelectors.hasActiveView(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-        tickets: ticketsSelectors.getTickets(state),
-        urlViewId,
-        views: state.views,
+        return {
+            activeView: viewsSelectors.getActiveView(state),
+            hasActiveView: viewsSelectors.hasActiveView(state),
+            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+            tickets: ticketsSelectors.getTickets(state),
+            urlViewId,
+            views: state.views,
+        }
+    },
+    {
+        fetchTags: tagsActions.fetchTags,
     }
-}
-
-const mapDispatchToProps = {
-    fetchTags: tagsActions.fetchTags,
-}
-
-export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(TicketListContainer)
 )
+
+export default withRouter(connector(TicketListContainer))

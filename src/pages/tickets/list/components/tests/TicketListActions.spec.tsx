@@ -1,17 +1,32 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {initialState as currentUser} from '../../../../../state/currentUser/reducers.ts'
-import {TicketListActionsContainer} from '../TicketListActions/TicketListActions'
-import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user.ts'
+import {initialState as currentUser} from '../../../../../state/currentUser/reducers'
+import {TicketListActionsContainer} from '../TicketListActions'
+import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user'
+import * as viewsActions from '../../../../../state/views/actions'
+import * as ticketsActions from '../../../../../state/tickets/actions.js'
 
 describe('TicketListActions component', () => {
-    const minProps = {
-        agents: fromJS([]),
+    const minProps: ComponentProps<typeof TicketListActionsContainer> = {
         currentUser,
-        teams: fromJS([]),
         areFiltersValid: true,
+        isActiveViewTrashView: false,
+        allViewItemsSelected: false,
+        activeView: fromJS({}) as Map<any, any>,
+        agents: fromJS([]) as List<any>,
+        teams: fromJS([]) as List<any>,
+        view: fromJS({}) as Map<any, any>,
+        selectedItemsIds: fromJS([]) as List<any>,
+        getViewCount: jest.fn(),
+        openMacroModal: jest.fn(),
+        fieldEnumSearchCancellable: jest.fn(),
+        cancelFieldEnumSearchCancellable: jest.fn(),
+        actions: {
+            views: {} as typeof viewsActions,
+            tickets: {} as typeof ticketsActions,
+        },
     }
 
     it('should display when nothing is selected', () => {

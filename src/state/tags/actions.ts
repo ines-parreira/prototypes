@@ -25,7 +25,7 @@ export function addTags(
 }
 
 export function fetchTags(
-    page: Maybe<number>,
+    page?: Maybe<number>,
     sort: TagSortableProperty = TagSortableProperty.Usage,
     reverse = true,
     search = ''

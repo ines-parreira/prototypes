@@ -1,29 +1,20 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import moment from 'moment'
+import {Map} from 'immutable'
 
-import type {Map, List} from 'immutable'
-
-import {
-    EMAIL_INTEGRATION_TYPE,
-    FACEBOOK_INTEGRATION_TYPE,
-    GORGIAS_CHAT_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
-    SMOOCH_INTEGRATION_TYPE,
-} from '../../../constants/integration.ts'
-import {tryLocalStorage} from '../../../services/common/utils.ts'
-import * as agentSelectors from '../../../state/agents/selectors.ts'
-import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import * as integrationsSelectors from '../../../state/integrations/selectors.ts'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker'
-import {isAdmin} from '../../../utils.ts'
-
-import InfobarLayout from '../../common/components/infobar/InfobarLayout'
-import Video from '../../common/components/Video'
+import {tryLocalStorage} from '../../../services/common/utils'
+import * as agentSelectors from '../../../state/agents/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as integrationsSelectors from '../../../state/integrations/selectors'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {isAdmin} from '../../../utils'
+import InfobarLayout from '../../common/components/infobar/InfobarLayout.js'
+import Video from '../../common/components/Video/Video'
+import {RootState} from '../../../state/types'
+import {IntegrationType} from '../../../models/integration/types'
 
 import css from './TicketListInfobarContainer.less'
 
@@ -38,16 +29,13 @@ const CheckIcon = ({condition}: {condition: boolean}) => (
     </i>
 )
 
-type Props = {
-    agents: List<*>,
-    currentUser: Map<*, *>,
-    emailIntegrations: List<*>,
-    hasIntegrationsOfTypes: typeof integrationsSelectors.hasIntegrationOfTypes,
-}
+type Props = ConnectedProps<typeof connector>
 
-class TicketListInfobarContainer extends React.Component<Props> {
+class TicketListInfobarContainer extends Component<Props> {
     _hideBoarding = () => {
-        tryLocalStorage(() => window.localStorage.setItem('hideBoarding', true))
+        tryLocalStorage(() =>
+            window.localStorage.setItem('hideBoarding', 'true')
+        )
         this.forceUpdate()
     }
 
@@ -61,30 +49,32 @@ class TicketListInfobarContainer extends React.Component<Props> {
 
         const hasVerifiedEmailIntegration = emailIntegrations
             .filter(
-                (integration) =>
-                    !integration
-                        .getIn(['meta', 'address'])
-                        .endsWith(window.EMAIL_FORWARDING_DOMAIN)
+                (integration: Map<any, any>) =>
+                    !(integration.getIn([
+                        'meta',
+                        'address',
+                    ]) as string).endsWith(window.EMAIL_FORWARDING_DOMAIN)
             ) // remove generated gorgias addresses
-            .some((integration) => {
+            .some((integration: Map<any, any>) => {
                 // gmail or outlook is connected or forwarding is on
                 return (
-                    integration.get('type') !== EMAIL_INTEGRATION_TYPE ||
-                    integration.getIn(['meta', 'verified'])
+                    integration.get('type') !==
+                        IntegrationType.EmailIntegrationType ||
+                    (integration.getIn(['meta', 'verified']) as boolean)
                 )
             })
 
         const hasConnectedFacebook = hasIntegrationsOfTypes(
-            FACEBOOK_INTEGRATION_TYPE
+            IntegrationType.FacebookIntegrationType
         )
         const hasShopifyIntegration = hasIntegrationsOfTypes(
-            SHOPIFY_INTEGRATION_TYPE
+            IntegrationType.ShopifyIntegrationType
         )
 
         const hasConnectedChat = hasIntegrationsOfTypes([
-            SMOOCH_INTEGRATION_TYPE,
-            SMOOCH_INSIDE_INTEGRATION_TYPE,
-            GORGIAS_CHAT_INTEGRATION_TYPE,
+            IntegrationType.SmoochIntegrationType,
+            IntegrationType.SmoochInsideIntegrationType,
+            IntegrationType.GorgiasChatIntegrationType,
         ])
 
         const hasInvitedTeamMembers = agents.size > 1
@@ -221,7 +211,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state) => {
+const connector = connect((state: RootState) => {
     return {
         agents: agentSelectors.getAgents(state),
         currentUser: currentUserSelectors.getCurrentUser(state),
@@ -230,6 +220,6 @@ const mapStateToProps = (state) => {
             state
         ),
     }
-}
+})
 
-export default connect(mapStateToProps)(TicketListInfobarContainer)
+export default connector(TicketListInfobarContainer)
