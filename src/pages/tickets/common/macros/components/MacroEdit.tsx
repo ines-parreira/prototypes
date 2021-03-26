@@ -368,7 +368,7 @@ export class MacroEdit extends React.Component<
                                     break
                                 case ticketTypes.SNOOZE_TICKET:
                                     config = {
-                                        title: 'Snooze ticket for...',
+                                        title: 'Snooze for',
                                         content: (
                                             <SnoozeTicketAction
                                                 index={index}

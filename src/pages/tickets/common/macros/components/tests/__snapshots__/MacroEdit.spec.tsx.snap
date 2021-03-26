@@ -631,7 +631,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                           tabIndex="0"
                           type="button"
                         >
-                          Snooze ticket
+                          Snooze for
                         </button>
                       </DropdownItem>
                       <DropdownItem

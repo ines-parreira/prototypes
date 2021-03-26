@@ -579,7 +579,7 @@ export const ACTION_TEMPLATES = [
     {
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.SnoozeTicket,
-        title: 'Snooze ticket',
+        title: 'Snooze for',
         partialUpdateKeys: ['snooze_datetime', 'status'],
         partialUpdateValues: ['snooze_datetime', 'status'],
     },

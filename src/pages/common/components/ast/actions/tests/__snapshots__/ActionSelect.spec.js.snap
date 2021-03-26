@@ -96,7 +96,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Snooze ticket
+      Snooze for
     </DropdownItem>
     <DropdownItem
       key="9"
@@ -234,7 +234,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Snooze ticket
+      Snooze for
     </DropdownItem>
     <DropdownItem
       key="9"

@@ -120,7 +120,7 @@ class Preview extends React.Component {
             ])
             return (
                 <div className={css.macroData}>
-                    <strong className="text-muted">Snooze ticket for </strong>
+                    <strong className="text-muted">Snooze for </strong>
                     <TimedeltaLabel duration={duration} />
                 </div>
             )
