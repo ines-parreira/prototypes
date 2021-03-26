@@ -1,55 +1,52 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import React, {ReactElement} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Expression, Identifier, Literal} from 'estree'
+import {List, Map, Seq} from 'immutable'
 
-import {IntegrationsDetailLabel} from '../../../utils/labels'
-import {getLanguageDisplayName} from '../../../../../utils.ts'
+import {IntegrationsDetailLabel} from '../../../utils/labels.js'
+import {getLanguageDisplayName} from '../../../../../utils'
 
-import {getMessagingIntegrations} from '../../../../../state/integrations/selectors.ts'
-import * as viewsSelectors from '../../../../../state/views/selectors.ts'
-import {getTags} from '../../../../../state/tags/selectors.ts'
+import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
+import * as viewsSelectors from '../../../../../state/views/selectors'
+import {getTags} from '../../../../../state/tags/selectors'
+import {updateFieldFilter} from '../../../../../state/views/actions'
+import {RootState} from '../../../../../state/types'
+import {Option} from '../../../forms/MultiSelectOptionsField/types'
+import {FieldSearchResult} from '../../../../../state/views/types'
 
-import {timedeltaOperators} from '../../../../../config/rules.ts'
-import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu.tsx'
+import {timedeltaOperators} from '../../../../../config/rules'
 
-import FilterDropdown from '../FilterDropdown.tsx'
-import DatetimePicker from '../../../forms/DatetimePicker'
-import TimedeltaPicker from '../../../forms/TimedeltaPicker'
-import MultiSelectField from '../../../forms/MultiSelectField'
-import FilterMultiSelectField from '../FilterMultiSelectField.tsx'
-import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants'
-import {INSTAGRAM_DM_CHANNEL} from '../../../../../config/ticket.ts'
+import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
-@connect((state) => {
-    return {
-        integrations: getMessagingIntegrations(state),
-        areFiltersValid: viewsSelectors.areFiltersValid(state),
-        tags: getTags(state),
-        currentAccountDomain: state.currentAccount.get('domain'),
-    }
-})
-export default class Right extends React.Component {
-    static propTypes = {
-        operator: PropTypes.object,
-        areFiltersValid: PropTypes.bool.isRequired,
-        config: ImmutablePropTypes.map.isRequired,
-        field: ImmutablePropTypes.map,
-        view: PropTypes.object,
-        node: PropTypes.object,
-        index: PropTypes.number.isRequired,
-        agents: PropTypes.object.isRequired,
-        teams: PropTypes.object.isRequired,
-        integrations: PropTypes.object.isRequired,
-        currentUser: PropTypes.object.isRequired,
-        updateFieldFilter: PropTypes.func.isRequired,
-        objectPath: PropTypes.string.isRequired,
-        empty: PropTypes.bool.isRequired,
-        tags: PropTypes.object.isRequired,
-        currentAccountDomain: PropTypes.string.isRequired,
-    }
+import FilterDropdown from '../FilterDropdown'
+import DatetimePicker from '../../../forms/DatetimePicker.js'
+import TimedeltaPicker from '../../../forms/TimedeltaPicker.js'
+import MultiSelectField from '../../../forms/MultiSelectField.js'
+import FilterMultiSelectField from '../FilterMultiSelectField'
+import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants.js'
+import {TicketChannel} from '../../../../../business/types/ticket'
 
-    static defaultProps = {
+type OwnProps = {
+    operator: Identifier
+    config: Map<any, any>
+    field: Map<any, any>
+    node: Expression
+    index: number
+    agents: List<Map<any, any>>
+    teams: Seq.Indexed<Map<any, any>> | List<any>
+    updateFieldFilter: typeof updateFieldFilter
+    objectPath: string
+    empty: boolean
+}
+
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+type State = {
+    dropdownOpen: boolean
+}
+
+class Right extends React.Component<Props, State> {
+    static defaultProps: Partial<Props> = {
         empty: false,
     }
 
@@ -59,17 +56,19 @@ export default class Right extends React.Component {
     }
 
     componentDidMount() {
+        const {empty, node} = this.props
         // Automatically set the first option
         // if the operator is not an empty operator AND the field has only one option
-        if (!this.props.empty && this.props.node.value === '') {
+        if (!empty && 'value' in node && node.value === '') {
             this._selectFirstOption()
         }
     }
 
     componentDidUpdate() {
+        const {empty, node} = this.props
         // Automatically set the first option
         // if the operator is not an empty operator AND the field has only one option
-        if (!this.props.empty && this.props.node.value === '') {
+        if (!empty && 'value' in node && node.value === '') {
             this._selectFirstOption()
         }
     }
@@ -81,7 +80,7 @@ export default class Right extends React.Component {
             return
         }
 
-        const options = field.getIn(['filter', 'enum'])
+        const options: List<string> = field.getIn(['filter', 'enum'])
 
         if (options && options.size === 1) {
             updateFieldFilter(index, options.first())
@@ -92,8 +91,10 @@ export default class Right extends React.Component {
         this.setState({dropdownOpen: !this.state.dropdownOpen})
     }
 
-    _mapTagSearchResultsToOptions = (results) => {
-        return results.map((result) => ({
+    _mapTagSearchResultsToOptions = (
+        results: FieldSearchResult[]
+    ): Option[] => {
+        return results.map((result: FieldSearchResult) => ({
             value: result.name,
             label: result.name,
         }))
@@ -115,7 +116,7 @@ export default class Right extends React.Component {
             return <span />
         }
 
-        if (!field) {
+        if (!field && 'value' in node) {
             return (
                 <div>
                     <div className="btn btn-outline-danger btn-frozen mr-2">
@@ -125,7 +126,8 @@ export default class Right extends React.Component {
             )
         }
 
-        let displayedValue = node.value
+        let displayedValue: Literal['value'] | ReactElement = (node as Literal)
+            .value
 
         if (displayedValue === '{{current_user.id}}') {
             // display current user variable
@@ -133,16 +135,18 @@ export default class Right extends React.Component {
         } else if (field.get('name') === 'integrations') {
             // display integration
             if (node.type === 'ArrayExpression') {
-                const selectedOptions = node.elements.map((opt) => opt.value)
-                const options = this.props.integrations
+                const selectedOptions = node.elements.map((opt) => {
+                    return (opt as Literal).value
+                })
+                const options = (this.props.integrations as List<Map<any, any>>)
                     .map((integration) => ({
-                        label: integration.get('name'),
+                        label: integration!.get('name') as string,
                         displayLabel: (
                             <IntegrationsDetailLabel
-                                integration={integration}
+                                integration={integration!}
                             />
                         ),
-                        value: integration.get('id'),
+                        value: integration!.get('id') as number,
                     }))
                     .toJS()
 
@@ -152,15 +156,19 @@ export default class Right extends React.Component {
                         options={options}
                         singular="integration"
                         plural="integrations"
-                        onChange={(value) => updateFieldFilter(index, value)}
+                        onChange={(value: Option[]) =>
+                            updateFieldFilter(index, value)
+                        }
                     />
                 )
             }
 
-            const integration = this.props.integrations.find(
+            const integration = (this.props.integrations as List<
+                Map<any, any>
+            >).find(
                 (integration) =>
-                    integration.get('id').toString() ===
-                    displayedValue.toString()
+                    (integration!.get('id') as number).toString() ===
+                    displayedValue!.toString()
             )
             if (integration) {
                 displayedValue = (
@@ -169,10 +177,14 @@ export default class Right extends React.Component {
             }
         } else if (field.get('name') === 'assignee_team') {
             // display assignee team
-            const assignee = this.props.teams.find(
+            const assignee = (this.props.teams as Seq.Indexed<
+                Map<any, any>
+            >).find(
                 (team) =>
-                    team.get('id').toString() === displayedValue.toString()
+                    (team!.get('id') as number).toString() ===
+                    displayedValue!.toString()
             )
+
             if (assignee) {
                 displayedValue = <span>{assignee.get('name')}</span>
             }
@@ -180,38 +192,47 @@ export default class Right extends React.Component {
             // display assignee user
             const assignee = this.props.agents.find(
                 (agent) =>
-                    agent.get('id').toString() === displayedValue.toString()
+                    (agent!.get('id') as number).toString() ===
+                    displayedValue!.toString()
             )
             if (assignee) {
                 displayedValue = <span>{assignee.get('name')}</span>
             }
         } else if (field.get('name') === 'customer') {
             // display customer
-            displayedValue = `Customer #${displayedValue}`
+            displayedValue = `Customer #${displayedValue as string}`
         } else if (field.get('name') === 'language') {
             // show the display name
-            displayedValue = getLanguageDisplayName(displayedValue)
-        } else if ((field.get('path') || '').endsWith('_datetime')) {
+            displayedValue = getLanguageDisplayName(
+                displayedValue as Maybe<string>
+            )
+        } else if (
+            ((field.get('path') as string) || '').endsWith('_datetime')
+        ) {
             if (timedeltaOperators.includes(operator.name)) {
                 return (
                     <TimedeltaPicker
-                        value={displayedValue}
-                        onChange={(value) => updateFieldFilter(index, value)}
+                        value={displayedValue as string}
+                        onChange={(value: string) =>
+                            updateFieldFilter(index, value)
+                        }
                     />
                 )
             }
 
             return (
                 <DatetimePicker
-                    datetime={displayedValue}
-                    onChange={(value) => updateFieldFilter(index, value)}
+                    datetime={displayedValue as string}
+                    onChange={(value: string) =>
+                        updateFieldFilter(index, value)
+                    }
                 />
             )
         } else if (field.get('name') === 'tags') {
             if (node.type === 'ArrayExpression') {
-                const selectedOptions = node.elements.map((opt) => ({
-                    label: opt.value,
-                    value: opt.value,
+                const selectedOptions: Option[] = node.elements.map((opt) => ({
+                    label: (opt as Literal).value as string,
+                    value: (opt as Literal).value,
                 }))
 
                 return (
@@ -220,10 +241,12 @@ export default class Right extends React.Component {
                         selectedOptions={selectedOptions}
                         singular="tag"
                         plural="tags"
-                        onChange={(options) =>
+                        onChange={(options: Option[]) =>
                             updateFieldFilter(
                                 index,
-                                options.map((option) => option.value)
+                                options.map(
+                                    (option: Option) => option.value as unknown
+                                )
                             )
                         }
                         mapSearchResults={this._mapTagSearchResultsToOptions}
@@ -240,21 +263,25 @@ export default class Right extends React.Component {
                 ) {
                     filteredField = field.updateIn(
                         ['filter', 'enum'],
-                        (channels) =>
+                        (channels: List<string>) =>
                             channels.filter(
-                                (channel) => channel !== INSTAGRAM_DM_CHANNEL
+                                (channel) =>
+                                    channel !==
+                                    TicketChannel.InstagramDirectMessage
                             )
                     )
                 }
 
-                const selectedOptions = node.elements.map((opt) => opt.value)
-                const options = filteredField
-                    .getIn(['filter', 'enum'])
-                    .map((val) => ({
-                        label: val,
-                        value: val,
-                    }))
-                    .toJS()
+                const selectedOptions = node.elements.map(
+                    (opt) => (opt as Literal).value
+                )
+                const options = (((filteredField.getIn([
+                    'filter',
+                    'enum',
+                ]) as List<any>).map((val: string) => ({
+                    label: val,
+                    value: val,
+                })) as unknown) as List<Map<any, any>>).toJS()
 
                 return (
                     <MultiSelectField
@@ -262,7 +289,9 @@ export default class Right extends React.Component {
                         options={options}
                         singular="channel"
                         plural="channels"
-                        onChange={(value) => updateFieldFilter(index, value)}
+                        onChange={(value: Option[]) =>
+                            updateFieldFilter(index, value)
+                        }
                     />
                 )
             }
@@ -273,15 +302,20 @@ export default class Right extends React.Component {
             field.get('name') === 'channel' &&
             !INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)
         ) {
-            filteredField = field.updateIn(['filter', 'enum'], (channels) =>
-                channels.filter((channel) => channel !== INSTAGRAM_DM_CHANNEL)
+            filteredField = field.updateIn(
+                ['filter', 'enum'],
+                (channels: List<string>) =>
+                    channels.filter(
+                        (channel) =>
+                            channel !== TicketChannel.InstagramDirectMessage
+                    )
             )
         }
 
         return (
             <div>
                 <div onClick={this._toggleDropdown}>
-                    {node.value === '' ? (
+                    {(node as Literal).value === '' ? (
                         <div className="btn btn-secondary btn-sm dropdown-toggle clickable">
                             Select a value
                         </div>
@@ -310,3 +344,14 @@ export default class Right extends React.Component {
         )
     }
 }
+
+const connector = connect((state: RootState) => {
+    return {
+        integrations: getMessagingIntegrations(state),
+        areFiltersValid: viewsSelectors.areFiltersValid(state),
+        tags: getTags(state),
+        currentAccountDomain: state.currentAccount.get('domain'),
+    }
+})
+
+export default connector(Right)

@@ -38,7 +38,7 @@ import {
 import {activeViewIdSet} from '../../../../state/ui/views/actions'
 import history from '../../../history'
 
-import Filters from './Filters/index.js'
+import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
 
 type OwnProps = {
@@ -209,7 +209,6 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
             isSearch,
             agents,
             teams,
-            currentUser,
             viewDeleted,
         } = this.props
         const {isSubmitting} = this.state
@@ -246,7 +245,6 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
                         }
                         agents={agents}
                         teams={teams}
-                        currentUser={currentUser}
                     />
 
                     <UncontrolledDropdown>

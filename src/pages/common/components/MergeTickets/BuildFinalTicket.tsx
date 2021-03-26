@@ -1,7 +1,7 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
 
-import BinaryChoiceField from '../BinaryChoiceField.js'
+import BinaryChoiceField from '../BinaryChoiceField'
 import Avatar from '../Avatar/Avatar'
 
 type Props = {

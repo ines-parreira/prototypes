@@ -32,7 +32,12 @@ import {StoreDispatch, RootState} from '../types'
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
 import * as types from './constants.js'
-import {ViewFilter, ViewImmutable, ViewNavDirection} from './types'
+import {
+    FieldSearchResult,
+    ViewFilter,
+    ViewImmutable,
+    ViewNavDirection,
+} from './types'
 
 export const setViewActive = (view: ViewImmutable) => (
     dispatch: StoreDispatch
@@ -138,7 +143,9 @@ export function fieldEnumSearch(
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    return fromJS(resp.data) as List<any>
+                    return fromJS(resp.data) as List<
+                        Map<keyof FieldSearchResult, FieldSearchResult>
+                    >
                 },
                 (error: AxiosError) => {
                     return Promise.reject(error)

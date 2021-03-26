@@ -22,7 +22,7 @@ type Unit = {
 
 type Props = {
     value: string,
-    onChange: (string) => null,
+    onChange: (string) => void,
     units?: Array<Unit>,
 }
 

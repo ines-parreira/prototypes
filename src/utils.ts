@@ -857,7 +857,9 @@ export const validateWebhookURL = (val: string): Maybe<string> => {
 /**
  * Get the display name of a language from its locale name
  */
-export const getLanguageDisplayName = (locale: string): Maybe<string> => {
+export const getLanguageDisplayName = (
+    locale: Maybe<string>
+): string | null => {
     if (!locale) {
         return null
     }

@@ -14,3 +14,8 @@ export type ViewFilter = {
 }
 
 export type ViewImmutable = Map<any, any>
+
+export type FieldSearchResult = {
+    id: number
+    name: string
+}

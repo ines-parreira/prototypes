@@ -1,16 +1,20 @@
-// @flow
-import React from 'react'
+import React, {ReactElement} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import {FormGroup} from 'reactstrap'
 
+type Option = {
+    label: string | ReactElement
+    value: string | Record<string, unknown>
+}
+
 type Props = {
-    label: ?string,
-    options: Array<Object>,
-    tooltip?: Object,
-    value: ?string | ?Object | ?number,
-    onChange: (any) => void,
+    label: Maybe<string>
+    options: Array<Option | string>
+    tooltip?: ReactElement
+    value: Maybe<string | Record<string, unknown> | number>
+    onChange: (value: any) => void
 }
 
 /**
@@ -19,7 +23,7 @@ type Props = {
  * ex: used in merge customers feature for merging names
  */
 export default class BinaryChoiceField extends React.Component<Props> {
-    static defaultProps = {
+    static defaultProps: Partial<Props> = {
         onChange: _noop,
     }
 
@@ -70,7 +74,7 @@ export default class BinaryChoiceField extends React.Component<Props> {
                         onClick={
                             !firstIsDisabled
                                 ? () => onChange(firstOption.value)
-                                : null
+                                : undefined
                         }
                     >
                         {firstOption.label || '(no value)'}
@@ -80,7 +84,7 @@ export default class BinaryChoiceField extends React.Component<Props> {
                         onClick={
                             !secondIsDisabled
                                 ? () => onChange(secondOption.value)
-                                : null
+                                : undefined
                         }
                     >
                         {secondOption.label || '(no value)'}

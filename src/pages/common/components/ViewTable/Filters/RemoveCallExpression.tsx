@@ -1,12 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-export default class RemoveCallExpression extends React.Component {
-    static propTypes = {
-        index: PropTypes.number.isRequired,
-        onClick: PropTypes.func.isRequired,
-    }
+type Props = {
+    index: number
+    onClick: (index: number) => void
+}
 
+export default class RemoveCallExpression extends React.Component<Props> {
     render() {
         const {index, onClick} = this.props
 

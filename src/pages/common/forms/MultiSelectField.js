@@ -13,7 +13,7 @@ type Props = {
     values: ?(any[]),
     className?: string,
     caseInsensitive?: boolean,
-    onChange: (any[]) => void,
+    onChange: (options: any[]) => void,
     dropdownMenu?: ComponentType<*>,
     void?: any,
 }

@@ -46,7 +46,7 @@ const minProps = ({
     config: viewsConfig.getConfigByName('ticket'),
 } as unknown) as ComponentProps<typeof FilterTopbarContainer>
 
-jest.mock('../Filters/index.js', () => {
+jest.mock('../Filters/ViewFilters', () => {
     return ({
         view,
         removeFieldFilter,

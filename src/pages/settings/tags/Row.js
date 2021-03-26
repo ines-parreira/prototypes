@@ -6,7 +6,7 @@ import {Button, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 
 import InputField from '../../common/forms/InputField'
-import ColorPicker from '../../common/components/ColorPicker'
+import ColorPicker from '../../common/components/ColorPicker.tsx'
 import {TagLabel} from '../../common/utils/labels'
 import {toJS} from '../../../utils.ts'
 import {DEFAULT_TAG_COLOR} from '../../../config.ts'

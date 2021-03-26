@@ -8,6 +8,7 @@ import withCancellableRequest, {
 } from '../../../common/utils/withCancellableRequest.js'
 import MultiSelectOptionsField from '../../forms/MultiSelectOptionsField/index.js'
 import {Option} from '../../forms/MultiSelectOptionsField/types'
+import {FieldSearchResult} from '../../../../state/views/types'
 
 type Props = {
     plural: string
@@ -19,7 +20,7 @@ type Props = {
         field: Map<any, any>,
         query: string
     ) => Promise<Maybe<List<any>>>
-    mapSearchResults: <T>(searchResults: T[]) => Option[]
+    mapSearchResults: (searchResults: FieldSearchResult[]) => Option[]
     dropdownMenu?: ComponentType<any>
 } & CancellableRequestInjectedProps<
     'fieldEnumSearchCancellable',

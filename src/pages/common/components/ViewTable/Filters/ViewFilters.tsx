@@ -1,29 +1,44 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
+import {List, Map, Seq} from 'immutable'
+import {
+    Expression,
+    LogicalExpression,
+    Program,
+    ExpressionStatement,
+} from 'estree'
 
-import * as schemasSelectors from '../../../../../state/schemas/selectors.ts'
+import * as schemasSelectors from '../../../../../state/schemas/selectors'
+import {
+    removeFieldFilter,
+    updateFieldFilter,
+    updateFieldFilterOperator,
+} from '../../../../../state/views/actions'
+import {RootState} from '../../../../../state/types'
 
 import CallExpression from './CallExpression'
 
-export class ViewFilters extends React.Component {
-    removeCondition = (index) => {
+type OwnProps = {
+    view: Map<any, any>
+    removeFieldFilter: typeof removeFieldFilter
+    agents: List<Map<any, any>>
+    teams: Seq.Indexed<Map<any, any>> | List<any>
+    updateFieldFilter: typeof updateFieldFilter
+    updateFieldFilterOperator: typeof updateFieldFilterOperator
+}
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export class ViewFilters extends React.Component<Props> {
+    removeCondition = (index: number) => {
         this.props.removeFieldFilter(index)
     }
 
-    updateOperator = (index, value) => {
+    updateOperator = (index: number, value: string) => {
         this.props.updateFieldFilterOperator(index, value)
     }
 
     render() {
-        const {
-            view,
-            schemas,
-            agents,
-            teams,
-            currentUser,
-            updateFieldFilter,
-        } = this.props
+        const {view, schemas, agents, teams, updateFieldFilter} = this.props
 
         if (!view || !schemas || schemas.isEmpty()) {
             return null
@@ -31,22 +46,26 @@ export class ViewFilters extends React.Component {
 
         if (
             !view.get('filters_ast') ||
-            !view.getIn(['filters_ast', 'body']).size
+            !(view.getIn(['filters_ast', 'body']) as List<any>).size
         ) {
             return <p className="text-muted mt-2">No filters selected</p>
         }
 
-        const exp = view.get('filters_ast').toJS().body[0].expression
+        const exp: LogicalExpression = (((view.get('filters_ast') as Map<
+            any,
+            any
+        >).toJS() as Program).body[0] as ExpressionStatement)
+            .expression as LogicalExpression
         // counting call expressions so we can delete them later
         let callExprCounter = 0
-        const walk = (node, parentNode) => {
+        const walk = (node: Expression, parentNode?: LogicalExpression) => {
             switch (node.type) {
                 case 'CallExpression':
                     return (
                         <div className="view-filters-item">
                             <CallExpression
                                 node={node}
-                                parentNode={parentNode}
+                                parentNode={parentNode!}
                                 view={view}
                                 schemas={schemas}
                                 index={callExprCounter++}
@@ -54,7 +73,6 @@ export class ViewFilters extends React.Component {
                                 updateOperator={this.updateOperator}
                                 agents={agents}
                                 teams={teams}
-                                currentUser={currentUser}
                                 updateFieldFilter={updateFieldFilter}
                             />
                         </div>
@@ -68,28 +86,17 @@ export class ViewFilters extends React.Component {
                         </div>
                     )
                 default:
-                    throw Error('Unknown type', node)
+                    throw Error(`Unknown type: ${node.type}`)
             }
         }
         return walk(exp)
     }
 }
 
-ViewFilters.propTypes = {
-    view: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
-    removeFieldFilter: PropTypes.func.isRequired,
-    agents: PropTypes.object.isRequired,
-    teams: PropTypes.object.isRequired,
-    currentUser: PropTypes.object.isRequired,
-    updateFieldFilter: PropTypes.func.isRequired,
-    updateFieldFilterOperator: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = (state) => {
+const connector = connect((state: RootState) => {
     return {
         schemas: schemasSelectors.getSchemas(state),
     }
-}
+})
 
-export default connect(mapStateToProps)(ViewFilters)
+export default connector(ViewFilters)

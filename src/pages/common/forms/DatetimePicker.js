@@ -10,7 +10,7 @@ import {stringToDatetime} from '../../../utils/date.ts'
 type Props = {
     datetime: string,
     isDisabled?: boolean,
-    onChange: (state: Object) => *,
+    onChange: (state: string) => *,
 }
 
 type State = {

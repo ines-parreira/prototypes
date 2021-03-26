@@ -1,12 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Button} from 'reactstrap'
+import {LogicalOperator} from 'estree'
 
-export default class OperatorLabel extends React.Component {
-    static propTypes = {
-        operator: PropTypes.string.isRequired,
-    }
+type Props = {
+    operator: Exclude<LogicalOperator, '??'>
+}
 
+export default class OperatorLabel extends React.Component<Props> {
     render() {
         const {operator} = this.props
 

@@ -1,9 +1,8 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import React, {ChangeEvent, Component} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import {Button, Popover, PopoverBody, Input} from 'reactstrap'
 
-import {DEFAULT_TAG_COLOR} from '../../../config.ts'
+import {DEFAULT_TAG_COLOR} from '../../../config'
 
 import css from './ColorPicker.less'
 
@@ -24,18 +23,24 @@ const colors = [
     '#767676', // grey
 ]
 
-export default class ColorPicker extends Component {
-    static propTypes = {
-        value: PropTypes.string.isRequired,
-        onChange: PropTypes.func.isRequired,
-        colors: PropTypes.array.isRequired,
-    }
+type Props = {
+    value: string
+    onChange: (value: string) => void
+    colors: string[]
+}
 
-    static defaultProps = {
+type State = {
+    displayPopup: boolean
+}
+
+export default class ColorPicker extends Component<Props, State> {
+    static defaultProps: Partial<Props> = {
         colors,
     }
 
-    constructor(props) {
+    readonly uniqueId: string
+
+    constructor(props: Props) {
         super(props)
 
         this.uniqueId = _uniqueId('color-picker-')
@@ -45,12 +50,12 @@ export default class ColorPicker extends Component {
         }
     }
 
-    _handleClickChoice = (value) => {
+    _handleClickChoice = (value: string) => {
         this.props.onChange(value)
         this._togglePopup()
     }
 
-    _handleChange = (e) => {
+    _handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         this.props.onChange(value)
     }

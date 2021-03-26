@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ColorPicker from '../components/ColorPicker'
+import ColorPicker from '../components/ColorPicker.tsx'
 
 import InputField from './InputField'
 
