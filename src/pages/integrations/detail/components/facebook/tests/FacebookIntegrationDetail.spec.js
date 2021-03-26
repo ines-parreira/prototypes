@@ -9,6 +9,28 @@ import {
     SPANISH_LANGUAGE,
 } from '../../../../../../constants/languages.ts'
 import FacebookIntegrationDetail from '../FacebookIntegrationDetail'
+import {
+    ADS_MANAGEMENT,
+    ADS_READ,
+    ADVERTISE_ROLE,
+    ANALYZE_ROLE,
+    BUSINESS_MANAGEMENT,
+    FACEBOOK_USER_TYPES,
+    INSTAGRAM_BASIC,
+    INSTAGRAM_MANAGE_COMMENTS,
+    MODERATE_ROLE,
+    PAGES_MANAGE_ADS,
+    PAGES_MANAGE_ENGAGEMENT,
+    PAGES_MANAGE_METADATA,
+    PAGES_MANAGE_POSTS,
+    PAGES_MESSAGING,
+    PAGES_MESSAGING_SUBSCRIPTIONS,
+    PAGES_READ_ENGAGEMENT,
+    PAGES_READ_USER_CONTENT,
+    PAGES_SHOW_LIST,
+    PERMISSIONS_PER_INTEGRATION_META_SETTING,
+    READ_PAGE_MAILBOXES,
+} from '../utils'
 
 const defaultProps = {
     actions: {
@@ -388,6 +410,244 @@ describe('<FacebookIntegrationDetail/>', () => {
             expect(component).toMatchSnapshot()
         })
 
+        it.each([
+            ...FACEBOOK_USER_TYPES,
+            {
+                name: 'Custom/Unknown',
+                roles: [ADVERTISE_ROLE],
+            },
+        ])(
+            'should render an integration with facebookUserTypes',
+            (facebookUserType) => {
+                const integration = fromJS({
+                    id: 1,
+                    type: FACEBOOK_INTEGRATION_TYPE,
+                    name: 'My facebook page',
+                    meta: {
+                        roles: facebookUserType.roles.join(','),
+                        oauth: {
+                            scope: [
+                                PAGES_MANAGE_ADS,
+                                PAGES_MANAGE_METADATA,
+                                PAGES_READ_ENGAGEMENT,
+                                PAGES_READ_USER_CONTENT,
+                                PAGES_MANAGE_POSTS,
+                                PAGES_MANAGE_ENGAGEMENT,
+                                BUSINESS_MANAGEMENT,
+                                PAGES_SHOW_LIST,
+                                READ_PAGE_MAILBOXES,
+                                PAGES_MESSAGING,
+                                PAGES_MESSAGING_SUBSCRIPTIONS,
+                                INSTAGRAM_BASIC,
+                                INSTAGRAM_MANAGE_COMMENTS,
+                                ADS_READ,
+                                ADS_MANAGEMENT,
+                            ].join(','),
+                        },
+                        instagram: {
+                            id: '178941234975',
+                        },
+                        name: 'My facebook page',
+                    },
+                })
+
+                const component = shallow(
+                    <FacebookIntegrationDetail
+                        {...defaultProps}
+                        integration={integration}
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            }
+        )
+
+        it('should render an integration with canModerate enabled', () => {
+            const integration = fromJS({
+                id: 1,
+                type: FACEBOOK_INTEGRATION_TYPE,
+                name: 'My facebook page',
+                meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
+                    oauth: {
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            READ_PAGE_MAILBOXES,
+                            PAGES_MESSAGING,
+                            PAGES_MESSAGING_SUBSCRIPTIONS,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                            ADS_READ,
+                            ADS_MANAGEMENT,
+                        ].join(','),
+                    },
+                    instagram: {
+                        id: '178941234975',
+                    },
+                    name: 'My facebook page',
+                },
+            })
+
+            const component = shallow(
+                <FacebookIntegrationDetail
+                    {...defaultProps}
+                    integration={integration}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render an integration with canModerate disabled because there is no MODERATE_ROLE', () => {
+            const integration = fromJS({
+                id: 1,
+                type: FACEBOOK_INTEGRATION_TYPE,
+                name: 'My facebook page',
+                meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE].join(','),
+                    oauth: {
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            READ_PAGE_MAILBOXES,
+                            PAGES_MESSAGING,
+                            PAGES_MESSAGING_SUBSCRIPTIONS,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                            ADS_READ,
+                            ADS_MANAGEMENT,
+                        ].join(','),
+                    },
+                    instagram: {
+                        id: '178941234975',
+                    },
+                    name: 'My facebook page',
+                },
+            })
+
+            const component = shallow(
+                <FacebookIntegrationDetail
+                    {...defaultProps}
+                    integration={integration}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it.each([
+            // Messenger enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled'].join(
+                ','
+            ),
+            // Messenger disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled']
+                .slice(0, -1)
+                .join(','),
+            // Posts && History enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled'].join(','),
+            // Posts && History disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled']
+                .slice(0, -1)
+                .join(','),
+            // Instagram comments enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_comments_enabled'
+            ].join(','),
+            // Instagram comments disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_comments_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            // Instagram mentions enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_mentions_enabled'
+            ].join(','),
+            // Instagram mentions disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_mentions_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            // Instagram ads enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_ads_enabled'
+            ].join(','),
+            // Instagram ads disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['instagram_ads_enabled']
+                .slice(0, -1)
+                .join(','),
+            // Instagram direct message enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_direct_message_enabled'
+            ].join(','),
+            // Instagram direct message disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'instagram_direct_message_enabled'
+            ]
+                .slice(0, -1)
+                .join(','),
+            // Facebook recommendations enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING[
+                'recommendations_enabled'
+            ].join(','),
+            // Facebook recommendations disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['recommendations_enabled']
+                .slice(0, -1)
+                .join(','),
+        ])(
+            'should render an integration with meta settings enabled/disabled based on permissions',
+            (permissions) => {
+                const integration = fromJS({
+                    id: 1,
+                    type: FACEBOOK_INTEGRATION_TYPE,
+                    name: 'My facebook page',
+                    meta: {
+                        roles: [
+                            ADVERTISE_ROLE,
+                            ANALYZE_ROLE,
+                            MODERATE_ROLE,
+                        ].join(','),
+                        oauth: {
+                            scope: permissions,
+                        },
+                        instagram: {
+                            id: '178941234975',
+                        },
+                        name: 'My facebook page',
+                        settings: {
+                            instagram_ads_enabled: true,
+                        },
+                    },
+                })
+
+                const component = shallow(
+                    <FacebookIntegrationDetail
+                        {...defaultProps}
+                        integration={integration}
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            }
+        )
+
         it(
             'should render an integration with instagram disabled because the scope of the integration does not ' +
                 'include instagram permissions',
@@ -397,8 +657,27 @@ describe('<FacebookIntegrationDetail/>', () => {
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
                     meta: {
+                        roles: [
+                            ADVERTISE_ROLE,
+                            ANALYZE_ROLE,
+                            MODERATE_ROLE,
+                        ].join(','),
                         oauth: {
-                            scope: 'business_management,manage_pages',
+                            scope: [
+                                PAGES_MANAGE_ADS,
+                                PAGES_MANAGE_METADATA,
+                                PAGES_READ_ENGAGEMENT,
+                                PAGES_READ_USER_CONTENT,
+                                PAGES_MANAGE_POSTS,
+                                PAGES_MANAGE_ENGAGEMENT,
+                                BUSINESS_MANAGEMENT,
+                                PAGES_SHOW_LIST,
+                                READ_PAGE_MAILBOXES,
+                                PAGES_MESSAGING,
+                                PAGES_MESSAGING_SUBSCRIPTIONS,
+                                ADS_READ,
+                                ADS_MANAGEMENT,
+                            ].join(','),
                         },
                         instagram: {
                             id: '178941234975',
@@ -427,9 +706,29 @@ describe('<FacebookIntegrationDetail/>', () => {
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
                     meta: {
+                        roles: [
+                            ADVERTISE_ROLE,
+                            ANALYZE_ROLE,
+                            MODERATE_ROLE,
+                        ].join(','),
                         oauth: {
-                            scope:
-                                'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                            scope: [
+                                PAGES_MANAGE_ADS,
+                                PAGES_MANAGE_METADATA,
+                                PAGES_READ_ENGAGEMENT,
+                                PAGES_READ_USER_CONTENT,
+                                PAGES_MANAGE_POSTS,
+                                PAGES_MANAGE_ENGAGEMENT,
+                                BUSINESS_MANAGEMENT,
+                                PAGES_SHOW_LIST,
+                                READ_PAGE_MAILBOXES,
+                                PAGES_MESSAGING,
+                                PAGES_MESSAGING_SUBSCRIPTIONS,
+                                INSTAGRAM_BASIC,
+                                INSTAGRAM_MANAGE_COMMENTS,
+                                ADS_READ,
+                                ADS_MANAGEMENT,
+                            ].join(','),
                         },
                         instagram: {
                             id: null,
@@ -455,9 +754,25 @@ describe('<FacebookIntegrationDetail/>', () => {
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
                 meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
                     oauth: {
-                        scope:
-                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            READ_PAGE_MAILBOXES,
+                            PAGES_MESSAGING,
+                            PAGES_MESSAGING_SUBSCRIPTIONS,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                        ].join(','),
                     },
                     instagram: {
                         id: '178941234975',
@@ -482,10 +797,27 @@ describe('<FacebookIntegrationDetail/>', () => {
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
                 meta: {
+                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
+                        ','
+                    ),
                     oauth: {
-                        scope:
-                            'business_management,manage_pages,instagram_basic,instagram_manage_comments,ads_read,' +
-                            'ads_management',
+                        scope: [
+                            PAGES_MANAGE_ADS,
+                            PAGES_MANAGE_METADATA,
+                            PAGES_READ_ENGAGEMENT,
+                            PAGES_READ_USER_CONTENT,
+                            PAGES_MANAGE_POSTS,
+                            PAGES_MANAGE_ENGAGEMENT,
+                            BUSINESS_MANAGEMENT,
+                            PAGES_SHOW_LIST,
+                            READ_PAGE_MAILBOXES,
+                            PAGES_MESSAGING,
+                            PAGES_MESSAGING_SUBSCRIPTIONS,
+                            INSTAGRAM_BASIC,
+                            INSTAGRAM_MANAGE_COMMENTS,
+                            ADS_READ,
+                            ADS_MANAGEMENT,
+                        ].join(','),
                     },
                     instagram: {
                         id: '178941234975',
@@ -517,9 +849,27 @@ describe('<FacebookIntegrationDetail/>', () => {
                     name: 'My facebook page',
                     meta: {
                         name: 'My facebook page',
+                        roles: [
+                            ADVERTISE_ROLE,
+                            ANALYZE_ROLE,
+                            MODERATE_ROLE,
+                        ].join(','),
                         oauth: {
-                            scope:
-                                'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                            scope: [
+                                PAGES_MANAGE_ADS,
+                                PAGES_MANAGE_METADATA,
+                                PAGES_READ_ENGAGEMENT,
+                                PAGES_READ_USER_CONTENT,
+                                PAGES_MANAGE_POSTS,
+                                PAGES_MANAGE_ENGAGEMENT,
+                                BUSINESS_MANAGEMENT,
+                                PAGES_SHOW_LIST,
+                                READ_PAGE_MAILBOXES,
+                                PAGES_MESSAGING,
+                                PAGES_MESSAGING_SUBSCRIPTIONS,
+                                INSTAGRAM_BASIC,
+                                INSTAGRAM_MANAGE_COMMENTS,
+                            ].join(','),
                         },
                         instagram: {
                             id: '178941234975',

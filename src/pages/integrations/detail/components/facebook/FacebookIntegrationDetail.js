@@ -28,6 +28,12 @@ import pageIconDefault from '../../../../../../img/integrations/facebook-page.pn
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton'
+import {
+    canEnableMetaSetting,
+    getFacebookUserTypeByRoles,
+    hasFacebookRole,
+    MODERATE_ROLE,
+} from './utils'
 
 type Props = {
     integration: Map<*, *>,
@@ -144,19 +150,59 @@ export default class FacebookIntegrationDetail extends React.Component<
 
         const integrationMeta = integration.get('meta') || fromJS({})
 
-        const integrationScope =
-            integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
-        const doesntHaveInstagramPermissions =
-            !integrationScope.includes('instagram_basic') ||
-            !integrationScope.includes('instagram_manage_comments')
-        const doesntHaveAdsPermissions =
-            !integrationScope.includes('ads_read') ||
-            !integrationScope.includes('ads_management')
-        const doesntHaveInstagramId = !integration.getIn([
+        let userRoles = integration.getIn(['meta', 'roles'])
+        userRoles = userRoles ? userRoles.split(',') : []
+
+        let userPermissions = integration.getIn(['meta', 'oauth', 'scope'])
+        userPermissions = userPermissions ? userPermissions.split(',') : []
+
+        const canModerate = hasFacebookRole(userRoles, MODERATE_ROLE)
+
+        const instagramIsDisabled = !integration.getIn([
             'meta',
             'instagram',
             'id',
         ])
+
+        const canEnableMessenger =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'messenger_enabled')
+
+        const canEnablePosts =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'posts_enabled')
+
+        const canEnableRecommendations =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'recommendations_enabled')
+
+        const canEnableInstagramComments =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'instagram_comments_enabled')
+
+        const canEnableInstagramMentions =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'instagram_mentions_enabled')
+
+        const canEnableInstagramAds =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'instagram_ads_enabled')
+
+        const canEnableInstagramDirectMessage =
+            canModerate &&
+            canEnableMetaSetting(
+                userPermissions,
+                'instagram_direct_message_enabled'
+            )
+
+        const displayPermissionAlert =
+            !canEnableMessenger ||
+            !canEnablePosts ||
+            !canEnableRecommendations ||
+            !canEnableInstagramComments ||
+            !canEnableInstagramMentions ||
+            !canEnableInstagramAds ||
+            !canEnableInstagramDirectMessage
 
         //Todo(@Mehdi): change this when the feature is available for all accounts
         const isNotAllowedToInstagramDM = !integration.getIn([
@@ -181,55 +227,13 @@ export default class FacebookIntegrationDetail extends React.Component<
                         )
                     }
                     disabled={
-                        doesntHaveInstagramPermissions || doesntHaveInstagramId
+                        !canEnableInstagramDirectMessage || instagramIsDisabled
                     }
                 />
             )
         }
 
-        let alertComponent = null
-
         const isSubmitting = !!loading.get('updateIntegration')
-
-        if (doesntHaveInstagramPermissions) {
-            alertComponent = (
-                <Alert color="warning">
-                    <i className="material-icons md-2 mr-2">warning</i>
-                    Instagram is disabled because we miss the required
-                    permissions. Please{' '}
-                    <FacebookLoginButton reconnect link>
-                        click here to update your permissions
-                    </FacebookLoginButton>
-                    .
-                </Alert>
-            )
-        } else if (doesntHaveInstagramId) {
-            alertComponent = (
-                <Alert color="warning">
-                    You cannot activate Instagram on this page: it is not
-                    associated with any Instagram account.
-                    <br />
-                    If you just associated the page with an Instagram account,
-                    please{' '}
-                    <FacebookLoginButton reconnect link>
-                        click here to update your integrations
-                    </FacebookLoginButton>
-                    .
-                </Alert>
-            )
-        } else if (doesntHaveAdsPermissions) {
-            alertComponent = (
-                <Alert color="warning">
-                    <i className="material-icons md-2 mr-2">warning</i>
-                    Ads are disabled because we miss the required permissions.
-                    Please{' '}
-                    <FacebookLoginButton reconnect link>
-                        click here to update your permissions
-                    </FacebookLoginButton>
-                    .
-                </Alert>
-            )
-        }
 
         if (loading.get('integration') || integration.isEmpty()) {
             return <Loader />
@@ -275,6 +279,9 @@ export default class FacebookIntegrationDetail extends React.Component<
                             <h2 className="d-inline mr-3 text-info">
                                 {integration.get('name')}
                             </h2>
+                            <span className="mr-3">
+                                [{getFacebookUserTypeByRoles(userRoles)}]
+                            </span>
                             <span>
                                 {_truncate(integrationMeta.get('about'), {
                                     length: 100,
@@ -282,6 +289,65 @@ export default class FacebookIntegrationDetail extends React.Component<
                             </span>
                         </div>
                     </div>
+
+                    {!canModerate && (
+                        <div className="d-flex mt-3">
+                            <Alert
+                                color="warning"
+                                className="d-flex align-items-center"
+                            >
+                                <i className="material-icons md-3 mr-3">
+                                    warning
+                                </i>
+                                In order to be able to enable features for this
+                                integration you need to have one of the
+                                following roles on the page: Admin, Editor,
+                                Moderator.
+                                <br />
+                                If you already have all the permissions, please
+                                try to reconnect the integration.
+                            </Alert>
+                        </div>
+                    )}
+                    {canModerate && instagramIsDisabled && (
+                        <div className="d-flex mt-3">
+                            <Alert color="warning">
+                                <i className="material-icons md-3 mr-3">
+                                    warning
+                                </i>
+                                You cannot activate Instagram on this page: it
+                                is not associated with any Instagram account.
+                                <br />
+                                If you just associated the page with an
+                                Instagram account, please{' '}
+                                <FacebookLoginButton reconnect link>
+                                    click here to update your integrations
+                                </FacebookLoginButton>
+                                .
+                            </Alert>
+                        </div>
+                    )}
+                    {canModerate && displayPermissionAlert && (
+                        <div className="d-flex mt-3">
+                            <Alert
+                                color="warning"
+                                className="align-items-center"
+                            >
+                                <i className="material-icons md-3 mr-3">
+                                    warning
+                                </i>
+                                Entire page or some features are disabled
+                                because you didn't grant all the permissions we
+                                asked for when logging to Facebook. To fix this,
+                                navigate to{' '}
+                                <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
+                                    this URL
+                                </a>
+                                , delete the Gorgias app then reconnect your
+                                integration.
+                            </Alert>
+                        </div>
+                    )}
                     <div className="d-md-flex">
                         <FormGroup className="mr-3">
                             <BooleanField
@@ -295,6 +361,7 @@ export default class FacebookIntegrationDetail extends React.Component<
                                         'messenger_enabled'
                                     )
                                 }
+                                disabled={!canEnableMessenger}
                             />
                             <BooleanField
                                 name="posts_enabled"
@@ -307,6 +374,7 @@ export default class FacebookIntegrationDetail extends React.Component<
                                         'posts_enabled'
                                     )
                                 }
+                                disabled={!canEnablePosts}
                             />
                             <BooleanField
                                 name="recommendations_enabled"
@@ -321,6 +389,7 @@ export default class FacebookIntegrationDetail extends React.Component<
                                         'recommendations_enabled'
                                     )
                                 }
+                                disabled={!canEnableRecommendations}
                             />
 
                             <BooleanField
@@ -338,8 +407,8 @@ export default class FacebookIntegrationDetail extends React.Component<
                                     )
                                 }
                                 disabled={
-                                    doesntHaveInstagramPermissions ||
-                                    doesntHaveInstagramId
+                                    !canEnableInstagramComments ||
+                                    instagramIsDisabled
                                 }
                             />
 
@@ -358,8 +427,8 @@ export default class FacebookIntegrationDetail extends React.Component<
                                     )
                                 }
                                 disabled={
-                                    doesntHaveInstagramPermissions ||
-                                    doesntHaveInstagramId
+                                    !canEnableInstagramMentions ||
+                                    instagramIsDisabled
                                 }
                             />
                             <BooleanField
@@ -376,9 +445,8 @@ export default class FacebookIntegrationDetail extends React.Component<
                                     )
                                 }
                                 disabled={
-                                    doesntHaveInstagramPermissions ||
-                                    doesntHaveAdsPermissions ||
-                                    doesntHaveInstagramId
+                                    !canEnableInstagramAds ||
+                                    instagramIsDisabled
                                 }
                             />
                             {instagram_direct_message_setting}
@@ -395,9 +463,9 @@ export default class FacebookIntegrationDetail extends React.Component<
                                         'import_history_enabled'
                                     )
                                 }
+                                disabled={!canEnablePosts}
                             />
                         </FormGroup>
-                        <div>{alertComponent}</div>
                     </div>
 
                     <InputField

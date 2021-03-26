@@ -28,6 +28,13 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 
 import pageIconDefault from '../../../../../../../img/integrations/facebook-page.png'
 
+import {
+    canEnableMetaSetting,
+    getFacebookUserTypeByRoles,
+    hasFacebookRole,
+    MODERATE_ROLE,
+} from '../utils'
+
 import css from './FacebookIntegrationSetup.less'
 
 type Props = {
@@ -90,26 +97,52 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         let {selectedIntegrations} = this.state
         const id = integration.get('id')
 
+        let userPermissions = integration.getIn(['meta', 'oauth', 'scope'])
+        userPermissions = userPermissions ? userPermissions.split(',') : []
+
+        const canEnableMessenger = canEnableMetaSetting(
+            userPermissions,
+            'messenger_enabled'
+        )
+        const canEnablePosts = canEnableMetaSetting(
+            userPermissions,
+            'posts_enabled'
+        )
+        const canEnableRecommendations = canEnableMetaSetting(
+            userPermissions,
+            'recommendations_enabled'
+        )
+        const canEnableInstagramComments = canEnableMetaSetting(
+            userPermissions,
+            'instagram_comments_enabled'
+        )
+        const canEnableInstagramMentions = canEnableMetaSetting(
+            userPermissions,
+            'instagram_mentions_enabled'
+        )
+        const canEnableInstagramAds = canEnableMetaSetting(
+            userPermissions,
+            'instagram_ads_enabled'
+        )
+        const canEnableInstagramDirectMessage = canEnableMetaSetting(
+            userPermissions,
+            'instagram_direct_message_enabled'
+        )
+
         if (enable) {
             const basicSettings = {
-                messenger_enabled: true,
-                posts_enabled: true,
-                recommendations_enabled: true,
-                instagram_comments_enabled: !!integration.getIn([
-                    'meta',
-                    'instagram',
-                    'id',
-                ]),
-                instagram_mentions_enabled: !!integration.getIn([
-                    'meta',
-                    'instagram',
-                    'id',
-                ]),
-                instagram_ads_enabled: !!integration.getIn([
-                    'meta',
-                    'instagram',
-                    'id',
-                ]),
+                messenger_enabled: canEnableMessenger,
+                posts_enabled: canEnablePosts,
+                recommendations_enabled: canEnableRecommendations,
+                instagram_comments_enabled:
+                    canEnableInstagramComments &&
+                    !!integration.getIn(['meta', 'instagram', 'id']),
+                instagram_mentions_enabled:
+                    canEnableInstagramMentions &&
+                    !!integration.getIn(['meta', 'instagram', 'id']),
+                instagram_ads_enabled:
+                    canEnableInstagramAds &&
+                    !!integration.getIn(['meta', 'instagram', 'id']),
             }
             // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
             let additionalSettings = {}
@@ -120,11 +153,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
             ])
             if (isAllowedToInstagramDM) {
                 additionalSettings = {
-                    instagram_direct_message_enabled: !!integration.getIn([
-                        'meta',
-                        'instagram',
-                        'id',
-                    ]),
+                    instagram_direct_message_enabled:
+                        canEnableInstagramDirectMessage &&
+                        !!integration.getIn(['meta', 'instagram', 'id']),
                 }
             }
 
@@ -197,12 +228,63 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                         integrations.map((integration) => {
                             const id = integration.get('id')
 
+                            let userRoles = integration.getIn(['meta', 'roles'])
+                            userRoles = userRoles ? userRoles.split(',') : []
+
+                            let userPermissions = integration.getIn([
+                                'meta',
+                                'oauth',
+                                'scope',
+                            ])
+                            userPermissions = userPermissions
+                                ? userPermissions.split(',')
+                                : []
+
                             const instagramIsDisabled = !integration.getIn([
                                 'meta',
                                 'instagram',
                                 'id',
                             ])
                             const pageEnabled = selectedIntegrations.has(id)
+                            const canModerate = hasFacebookRole(
+                                userRoles,
+                                MODERATE_ROLE
+                            )
+
+                            const canEnableMessenger = canEnableMetaSetting(
+                                userPermissions,
+                                'messenger_enabled'
+                            )
+
+                            const canEnablePosts = canEnableMetaSetting(
+                                userPermissions,
+                                'posts_enabled'
+                            )
+
+                            const canEnableRecommendations = canEnableMetaSetting(
+                                userPermissions,
+                                'recommendations_enabled'
+                            )
+
+                            const canEnableInstagramComments = canEnableMetaSetting(
+                                userPermissions,
+                                'instagram_comments_enabled'
+                            )
+
+                            const canEnableInstagramMentions = canEnableMetaSetting(
+                                userPermissions,
+                                'instagram_mentions_enabled'
+                            )
+
+                            const canEnableInstagramAds = canEnableMetaSetting(
+                                userPermissions,
+                                'instagram_ads_enabled'
+                            )
+
+                            const canEnableInstagramDirectMessage = canEnableMetaSetting(
+                                userPermissions,
+                                'instagram_direct_message_enabled'
+                            )
 
                             // Todo(@Mehdi): change this when the feature will be available to all accounts
                             const isNotAllowedToInstagramDM = !integration.getIn(
@@ -212,6 +294,25 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                     'instagram_direct_message_allowed',
                                 ]
                             )
+
+                            const displayPermissionAlert =
+                                !canEnableMessenger ||
+                                !canEnablePosts ||
+                                !canEnableRecommendations ||
+                                !canEnableInstagramComments ||
+                                !canEnableInstagramMentions ||
+                                !canEnableInstagramAds ||
+                                (!canEnableInstagramDirectMessage &&
+                                    !isNotAllowedToInstagramDM)
+
+                            const nothingToEnable =
+                                !canEnableMessenger &&
+                                !canEnablePosts &&
+                                !canEnableRecommendations &&
+                                !canEnableInstagramComments &&
+                                !canEnableInstagramMentions &&
+                                !canEnableInstagramAds &&
+                                !canEnableInstagramDirectMessage
 
                             return (
                                 <div
@@ -256,6 +357,13 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             'name',
                                                         ])}
                                                     </h3>
+                                                    <span className="mr-3">
+                                                        [
+                                                        {getFacebookUserTypeByRoles(
+                                                            userRoles
+                                                        )}
+                                                        ]
+                                                    </span>
                                                     <span>
                                                         {_truncate(
                                                             integration.getIn([
@@ -268,75 +376,145 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                 </div>
                                             </div>
                                         </div>
-                                        <ToggleButton
-                                            value={pageEnabled}
-                                            onChange={(value) =>
-                                                this._toggleIntegration(
-                                                    integration,
-                                                    value
-                                                )
-                                            }
-                                        />
+                                        {!nothingToEnable && canModerate && (
+                                            <ToggleButton
+                                                value={pageEnabled}
+                                                onChange={(value) =>
+                                                    this._toggleIntegration(
+                                                        integration,
+                                                        value
+                                                    )
+                                                }
+                                            />
+                                        )}
                                     </div>
+                                    {!canModerate && (
+                                        <div className="d-flex mt-3">
+                                            <Alert
+                                                color="warning"
+                                                className="d-flex align-items-center"
+                                            >
+                                                <i className="material-icons md-3 mr-3">
+                                                    warning
+                                                </i>
+                                                In order to be able to integrate
+                                                this page you need to have one
+                                                of the following roles: Admin,
+                                                Editor, Moderator.
+                                            </Alert>
+                                        </div>
+                                    )}
 
-                                    <div className={css.settings}>
-                                        <p className="font-weight-medium">
-                                            Choose the Facebook channels you
-                                            want to use to communicate with your
-                                            customers:
-                                        </p>
+                                    {pageEnabled &&
+                                        !displayPermissionAlert &&
+                                        canModerate &&
+                                        instagramIsDisabled && (
+                                            <div className="d-flex mt-3">
+                                                <Alert
+                                                    color="warning"
+                                                    className="d-flex align-items-center"
+                                                >
+                                                    <i className="material-icons md-3 mr-3">
+                                                        warning
+                                                    </i>
+                                                    Create an Instagram account
+                                                    for this page and you will
+                                                    be able to enable Instagram
+                                                    features.
+                                                </Alert>
+                                            </div>
+                                        )}
 
-                                        <div className="d-md-flex">
-                                            <FormGroup className="mr-5">
-                                                <BooleanField
-                                                    name={`${id}.messenger_enabled`}
-                                                    type="checkbox"
-                                                    label="Enable Messenger"
-                                                    value={this._getSettingValue(
-                                                        id,
-                                                        'messenger_enabled'
-                                                    )}
-                                                    onChange={(value) =>
-                                                        this._setSettingValue(
+                                    {displayPermissionAlert && (
+                                        <div className="d-flex mt-3">
+                                            <Alert
+                                                color="warning"
+                                                className="align-items-center"
+                                            >
+                                                <i className="material-icons md-3 mr-3">
+                                                    warning
+                                                </i>
+                                                Entire page or some features are
+                                                disabled because you didn't
+                                                grant all the permissions we
+                                                asked for when logging to
+                                                Facebook. To fix this, navigate
+                                                to{' '}
+                                                <a href="https://www.facebook.com/settings?tab=business_tools&ref=settings">
+                                                    this URL
+                                                </a>
+                                                , delete the Gorgias app then
+                                                try again.
+                                            </Alert>
+                                        </div>
+                                    )}
+                                    {!nothingToEnable && canModerate && (
+                                        <div className={css.settings}>
+                                            <p className="font-weight-medium">
+                                                Choose the Facebook channels you
+                                                want to use to communicate with
+                                                your customers:
+                                            </p>
+
+                                            <div className="d-md-flex">
+                                                <FormGroup className="mr-5">
+                                                    <BooleanField
+                                                        name={`${id}.messenger_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Messenger"
+                                                        value={this._getSettingValue(
                                                             id,
-                                                            'messenger_enabled',
-                                                            value
-                                                        )
-                                                    }
-                                                />
-                                                <BooleanField
-                                                    name={`${id}.posts_enabled`}
-                                                    type="checkbox"
-                                                    label="Enable Facebook posts, comments and ads comments"
-                                                    value={this._getSettingValue(
-                                                        id,
-                                                        'posts_enabled'
-                                                    )}
-                                                    onChange={(value) =>
-                                                        this._setSettingValue(
+                                                            'messenger_enabled'
+                                                        )}
+                                                        onChange={(value) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'messenger_enabled',
+                                                                value
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            !canEnableMessenger
+                                                        }
+                                                    />
+                                                    <BooleanField
+                                                        name={`${id}.posts_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Facebook posts, comments and ads comments"
+                                                        value={this._getSettingValue(
                                                             id,
-                                                            'posts_enabled',
-                                                            value
-                                                        )
-                                                    }
-                                                />
-                                                <BooleanField
-                                                    name={`${id}.recommendations_enabled`}
-                                                    type="checkbox"
-                                                    label="Enable Facebook recommendations"
-                                                    value={this._getSettingValue(
-                                                        id,
-                                                        'recommendations_enabled'
-                                                    )}
-                                                    onChange={(value) =>
-                                                        this._setSettingValue(
+                                                            'posts_enabled'
+                                                        )}
+                                                        onChange={(value) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'posts_enabled',
+                                                                value
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            !canEnablePosts
+                                                        }
+                                                    />
+                                                    <BooleanField
+                                                        name={`${id}.recommendations_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Facebook recommendations"
+                                                        value={this._getSettingValue(
                                                             id,
-                                                            'recommendations_enabled',
-                                                            value
-                                                        )
-                                                    }
-                                                />
-                                                {!instagramIsDisabled && (
+                                                            'recommendations_enabled'
+                                                        )}
+                                                        onChange={(value) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'recommendations_enabled',
+                                                                value
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            !canEnableRecommendations
+                                                        }
+                                                    />
                                                     <BooleanField
                                                         name={`${id}.instagram_comments_enabled`}
                                                         type="checkbox"
@@ -352,9 +530,11 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                 value
                                                             )
                                                         }
+                                                        disabled={
+                                                            !canEnableInstagramComments ||
+                                                            instagramIsDisabled
+                                                        }
                                                     />
-                                                )}
-                                                {!instagramIsDisabled && (
                                                     <BooleanField
                                                         name={`${id}.instagram_mentions_enabled`}
                                                         type="checkbox"
@@ -370,9 +550,11 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                 value
                                                             )
                                                         }
+                                                        disabled={
+                                                            !canEnableInstagramMentions ||
+                                                            instagramIsDisabled
+                                                        }
                                                     />
-                                                )}
-                                                {!instagramIsDisabled && (
                                                     <BooleanField
                                                         name={`${id}.instagram_ads_enabled`}
                                                         type="checkbox"
@@ -388,71 +570,66 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                 value
                                                             )
                                                         }
+                                                        disabled={
+                                                            !canEnableInstagramAds ||
+                                                            instagramIsDisabled
+                                                        }
                                                     />
-                                                )}
-                                                {!instagramIsDisabled &&
-                                                    !isNotAllowedToInstagramDM && (
+                                                    {!instagramIsDisabled &&
+                                                        canEnableInstagramDirectMessage &&
+                                                        !isNotAllowedToInstagramDM && (
+                                                            <BooleanField
+                                                                name={`${id}.instagram_direct_message_enabled`}
+                                                                type="checkbox"
+                                                                label="Enable Instagram direct message"
+                                                                value={this._getSettingValue(
+                                                                    id,
+                                                                    'instagram_direct_message_enabled'
+                                                                )}
+                                                                onChange={(
+                                                                    value
+                                                                ) =>
+                                                                    this._setSettingValue(
+                                                                        id,
+                                                                        'instagram_direct_message_enabled',
+                                                                        value
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                </FormGroup>
+                                            </div>
+
+                                            <div>
+                                                <p className="font-weight-medium">
+                                                    Import your Facebook data:
+                                                </p>
+                                                <div className="d-md-flex">
+                                                    <FormGroup className="mr-5">
                                                         <BooleanField
-                                                            name={`${id}.instagram_direct_message_enabled`}
+                                                            name={`${id}.import_history_enabled`}
                                                             type="checkbox"
-                                                            label="Enable Instagram direct message"
+                                                            label="Import 30 days of history (posts and comments) as closed tickets"
                                                             value={this._getSettingValue(
                                                                 id,
-                                                                'instagram_direct_message_enabled'
+                                                                'import_history_enabled'
                                                             )}
                                                             onChange={(value) =>
                                                                 this._setSettingValue(
                                                                     id,
-                                                                    'instagram_direct_message_enabled',
+                                                                    'import_history_enabled',
                                                                     value
                                                                 )
                                                             }
+                                                            disabled={
+                                                                !canEnablePosts
+                                                            }
                                                         />
-                                                    )}
-                                            </FormGroup>
-                                            {instagramIsDisabled && (
-                                                <div>
-                                                    <Alert
-                                                        color="warning"
-                                                        className="d-flex align-items-center"
-                                                    >
-                                                        <i className="material-icons md-3 mr-3">
-                                                            warning
-                                                        </i>
-                                                        Create an Instagram
-                                                        account for this page
-                                                        and you will be able to
-                                                        enable Instagram
-                                                        comments.
-                                                    </Alert>
+                                                    </FormGroup>
                                                 </div>
-                                            )}
+                                            </div>
                                         </div>
-
-                                        <p className="font-weight-medium">
-                                            Import your Facebook data:
-                                        </p>
-                                        <div className="d-md-flex">
-                                            <FormGroup className="mr-5">
-                                                <BooleanField
-                                                    name={`${id}.import_history_enabled`}
-                                                    type="checkbox"
-                                                    label="Import 30 days of history (posts and comments) as closed tickets"
-                                                    value={this._getSettingValue(
-                                                        id,
-                                                        'import_history_enabled'
-                                                    )}
-                                                    onChange={(value) =>
-                                                        this._setSettingValue(
-                                                            id,
-                                                            'import_history_enabled',
-                                                            value
-                                                        )
-                                                    }
-                                                />
-                                            </FormGroup>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             )
                         })
