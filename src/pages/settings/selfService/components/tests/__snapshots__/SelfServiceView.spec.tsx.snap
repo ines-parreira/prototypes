@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelfServiceView/> should show a row for each shopify integration 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Self-Service
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <p>
+              Most ecommerce support requests are about the same 20 types of issues.
+            </p>
+            <p>
+              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+            </p>
+            <h5>
+              Enable Self-Service
+            </h5>
+            <p>
+              Self-Service is only available to stores that have a Shopify store integration.
+            </p>
+            <table
+              class="table"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore1
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <label
+                      class="switch"
+                    >
+                      <input
+                        checked=""
+                        readonly=""
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore2
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <label
+                      class="switch"
+                    >
+                      <input
+                        readonly=""
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore3
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <label
+                      class="switch"
+                    >
+                      <input
+                        checked=""
+                        readonly=""
+                        type="checkbox"
+                      />
+                      <div
+                        class="slider"
+                      />
+                    </label>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          class="col"
+        >
+          <img
+            alt="Self-Service example"
+            height="689"
+            src="test-file-stub"
+            width="442"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
