@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import {initialState as currentUser} from '../../../../../state/currentUser/reducers'
 import {TicketListActionsContainer} from '../TicketListActions'
@@ -29,30 +29,30 @@ describe('TicketListActions component', () => {
         },
     }
 
-    it('should display when nothing is selected', () => {
-        const component = shallow(
+    it('should render disabled buttons when nothing is selected', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([])}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display when some tickets are selected', () => {
-        const component = shallow(
+    it('should render enabled buttons when some tickets are selected', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display options for teams assignations', () => {
-        const component = shallow(
+    it('should render teams in assign team dropdown', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
@@ -64,11 +64,11 @@ describe('TicketListActions component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display options for agents assignations', () => {
-        const component = shallow(
+    it('should render agents options in assign agent dropdown', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
@@ -80,11 +80,11 @@ describe('TicketListActions component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display special actions for trash view', () => {
-        const component = shallow(
+    it('should render special actions for trash view', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([])}
@@ -92,11 +92,11 @@ describe('TicketListActions component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display the export tickets button for agents', () => {
-        const component = shallow(
+    it('should render export tickets button for agents', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([])}
@@ -108,11 +108,11 @@ describe('TicketListActions component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should not display the export tickets button for lite agents', () => {
-        const component = shallow(
+    it('should not render export tickets button for lite agents', () => {
+        const {container} = render(
             <TicketListActionsContainer
                 {...minProps}
                 selectedItemsIds={fromJS([])}
@@ -124,6 +124,6 @@ describe('TicketListActions component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

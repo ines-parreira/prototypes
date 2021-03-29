@@ -1,2302 +1,1997 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketListActions component should display options for agents assignations 1`] = `
+exports[`TicketListActions component should not render export tickets button for lite agents 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center"
+  class="d-none d-md-inline-flex align-items-center"
 >
   <div
-    className="d-inline-flex align-items-center"
+    class="d-inline-flex align-items-center"
   >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
-        />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
         <div
-          className="agents-dropdown-list"
-        >
-          <DropdownItem
-            key="4"
-            onClick={[Function]}
-            tag="button"
-            toggle={true}
-            type="button"
-          >
-            <AgentLabel
-              className=""
-              name="foo"
-              profilePictureUrl=""
-              shouldDisplayAvatar={true}
-            />
-          </DropdownItem>
-          <DropdownItem
-            key="5"
-            onClick={[Function]}
-            tag="button"
-            toggle={true}
-            type="button"
-          >
-            <AgentLabel
-              className=""
-              name="bar"
-              profilePictureUrl=""
-              shouldDisplayAvatar={true}
-            />
-          </DropdownItem>
-          <DropdownItem
-            key="6"
-            onClick={[Function]}
-            tag="button"
-            toggle={true}
-            type="button"
-          >
-            <AgentLabel
-              className=""
-              name="baz"
-              profilePictureUrl=""
-              shouldDisplayAvatar={true}
-            />
-          </DropdownItem>
-        </div>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any agent
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any team
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={false}
-        right={true}
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Apply macro
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          className="text-danger"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Delete
-        </DropdownItem>
-      </DropdownMenu>
+        </button>
+      </div>
       <div
-        className="delete-popover-target"
+        class="delete-popover-target"
         id="bulk-more-button"
       />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          5
-           
-          ticket
-          s
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
+    </div>
   </div>
 </div>
 `;
 
-exports[`TicketListActions component should display options for teams assignations 1`] = `
+exports[`TicketListActions component should render agents options in assign agent dropdown 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center"
+  class="d-none d-md-inline-flex align-items-center"
 >
   <div
-    className="d-inline-flex align-items-center"
+    class="d-inline-flex align-items-center"
   >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary"
         type="button"
       >
         Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary"
         type="button"
       >
         Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="agents-dropdown-list"
         >
-          Could not find any agent
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="AgentLabel"
+            >
+              <div
+                class="component avatar"
+                style="width: 26px; height: 26px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                >
+                  <span>
+                    f
+                  </span>
+                </div>
+              </div>
+              <span
+                class="name"
+              >
+                foo
+              </span>
+            </div>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="AgentLabel"
+            >
+              <div
+                class="component avatar"
+                style="width: 26px; height: 26px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                >
+                  <span>
+                    b
+                  </span>
+                </div>
+              </div>
+              <span
+                class="name"
+              >
+                bar
+              </span>
+            </div>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="AgentLabel"
+            >
+              <div
+                class="component avatar"
+                style="width: 26px; height: 26px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                >
+                  <span>
+                    b
+                  </span>
+                </div>
+              </div>
+              <span
+                class="name"
+              >
+                baz
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
-        />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
         <div
-          className="teams-dropdown-list"
-        >
-          <DropdownItem
-            className="teams-dropdown-item"
-            key="4"
-            onClick={[Function]}
-            tag="button"
-            toggle={true}
-            type="button"
-          >
-            <TeamLabel
-              className=""
-              name="foo"
-              shouldDisplayAvatar={true}
-              shouldDisplayTeamIcon={false}
-            />
-          </DropdownItem>
-          <DropdownItem
-            className="teams-dropdown-item"
-            key="5"
-            onClick={[Function]}
-            tag="button"
-            toggle={true}
-            type="button"
-          >
-            <TeamLabel
-              className=""
-              name="bar"
-              shouldDisplayAvatar={true}
-              shouldDisplayTeamIcon={false}
-            />
-          </DropdownItem>
-          <DropdownItem
-            className="teams-dropdown-item"
-            key="6"
-            onClick={[Function]}
-            tag="button"
-            toggle={true}
-            type="button"
-          >
-            <TeamLabel
-              className=""
-              name="baz"
-              shouldDisplayAvatar={true}
-              shouldDisplayTeamIcon={false}
-            />
-          </DropdownItem>
-        </div>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any team
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={false}
-        right={true}
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Apply macro
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          className="text-danger"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Delete
-        </DropdownItem>
-      </DropdownMenu>
+        </button>
+      </div>
       <div
-        className="delete-popover-target"
+        class="delete-popover-target"
         id="bulk-more-button"
       />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          5
-           
-          ticket
-          s
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
+    </div>
   </div>
 </div>
 `;
 
-exports[`TicketListActions component should display special actions for trash view 1`] = `
+exports[`TicketListActions component should render disabled buttons when nothing is selected 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center"
+  class="d-none d-md-inline-flex align-items-center"
 >
   <div
-    className="d-inline-flex align-items-center"
+    class="d-inline-flex align-items-center"
   >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any agent
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any team
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={true}
-        right={true}
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Apply macro
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="undelete-button"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Undelete
-        </DropdownItem>
-        <DropdownItem
-          className="text-danger"
-          key="delete-button"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          Delete forever
-        </DropdownItem>
-      </DropdownMenu>
+          Delete
+        </button>
+      </div>
       <div
-        className="delete-popover-target"
+        class="delete-popover-target"
         id="bulk-more-button"
       />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-           forever
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
+    </div>
   </div>
 </div>
 `;
 
-exports[`TicketListActions component should display the export tickets button for agents 1`] = `
+exports[`TicketListActions component should render enabled buttons when some tickets are selected 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center"
+  class="d-none d-md-inline-flex align-items-center"
 >
   <div
-    className="d-inline-flex align-items-center"
+    class="d-inline-flex align-items-center"
   >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary"
         type="button"
       >
         Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary"
         type="button"
       >
         Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any agent
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any team
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={true}
-        right={true}
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Apply macro
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+      <div
+        class="delete-popover-target"
+        id="bulk-more-button"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`TicketListActions component should render export tickets button for agents 1`] = `
+<div
+  class="d-none d-md-inline-flex align-items-center"
+>
+  <div
+    class="d-inline-flex align-items-center"
+  >
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Close
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          SET STATUS
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Open
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to me
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any agent
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Assign to team
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ASSIGN TO:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any team
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="text-warning clear-assignee"
+          >
+            Clear assignee
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        Add tag
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
+        >
+          ADD TAG:
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        />
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
+        type="button"
+      >
+        More
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Apply macro
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Export tickets
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          className="text-danger"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Delete
-        </DropdownItem>
-      </DropdownMenu>
+        </button>
+      </div>
       <div
-        className="delete-popover-target"
+        class="delete-popover-target"
         id="bulk-more-button"
       />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
+    </div>
   </div>
 </div>
 `;
 
-exports[`TicketListActions component should display when nothing is selected 1`] = `
+exports[`TicketListActions component should render special actions for trash view 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center"
+  class="d-none d-md-inline-flex align-items-center"
 >
   <div
-    className="d-inline-flex align-items-center"
+    class="d-inline-flex align-items-center"
   >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any agent
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any team
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={true}
-        right={true}
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        disabled=""
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary disabled"
+        disabled=""
         type="button"
       >
         More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Apply macro
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          className="text-danger"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
-          Delete
-        </DropdownItem>
-      </DropdownMenu>
+          Undelete
+        </button>
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          Delete forever
+        </button>
+      </div>
       <div
-        className="delete-popover-target"
+        class="delete-popover-target"
         id="bulk-more-button"
       />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
+    </div>
   </div>
 </div>
 `;
 
-exports[`TicketListActions component should display when some tickets are selected 1`] = `
+exports[`TicketListActions component should render teams in assign team dropdown 1`] = `
 <div
-  className="d-none d-md-inline-flex align-items-center"
+  class="d-none d-md-inline-flex align-items-center"
 >
   <div
-    className="d-inline-flex align-items-center"
+    class="d-inline-flex align-items-center"
   >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary"
         type="button"
       >
         Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </h6>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <Button
-        color="secondary"
-        disabled={false}
-        onClick={[Function]}
-        tag="button"
+      <button
+        class="btn btn-secondary"
         type="button"
       >
         Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      </button>
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <span
+          class="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
         >
           Could not find any agent
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </h6>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="teams-dropdown-list"
         >
-          Could not find any team
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+          <button
+            class="teams-dropdown-item dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="TeamLabel"
+            >
+              <div
+                class="component avatar"
+                style="width: 26px; height: 26px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                >
+                  <span>
+                    f
+                  </span>
+                </div>
+              </div>
+              <span
+                class="name"
+              >
+                foo
+              </span>
+            </div>
+          </button>
+          <button
+            class="teams-dropdown-item dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="TeamLabel"
+            >
+              <div
+                class="component avatar"
+                style="width: 26px; height: 26px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                >
+                  <span>
+                    b
+                  </span>
+                </div>
+              </div>
+              <span
+                class="name"
+              >
+                bar
+              </span>
+            </div>
+          </button>
+          <button
+            class="teams-dropdown-item dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <div
+              class="TeamLabel"
+            >
+              <div
+                class="component avatar"
+                style="width: 26px; height: 26px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                >
+                  <span>
+                    b
+                  </span>
+                </div>
+              </div>
+              <span
+                class="name"
+              >
+                baz
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span
-            className="text-warning clear-assignee"
+            class="text-warning clear-assignee"
           >
             Clear assignee
           </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
+        </button>
+      </div>
+    </div>
+    <div
+      class="mr-2 btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={false}
-        right={true}
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        tabindex="-1"
       >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
+        <h6
+          class="mb-2 dropdown-header"
+          tabindex="-1"
         >
           ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
+        </h6>
+        <button
+          class="dropdown-item-input dropdown-item"
+          role="menuitem"
+          tabindex="0"
         />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
+      </div>
+    </div>
+    <div
+      class="btn-group btn-group-sm"
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={false}
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="dropdown-toggle btn btn-secondary"
         type="button"
       >
         More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <div
+        aria-hidden="true"
+        class="dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Apply macro
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
         />
-        <DropdownItem
-          className="text-danger"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="text-danger dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           Delete
-        </DropdownItem>
-      </DropdownMenu>
+        </button>
+      </div>
       <div
-        className="delete-popover-target"
+        class="delete-popover-target"
         id="bulk-more-button"
       />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          5
-           
-          ticket
-          s
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
-  </div>
-</div>
-`;
-
-exports[`TicketListActions component should not display the export tickets button for lite agents 1`] = `
-<div
-  className="d-none d-md-inline-flex align-items-center"
->
-  <div
-    className="d-inline-flex align-items-center"
-  >
-    <UncontrolledButtonDropdown
-      className="mr-2"
-      size="sm"
-    >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
-        type="button"
-      >
-        Close
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
-        type="button"
-      />
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
-      >
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
-        >
-          SET STATUS
-        </DropdownItem>
-        <DropdownItem
-          key="open"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          Open
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
-    >
-      <Button
-        color="secondary"
-        disabled={true}
-        onClick={[Function]}
-        tag="button"
-        type="button"
-      >
-        Assign to me
-      </Button>
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
-        type="button"
-      />
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
-      >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
-        >
-          ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
-        />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
-        />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
-        >
-          Could not find any agent
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
-        />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <span
-            className="text-warning clear-assignee"
-          >
-            Clear assignee
-          </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
-    >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
-        type="button"
-      >
-        Assign to team
-      </DropdownToggle>
-      <DropdownMenu
-        className="assignee-dropdown-list"
-        flip={true}
-        right={true}
-        tag="div"
-      >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
-        >
-          ASSIGN TO:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
-        />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
-        />
-        <DropdownItem
-          header={true}
-          tag="button"
-          toggle={true}
-        >
-          Could not find any team
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
-        />
-        <DropdownItem
-          key="clear"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <span
-            className="text-warning clear-assignee"
-          >
-            Clear assignee
-          </span>
-        </DropdownItem>
-      </DropdownMenu>
-    </ButtonDropdown>
-    <ButtonDropdown
-      a11y={false}
-      className="mr-2"
-      isOpen={false}
-      size="sm"
-      toggle={[Function]}
-    >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
-        type="button"
-      >
-        Add tag
-      </DropdownToggle>
-      <TagDropdownMenu
-        disabled={true}
-        right={true}
-      >
-        <DropdownItem
-          className="mb-2"
-          header={true}
-          tag="button"
-          toggle={true}
-        >
-          ADD TAG:
-        </DropdownItem>
-        <DropdownItem
-          className="dropdown-item-input"
-          tag="button"
-          toggle={false}
-        />
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
-        />
-      </TagDropdownMenu>
-    </ButtonDropdown>
-    <UncontrolledButtonDropdown
-      size="sm"
-    >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-        disabled={true}
-        type="button"
-      >
-        More
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        right={true}
-        tag="div"
-      >
-        <DropdownItem
-          onClick={[MockFunction]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          Apply macro
-        </DropdownItem>
-        <DropdownItem
-          divider={true}
-          tag="button"
-          toggle={true}
-        />
-        <DropdownItem
-          className="text-danger"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          Delete
-        </DropdownItem>
-      </DropdownMenu>
-      <div
-        className="delete-popover-target"
-        id="bulk-more-button"
-      />
-    </UncontrolledButtonDropdown>
-    <Popover
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="bulk-more-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          Are you sure you want to delete 
-          0
-           
-          ticket
-          ?
-        </p>
-        <Button
-          autoFocus={true}
-          color="success"
-          onClick={[Function]}
-          tag="button"
-          type="submit"
-        >
-          Confirm
-        </Button>
-      </PopoverBody>
-    </Popover>
+    </div>
   </div>
 </div>
 `;
