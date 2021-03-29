@@ -75,5 +75,17 @@ describe('defaultSuggestionsFilter()', () => {
             const results = defaultSuggestionsFilter('Πόπη', suggestions)
             expect(results).toEqual(greekResults)
         })
+
+        it("when some suggestion doesn't have a name", () => {
+            const suggestions = fromJS([
+                {name: 'Severine Smith'},
+                {name: 'Séverine Dupont'},
+                {},
+                {name: 'Jean Bon'},
+            ])
+
+            const results = defaultSuggestionsFilter('severine', suggestions)
+            expect(results).toEqual(expectedResults)
+        })
     })
 })

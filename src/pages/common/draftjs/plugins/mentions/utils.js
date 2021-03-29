@@ -19,7 +19,9 @@ export const defaultSuggestionsFilter = (searchValue, suggestions) => {
     const filteredSuggestions = suggestions.filter(
         (suggestion) =>
             !value ||
-            _deburr(suggestion.get('name').toLowerCase()).indexOf(value) > -1
+            _deburr((suggestion.get('name') || '').toLowerCase()).indexOf(
+                value
+            ) > -1
     )
     const size = filteredSuggestions.size < 5 ? filteredSuggestions.size : 5
     return filteredSuggestions.setSize(size)
