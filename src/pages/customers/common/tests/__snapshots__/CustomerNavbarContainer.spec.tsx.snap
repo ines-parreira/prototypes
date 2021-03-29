@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomerNavbarContainer /> should display 1`] = `
+<div>
+  Navbar: 
+  <div>
+    children: 
+    <div>
+      <div>
+        isLoading: 
+        false
+      </div>
+      <div>
+        settingType: 
+        customer-views
+      </div>
+    </div>
+  </div>
+</div>
+`;
