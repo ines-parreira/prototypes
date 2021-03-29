@@ -2,7 +2,10 @@ import _ceil from 'lodash/ceil'
 
 import {fromJS, Map, List} from 'immutable'
 
-import {NonFractionalCurrency} from '../../constants/integrations/types/shopify'
+import {
+    DiscountType,
+    NonFractionalCurrency,
+} from '../../constants/integrations/types/shopify'
 
 import {formatPercentage, formatPrice} from './number'
 
@@ -25,7 +28,6 @@ export function initLineItemAppliedDiscount(
     >).find((discountApplication: Map<any, any>, index) => {
         const found =
             indexes.includes(index as number) &&
-            discountApplication.get('allocation_method') === 'one' &&
             discountApplication.get('target_selection') === 'explicit' &&
             discountApplication.get('target_type') === 'line_item'
 
@@ -49,7 +51,6 @@ export function initLineItemAppliedDiscount(
             discountApplicationIndex
     ) as Map<any, any>
 
-    const quantity = lineItem.get('quantity')
     const currency = order.get('currency')
 
     const title = discountApplication.get('title')
@@ -60,8 +61,8 @@ export function initLineItemAppliedDiscount(
     const amount = discountAllocation.get('amount')
 
     const appliedValue =
-        type === 'fixed_amount'
-            ? formatPrice(parseFloat(value) / quantity, currency)
+        type === DiscountType.FixedAmount
+            ? formatPrice(value, currency)
             : formatPercentage(value)
     const appliedAmount = formatPrice(amount, currency)
 

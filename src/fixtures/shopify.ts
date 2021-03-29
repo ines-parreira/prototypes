@@ -1071,6 +1071,7 @@ export const shopifyDiscountAllocationFixture = ({
 export const shopifyDiscountApplicationFixture = ({
     value = '50.00',
     type = DiscountType.Percentage,
+    allocationMethod = DiscountAllocationMethod.Across,
 } = {}): DiscountApplication => ({
     type: DiscountApplicationType.Manual,
     title: '',
@@ -1079,7 +1080,7 @@ export const shopifyDiscountApplicationFixture = ({
     description: '',
     target_type: DiscountTargetType.LineItem,
     target_selection: DiscountTargetSelection.Explicit,
-    allocation_method: DiscountAllocationMethod.One,
+    allocation_method: allocationMethod,
 })
 
 export const shopifyRefundFixture = ({
