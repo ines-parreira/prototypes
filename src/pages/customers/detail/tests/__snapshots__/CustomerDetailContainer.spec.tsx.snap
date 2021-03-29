@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomerDetailContainer /> should display the customer and its history of messages 1`] = `
+<div
+  class="CustomerDetailContainer"
+>
+  <div
+    class="flex-spaced-row"
+  >
+    <h1>
+      Rachel Greene
+    </h1>
+    <div>
+      <a
+        class="btn btn-secondary mr-2"
+        to="/app/ticket/new?customer=1"
+      >
+        Create ticket
+      </a>
+      <button
+        class="btn btn-success"
+        type="button"
+      >
+        Edit customer
+      </button>
+    </div>
+  </div>
+  <div
+    class="my-4"
+  >
+    <div
+      class="component"
+    >
+      <a
+        class="component card"
+        href="/app/ticket/152"
+      >
+        <div
+          class="body d-flex card-body"
+        >
+          <div
+            class="meta"
+          >
+            <span
+              class="mb-2 mr-2 badge badge-primary badge-pill"
+            >
+              open
+            </span>
+            <div>
+              DatetimeLabel
+            </div>
+            <div
+              class="AgentLabel"
+            >
+              <span
+                class="material-icons md-2"
+              >
+                account_circle
+              </span>
+              <span
+                class="name"
+              >
+                Alex Plugaru
+              </span>
+            </div>
+          </div>
+          <div
+            class="details"
+          >
+            <i
+              class="icon d-inline-block material-icons icon uncolored"
+            >
+              email
+            </i>
+            <h5
+              class="subject mb-1"
+            >
+              Great ticket
+            </h5>
+            <div
+              class="excerpt mb-2"
+            />
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+`;

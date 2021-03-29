@@ -4,7 +4,7 @@ import axios from 'axios'
 import {initialState} from '../reducers.ts'
 import * as actions from '../actions.ts'
 import * as constants from '../constants.ts'
-import {mockStore} from '../../../utils/testing.ts'
+import {mockStore} from '../../../utils/testing.tsx'
 
 window.location = {
     pathname: '/self-service',

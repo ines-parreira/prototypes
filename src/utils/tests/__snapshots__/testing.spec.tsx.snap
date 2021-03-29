@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing renderWithRouter should render 1`] = `
+<div>
+  Bloup
+</div>
+`;

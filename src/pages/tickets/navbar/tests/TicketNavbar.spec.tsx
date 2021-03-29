@@ -1,10 +1,10 @@
-import {render, fireEvent} from '@testing-library/react'
+import {fireEvent} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 import React, {ComponentProps, ReactNode} from 'react'
-import {Router, Route} from 'react-router-dom'
-import {createBrowserHistory, History} from 'history'
+import {createBrowserHistory} from 'history'
 
+import {renderWithRouter} from '../../../../utils/testing'
 import {UserRole} from '../../../../config/types/user'
 import {section} from '../../../../fixtures/section'
 import {user} from '../../../../fixtures/users'
@@ -118,24 +118,6 @@ jest.mock(
     )
 )
 const mockedServer = new MockAdapter(client)
-const RouterWrapper = ({
-    history,
-    children,
-}: {
-    history?: History
-    children?: ReactNode
-}) => {
-    let historyInstance = history
-    if (!historyInstance) {
-        historyInstance = createBrowserHistory()
-        historyInstance.push('/foo/1')
-    }
-    return (
-        <Router history={historyInstance}>
-            <Route path="/foo/:viewId?">{children}</Route>
-        </Router>
-    )
-}
 
 describe('<TicketNavbar/>', () => {
     const minProps = ({
@@ -208,16 +190,21 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should render', () => {
-        const {container} = render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
-        })
+        const {container} = renderWithRouter(
+            <TicketNavbarContainer {...minProps} />,
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            }
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
-        render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
+        renderWithRouter(<TicketNavbarContainer {...minProps} />, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
         })
 
         setImmediate(() => {
@@ -232,8 +219,9 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should fetch the sections and dispatch the result', (done) => {
-        render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
+        renderWithRouter(<TicketNavbarContainer {...minProps} />, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
         })
 
         setImmediate(() => {
@@ -246,9 +234,12 @@ describe('<TicketNavbar/>', () => {
 
     it('should fallback to location view id when view id is missing from the params', (done) => {
         const history = createBrowserHistory()
+        history.push('/foo/1')
+
         history.push('/foo?viewId=2')
-        render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: (props) => <RouterWrapper {...props} history={history} />,
+        renderWithRouter(<TicketNavbarContainer {...minProps} />, {
+            history,
+            path: '/foo/:viewId?',
         })
 
         setImmediate(() => {
@@ -263,8 +254,9 @@ describe('<TicketNavbar/>', () => {
 
     it('should dispatch a notification when failing to fetch views', (done) => {
         mockedServer.onGet('/api/views/').reply(503, {message: 'error'})
-        render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
+        renderWithRouter(<TicketNavbarContainer {...minProps} />, {
+            path: '/foo/:viewId?',
+            route: '/foo/1',
         })
 
         setImmediate(() => {
@@ -277,10 +269,11 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should display shared actions for lead-agent/admin', () => {
-        const {container} = render(
+        const {container} = renderWithRouter(
             <TicketNavbarContainer {...minProps} currentUser={fromJS(user)} />,
             {
-                wrapper: RouterWrapper,
+                path: '/foo/:viewId?',
+                route: '/foo/1',
             }
         )
 
@@ -288,10 +281,11 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should open a new section modal when clicking create section', () => {
-        const {container, getByTestId} = render(
+        const {container, getByTestId} = renderWithRouter(
             <TicketNavbarContainer {...minProps} />,
             {
-                wrapper: RouterWrapper,
+                path: '/foo/:viewId?',
+                route: '/foo/1',
             }
         )
 
@@ -300,10 +294,11 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should close a new section modal when clicking close section', () => {
-        const {container, getByTestId} = render(
+        const {container, getByTestId} = renderWithRouter(
             <TicketNavbarContainer {...minProps} />,
             {
-                wrapper: RouterWrapper,
+                path: '/foo/:viewId?',
+                route: '/foo/1',
             }
         )
 
@@ -313,10 +308,11 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update the draft form on change', () => {
-        const {container, getByTestId} = render(
+        const {container, getByTestId} = renderWithRouter(
             <TicketNavbarContainer {...minProps} />,
             {
-                wrapper: RouterWrapper,
+                path: '/foo/:viewId?',
+                route: '/foo/1',
             }
         )
 
@@ -331,9 +327,13 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should create a new section', (done) => {
-        const {getByTestId} = render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
-        })
+        const {getByTestId} = renderWithRouter(
+            <TicketNavbarContainer {...minProps} />,
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            }
+        )
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -345,9 +345,13 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update a section', (done) => {
-        const {getByTestId} = render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
-        })
+        const {getByTestId} = renderWithRouter(
+            <TicketNavbarContainer {...minProps} />,
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            }
+        )
 
         fireEvent.click(getByTestId('TicketNavbarContent-rename'))
         fireEvent.click(getByTestId('SectionModal-submit'))
@@ -359,9 +363,13 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should delete a section', (done) => {
-        const {getByTestId} = render(<TicketNavbarContainer {...minProps} />, {
-            wrapper: RouterWrapper,
-        })
+        const {getByTestId} = renderWithRouter(
+            <TicketNavbarContainer {...minProps} />,
+            {
+                path: '/foo/:viewId?',
+                route: '/foo/1',
+            }
+        )
 
         fireEvent.click(getByTestId('TicketNavbarContent-delete'))
         fireEvent.click(getByTestId('DeleteModal-submit'))

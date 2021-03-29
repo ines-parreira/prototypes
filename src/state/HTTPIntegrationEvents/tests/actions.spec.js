@@ -6,7 +6,7 @@ import {
     fetchHTTPIntegrationEvent,
     fetchHTTPIntegrationEvents,
 } from '../actions.ts'
-import {mockStore} from '../../../utils/testing.ts'
+import {mockStore} from '../../../utils/testing.tsx'
 
 describe('HTTPIntegrationEvents', () => {
     let store = null
