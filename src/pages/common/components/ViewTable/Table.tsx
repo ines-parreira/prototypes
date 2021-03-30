@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
+import {usePrevious} from 'react-use'
 
 import Loader from '../Loader/Loader'
 import BlankState from '../BlankState/index.js'
@@ -24,7 +25,7 @@ type OwnProps = {
     config: Map<any, any>
     isLoading: (list: string) => boolean
     isSearch: boolean
-    selectable: boolean
+    selectable?: boolean
     navigation: Map<any, any>
     selectedItemsIds?: List<any>
     type: string
@@ -40,124 +41,56 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-type State = {
-    rowCursor: number
-}
+export const TableContainer = ({
+    ActionsComponent,
+    config,
+    fetchViewItems,
+    fields,
+    isLoading,
+    isSearch,
+    items = fromJS([]),
+    getItemUrl,
+    navigation,
+    onItemClick,
+    resetView,
+    selectable = true,
+    selectedItemsIds,
+    toggleIdInPageSelection,
+    toggleViewSelection,
+    type = 'ticket',
+    updatePageSelection,
+    view,
+    viewSelected,
+}: Props) => {
+    const prevItems = usePrevious(items)
+    const [rowCursor, setRowCursor] = useState(0)
 
-export class TableContainer extends React.Component<Props, State> {
-    static defaultProps = {
-        items: fromJS([]),
-        type: 'ticket',
-        selectable: true,
-    }
+    const areAllSelected = useMemo(
+        () => !!selectedItemsIds && items.size === selectedItemsIds.size,
+        [items, selectedItemsIds]
+    )
 
-    state = {
-        rowCursor: 0,
-    }
+    const indeterminateCheckbox = useMemo(
+        () =>
+            !!selectedItemsIds &&
+            selectedItemsIds.size > 0 &&
+            selectedItemsIds.size < items.size,
+        [selectedItemsIds]
+    )
 
-    componentDidMount() {
-        this._bindKeys()
-    }
-
-    componentWillUnmount() {
-        shortcutManager.unbind('View')
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        if (
-            nextProps.selectedItemsIds &&
-            nextProps.viewSelected &&
-            nextProps.selectedItemsIds.size !== nextProps.items.size
-        ) {
-            nextProps.toggleViewSelection()
-        }
-        // new items loaded
-        if (!nextProps.items.equals(this.props.items)) {
-            this.setState({rowCursor: 0})
-            if (nextProps.viewSelected) {
-                nextProps.updatePageSelection(
-                    nextProps.items.map(
-                        (item: Map<any, any>) => item.get('id') as number
-                    ) as List<any>
-                )
-            } else if (nextProps.selectedItemsIds) {
-                nextProps.updatePageSelection(
-                    nextProps.selectedItemsIds.filter((itemId) =>
-                        nextProps.items.some(
-                            (item: Map<any, any>) => item.get('id') === itemId
-                        )
-                    ) as List<any>
-                )
-            }
-        }
-    }
-
-    _bindKeys() {
-        shortcutManager.bind('View', {
-            GO_NEXT_PAGE: {
-                action: () => this._movePage(),
-            },
-            GO_PREV_PAGE: {
-                action: () => this._movePage(ViewNavDirection.PrevView),
-            },
-            GO_NEXT_ROW: {
-                action: () => this._moveCursor(),
-            },
-            GO_PREV_ROW: {
-                action: () => this._moveCursor(MoveIndexDirection.Prev),
-            },
-            CHECK_ITEM: {
-                action: () => {
-                    const cursorId = this.props.items.getIn([
-                        this.state.rowCursor,
-                        'id',
-                    ])
-                    if (cursorId) {
-                        this.props.toggleIdInPageSelection(cursorId)
-                    }
-                },
-            },
-            OPEN_ITEM: {
-                action: (e) => {
-                    e.preventDefault()
-                    const item = this.props.items.get(this.state.rowCursor)
-                    const {onItemClick, getItemUrl} = this.props
-
-                    if (onItemClick) {
-                        onItemClick(item)
-                    } else if (getItemUrl) {
-                        history.push(getItemUrl(item))
-                    }
-                },
-            },
-        })
-    }
-
-    _moveCursor = (direction: MoveIndexDirection = MoveIndexDirection.Next) => {
-        this.setState({
-            rowCursor: moveIndex(this.state.rowCursor, this.props.items.size, {
+    const moveCursor = (
+        direction: MoveIndexDirection = MoveIndexDirection.Next
+    ) => {
+        setRowCursor(
+            moveIndex(rowCursor, items.size, {
                 direction,
-            }),
-        })
+            })
+        )
     }
 
-    _toggleSelectAllPageItems = () => {
-        const itemsIds = this.props.items.map(
-            (item: Map<any, any>) => item.get('id') as number
-        ) as List<any>
-        if (
-            this.props.selectedItemsIds &&
-            this.props.selectedItemsIds.size > 0
-        ) {
-            this.props.updatePageSelection(List())
-        } else {
-            this.props.updatePageSelection(itemsIds)
-        }
-    }
-
-    _movePage = (direction: ViewNavDirection = ViewNavDirection.NextView) => {
-        const {navigation, fetchViewItems, isLoading} = this.props
-
+    const movePage = (
+        direction: ViewNavDirection = ViewNavDirection.NextView
+    ) => {
         if (
             (direction === ViewNavDirection.PrevView &&
                 !navigation.get('prev_items')) ||
@@ -171,154 +104,115 @@ export class TableContainer extends React.Component<Props, State> {
         void fetchViewItems(direction)
     }
 
-    render() {
-        const {
-            ActionsComponent,
-            view,
-            config,
-            isLoading,
-            isSearch,
-            items,
-            fields,
-            selectable,
-            selectedItemsIds,
-            type,
-            resetView,
-            onItemClick,
-            getItemUrl,
-            fetchViewItems,
-            navigation,
-        } = this.props
+    useEffect(() => {
+        shortcutManager.bind('View', {
+            GO_NEXT_PAGE: {
+                action: () => movePage(),
+            },
+            GO_PREV_PAGE: {
+                action: () => movePage(ViewNavDirection.PrevView),
+            },
+            GO_NEXT_ROW: {
+                action: () => moveCursor(),
+            },
+            GO_PREV_ROW: {
+                action: () => moveCursor(MoveIndexDirection.Prev),
+            },
+            CHECK_ITEM: {
+                action: () => {
+                    const cursorId = items.getIn([rowCursor, 'id'])
+                    if (cursorId) {
+                        toggleIdInPageSelection(cursorId)
+                    }
+                },
+            },
+            OPEN_ITEM: {
+                action: (e) => {
+                    e.preventDefault()
+                    const item = items.get(rowCursor)
 
-        if (isLoading('fetchList')) {
-            return <Loader />
+                    if (onItemClick) {
+                        onItemClick(item)
+                    } else if (getItemUrl) {
+                        history.push(getItemUrl(item))
+                    }
+                },
+            },
+        })
+        return () => {
+            shortcutManager.unbind('View')
         }
+    }, [moveCursor, movePage])
 
-        // if empty view or view fields => show message
-        if (items.isEmpty()) {
-            let message
+    useEffect(() => {
+        if (
+            selectedItemsIds &&
+            viewSelected &&
+            selectedItemsIds.size !== items.size
+        ) {
+            toggleViewSelection()
+        }
+    }, [items.size, selectedItemsIds, viewSelected])
 
-            // if view is being modified, which resulted in an empty list
-            if (view.get('dirty')) {
-                message = (
-                    <p>
-                        No {config.get('singular')} found.
-                        <br />
-                        {!isSearch ? (
-                            <a
-                                onClick={() => {
-                                    resetView(config.get('name'))
-                                    void fetchViewItems()
-                                }}
-                            >
-                                Reset view
-                            </a>
-                        ) : null}
-                    </p>
+    useEffect(() => {
+        if (prevItems && !prevItems.equals(items)) {
+            setRowCursor(0)
+            if (viewSelected) {
+                updatePageSelection(
+                    items.map(
+                        (item: Map<any, any>) => item.get('id') as number
+                    ) as List<any>
+                )
+            } else if (selectedItemsIds) {
+                updatePageSelection(
+                    selectedItemsIds.filter((itemId) =>
+                        items.some(
+                            (item: Map<any, any>) => item.get('id') === itemId
+                        )
+                    ) as List<any>
                 )
             }
-
-            return (
-                <div>
-                    <BlankState message={message} />
-                    <Navigation
-                        hasNextItems={!!navigation.get('next_items')}
-                        hasPrevItems={!!navigation.get('prev_items')}
-                        fetchNextItems={() =>
-                            fetchViewItems(ViewNavDirection.NextView)
-                        }
-                        fetchPrevItems={() =>
-                            fetchViewItems(ViewNavDirection.PrevView)
-                        }
-                    />
-                </div>
-            )
         }
+    }, [items, prevItems])
 
-        const areAllSelected =
-            !!selectedItemsIds && items.size === selectedItemsIds.size
-        const indeterminateCheckbox =
-            !!selectedItemsIds &&
-            selectedItemsIds.size > 0 &&
-            selectedItemsIds.size < items.size
+    const toggleSelectAllPageItems = () => {
+        const itemsIds = items.map(
+            (item: Map<any, any>) => item.get('id') as number
+        ) as List<any>
+        if (selectedItemsIds && selectedItemsIds.size > 0) {
+            updatePageSelection(List())
+        } else {
+            updatePageSelection(itemsIds)
+        }
+    }
+
+    if (isLoading('fetchList')) {
+        return <Loader />
+    }
+
+    if (items.isEmpty()) {
         return (
             <div>
-                <table className={classnames(css.table, 'view-table')}>
-                    <thead>
-                        <tr>
-                            {selectable ? (
-                                <td
-                                    className="cell-wrapper cell-short clickable d-none d-md-table-cell"
-                                    onClick={this._toggleSelectAllPageItems}
-                                >
-                                    <input
-                                        type="checkbox"
-                                        checked={areAllSelected}
-                                        ref={(el) =>
-                                            el &&
-                                            (el.indeterminate = indeterminateCheckbox)
-                                        }
-                                        readOnly
-                                    />
-                                </td>
-                            ) : null}
-                            {fields.map((field: Map<any, any>, index) => {
-                                return (
-                                    <HeaderCell
-                                        key={field.get('name')}
-                                        field={field}
-                                        fields={fields}
-                                        type={type}
-                                        isLast={
-                                            fields.size ===
-                                            (index as number) + 1
-                                        }
-                                        isSearch={isSearch}
-                                        ActionsComponent={ActionsComponent}
-                                    />
-                                )
-                            })}
-                        </tr>
-                        {(!!navigation.get('next_items') ||
-                            !!navigation.get('prev_items')) &&
-                        areAllSelected &&
-                        type === 'ticket' ? (
-                            <ViewSelection
-                                colSize={fields.size + 1}
-                                selectedCount={items.size}
-                                viewSelected={this.props.viewSelected}
-                                onSelectViewClick={
-                                    this.props.toggleViewSelection
-                                }
-                            />
-                        ) : null}
-                    </thead>
-                    <tbody>
-                        {items.map((item: Map<any, any>, index) => {
-                            const id = item.get('id')
-
-                            return (
-                                <Row
-                                    key={id}
-                                    fields={fields}
-                                    item={item}
-                                    selectable={selectable}
-                                    isSelected={
-                                        !!selectedItemsIds &&
-                                        selectedItemsIds.includes(id)
-                                    }
-                                    type={type}
-                                    hasCursor={this.state.rowCursor === index}
-                                    onItemClick={onItemClick}
-                                    itemUrl={
-                                        getItemUrl ? getItemUrl(item) : null
-                                    }
-                                />
-                            )
-                        })}
-                    </tbody>
-                </table>
-
+                <BlankState
+                    message={
+                        view.get('dirty') ? (
+                            <p>
+                                No {config.get('singular')} found.
+                                <br />
+                                {!isSearch ? (
+                                    <a
+                                        onClick={() => {
+                                            resetView(config.get('name'))
+                                            void fetchViewItems()
+                                        }}
+                                    >
+                                        Reset view
+                                    </a>
+                                ) : null}
+                            </p>
+                        ) : null
+                    }
+                />
                 <Navigation
                     hasNextItems={!!navigation.get('next_items')}
                     hasPrevItems={!!navigation.get('prev_items')}
@@ -332,6 +226,88 @@ export class TableContainer extends React.Component<Props, State> {
             </div>
         )
     }
+
+    return (
+        <div>
+            <table className={classnames(css.table, 'view-table')}>
+                <thead>
+                    <tr>
+                        {selectable ? (
+                            <td
+                                className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+                                onClick={toggleSelectAllPageItems}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={areAllSelected}
+                                    ref={(el) =>
+                                        el &&
+                                        (el.indeterminate = indeterminateCheckbox)
+                                    }
+                                    readOnly
+                                />
+                            </td>
+                        ) : null}
+                        {fields.map((field: Map<any, any>, index) => {
+                            return (
+                                <HeaderCell
+                                    key={field.get('name')}
+                                    field={field}
+                                    fields={fields}
+                                    type={type}
+                                    isLast={
+                                        fields.size === (index as number) + 1
+                                    }
+                                    isSearch={isSearch}
+                                    ActionsComponent={ActionsComponent}
+                                />
+                            )
+                        })}
+                    </tr>
+                    {(!!navigation.get('next_items') ||
+                        !!navigation.get('prev_items')) &&
+                    areAllSelected &&
+                    type === 'ticket' ? (
+                        <ViewSelection
+                            colSize={fields.size + 1}
+                            selectedCount={items.size}
+                            viewSelected={viewSelected}
+                            onSelectViewClick={toggleViewSelection}
+                        />
+                    ) : null}
+                </thead>
+                <tbody>
+                    {items.map((item: Map<any, any>, index) => {
+                        const id = item.get('id')
+
+                        return (
+                            <Row
+                                key={id}
+                                fields={fields}
+                                item={item}
+                                selectable={selectable}
+                                isSelected={
+                                    !!selectedItemsIds &&
+                                    selectedItemsIds.includes(id)
+                                }
+                                type={type}
+                                hasCursor={rowCursor === index}
+                                onItemClick={onItemClick}
+                                itemUrl={getItemUrl ? getItemUrl(item) : null}
+                            />
+                        )
+                    })}
+                </tbody>
+            </table>
+
+            <Navigation
+                hasNextItems={!!navigation.get('next_items')}
+                hasPrevItems={!!navigation.get('prev_items')}
+                fetchNextItems={() => fetchViewItems(ViewNavDirection.NextView)}
+                fetchPrevItems={() => fetchViewItems(ViewNavDirection.PrevView)}
+            />
+        </div>
+    )
 }
 
 const connector = connect(

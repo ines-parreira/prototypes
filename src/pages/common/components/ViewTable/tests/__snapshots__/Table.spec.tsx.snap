@@ -708,7 +708,9 @@ exports[`ViewTable::Table should display a default view 1`] = `
 
 exports[`ViewTable::Table should display a default view with no items 1`] = `
 <div>
-  <Component />
+  <Component
+    message={null}
+  />
   <Navigation
     fetchNextItems={[Function]}
     fetchPrevItems={[Function]}
