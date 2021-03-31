@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SelfServiceView/> should show a row for each shopify integration 1`] = `
+exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 will get deactivated 1`] = `
 <div>
   <div
     class="full-width"
@@ -59,18 +59,11 @@ exports[`<SelfServiceView/> should show a row for each shopify integration 1`] =
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      class="switch"
+                    <div
+                      data-testid="toggle-button"
                     >
-                      <input
-                        checked=""
-                        readonly=""
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                      ToggleButtonMock value=true
+                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -103,17 +96,11 @@ exports[`<SelfServiceView/> should show a row for each shopify integration 1`] =
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      class="switch"
+                    <div
+                      data-testid="toggle-button"
                     >
-                      <input
-                        readonly=""
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                      ToggleButtonMock value=false
+                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -146,18 +133,48 @@ exports[`<SelfServiceView/> should show a row for each shopify integration 1`] =
                   <td
                     class="smallest align-middle"
                   >
-                    <label
-                      class="switch"
+                    <div
+                      data-testid="toggle-button"
                     >
-                      <input
-                        checked=""
-                        readonly=""
-                        type="checkbox"
-                      />
-                      <div
-                        class="slider"
-                      />
-                    </label>
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore4
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -175,6 +192,448 @@ exports[`<SelfServiceView/> should show a row for each shopify integration 1`] =
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <div
+          class="col"
+        >
+          <img
+            alt="Self-Service example"
+            height="689"
+            src="test-file-stub"
+            width="442"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Self-Service
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <p>
+              Most ecommerce support requests are about the same 20 types of issues.
+            </p>
+            <p>
+              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+            </p>
+            <h5>
+              Enable Self-Service
+            </h5>
+            <p>
+              Self-Service is only available to stores that have a Shopify store integration.
+            </p>
+            <table
+              class="table"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore1
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore2
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore3
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore4
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          class="col"
+        >
+          <img
+            alt="Self-Service example"
+            height="689"
+            src="test-file-stub"
+            width="442"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServiceView/> render() should render a row for each shopify integration, 2 active and 1 inactive ssp services 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Self-Service
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <p>
+              Most ecommerce support requests are about the same 20 types of issues.
+            </p>
+            <p>
+              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+            </p>
+            <h5>
+              Enable Self-Service
+            </h5>
+            <p>
+              Self-Service is only available to stores that have a Shopify store integration.
+            </p>
+            <table
+              class="table"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore1
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore2
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="link-full-td"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <div>
+                        <b>
+                          mystore3
+                        </b>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div
+          class="col"
+        >
+          <img
+            alt="Self-Service example"
+            height="689"
+            src="test-file-stub"
+            width="442"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServiceView/> render() should render the default message when there is no active shopify integration 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Self-Service
+      </h1>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <p>
+              Most ecommerce support requests are about the same 20 types of issues.
+            </p>
+            <p>
+              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+            </p>
+            <h5>
+              Enable Self-Service
+            </h5>
+            <div
+              class="alert alert-warning fade"
+              role="alert"
+            >
+              No active Shopify store detected. Please make sure to add a Shopify integration to access the Self-service features.
+            </div>
           </div>
         </div>
         <div

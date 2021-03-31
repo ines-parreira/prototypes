@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {Col, Container, Row, Table} from 'reactstrap'
+import {Alert, Col, Container, Row, Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
@@ -71,30 +71,51 @@ export const SelfServiceView = ({
                                 for your team to handle.
                             </p>
                             <h5>Enable Self-Service</h5>
-                            <p>
-                                Self-Service is only available to stores that
-                                have a Shopify store integration.
-                            </p>
-                            <Table>
-                                <tbody>
-                                    {shopifyIntegrations
-                                        .valueSeq()
-                                        .map((integration: Map<any, any>) => (
-                                            <IntegrationRow
-                                                key={integration.get('id')}
-                                                integration={integration}
-                                                configuration={_findConfiguration(
-                                                    selfServiceConfigurations,
-                                                    integration
+                            {shopifyIntegrations.size === 0 ? (
+                                <Alert color="warning">
+                                    No active Shopify store detected. Please
+                                    make sure to add a Shopify integration to
+                                    access the Self-service features.
+                                </Alert>
+                            ) : (
+                                <>
+                                    <p>
+                                        Self-Service is only available to stores
+                                        that have a Shopify store integration.
+                                    </p>
+                                    <Table>
+                                        <tbody>
+                                            {shopifyIntegrations
+                                                .valueSeq()
+                                                .map(
+                                                    (
+                                                        integration: Map<
+                                                            any,
+                                                            any
+                                                        >
+                                                    ) => (
+                                                        <IntegrationRow
+                                                            key={integration.get(
+                                                                'id'
+                                                            )}
+                                                            integration={
+                                                                integration
+                                                            }
+                                                            configuration={_findConfiguration(
+                                                                selfServiceConfigurations,
+                                                                integration
+                                                            )}
+                                                            isLoadingConfigurations={
+                                                                isLoadingConfigurations
+                                                            }
+                                                            actions={actions}
+                                                        />
+                                                    )
                                                 )}
-                                                isLoadingConfigurations={
-                                                    isLoadingConfigurations
-                                                }
-                                                actions={actions}
-                                            />
-                                        ))}
-                                </tbody>
-                            </Table>
+                                        </tbody>
+                                    </Table>
+                                </>
+                            )}
                         </div>
                     </Col>
                     <Col>
