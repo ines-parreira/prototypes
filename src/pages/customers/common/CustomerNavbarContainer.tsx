@@ -1,8 +1,8 @@
-import React, {useEffect, useMemo} from 'react'
-import {useLocation, useParams} from 'react-router-dom'
+import React, {useEffect} from 'react'
+import {useParams} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {parse} from 'query-string'
 
+import useSearch from '../../../hooks/useSearch'
 import {RootState} from '../../../state/types'
 import {fetchViews} from '../../../state/views/actions'
 import Navbar from '../../common/components/Navbar.js'
@@ -17,11 +17,8 @@ export const CustomerNavbarContainer = ({
     fetchViews,
     isLoading,
 }: OwnProps & ConnectedProps<typeof connector>) => {
-    const location = useLocation()
     const {viewId} = useParams<{viewId?: string}>()
-    const viewIdSearch = useMemo(() => parse(location.search).viewId, [
-        location,
-    ])
+    const {viewId: viewIdSearch} = useSearch<{viewId?: string}>()
 
     useEffect(() => {
         void fetchViews(viewId || (viewIdSearch as string))

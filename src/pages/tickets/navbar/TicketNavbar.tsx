@@ -1,10 +1,10 @@
 import _debounce from 'lodash/debounce'
 import React, {useEffect, useMemo, useCallback, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
-import {parse} from 'query-string'
 
+import useSearch from '../../../hooks/useSearch'
 import {
     UserRole,
     UserSetting,
@@ -91,8 +91,8 @@ export function TicketNavbarContainer({
     submitSettingSuccess,
 }: ConnectedProps<typeof connector>) {
     const history = useHistory()
-    const location = useLocation()
     const params = useParams<{viewId?: string}>()
+    const {viewId} = useSearch<{viewId?: string}>()
     const [isSectionFormModalOpened, setSectionFormModalOpened] = useState(
         false
     )
@@ -117,9 +117,7 @@ export function TicketNavbarContainer({
                 const res = await fetchViews()
                 fetchViewsSuccess(
                     res,
-                    params.viewId != null
-                        ? params.viewId
-                        : (parse(location.search).viewId as string)
+                    params.viewId != null ? params.viewId : (viewId as string)
                 )
                 viewsFetched(res.data)
             } catch (error) {

@@ -5,6 +5,7 @@ import _noop from 'lodash/noop'
 import {render} from '@testing-library/react'
 import {compressToEncodedURIComponent} from 'lz-string'
 import {stringify} from 'query-string'
+import reactRouterDom from 'react-router-dom'
 
 import {
     ViewSearchUrlSyncInjectedProps,
@@ -12,6 +13,11 @@ import {
 } from '../withViewSearchUrlSync'
 import * as viewsConfig from '../../../../../config/views'
 import history from '../../../../history'
+
+jest.spyOn(reactRouterDom, 'useLocation')
+const mockedUseLocation = reactRouterDom.useLocation as jest.MockedFunction<
+    typeof reactRouterDom.useLocation
+>
 
 const InnerComponent = ({urlSearchView}: ViewSearchUrlSyncInjectedProps) => {
     return <div>Search view: {JSON.stringify(urlSearchView.toJS())}</div>
@@ -48,12 +54,6 @@ const createLocation = ({
 const defaultProps = ({
     config: viewsConfig.getConfigByName('ticket'),
     isSearch: true,
-    location: createLocation(),
-    match: {
-        params: {},
-    },
-    router: {},
-    routes: [],
     activeView: searchView(''),
     updateView: jest.fn(),
     areFiltersValid: true,
@@ -67,6 +67,7 @@ jest.mock('../../../../history')
 
 beforeEach(() => {
     jest.clearAllMocks()
+    mockedUseLocation.mockReturnValue(createLocation())
     ;(history.push as jest.MockedFunction<
         typeof history.push
     >).mockImplementation(_noop)
@@ -74,25 +75,23 @@ beforeEach(() => {
 
 describe('withViewSearchUrlSync', () => {
     it('should inject urlSearchView', () => {
-        const {container} = render(
-            <WrappedComponent
-                {...defaultProps}
-                location={createLocation({
-                    search: 'foo search query',
-                    filters: ticketChannelEqualChatFilter,
-                })}
-            />
+        mockedUseLocation.mockReturnValue(
+            createLocation({
+                search: 'foo search query',
+                filters: ticketChannelEqualChatFilter,
+            })
         )
+        const {container} = render(<WrappedComponent {...defaultProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     describe('url sync', () => {
         it('should not sync view with url on mount', () => {
+            mockedUseLocation.mockReturnValue(createLocation({search: 'bar'}))
             render(
                 <WrappedComponent
                     {...defaultProps}
                     activeView={searchView('foo')}
-                    location={createLocation({search: 'bar'})}
                 />
             )
             expect(history.push).not.toHaveBeenCalled()
@@ -115,16 +114,16 @@ describe('withViewSearchUrlSync', () => {
 
         it('should not update url search query when view and url queries are the same', () => {
             const newQuery = 'foo search query'
-            const {rerender} = render(
-                <WrappedComponent
-                    {...defaultProps}
-                    location={createLocation({search: newQuery})}
-                />
+            mockedUseLocation.mockReturnValue(
+                createLocation({search: newQuery})
+            )
+            const {rerender} = render(<WrappedComponent {...defaultProps} />)
+            mockedUseLocation.mockReturnValue(
+                createLocation({search: newQuery})
             )
             rerender(
                 <WrappedComponent
                     {...defaultProps}
-                    location={createLocation({search: newQuery})}
                     activeView={searchView(newQuery)}
                 />
             )
@@ -146,12 +145,10 @@ describe('withViewSearchUrlSync', () => {
         it('should update active view search on url search query change ', () => {
             const newQuery = 'foo search query'
             const {rerender} = render(<WrappedComponent {...defaultProps} />)
-            rerender(
-                <WrappedComponent
-                    {...defaultProps}
-                    location={createLocation({search: newQuery})}
-                />
+            mockedUseLocation.mockReturnValue(
+                createLocation({search: newQuery})
             )
+            rerender(<WrappedComponent {...defaultProps} />)
             expect(defaultProps.updateView).toHaveBeenLastCalledWith(
                 searchView(newQuery),
                 false
@@ -166,11 +163,13 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView(newQuery)}
                 />
             )
+            mockedUseLocation.mockReturnValue(
+                createLocation({search: newQuery})
+            )
             rerender(
                 <WrappedComponent
                     {...defaultProps}
                     activeView={searchView(newQuery)}
-                    location={createLocation({search: newQuery})}
                 />
             )
             expect(defaultProps.updateView).not.toHaveBeenCalled()
@@ -178,27 +177,26 @@ describe('withViewSearchUrlSync', () => {
 
         it('should not update active view search when not in search mode', () => {
             const {rerender} = render(<WrappedComponent {...defaultProps} />)
-            rerender(
-                <WrappedComponent
-                    {...defaultProps}
-                    isSearch={false}
-                    location={createLocation({search: 'foo search query'})}
-                />
+            mockedUseLocation.mockReturnValue(
+                createLocation({search: 'foo search query'})
             )
+            rerender(<WrappedComponent {...defaultProps} isSearch={false} />)
             expect(defaultProps.updateView).not.toHaveBeenCalled()
         })
     })
 
     describe('filters sync', () => {
         it('should not sync view with filters on mount', () => {
+            mockedUseLocation.mockReturnValue(
+                createLocation({
+                    search: 'foo',
+                    filters: ticketChannelEqualChatFilter,
+                })
+            )
             render(
                 <WrappedComponent
                     {...defaultProps}
                     activeView={searchView('foo')}
-                    location={createLocation({
-                        search: 'foo',
-                        filters: ticketChannelEqualChatFilter,
-                    })}
                 />
             )
             expect(history.push).not.toHaveBeenCalled()
@@ -219,20 +217,20 @@ describe('withViewSearchUrlSync', () => {
         })
 
         it('should not update url filters when view and url filters are the same', () => {
-            const {rerender} = render(
-                <WrappedComponent
-                    {...defaultProps}
-                    location={createLocation({
-                        filters: ticketChannelEqualChatFilter,
-                    })}
-                />
+            mockedUseLocation.mockReturnValue(
+                createLocation({
+                    filters: ticketChannelEqualChatFilter,
+                })
+            )
+            const {rerender} = render(<WrappedComponent {...defaultProps} />)
+            mockedUseLocation.mockReturnValue(
+                createLocation({
+                    filters: ticketChannelEqualChatFilter,
+                })
             )
             rerender(
                 <WrappedComponent
                     {...defaultProps}
-                    location={createLocation({
-                        filters: ticketChannelEqualChatFilter,
-                    })}
                     activeView={searchView('', ticketChannelEqualChatFilter)}
                 />
             )
@@ -253,14 +251,12 @@ describe('withViewSearchUrlSync', () => {
 
         it('should update active view filters on url filters change ', () => {
             const {rerender} = render(<WrappedComponent {...defaultProps} />)
-            rerender(
-                <WrappedComponent
-                    {...defaultProps}
-                    location={createLocation({
-                        filters: ticketChannelEqualChatFilter,
-                    })}
-                />
+            mockedUseLocation.mockReturnValue(
+                createLocation({
+                    filters: ticketChannelEqualChatFilter,
+                })
             )
+            rerender(<WrappedComponent {...defaultProps} />)
             expect(defaultProps.updateView).toHaveBeenLastCalledWith(
                 searchView('', ticketChannelEqualChatFilter),
                 false
@@ -274,13 +270,15 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView('', ticketChannelEqualChatFilter)}
                 />
             )
+            mockedUseLocation.mockReturnValue(
+                createLocation({
+                    filters: ticketChannelEqualChatFilter,
+                })
+            )
             rerender(
                 <WrappedComponent
                     {...defaultProps}
                     activeView={searchView('', ticketChannelEqualChatFilter)}
-                    location={createLocation({
-                        filters: ticketChannelEqualChatFilter,
-                    })}
                 />
             )
             expect(defaultProps.updateView).not.toHaveBeenCalled()
@@ -288,15 +286,12 @@ describe('withViewSearchUrlSync', () => {
 
         it('should not update active view filters when not in search mode', () => {
             const {rerender} = render(<WrappedComponent {...defaultProps} />)
-            rerender(
-                <WrappedComponent
-                    {...defaultProps}
-                    isSearch={false}
-                    location={createLocation({
-                        filters: ticketChannelEqualChatFilter,
-                    })}
-                />
+            mockedUseLocation.mockReturnValue(
+                createLocation({
+                    filters: ticketChannelEqualChatFilter,
+                })
             )
+            rerender(<WrappedComponent {...defaultProps} isSearch={false} />)
             expect(defaultProps.updateView).not.toHaveBeenCalled()
         })
     })

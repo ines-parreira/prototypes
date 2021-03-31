@@ -1,32 +1,27 @@
 import React, {ComponentType, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {withRouter, RouteComponentProps} from 'react-router-dom'
+import {withRouter, useLocation} from 'react-router-dom'
 import {useUpdateEffect} from 'react-use'
 import {Map} from 'immutable'
 import {
     compressToEncodedURIComponent,
     decompressFromEncodedURIComponent,
 } from 'lz-string'
-import {parse, stringify} from 'query-string'
+import {stringify} from 'query-string'
 
+import useSearch from '../../../../hooks/useSearch'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import {RootState} from '../../../../state/types'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsConfig from '../../../../config/views'
 import history from '../../../history'
 
-type QueryString = {
-    q?: string
-    filters?: string
-}
-
 type InjectedProps = {
     urlSearchView: Map<any, any>
 }
 
 export type ViewSearchUrlSyncInjectedProps = InjectedProps &
-    ConnectedProps<typeof connector> &
-    RouteComponentProps
+    ConnectedProps<typeof connector>
 
 type Props = {
     isSearch: boolean
@@ -41,16 +36,16 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
     ) => {
         const {
             config,
-            location,
             updateView,
             activeView,
             isSearch,
             areFiltersValid,
         } = props
-        const {q: urlQuery = '', filters = ''} = parse(location.search) as {
-            q: string | undefined
-            filters: string | undefined
-        }
+        const location = useLocation()
+        const {q: urlQuery = '', filters = ''} = useSearch<{
+            q?: string
+            filters?: string
+        }>()
         const viewQuery = activeView.get('search') || ''
         const urlFilters = useMemo(() => {
             return decompressFromEncodedURIComponent(filters) || ''
@@ -78,7 +73,7 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
                 history.push({
                     ...location,
                     search: stringify({
-                        ...parse(location.search),
+                        ...(filters ? {filters} : {}),
                         q: viewQuery,
                     }),
                 })
@@ -90,7 +85,7 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
                 history.push({
                     ...location,
                     search: stringify({
-                        ...parse(location.search),
+                        ...(urlQuery ? {q: urlQuery} : {}),
                         filters: viewFilters
                             ? compressToEncodedURIComponent(viewFilters)
                             : undefined,
