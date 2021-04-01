@@ -1,4 +1,10 @@
-import React, {Component, ReactElement} from 'react'
+import React, {
+    ReactElement,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
@@ -38,10 +44,13 @@ import {JobType} from '../../../../models/job/types'
 
 import css from './TicketListActions.less'
 
+const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
+
 type OwnProps = {
     view: Map<any, any>
     selectedItemsIds: List<number>
     openMacroModal: () => void
+    searchTagsDebounceDelay?: number
 }
 
 type Props = OwnProps &
@@ -52,156 +61,115 @@ type Props = OwnProps &
         typeof viewsActions.fieldEnumSearch
     >
 
-type State = {
-    popoverOpen: string
-    teamsSearch: string
-    agentsSearch: string
-    tagsSearch: string
-    tags: List<Map<any, any>>
-    isLoadingTags: boolean
-    askTrashConfirmation: boolean
-    askDeleteConfirmation: boolean
-    isLaunchingJob: boolean
+enum ActionDropdown {
+    Teams = 'teams',
+    Agents = 'agents',
+    Tags = 'tags',
+    Trash = 'trash',
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
-export class TicketListActionsContainer extends Component<Props, State> {
-    state = {
-        popoverOpen: '',
-        teamsSearch: '',
-        agentsSearch: '',
-        tagsSearch: '',
-        tags: fromJS([]) as List<Map<any, any>>,
-        isLoadingTags: false,
-        askTrashConfirmation: false,
-        askDeleteConfirmation: false,
-        isLaunchingJob: false,
+export const TicketListActionsContainer = ({
+    selectedItemsIds,
+    allViewItemsSelected,
+    actions,
+    activeView,
+    fieldEnumSearchCancellable,
+    openMacroModal,
+    teams,
+    agents,
+    getViewCount,
+    areFiltersValid,
+    currentUser,
+    isActiveViewTrashView,
+    searchTagsDebounceDelay = 300,
+}: Props) => {
+    const [openDropdown, setOpenDropdown] = useState<ActionDropdown | null>(
+        null
+    )
+    const [teamsSearchQuery, setTeamsSearchQuery] = useState('')
+    const [agentsSearchQuery, setAgentsSearchQuery] = useState('')
+    const [tagsSearchQuery, setTagsSearchQuery] = useState('')
+    const [tags, setTags] = useState(fromJS([]) as List<Map<any, any>>)
+    const [isLoadingTags, setIsLoadingTags] = useState(false)
+    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(
+        false
+    )
+    const [isLaunchingJob, setIsLaunchingJob] = useState(false)
+
+    const hasSelectedItems = !selectedItemsIds.isEmpty()
+    const isDisabled = !hasSelectedItems || isLaunchingJob || !areFiltersValid
+
+    const filteredTeams = useMemo(() => {
+        return teams.filter((team) =>
+            (team!.get('name') as string)
+                .toLowerCase()
+                .includes(teamsSearchQuery.toLowerCase())
+        ) as List<Map<any, any>>
+    }, [teams, teamsSearchQuery])
+
+    const filteredAgents = useMemo(() => {
+        return agents.filter((agent) => {
+            const agentLabel =
+                (agent!.get('name') as string) ||
+                (agent!.get('email') as string)
+            return agentLabel
+                .toLowerCase()
+                .includes(agentsSearchQuery.toLowerCase())
+        }) as List<Map<any, any>>
+    }, [agents, agentsSearchQuery])
+
+    const selectedCount = useMemo(() => {
+        return allViewItemsSelected
+            ? getViewCount(activeView.get('id'))
+            : selectedItemsIds.size
+    }, [allViewItemsSelected, getViewCount, selectedItemsIds.size])
+
+    const toggleDropdown = (dropdown: ActionDropdown): boolean => {
+        const newOpenDropdown = openDropdown !== dropdown ? dropdown : null
+        setOpenDropdown(newOpenDropdown)
+        return !!newOpenDropdown
     }
 
-    componentDidMount() {
-        this._bindKeys()
-    }
-
-    componentWillUnmount() {
-        shortcutManager.unbind('TicketListActions')
-    }
-
-    _bindKeys = () => {
-        shortcutManager.bind('TicketListActions', {
-            CREATE_TICKET: {
-                action: (e) => {
-                    e.preventDefault()
-                    history.push('/app/ticket/new')
-                },
-            },
-            OPEN_TICKET: {
-                action: () => this._bulkUpdate('status', 'open'),
-            },
-            CLOSE_TICKET: {
-                action: () => this._bulkUpdate('status', 'closed'),
-            },
-            OPEN_ASSIGNEE: {
-                action: (e) => {
-                    if (!this._hasChecked()) {
-                        return
-                    }
-                    e.preventDefault()
-                    this._toggleAgentsDropdown()
-                },
-            },
-            OPEN_TAGS: {
-                action: (e) => {
-                    if (!this._hasChecked()) {
-                        return
-                    }
-                    e.preventDefault()
-                    this._toggleTagsDropdown()
-                },
-            },
-            OPEN_MACRO: {
-                action: (e) => {
-                    if (!this._hasChecked()) {
-                        return
-                    }
-                    e.preventDefault()
-                    this.props.openMacroModal()
-                },
-            },
-            DELETE_TICKET: {
-                action: () => {
-                    if (!this._hasChecked()) {
-                        return
-                    }
-                    this._toggleTrashConfirmation()
-                },
-            },
-            HIDE_POPOVER: {
-                key: 'esc',
-                action: () => {
-                    this._togglePopover()
-                },
-            },
-        })
-    }
-
-    _hasChecked = () => {
-        return !this.props.selectedItemsIds.isEmpty()
-    }
-
-    _isPopoverOpen = (popoverOpen: string) => {
-        return this.state.popoverOpen === popoverOpen
-    }
-
-    _togglePopover = (popoverOpen = '') => {
-        return this.setState({popoverOpen})
-    }
-
-    _toggleTeamsDropdown = () => {
-        const opens = !this._isPopoverOpen('teams')
-        this._togglePopover(opens ? 'teams' : '')
-
-        if (opens) {
-            this.setState({teamsSearch: ''})
+    const toggleTeamsDropdown = () => {
+        const isOpen = toggleDropdown(ActionDropdown.Teams)
+        if (isOpen) {
+            setTeamsSearchQuery('')
         }
     }
 
-    _toggleAgentsDropdown = () => {
-        const opens = !this._isPopoverOpen('agents')
-        this._togglePopover(opens ? 'agents' : '')
-
-        if (opens) {
-            this.setState({agentsSearch: ''})
+    const toggleAgentsDropdown = () => {
+        const isOpen = toggleDropdown(ActionDropdown.Agents)
+        if (isOpen) {
+            setAgentsSearchQuery('')
         }
     }
 
-    _toggleTagsDropdown = () => {
-        const opens = !this._isPopoverOpen('tags')
-        this._togglePopover(opens ? 'tags' : '')
-
-        if (opens) {
+    const toggleTagsDropdown = () => {
+        const isOpen = toggleDropdown(ActionDropdown.Tags)
+        if (isOpen) {
             const search = ''
-            this._queryTags(search)
-            this.setState({tagsSearch: search})
+            queryTags(search)
+            setTagsSearchQuery(search)
         }
     }
 
-    _addTag = (name: string) => {
+    const addTag = (name: string) => {
         if (!name) {
             return
         }
 
-        this._bulkUpdate('tags', [name])
-        this.setState({tagsSearch: ''})
+        bulkUpdate('tags', [name])
+        setTagsSearchQuery('')
     }
 
-    _searchTags = (search: string) => {
-        this.setState({tagsSearch: search})
-        this._queryTagsOnSearch(search)
+    const searchTags = (search: string) => {
+        setTagsSearchQuery(search)
+        queryTagsOnSearch(search)
     }
 
-    _queryTags = (search: string) => {
-        const {fieldEnumSearchCancellable} = this.props
-        this.setState({isLoadingTags: true})
+    const queryTags = (search: string) => {
+        setIsLoadingTags(true)
 
         const field = fromJS({
             filter: {type: 'tag'},
@@ -211,70 +179,128 @@ export class TicketListActionsContainer extends Component<Props, State> {
             if (!data) {
                 return
             }
-            this.setState({
-                tags: data,
-                isLoadingTags: false,
-            })
+            setTags(data)
+            setIsLoadingTags(false)
         })
     }
 
-    _queryTagsOnSearch = _debounce(this._queryTags, 300)
+    const queryTagsOnSearch = useCallback(
+        _debounce(queryTags, searchTagsDebounceDelay),
+        []
+    )
 
-    _createJob = async (
-        jobType: string,
+    const createJob = async (
+        jobType: JobType,
         jobParams: Record<string, unknown>
     ) => {
-        this.setState({isLaunchingJob: true})
-        const actionsToUse = this.props.allViewItemsSelected
-            ? this.props.actions.views
-            : this.props.actions.tickets
-        const actionsArgs = this.props.allViewItemsSelected
-            ? this.props.activeView
-            : this.props.selectedItemsIds
+        setIsLaunchingJob(true)
+        const actionsToUse = allViewItemsSelected
+            ? actions.views
+            : actions.tickets
+        const actionsArgs = allViewItemsSelected ? activeView : selectedItemsIds
 
         try {
             await actionsToUse.createJob(actionsArgs, jobType, jobParams)
-            this.props.actions.views.updateSelectedItemsIds(fromJS([]))
+            actions.views.updateSelectedItemsIds(fromJS([]))
         } catch {
             // Don't raise an exception in the console
         } finally {
-            this.setState({isLaunchingJob: false})
+            setIsLaunchingJob(false)
         }
     }
 
-    _bulkUpdate = (key: string, value: any) => {
-        if (!this._hasChecked()) {
+    const bulkUpdate = (key: string, value: any) => {
+        if (!hasSelectedItems) {
             return
         }
-        void this._createJob(JobType.UpdateTicket, {updates: {[key]: value}})
+        void createJob(JobType.UpdateTicket, {updates: {[key]: value}})
     }
 
-    _bulkExport = () => {
-        void this._createJob(JobType.ExportTicket, {})
+    const bulkExport = () => {
+        void createJob(JobType.ExportTicket, {})
     }
 
-    _bulkTrash = () => {
-        this._toggleTrashConfirmation(false)
-        void this._createJob(JobType.UpdateTicket, {
+    const bulkTrash = () => {
+        toggleTrashConfirmation(false)
+        void createJob(JobType.UpdateTicket, {
             updates: {trashed_datetime: moment.utc()},
         })
     }
 
-    _bulkUnTrash = () => {
-        void this._createJob(JobType.UpdateTicket, {
+    const bulkUnTrash = () => {
+        void createJob(JobType.UpdateTicket, {
             updates: {trashed_datetime: null},
         })
     }
 
-    _bulkDelete = () => {
-        this.setState({askDeleteConfirmation: false})
-        void this._createJob(JobType.DeleteTicket, {})
+    const bulkDelete = () => {
+        setIsDeleteConfirmationOpen(false)
+        void createJob(JobType.DeleteTicket, {})
     }
 
-    _renderTagsMenu = () => {
-        const {tagsSearch} = this.state
+    useEffect(() => {
+        shortcutManager.bind(SHORTCUT_MANAGER_COMPONENT_NAME, {
+            CREATE_TICKET: {
+                action: (e) => {
+                    e.preventDefault()
+                    history.push('/app/ticket/new')
+                },
+            },
+            OPEN_TICKET: {
+                action: () => bulkUpdate('status', 'open'),
+            },
+            CLOSE_TICKET: {
+                action: () => bulkUpdate('status', 'closed'),
+            },
+            OPEN_ASSIGNEE: {
+                action: (e) => {
+                    if (!hasSelectedItems) {
+                        return
+                    }
+                    e.preventDefault()
+                    toggleAgentsDropdown()
+                },
+            },
+            OPEN_TAGS: {
+                action: (e) => {
+                    if (!hasSelectedItems) {
+                        return
+                    }
+                    e.preventDefault()
+                    toggleTagsDropdown()
+                },
+            },
+            OPEN_MACRO: {
+                action: (e) => {
+                    if (!hasSelectedItems) {
+                        return
+                    }
+                    e.preventDefault()
+                    openMacroModal()
+                },
+            },
+            DELETE_TICKET: {
+                action: () => {
+                    if (!hasSelectedItems) {
+                        return
+                    }
+                    toggleTrashConfirmation()
+                },
+            },
+            HIDE_POPOVER: {
+                key: 'esc',
+                action: () => {
+                    setOpenDropdown(null)
+                },
+            },
+        })
+        return () => {
+            shortcutManager.unbind(SHORTCUT_MANAGER_COMPONENT_NAME)
+        }
+    })
 
-        if (this.state.isLoadingTags) {
+    const renderTagsMenu = () => {
+        if (isLoadingTags) {
             return (
                 <DropdownItem disabled>
                     <i className="material-icons md-spin mr-2">refresh</i>
@@ -283,25 +309,25 @@ export class TicketListActionsContainer extends Component<Props, State> {
             )
         }
 
-        let options = this.state.tags.map((tag) => {
+        let options = tags.map((tag) => {
             const name = tag!.get('name')
             return (
                 <DropdownItem
                     key={name}
                     type="button"
-                    onClick={() => this._bulkUpdate('tags', [tag!.get('name')])}
+                    onClick={() => bulkUpdate('tags', [tag!.get('name')])}
                 >
                     {name}
                 </DropdownItem>
             )
         }) as List<ReactElement>
 
-        const isInEnum = !!this.state.tags.find(
-            (tag) => tag!.get('name') === tagsSearch
+        const isInEnum = !!tags.find(
+            (tag) => tag!.get('name') === tagsSearchQuery
         )
 
-        if (!isInEnum && tagsSearch) {
-            if (!this.state.tags.isEmpty()) {
+        if (!isInEnum && tagsSearchQuery) {
+            if (!tags.isEmpty()) {
                 options = options.push(<DropdownItem key="divider" divider />)
             }
 
@@ -309,9 +335,9 @@ export class TicketListActionsContainer extends Component<Props, State> {
                 <DropdownItem
                     key="create"
                     type="button"
-                    onClick={() => this._addTag(tagsSearch)}
+                    onClick={() => addTag(tagsSearchQuery)}
                 >
-                    <b>Create</b> {tagsSearch}
+                    <b>Create</b> {tagsSearchQuery}
                 </DropdownItem>
             )
         }
@@ -319,73 +345,27 @@ export class TicketListActionsContainer extends Component<Props, State> {
         return options
     }
 
-    _toggleTrashConfirmation = (visible?: any) => {
+    const toggleTrashConfirmation = (visible?: any) => {
         const opens = !_isUndefined(visible)
             ? visible
-            : !this._isPopoverOpen('trash')
-        this._togglePopover(opens ? 'trash' : '')
-        this._toggleDeleteConfirmation()
+            : openDropdown !== ActionDropdown.Trash
+        setOpenDropdown(opens ? ActionDropdown.Trash : null)
+        toggleDeleteConfirmation()
     }
 
-    _toggleDeleteConfirmation = () => {
-        this.setState({
-            askDeleteConfirmation: !this.state.askDeleteConfirmation,
-        })
+    const toggleDeleteConfirmation = () => {
+        setIsDeleteConfirmationOpen(!isDeleteConfirmationOpen)
     }
 
-    _renderBulkActions = () => {
-        const {
-            currentUser,
-            isActiveViewTrashView,
-            selectedItemsIds,
-            teams,
-            agents,
-            openMacroModal,
-            allViewItemsSelected,
-            activeView,
-            getViewCount,
-            areFiltersValid,
-        } = this.props
-
-        const {
-            teamsSearch,
-            agentsSearch,
-            tagsSearch,
-            askDeleteConfirmation,
-            isLaunchingJob,
-        } = this.state
-
-        const areItemsSelected = !selectedItemsIds.isEmpty()
-
-        const filteredTeams = teams.filter((team) =>
-            (team!.get('name') as string)
-                .toLowerCase()
-                .includes(teamsSearch.toLowerCase())
-        ) as List<Map<any, any>>
-
-        const filteredAgents = agents.filter((agent) => {
-            const agentLabel =
-                (agent!.get('name') as string) ||
-                (agent!.get('email') as string)
-            return agentLabel.toLowerCase().includes(agentsSearch.toLowerCase())
-        }) as List<Map<any, any>>
-
-        const selectedCount = allViewItemsSelected
-            ? getViewCount(activeView.get('id'))
-            : selectedItemsIds.size
-
-        return (
+    return (
+        <div className="d-none d-md-inline-flex align-items-center">
             <div className="d-inline-flex align-items-center">
                 <UncontrolledButtonDropdown className="mr-2" size="sm">
                     <Button
                         type="button"
                         color="secondary"
-                        onClick={() => this._bulkUpdate('status', 'closed')}
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        onClick={() => bulkUpdate('status', 'closed')}
+                        disabled={isDisabled}
                     >
                         Close
                     </Button>
@@ -393,18 +373,14 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        disabled={isDisabled}
                     />
                     <DropdownMenu right>
                         <DropdownItem header>SET STATUS</DropdownItem>
                         <DropdownItem
                             key="open"
                             type="button"
-                            onClick={() => this._bulkUpdate('status', 'open')}
+                            onClick={() => bulkUpdate('status', 'open')}
                         >
                             Open
                         </DropdownItem>
@@ -413,24 +389,20 @@ export class TicketListActionsContainer extends Component<Props, State> {
                 <ButtonDropdown
                     className="mr-2"
                     size="sm"
-                    isOpen={this._isPopoverOpen('agents')}
-                    toggle={this._toggleAgentsDropdown}
+                    isOpen={openDropdown === ActionDropdown.Agents}
+                    toggle={toggleAgentsDropdown}
                     a11y={false}
                 >
                     <Button
                         type="button"
                         color="secondary"
                         onClick={() =>
-                            this._bulkUpdate('assignee_user', {
+                            bulkUpdate('assignee_user', {
                                 id: currentUser.get('id'),
                                 name: currentUser.get('name'),
                             })
                         }
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        disabled={isDisabled}
                     >
                         Assign to me
                     </Button>
@@ -438,11 +410,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        disabled={isDisabled}
                     />
                     <DropdownMenu
                         right
@@ -455,15 +423,13 @@ export class TicketListActionsContainer extends Component<Props, State> {
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {this._isPopoverOpen('agents') && ( // rebuild input on each opening so "autoFocus" works
+                            {openDropdown === ActionDropdown.Agents && ( // rebuild input on each opening so "autoFocus" works
                                 <Input
                                     placeholder="Search agents..."
                                     autoFocus
-                                    value={agentsSearch}
+                                    value={agentsSearchQuery}
                                     onChange={(event) =>
-                                        this.setState({
-                                            agentsSearch: event.target.value,
-                                        })
+                                        setAgentsSearchQuery(event.target.value)
                                     }
                                 />
                             )}
@@ -480,7 +446,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                                         key={agent!.get('id')}
                                         type="button"
                                         onClick={() => {
-                                            this._bulkUpdate('assignee_user', {
+                                            bulkUpdate('assignee_user', {
                                                 id: agent!.get('id'),
                                                 name: agent!.get('name'),
                                             })
@@ -505,9 +471,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         <DropdownItem
                             key="clear"
                             type="button"
-                            onClick={() =>
-                                this._bulkUpdate('assignee_user', null)
-                            }
+                            onClick={() => bulkUpdate('assignee_user', null)}
                         >
                             <span
                                 className={classnames(
@@ -522,8 +486,8 @@ export class TicketListActionsContainer extends Component<Props, State> {
                 </ButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
-                    isOpen={this._isPopoverOpen('teams')}
-                    toggle={this._toggleTeamsDropdown}
+                    isOpen={openDropdown === ActionDropdown.Teams}
+                    toggle={toggleTeamsDropdown}
                     size="sm"
                     a11y={false}
                 >
@@ -531,11 +495,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        disabled={isDisabled}
                     >
                         Assign to team
                     </DropdownToggle>
@@ -550,15 +510,13 @@ export class TicketListActionsContainer extends Component<Props, State> {
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {this._isPopoverOpen('teams') && ( // rebuild input on each opening so "autoFocus" works
+                            {openDropdown === ActionDropdown.Teams && ( // rebuild input on each opening so "autoFocus" works
                                 <Input
                                     placeholder="Search teams..."
                                     autoFocus
-                                    value={teamsSearch}
+                                    value={teamsSearchQuery}
                                     onChange={(event) =>
-                                        this.setState({
-                                            teamsSearch: event.target.value,
-                                        })
+                                        setTeamsSearchQuery(event.target.value)
                                     }
                                 />
                             )}
@@ -576,7 +534,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                                         type="button"
                                         className={css['teams-dropdown-item']}
                                         onClick={() => {
-                                            this._bulkUpdate(
+                                            bulkUpdate(
                                                 'assignee_team_id',
                                                 team!.get('id')
                                             )
@@ -598,9 +556,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         <DropdownItem
                             key="clear"
                             type="button"
-                            onClick={() =>
-                                this._bulkUpdate('assignee_team_id', null)
-                            }
+                            onClick={() => bulkUpdate('assignee_team_id', null)}
                         >
                             <span
                                 className={classnames(
@@ -615,8 +571,8 @@ export class TicketListActionsContainer extends Component<Props, State> {
                 </ButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
-                    isOpen={this._isPopoverOpen('tags')}
-                    toggle={this._toggleTagsDropdown}
+                    isOpen={openDropdown === ActionDropdown.Tags}
+                    toggle={toggleTagsDropdown}
                     size="sm"
                     a11y={false}
                 >
@@ -624,22 +580,11 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        disabled={isDisabled}
                     >
                         Add tag
                     </DropdownToggle>
-                    <TagDropdownMenu
-                        right
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
-                    >
+                    <TagDropdownMenu right disabled={isDisabled}>
                         <DropdownItem header className="mb-2">
                             ADD TAG:
                         </DropdownItem>
@@ -647,19 +592,19 @@ export class TicketListActionsContainer extends Component<Props, State> {
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {this._isPopoverOpen('tags') && ( // rebuild input on each opening so "autoFocus" works
+                            {openDropdown === ActionDropdown.Tags && ( // rebuild input on each opening so "autoFocus" works
                                 <Input
                                     placeholder="Search tags..."
                                     autoFocus
-                                    value={tagsSearch}
+                                    value={tagsSearchQuery}
                                     onChange={(event) =>
-                                        this._searchTags(event.target.value)
+                                        searchTags(event.target.value)
                                     }
                                 />
                             )}
                         </DropdownItem>
                         <DropdownItem divider />
-                        {this._renderTagsMenu()}
+                        {renderTagsMenu()}
                     </TagDropdownMenu>
                 </ButtonDropdown>
                 <UncontrolledButtonDropdown size="sm">
@@ -667,11 +612,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                         color="secondary"
                         type="button"
                         caret
-                        disabled={
-                            !areItemsSelected ||
-                            isLaunchingJob ||
-                            !areFiltersValid
-                        }
+                        disabled={isDisabled}
                     >
                         More
                     </DropdownToggle>
@@ -680,10 +621,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                             Apply macro
                         </DropdownItem>
                         {hasRole(currentUser, AGENT_ROLE) && (
-                            <DropdownItem
-                                type="button"
-                                onClick={this._bulkExport}
-                            >
+                            <DropdownItem type="button" onClick={bulkExport}>
                                 Export tickets
                             </DropdownItem>
                         )}
@@ -693,7 +631,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                                 <DropdownItem
                                     key="undelete-button"
                                     type="button"
-                                    onClick={this._bulkUnTrash}
+                                    onClick={bulkUnTrash}
                                 >
                                     Undelete
                                 </DropdownItem>,
@@ -701,7 +639,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                                     key="delete-button"
                                     type="button"
                                     className="text-danger"
-                                    onClick={this._toggleDeleteConfirmation}
+                                    onClick={toggleDeleteConfirmation}
                                 >
                                     Delete forever
                                 </DropdownItem>,
@@ -710,7 +648,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                             <DropdownItem
                                 type="button"
                                 className="text-danger"
-                                onClick={this._toggleTrashConfirmation}
+                                onClick={toggleTrashConfirmation}
                             >
                                 Delete
                             </DropdownItem>
@@ -723,9 +661,9 @@ export class TicketListActionsContainer extends Component<Props, State> {
                 </UncontrolledButtonDropdown>
                 <Popover
                     placement="bottom"
-                    isOpen={askDeleteConfirmation}
+                    isOpen={isDeleteConfirmationOpen}
                     target="bulk-more-button"
-                    toggle={this._toggleDeleteConfirmation}
+                    toggle={toggleDeleteConfirmation}
                     trigger="legacy"
                 >
                     <PopoverHeader>Are you sure?</PopoverHeader>
@@ -739,9 +677,7 @@ export class TicketListActionsContainer extends Component<Props, State> {
                             type="submit"
                             color="success"
                             onClick={
-                                isActiveViewTrashView
-                                    ? this._bulkDelete
-                                    : this._bulkTrash
+                                isActiveViewTrashView ? bulkDelete : bulkTrash
                             }
                             autoFocus
                         >
@@ -750,16 +686,8 @@ export class TicketListActionsContainer extends Component<Props, State> {
                     </PopoverBody>
                 </Popover>
             </div>
-        )
-    }
-
-    render() {
-        return (
-            <div className="d-none d-md-inline-flex align-items-center">
-                {this._renderBulkActions()}
-            </div>
-        )
-    }
+        </div>
+    )
 }
 
 const connector = connect(
