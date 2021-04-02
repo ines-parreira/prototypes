@@ -1,25 +1,21 @@
 // @flow
-import React from 'react'
+// $FlowFixMe
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
-import {fromJS, List, Map} from 'immutable'
+import {useLocation} from 'react-router-dom'
+import {fromJS, Map} from 'immutable'
 import {Button} from 'reactstrap'
-import _noop from 'lodash/noop'
+import {CancelToken} from 'axios'
+import {usePrevious, useUpdateEffect} from 'react-use'
 
+import useCancellableRequest from '../../../../../hooks/useCancellableRequest.ts'
 import * as infobarActions from '../../../../../state/infobar/actions.ts'
 import * as infobarConstants from '../../../../../state/infobar/constants'
 import * as customersActions from '../../../../../state/customers/actions.ts'
-import * as ticketActions from '../../../../../state/ticket/actions.ts'
-import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
-import {
-    startEditionMode,
-    stopEditionMode,
-    submitWidgets,
-} from '../../../../../state/widgets/actions.ts'
+import {setCustomer} from '../../../../../state/ticket/actions.ts'
+import * as WidgetsActions from '../../../../../state/widgets/actions.ts'
 import history from '../../../../history.ts'
-
-import type {reactRouterLocation} from '../../../../../types'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import Loader from '../../Loader/Loader.tsx'
@@ -39,241 +35,236 @@ import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/
 
 type Props = {
     actions: {
-        widgets: {
-            startEditionMode: typeof startEditionMode,
-            stopEditionMode: typeof stopEditionMode,
-            submitWidgets: typeof submitWidgets,
-        },
         fetchPreviewCustomer: typeof infobarActions.fetchPreviewCustomer,
+        widgets: {
+            cancelDrag: typeof WidgetsActions.cancelDrag,
+            drag: typeof WidgetsActions.drag,
+            drop: typeof WidgetsActions.drop,
+            generateAndSetWidgets: typeof WidgetsActions.generateAndSetWidgets,
+            removeEditedWidget: typeof WidgetsActions.removeEditedWidget,
+            resetWidgets: typeof WidgetsActions.resetWidgets,
+            setEditedWidgets: typeof WidgetsActions.setEditedWidgets,
+            setEditionAsDirty: typeof WidgetsActions.setEditionAsDirty,
+            startEditionMode: typeof WidgetsActions.startEditionMode,
+            stopEditionMode: typeof WidgetsActions.stopEditionMode,
+            startWidgetEdition: typeof WidgetsActions.startWidgetEdition,
+            stopWidgetEdition: typeof WidgetsActions.stopWidgetEdition,
+            submitWidgets: typeof WidgetsActions.submitWidgets,
+            updateEditedWidget: typeof WidgetsActions.updateEditedWidget,
+            submitWidgets: typeof WidgetsActions.submitWidgets,
+        },
     },
     context: string,
-    identifier: string,
-    infobar: Object,
-    isRouteEditingWidgets: boolean,
-    sources: Map<*, *>,
-    customer: Map<*, *>,
-    widgets: Map<*, *>,
+    customer: Map<any, any>,
     fetchCustomerHistory: typeof customersActions.fetchCustomerHistory,
-    searchCancellable: typeof infobarActions.search,
+    identifier: string,
+    isRouteEditingWidgets: boolean,
+    searchCustomers: typeof infobarActions.search,
     searchSimilarCustomer: typeof infobarActions.similarCustomer,
-    setCustomer: typeof ticketActions.setCustomer,
-
-    // react-router
-    location: reactRouterLocation,
-}
-
-type State = {
-    isSearching: boolean,
-    isFetchingCustomer: boolean,
-    displaySearchResults: boolean,
-    displaySelectedCustomer: boolean,
-    showMergeCustomerModal: boolean,
-    searchResults: List<*>,
-    selectedCustomer: Map<*, *>,
-    suggestedCustomer: Map<*, *>,
-    searchErrorMessage: ?string,
+    setCustomer: typeof setCustomer,
+    sources: Map<any, any>,
+    widgets: Map<any, any>,
 }
 
 const MERGE_ERROR_MESSAGE = `You can only edit orders of the customer associated with this ticket.
 To edit this order, merge both customers or change the customer associated with this ticket.`
 
-export class Infobar extends React.Component<Props, State> {
-    static defaultProps = {
-        customer: fromJS({}),
-    }
+export const Infobar = ({
+    actions: {
+        fetchPreviewCustomer,
+        widgets: {
+            cancelDrag,
+            drag,
+            drop,
+            generateAndSetWidgets,
+            removeEditedWidget,
+            resetWidgets,
+            setEditedWidgets,
+            setEditionAsDirty,
+            startEditionMode,
+            startWidgetEdition,
+            stopEditionMode,
+            stopWidgetEdition,
+            submitWidgets,
+            updateEditedWidget,
+        },
+    },
+    context,
+    customer = fromJS({}),
+    fetchCustomerHistory,
+    identifier,
+    isRouteEditingWidgets,
+    searchCustomers,
+    searchSimilarCustomer,
+    setCustomer,
+    sources,
+    widgets,
+}: Props) => {
+    const location = useLocation()
+    const [searchErrorMessage, setSearchErrorMessage] = useState(null)
+    const [isSearching, setIsSearching] = useState(false)
+    const [isFetchingCustomer, setIsFetchingCustomer] = useState(false)
+    const [displaySearchResults, setDisplaySearchResults] = useState(false)
+    const [displaySelectedCustomer, setDisplaySelectedCustomer] = useState(
+        false
+    )
+    const [showMergeCustomerModal, setShowMergeCustomerModal] = useState(false)
+    const [searchResults, setSearchResults] = useState(fromJS([]))
+    const [selectedCustomer, setSelectedCustomer] = useState(fromJS({}))
+    const [suggestedCustomer, setSuggestedCustomer] = useState(fromJS({}))
+    const prevCustomer = usePrevious(customer)
 
-    state = {
-        searchErrorMessage: null,
-        isSearching: false,
-        isFetchingCustomer: false,
-        displaySearchResults: false,
-        displaySelectedCustomer: false,
-        showMergeCustomerModal: false,
-        searchResults: fromJS([]),
-        selectedCustomer: fromJS({}),
-        suggestedCustomer: fromJS({}),
-    }
-
-    // refs
-    search = {
-        _reset: _noop,
-    }
-
-    componentWillMount() {
-        const {
-            actions: {widgets: widgetsActions},
-            context,
-            isRouteEditingWidgets,
-            widgets,
-        } = this.props
-
-        this._updateSimilarCustomer(this.props)
-        if (
-            isRouteEditingWidgets &&
-            !widgets.getIn(['_internal', 'isEditing'])
-        ) {
-            widgetsActions.startEditionMode(context)
-        } else if (
-            !isRouteEditingWidgets &&
-            widgets.getIn(['_internal', 'isEditing'])
-        ) {
-            widgetsActions.stopEditionMode()
-        }
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        if (this.props.identifier !== nextProps.identifier) {
-            this._resetSearch()
-        }
-
-        const isEditingParam = nextProps.isRouteEditingWidgets
-        const isEditing = nextProps.widgets.getIn(['_internal', 'isEditing'])
-
-        if (isEditingParam && !isEditing) {
-            nextProps.actions.widgets.startEditionMode(nextProps.context)
-        } else if (!isEditingParam && isEditing) {
-            nextProps.actions.widgets.stopEditionMode()
-        }
-
-        // if customer changed then try to find a suggestion of other customer to merge with it
-        if (!this.props.customer.equals(nextProps.customer)) {
-            this._updateSimilarCustomer(nextProps)
-        }
-    }
-
-    _updateSimilarCustomer = (props: Props) => {
-        this.setState({suggestedCustomer: fromJS({})})
-
-        if (props.customer.isEmpty() || !props.customer.get('id')) {
-            return
-        }
-
-        this.props
-            .searchSimilarCustomer(props.customer.get('id'))
-            .then((data) => {
-                if (!data) {
-                    return
-                }
-                const {customer: suggestion} = data
-                const suggestionImmutable = fromJS(suggestion || {})
-
-                if (suggestionImmutable.isEmpty()) {
-                    return
-                }
-
-                this.setState({
-                    suggestedCustomer: suggestionImmutable,
-                })
-            })
-    }
-
-    _mode = (state: State = this.state) => {
+    const isWidgetEditing = useMemo(
+        () => widgets.getIn(['_internal', 'isEditing']),
+        [widgets]
+    )
+    const isEditing = useMemo(() => isWidgetEditing && isRouteEditingWidgets, [
+        isWidgetEditing,
+    ])
+    const mode = useMemo(() => {
         // the following succession of conditions is in a particular order
         // which is important for the good display of each of those
         // /!\ do not mix it without testing it carefully
 
-        if (state.isSearching) {
+        if (isSearching || isFetchingCustomer) {
             return 'loading'
         }
 
-        if (state.isFetchingCustomer) {
-            return 'loading'
-        }
-
-        if (state.displaySelectedCustomer) {
+        if (displaySelectedCustomer) {
             return 'selected'
         }
 
-        if (state.displaySearchResults) {
+        if (displaySearchResults) {
             return 'results'
         }
 
         return 'default'
+    }, [
+        displaySearchResults,
+        displaySelectedCustomer,
+        isFetchingCustomer,
+        isSearching,
+    ])
+    const defaultCustomerId = useMemo(
+        () =>
+            sources.getIn(['ticket', 'customer', 'id']) ||
+            sources.getIn(['customer', 'id']),
+        [sources]
+    )
+
+    const searchRef = useRef()
+
+    useUpdateEffect(() => {
+        resetSearch()
+    }, [identifier])
+
+    useEffect(() => {
+        if (isRouteEditingWidgets && !isWidgetEditing) {
+            startEditionMode(context)
+        } else if (!isRouteEditingWidgets && isWidgetEditing) {
+            stopEditionMode()
+        }
+    }, [isWidgetEditing, isRouteEditingWidgets])
+
+    // if customer changed then try to find a suggestion of other customer to merge with it
+    useEffect(() => {
+        if (!prevCustomer || !prevCustomer.equals(customer)) {
+            updateSimilarCustomer()
+        }
+    }, [customer, prevCustomer])
+
+    const [
+        cancellableSearch,
+    ] = useCancellableRequest((cancelToken: CancelToken) => async (query) =>
+        await searchCustomers(query, cancelToken)
+    )
+
+    const updateSimilarCustomer = async () => {
+        setSuggestedCustomer(fromJS({}))
+
+        if (customer.isEmpty() || !customer.get('id')) {
+            return
+        }
+
+        const data = await searchSimilarCustomer(customer.get('id'))
+        if (!data) {
+            return
+        }
+        const {customer: suggestion} = data
+        const suggestionImmutable = fromJS(suggestion || {})
+
+        if (suggestionImmutable.isEmpty()) {
+            return
+        }
+
+        setSuggestedCustomer(suggestionImmutable)
     }
 
-    _isEditing = () => {
-        return (
-            this.props.widgets.getIn(['_internal', 'isEditing']) &&
-            this.props.isRouteEditingWidgets
-        )
-    }
-
-    _toggleEditionMode = (isEditing: boolean) => {
-        const {identifier, context, location} = this.props
-
+    const toggleEditionMode = () => {
         if (!identifier) {
             return
         }
 
         if (isEditing) {
+            history.push(`/app/${context}/${identifier}${location.search}`)
+        } else {
             history.push(
                 `/app/${context}/${identifier}/edit-widgets${location.search}`
             )
-        } else {
-            history.push(`/app/${context}/${identifier}${location.search}`)
         }
     }
 
-    _onSearchResultClick = async (customer: Map<*, *>) => {
-        this.setState({isFetchingCustomer: true})
-        const result = await this.props.actions.fetchPreviewCustomer(
-            customer.get('id')
-        )
+    const onSearchResultClick = async (customer: Map<any, any>) => {
+        setIsFetchingCustomer(true)
+        const result = await fetchPreviewCustomer(customer.get('id'))
         if (result.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
-            this.setState({
-                displaySelectedCustomer: true,
-                isFetchingCustomer: false,
-                selectedCustomer: fromJS(result.resp),
-            })
+            setDisplaySelectedCustomer(true)
+            setIsFetchingCustomer(false)
+            setSelectedCustomer(fromJS(result.resp))
         } else {
-            this.setState({isFetchingCustomer: false})
+            setIsFetchingCustomer(false)
         }
     }
 
-    _onSearch = (query: string) => {
+    const onSearch = async (query: string) => {
         if (query) {
-            this.setState({isSearching: true})
-            this.props.searchCancellable(query).then((res) => {
-                if (!res) {
-                    return
-                }
-                const {error, resp} = res
-                let errorMessage
+            setIsSearching(true)
+            const res = await cancellableSearch(query)
+            if (!res) {
+                return
+            }
+            const {error, resp} = res
+            let errorMessage
 
-                if (error) {
-                    errorMessage =
-                        error?.response?.data?.error?.msg ||
-                        'Failed to do the search. Please try again.'
-                }
+            if (error) {
+                errorMessage =
+                    error?.response?.data?.error?.msg ||
+                    'Failed to do the search. Please try again.'
+            }
 
-                this.setState({
-                    searchErrorMessage: errorMessage,
-                    displaySelectedCustomer: false,
-                    displaySearchResults: true,
-                    isSearching: false,
-                    searchResults: error
-                        ? fromJS([])
-                        : fromJS(resp.data.slice(0, 8)),
-                })
-            })
+            setSearchErrorMessage(errorMessage)
+            setDisplaySelectedCustomer(false)
+            setDisplaySearchResults(true)
+            setIsSearching(false)
+            setSearchResults(error ? fromJS([]) : fromJS(resp.data.slice(0, 8)))
         } else {
-            this._resetSearch()
+            resetSearch()
         }
     }
 
-    _fetchCustomerHistory = () => {
-        if (this.props.customer.isEmpty()) {
+    const handleCustomerHistoryFetch = () => {
+        if (customer.isEmpty()) {
             return
         }
 
-        const askedCustomerId = this.props.customer.get('id')
+        const askedCustomerId = customer.get('id')
 
         // wait 1.5s before fetching customer history after merge (merge can take some time and is async)
         setTimeout(() => {
-            this.props.fetchCustomerHistory(askedCustomerId, {
+            fetchCustomerHistory(askedCustomerId, {
                 successCondition: () => {
                     return (
-                        this.props.customer.get('id').toString() ===
+                        customer.get('id').toString() ===
                         askedCustomerId.toString()
                     )
                 },
@@ -281,315 +272,321 @@ export class Infobar extends React.Component<Props, State> {
         }, 1500)
     }
 
-    _resetSearch = () => {
-        this.setState({
-            displaySearchResults: false,
-            searchResults: fromJS([]),
-        })
+    const resetSearch = () => {
+        setDisplaySearchResults(false)
+        setSearchResults(fromJS([]))
     }
 
-    _resetSelected = () => {
-        this.setState({
-            displaySelectedCustomer: false,
-            selectedCustomer: fromJS({}),
-        })
+    const resetSelected = () => {
+        setDisplaySelectedCustomer(false)
+        setSelectedCustomer(fromJS({}))
     }
 
     // reset search and display current customer
-    _returnToCurrentCustomerProfile = () => {
-        this._resetSearch()
-        this._resetSelected()
-        if (this.search) {
-            this.search._reset()
-        }
+    const returnToCurrentCustomerProfile = () => {
+        resetSearch()
+        resetSelected()
+        searchRef.current && searchRef.current._reset()
     }
 
-    _setCustomer = () => {
-        return this.props
-            .setCustomer(this.state.selectedCustomer)
-            .then(this._returnToCurrentCustomerProfile)
+    const handleSetCustomer = () => {
+        setCustomer(selectedCustomer).then(returnToCurrentCustomerProfile)
     }
 
-    _renderCustomerInfo = (
-        customer: Map<*, *>,
-        displayTabs: boolean = true
-    ) => {
-        const isEditing = this._isEditing()
+    const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
 
-        const sources = this.props.sources
-            .setIn(['ticket', 'customer'], customer)
-            .set('customer', customer)
+    const currentContext = widgets.get('currentContext', '')
 
-        return (
-            <InfobarCustomerInfo
-                actions={this.props.actions.widgets}
-                isEditing={isEditing}
-                sources={sources}
-                customer={customer}
-                widgets={this.props.widgets}
-                displayTabs={displayTabs}
-            />
-        )
-    }
+    const canEditWidgets =
+        hasFetchedWidgets &&
+        areSourcesReady(sources, currentContext) &&
+        !displaySelectedCustomer
 
-    _renderContent = () => {
-        const {sources, customer} = this.props
-
-        const mode = this._mode()
-
-        if (mode === 'loading') {
-            return <Loader />
-        }
-
-        if (mode === 'selected') {
-            return (
-                <>
-                    <div className="m-3">
-                        <Button
-                            type="button"
-                            onClick={() => this._resetSelected()}
-                        >
-                            <i className="material-icons md-2 mr-2">
-                                arrow_back
-                            </i>
-                            Back
-                        </Button>
-                        <InfobarCustomerActions
-                            customer={customer}
-                            sources={sources}
-                            selectedCustomer={this.state.selectedCustomer}
-                            toggleMergeCustomerModal={(
-                                showMergeCustomerModal: boolean
-                            ) => this.setState({showMergeCustomerModal})}
-                            setCustomer={this._setCustomer}
-                        />
-                    </div>
-                    <ActionButtonContext.Provider
-                        value={{
-                            actionError: MERGE_ERROR_MESSAGE,
-                        }}
-                    >
-                        {this._renderCustomerInfo(this.state.selectedCustomer)}
-                        <MergeCustomersContainer
-                            isTicketContext={
-                                !sources.get('ticket', fromJS({})).isEmpty()
-                            }
-                            display={this.state.showMergeCustomerModal}
-                            destinationCustomer={customer}
-                            sourceCustomer={this.state.selectedCustomer}
-                            onSuccess={() => {
-                                this._fetchCustomerHistory()
-                                this._returnToCurrentCustomerProfile()
-                            }}
-                            onClose={() => {
-                                this.setState({showMergeCustomerModal: false})
-                            }}
-                        />
-                    </ActionButtonContext.Provider>
-                </>
-            )
-        }
-
-        if (mode === 'results') {
-            const defaultCustomerId =
-                sources.getIn(['ticket', 'customer', 'id']) ||
-                sources.getIn(['customer', 'id'])
-
-            return (
-                <>
-                    <div className="m-3">
-                        <Button
-                            type="button"
-                            onClick={() => this._resetSearch()}
-                        >
-                            <i className="material-icons md-2 mr-2">
-                                arrow_back
-                            </i>
-                            Back
-                        </Button>
-                    </div>
-                    <InfobarSearchResultsList
-                        errorMessage={this.state.searchErrorMessage}
-                        searchResults={this.state.searchResults}
-                        defaultCustomerId={defaultCustomerId}
-                        onCustomerClick={this._onSearchResultClick}
+    return (
+        <InfobarLayout
+            className={classnames({
+                [css.editing]: isEditing,
+            })}
+        >
+            <div className={css.infobarContent}>
+                <div
+                    className={classnames(
+                        css.infobarSearchWrapper,
+                        'd-flex align-items-center justify-content-between'
+                    )}
+                >
+                    <Search
+                        tabIndex="10"
+                        placeholder="Search for customers by email, order number, etc."
+                        bindKey
+                        onChange={onSearch}
+                        style={{maxWidth: 'none'}}
+                        searchDebounceTime={200}
+                        ref={searchRef}
                     />
-                </>
-            )
-        }
-
-        if (!this.props.identifier) {
-            return null
-        }
-
-        const displaySuggestedCustomer =
-            !this.state.suggestedCustomer.isEmpty() &&
-            !this.props.widgets.getIn(['_internal', 'isEditing'])
-
-        return (
-            <>
-                {this._renderCustomerInfo(customer)}
-                {displaySuggestedCustomer && (
-                    <div className="d-none d-md-block">
-                        <div className={css.infobarSectionSeparator} />
-                        <div className={classnames(css.suggestedCustomer)}>
-                            <h4>Is this the same person?</h4>
-                            <p>
-                                'We have found someone similar to the customer
-                                of this ticket. If it is the same person, merge
-                                them together to get a unified view of this
-                                customer.
-                            </p>
-                            <div style={{marginBottom: '30px'}}>
-                                <Button
-                                    className="mr-2"
-                                    type="button"
-                                    color="primary"
-                                    onClick={() => {
-                                        // TODO(customers-migration): ask confirmation to update this event
-                                        segmentTracker.logEvent(
-                                            segmentTracker.EVENTS
-                                                .USER_MERGE_CLICK,
-                                            {
-                                                location:
-                                                    'suggested user in infobar',
-                                            }
-                                        )
-                                        this.setState({
-                                            showMergeCustomerModal: true,
-                                        })
-                                    }}
-                                >
-                                    <i className="material-icons mr-1">
-                                        call_merge
+                    <Button
+                        className={classnames(
+                            css.toggleWidgets,
+                            'd-none d-md-inline-block ml-2 btn-transparent'
+                        )}
+                        type="button"
+                        id="toggle-widgets-edition-button"
+                        color="secondary"
+                        active={isEditing}
+                        disabled={!canEditWidgets}
+                        onClick={toggleEditionMode}
+                    >
+                        <i className="material-icons md-2">settings</i>
+                    </Button>
+                    <Tooltip
+                        placement="left"
+                        target="toggle-widgets-edition-button"
+                    >
+                        {isEditing ? 'Leave widgets edition' : 'Edit widgets'}
+                    </Tooltip>
+                </div>
+                <div className={css.content}>
+                    {mode === 'loading' ? (
+                        <Loader />
+                    ) : mode === 'selected' ? (
+                        <>
+                            <div className="m-3">
+                                <Button type="button" onClick={resetSelected}>
+                                    <i className="material-icons md-2 mr-2">
+                                        arrow_back
                                     </i>
-                                    Merge
+                                    Back
                                 </Button>
+                                <InfobarCustomerActions
+                                    customer={customer}
+                                    sources={sources}
+                                    selectedCustomer={selectedCustomer}
+                                    toggleMergeCustomerModal={(
+                                        showMergeCustomerModal: boolean
+                                    ) =>
+                                        setShowMergeCustomerModal(
+                                            showMergeCustomerModal
+                                        )
+                                    }
+                                    setCustomer={handleSetCustomer}
+                                />
                             </div>
                             <ActionButtonContext.Provider
                                 value={{
                                     actionError: MERGE_ERROR_MESSAGE,
                                 }}
                             >
-                                {this._renderCustomerInfo(
-                                    this.state.suggestedCustomer,
-                                    false
-                                )}
+                                <InfobarCustomerInfo
+                                    actions={{
+                                        cancelDrag,
+                                        drag,
+                                        drop,
+                                        generateAndSetWidgets,
+                                        removeEditedWidget,
+                                        resetWidgets,
+                                        setEditedWidgets,
+                                        setEditionAsDirty,
+                                        startWidgetEdition,
+                                        stopWidgetEdition,
+                                        updateEditedWidget,
+                                    }}
+                                    isEditing={isEditing}
+                                    sources={sources
+                                        .setIn(
+                                            ['ticket', 'customer'],
+                                            selectedCustomer
+                                        )
+                                        .set('customer', selectedCustomer)}
+                                    customer={selectedCustomer}
+                                    widgets={widgets}
+                                />
                                 <MergeCustomersContainer
                                     isTicketContext={
                                         !sources
                                             .get('ticket', fromJS({}))
                                             .isEmpty()
                                     }
-                                    display={this.state.showMergeCustomerModal}
+                                    display={showMergeCustomerModal}
                                     destinationCustomer={customer}
-                                    sourceCustomer={
-                                        this.state.suggestedCustomer
-                                    }
-                                    onSuccess={this._fetchCustomerHistory}
+                                    sourceCustomer={selectedCustomer}
+                                    onSuccess={() => {
+                                        handleCustomerHistoryFetch()
+                                        returnToCurrentCustomerProfile()
+                                    }}
                                     onClose={() => {
-                                        this.setState({
-                                            showMergeCustomerModal: false,
-                                        })
+                                        setShowMergeCustomerModal(false)
                                     }}
                                 />
                             </ActionButtonContext.Provider>
-                        </div>
-                    </div>
-                )}
-            </>
-        )
-    }
-
-    render() {
-        const {widgets, sources} = this.props
-
-        const isEditing = this._isEditing()
-        const hasFetchedWidgets = widgets.getIn([
-            '_internal',
-            'hasFetchedWidgets',
-        ])
-
-        const context = widgets.get('currentContext', '')
-
-        const canEditWidgets =
-            hasFetchedWidgets &&
-            areSourcesReady(sources, context) &&
-            !this.state.displaySelectedCustomer
-
-        return (
-            <InfobarLayout
-                className={classnames({
-                    [css.editing]: isEditing,
-                })}
-            >
-                <div className={css.infobarContent}>
-                    <div
-                        className={classnames(
-                            css.infobarSearchWrapper,
-                            'd-flex align-items-center justify-content-between'
-                        )}
-                    >
-                        <Search
-                            tabIndex="10"
-                            placeholder="Search for customers by email, order number, etc."
-                            bindKey
-                            onChange={this._onSearch}
-                            style={{maxWidth: 'none'}}
-                            searchDebounceTime={200}
-                            ref={(search) => {
-                                this.search = search
-                            }}
-                        />
-
-                        <Button
-                            className={classnames(
-                                css.toggleWidgets,
-                                'd-none d-md-inline-block ml-2 btn-transparent'
+                        </>
+                    ) : mode === 'results' ? (
+                        <>
+                            <div className="m-3">
+                                <Button
+                                    type="button"
+                                    onClick={() => resetSearch()}
+                                >
+                                    <i className="material-icons md-2 mr-2">
+                                        arrow_back
+                                    </i>
+                                    Back
+                                </Button>
+                            </div>
+                            <InfobarSearchResultsList
+                                errorMessage={searchErrorMessage}
+                                searchResults={searchResults}
+                                defaultCustomerId={defaultCustomerId}
+                                onCustomerClick={onSearchResultClick}
+                            />
+                        </>
+                    ) : identifier ? (
+                        <>
+                            <InfobarCustomerInfo
+                                actions={{
+                                    cancelDrag,
+                                    drag,
+                                    drop,
+                                    generateAndSetWidgets,
+                                    removeEditedWidget,
+                                    resetWidgets,
+                                    setEditedWidgets,
+                                    setEditionAsDirty,
+                                    startWidgetEdition,
+                                    stopWidgetEdition,
+                                    updateEditedWidget,
+                                }}
+                                isEditing={isEditing}
+                                sources={sources
+                                    .setIn(['ticket', 'customer'], customer)
+                                    .set('customer', customer)}
+                                customer={customer}
+                                widgets={widgets}
+                            />
+                            {!suggestedCustomer.isEmpty() && !isWidgetEditing && (
+                                <div className="d-none d-md-block">
+                                    <div
+                                        className={css.infobarSectionSeparator}
+                                    />
+                                    <div
+                                        className={classnames(
+                                            css.suggestedCustomer
+                                        )}
+                                    >
+                                        <h4>Is this the same person?</h4>
+                                        <p>
+                                            'We have found someone similar to
+                                            the customer of this ticket. If it
+                                            is the same person, merge them
+                                            together to get a unified view of
+                                            this customer.
+                                        </p>
+                                        <div style={{marginBottom: '30px'}}>
+                                            <Button
+                                                className="mr-2"
+                                                type="button"
+                                                color="primary"
+                                                onClick={() => {
+                                                    // TODO(customers-migration): ask confirmation to update this event
+                                                    segmentTracker.logEvent(
+                                                        segmentTracker.EVENTS
+                                                            .USER_MERGE_CLICK,
+                                                        {
+                                                            location:
+                                                                'suggested user in infobar',
+                                                        }
+                                                    )
+                                                    setShowMergeCustomerModal(
+                                                        true
+                                                    )
+                                                }}
+                                            >
+                                                <i className="material-icons mr-1">
+                                                    call_merge
+                                                </i>
+                                                Merge
+                                            </Button>
+                                        </div>
+                                        <ActionButtonContext.Provider
+                                            value={{
+                                                actionError: MERGE_ERROR_MESSAGE,
+                                            }}
+                                        >
+                                            <InfobarCustomerInfo
+                                                actions={{
+                                                    cancelDrag,
+                                                    drag,
+                                                    drop,
+                                                    generateAndSetWidgets,
+                                                    removeEditedWidget,
+                                                    resetWidgets,
+                                                    setEditedWidgets,
+                                                    setEditionAsDirty,
+                                                    startWidgetEdition,
+                                                    stopWidgetEdition,
+                                                    updateEditedWidget,
+                                                }}
+                                                isEditing={isEditing}
+                                                sources={sources
+                                                    .setIn(
+                                                        ['ticket', 'customer'],
+                                                        suggestedCustomer
+                                                    )
+                                                    .set(
+                                                        'customer',
+                                                        suggestedCustomer
+                                                    )}
+                                                customer={suggestedCustomer}
+                                                widgets={widgets}
+                                                displayTabs={false}
+                                            />
+                                            <MergeCustomersContainer
+                                                isTicketContext={
+                                                    !sources
+                                                        .get(
+                                                            'ticket',
+                                                            fromJS({})
+                                                        )
+                                                        .isEmpty()
+                                                }
+                                                display={showMergeCustomerModal}
+                                                destinationCustomer={customer}
+                                                sourceCustomer={
+                                                    suggestedCustomer
+                                                }
+                                                onSuccess={
+                                                    handleCustomerHistoryFetch
+                                                }
+                                                onClose={() => {
+                                                    setShowMergeCustomerModal(
+                                                        false
+                                                    )
+                                                }}
+                                            />
+                                        </ActionButtonContext.Provider>
+                                    </div>
+                                </div>
                             )}
-                            type="button"
-                            id="toggle-widgets-edition-button"
-                            color="secondary"
-                            active={isEditing}
-                            disabled={!canEditWidgets}
-                            onClick={() => {
-                                this._toggleEditionMode(!isEditing)
-                            }}
-                        >
-                            <i className="material-icons md-2">settings</i>
-                        </Button>
-                        <Tooltip
-                            placement="left"
-                            target="toggle-widgets-edition-button"
-                        >
-                            {isEditing
-                                ? 'Leave widgets edition'
-                                : 'Edit widgets'}
-                        </Tooltip>
-                    </div>
-                    <div className={css.content}>{this._renderContent()}</div>
+                        </>
+                    ) : null}
                 </div>
-                {isEditing && (
-                    <InfobarWidgetsEditionTools
-                        actions={this.props.actions.widgets}
-                        widgets={widgets}
-                        context={context}
-                    />
-                )}
-            </InfobarLayout>
-        )
-    }
+            </div>
+            {isEditing && (
+                <InfobarWidgetsEditionTools
+                    actions={{
+                        startEditionMode,
+                        submitWidgets,
+                    }}
+                    widgets={widgets}
+                    context={currentContext}
+                />
+            )}
+        </InfobarLayout>
+    )
 }
 
-export default withCancellableRequest(
-    'searchCancellable',
-    infobarActions.search
-)(
-    withRouter(
-        connect(null, {
-            fetchCustomerHistory: customersActions.fetchCustomerHistory,
-            searchSimilarCustomer: infobarActions.similarCustomer,
-            setCustomer: ticketActions.setCustomer,
-        })(Infobar)
-    )
-)
+export default connect(null, {
+    fetchCustomerHistory: customersActions.fetchCustomerHistory,
+    searchCustomers: infobarActions.search,
+    searchSimilarCustomer: infobarActions.similarCustomer,
+    setCustomer,
+})(Infobar)

@@ -1,40 +1,102 @@
 //@flow
 import React, {type ElementProps} from 'react'
-import {shallow} from 'enzyme'
+import {fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import {Infobar} from '../Infobar'
+import {renderWithRouter} from '../../../../../../utils/testing.tsx'
 import {
     FETCH_PREVIEW_CUSTOMER_ERROR,
     FETCH_PREVIEW_CUSTOMER_SUCCESS,
 } from '../../../../../../state/infobar/constants'
-import {
-    startEditionMode,
-    stopEditionMode,
-    submitWidgets,
-} from '../../../../../../state/widgets/actions.ts'
 import Search from '../../../Search'
+import InfobarLayout from '../../InfobarLayout'
+import InfobarCustomerInfo from '../InfobarCustomerInfo'
+import InfobarSearchResultsList from '../InfobarSearchResultsList'
+import {Infobar} from '../Infobar'
 
 jest.mock(
     '../../../Search',
     () => ({onChange, ...other}: ElementProps<typeof Search>) => (
-        <input {...other} onChange={onChange} />
+        <input data-testid="Search" {...other} onChange={onChange} />
+    )
+)
+
+jest.mock(
+    '../InfobarCustomerInfo',
+    () => ({customer}: ElementProps<typeof InfobarCustomerInfo>) => (
+        <div data-testid="InfobarCustomerInfo">
+            InfobarCustomerInfo<div>customer: {JSON.stringify(customer)}</div>
+        </div>
+    )
+)
+
+jest.mock(
+    '../../InfobarLayout',
+    () => ({children}: ElementProps<typeof InfobarLayout>) => (
+        <div data-testid="InfobarLayout">{children}</div>
+    )
+)
+
+jest.mock('../../../MergeCustomers/MergeCustomersContainer', () => () => (
+    <div>MergeCustomersContainer</div>
+))
+
+const mockCustomer = fromJS({id: 7})
+
+jest.mock(
+    '../InfobarSearchResultsList',
+    () => ({
+        errorMessage,
+        defaultCustomerId,
+        onCustomerClick,
+        searchResults,
+    }: ElementProps<typeof InfobarSearchResultsList>) => (
+        <div
+            data-testid="InfobarSearchResultsList"
+            onClick={() => onCustomerClick(mockCustomer)}
+        >
+            <div>errorMessage: {errorMessage}</div>
+            <div>defaultCustomerId: {defaultCustomerId}</div>
+            <div>searchResults: {JSON.stringify(searchResults)}</div>
+        </div>
     )
 )
 
 const commonProps = {
     actions: {
-        widgets: {
-            startEditionMode: jest.fn(startEditionMode),
-            stopEditionMode: jest.fn(stopEditionMode),
-            submitWidgets: jest.fn(submitWidgets),
-        },
         fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
+        widgets: {
+            cancelDrag: jest.fn(),
+            drag: jest.fn(),
+            drop: jest.fn(),
+            generateAndSetWidgets: jest.fn(),
+            removeEditedWidget: jest.fn(),
+            resetWidgets: jest.fn(),
+            setEditedWidgets: jest.fn(),
+            setEditionAsDirty: jest.fn(),
+            startEditionMode: jest.fn(),
+            startWidgetEdition: jest.fn(),
+            stopEditionMode: jest.fn(),
+            stopWidgetEdition: jest.fn(),
+            submitWidgets: jest.fn(),
+            updateEditedWidget: jest.fn(),
+        },
     },
     context: 'ticket',
+    customer: fromJS({
+        id: 2,
+    }),
+    fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
     identifier: '1',
-    infobar: {},
     isRouteEditingWidgets: false,
+    location: {
+        search: 'searchQuery',
+        pathname: 'foo',
+        query: {},
+    },
+    searchCustomers: jest.fn(() => Promise.resolve({resp: {data: []}})),
+    searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
+    setCustomer: jest.fn(() => Promise.resolve()),
     sources: fromJS({
         ticket: {
             customer: {
@@ -43,25 +105,16 @@ const commonProps = {
         },
         customer: {
             id: 2,
+            data: {name: 'Marie Curie'},
         },
-    }),
-    customer: fromJS({
-        id: 2,
     }),
     widgets: fromJS({
+        currentContext: 'customer',
         _internal: {
             isEditing: false,
+            hasFetchedWidgets: true,
         },
     }),
-    fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
-    searchCancellable: jest.fn(() => Promise.resolve({resp: {data: []}})),
-    searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
-    setCustomer: jest.fn(() => Promise.resolve()),
-    location: {
-        search: 'searchQuery',
-        pathname: 'foo',
-        query: {},
-    },
 }
 
 describe('<Infobar/>', () => {
@@ -70,79 +123,128 @@ describe('<Infobar/>', () => {
     })
 
     it('should render ticket context', () => {
-        const component = shallow(<Infobar {...commonProps} />)
+        const {container} = renderWithRouter(<Infobar {...commonProps} />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render customer context', () => {
-        const component = shallow(
+        const {container} = renderWithRouter(
             <Infobar {...commonProps} context="customer" />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render loading state because the search is in progress', () => {
-        const component = shallow(<Infobar {...commonProps} />).setState({
-            isSearching: true,
-        })
+        const {container, getByTestId} = renderWithRouter(
+            <Infobar {...commonProps} />
+        )
 
-        expect(component).toMatchSnapshot()
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the error when loading error', (done) => {
+    it('should render the error when loading error', async () => {
         const mockedErrorSearch = jest
             .fn()
             .mockResolvedValue({error: 'generic_error'})
 
-        const component = shallow(
-            <Infobar {...commonProps} searchCancellable={mockedErrorSearch} />
+        const {container, getByTestId, getByText} = renderWithRouter(
+            <Infobar {...commonProps} searchCustomers={mockedErrorSearch} />
         )
 
-        component.find(Search).simulate('change', 'query')
-        setImmediate(() => {
-            expect(component).toMatchSnapshot()
-            done()
-        })
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+
+        await waitFor(() => getByText(/Failed to do the search/i))
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render loading state because the customer is being fetched', () => {
-        const component = shallow(<Infobar {...commonProps} />).setState({
-            isFetchingCustomer: true,
-        })
+    it('should render loading state because the customer is being fetched', async () => {
+        const {container, getByTestId} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                searchCustomers={() =>
+                    Promise.resolve({
+                        resp: {data: [{id: 7}, {id: 8}, {id: 9}]},
+                    })
+                }
+            />
+        )
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
 
-        expect(component).toMatchSnapshot()
+        const InfobarSearchResultsList = await waitFor(() =>
+            getByTestId('InfobarSearchResultsList')
+        )
+        fireEvent.click(InfobarSearchResultsList)
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render selected customer', () => {
-        const component = shallow(<Infobar {...commonProps} />).setState({
-            displaySelectedCustomer: true,
-            selectedCustomer: fromJS({id: 7}),
-        })
+    it('should render selected customer', async () => {
+        const {container, getByTestId} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                actions={{
+                    ...commonProps.actions,
+                    fetchPreviewCustomer: (id) =>
+                        Promise.resolve({
+                            type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                            resp: {
+                                id,
+                            },
+                        }),
+                }}
+            />
+        )
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
 
-        expect(component).toMatchSnapshot()
+        const InfobarSearchResultsList = await waitFor(() =>
+            getByTestId('InfobarSearchResultsList')
+        )
+        fireEvent.click(InfobarSearchResultsList)
+        await waitFor(() => getByTestId('InfobarCustomerInfo'))
+
+        expect(container).toMatchSnapshot()
     })
 
-    it('should render search results', () => {
-        const component = shallow(<Infobar {...commonProps} />).setState({
-            displaySearchResults: true,
-            searchResults: fromJS([{id: 8}, {id: 9}]),
-        })
+    it('should render search results', async () => {
+        const {container, getByTestId} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                searchCustomers={() =>
+                    Promise.resolve({
+                        resp: {data: [{id: 8}, {id: 9}]},
+                    })
+                }
+            />
+        )
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
 
-        expect(component).toMatchSnapshot()
+        await waitFor(() => getByTestId('InfobarSearchResultsList'))
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render current customer with suggested customer', () => {
-        const component = shallow(<Infobar {...commonProps} />).setState({
-            suggestedCustomer: fromJS({id: 10}),
-        })
+    it('should render current customer with suggested customer', async () => {
+        const {container, getByText} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                searchSimilarCustomer={() =>
+                    Promise.resolve({
+                        customer: fromJS({id: 10}),
+                    })
+                }
+            />
+        )
 
-        expect(component).toMatchSnapshot()
+        await waitFor(() =>
+            getByText(/We have found someone similar to the customer/)
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render widgets edition mode', () => {
-        const component = shallow(
+        const {container} = renderWithRouter(
             <Infobar
                 {...commonProps}
                 widgets={fromJS({
@@ -154,10 +256,10 @@ describe('<Infobar/>', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    describe('_onSearchResultClick()', () => {
+    describe('onSearchResultClick()', () => {
         let customer: Map
         let customerId = 5
 
@@ -167,34 +269,8 @@ describe('<Infobar/>', () => {
             customer.set('id', customerId)
         })
 
-        it('should reset spinner and select customer on fetch customer success', async () => {
-            const component = shallow(
-                <Infobar
-                    {...commonProps}
-                    actions={{
-                        ...commonProps.actions,
-                        fetchPreviewCustomer: jest.fn(() =>
-                            Promise.resolve({
-                                type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
-                                resp: {
-                                    id: customerId,
-                                },
-                            })
-                        ),
-                    }}
-                />
-            )
-
-            await component.instance()._onSearchResultClick(customer)
-
-            expect(component.state().isFetchingCustomer).toEqual(false)
-            expect(component.state().selectedCustomer.get('id')).toEqual(
-                customerId
-            )
-        })
-
         it('should reset spinner and keep customer empty on fetch customer failure', async () => {
-            const component = shallow(
+            const {container, getByTestId} = renderWithRouter(
                 <Infobar
                     {...commonProps}
                     actions={{
@@ -207,15 +283,19 @@ describe('<Infobar/>', () => {
                     }}
                 />
             )
+            fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
 
-            await component.instance()._onSearchResultClick(customer)
+            await waitFor(() =>
+                fireEvent.click(getByTestId('InfobarSearchResultsList'))
+            )
 
-            expect(component.state().isFetchingCustomer).toEqual(false)
-            expect(component.state().selectedCustomer.get('id')).toBeUndefined()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should start edition mode, because it is mounting in edition mode and the widgets state is not in edit mode', () => {
-            shallow(<Infobar {...commonProps} isRouteEditingWidgets={true} />)
+            renderWithRouter(
+                <Infobar {...commonProps} isRouteEditingWidgets={true} />
+            )
 
             expect(
                 commonProps.actions.widgets.startEditionMode
@@ -223,7 +303,7 @@ describe('<Infobar/>', () => {
         })
 
         it('should stop edition mode, because it is mounting in read mode and the widgets state is in edit mode', () => {
-            shallow(
+            renderWithRouter(
                 <Infobar
                     {...commonProps}
                     widgets={fromJS({

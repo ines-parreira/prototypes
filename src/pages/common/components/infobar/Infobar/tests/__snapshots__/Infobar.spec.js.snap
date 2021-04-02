@@ -1,97 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Infobar/> should render current customer with suggested customer 1`] = `
-<Connect(InfobarLayout)
-  className=""
+exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer empty on fetch customer failure 1`] = `
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
-      <Connect(InfobarCustomerInfo)
-        actions={
-          Object {
-            "startEditionMode": [MockFunction],
-            "stopEditionMode": [MockFunction],
-            "submitWidgets": [MockFunction],
-          }
-        }
-        customer={
-          Immutable.Map {
-            "id": 2,
-          }
-        }
-        displayTabs={true}
-        isEditing={false}
-        sources={
-          Immutable.Map {
-            "ticket": Immutable.Map {
-              "customer": Immutable.Map {
-                "id": 2,
-              },
-            },
-            "customer": Immutable.Map {
-              "id": 2,
-            },
-          }
-        }
-        widgets={
-          Immutable.Map {
-            "_internal": Immutable.Map {
-              "isEditing": false,
-            },
-          }
-        }
-      />
       <div
-        className="d-none d-md-block"
+        class="m-3"
+      >
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          <i
+            class="material-icons md-2 mr-2"
+          >
+            arrow_back
+          </i>
+          Back
+        </button>
+      </div>
+      <div
+        data-testid="InfobarSearchResultsList"
+      >
+        <div>
+          errorMessage: 
+        </div>
+        <div>
+          defaultCustomerId: 
+          2
+        </div>
+        <div>
+          searchResults: 
+          []
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Infobar/> should render current customer with suggested customer 1`] = `
+<div
+  data-testid="InfobarLayout"
+>
+  <div
+    class="infobarContent"
+  >
+    <div
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
+    >
+      <input
+        data-testid="Search"
+        placeholder="Search for customers by email, order number, etc."
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
+      />
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
+        id="toggle-widgets-edition-button"
+        type="button"
+      >
+        <i
+          class="material-icons md-2"
+        >
+          settings
+        </i>
+      </button>
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        data-testid="InfobarCustomerInfo"
+      >
+        InfobarCustomerInfo
+        <div>
+          customer: 
+          {"id":2}
+        </div>
+      </div>
+      <div
+        class="d-none d-md-block"
       >
         <div
-          className="infobarSectionSeparator"
+          class="infobarSectionSeparator"
         />
         <div
-          className="suggestedCustomer"
+          class="suggestedCustomer"
         >
           <h4>
             Is this the same person?
@@ -100,812 +124,502 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
             'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this customer.
           </p>
           <div
-            style={
-              Object {
-                "marginBottom": "30px",
-              }
-            }
+            style="margin-bottom: 30px;"
           >
-            <Button
-              className="mr-2"
-              color="primary"
-              onClick={[Function]}
-              tag="button"
+            <button
+              class="mr-2 btn btn-primary"
               type="button"
             >
               <i
-                className="material-icons mr-1"
+                class="material-icons mr-1"
               >
                 call_merge
               </i>
               Merge
-            </Button>
+            </button>
           </div>
-          <ContextProvider
-            value={
-              Object {
-                "actionError": "You can only edit orders of the customer associated with this ticket.
-To edit this order, merge both customers or change the customer associated with this ticket.",
-              }
-            }
+          <div
+            data-testid="InfobarCustomerInfo"
           >
-            <Connect(InfobarCustomerInfo)
-              actions={
-                Object {
-                  "startEditionMode": [MockFunction],
-                  "stopEditionMode": [MockFunction],
-                  "submitWidgets": [MockFunction],
-                }
-              }
-              customer={
-                Immutable.Map {
-                  "id": 10,
-                }
-              }
-              displayTabs={false}
-              isEditing={false}
-              sources={
-                Immutable.Map {
-                  "ticket": Immutable.Map {
-                    "customer": Immutable.Map {
-                      "id": 10,
-                    },
-                  },
-                  "customer": Immutable.Map {
-                    "id": 10,
-                  },
-                }
-              }
-              widgets={
-                Immutable.Map {
-                  "_internal": Immutable.Map {
-                    "isEditing": false,
-                  },
-                }
-              }
-            />
-            <Connect(MergeCustomersContainer)
-              destinationCustomer={
-                Immutable.Map {
-                  "id": 2,
-                }
-              }
-              display={false}
-              isTicketContext={true}
-              onClose={[Function]}
-              onSuccess={[Function]}
-              sourceCustomer={
-                Immutable.Map {
-                  "id": 10,
-                }
-              }
-            />
-          </ContextProvider>
+            InfobarCustomerInfo
+            <div>
+              customer: 
+              {"id":10}
+            </div>
+          </div>
+          <div>
+            MergeCustomersContainer
+          </div>
         </div>
       </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render customer context 1`] = `
-<Connect(InfobarLayout)
-  className=""
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
-      <Connect(InfobarCustomerInfo)
-        actions={
-          Object {
-            "startEditionMode": [MockFunction],
-            "stopEditionMode": [MockFunction],
-            "submitWidgets": [MockFunction],
-          }
-        }
-        customer={
-          Immutable.Map {
-            "id": 2,
-          }
-        }
-        displayTabs={true}
-        isEditing={false}
-        sources={
-          Immutable.Map {
-            "ticket": Immutable.Map {
-              "customer": Immutable.Map {
-                "id": 2,
-              },
-            },
-            "customer": Immutable.Map {
-              "id": 2,
-            },
-          }
-        }
-        widgets={
-          Immutable.Map {
-            "_internal": Immutable.Map {
-              "isEditing": false,
-            },
-          }
-        }
-      />
+      <div
+        data-testid="InfobarCustomerInfo"
+      >
+        InfobarCustomerInfo
+        <div>
+          customer: 
+          {"id":2}
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render loading state because the customer is being fetched 1`] = `
-<Connect(InfobarLayout)
-  className=""
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
-      <Loader
-        inline={false}
-        minHeight="500px"
-        size="40px"
-      />
+      <div
+        class="container"
+      >
+        <div
+          class="inner"
+          style="min-height: 500px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 40px;"
+          />
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render loading state because the search is in progress 1`] = `
-<Connect(InfobarLayout)
-  className=""
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
-      <Loader
-        inline={false}
-        minHeight="500px"
-        size="40px"
-      />
+      <div
+        class="container"
+      >
+        <div
+          class="inner"
+          style="min-height: 500px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 40px;"
+          />
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render search results 1`] = `
-<Connect(InfobarLayout)
-  className=""
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="m-3"
+        class="m-3"
       >
-        <Button
-          color="secondary"
-          onClick={[Function]}
-          tag="button"
+        <button
+          class="btn btn-secondary"
           type="button"
         >
           <i
-            className="material-icons md-2 mr-2"
+            class="material-icons md-2 mr-2"
           >
             arrow_back
           </i>
           Back
-        </Button>
+        </button>
       </div>
-      <InfobarSearchResultsList
-        defaultCustomerId={2}
-        errorMessage={null}
-        onCustomerClick={[Function]}
-        searchResults={
-          Immutable.List [
-            Immutable.Map {
-              "id": 8,
-            },
-            Immutable.Map {
-              "id": 9,
-            },
-          ]
-        }
-      />
+      <div
+        data-testid="InfobarSearchResultsList"
+      >
+        <div>
+          errorMessage: 
+        </div>
+        <div>
+          defaultCustomerId: 
+          2
+        </div>
+        <div>
+          searchResults: 
+          [{"id":8},{"id":9}]
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render selected customer 1`] = `
-<Connect(InfobarLayout)
-  className=""
->
+<div>
   <div
-    className="infobarContent"
+    data-testid="InfobarLayout"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
-    >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
-        placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
-      />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
-        id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
-        type="button"
-      >
-        <i
-          className="material-icons md-2"
-        >
-          settings
-        </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
-    </div>
-    <div
-      className="content"
+      class="infobarContent"
     >
       <div
-        className="m-3"
+        class="infobarSearchWrapper d-flex align-items-center justify-content-between"
       >
-        <Button
-          color="secondary"
-          onClick={[Function]}
-          tag="button"
+        <input
+          data-testid="Search"
+          placeholder="Search for customers by email, order number, etc."
+          searchdebouncetime="200"
+          style="max-width: none;"
+          tabindex="10"
+        />
+        <button
+          class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary disabled"
+          disabled=""
+          id="toggle-widgets-edition-button"
           type="button"
         >
           <i
-            className="material-icons md-2 mr-2"
+            class="material-icons md-2"
           >
-            arrow_back
+            settings
           </i>
-          Back
-        </Button>
-        <InfobarCustomerActions
-          customer={
-            Immutable.Map {
-              "id": 2,
-            }
-          }
-          selectedCustomer={
-            Immutable.Map {
-              "id": 7,
-            }
-          }
-          setCustomer={[Function]}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 2,
-                },
-              },
-              "customer": Immutable.Map {
-                "id": 2,
-              },
-            }
-          }
-          toggleMergeCustomerModal={[Function]}
-        />
+        </button>
       </div>
-      <ContextProvider
-        value={
-          Object {
-            "actionError": "You can only edit orders of the customer associated with this ticket.
-To edit this order, merge both customers or change the customer associated with this ticket.",
-          }
-        }
+      <div
+        class="content"
       >
-        <Connect(InfobarCustomerInfo)
-          actions={
-            Object {
-              "startEditionMode": [MockFunction],
-              "stopEditionMode": [MockFunction],
-              "submitWidgets": [MockFunction],
-            }
-          }
-          customer={
-            Immutable.Map {
-              "id": 7,
-            }
-          }
-          displayTabs={true}
-          isEditing={false}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 7,
-                },
-              },
-              "customer": Immutable.Map {
-                "id": 7,
-              },
-            }
-          }
-          widgets={
-            Immutable.Map {
-              "_internal": Immutable.Map {
-                "isEditing": false,
-              },
-            }
-          }
-        />
-        <Connect(MergeCustomersContainer)
-          destinationCustomer={
-            Immutable.Map {
-              "id": 2,
-            }
-          }
-          display={false}
-          isTicketContext={true}
-          onClose={[Function]}
-          onSuccess={[Function]}
-          sourceCustomer={
-            Immutable.Map {
-              "id": 7,
-            }
-          }
-        />
-      </ContextProvider>
+        <div
+          class="m-3"
+        >
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons md-2 mr-2"
+            >
+              arrow_back
+            </i>
+            Back
+          </button>
+          <div
+            class="float-right d-none d-md-block"
+          >
+            <button
+              class="btn btn-secondary"
+              type="submit"
+            >
+              Merge
+            </button>
+          </div>
+        </div>
+        <div
+          data-testid="InfobarCustomerInfo"
+        >
+          InfobarCustomerInfo
+          <div>
+            customer: 
+            {"id":7}
+          </div>
+        </div>
+        <div>
+          MergeCustomersContainer
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render the error when loading error 1`] = `
-<Connect(InfobarLayout)
-  className=""
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
       <div
-        className="m-3"
+        class="m-3"
       >
-        <Button
-          color="secondary"
-          onClick={[Function]}
-          tag="button"
+        <button
+          class="btn btn-secondary"
           type="button"
         >
           <i
-            className="material-icons md-2 mr-2"
+            class="material-icons md-2 mr-2"
           >
             arrow_back
           </i>
           Back
-        </Button>
+        </button>
       </div>
-      <InfobarSearchResultsList
-        defaultCustomerId={2}
-        errorMessage="Failed to do the search. Please try again."
-        onCustomerClick={[Function]}
-        searchResults={Immutable.List []}
-      />
+      <div
+        data-testid="InfobarSearchResultsList"
+      >
+        <div>
+          errorMessage: 
+          Failed to do the search. Please try again.
+        </div>
+        <div>
+          defaultCustomerId: 
+          2
+        </div>
+        <div>
+          searchResults: 
+          []
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render ticket context 1`] = `
-<Connect(InfobarLayout)
-  className=""
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={false}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary"
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Edit widgets
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
-      <Connect(InfobarCustomerInfo)
-        actions={
-          Object {
-            "startEditionMode": [MockFunction],
-            "stopEditionMode": [MockFunction],
-            "submitWidgets": [MockFunction],
-          }
-        }
-        customer={
-          Immutable.Map {
-            "id": 2,
-          }
-        }
-        displayTabs={true}
-        isEditing={false}
-        sources={
-          Immutable.Map {
-            "ticket": Immutable.Map {
-              "customer": Immutable.Map {
-                "id": 2,
-              },
-            },
-            "customer": Immutable.Map {
-              "id": 2,
-            },
-          }
-        }
-        widgets={
-          Immutable.Map {
-            "_internal": Immutable.Map {
-              "isEditing": false,
-            },
-          }
-        }
-      />
+      <div
+        data-testid="InfobarCustomerInfo"
+      >
+        InfobarCustomerInfo
+        <div>
+          customer: 
+          {"id":2}
+        </div>
+      </div>
     </div>
   </div>
-</Connect(InfobarLayout)>
+</div>
 `;
 
 exports[`<Infobar/> should render widgets edition mode 1`] = `
-<Connect(InfobarLayout)
-  className="editing"
+<div
+  data-testid="InfobarLayout"
 >
   <div
-    className="infobarContent"
+    class="infobarContent"
   >
     <div
-      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+      class="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Component
-        bindKey={true}
-        onChange={[Function]}
+      <input
+        data-testid="Search"
         placeholder="Search for customers by email, order number, etc."
-        searchDebounceTime={200}
-        style={
-          Object {
-            "maxWidth": "none",
-          }
-        }
-        tabIndex="10"
+        searchdebouncetime="200"
+        style="max-width: none;"
+        tabindex="10"
       />
-      <Button
-        active={true}
-        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
-        color="secondary"
-        disabled={true}
+      <button
+        class="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent btn btn-secondary active disabled"
+        disabled=""
         id="toggle-widgets-edition-button"
-        onClick={[Function]}
-        tag="button"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           settings
         </i>
-      </Button>
-      <Tooltip
-        delay={0}
-        placement="left"
-        target="toggle-widgets-edition-button"
-      >
-        Leave widgets edition
-      </Tooltip>
+      </button>
     </div>
     <div
-      className="content"
+      class="content"
     >
-      <Connect(InfobarCustomerInfo)
-        actions={
-          Object {
-            "startEditionMode": [MockFunction],
-            "stopEditionMode": [MockFunction],
-            "submitWidgets": [MockFunction],
-          }
-        }
-        customer={
-          Immutable.Map {
-            "id": 2,
-          }
-        }
-        displayTabs={true}
-        isEditing={true}
-        sources={
-          Immutable.Map {
-            "ticket": Immutable.Map {
-              "customer": Immutable.Map {
-                "id": 2,
-              },
-            },
-            "customer": Immutable.Map {
-              "id": 2,
-            },
-          }
-        }
-        widgets={
-          Immutable.Map {
-            "_internal": Immutable.Map {
-              "isEditing": true,
-            },
-          }
-        }
-      />
+      <div
+        data-testid="InfobarCustomerInfo"
+      >
+        InfobarCustomerInfo
+        <div>
+          customer: 
+          {"id":2}
+        </div>
+      </div>
     </div>
   </div>
-  <InfobarWidgetsEditionTools
-    actions={
-      Object {
-        "startEditionMode": [MockFunction],
-        "stopEditionMode": [MockFunction],
-        "submitWidgets": [MockFunction],
-      }
-    }
-    context=""
-    widgets={
-      Immutable.Map {
-        "_internal": Immutable.Map {
-          "isEditing": true,
-        },
-      }
-    }
-  />
-</Connect(InfobarLayout)>
+  <div>
+    <button
+      class="mr-2 btn btn-success disabled"
+      disabled=""
+      type="button"
+    >
+      Save changes
+    </button>
+    <button
+      class="btn btn-secondary disabled"
+      disabled=""
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</div>
 `;
