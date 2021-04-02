@@ -1,76 +1,46 @@
-import React, {Component, ComponentProps, ComponentType} from 'react'
+import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import DocumentTitle from 'react-document-title'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Link, useLocation, useParams} from 'react-router-dom'
 import {Button} from 'reactstrap'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
-import MacroContainer from '../common/macros/MacroContainer.js'
-import {compactInteger} from '../../../utils'
-import {isCreationUrl, isSearchUrl} from '../../common/utils/url.js'
-import * as tagsActions from '../../../state/tags/actions'
-import * as ticketsSelectors from '../../../state/tickets/selectors'
-import * as viewsSelectors from '../../../state/views/selectors'
-import ViewTable from '../../common/components/ViewTable/ViewTable'
 import {RootState} from '../../../state/types'
+import {fetchTags} from '../../../state/tags/actions'
+import {getTickets} from '../../../state/tickets/selectors'
+import {
+    getActiveView,
+    hasActiveView,
+    getSelectedItemsIds,
+} from '../../../state/views/selectors'
+import {compactInteger} from '../../../utils'
+import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
+import ViewTable from '../../common/components/ViewTable/ViewTable'
+import MacroContainer from '../common/macros/MacroContainer.js'
 
 import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
 
-type Params = {
-    viewId?: string
-}
+export const TicketListContainer = ({
+    activeView,
+    fetchTags,
+    hasActiveView,
+    selectedItemsIds,
+    tickets,
+}: ConnectedProps<typeof connector>) => {
+    const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
+    const {pathname} = useLocation()
+    const params = useParams<{viewId?: string}>()
+    const isSearch = useMemo(() => isSearchUrl(pathname, 'tickets'), [pathname])
+    const isUpdate = useMemo(() => !isCreationUrl(pathname, 'tickets'), [
+        pathname,
+    ])
 
-type Props = ConnectedProps<typeof connector> & RouteComponentProps<Params>
+    useEffect(() => {
+        void fetchTags()
+    }, [])
 
-type State = {
-    isSearch: boolean
-    isUpdate: boolean
-    isMacroModalOpen: boolean
-    actionsComponent: Maybe<ComponentType>
-}
-
-class TicketListContainer extends Component<Props, State> {
-    state = {
-        isSearch: false,
-        isUpdate: true,
-        isMacroModalOpen: false,
-        actionsComponent: null,
-    }
-
-    _setInitialState = (props: Props) => {
-        this.setState({
-            isSearch: isSearchUrl(props.location.pathname, 'tickets'),
-            isUpdate: !isCreationUrl(props.location.pathname, 'tickets'),
-        })
-    }
-
-    componentWillMount() {
-        void this.props.fetchTags()
-        this._setInitialState(this.props)
-    }
-
-    componentDidMount() {
-        this.setState({
-            actionsComponent: decorateComponentWithProps<
-                ComponentProps<typeof TicketListActions>,
-                {openMacroModal: () => void}
-            >(TicketListActions, {
-                openMacroModal: this._openMacroModal,
-            }),
-        })
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        this._setInitialState(nextProps)
-    }
-
-    _openMacroModal = () => this.setState({isMacroModalOpen: true})
-    _closeMacroModal = () => this.setState({isMacroModalOpen: false})
-
-    render() {
-        const {isSearch, isUpdate} = this.state
-        const {tickets, urlViewId, activeView, hasActiveView} = this.props
+    const title = useMemo(() => {
         let title = 'Loading...'
 
         if (!isUpdate) {
@@ -89,66 +59,66 @@ class TicketListContainer extends Component<Props, State> {
         if (isSearch) {
             title = 'Search'
         }
+        return title
+    }, [activeView, hasActiveView, isSearch, isUpdate])
 
-        return (
-            <DocumentTitle title={title}>
-                <div
-                    className="d-flex flex-column"
-                    style={{
-                        width: '100%',
-                    }}
-                >
-                    <ViewTable
-                        className={css.table}
-                        type="ticket"
-                        items={tickets}
-                        isUpdate={isUpdate}
-                        isSearch={isSearch}
-                        urlViewId={urlViewId}
-                        ActionsComponent={this.state.actionsComponent}
-                        viewButtons={
-                            <div className="d-inline-flex align-items-center">
-                                <Button
-                                    tag={Link}
-                                    color="success"
-                                    to="/app/ticket/new"
-                                >
-                                    Create ticket
-                                </Button>
-                            </div>
-                        }
+    return (
+        <DocumentTitle title={title}>
+            <div
+                className="d-flex flex-column"
+                style={{
+                    width: '100%',
+                }}
+            >
+                <ViewTable
+                    className={css.table}
+                    type="ticket"
+                    items={tickets}
+                    isUpdate={isUpdate}
+                    isSearch={isSearch}
+                    urlViewId={params.viewId}
+                    ActionsComponent={decorateComponentWithProps<
+                        ComponentProps<typeof TicketListActions>,
+                        {openMacroModal: () => void}
+                    >(TicketListActions, {
+                        openMacroModal: () => setIsMacroModalOpen(true),
+                    })}
+                    viewButtons={
+                        <div className="d-inline-flex align-items-center">
+                            <Button
+                                tag={Link}
+                                color="success"
+                                to="/app/ticket/new"
+                            >
+                                Create ticket
+                            </Button>
+                        </div>
+                    }
+                />
+                {isMacroModalOpen && (
+                    <MacroContainer
+                        activeView={activeView}
+                        disableExternalActions
+                        selectedItemsIds={selectedItemsIds}
+                        closeModal={() => setIsMacroModalOpen(false)}
+                        selectionMode
                     />
-                    {this.state.isMacroModalOpen && (
-                        <MacroContainer
-                            activeView={activeView}
-                            disableExternalActions
-                            selectedItemsIds={this.props.selectedItemsIds}
-                            closeModal={this._closeMacroModal}
-                            selectionMode
-                        />
-                    )}
-                </div>
-            </DocumentTitle>
-        )
-    }
+                )}
+            </div>
+        </DocumentTitle>
+    )
 }
 
 const connector = connect(
-    (state: RootState, ownProps: RouteComponentProps<Params>) => {
-        const urlViewId = ownProps.match.params.viewId
-
-        return {
-            activeView: viewsSelectors.getActiveView(state),
-            hasActiveView: viewsSelectors.hasActiveView(state),
-            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-            tickets: ticketsSelectors.getTickets(state),
-            urlViewId,
-            views: state.views,
-        }
-    },
+    (state: RootState) => ({
+        activeView: getActiveView(state),
+        hasActiveView: hasActiveView(state),
+        selectedItemsIds: getSelectedItemsIds(state),
+        tickets: getTickets(state),
+    }),
     {
-        fetchTags: tagsActions.fetchTags,
+        fetchTags,
     }
 )
 
-export default withRouter(connector(TicketListContainer))
+export default connector(TicketListContainer)

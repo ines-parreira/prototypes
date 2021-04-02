@@ -7,7 +7,7 @@ import DocumentTitle from 'react-document-title'
 import {Button} from 'reactstrap'
 
 import {compactInteger} from '../../../utils.ts'
-import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
+import {isCreationUrl, isSearchUrl} from '../../common/utils/url.ts'
 import {getCustomers} from '../../../state/customers/selectors.ts'
 
 import * as viewsActions from '../../../state/views/actions.ts'

@@ -16,7 +16,7 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
-import {isCreationUrl} from '../../utils/url.js'
+import {isCreationUrl} from '../../utils/url'
 
 import Header from './Header'
 import Table from './Table'

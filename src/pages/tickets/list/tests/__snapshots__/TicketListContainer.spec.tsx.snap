@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketListContainer /> should display with default props 1`] = `
+<div
+  class="d-flex flex-column"
+  style="width: 100%;"
+>
+  <div>
+    ViewTable:
+    <div>
+      items: 
+      []
+    </div>
+    <div>
+      isUpdate: 
+      true
+    </div>
+    <div>
+      isSearch: 
+      false
+    </div>
+    <div>
+      urlViewId: 
+    </div>
+    <div>
+      ActionsComponent:
+      function _class() {
+      _classCallCheck(this, _class);
+
+      return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+    }
+    </div>
+  </div>
+</div>
+`;
