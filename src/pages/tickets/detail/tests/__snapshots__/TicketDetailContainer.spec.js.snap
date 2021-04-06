@@ -34,17 +34,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "cancel": [MockFunction],
             "create": [MockFunction],
             "edit": [MockFunction],
-            "fetchTags": [MockFunction] {
-              "calls": Array [
-                Array [],
-              ],
-              "results": Array [
-                Object {
-                  "type": "return",
-                  "value": undefined,
-                },
-              ],
-            },
+            "fetchTags": [MockFunction],
             "merge": [MockFunction],
             "remove": [MockFunction],
             "save": [MockFunction],
@@ -53,30 +43,8 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "setPage": [MockFunction],
           },
           "ticket": Object {
-            "clearTicket": [MockFunction] {
-              "calls": Array [
-                Array [],
-              ],
-              "results": Array [
-                Object {
-                  "type": "return",
-                  "value": undefined,
-                },
-              ],
-            },
-            "fetchTicket": [MockFunction] {
-              "calls": Array [
-                Array [
-                  "new",
-                ],
-              ],
-              "results": Array [
-                Object {
-                  "type": "return",
-                  "value": undefined,
-                },
-              ],
-            },
+            "clearTicket": [MockFunction],
+            "fetchTicket": [MockFunction],
             "findAndSetCustomer": [MockFunction],
             "goToNextTicket": [MockFunction],
             "messageDeleted": [MockFunction],
