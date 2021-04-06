@@ -24,9 +24,9 @@ import {handleUsageBanner} from '../state/notifications/actions.ts'
 
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/'
-import FullPage from './common/components/FullPage'
+import FullPage from './common/components/FullPage.tsx'
 import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp.tsx'
-import ModalNotification from './common/components/ModalNotification'
+import ModalNotification from './common/components/ModalNotification.tsx'
 import notificationsTheme from './common/components/Notifications'
 import {ErrorBoundary} from './ErrorBoundary'
 

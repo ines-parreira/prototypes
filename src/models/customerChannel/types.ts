@@ -1,3 +1,5 @@
+import {ReactNode} from 'react'
+
 import {Channel} from '../ticket/types'
 
 export type CustomerChannel = {
@@ -8,4 +10,9 @@ export type CustomerChannel = {
     id: number
     updated_datetime: Maybe<string>
     created_datetime: string
+}
+
+export type MultiSelectBinaryChoiceFieldOption = {
+    label: ReactNode
+    value: CustomerChannel
 }

@@ -12,7 +12,7 @@ import {
 import Loader from '../../common/components/Loader/Loader'
 import CustomerForm from '../common/components/CustomerForm.js'
 import Timeline from '../../common/components/timeline/Timeline'
-import Modal from '../../common/components/Modal.js'
+import Modal from '../../common/components/Modal'
 import {Customer} from '../../../state/customers/types'
 import {
     getCustomerHistory,

@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {createMemoryHistory} from 'history'
 
 import {renderWithRouter} from '../../../../utils/testing'
-import Navbar from '../../../common/components/Navbar.js'
+import Navbar from '../../../common/components/Navbar'
 import ViewNavbarView from '../../../common/components/ViewNavbarView/ViewNavbarView'
 import {CustomerNavbarContainer} from '../CustomerNavbarContainer'
 

@@ -19,7 +19,7 @@ import {TicketNavbarContainer, TicketNavbarElementType} from '../TicketNavbar'
 import TicketNavbarContent from '../TicketNavbarContent'
 
 jest.mock(
-    '../../../common/components/Navbar.js',
+    '../../../common/components/Navbar',
     () => ({children}: {children: ReactNode}) => <div>{children}</div>
 )
 jest.mock('../../../common/components/RecentChats.js', () => () => (

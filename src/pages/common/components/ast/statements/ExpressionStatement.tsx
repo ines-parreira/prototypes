@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import Expression from '../expression/Expression'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
-import Hoverable from '../../Hoverable.js'
+import Hoverable from '../../Hoverable'
 
 type Props = {
     rule: Map<any, any>

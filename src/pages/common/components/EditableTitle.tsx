@@ -1,15 +1,51 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {
+    CSSProperties,
+    Component,
+    KeyboardEvent,
+    ChangeEvent,
+    FocusEvent,
+} from 'react'
 import classnames from 'classnames'
-import {Input} from 'reactstrap'
+import {Input, InputProps} from 'reactstrap'
 import _noop from 'lodash/noop'
 
 import css from './EditableTitle.less'
 
-export default class EditableTitle extends React.Component {
-    constructor(props) {
+type Props = {
+    className: string
+    title: string
+    placeholder?: string
+    update: (value: string) => void
+    focus?: boolean
+    select?: boolean
+    size: InputProps['bsSize']
+    disabled?: boolean
+    style: CSSProperties
+    forceEditMode?: boolean
+    onChange?: (value?: string) => void
+}
+
+type State = {
+    editMode: boolean
+    value: string
+}
+export default class EditableTitle extends Component<Props, State> {
+    static defaultProps: Pick<
+        Props,
+        'className' | 'update' | 'style' | 'size'
+    > = {
+        className: '',
+        update: _noop,
+        style: {},
+        size: 'xl' as InputProps['bsSize'],
+    }
+
+    constructor(props: Props) {
         super(props)
-        this.state = this._stateProps(props)
+        this.state = {
+            value: props.title,
+            editMode: false,
+        }
     }
 
     componentDidMount() {
@@ -20,9 +56,9 @@ export default class EditableTitle extends React.Component {
         }, 1)
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (!this.state.editMode && this.state.value !== nextProps.title) {
-            this.setState(this._stateProps(nextProps))
+            this.setState({value: nextProps.title})
 
             setTimeout(() => {
                 if (nextProps.select) {
@@ -37,26 +73,30 @@ export default class EditableTitle extends React.Component {
     _select = () => {
         // eslint-disable-next-line react/no-string-refs
         const titleRef = this.refs.title
+        //@ts-ignore
         if (titleRef && titleRef.select) {
-            titleRef.select()
+            //@ts-ignore
+            titleRef.select() // eslint-disable-line
         }
     }
 
     _blur = () => {
         // eslint-disable-next-line react/no-string-refs
         const titleRef = this.refs.title
+        //@ts-ignore
         if (titleRef && titleRef.blur) {
-            titleRef.blur()
+            //@ts-ignore
+            titleRef.blur() // eslint-disable-line
         }
     }
 
-    _onKeyDown = (e) => {
+    _onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 13) {
             e.preventDefault()
         }
     }
 
-    _onKeyUp = (e) => {
+    _onKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 13 || e.keyCode === 27) {
             e.preventDefault()
 
@@ -70,11 +110,7 @@ export default class EditableTitle extends React.Component {
         }
     }
 
-    _stateProps = (props) => ({
-        value: props.title,
-    })
-
-    _onChange = (e) => {
+    _onChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         this.setState({value})
 
@@ -83,7 +119,7 @@ export default class EditableTitle extends React.Component {
         }
     }
 
-    _onBlur = ({target: {value}}) => {
+    _onBlur = ({target: {value}}: FocusEvent<HTMLInputElement>) => {
         this.setState({editMode: false})
         this.props.update(value)
     }
@@ -93,9 +129,10 @@ export default class EditableTitle extends React.Component {
 
         return (
             <Input
+                //@ts-ignore
                 innerRef="title"
                 type="text"
-                tabIndex="1"
+                tabIndex={1}
                 bsSize={size}
                 style={style}
                 disabled={this.props.disabled}
@@ -114,25 +151,4 @@ export default class EditableTitle extends React.Component {
             />
         )
     }
-}
-
-EditableTitle.propTypes = {
-    className: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    placeholder: PropTypes.string,
-    update: PropTypes.func.isRequired,
-    focus: PropTypes.bool,
-    select: PropTypes.bool,
-    size: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
-    style: PropTypes.object.isRequired,
-    forceEditMode: PropTypes.bool,
-    onChange: PropTypes.func,
-}
-
-EditableTitle.defaultProps = {
-    className: '',
-    update: _noop,
-    style: {},
-    size: 'xl',
 }

@@ -15,7 +15,7 @@ import InputField from '../../../../../common/forms/InputField'
 import SelectField from '../../../../../common/forms/MultiSelectField'
 import * as rulesConfig from '../../../../../../config/rules.ts'
 
-import EditableTitle from '../../../../../common/components/EditableTitle'
+import EditableTitle from '../../../../../common/components/EditableTitle.tsx'
 import Program from '../../../../../common/components/ast/Program.tsx'
 import Errors from '../../../../../common/components/ast/Errors'
 import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'

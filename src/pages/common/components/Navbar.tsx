@@ -1,8 +1,6 @@
-// @flow
-import React, {type Node} from 'react'
-import {type Map} from 'immutable'
+import React, {Component, ReactNode} from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
@@ -14,28 +12,29 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import shortcutManager from '../../../services/shortcutManager/index.ts'
+import shortcutManager from '../../../services/shortcutManager/index'
 
-import * as currentUserActions from '../../../state/currentUser/actions.ts'
-import * as layoutActions from '../../../state/layout/actions.ts'
+import * as currentUserActions from '../../../state/currentUser/actions'
+import * as layoutActions from '../../../state/layout/actions'
 
-import * as layoutSelectors from '../../../state/layout/selectors.ts'
-import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import * as billingSelectors from '../../../state/billing/selectors.ts'
+import * as layoutSelectors from '../../../state/layout/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as billingSelectors from '../../../state/billing/selectors'
+import {RootState} from '../../../state/types'
 
-import ToggleButton from '../../../pages/common/components/ToggleButton'
+import ToggleButton from '../../../pages/common/components/ToggleButton.js'
 import './Navbar.less'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 
-import Avatar from './Avatar/Avatar.tsx'
+import Avatar from './Avatar/Avatar'
 
 type NavLinkProps = {
-    to: string,
-    className: ?string,
+    to: string
+    className: Maybe<string>
 }
 
 // A <Link /> with some default styles
-class NavLink extends React.Component<NavLinkProps> {
+class NavLink extends Component<NavLinkProps> {
     render() {
         const {className, to} = this.props
 
@@ -82,38 +81,20 @@ const mainMenu = [
     },
 ]
 
-type NavbarProps = {
-    currentUser: Map<*, *>,
-    currentUserPreferences: Map<*, *>,
-    currentPlan: Map<*, *>,
-    available: boolean,
-    activeContent: ?string,
-    children: ?Array<Node> | ?Node,
-    submitSetting: (Object) => Promise<*>,
-    isOpenedPanel: boolean,
-    closePanels: typeof layoutActions.closePanels,
+type OwnProps = {
+    activeContent: Maybe<string>
+    children: ReactNode
 }
 
-type NavbarState = {
-    bottomDropdownOpen: boolean,
-    noticeableWidgetRendered: boolean,
-    title: ?string,
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+type State = {
+    bottomDropdownOpen: boolean
+    noticeableWidgetRendered: boolean
+    title: Maybe<string>
 }
 
-@connect(
-    (state) => ({
-        currentUser: currentUserSelectors.getCurrentUser(state),
-        currentUserPreferences: currentUserSelectors.getPreferences(state),
-        currentPlan: billingSelectors.currentPlan(state),
-        available: currentUserSelectors.isAvailable(state),
-        isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
-    }),
-    {
-        submitSetting: currentUserActions.submitSetting,
-        closePanels: layoutActions.closePanels,
-    }
-)
-export default class Navbar extends React.Component<NavbarProps, NavbarState> {
+class Navbar extends React.Component<Props, State> {
     static childContextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
@@ -138,7 +119,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
         })
     }
 
-    componentDidUpdate(prevProps: NavbarProps, prevState: NavbarState) {
+    componentDidUpdate(prevProps: OwnProps, prevState: State) {
         // render and update the noticeable widget and notification
         if (this.state.bottomDropdownOpen) {
             if (
@@ -148,7 +129,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                 return
             }
 
-            window.noticeable
+            void window.noticeable
                 .render('widget', window.noticeableWidgetId)
                 .then(() => {
                     this.setState({noticeableWidgetRendered: true})
@@ -157,18 +138,20 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
             window.noticeable.on(
                 'widget:publication:unread_count:changed',
                 window.noticeableWidgetId,
-                (e) => {
+                (e: Record<string, any>) => {
                     const element = document.getElementById(
                         'noticeable-widget-notification'
                     )
                     if (element) {
                         element.style.visibility =
-                            e.detail.value === 0 ? 'hidden' : 'visible'
+                            (e.detail as Record<string, any>).value === 0
+                                ? 'hidden'
+                                : 'visible'
                     }
                 }
             )
         } else if (this.state.noticeableWidgetRendered) {
-            window.noticeable
+            void window.noticeable
                 .destroy('widget', window.noticeableWidgetId)
                 .then(() => {
                     this.setState({noticeableWidgetRendered: false})
@@ -192,12 +175,12 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
             ['data', 'available'],
             (status) => !status
         )
-        return submitSetting(newPreferences.toJS())
+        return submitSetting(newPreferences.toJS(), false)
     }
 
     render() {
         const {currentUser, currentPlan, available} = this.props
-        const currentPlanName = currentPlan.get('name') || ''
+        const currentPlanName = (currentPlan.get('name') as string) || ''
         const isBasicOrPro = ['pro', 'basic'].some((planType) =>
             currentPlanName.toLowerCase().includes(planType)
         )
@@ -367,3 +350,19 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
         )
     }
 }
+
+const connector = connect(
+    (state: RootState) => ({
+        currentUser: currentUserSelectors.getCurrentUser(state),
+        currentUserPreferences: currentUserSelectors.getPreferences(state),
+        currentPlan: billingSelectors.currentPlan(state),
+        available: currentUserSelectors.isAvailable(state),
+        isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
+    }),
+    {
+        submitSetting: currentUserActions.submitSetting,
+        closePanels: layoutActions.closePanels,
+    }
+)
+
+export default connector(Navbar)

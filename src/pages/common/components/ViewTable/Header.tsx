@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
-import EditableTitle from '../EditableTitle.js'
+import EditableTitle from '../EditableTitle'
 import Search from '../Search.js'
 import {slugify} from '../../../../utils'
 import * as viewsActions from '../../../../state/views/actions'

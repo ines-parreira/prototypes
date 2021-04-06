@@ -2,7 +2,7 @@ import React from 'react'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-import Navbar from '../../common/components/Navbar'
+import Navbar from '../../common/components/Navbar.tsx'
 
 import SettingsNavbar from './components/SettingsNavbar'
 

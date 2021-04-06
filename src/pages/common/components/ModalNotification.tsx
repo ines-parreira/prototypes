@@ -1,33 +1,29 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {removeNotification as hide} from 'reapop'
 import {Button} from 'reactstrap'
 
+import {NotificationButton} from '../../../state/notifications/types'
+
 import Modal from '../components/Modal'
 
-class ModalNotification extends React.Component {
-    static propTypes = {
-        id: PropTypes.number.isRequired,
-        title: PropTypes.string,
-        message: PropTypes.string.isRequired,
-        buttons: PropTypes.arrayOf(
-            PropTypes.shape({
-                name: PropTypes.string,
-                onClick: PropTypes.func,
-                color: PropTypes.string,
-            })
-        ).isRequired,
-        dismissible: PropTypes.bool.isRequired,
-        hide: PropTypes.func.isRequired,
-    }
+type OwnProps = {
+    id: number
+    title?: string
+    message: string
+    buttons: NotificationButton[]
+    dismissible: boolean
+}
 
-    static defaultProps = {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+class ModalNotification extends Component<Props> {
+    static defaultProps: Pick<Props, 'dismissible' | 'buttons'> = {
         dismissible: true,
         buttons: [],
     }
 
-    _handleClick = (onClick) => {
+    _handleClick = (onClick: () => void) => {
         if (typeof onClick === 'function') {
             onClick()
         }
@@ -36,7 +32,7 @@ class ModalNotification extends React.Component {
     }
 
     _toggle = () => {
-        this.props.hide(this.props.id)
+        ;(this.props.hide as (id: number) => void)(this.props.id)
     }
 
     render() {
@@ -71,8 +67,8 @@ class ModalNotification extends React.Component {
     }
 }
 
-const mapDispatchToProps = {
+const connector = connect(null, {
     hide,
-}
+})
 
-export default connect(null, mapDispatchToProps)(ModalNotification)
+export default connector(ModalNotification)

@@ -128,7 +128,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       />
       <MultiSelectBinaryChoiceField
         label="Contact info"
-        name="customer.channels"
         onChange={[Function]}
         options={
           Array [

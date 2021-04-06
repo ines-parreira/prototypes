@@ -32,7 +32,7 @@ import ProductSearchInput from '../../../../../../../../../forms/ProductSearchIn
 import {DatetimeLabel} from '../../../../../../../../../utils/labels.js'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal.js'
+import Modal from '../../../../../../../../Modal'
 import {ShopifyActionType} from '../../types'
 
 import AddCustomItemPopover from './AddCustomItemPopover/AddCustomItemPopover'

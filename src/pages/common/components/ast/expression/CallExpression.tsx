@@ -6,7 +6,7 @@ import _upperFirst from 'lodash/upperFirst'
 import {ObjectExpressionPropertyKey} from '../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import Action, {actionsConfig} from '../actions/Action'
-import Hoverable from '../../Hoverable.js'
+import Hoverable from '../../Hoverable'
 import DeleteBinaryExpression from '../operations/DeleteBinaryExpression.js'
 
 import {getSyntaxTreeLeaves} from '../utils.js'

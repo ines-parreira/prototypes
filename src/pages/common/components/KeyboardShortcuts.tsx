@@ -1,16 +1,17 @@
-// @flow
-import React from 'react'
+import {Component} from 'react'
 
-import shortcutManager from '../../../services/shortcutManager/index.ts'
+import shortcutManager, {
+    KeymapActions,
+} from '../../../services/shortcutManager/shortcutManager'
 
 type Props = {
-    name: string,
-    keymap: any,
+    name: string
+    keymap: KeymapActions
 }
 
 // TODO(@ghinda): replace direct use of shortcutManager with this component
-export default class KeyboardShortcuts extends React.Component<Props> {
-    static defaultProps = {
+export default class KeyboardShortcuts extends Component<Props> {
+    static defaultProps: Pick<Props, 'name' | 'keymap'> = {
         name: '',
         keymap: {},
     }

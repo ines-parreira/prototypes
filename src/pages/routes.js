@@ -33,7 +33,7 @@ import APIView from './settings/api/APIView'
 
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
-import NoMatch from './common/components/NoMatch'
+import NoMatch from './common/components/NoMatch.tsx'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer.tsx'
 import UserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'

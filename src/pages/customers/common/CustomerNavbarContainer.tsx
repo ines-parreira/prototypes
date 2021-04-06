@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import useSearch from '../../../hooks/useSearch'
 import {RootState} from '../../../state/types'
 import {fetchViews} from '../../../state/views/actions'
-import Navbar from '../../common/components/Navbar.js'
+import Navbar from '../../common/components/Navbar'
 
 import CustomersNavbarView from './components/CustomersNavbarView.js'
 

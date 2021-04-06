@@ -21,7 +21,7 @@ import {RootState} from '../../../../../../../../../../../state/types'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal.js'
+import Modal from '../../../../../../../../Modal'
 import RefundOrderForm from '../RefundOrderForm/index.js'
 
 import css from './CancelOrderModal.less'

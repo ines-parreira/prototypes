@@ -16,7 +16,7 @@ import * as viewsSelectors from '../../../state/views/selectors.ts'
 import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
 
 import CustomerForm from '../common/components/CustomerForm'
-import Modal from '../../common/components/Modal'
+import Modal from '../../common/components/Modal.tsx'
 
 import CustomerListActions from './components/CustomerListActions'
 

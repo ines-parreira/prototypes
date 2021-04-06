@@ -27,6 +27,7 @@ export type NotificationButton = {
     name: string
     onClick: () => void
     primary: boolean
+    color?: 'string'
 }
 
 export type HandleUsageBanner = {

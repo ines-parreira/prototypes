@@ -21,7 +21,7 @@ import {IntegrationType} from '../../../../../../../../../../../models/integrati
 import {RootState} from '../../../../../../../../../../../state/types'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal.js'
+import Modal from '../../../../../../../../Modal'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
 import css from './RefundOrderModal.less'

@@ -8,7 +8,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {parse} from 'query-string'
 
-import Modal from '../../../../common/components/Modal.js'
+import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
 
 import ReactSortable from '../../../../common/components/dragging/ReactSortable.js'

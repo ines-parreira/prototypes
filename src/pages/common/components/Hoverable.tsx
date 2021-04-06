@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps, ComponentType, Component} from 'react'
 import PropTypes from 'prop-types'
 
 /**
@@ -6,18 +6,27 @@ import PropTypes from 'prop-types'
  * @param ComposedComponent
  * @returns {{}}
  */
-export default function Hoverable(ComposedComponent) {
-    return class extends React.Component {
-        static propTypes = {
-            hoverableClassName: PropTypes.string,
-        }
 
+type OwnProps = {
+    hoverableClassName?: string
+}
+
+type State = {
+    hovered: boolean
+}
+
+export default function Hoverable<ComposableProps>(
+    ComposedComponent: ComponentType<ComposableProps>
+): ComponentType<any> {
+    type Props = OwnProps & ComponentProps<typeof ComposedComponent>
+
+    return class extends Component<Props, State> {
         static childContextTypes = {
             hovered: PropTypes.bool,
         }
 
-        constructor() {
-            super()
+        constructor(props: Props) {
+            super(props)
             this.state = {hovered: false}
         }
 

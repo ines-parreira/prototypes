@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import Modal from '../Modal.js'
+import Modal from '../Modal'
 
 import css from './Video.less'
 

@@ -1,5 +1,4 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactNode, Component} from 'react'
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _find from 'lodash/find'
@@ -11,15 +10,37 @@ import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
 import {FormGroup} from 'reactstrap'
 
+import {
+    CustomerChannel,
+    MultiSelectBinaryChoiceFieldOption,
+} from '../../../models/customerChannel/types'
+
 /**
  * Allow to pick values from multiples sources and build a single one.
  * Multiple values can be picked from each source
  * ex: used in merge customers feature for merging channels
  */
-class MultiSelectBinaryChoiceField extends React.Component {
-    componentWillReceiveProps(nextProps) {
+
+type Props = {
+    value: CustomerChannel[]
+    label?: string
+    options: Array<Array<MultiSelectBinaryChoiceFieldOption>>
+    requiredValues: CustomerChannel[]
+    tooltip?: ReactNode
+    propertiesToCompare: string[]
+    onChange: (channels: CustomerChannel[]) => void
+}
+
+class MultiSelectBinaryChoiceField extends Component<Props> {
+    static defaultProps: Pick<Props, 'propertiesToCompare' | 'onChange'> = {
+        propertiesToCompare: [],
+        onChange: _noop,
+    }
+    componentWillReceiveProps(nextProps: Props) {
         const {requiredValues} = nextProps
-        const activeIds = this.props.value.map((channel) => channel.id)
+        const activeIds = this.props.value.map(
+            (channel: CustomerChannel) => channel.id
+        )
 
         // Force selection of non-selected required values
         _forEach(requiredValues, (requiredValue) => {
@@ -29,7 +50,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
         })
     }
 
-    _onChange(value, forceAdd = false) {
+    _onChange(value: CustomerChannel, forceAdd = false) {
         if (_isUndefined(value)) {
             return
         }
@@ -37,7 +58,7 @@ class MultiSelectBinaryChoiceField extends React.Component {
         const newVal = _compact(this.props.value) || []
 
         // compare whole value by default
-        let referenceValue = value
+        let referenceValue: Partial<CustomerChannel> = value
 
         // reduce properties to compare in value to get a match
         if (this.props.propertiesToCompare.length) {
@@ -57,7 +78,9 @@ class MultiSelectBinaryChoiceField extends React.Component {
         this.props.onChange(newVal)
     }
 
-    _expandOptionsSet = (optionSet) => {
+    _expandOptionsSet = (
+        optionSet: Array<MultiSelectBinaryChoiceFieldOption>
+    ) => {
         const requiredValuesIds = this.props.requiredValues.map(
             (requiredValue) => requiredValue.id
         )
@@ -74,7 +97,9 @@ class MultiSelectBinaryChoiceField extends React.Component {
                     key={idx}
                     className={className}
                     onClick={
-                        disabled ? null : () => this._onChange(option.value)
+                        disabled
+                            ? undefined
+                            : () => this._onChange(option.value)
                     }
                 >
                     {option.label}
@@ -104,21 +129,6 @@ class MultiSelectBinaryChoiceField extends React.Component {
             </FormGroup>
         )
     }
-}
-
-MultiSelectBinaryChoiceField.propTypes = {
-    value: PropTypes.array.isRequired,
-    label: PropTypes.string,
-    options: PropTypes.array.isRequired,
-    requiredValues: PropTypes.array,
-    tooltip: PropTypes.object,
-    propertiesToCompare: PropTypes.array.isRequired,
-    onChange: PropTypes.func,
-}
-
-MultiSelectBinaryChoiceField.defaultProps = {
-    propertiesToCompare: [],
-    onChange: _noop,
 }
 
 export default MultiSelectBinaryChoiceField

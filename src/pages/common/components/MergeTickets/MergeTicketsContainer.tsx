@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {Button, Form} from 'reactstrap'
 
-import Modal from '../Modal.js'
+import Modal from '../Modal'
 import ConfirmButton from '../ConfirmButton'
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'

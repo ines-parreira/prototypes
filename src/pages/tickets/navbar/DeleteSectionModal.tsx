@@ -3,7 +3,7 @@ import React from 'react'
 import {Button} from 'reactstrap'
 
 import {Section} from '../../../models/section/types'
-import Modal from '../../common/components/Modal.js'
+import Modal from '../../common/components/Modal'
 
 import css from './DeleteSectionModal.less'
 

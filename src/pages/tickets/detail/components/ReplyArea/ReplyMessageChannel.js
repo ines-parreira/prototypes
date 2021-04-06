@@ -15,7 +15,7 @@ import {prepare} from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {getMessages} from '../../../../../state/ticket/selectors.ts'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
-import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
+import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts.tsx'
 import SourceIcon from '../../../../common/components/SourceIcon'
 
 import {

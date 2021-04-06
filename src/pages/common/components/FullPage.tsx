@@ -1,20 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactNode, Component} from 'react'
 import classnames from 'classnames'
-import {withRouter} from 'react-router-dom'
+import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container, Row, Col} from 'reactstrap'
 
 import appCss from '../../App.less'
 
 import css from './FullPage.less'
 
-@withRouter
-export default class FullPage extends React.Component {
-    static propTypes = {
-        noContainerWidthLimit: PropTypes.bool,
-        children: PropTypes.node.isRequired,
-    }
+type OwnProps = {
+    noContainerWidthLimit?: boolean
+    children: ReactNode
+}
 
+class FullPage extends Component<OwnProps & RouteComponentProps> {
     render() {
         const {noContainerWidthLimit} = this.props
         return (
@@ -37,3 +35,5 @@ export default class FullPage extends React.Component {
         )
     }
 }
+
+export default withRouter(FullPage)

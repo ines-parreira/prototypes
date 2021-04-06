@@ -9,13 +9,16 @@ import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils.js'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 
 import SourceIcon from '../SourceIcon.js'
-import Modal from '../Modal.js'
+import Modal from '../Modal'
 import ConfirmButton from '../ConfirmButton'
 import Tooltip from '../Tooltip.js'
-import {JSONTree} from '../JSONTree.js'
+import {JSONTree} from '../JSONTree'
 import BinaryChoiceField from '../BinaryChoiceField'
-import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField.js'
-import {CustomerChannel} from '../../../../models/customerChannel/types'
+import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
+import {
+    CustomerChannel,
+    MultiSelectBinaryChoiceFieldOption,
+} from '../../../../models/customerChannel/types'
 import {SourceType} from '../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../business/types/ticket'
 import {Customer} from '../../../../state/customers/types'
@@ -126,10 +129,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                 value: (channel as Map<any, any>).toJS(),
             }))
             .toList()
-            .toJS() as Array<{
-            label: React.ReactElement
-            value: CustomerChannel
-        }>
+            .toJS() as Array<MultiSelectBinaryChoiceFieldOption>
     }
 
     _toggle = () => {
@@ -328,7 +328,6 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                                     </Tooltip>
                                 </span>
                             }
-                            name="customer.channels"
                             requiredValues={requiredChannelValues}
                             options={[
                                 this._generateChannelOptions(

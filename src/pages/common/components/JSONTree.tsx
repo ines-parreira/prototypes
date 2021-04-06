@@ -1,17 +1,44 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactElement, FC} from 'react'
 import {Map, List} from 'immutable'
 
-const switchComponent = (data, root = false, last = false) => {
+type DataType = Map<any, any> | List<any> | string | number | boolean | null
+
+type ObjectComponentProps = {
+    data: Map<any, any>
+    root: boolean
+    last: boolean
+}
+type ArrayComponentProps = {
+    data: List<any>
+    root: boolean
+    last: boolean
+}
+const switchComponent = (
+    data: DataType,
+    root = false,
+    last = false
+): ReactElement => {
     if (Map.isMap(data)) {
-        if (!!data.size) {
-            return <ObjectComponent data={data} root={root} last={last} />
+        if (!!(data as Map<any, any>).size) {
+            return (
+                <ObjectComponent
+                    data={data as Map<any, any>}
+                    root={root}
+                    last={last}
+                />
+            )
         }
 
         return <span className="empty-object">{'{}'}</span>
     } else if (List.isList(data)) {
-        if (data.size) {
-            return <ArrayComponent data={data} root={root} last={last} />
+        if ((data as List<any>).size) {
+            return (
+                <ArrayComponent
+                    data={data as List<any>}
+                    root={root}
+                    last={last}
+                />
+            )
         }
 
         return <span className="empty-array">{'[]'}</span>
@@ -28,7 +55,11 @@ const switchComponent = (data, root = false, last = false) => {
     return <span>{data}</span>
 }
 
-const ObjectComponent = ({data, root = false, last = false}) => {
+const ObjectComponent = ({
+    data,
+    root = false,
+    last = false,
+}: ObjectComponentProps) => {
     const leftBracket = '{'
     const leftArrayBracket = '['
     const rightBracket = '}'
@@ -40,7 +71,7 @@ const ObjectComponent = ({data, root = false, last = false}) => {
             <span>{root && leftBracket}</span>
             <div className="content">
                 {data
-                    .map((v, k) => {
+                    .map((v, k: string) => {
                         idx++
                         const childNode = switchComponent(
                             v,
@@ -48,11 +79,9 @@ const ObjectComponent = ({data, root = false, last = false}) => {
                             idx >= data.size
                         )
                         const isObject =
-                            childNode.type.name &&
-                            childNode.type.name === 'ObjectComponent'
+                            (childNode.type as FC)?.name === 'ObjectComponent'
                         const isArray =
-                            childNode.type.name &&
-                            childNode.type.name === 'ArrayComponent'
+                            (childNode.type as FC)?.name === 'ArrayComponent'
 
                         return (
                             <div key={`${k}-${idx}`} className="field">
@@ -78,13 +107,11 @@ const ObjectComponent = ({data, root = false, last = false}) => {
     )
 }
 
-ObjectComponent.propTypes = {
-    data: PropTypes.object.isRequired,
-    root: PropTypes.bool.isRequired,
-    last: PropTypes.bool.isRequired,
-}
-
-const ArrayComponent = ({data, root = false, last = false}) => {
+const ArrayComponent = ({
+    data,
+    root = false,
+    last = false,
+}: ArrayComponentProps) => {
     const leftBracket = '['
     const rightBracket = ']'
 
@@ -96,19 +123,17 @@ const ArrayComponent = ({data, root = false, last = false}) => {
                     const childNode = switchComponent(
                         v,
                         true,
-                        idx >= data.size - 1
+                        (idx as number) >= data.size - 1
                     )
                     const isObject =
-                        childNode.type.name &&
-                        childNode.type.name === 'ObjectComponent'
+                        (childNode.type as FC)?.name === 'ObjectComponent'
                     const isArray =
-                        childNode.type.name &&
-                        childNode.type.name === 'ArrayComponent'
+                        (childNode.type as FC)?.name === 'ArrayComponent'
 
                     return (
                         <div key={idx} className="field">
                             {childNode}
-                            {idx < data.size - 1 &&
+                            {(idx as number) < data.size - 1 &&
                                 !isObject &&
                                 !isArray &&
                                 ','}
@@ -124,20 +149,10 @@ const ArrayComponent = ({data, root = false, last = false}) => {
     )
 }
 
-ArrayComponent.propTypes = {
-    data: PropTypes.object.isRequired,
-    root: PropTypes.bool.isRequired,
-    last: PropTypes.bool.isRequired,
-}
-
-export const JSONTree = ({data}) => {
+export const JSONTree = ({data}: {data: DataType}) => {
     return (
         <div className="json-tree">
             {data ? switchComponent(data, true, true) : 'null'}
         </div>
     )
-}
-
-JSONTree.propTypes = {
-    data: PropTypes.object,
 }

@@ -1,26 +1,26 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactNode, Component} from 'react'
 import {
     Modal as BootstrapModal,
     ModalHeader,
     ModalBody,
     ModalFooter,
+    ModalProps,
 } from 'reactstrap'
+import _noop from 'lodash/noop'
 
-export default class Modal extends React.Component {
-    static propTypes = {
-        children: PropTypes.node.isRequired,
-        dismissible: PropTypes.bool.isRequired,
-        isOpen: PropTypes.bool,
-        onClose: PropTypes.func,
-        header: PropTypes.node,
-        footer: PropTypes.node,
-        headerClassName: PropTypes.string,
-        footerClassName: PropTypes.string,
-        bodyClassName: PropTypes.string,
-    }
+type Props = {
+    children: ReactNode
+    dismissible: boolean
+    onClose: () => void
+    header?: string | ReactNode
+    footer?: ReactNode
+    headerClassName?: string
+    footerClassName?: string
+    bodyClassName?: string
+} & Pick<ModalProps, KnownKeys<ModalProps>>
 
-    static defaultProps = {
+export default class Modal extends Component<Props> {
+    static defaultProps: Pick<Props, 'dismissible'> = {
         dismissible: true,
     }
 
@@ -35,7 +35,6 @@ export default class Modal extends React.Component {
     render() {
         const {
             isOpen,
-            onClose, // eslint-disable-line
             children,
             header,
             footer,
@@ -46,7 +45,9 @@ export default class Modal extends React.Component {
             ...rest
         } = this.props
 
-        const toggleProps = {}
+        const toggleProps = {
+            toggle: _noop,
+        }
 
         if (dismissible) {
             toggleProps.toggle = this._toggle
@@ -55,9 +56,9 @@ export default class Modal extends React.Component {
         return (
             <BootstrapModal
                 isOpen={isOpen}
-                fade={false}
                 {...toggleProps}
                 {...rest}
+                fade={false}
             >
                 {header && (
                     <ModalHeader {...toggleProps} className={headerClassName}>

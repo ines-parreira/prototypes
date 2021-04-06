@@ -3,7 +3,7 @@ import {Badge} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 import classnames from 'classnames'
 
-import Modal from '../../components/Modal.js'
+import Modal from '../../components/Modal'
 
 import shortcutManager from '../../../../services/shortcutManager/index'
 import keymap from '../../../../config/shortcuts'

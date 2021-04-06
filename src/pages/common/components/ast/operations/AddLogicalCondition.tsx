@@ -11,7 +11,7 @@ import {
 
 import {RuleOperation} from '../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
-import Hoverable from '../../Hoverable.js'
+import Hoverable from '../../Hoverable'
 
 type Props = {
     rule: Map<any, any>
