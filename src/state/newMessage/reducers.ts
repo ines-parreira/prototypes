@@ -165,7 +165,7 @@ export default function reducer(
             // if macro already added, do not do anything
             if (
                 macros.find(
-                    (macro: Record<string, unknown>) => macro.id === macroId
+                    (macro: Map<any, any>) => macro.get('id') === macroId
                 )
             ) {
                 return state
@@ -173,7 +173,7 @@ export default function reducer(
 
             return state.updateIn(
                 ['newMessage', 'macros'],
-                (macros: unknown[]) => macros.push({id: macroId})
+                (macros: unknown[]) => macros.push(fromJS({id: macroId}))
             )
         }
 

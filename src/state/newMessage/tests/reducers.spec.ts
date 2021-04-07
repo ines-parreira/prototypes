@@ -99,16 +99,36 @@ describe('new message reducer', () => {
         ).toEqualImmutable(expected)
     })
 
-    it('should return state with new micro ID', () => {
+    it('should return state with new macro id', () => {
         const expected = initialState.setIn(
             ['newMessage', 'macros'],
-            (initialState.getIn(['newMessage', 'macros']) as List<any>).push({
-                id: '666',
-            })
+            (initialState.getIn(['newMessage', 'macros']) as List<any>).push(
+                fromJS({
+                    id: '666',
+                })
+            )
         )
 
         expect(
             reducer(initialState, {
+                type: types.NEW_MESSAGE_RECORD_MACRO,
+                macro: fromJS({id: '666'}),
+            })
+        ).toEqual(expected)
+    })
+
+    it('should return state without adding a duplicated macro id', () => {
+        const expected = initialState.setIn(
+            ['newMessage', 'macros'],
+            (initialState.getIn(['newMessage', 'macros']) as List<any>).push(
+                fromJS({
+                    id: '666',
+                })
+            )
+        )
+
+        expect(
+            reducer(expected, {
                 type: types.NEW_MESSAGE_RECORD_MACRO,
                 macro: fromJS({id: '666'}),
             })
