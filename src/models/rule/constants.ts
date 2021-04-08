@@ -63,6 +63,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
 } = {
     [IdentifierCategoryKey.Message]: [
         {
+            label: 'Body',
+            text: 'message body',
+            value: 'message.text',
+        },
+        {
             label: 'Channel',
             text: 'message channel',
             value: 'message.channel',
@@ -101,11 +106,6 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: 'Sentiments',
             text: 'message sentiments',
             value: 'message.sentiments.name',
-        },
-        {
-            label: 'Body',
-            text: 'message body',
-            value: 'message.text',
         },
         {
             label: 'Via',
