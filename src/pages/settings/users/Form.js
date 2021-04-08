@@ -39,7 +39,7 @@ import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
 import {AccountFeatures} from '../../../state/currentAccount/types.ts'
 import * as helpers from '../../../state/agents/helpers.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
-import Popover from '../../common/components/Popover'
+import Popover from '../../common/components/Popover.tsx'
 import history from '../../history.ts'
 
 import DeleteUser from './DeleteUser'

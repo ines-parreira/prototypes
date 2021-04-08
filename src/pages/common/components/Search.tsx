@@ -1,37 +1,40 @@
-import React, {type Element} from 'react'
-import PropTypes from 'prop-types'
+import React, {CSSProperties, Component, KeyboardEvent} from 'react'
 import ReactDOM from 'react-dom'
 import classnames from 'classnames'
 import {Input} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../services/shortcutManager/index.ts'
+import shortcutManager from '../../../services/shortcutManager/shortcutManager'
 
 import css from './Search.less'
 
-export default class Search extends React.Component {
-    static propTypes = {
-        onChange: PropTypes.func.isRequired,
-        onKeyDown: PropTypes.func,
-        params: PropTypes.object,
-        forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-        shouldResetInput: PropTypes.bool,
-        disabled: PropTypes.bool,
+type Props = {
+    onChange: (searchQuery: string) => void
+    onKeyDown?: (event: KeyboardEvent) => void
+    onFocus?: () => void
+    forcedQuery?: string
+    shouldResetInput?: boolean
+    disabled: boolean
+    autoFocus?: boolean
+    className?: string
+    placeholder: string
+    bindKey?: boolean
+    searchDebounceTime: number
+    // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
+    location?: string
+    style: CSSProperties
+}
 
-        className: PropTypes.string,
-        placeholder: PropTypes.string,
-        bindKey: PropTypes.bool,
-        searchDebounceTime: PropTypes.number.isRequired,
+export default class Search extends Component<Props> {
+    private isInitialized: boolean
 
-        // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
-        location: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        style: PropTypes.object.isRequired,
-    }
+    searchInputRef: Maybe<Input>
 
-    searchInputRef: ?Element<typeof Input>
-
-    static defaultProps = {
+    static defaultProps: Pick<
+        Props,
+        'disabled' | 'placeholder' | 'style' | 'searchDebounceTime'
+    > = {
         disabled: false,
         placeholder: 'Search...',
         style: {},
@@ -42,7 +45,7 @@ export default class Search extends React.Component {
         search: '',
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
 
         this.isInitialized = false
@@ -57,15 +60,17 @@ export default class Search extends React.Component {
             shortcutManager.bind('Search', {
                 FOCUS_SEARCH: {
                     action: (e) => {
-                        e.preventDefault()
-                        ReactDOM.findDOMNode(this.searchInputRef).focus()
+                        e.preventDefault(),
+                            (ReactDOM.findDOMNode(
+                                this.searchInputRef
+                            ) as HTMLInputElement)!.focus()
                     },
                 },
             })
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const shouldSetValue =
             !this.isInitialized ||
             (nextProps.location && this.props.location !== nextProps.location)
@@ -102,7 +107,7 @@ export default class Search extends React.Component {
         return this.props.onChange(this.state.search)
     }, this.props.searchDebounceTime)
 
-    _handleChange = (search) => {
+    _handleChange = (search: string) => {
         this.setState({search})
         return this._debouncedSearch()
     }
@@ -111,13 +116,15 @@ export default class Search extends React.Component {
         return this._handleChange('')
     }
 
-    handleKeyDown = (e) => {
+    handleKeyDown = (e: KeyboardEvent) => {
         const {onKeyDown} = this.props
         if (onKeyDown) {
             onKeyDown(e)
         }
         if (e.key === 'Escape' && this.searchInputRef) {
-            ReactDOM.findDOMNode(this.searchInputRef).blur()
+            ;(ReactDOM.findDOMNode(
+                this.searchInputRef
+            ) as HTMLInputElement).blur()
         }
     }
 
@@ -126,7 +133,6 @@ export default class Search extends React.Component {
             style,
             className,
             onChange, // eslint-disable-line
-            params, // eslint-disable-line
             forcedQuery, // eslint-disable-line
             shouldResetInput, // eslint-disable-line
             bindKey, // eslint-disable-line

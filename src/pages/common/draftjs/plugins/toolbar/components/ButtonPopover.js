@@ -3,7 +3,7 @@ import React, {type Node as ReactNode, type ElementRef} from 'react'
 import * as ReactDOM from 'react-dom'
 
 import Button from './Button'
-import Popover from './Popover'
+import Popover from './Popover.tsx'
 
 type Props = {
     name: string,

@@ -9,7 +9,7 @@ import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import DatePicker from '../../common/forms/DatePicker'
 import SelectFilter from '../../stats/common/SelectFilter.tsx'
-import Pagination from '../../common/components/Pagination'
+import Pagination from '../../common/components/Pagination.tsx'
 import {fetchUsersAudit} from '../../../state/usersAudit/actions.ts'
 import {
     getUserAuditEvents,

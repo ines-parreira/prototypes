@@ -22,7 +22,7 @@ import Loader from '../../Loader/Loader.tsx'
 import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer.tsx'
-import Search from '../../Search'
+import Search from '../../Search.tsx'
 
 import {areSourcesReady} from '../utils'
 import css from '../Infobar.less'

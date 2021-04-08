@@ -1,26 +1,28 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {Link, withRouter} from 'react-router-dom'
-import {fromJS} from 'immutable'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Map, fromJS, List} from 'immutable'
 
-import {isCurrentlyOnTicket} from '../../../utils.ts'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker'
+import {isCurrentlyOnTicket} from '../../../utils'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 
-import {MAX_RECENT_CHATS} from '../../../config/recentChats.ts'
+import {RootState} from '../../../state/types'
 
-import Tooltip from './Tooltip'
-import SourceIcon from './SourceIcon'
+import {MAX_RECENT_CHATS} from '../../../config/recentChats'
+
+import Tooltip from './Tooltip.js'
+import SourceIcon from './SourceIcon.js'
 
 import css from './RecentChats.less'
 
-class RecentChatsItem extends React.Component {
-    static propTypes = {
-        recentTicket: PropTypes.object.isRequired,
-        position: PropTypes.number.isRequired,
-    }
+type ItemProps = {
+    recentTicket: Map<any, any>
+    position: number
+}
 
+class RecentChatsItem extends Component<ItemProps> {
     static contextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
@@ -28,8 +30,9 @@ class RecentChatsItem extends React.Component {
     render() {
         const {recentTicket, position} = this.props
         const channel = recentTicket.get('channel')
-        const customer = recentTicket.get('customer') || fromJS({})
-        const customerID = customer.get('id')
+        const customer: Map<any, any> =
+            recentTicket.get('customer') || fromJS({})
+        const customerID: number = customer.get('id')
         // If no customer name nor ticket subject exists, then we'll display a customer's id
         const customerName =
             customer.get('name') ||
@@ -53,9 +56,11 @@ class RecentChatsItem extends React.Component {
                             ticket: recentTicket.toJS(),
                         }
                     )
-                    this.context.closePanel()
+                    ;(this.context as {
+                        closePanel: () => void
+                    }).closePanel()
                 }}
-                to={`/app/ticket/${recentTicket.get('id')}`}
+                to={`/app/ticket/${recentTicket.get('id') as number}`}
                 className={linkClasses}
                 title={customerName}
             >
@@ -69,13 +74,10 @@ class RecentChatsItem extends React.Component {
     }
 }
 
-class RecentChats extends React.Component {
-    static propTypes = {
-        chats: PropTypes.object,
-        location: PropTypes.object,
-    }
+type Props = ConnectedProps<typeof connector> & RouteComponentProps
 
-    componentDidUpdate(prevProps) {
+class RecentChats extends Component<Props> {
+    componentDidUpdate(prevProps: Props) {
         const {location} = this.props
         if (location.pathname !== prevProps.location.pathname) {
             this.forceUpdate()
@@ -83,7 +85,7 @@ class RecentChats extends React.Component {
     }
 
     render() {
-        const tickets = this.props.chats.get('tickets')
+        const tickets = this.props.chats.get('tickets') as List<Map<any, any>>
 
         if (!tickets || tickets.isEmpty()) {
             return null
@@ -106,9 +108,9 @@ class RecentChats extends React.Component {
                     <div className="menu">
                         {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
                             <RecentChatsItem
-                                key={e.get('id')}
-                                recentTicket={e}
-                                position={index + 1}
+                                key={e!.get('id')}
+                                recentTicket={e!}
+                                position={index! + 1}
                             />
                         ))}
                     </div>
@@ -118,8 +120,8 @@ class RecentChats extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const connector = connect((state: RootState) => ({
     chats: state.chats,
-})
+}))
 
-export default withRouter(connect(mapStateToProps)(RecentChats))
+export default withRouter(connector(RecentChats))

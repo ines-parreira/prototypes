@@ -37,7 +37,7 @@ import {fetchViewsSuccess} from '../../../state/views/actions'
 import {hasRole} from '../../../utils'
 import Navbar from '../../common/components/Navbar'
 import NavbarBlock from '../../common/components/navbar/NavbarBlock'
-import RecentChats from '../../common/components/RecentChats.js'
+import RecentChats from '../../common/components/RecentChats'
 import {
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,

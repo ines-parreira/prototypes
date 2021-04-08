@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom'
 import {Input} from 'reactstrap'
 
 import Search from '../Search'
-const spy = jest.spyOn(ReactDOM, 'findDOMNode')
+const spy = jest.spyOn(ReactDOM, 'findDOMNode') as jest.SpyInstance<
+    HTMLInputElement
+>
 
 describe('Search component', () => {
     beforeEach(() => {
@@ -13,14 +15,14 @@ describe('Search component', () => {
     })
 
     it('handle change function', () => {
-        const component = mount(<Search onChange={_noop} />)
+        const component = mount<Search>(<Search onChange={_noop} />)
         component.instance()._handleChange('text')
         expect(component.instance().state.search).toEqual('text')
         expect(component).toMatchSnapshot()
     })
 
     it('reset function', () => {
-        const component = mount(<Search onChange={_noop} />)
+        const component = mount<Search>(<Search onChange={_noop} />)
         component.instance()._handleChange('text')
         expect(component.instance().state.search).toEqual('text')
         expect(component).toMatchSnapshot()
@@ -30,13 +32,13 @@ describe('Search component', () => {
     })
 
     it('should blur when pressing escape', () => {
-        const component = shallow(<Search onChange={_noop} />)
+        const component = shallow<Search>(<Search onChange={_noop} />)
         const mockBlur = jest.fn()
-        spy.mockReturnValue({
+        spy.mockReturnValue(({
             blur: mockBlur,
-        })
+        } as unknown) as HTMLInputElement)
 
-        component.instance().searchInputRef = {}
+        component.instance().searchInputRef = {} as Input
         component.find(Input).simulate('keydown', {key: 'a'})
         component.find(Input).simulate('keydown', {key: 'Escape'})
         expect(mockBlur).toHaveBeenCalledTimes(1)

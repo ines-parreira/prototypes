@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 
 import {ManageTags} from '../ManageTags'
 import Loader from '../../../common/components/Loader/Loader.tsx'
-import Pagination from '../../../common/components/Pagination'
+import Pagination from '../../../common/components/Pagination.tsx'
 
 describe('ManageTags component', () => {
     let component

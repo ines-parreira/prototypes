@@ -31,7 +31,7 @@ import {getTeams} from '../../state/teams/selectors.ts'
 
 import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
-import Popover from '../common/components/Popover'
+import Popover from '../common/components/Popover.tsx'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
 
 import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../state/integrations/constants'

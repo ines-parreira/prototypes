@@ -13,7 +13,7 @@ import PageHeader from '../../common/components/PageHeader.tsx'
 import * as actions from '../../../state/teams/actions.ts'
 import Avatar from '../../common/components/Avatar'
 import Loader from '../../common/components/Loader/Loader.tsx'
-import Pagination from '../../common/components/Pagination'
+import Pagination from '../../common/components/Pagination.tsx'
 
 import {type teamType} from '../../../state/teams/types'
 

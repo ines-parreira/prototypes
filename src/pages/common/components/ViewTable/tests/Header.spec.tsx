@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
-import Search from '../../Search.js'
+import Search from '../../Search'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as viewsActions from '../../../../../state/views/actions'
 import history from '../../../../history'

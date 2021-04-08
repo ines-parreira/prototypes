@@ -1,22 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component} from 'react'
 import ReactPaginate from 'react-paginate'
 
-export default class Pagination extends React.Component {
-    static propTypes = {
-        onChange: PropTypes.func.isRequired,
-        pageCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-            .isRequired,
-        currentPage: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-            .isRequired,
-        className: PropTypes.string,
-    }
+type Props = {
+    onChange: (nextPage: number) => void
+    pageCount: string | number
+    currentPage: string | number
+    className?: string
+}
 
-    _handlePageClick = ({selected}) => {
+export default class Pagination extends Component<Props> {
+    _handlePageClick = ({selected}: {selected: number}) => {
         // ReactPaginate works with indexes instead of page number, so page 1 for us is page 0 for the lib
         const nextPageNumber = selected + 1
+        const currentPage =
+            typeof this.props.currentPage === 'string'
+                ? parseInt(this.props.currentPage)
+                : this.props.currentPage
 
-        if (parseInt(this.props.currentPage) === nextPageNumber) {
+        if (currentPage === nextPageNumber) {
             return
         }
 
@@ -24,19 +25,21 @@ export default class Pagination extends React.Component {
     }
 
     render() {
-        const {
-            onChange, // eslint-disable-line
-            className,
-            ...properties
-        } = this.props
+        const {className, ...properties} = this.props
 
-        properties.pageCount = parseInt(properties.pageCount)
+        const pageCount =
+            typeof properties.pageCount === 'string'
+                ? parseInt(properties.pageCount)
+                : properties.pageCount
 
         // ReactPaginate works with indexes instead of page number, so page 1 for us is page 0 for the lib
-        const forcePage = parseInt(properties.currentPage) - 1
+        const forcePage =
+            typeof properties.currentPage === 'string'
+                ? parseInt(properties.currentPage) - 1
+                : properties.currentPage - 1
         delete properties.currentPage
 
-        if (properties.pageCount <= 1) {
+        if (pageCount <= 1) {
             return null
         }
 
@@ -51,7 +54,7 @@ export default class Pagination extends React.Component {
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={this._handlePageClick}
-                containerClassName={`pagination ${className}`}
+                containerClassName={`pagination ${className || ''}`}
                 breakClassName={'page-item'}
                 breakLabel={<a className="page-link">...</a>}
                 pageClassName={'page-item'}
@@ -64,6 +67,7 @@ export default class Pagination extends React.Component {
                 disableInitialCallback={true}
                 forcePage={forcePage}
                 {...properties}
+                pageCount={pageCount}
             />
         )
     }

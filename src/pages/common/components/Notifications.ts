@@ -1,4 +1,3 @@
-//@flow
 /* reapop notifications theme
  */
 
@@ -16,7 +15,7 @@ export default _merge({}, reapopThemeWybo, {
     notification: {
         className: {
             main: `${reapopThemeWybo.notification.className.main} ${css.notification}`,
-            status: (_status) => {
+            status: (_status: string) => {
                 const status = `notification--${_status}`
                 return `${reapopThemeWybo.notification.className[status]} ${css[status]}`
             },

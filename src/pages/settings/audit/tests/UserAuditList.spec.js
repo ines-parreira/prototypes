@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 
 import {UserAuditList} from '../UserAuditList'
 import Loader from '../../../common/components/Loader/Loader.tsx'
-import Pagination from '../../../common/components/Pagination'
+import Pagination from '../../../common/components/Pagination.tsx'
 import {
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,

@@ -5,7 +5,7 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import EditableTitle from '../EditableTitle'
-import Search from '../Search.js'
+import Search from '../Search'
 import {slugify} from '../../../../utils'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'

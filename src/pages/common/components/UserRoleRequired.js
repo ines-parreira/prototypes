@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {hasRole} from '../../../utils.ts'
 import history from '../../history.ts'
 
-import NotAllowed from './NotAllowed'
+import NotAllowed from './NotAllowed.tsx'
 
 // check user role before render the desired component
 const userRoleRequired = (Component, requiredRole, redirectTo) => {

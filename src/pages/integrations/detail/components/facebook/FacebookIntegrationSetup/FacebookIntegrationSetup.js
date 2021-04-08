@@ -21,7 +21,7 @@ import history from '../../../../../history.ts'
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import Pagination from '../../../../../common/components/Pagination'
+import Pagination from '../../../../../common/components/Pagination.tsx'
 import BooleanField from '../../../../../common/forms/BooleanField'
 
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'

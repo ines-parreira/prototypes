@@ -22,7 +22,7 @@ jest.mock(
     '../../../common/components/Navbar',
     () => ({children}: {children: ReactNode}) => <div>{children}</div>
 )
-jest.mock('../../../common/components/RecentChats.js', () => () => (
+jest.mock('../../../common/components/RecentChats', () => () => (
     <div>RecentChats</div>
 ))
 jest.mock(

@@ -27,7 +27,7 @@ import BannerNotifications from './common/components/BannerNotifications/'
 import FullPage from './common/components/FullPage.tsx'
 import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp.tsx'
 import ModalNotification from './common/components/ModalNotification.tsx'
-import notificationsTheme from './common/components/Notifications'
+import notificationsTheme from './common/components/Notifications.ts'
 import {ErrorBoundary} from './ErrorBoundary'
 
 type Props = {

@@ -1,18 +1,17 @@
-// @flow
-//$FlowFixMe
-import React, {useRef, useState, type Node} from 'react'
+import React, {useRef, useState, ReactNode, RefObject} from 'react'
 import {
     Button,
     Popover as ReactstrapPopover,
     PopoverHeader,
     PopoverBody,
+    PopoverProps,
 } from 'reactstrap'
 
 type Props = {
-    header?: string,
-    placement?: string,
-    buttonText?: string,
-    children: Node,
+    header?: string
+    placement?: PopoverProps['placement']
+    buttonText?: string
+    children: ReactNode
 }
 
 const Popover = ({
@@ -21,8 +20,8 @@ const Popover = ({
     placement = 'auto',
     children,
 }: Props) => {
-    const ref = useRef()
-    const [isOpen, setOpen] = useState(false)
+    const ref: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null)
+    const [isOpen, setOpen] = useState<boolean>(false)
 
     const togglePopover = () => {
         setOpen(!isOpen)

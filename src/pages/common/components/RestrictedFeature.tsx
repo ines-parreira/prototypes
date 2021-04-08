@@ -1,18 +1,23 @@
-import React from 'react'
+import React, {ReactNode, Component} from 'react'
 
 import {Alert} from 'reactstrap'
 import Lightbox from 'react-images'
 
-import Carousel from './../../integrations/common/Carousel'
+import Carousel from './../../integrations/common/Carousel.js'
 
 type Props = {
-    imagesURL: Array,
-    info: string,
-    alertMsg: Node,
+    imagesURL: string[]
+    info: string
+    alertMsg: ReactNode
 }
 
-export default class RestrictedFeature extends React.Component<Props> {
-    constructor(props) {
+type State = {
+    isLightboxOpen: boolean
+    currentImage: number
+}
+
+export default class RestrictedFeature extends Component<Props, State> {
+    constructor(props: Props) {
         super(props)
 
         this.state = {
@@ -21,14 +26,14 @@ export default class RestrictedFeature extends React.Component<Props> {
         }
     }
 
-    _toggleLightbox = (selectedImageId) => {
+    _toggleLightbox = (selectedImageId?: number) => {
         this.setState({
             isLightboxOpen: !this.state.isLightboxOpen,
             currentImage: selectedImageId || 0,
         })
     }
 
-    _gotoImage = (index) => {
+    _gotoImage = (index: number) => {
         this.setState({currentImage: index})
     }
 
@@ -38,16 +43,15 @@ export default class RestrictedFeature extends React.Component<Props> {
         return (
             <div className="col mt-2">
                 <Alert color="danger">{alertMsg}</Alert>
-
                 <p>{info}</p>
-
                 <Carousel
                     imagesUrl={imagesURL}
-                    onImageClick={({index}) => this._toggleLightbox(index)}
+                    onImageClick={({index}: {index: number}) =>
+                        this._toggleLightbox(index)
+                    }
                 />
-
                 <Lightbox
-                    images={imagesURL.map((imageURL) => {
+                    images={imagesURL.map((imageURL: string) => {
                         return {
                             src: imageURL,
                         }

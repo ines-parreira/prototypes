@@ -1,17 +1,16 @@
-//@flow
+import React, {ReactNode, Component} from 'react'
 import classnames from 'classnames'
-import * as React from 'react'
 
 import css from './Popover.less'
 
 type Props = {
-    trigger: React.Node,
-    children: React.Node,
-    isOpen: boolean,
-    className?: string,
+    trigger: ReactNode
+    children: ReactNode
+    isOpen: boolean
+    className?: string
 }
 
-export default class Popover extends React.Component<Props> {
+export default class Popover extends Component<Props> {
     render() {
         const {isOpen, children, trigger, className} = this.props
         return (

@@ -16,7 +16,7 @@ import {RenderLabel} from '../../utils/labels.js'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../utils/withCancellableRequest'
-import Search from '../Search.js'
+import Search from '../Search'
 import {RootState} from '../../../../state/types'
 
 import css from './FilterDropdown.less'

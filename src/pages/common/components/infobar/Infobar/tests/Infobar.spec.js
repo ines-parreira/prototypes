@@ -8,14 +8,14 @@ import {
     FETCH_PREVIEW_CUSTOMER_ERROR,
     FETCH_PREVIEW_CUSTOMER_SUCCESS,
 } from '../../../../../../state/infobar/constants'
-import Search from '../../../Search'
+import Search from '../../../Search.tsx'
 import InfobarLayout from '../../InfobarLayout'
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import {Infobar} from '../Infobar'
 
 jest.mock(
-    '../../../Search',
+    '../../../Search.tsx',
     () => ({onChange, ...other}: ElementProps<typeof Search>) => (
         <input data-testid="Search" {...other} onChange={onChange} />
     )

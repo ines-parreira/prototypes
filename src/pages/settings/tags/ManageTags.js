@@ -16,11 +16,11 @@ import type {List, Map} from 'immutable'
 
 import InputField from '../../common/forms/InputField'
 
-import Pagination from '../../common/components/Pagination'
+import Pagination from '../../common/components/Pagination.tsx'
 import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import Video from '../../common/components/Video'
-import Search from '../../common/components/Search'
+import Search from '../../common/components/Search.tsx'
 
 import * as tagsActions from '../../../state/tags/actions.ts'
 import * as tagsSelectors from '../../../state/tags/selectors.ts'

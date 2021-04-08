@@ -16,9 +16,9 @@ import classnames from 'classnames'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import * as actions from '../../../../state/teams/actions.ts'
-import Pagination from '../../../common/components/Pagination'
+import Pagination from '../../../common/components/Pagination.tsx'
 import Loader from '../../../common/components/Loader/Loader.tsx'
-import Search from '../../../common/components/Search'
+import Search from '../../../common/components/Search.tsx'
 
 import {type teamType} from '../../../../state/teams/types'
 

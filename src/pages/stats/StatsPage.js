@@ -14,7 +14,7 @@ import {AccountFeatures} from '../../state/currentAccount/types.ts'
 
 import withPaywall from '../common/utils/withPaywall.tsx'
 
-import RestrictedFeature from '../common/components/RestrictedFeature'
+import RestrictedFeature from '../common/components/RestrictedFeature.tsx'
 
 import StatsFilters from './StatsFilters'
 import Stats from './Stats'
