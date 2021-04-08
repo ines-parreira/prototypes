@@ -39,7 +39,7 @@ export const CustomerDetailContainer = ({
 
     useEffect(() => {
         void (async () => {
-            const {resp} = await (fetchCustomer(customerId as any) as Promise<{
+            const {resp} = await (fetchCustomer(customerId) as Promise<{
                 resp: Customer
             }>)
             void fetchCustomerHistory(customerId as any, {

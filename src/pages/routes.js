@@ -15,7 +15,7 @@ import IntegrationDetailContainer from './integrations/detail/IntegrationDetailC
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
-import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
+import TicketSourceContainer from './tickets/detail/TicketSourceContainer.tsx'
 import TicketNavbar from './tickets/navbar/TicketNavbar.tsx'
 import TicketListContainer from './tickets/list/TicketListContainer.tsx'
 import RuleContainer from './settings/rules/list/RuleContainer.ts'

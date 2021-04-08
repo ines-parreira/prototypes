@@ -15,7 +15,7 @@ import * as types from './constants.js'
 import {mergeChannels} from './helpers'
 import {Customer, CustomerDraft} from './types'
 
-export function fetchCustomer(customerId: number) {
+export function fetchCustomer(customerId: string) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.FETCH_CUSTOMER_START,
