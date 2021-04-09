@@ -80,10 +80,6 @@ export default class IntegrationList extends React.Component<Props> {
                 integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
         )
 
-        if (smoochInsideIntegrations.size === 0) {
-            return null
-        }
-
         // active means that the integration is either enabled or installed on a shopify store
         const hasActiveSmoochInsideIntegrations = smoochInsideIntegrations.find(
             (integration) =>
@@ -91,13 +87,15 @@ export default class IntegrationList extends React.Component<Props> {
                 integration.getIn(['meta', 'shopify_integration_ids', 'size'])
         )
 
+        if (!hasActiveSmoochInsideIntegrations) {
+            return null
+        }
+
         return (
             <Alert color="danger">
                 <span>
-                    {hasActiveSmoochInsideIntegrations
-                        ? 'You are currently using a deprecated version of the chat integration. '
-                        : 'You currently have inactive old chat integrations set up in your account. '}
-                    If applicable, please migrate to the{' '}
+                    You are currently using a deprecated version of the chat
+                    integration. If applicable, please migrate to the{' '}
                     <Link to="/app/settings/integrations/gorgias_chat">
                         new chat integration
                     </Link>{' '}
