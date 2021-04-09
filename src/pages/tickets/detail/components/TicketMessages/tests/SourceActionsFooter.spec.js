@@ -141,27 +141,6 @@ describe('<SourceActionsFooter/>', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should render a spinner loader because the page has reacted and is waiting for webhook update', () => {
-        facebookMessageWithPageAndCustomerReactions.meta.facebook_reactions.page_reaction.is_reacting = true
-
-        const component = render(
-            <SourceActionsFooter
-                source={facebookMessageWithPageAndCustomerReactions.source}
-                meta={facebookMessageWithPageAndCustomerReactions.meta}
-                integrationId={
-                    facebookMessageWithPageAndCustomerReactions.integration_id
-                }
-                messageId={
-                    facebookMessageWithPageAndCustomerReactions.message_id
-                }
-                isMessageHidden={false}
-                isMessageDeleted={false}
-                store={store}
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-
     it("should render nothing because it's a duplicated Facebook message", () => {
         const component = render(
             <SourceActionsFooter

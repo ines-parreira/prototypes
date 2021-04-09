@@ -298,11 +298,7 @@ export class SourceActionsFooter extends React.Component<Props> {
             meta.facebook_reactions &&
             meta.facebook_reactions.page_reaction
         ) {
-            if (meta.facebook_reactions.page_reaction.is_reacting) {
-                widgets.push(
-                    this._getLikingLoader(meta.facebook_reactions.page_reaction)
-                )
-            } else if (meta.facebook_reactions.page_reaction.reaction_type) {
+            if (meta.facebook_reactions.page_reaction.reaction_type) {
                 widgets.push(
                     this._handlePageReaction(
                         meta.facebook_reactions.page_reaction.reaction_type
