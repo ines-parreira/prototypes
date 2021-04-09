@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderStarPoints/> render() should render children 1`] = `
+<span
+  className="container"
+>
+  <span
+    className="material-icons stars"
+  >
+    stars
+  </span>
+  <span
+    className="children"
+  >
+    555
+  </span>
+</span>
+`;

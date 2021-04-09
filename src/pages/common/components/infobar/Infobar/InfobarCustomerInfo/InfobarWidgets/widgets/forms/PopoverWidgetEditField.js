@@ -62,6 +62,10 @@ class PopoverWidgetEditField extends React.Component {
                     <option value="email">Email</option>
                     <option value="boolean">Boolean (true/false)</option>
                     <option value="array">List</option>
+                    <option value="sentiment">Sentiment</option>
+                    <option value="rating">Rating</option>
+                    <option value="points">Points</option>
+                    <option value="percent">Percent</option>
                 </InputField>
 
                 <div>

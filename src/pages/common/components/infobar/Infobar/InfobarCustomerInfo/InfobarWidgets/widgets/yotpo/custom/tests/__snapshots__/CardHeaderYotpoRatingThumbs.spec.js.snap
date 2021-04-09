@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderYotpoRatingThumbs/> render() should render children and green thumb 1`] = `
+<span
+  className="container"
+>
+  <strong>
+    3
+  </strong>
+  <span
+    className="material-icons greenThumb"
+  >
+    thumb_up
+     
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoRatingThumbs/> render() should render children and red thumb 1`] = `
+<span
+  className="container"
+>
+  <strong>
+    1
+  </strong>
+  <span
+    className="material-icons redThumb"
+  >
+    thumb_down
+     
+  </span>
+</span>
+`;

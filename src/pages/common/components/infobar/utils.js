@@ -25,12 +25,22 @@ import _toLower from 'lodash/toLower'
 import momentTimezone from 'moment-timezone'
 import moment from 'moment'
 
+import ReactStars from 'react-rating-stars-component'
+
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils.ts'
 import {
     getContextFromSourcePath,
     getSourcePathFromContext,
 } from '../../../../state/widgets/utils.ts'
+
+import {
+    SENTIMENT_TYPE_LOWER_BOUND,
+    SENTIMENT_TYPE_UPPER_BOUND,
+} from '../../../../config.ts'
+
+import css from './utils.less'
+
 const Raven = window.Raven
 
 /**
@@ -168,7 +178,7 @@ export function isBoolean(string) {
 export function areSourcesReady(
     sources: Map<*, *>,
     context: string,
-    everySources: boolean = false
+    everySources = false
 ): boolean {
     // for every source
     const currentSource = sources.get(context)
@@ -417,7 +427,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
  * @param context
  * @returns {*}
  */
-export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
+export function jsonToWidgets(json: Object, context = 'ticket'): Array {
     const defaultResponse = []
 
     try {
@@ -569,6 +579,14 @@ export function prepareWidgetToDisplay(
 }
 
 /**
+ * Return colors used by the Star Rating widgets
+ */
+export const StarRatingColors = Object.freeze({
+    color: '#E8EBEF',
+    activeColor: '#FDAB40',
+})
+
+/**
  * Return a field value based on raw incoming data and a field type
  * @param data
  * @param type
@@ -651,6 +669,82 @@ export function guessFieldValueFromRawData(data, type) {
             if (_isArray(data)) {
                 fieldValue = data.join(', ')
             }
+            break
+        }
+        case 'sentiment': {
+            if (!isNaN(data)) {
+                fieldValue = (
+                    <>
+                        {parseFloat(data) >= SENTIMENT_TYPE_UPPER_BOUND ? (
+                            <>
+                                <strong>Positive</strong>
+                                <span
+                                    className={`material-icons ${css.greenThumb}`}
+                                >
+                                    thumb_up
+                                </span>
+                            </>
+                        ) : parseFloat(data) <= SENTIMENT_TYPE_LOWER_BOUND ? (
+                            <>
+                                <strong>Negative</strong>
+                                <span
+                                    className={`material-icons ${css.redThumb}`}
+                                >
+                                    thumb_down
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                <strong>Inconclusive</strong>
+                            </>
+                        )}
+                    </>
+                )
+            }
+            break
+        }
+        case 'rating': {
+            if (!isNaN(data)) {
+                const starRatings = {
+                    activeColor: StarRatingColors.activeColor,
+                    value: parseFloat(data),
+                    size: 15,
+                    edit: false,
+                    isHalf: true,
+                    color: StarRatingColors.color,
+                    emptyIcon: <span className={`material-icons`}>star</span>,
+                    halfIcon: (
+                        <span className={`material-icons`}>star_half</span>
+                    ),
+                    filledIcon: <span className={`material-icons`}>star</span>,
+                }
+                fieldValue = (
+                    <>
+                        <b>{data}</b>
+                        <span className={css.starRatingWrapper}>
+                            <ReactStars {...starRatings} />
+                        </span>
+                    </>
+                )
+            }
+            break
+        }
+        case 'points': {
+            if (!isNaN(data)) {
+                fieldValue = (
+                    <Badge pill color="primary">
+                        {parseFloat(data).toLocaleString()}
+                    </Badge>
+                )
+            }
+
+            break
+        }
+        case 'percent': {
+            if (!isNaN(data)) {
+                fieldValue = data.toString() + '%'
+            }
+
             break
         }
         default:

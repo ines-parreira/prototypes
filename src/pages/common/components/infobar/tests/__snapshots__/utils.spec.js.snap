@@ -1,5 +1,267 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`widgets infobar utils guessFieldValueFromRawData() given "-1" and "sentiment" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <React.Fragment>
+    <strong>
+      Negative
+    </strong>
+    <span
+      className="material-icons redThumb"
+    >
+      thumb_down
+    </span>
+  </React.Fragment>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "0" and "sentiment" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <React.Fragment>
+    <strong>
+      Inconclusive
+    </strong>
+  </React.Fragment>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "percent" as arguments, returns correct value 1`] = `"1%"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "points" as arguments, returns correct value 1`] = `
+<Badge
+  color="primary"
+  pill={true}
+  tag="span"
+>
+  1
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "rating" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <b>
+    1
+  </b>
+  <span
+    className="starRatingWrapper"
+  >
+    <ReactStars
+      a11y={true}
+      activeColor="#FDAB40"
+      char="★"
+      color="#E8EBEF"
+      count={5}
+      edit={false}
+      emptyIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      filledIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      half={false}
+      halfIcon={
+        <span
+          className="material-icons"
+        >
+          star_half
+        </span>
+      }
+      isHalf={true}
+      onChange={[Function]}
+      size={15}
+      value={1}
+    />
+  </span>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "sentiment" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <React.Fragment>
+    <strong>
+      Positive
+    </strong>
+    <span
+      className="material-icons greenThumb"
+    >
+      thumb_up
+    </span>
+  </React.Fragment>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "hello" and "percent" as arguments, returns default value 1`] = `"hello"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "hello" and "points" as arguments, returns default value 1`] = `"hello"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "hello" and "rating" as arguments, returns default value 1`] = `"hello"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given "hello" and "sentiment" as arguments, returns default value 1`] = `"hello"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given -1 and "sentiment" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <React.Fragment>
+    <strong>
+      Negative
+    </strong>
+    <span
+      className="material-icons redThumb"
+    >
+      thumb_down
+    </span>
+  </React.Fragment>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 0 and "sentiment" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <React.Fragment>
+    <strong>
+      Inconclusive
+    </strong>
+  </React.Fragment>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "percent" as arguments, returns correct value 1`] = `"1%"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "points" as arguments, returns correct value 1`] = `
+<Badge
+  color="primary"
+  pill={true}
+  tag="span"
+>
+  1
+</Badge>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "rating" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <b>
+    1
+  </b>
+  <span
+    className="starRatingWrapper"
+  >
+    <ReactStars
+      a11y={true}
+      activeColor="#FDAB40"
+      char="★"
+      color="#E8EBEF"
+      count={5}
+      edit={false}
+      emptyIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      filledIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      half={false}
+      halfIcon={
+        <span
+          className="material-icons"
+        >
+          star_half
+        </span>
+      }
+      isHalf={true}
+      onChange={[Function]}
+      size={15}
+      value={1}
+    />
+  </span>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "sentiment" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <React.Fragment>
+    <strong>
+      Positive
+    </strong>
+    <span
+      className="material-icons greenThumb"
+    >
+      thumb_up
+    </span>
+  </React.Fragment>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 5 and "rating" as arguments, returns correct value 1`] = `
+<React.Fragment>
+  <b>
+    5
+  </b>
+  <span
+    className="starRatingWrapper"
+  >
+    <ReactStars
+      a11y={true}
+      activeColor="#FDAB40"
+      char="★"
+      color="#E8EBEF"
+      count={5}
+      edit={false}
+      emptyIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      filledIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      half={false}
+      halfIcon={
+        <span
+          className="material-icons"
+        >
+          star_half
+        </span>
+      }
+      isHalf={true}
+      onChange={[Function]}
+      size={15}
+      value={5}
+    />
+  </span>
+</React.Fragment>
+`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "percent" as arguments, returns correct value 1`] = `"555%"`;
+
+exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "points" as arguments, returns correct value 1`] = `
+<Badge
+  color="primary"
+  pill={true}
+  tag="span"
+>
+  555
+</Badge>
+`;
+
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 1`] = `
 <Badge
   color="danger"

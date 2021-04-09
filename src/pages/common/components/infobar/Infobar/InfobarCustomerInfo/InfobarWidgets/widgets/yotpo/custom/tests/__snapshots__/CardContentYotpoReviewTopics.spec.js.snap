@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardContentYotpoReviewTopics/> render() should render children as a list of pills 1`] = `
+<div
+  className="topTopicsContainer"
+>
+  <span
+    className="container"
+  >
+    <span
+      className="label"
+    >
+      <span
+        className="material-icons favorite"
+      >
+        favorite
+      </span>
+      Top Topics
+    </span>
+  </span>
+  <span
+    className="topics"
+  >
+    <Badge
+      className="topic"
+      color="secondary"
+      key="0"
+      pill={false}
+      tag="span"
+    >
+      bread
+    </Badge>
+    <Badge
+      className="topic"
+      color="secondary"
+      key="1"
+      pill={false}
+      tag="span"
+    >
+      test
+    </Badge>
+  </span>
+</div>
+`;

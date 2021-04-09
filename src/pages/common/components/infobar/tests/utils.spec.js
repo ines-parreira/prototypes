@@ -322,6 +322,45 @@ describe('widgets infobar utils', () => {
                 utils.guessFieldValueFromRawData(0, 'boolean')
             ).toMatchSnapshot()
         })
+
+        const validValues = [
+            ['1', 'sentiment'],
+            [1, 'sentiment'],
+            ['-1', 'sentiment'],
+            [-1, 'sentiment'],
+            ['0', 'sentiment'],
+            [0, 'sentiment'],
+            ['1', 'rating'],
+            [1, 'rating'],
+            [5, 'rating'],
+            ['1', 'points'],
+            [1, 'points'],
+            [555, 'points'],
+            ['1', 'percent'],
+            [1, 'percent'],
+            [555, 'percent'],
+        ]
+        const defaultValues = [
+            ['hello', 'sentiment'],
+            ['hello', 'rating'],
+            ['hello', 'points'],
+            ['hello', 'percent'],
+        ]
+
+        it.each(validValues)(
+            'given %p and %p as arguments, returns correct value',
+            (data, type) => {
+                const result = utils.guessFieldValueFromRawData(data, type)
+                expect(result).toMatchSnapshot()
+            }
+        )
+        it.each(defaultValues)(
+            'given %p and %p as arguments, returns default value',
+            (data, type) => {
+                const result = utils.guessFieldValueFromRawData(data, type)
+                expect(result).toMatchSnapshot()
+            }
+        )
     })
 
     describe('getLocalTime()', () => {

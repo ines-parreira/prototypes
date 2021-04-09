@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderYotpoReviewStatistics/> render() should render children and chat bubble icon 1`] = `
+<span
+  className="container"
+>
+  <span
+    className="material-icons star"
+  >
+    chat_bubble
+  </span>
+  <span>
+    Reviews
+  </span>
+  <Badge
+    className="pill"
+    color="primary"
+    pill={true}
+    tag="span"
+  >
+    3
+  </Badge>
+</span>
+`;

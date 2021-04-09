@@ -1,0 +1,38 @@
+@import '~css/new/colors';
+
+:local {
+  .container {
+    padding-top: 10px;
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+
+  .children {
+    margin: 1rem;
+  }
+
+  .label {
+    font-size: 13px;
+    font-weight: normal;
+  }
+
+  .greenThumb{
+    font-size: 13px;
+    padding: 0.25rem;
+    border-radius: 15px;
+    background-color: @green;
+    color: white;
+    margin-left: 5px;
+  }
+
+  .redThumb{
+    size:20px;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: @red;
+    color: white;
+    margin-left: 5px;
+  }
+}

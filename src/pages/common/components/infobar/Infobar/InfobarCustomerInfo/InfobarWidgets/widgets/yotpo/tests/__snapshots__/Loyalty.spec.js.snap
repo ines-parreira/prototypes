@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TitleWrapper/> render() should not render loyalty point balance 1`] = `
+<Fragment>
+  <CardHeaderYotpoLoyaltyPoints />
+</Fragment>
+`;
+
+exports[`<TitleWrapper/> render() should render loyalty point balance 1`] = `
+<Fragment>
+  <CardHeaderYotpoLoyaltyPoints>
+    1
+  </CardHeaderYotpoLoyaltyPoints>
+</Fragment>
+`;

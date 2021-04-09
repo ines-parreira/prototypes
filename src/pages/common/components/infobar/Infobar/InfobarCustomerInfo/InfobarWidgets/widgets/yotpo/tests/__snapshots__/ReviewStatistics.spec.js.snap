@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AfterContent/> render() should render top topics for reviews 1`] = `
+<Fragment>
+  <CardContentYotpoReviewTopics>
+    food
+    stuff
+  </CardContentYotpoReviewTopics>
+</Fragment>
+`;
+
+exports[`<TitleWrapper/> render() should render header total reviews 1`] = `
+<Fragment>
+  <CardHeaderYotpoReviewStatistics>
+    2
+  </CardHeaderYotpoReviewStatistics>
+</Fragment>
+`;

@@ -1,0 +1,460 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AfterTitle/> render() should render with different score values 1`] = `
+<span
+  className="subtitle"
+>
+  <CardHeaderValue
+    label="Created"
+  >
+    <Connect(DatetimeLabel)
+      dateTime={2021-01-31T19:12:00.000Z}
+      key="created-at"
+    />
+    <span
+      className="starRatingWrapper"
+    >
+      <ReactStars
+        a11y={true}
+        activeColor="#FDAB40"
+        char="★"
+        color="#E8EBEF"
+        count={5}
+        edit={false}
+        emptyIcon={
+          <span
+            className="material-icons"
+          >
+            star
+          </span>
+        }
+        filledIcon={
+          <span
+            className="material-icons"
+          >
+            star
+          </span>
+        }
+        half={false}
+        halfIcon={
+          <span
+            className="material-icons"
+          >
+            star_half
+          </span>
+        }
+        isHalf={true}
+        onChange={[Function]}
+        size={15}
+        value={1.5}
+      />
+    </span>
+  </CardHeaderValue>
+</span>
+`;
+
+exports[`<AfterTitle/> render() should render with different score values 2`] = `
+<span
+  className="subtitle"
+>
+  <CardHeaderValue
+    label="Created"
+  >
+    <Connect(DatetimeLabel)
+      dateTime={2021-01-31T19:12:00.000Z}
+      key="created-at"
+    />
+    <span
+      className="starRatingWrapper"
+    >
+      <ReactStars
+        a11y={true}
+        activeColor="#FDAB40"
+        char="★"
+        color="#E8EBEF"
+        count={5}
+        edit={false}
+        emptyIcon={
+          <span
+            className="material-icons"
+          >
+            star
+          </span>
+        }
+        filledIcon={
+          <span
+            className="material-icons"
+          >
+            star
+          </span>
+        }
+        half={false}
+        halfIcon={
+          <span
+            className="material-icons"
+          >
+            star_half
+          </span>
+        }
+        isHalf={true}
+        onChange={[Function]}
+        size={15}
+        value={0}
+      />
+    </span>
+  </CardHeaderValue>
+</span>
+`;
+
+exports[`<AfterTitle/> render() should render with different score values 3`] = `
+<span
+  className="subtitle"
+>
+  <CardHeaderValue
+    label="Created"
+  >
+    <Connect(DatetimeLabel)
+      dateTime={2021-01-31T19:12:00.000Z}
+      key="created-at"
+    />
+    <span
+      className="starRatingWrapper"
+    >
+      <ReactStars
+        a11y={true}
+        activeColor="#FDAB40"
+        char="★"
+        color="#E8EBEF"
+        count={5}
+        edit={false}
+        emptyIcon={
+          <span
+            className="material-icons"
+          >
+            star
+          </span>
+        }
+        filledIcon={
+          <span
+            className="material-icons"
+          >
+            star
+          </span>
+        }
+        half={false}
+        halfIcon={
+          <span
+            className="material-icons"
+          >
+            star_half
+          </span>
+        }
+        isHalf={true}
+        onChange={[Function]}
+        size={15}
+        value={5}
+      />
+    </span>
+  </CardHeaderValue>
+</span>
+`;
+
+exports[`<BeforeContent/> render() should render images correctly 1`] = `
+<div
+  className="reviewContainer"
+>
+  <p
+    className="reviewTitle"
+  >
+    Review title
+  </p>
+  <p
+    className="reviewContent"
+  >
+    Long review content lorem ipsum dolor sit amen...
+  </p>
+  <div
+    className="reviewImagesContainer"
+  >
+    <img
+      alt="review 13"
+      className="reviewImage"
+      key="13"
+      src="http://s3.amazonaws.com/yotpo-images-test/Review/29/13/square.jpeg?1457513657"
+    />
+    <img
+      alt="review 14"
+      className="reviewImage"
+      key="14"
+      src="http://s3.amazonaws.com/yotpo-images-test/Review/29/14/square.jpeg?1457513714"
+    />
+  </div>
+  <div
+    className="reviewFooter"
+  >
+    <a
+      href="#"
+    >
+      View reply
+    </a>
+    <span
+      className="reviewFooterThumbs"
+    >
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_down
+         
+      </span>
+      <b>
+        0
+      </b>
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_up
+         
+      </span>
+      <b>
+        0
+      </b>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<BeforeContent/> render() should render votes down correctly 1`] = `
+<div
+  className="reviewContainer"
+>
+  <p
+    className="reviewTitle"
+  >
+    Review title
+  </p>
+  <p
+    className="reviewContent"
+  >
+    Long review content lorem ipsum dolor sit amen...
+  </p>
+  <div
+    className="reviewFooter"
+  >
+    <a
+      href="#"
+    >
+      View reply
+    </a>
+    <span
+      className="reviewFooterThumbs"
+    >
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_down
+         
+      </span>
+      <b>
+        0
+      </b>
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_up
+         
+      </span>
+      <b>
+        12
+      </b>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<BeforeContent/> render() should render votes up correctly 1`] = `
+<div
+  className="reviewContainer"
+>
+  <p
+    className="reviewTitle"
+  >
+    Review title
+  </p>
+  <p
+    className="reviewContent"
+  >
+    Long review content lorem ipsum dolor sit amen...
+  </p>
+  <div
+    className="reviewFooter"
+  >
+    <a
+      href="#"
+    >
+      View reply
+    </a>
+    <span
+      className="reviewFooterThumbs"
+    >
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_down
+         
+      </span>
+      <b>
+        12
+      </b>
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_up
+         
+      </span>
+      <b>
+        0
+      </b>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<BeforeContent/> render() should render with both votes up and down correctly 1`] = `
+<div
+  className="reviewContainer"
+>
+  <p
+    className="reviewTitle"
+  >
+    Review title
+  </p>
+  <p
+    className="reviewContent"
+  >
+    Long review content lorem ipsum dolor sit amen...
+  </p>
+  <div
+    className="reviewFooter"
+  >
+    <a
+      href="#"
+    >
+      View reply
+    </a>
+    <span
+      className="reviewFooterThumbs"
+    >
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_down
+         
+      </span>
+      <b>
+        15
+      </b>
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_up
+         
+      </span>
+      <b>
+        12
+      </b>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<BeforeContent/> render() should render with no images 1`] = `
+<div
+  className="reviewContainer"
+>
+  <p
+    className="reviewTitle"
+  >
+    Review title
+  </p>
+  <p
+    className="reviewContent"
+  >
+    Long review content lorem ipsum dolor sit amen...
+  </p>
+  <div
+    className="reviewFooter"
+  >
+    <a
+      href="#"
+    >
+      View reply
+    </a>
+    <span
+      className="reviewFooterThumbs"
+    >
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_down
+         
+      </span>
+      <b>
+        0
+      </b>
+      <span
+        className="material-icons reviewFooterThumb"
+      >
+        thumb_up
+         
+      </span>
+      <b>
+        0
+      </b>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render both visible and invisible reviews correctly 1`] = `
+<div
+  className="titleContainer"
+>
+  <span
+    className="titleOff"
+  >
+    <span
+      className="material-icons inventory"
+    >
+      inventory
+    </span>
+    <span />
+    <CardHeaderBadge
+      className="material-icons visibility"
+      color="secondary"
+      iconName="visibility_off"
+    />
+  </span>
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render both visible and invisible reviews correctly 2`] = `
+<div
+  className="titleContainer"
+>
+  <span
+    className="titleOff"
+  >
+    <span
+      className="material-icons inventory"
+    >
+      inventory
+    </span>
+    <span />
+    <CardHeaderBadge
+      className="material-icons visibility"
+      color="secondary"
+      iconName="visibility_off"
+    />
+  </span>
+</div>
+`;

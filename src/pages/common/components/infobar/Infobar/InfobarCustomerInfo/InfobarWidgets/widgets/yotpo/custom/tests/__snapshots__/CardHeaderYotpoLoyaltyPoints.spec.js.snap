@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderYotpoLoyaltyPoints/> render() should render children 1`] = `
+<span
+  className="container"
+>
+  <span
+    className="material-icons star"
+  >
+    stars
+  </span>
+  <span>
+    Loyalty Points
+  </span>
+  <Badge
+    className="pill"
+    color="primary"
+    pill={true}
+    tag="span"
+  >
+    12,345
+  </Badge>
+</span>
+`;

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderStatusLabel/> render() should render children 1`] = `
+<span
+  className="container"
+>
+  <span
+    className="material-icons stars"
+  >
+    star_rate
+  </span>
+  <span
+    className="children"
+  >
+    123
+  </span>
+</span>
+`;
