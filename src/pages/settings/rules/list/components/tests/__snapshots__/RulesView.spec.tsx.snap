@@ -34,7 +34,7 @@ exports[`<RulesView/> should not open a rule row because no ruleId is passed 1`]
         Learn more about how to setup rules
          
         <a
-          href="https://docs.gorgias.com/rules-auto/rules"
+          href="https://docs.gorgias.com/rules"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -144,7 +144,7 @@ exports[`<RulesView/> should open a rule row because a ruleId is passed and fetc
         Learn more about how to setup rules
          
         <a
-          href="https://docs.gorgias.com/rules-auto/rules"
+          href="https://docs.gorgias.com/rules"
           rel="noopener noreferrer"
           target="_blank"
         >
