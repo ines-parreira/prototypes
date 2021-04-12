@@ -32,7 +32,7 @@ jest.spyOn(utils, 'DatetimeLabel').mockImplementation((({
 }) as any)
 
 jest.mock(
-    '../../../../../../../../../Modal.js',
+    '../../../../../../../../../Modal',
     () => ({
         isOpen,
         children,
