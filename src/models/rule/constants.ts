@@ -294,7 +294,7 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
                 },
                 {
                     label: 'Tracking number',
-                    text: 'last order tracking numbner',
+                    text: 'last order tracking number',
                     value:
                         'ticket.customer.integrations.shopify.last_order.last_fulfillment.tracking_number',
                 },
