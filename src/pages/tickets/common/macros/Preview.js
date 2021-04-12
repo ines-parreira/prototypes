@@ -13,6 +13,7 @@ import {
     AgentLabel,
     StatusLabel,
     TimedeltaLabel,
+    TeamLabel,
 } from '../../../common/utils/labels'
 import RichField from '../../../common/forms/RichField'
 
@@ -155,7 +156,7 @@ class Preview extends React.Component {
         return (
             <div className={css.macroData}>
                 <strong className="text-muted mr-2 align-middle">
-                    Assign to:
+                    Assign to user:
                 </strong>
                 <span
                     key={`action-assign-${setAssigneeAction.id}`}
@@ -166,6 +167,33 @@ class Preview extends React.Component {
                         name={setAssigneeAction.getIn([
                             'arguments',
                             'assignee_user',
+                            'name',
+                        ])}
+                    />
+                </span>
+            </div>
+        )
+    }
+
+    renderSetTeamAssignee(setTeamAssigneeAction) {
+        if (!setTeamAssigneeAction) {
+            return null
+        }
+
+        return (
+            <div className={css.macroData}>
+                <strong className="text-muted mr-2 align-middle">
+                    Assign to team:
+                </strong>
+                <span
+                    key={`action-assign-${setTeamAssigneeAction.id}`}
+                    className="ticket-owner-btn ticket-details-item"
+                >
+                    <TeamLabel
+                        className="align-middle"
+                        name={setTeamAssigneeAction.getIn([
+                            'arguments',
+                            'assignee_team',
                             'name',
                         ])}
                     />
@@ -244,13 +272,15 @@ class Preview extends React.Component {
         const setAssigneeAction = macro
             .get('actions')
             .find((action) => action.get('name') === 'setAssignee')
+        const setTeamAssigneeAction = macro
+            .get('actions')
+            .find((action) => action.get('name') === 'setTeamAssignee')
         const setSubjectAction = macro
             .get('actions')
             .find((action) => action.get('name') === 'setSubject')
         const addAttachmentsActions = macro
             .get('actions')
             .find((action) => action.get('name') === 'addAttachments')
-
         const backActions = macro
             .get('actions')
             .filter(
@@ -266,6 +296,7 @@ class Preview extends React.Component {
                 {this.renderSnoozeTicket(snoozeTicketAction)}
                 {this.renderAddTags(addTagsActions)}
                 {this.renderSetAssignee(setAssigneeAction)}
+                {this.renderSetTeamAssignee(setTeamAssigneeAction)}
                 {this.renderSetSubject(setSubjectAction)}
                 {sortedBackActions
                     .map((v, k) => this.renderBackActions(k, v))
