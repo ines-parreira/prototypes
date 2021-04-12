@@ -156,7 +156,7 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                           tabindex="0"
                           type="button"
                         >
-                          ticket assigned
+                          ticket assigned to user
                         </button>
                         <button
                           class="option dropdown-item"
@@ -435,7 +435,7 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                           tabindex="0"
                           type="button"
                         >
-                          ticket assigned
+                          ticket assigned to user
                         </button>
                         <button
                           class="option dropdown-item"

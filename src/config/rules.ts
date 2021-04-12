@@ -3,7 +3,7 @@ import {fromJS, List} from 'immutable'
 export const eventNameToLabel: {[name: string]: string} = {
     'ticket-created': 'ticket created',
     'ticket-updated': 'ticket updated',
-    'ticket-assigned': 'ticket assigned',
+    'ticket-assigned': 'ticket assigned to user',
     'ticket-message-created': 'new message in ticket',
 }
 
