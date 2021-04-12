@@ -1,657 +1,1217 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DraftOrderModal/> render() should render as closed 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Duplicate order"
-  isOpen={false}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
->
-  <div
-    className="formHeader"
-  >
-    <ProductSearchInput
-      autoFocus={true}
-      className="searchInput"
-      onVariantClicked={[Function]}
-      searchOnFocus={false}
-    />
-    <AddCustomItemPopover
-      actionName="shopifyDuplicateOrder"
-      className="headerButton"
-      currencyCode="USD"
-      id="add-custom-item"
-      onSubmit={[Function]}
-      placement="bottom"
-    />
-  </div>
-  <Loader
-    inline={false}
-    minHeight="500px"
-    size="40px"
-  />
-  <ModalFooter
-    className="formFooter"
-    tag="div"
-  >
-    <Button
-      className="focusable"
-      color="secondary"
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Cancel
-    </Button>
-    <Button
-      className="focusable ml-auto"
-      color="primary"
-      disabled={true}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as paid
-    </Button>
-    <Button
-      className="focusable"
-      color="primary"
-      disabled={true}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as pending
-    </Button>
-  </ModalFooter>
-</Modal>
-`;
+exports[`<DraftOrderModal/> should not render when the modal is closed 1`] = `null`;
 
-exports[`<DraftOrderModal/> render() should render as open, with empty order table 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Duplicate order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
->
+exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
+<div>
   <div
-    className="formHeader"
+    data-testid="Modal"
   >
-    <ProductSearchInput
-      autoFocus={true}
-      className="searchInput"
-      onVariantClicked={[Function]}
-      searchOnFocus={false}
-    />
-    <AddCustomItemPopover
-      actionName="shopifyDuplicateOrder"
-      className="headerButton"
-      currencyCode="USD"
-      id="add-custom-item"
-      onSubmit={[Function]}
-      placement="bottom"
-    />
-  </div>
-  <div>
-    <DraftOrderTable
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      lineItems={Immutable.List []}
-      onChange={[Function]}
-      products={Map {}}
-      shopName="gorgiastest"
-    />
-    <Connect(DuplicateOrderFooterComponent)
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-    />
     <div
-      className="emailInvoiceContainer"
+      class="formHeader"
     >
-      <h4
-        className="mr-auto"
+      <div
+        data-testid="ProductSearchInput"
       >
-        Email invoice
-      </h4>
-      <EmailInvoicePopover
-        actionName="shopifyDuplicateOrder"
-        color="primary"
-        customerEmail="apu@gorgias.com"
-        disabled={true}
-        id="email-invoice"
-        onSubmit={[Function]}
-        placement="bottom"
+        <div
+          data-testid="ProductSearchInput_result"
+        >
+          Result
+        </div>
+      </div>
+      <div
+        data-testid="AddCustomItemPopover"
       >
-        Email invoice
-      </EmailInvoicePopover>
+        <div
+          data-testid="AddCustomItemPopover_submit"
+        >
+          Submit
+        </div>
+      </div>
+    </div>
+    <div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              Product
+            </th>
+            <th>
+              In stock
+            </th>
+            <th>
+              Item price
+            </th>
+            <th>
+              Qty
+            </th>
+            <th>
+              Item total
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="container"
+            >
+              <div
+                class="imgContainer"
+              >
+                <img
+                  alt="Alt"
+                  class="img"
+                />
+              </div>
+              <div
+                class="legend"
+              >
+                <div>
+                  <a
+                    class="title"
+                    href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766316567"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acidulous candy
+                  </a>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Red / A
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  SKU: 
+                  11111
+                </div>
+              </div>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <span
+                class="text-muted"
+              >
+                N/A
+              </span>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="d-inline-block text-center"
+                >
+                  <div>
+                    <button
+                      class="p-0 button focusable btn btn-link"
+                      id="applied-discount-d9380a31f1605ae09ef20c298b7acc1594d87474"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <strong>
+                        <span>
+                          €9.99
+                        </span>
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+                <span
+                  class="times"
+                >
+                  x
+                </span>
+              </div>
+            </td>
+            <td
+              class="quantityCol"
+            >
+              <input
+                class="form-control"
+                min="1"
+                type="number"
+                value="1"
+              />
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong
+                  class="mt-auto mb-auto mr-auto"
+                >
+                  <span>
+                    €9.99
+                  </span>
+                </strong>
+                <button
+                  class="delete focusable btn btn-link"
+                  tabindex="0"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    close
+                  </i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="container"
+            >
+              <div
+                class="imgContainer"
+              >
+                <img
+                  alt="Alt"
+                  class="img"
+                />
+              </div>
+              <div
+                class="legend"
+              >
+                <div>
+                  <a
+                    class="title"
+                    href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766349335"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acidulous candy
+                  </a>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Red / B
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  SKU: 
+                  11111
+                </div>
+              </div>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <span
+                class="text-muted"
+              >
+                N/A
+              </span>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="d-inline-block text-center"
+                >
+                  <div>
+                    <button
+                      class="p-0 button focusable btn btn-link"
+                      id="applied-discount-3e5f1cc20ae8deae111230f7b9efcebbb3a23ede"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <strong>
+                        <span>
+                          €9.99
+                        </span>
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+                <span
+                  class="times"
+                >
+                  x
+                </span>
+              </div>
+            </td>
+            <td
+              class="quantityCol"
+            >
+              <input
+                class="form-control"
+                min="1"
+                type="number"
+                value="4"
+              />
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong
+                  class="mt-auto mb-auto mr-auto"
+                >
+                  <span>
+                    €39.96
+                  </span>
+                </strong>
+                <button
+                  class="delete focusable btn btn-link"
+                  tabindex="0"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    close
+                  </i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        data-testid="OrderFooter"
+      >
+        editable: true
+        actionName: shopifyDuplicateOrder
+        currencyCode: EUR
+      </div>
+      <div
+        class="emailInvoiceContainer"
+      >
+        <h4
+          class="mr-auto"
+        >
+          Invoice sent
+        </h4>
+        <span
+          class="mr-4"
+        >
+          Sent on
+           
+          <div
+            data-testid="DatetimeLabel"
+          />
+        </span>
+        <div
+          data-testid="EmailInvoicePopover"
+        >
+          <div
+            data-testid="EmailInvoicePopover_submit"
+          >
+            Submit
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="formFooter modal-footer"
+    >
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary"
+        tabindex="0"
+        type="button"
+      >
+        Create order as paid
+      </button>
+      <button
+        class="focusable btn btn-primary"
+        tabindex="0"
+        type="button"
+      >
+        Create order as pending
+      </button>
     </div>
   </div>
-  <ModalFooter
-    className="formFooter"
-    tag="div"
-  >
-    <Button
-      className="focusable"
-      color="secondary"
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Cancel
-    </Button>
-    <Button
-      className="focusable ml-auto"
-      color="primary"
-      disabled={true}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as paid
-    </Button>
-    <Button
-      className="focusable"
-      color="primary"
-      disabled={true}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as pending
-    </Button>
-  </ModalFooter>
-</Modal>
+</div>
 `;
 
-exports[`<DraftOrderModal/> render() should render as open, with invoice sent 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Duplicate order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
->
+exports[`<DraftOrderModal/> should render a spinner when missing data 1`] = `
+<div>
   <div
-    className="formHeader"
+    data-testid="Modal"
   >
-    <ProductSearchInput
-      autoFocus={true}
-      className="searchInput"
-      onVariantClicked={[Function]}
-      searchOnFocus={false}
-    />
-    <AddCustomItemPopover
-      actionName="shopifyDuplicateOrder"
-      className="headerButton"
-      currencyCode="USD"
-      id="add-custom-item"
-      onSubmit={[Function]}
-      placement="bottom"
-    />
-  </div>
-  <div>
-    <DraftOrderTable
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      lineItems={
-        Immutable.List [
-          Immutable.Map {
-            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
-            "applied_discount": null,
-            "taxable": true,
-            "price": "9.99",
-            "quantity": 1,
-            "product_id": 8345093387,
-            "product_exists": true,
-            "properties": Immutable.List [],
-            "variant_id": 31128766316567,
-            "title": "Acidulous candy",
-            "sku": "11111",
-            "variant_title": "Red / A",
-            "requires_shipping": true,
-          },
-          Immutable.Map {
-            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
-            "applied_discount": null,
-            "taxable": true,
-            "price": "9.99",
-            "quantity": 4,
-            "product_id": 8345093387,
-            "product_exists": true,
-            "properties": Immutable.List [],
-            "variant_id": 31128766349335,
-            "title": "Acidulous candy",
-            "sku": "11111",
-            "variant_title": "Red / B",
-            "requires_shipping": true,
-          },
-        ]
-      }
-      onChange={[Function]}
-      products={Map {}}
-      shopName="gorgiastest"
-    />
-    <Connect(DuplicateOrderFooterComponent)
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-    />
     <div
-      className="emailInvoiceContainer"
+      class="formHeader"
     >
-      <h4
-        className="mr-auto"
+      <div
+        data-testid="ProductSearchInput"
       >
-        Invoice sent
-      </h4>
-      <span
-        className="mr-4"
+        <div
+          data-testid="ProductSearchInput_result"
+        >
+          Result
+        </div>
+      </div>
+      <div
+        data-testid="AddCustomItemPopover"
       >
-        Sent on
-         
-        <Connect(DatetimeLabel)
-          dateTime="2020-02-26T21:31:34-05:00"
-          hasTooltip={false}
-          labelFormat="L LT"
+        <div
+          data-testid="AddCustomItemPopover_submit"
+        >
+          Submit
+        </div>
+      </div>
+    </div>
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
         />
-      </span>
-      <EmailInvoicePopover
-        actionName="shopifyDuplicateOrder"
-        color="link"
-        customerEmail="apu@gorgias.com"
-        disabled={false}
-        id="email-invoice"
-        onSubmit={[Function]}
-        placement="bottom"
-      >
-        Email new invoice
-      </EmailInvoicePopover>
+      </div>
     </div>
-  </div>
-  <ModalFooter
-    className="formFooter"
-    tag="div"
-  >
-    <Button
-      className="focusable"
-      color="secondary"
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Cancel
-    </Button>
-    <Button
-      className="focusable ml-auto"
-      color="primary"
-      disabled={false}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as paid
-    </Button>
-    <Button
-      className="focusable"
-      color="primary"
-      disabled={false}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as pending
-    </Button>
-  </ModalFooter>
-</Modal>
-`;
-
-exports[`<DraftOrderModal/> render() should render as open, with order table 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Duplicate order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
->
-  <div
-    className="formHeader"
-  >
-    <ProductSearchInput
-      autoFocus={true}
-      className="searchInput"
-      onVariantClicked={[Function]}
-      searchOnFocus={false}
-    />
-    <AddCustomItemPopover
-      actionName="shopifyDuplicateOrder"
-      className="headerButton"
-      currencyCode="USD"
-      id="add-custom-item"
-      onSubmit={[Function]}
-      placement="bottom"
-    />
-  </div>
-  <div>
-    <DraftOrderTable
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      lineItems={
-        Immutable.List [
-          Immutable.Map {
-            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
-            "applied_discount": null,
-            "taxable": true,
-            "price": "9.99",
-            "quantity": 1,
-            "product_id": 8345093387,
-            "product_exists": true,
-            "properties": Immutable.List [],
-            "variant_id": 31128766316567,
-            "title": "Acidulous candy",
-            "sku": "11111",
-            "variant_title": "Red / A",
-            "requires_shipping": true,
-          },
-          Immutable.Map {
-            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
-            "applied_discount": null,
-            "taxable": true,
-            "price": "9.99",
-            "quantity": 4,
-            "product_id": 8345093387,
-            "product_exists": true,
-            "properties": Immutable.List [],
-            "variant_id": 31128766349335,
-            "title": "Acidulous candy",
-            "sku": "11111",
-            "variant_title": "Red / B",
-            "requires_shipping": true,
-          },
-        ]
-      }
-      onChange={[Function]}
-      products={Map {}}
-      shopName="gorgiastest"
-    />
-    <Connect(DuplicateOrderFooterComponent)
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-    />
     <div
-      className="emailInvoiceContainer"
+      class="formFooter modal-footer"
     >
-      <h4
-        className="mr-auto"
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
       >
-        Email invoice
-      </h4>
-      <EmailInvoicePopover
-        actionName="shopifyDuplicateOrder"
-        color="primary"
-        customerEmail="apu@gorgias.com"
-        disabled={false}
-        id="email-invoice"
-        onSubmit={[Function]}
-        placement="bottom"
+        Cancel
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary disabled"
+        disabled=""
+        tabindex="0"
+        type="button"
       >
-        Email invoice
-      </EmailInvoicePopover>
+        Create order as paid
+      </button>
+      <button
+        class="focusable btn btn-primary disabled"
+        disabled=""
+        tabindex="0"
+        type="button"
+      >
+        Create order as pending
+      </button>
     </div>
   </div>
-  <ModalFooter
-    className="formFooter"
-    tag="div"
-  >
-    <Button
-      className="focusable"
-      color="secondary"
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Cancel
-    </Button>
-    <Button
-      className="focusable ml-auto"
-      color="primary"
-      disabled={false}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as paid
-    </Button>
-    <Button
-      className="focusable"
-      color="primary"
-      disabled={false}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as pending
-    </Button>
-  </ModalFooter>
-</Modal>
+</div>
 `;
 
-exports[`<DraftOrderModal/> render() should render as open, with order table and default currency, when its missing 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Duplicate order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
->
+exports[`<DraftOrderModal/> should render with a default currency if missing from integrations 1`] = `
+<div>
   <div
-    className="formHeader"
+    data-testid="Modal"
   >
-    <ProductSearchInput
-      autoFocus={true}
-      className="searchInput"
-      onVariantClicked={[Function]}
-      searchOnFocus={false}
-    />
-    <AddCustomItemPopover
-      actionName="shopifyDuplicateOrder"
-      className="headerButton"
-      currencyCode="USD"
-      id="add-custom-item"
-      onSubmit={[Function]}
-      placement="bottom"
-    />
-  </div>
-  <div>
-    <DraftOrderTable
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      lineItems={
-        Immutable.List [
-          Immutable.Map {
-            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
-            "applied_discount": null,
-            "taxable": true,
-            "price": "9.99",
-            "quantity": 1,
-            "product_id": 8345093387,
-            "product_exists": true,
-            "properties": Immutable.List [],
-            "variant_id": 31128766316567,
-            "title": "Acidulous candy",
-            "sku": "11111",
-            "variant_title": "Red / A",
-            "requires_shipping": true,
-          },
-          Immutable.Map {
-            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
-            "applied_discount": null,
-            "taxable": true,
-            "price": "9.99",
-            "quantity": 4,
-            "product_id": 8345093387,
-            "product_exists": true,
-            "properties": Immutable.List [],
-            "variant_id": 31128766349335,
-            "title": "Acidulous candy",
-            "sku": "11111",
-            "variant_title": "Red / B",
-            "requires_shipping": true,
-          },
-        ]
-      }
-      onChange={[Function]}
-      products={Map {}}
-      shopName="gorgiastest"
-    />
-    <Connect(DuplicateOrderFooterComponent)
-      actionName="shopifyDuplicateOrder"
-      currencyCode="USD"
-      editable={true}
-    />
     <div
-      className="emailInvoiceContainer"
+      class="formHeader"
     >
-      <h4
-        className="mr-auto"
+      <div
+        data-testid="ProductSearchInput"
       >
-        Email invoice
-      </h4>
-      <EmailInvoicePopover
-        actionName="shopifyDuplicateOrder"
-        color="primary"
-        customerEmail="apu@gorgias.com"
-        disabled={false}
-        id="email-invoice"
-        onSubmit={[Function]}
-        placement="bottom"
+        <div
+          data-testid="ProductSearchInput_result"
+        >
+          Result
+        </div>
+      </div>
+      <div
+        data-testid="AddCustomItemPopover"
       >
-        Email invoice
-      </EmailInvoicePopover>
+        <div
+          data-testid="AddCustomItemPopover_submit"
+        >
+          Submit
+        </div>
+      </div>
+    </div>
+    <div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              Product
+            </th>
+            <th>
+              In stock
+            </th>
+            <th>
+              Item price
+            </th>
+            <th>
+              Qty
+            </th>
+            <th>
+              Item total
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="container"
+            >
+              <div
+                class="imgContainer"
+              >
+                <img
+                  alt="Alt"
+                  class="img"
+                />
+              </div>
+              <div
+                class="legend"
+              >
+                <div>
+                  <a
+                    class="title"
+                    href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766316567"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acidulous candy
+                  </a>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Red / A
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  SKU: 
+                  11111
+                </div>
+              </div>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <span
+                class="text-muted"
+              >
+                N/A
+              </span>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="d-inline-block text-center"
+                >
+                  <div>
+                    <button
+                      class="p-0 button focusable btn btn-link"
+                      id="applied-discount-d9380a31f1605ae09ef20c298b7acc1594d87474"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <strong>
+                        <span>
+                          $9.99
+                        </span>
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+                <span
+                  class="times"
+                >
+                  x
+                </span>
+              </div>
+            </td>
+            <td
+              class="quantityCol"
+            >
+              <input
+                class="form-control"
+                min="1"
+                type="number"
+                value="1"
+              />
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong
+                  class="mt-auto mb-auto mr-auto"
+                >
+                  <span>
+                    $9.99
+                  </span>
+                </strong>
+                <button
+                  class="delete focusable btn btn-link"
+                  tabindex="0"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    close
+                  </i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="container"
+            >
+              <div
+                class="imgContainer"
+              >
+                <img
+                  alt="Alt"
+                  class="img"
+                />
+              </div>
+              <div
+                class="legend"
+              >
+                <div>
+                  <a
+                    class="title"
+                    href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766349335"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acidulous candy
+                  </a>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Red / B
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  SKU: 
+                  11111
+                </div>
+              </div>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <span
+                class="text-muted"
+              >
+                N/A
+              </span>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="d-inline-block text-center"
+                >
+                  <div>
+                    <button
+                      class="p-0 button focusable btn btn-link"
+                      id="applied-discount-3e5f1cc20ae8deae111230f7b9efcebbb3a23ede"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <strong>
+                        <span>
+                          $9.99
+                        </span>
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+                <span
+                  class="times"
+                >
+                  x
+                </span>
+              </div>
+            </td>
+            <td
+              class="quantityCol"
+            >
+              <input
+                class="form-control"
+                min="1"
+                type="number"
+                value="4"
+              />
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong
+                  class="mt-auto mb-auto mr-auto"
+                >
+                  <span>
+                    $39.96
+                  </span>
+                </strong>
+                <button
+                  class="delete focusable btn btn-link"
+                  tabindex="0"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    close
+                  </i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        data-testid="OrderFooter"
+      >
+        editable: true
+        actionName: shopifyDuplicateOrder
+        currencyCode: USD
+      </div>
+      <div
+        class="emailInvoiceContainer"
+      >
+        <h4
+          class="mr-auto"
+        >
+          Email invoice
+        </h4>
+        <div
+          data-testid="EmailInvoicePopover"
+        >
+          <div
+            data-testid="EmailInvoicePopover_submit"
+          >
+            Submit
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="formFooter modal-footer"
+    >
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary"
+        tabindex="0"
+        type="button"
+      >
+        Create order as paid
+      </button>
+      <button
+        class="focusable btn btn-primary"
+        tabindex="0"
+        type="button"
+      >
+        Create order as pending
+      </button>
     </div>
   </div>
-  <ModalFooter
-    className="formFooter"
-    tag="div"
-  >
-    <Button
-      className="focusable"
-      color="secondary"
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Cancel
-    </Button>
-    <Button
-      className="focusable ml-auto"
-      color="primary"
-      disabled={false}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as paid
-    </Button>
-    <Button
-      className="focusable"
-      color="primary"
-      disabled={false}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as pending
-    </Button>
-  </ModalFooter>
-</Modal>
+</div>
 `;
 
-exports[`<DraftOrderModal/> render() should render as open, without order table 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Duplicate order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
->
+exports[`<DraftOrderModal/> should render with a populated order table when data is populated 1`] = `
+<div>
   <div
-    className="formHeader"
+    data-testid="Modal"
   >
-    <ProductSearchInput
-      autoFocus={true}
-      className="searchInput"
-      onVariantClicked={[Function]}
-      searchOnFocus={false}
-    />
-    <AddCustomItemPopover
-      actionName="shopifyDuplicateOrder"
-      className="headerButton"
-      currencyCode="USD"
-      id="add-custom-item"
-      onSubmit={[Function]}
-      placement="bottom"
-    />
+    <div
+      class="formHeader"
+    >
+      <div
+        data-testid="ProductSearchInput"
+      >
+        <div
+          data-testid="ProductSearchInput_result"
+        >
+          Result
+        </div>
+      </div>
+      <div
+        data-testid="AddCustomItemPopover"
+      >
+        <div
+          data-testid="AddCustomItemPopover_submit"
+        >
+          Submit
+        </div>
+      </div>
+    </div>
+    <div>
+      <table
+        class="table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              Product
+            </th>
+            <th>
+              In stock
+            </th>
+            <th>
+              Item price
+            </th>
+            <th>
+              Qty
+            </th>
+            <th>
+              Item total
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="container"
+            >
+              <div
+                class="imgContainer"
+              >
+                <img
+                  alt="Alt"
+                  class="img"
+                />
+              </div>
+              <div
+                class="legend"
+              >
+                <div>
+                  <a
+                    class="title"
+                    href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766316567"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acidulous candy
+                  </a>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Red / A
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  SKU: 
+                  11111
+                </div>
+              </div>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <span
+                class="text-muted"
+              >
+                N/A
+              </span>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="d-inline-block text-center"
+                >
+                  <div>
+                    <button
+                      class="p-0 button focusable btn btn-link"
+                      id="applied-discount-d9380a31f1605ae09ef20c298b7acc1594d87474"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <strong>
+                        <span>
+                          €9.99
+                        </span>
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+                <span
+                  class="times"
+                >
+                  x
+                </span>
+              </div>
+            </td>
+            <td
+              class="quantityCol"
+            >
+              <input
+                class="form-control"
+                min="1"
+                type="number"
+                value="1"
+              />
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong
+                  class="mt-auto mb-auto mr-auto"
+                >
+                  <span>
+                    €9.99
+                  </span>
+                </strong>
+                <button
+                  class="delete focusable btn btn-link"
+                  tabindex="0"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    close
+                  </i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="container"
+            >
+              <div
+                class="imgContainer"
+              >
+                <img
+                  alt="Alt"
+                  class="img"
+                />
+              </div>
+              <div
+                class="legend"
+              >
+                <div>
+                  <a
+                    class="title"
+                    href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766349335"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Acidulous candy
+                  </a>
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  Red / B
+                </div>
+                <div
+                  class="subtitle"
+                >
+                  SKU: 
+                  11111
+                </div>
+              </div>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <span
+                class="text-muted"
+              >
+                N/A
+              </span>
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="d-inline-block text-center"
+                >
+                  <div>
+                    <button
+                      class="p-0 button focusable btn btn-link"
+                      id="applied-discount-3e5f1cc20ae8deae111230f7b9efcebbb3a23ede"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <strong>
+                        <span>
+                          €9.99
+                        </span>
+                      </strong>
+                    </button>
+                  </div>
+                </div>
+                <span
+                  class="times"
+                >
+                  x
+                </span>
+              </div>
+            </td>
+            <td
+              class="quantityCol"
+            >
+              <input
+                class="form-control"
+                min="1"
+                type="number"
+                value="4"
+              />
+            </td>
+            <td
+              class="numberCol"
+            >
+              <div
+                class="d-flex"
+              >
+                <strong
+                  class="mt-auto mb-auto mr-auto"
+                >
+                  <span>
+                    €39.96
+                  </span>
+                </strong>
+                <button
+                  class="delete focusable btn btn-link"
+                  tabindex="0"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    close
+                  </i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        data-testid="OrderFooter"
+      >
+        editable: true
+        actionName: shopifyDuplicateOrder
+        currencyCode: EUR
+      </div>
+      <div
+        class="emailInvoiceContainer"
+      >
+        <h4
+          class="mr-auto"
+        >
+          Email invoice
+        </h4>
+        <div
+          data-testid="EmailInvoicePopover"
+        >
+          <div
+            data-testid="EmailInvoicePopover_submit"
+          >
+            Submit
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="formFooter modal-footer"
+    >
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary"
+        tabindex="0"
+        type="button"
+      >
+        Create order as paid
+      </button>
+      <button
+        class="focusable btn btn-primary"
+        tabindex="0"
+        type="button"
+      >
+        Create order as pending
+      </button>
+    </div>
   </div>
-  <Loader
-    inline={false}
-    minHeight="500px"
-    size="40px"
-  />
-  <ModalFooter
-    className="formFooter"
-    tag="div"
+</div>
+`;
+
+exports[`<DraftOrderModal/> should render with an empty order table when data is empty 1`] = `
+<div>
+  <div
+    data-testid="Modal"
   >
-    <Button
-      className="focusable"
-      color="secondary"
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
+    <div
+      class="formHeader"
     >
-      Cancel
-    </Button>
-    <Button
-      className="focusable ml-auto"
-      color="primary"
-      disabled={true}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
+      <div
+        data-testid="ProductSearchInput"
+      >
+        <div
+          data-testid="ProductSearchInput_result"
+        >
+          Result
+        </div>
+      </div>
+      <div
+        data-testid="AddCustomItemPopover"
+      >
+        <div
+          data-testid="AddCustomItemPopover_submit"
+        >
+          Submit
+        </div>
+      </div>
+    </div>
+    <div>
+      <table
+        class="table table"
+      >
+        <thead>
+          <tr>
+            <th>
+              Product
+            </th>
+            <th>
+              In stock
+            </th>
+            <th>
+              Item price
+            </th>
+            <th>
+              Qty
+            </th>
+            <th>
+              Item total
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="text-center text-muted"
+              colspan="4"
+            >
+              <small>
+                No items
+              </small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        data-testid="OrderFooter"
+      >
+        editable: true
+        actionName: shopifyDuplicateOrder
+        currencyCode: EUR
+      </div>
+      <div
+        class="emailInvoiceContainer"
+      >
+        <h4
+          class="mr-auto"
+        >
+          Email invoice
+        </h4>
+        <div
+          data-testid="EmailInvoicePopover"
+        >
+          <div
+            data-testid="EmailInvoicePopover_submit"
+          >
+            Submit
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="formFooter modal-footer"
     >
-      Create order as paid
-    </Button>
-    <Button
-      className="focusable"
-      color="primary"
-      disabled={true}
-      onClick={[Function]}
-      tabIndex={0}
-      tag="button"
-    >
-      Create order as pending
-    </Button>
-  </ModalFooter>
-</Modal>
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary disabled"
+        disabled=""
+        tabindex="0"
+        type="button"
+      >
+        Create order as paid
+      </button>
+      <button
+        class="focusable btn btn-primary disabled"
+        disabled=""
+        tabindex="0"
+        type="button"
+      >
+        Create order as pending
+      </button>
+    </div>
+  </div>
+</div>
 `;

@@ -1,11 +1,16 @@
-import React, {Component} from 'react'
+import React, {useMemo, useCallback} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Button, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
+import {useUpdateEffect, usePrevious} from 'react-use'
 
+import {
+    Product,
+    Variant,
+} from '../../../../../../../../../../../constants/integrations/types/shopify'
 import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
 import {
     addCustomRow,
@@ -21,13 +26,9 @@ import shortcutManager from '../../../../../../../../../../../services/shortcutM
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../../../state/types'
 import {
-    IntegrationDataItem,
     IntegrationType,
+    IntegrationDataItem,
 } from '../../../../../../../../../../../models/integration/types'
-import {
-    Product,
-    Variant,
-} from '../../../../../../../../../../../constants/integrations/types/shopify'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
 import {DatetimeLabel} from '../../../../../../../../../utils/labels.js'
 import Loader from '../../../../../../../../Loader/Loader'
@@ -41,397 +42,328 @@ import DraftOrderFooter from './OrderFooter/OrderFooter'
 import DraftOrderTable from './DraftOrderTable/DraftOrderTable'
 import css from './DraftOrderModal.less'
 
-type Props = Omit<InfobarModalProps, 'data'> & {
-    draftOrder: Map<any, any>
-    data: {
-        actionName: ShopifyActionType
-        order?: Map<any, any>
-        customer: Map<any, any>
+type OwnProps = {
+    draftOrder?: Map<any, any>
+    data?: {
+        actionName: ShopifyActionType | null
+        order?: Map<any, any> | null
+        customer?: Map<any, any>
     }
-} & ConnectedProps<typeof connector>
+    defaultCurrency?: string
+}
 
-export class DraftOrderModalContainer extends Component<Props> {
-    static _DEFAULT_CURRENCY = 'USD'
+export function DraftOrderModalContainer(
+    {
+        addCustomRow,
+        addRow,
+        defaultCurrency = 'USD',
+        draftOrder = fromJS({}),
+        data = {actionName: null, order: null},
+        header,
+        integrations,
+        isOpen,
+        loading,
+        loadingMessage,
+        payload,
+        products,
+        onInit,
+        onOpen,
+        onClose,
+        onChange,
+        onCancel,
+        onPayloadChange,
+        onEmailInvoice,
+        onCreateDraftOrder,
+        onBulkChange,
+        onSubmit,
+        onReset,
+    }: Omit<InfobarModalProps, 'data'> &
+        OwnProps &
+        ConnectedProps<typeof connector>,
+    {integrationId, customerId}: {integrationId: number; customerId: number}
+) {
+    const currentIntegration = useMemo(
+        () =>
+            integrations.find(
+                (integration: Map<any, any>) =>
+                    integration.get('id') === integrationId
+            ) as Map<any, any> | null,
+        [integrations, integrationId]
+    )
+    const hasScope = useMemo(
+        () =>
+            !!(currentIntegration?.getIn([
+                'meta',
+                'oauth',
+                'scope',
+            ]) as string).includes('write_draft_orders'),
+        [currentIntegration]
+    )
+    const currencyCode = useMemo(
+        () =>
+            (currentIntegration?.getIn(['meta', 'currency']) as string) ||
+            defaultCurrency,
+        [currentIntegration]
+    )
+    const previousIsOpen = usePrevious(isOpen)
+    const lineItems = useMemo(
+        () => (payload?.get('line_items') || fromJS([])) as List<Map<any, any>>,
+        [payload]
+    )
+    const isEmpty = useMemo(() => lineItems.size === 0, [lineItems])
 
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
-        customerId: PropTypes.number.isRequired,
-    }
-
-    static defaultProps = {
-        draftOrder: fromJS({}), // TODO this will be used with action "edit order"
-        data: {
-            actionName: null,
-            order: null,
-        } as any,
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        const {
-            isOpen,
-            data: {actionName, order, customer},
-            onOpen,
-            onInit,
-            onChange,
-        } = this.props
-        const {integrationId} = this.context
-        const hasScope = this._hasScope()
-
-        if (!isOpen && nextProps.isOpen) {
-            const integration = this._getIntegration() as Map<any, any> | null
-            const currencyCode = integration
-                ? integration.getIn(
-                      ['meta', 'currency'],
-                      DraftOrderModalContainer._DEFAULT_CURRENCY
-                  )
-                : DraftOrderModalContainer._DEFAULT_CURRENCY
-
-            onOpen(actionName as string)
-            hasScope &&
-                onInit(
-                    integrationId,
-                    order,
-                    customer,
-                    currencyCode,
-                    this._onInitError
-                )
-            shortcutManager.pause()
-
-            if (order) {
-                onChange('order_id', order.get('id'))
-            }
-        }
-    }
-
-    _getIntegration() {
-        const {integrations} = this.props
-        const {integrationId} = this.context
-
-        return integrations.find(
-            (integration: Map<any, any>) =>
-                integration.get('id') === integrationId
-        ) as Map<any, any>
-    }
-
-    _hasScope() {
-        const integration = this._getIntegration()
-
-        return !!integration
-            ? (integration.getIn([
-                  'meta',
-                  'oauth',
-                  'scope',
-              ]) as string).includes('write_draft_orders')
-            : false
-    }
-
-    _onInitError = () => {
-        const {onClose} = this.props
-
-        onClose()
-        this._onClose()
-    }
-
-    _onVariantClicked = (
-        item: IntegrationDataItem<Product>,
-        variant: Variant
-    ) => {
-        const {integrationId} = this.context
-        const {
-            addRow,
-            data: {actionName},
-        } = this.props
-        const {data: product} = item
-
-        void addRow(actionName, integrationId, product, variant)
-    }
-
-    _onAddCustomItem = (lineItem: Map<any, any>) => {
-        const {addCustomRow} = this.props
-        const {integrationId} = this.context
-
-        void addCustomRow(integrationId, lineItem)
-    }
-
-    _onLineItemsChange = (lineItems: List<any>) => {
-        const {payload, onPayloadChange} = this.props
-        const {integrationId} = this.context
-        const newPayload = payload.set('line_items', lineItems)
-
-        void onPayloadChange(integrationId, newPayload)
-    }
-
-    _onEmailInvoice = (invoicePayload: Map<any, any>) => {
-        const {
-            onEmailInvoice,
-            onClose,
-            data: {order},
-        } = this.props
-        const {integrationId, customerId} = this.context
-        const orderId = order ? order.get('id') : null
-
-        void onEmailInvoice(
-            integrationId,
-            customerId,
-            orderId,
-            invoicePayload,
-            () => {
-                onClose()
-                this._onClose()
-            }
-        )
-    }
-
-    _onSubmit(paymentPending: boolean) {
-        const {
-            data: {order},
-            onBulkChange,
-            onCreateDraftOrder,
-            onSubmit,
-        } = this.props
-        const {integrationId} = this.context
-        const orderId: number | null = order ? order.get('id') : null
-
-        void onCreateDraftOrder(integrationId, orderId).then((draftOrder) => {
-            const draftOrderId: string = !!draftOrder
-                ? draftOrder.get('id')
-                : ''
-            const changes = [
-                {name: 'draft_order_id', value: draftOrderId},
-                {name: 'payment_pending', value: paymentPending},
-            ]
-
-            onBulkChange(changes, () => {
-                onSubmit()
-                this._onClose()
-            })
-        })
-    }
-
-    _onSubmitPaid = () => {
-        this._onSubmit(false)
-    }
-
-    _onSubmitPending = () => {
-        this._onSubmit(true)
-    }
-
-    _onCancel(via: string) {
-        const {
-            onCancel,
-            onClose,
-            data: {actionName},
-        } = this.props
-        const {integrationId} = this.context
-
-        onCancel(actionName, integrationId, via)
-        onClose()
-        this._onClose()
-    }
-
-    _onCancelViaHeader = () => {
-        this._onCancel('header')
-    }
-
-    _onCancelViaFooter = () => {
-        this._onCancel('footer')
-    }
-
-    _onClose() {
-        const {onReset} = this.props
-
-        shortcutManager.unpause()
-        onReset()
-    }
-
-    _onMissingScopeClose = () => {
-        const {onClose} = this.props
-
-        onClose()
-        this._onClose()
-    }
-
-    render() {
-        const {
-            header,
-            isOpen,
-            payload,
-            products,
-            loading,
-            loadingMessage,
-            data: {order, actionName},
-            draftOrder,
-        } = this.props
-        const {integrationId} = this.context
-        const lineItems: List<any> = payload
-            ? payload.get('line_items', fromJS([]))
-            : fromJS([])
-        const empty = !lineItems.size
-
-        const integration = this._getIntegration()
-        if (!integration) {
-            return null
-        }
-
-        const shopName = integration.getIn(['meta', 'shop_name'])
-        const currencyCode = integration.getIn(
-            ['meta', 'currency'],
-            DraftOrderModalContainer._DEFAULT_CURRENCY
-        )
-        const hasScope = this._hasScope()
-
-        // TODO(@samy): remove when all Shopify integrations have draft order permissions
-        if (!hasScope) {
-            return (
-                <Modal
-                    header={header}
-                    isOpen={isOpen}
-                    onClose={this._onMissingScopeClose}
-                >
-                    <Alert color="danger">
-                        Missing Shopify permissions. To use this new feature,
-                        please go to the{' '}
-                        <Link
-                            to={`/app/settings/integrations/shopify/${
-                                integrationId as string
-                            }`}
-                        >
-                            settings page of your Shopify integration
-                        </Link>{' '}
-                        and click on "Update app permissions".
-                    </Alert>
-                </Modal>
+    const handleCancel = useCallback(
+        (via: string) => () => {
+            onCancel(data.actionName!, integrationId, via)
+            onClose()
+            handleReset()
+        },
+        [data, integrationId, onClose]
+    )
+    const handleInvoiceSubmit = useCallback(
+        (invoicePayload: Map<any, any>) => {
+            void onEmailInvoice(
+                integrationId,
+                customerId,
+                data.order ? data.order.get('id') : null,
+                invoicePayload,
+                () => {
+                    onClose()
+                    handleReset()
+                }
             )
-        }
+        },
+        [integrationId, customerId, data, onClose]
+    )
+    const handlePaymentSubmit = useCallback(
+        (isPending = false) => async () => {
+            const result = await onCreateDraftOrder(
+                integrationId,
+                data.order ? data.order.get('id') : null
+            )
+            onBulkChange(
+                [
+                    {name: 'draft_order_id', value: result?.get('id') || ''},
+                    {name: 'payment_pending', value: isPending},
+                ],
+                () => {
+                    onSubmit()
+                    handleReset()
+                }
+            )
+        },
+        [integrationId, data, onBulkChange, onSubmit]
+    )
+    const handleReset = useCallback(() => {
+        onReset()
+        shortcutManager.unpause()
+    }, [])
 
+    useUpdateEffect(() => {
+        if (!previousIsOpen && isOpen) {
+            onOpen(data.actionName!)
+            if (hasScope) {
+                void onInit(
+                    integrationId,
+                    data.order,
+                    data.customer!,
+                    currencyCode,
+                    () => {
+                        onClose()
+                        handleReset()
+                    }
+                )
+            }
+            shortcutManager.pause()
+            if (data.order) {
+                onChange('order_id', data.order.get('id'))
+            }
+        }
+    }, [
+        isOpen,
+        previousIsOpen,
+        onOpen,
+        data,
+        hasScope,
+        integrationId,
+        onClose,
+        currencyCode,
+        onChange,
+    ])
+
+    if (!hasScope) {
         return (
             <Modal
                 header={header}
                 isOpen={isOpen}
-                onClose={this._onCancelViaHeader}
-                keyboard={false}
-                size="xl"
-                bodyClassName="p-0"
-                backdrop="static"
+                onClose={() => {
+                    onClose()
+                    handleReset()
+                }}
             >
-                <div className={css.formHeader}>
-                    <ProductSearchInput
-                        className={css.searchInput}
-                        onVariantClicked={this._onVariantClicked}
-                        searchOnFocus={!order && !lineItems.size}
-                    />
-                    <AddCustomItemPopover
-                        id="add-custom-item"
-                        actionName={actionName}
-                        className={css.headerButton}
-                        currencyCode={currencyCode}
-                        onSubmit={this._onAddCustomItem}
-                    />
-                </div>
-                {payload ? (
-                    <div>
-                        <DraftOrderTable
-                            shopName={shopName}
-                            actionName={actionName}
-                            currencyCode={currencyCode}
-                            lineItems={lineItems}
-                            products={products}
-                            onChange={this._onLineItemsChange}
-                        />
-                        <DraftOrderFooter
-                            editable
-                            actionName={actionName}
-                            currencyCode={currencyCode}
-                        />
-                        {draftOrder.get('status') === 'invoice_sent' ? (
-                            <div className={css.emailInvoiceContainer}>
-                                <h4 className="mr-auto">Invoice sent</h4>
-                                <span className="mr-4">
-                                    Sent on{' '}
-                                    <DatetimeLabel
-                                        dateTime={draftOrder.get(
-                                            'invoice_sent_at'
-                                        )}
-                                        labelFormat="L LT"
-                                        hasTooltip={false}
-                                    />
-                                </span>
-                                <EmailInvoicePopover
-                                    id="email-invoice"
-                                    actionName={actionName}
-                                    color="link"
-                                    customerEmail={payload.getIn([
-                                        'customer',
-                                        'email',
-                                    ])}
-                                    disabled={loading || empty}
-                                    onSubmit={this._onEmailInvoice}
-                                >
-                                    Email new invoice
-                                </EmailInvoicePopover>
-                            </div>
-                        ) : (
-                            <div className={css.emailInvoiceContainer}>
-                                <h4 className="mr-auto">Email invoice</h4>
-                                <EmailInvoicePopover
-                                    id="email-invoice"
-                                    actionName={actionName}
-                                    color="primary"
-                                    customerEmail={payload.getIn([
-                                        'customer',
-                                        'email',
-                                    ])}
-                                    disabled={loading || empty}
-                                    onSubmit={this._onEmailInvoice}
-                                >
-                                    Email invoice
-                                </EmailInvoicePopover>
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <Loader />
-                )}
-                <ModalFooter className={css.formFooter}>
-                    <Button
-                        tabIndex={0}
-                        className={css.focusable}
-                        onClick={this._onCancelViaFooter}
+                <Alert color="danger">
+                    Missing Shopify permissions. To use this new feature, please
+                    go to the{' '}
+                    <Link
+                        to={`/app/settings/integrations/shopify/${integrationId}`}
                     >
-                        Cancel
-                    </Button>
-                    {loading && (
-                        <div className="ml-3">
-                            <Loader
-                                className={css.spinner}
-                                minHeight="20px"
-                                size="20px"
-                            />
-                            <span className="ml-2">{loadingMessage}</span>
-                        </div>
-                    )}
-                    <Button
-                        color="primary"
-                        disabled={loading || empty}
-                        tabIndex={0}
-                        className={classnames(css.focusable, 'ml-auto')}
-                        onClick={this._onSubmitPaid}
-                    >
-                        Create order as paid
-                    </Button>
-                    <Button
-                        color="primary"
-                        disabled={loading || empty}
-                        tabIndex={0}
-                        className={css.focusable}
-                        onClick={this._onSubmitPending}
-                    >
-                        Create order as pending
-                    </Button>
-                </ModalFooter>
+                        settings page of your Shopify integration
+                    </Link>
+                    and click on "Update app permissions".
+                </Alert>
             </Modal>
         )
     }
+    return (
+        <Modal
+            header={header}
+            isOpen={isOpen}
+            onClose={handleCancel('header')}
+            keyboard={false}
+            size="xl"
+            bodyClassName="p-0"
+            backdrop="static"
+        >
+            <div className={css.formHeader}>
+                <ProductSearchInput
+                    className={css.searchInput}
+                    onVariantClicked={(
+                        item: IntegrationDataItem<Product>,
+                        variant: Variant
+                    ) => {
+                        void addRow(
+                            data.actionName!,
+                            integrationId,
+                            item.data,
+                            variant
+                        )
+                    }}
+                    searchOnFocus={!data.order && isEmpty}
+                />
+                <AddCustomItemPopover
+                    id="add-custom-item"
+                    actionName={data.actionName!}
+                    className={css.headerButton}
+                    currencyCode={currencyCode}
+                    onSubmit={(lineItem) => {
+                        void addCustomRow(integrationId, lineItem)
+                    }}
+                />
+            </div>
+            {payload ? (
+                <div>
+                    <DraftOrderTable
+                        shopName={currentIntegration!.getIn([
+                            'meta',
+                            'shop_name',
+                        ])}
+                        actionName={data.actionName!}
+                        currencyCode={currencyCode}
+                        lineItems={lineItems}
+                        products={products}
+                        onChange={(lineItems) => {
+                            void onPayloadChange(
+                                integrationId,
+                                payload.set('line_items', lineItems)
+                            )
+                        }}
+                    />
+                    <DraftOrderFooter
+                        editable
+                        actionName={data.actionName!}
+                        currencyCode={currencyCode}
+                    />
+                    {draftOrder.get('status') === 'invoice_sent' ? (
+                        <div className={css.emailInvoiceContainer}>
+                            <h4 className="mr-auto">Invoice sent</h4>
+                            <span className="mr-4">
+                                Sent on{' '}
+                                <DatetimeLabel
+                                    dateTime={draftOrder.get('invoice_sent_at')}
+                                    labelFormat="L LT"
+                                    hasTooltip={false}
+                                />
+                            </span>
+                            <EmailInvoicePopover
+                                id="email-invoice"
+                                actionName={data.actionName!}
+                                color="link"
+                                customerEmail={payload.getIn([
+                                    'customer',
+                                    'email',
+                                ])}
+                                disabled={loading || isEmpty}
+                                onSubmit={handleInvoiceSubmit}
+                            >
+                                Email new invoice
+                            </EmailInvoicePopover>
+                        </div>
+                    ) : (
+                        <div className={css.emailInvoiceContainer}>
+                            <h4 className="mr-auto">Email invoice</h4>
+                            <EmailInvoicePopover
+                                id="email-invoice"
+                                actionName={data.actionName!}
+                                color="primary"
+                                customerEmail={payload.getIn([
+                                    'customer',
+                                    'email',
+                                ])}
+                                disabled={loading || isEmpty}
+                                onSubmit={handleInvoiceSubmit}
+                            >
+                                Email invoice
+                            </EmailInvoicePopover>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <Loader />
+            )}
+            <ModalFooter className={css.formFooter}>
+                <Button
+                    tabIndex={0}
+                    className={css.focusable}
+                    onClick={handleCancel('footer')}
+                >
+                    Cancel
+                </Button>
+                {loading && (
+                    <div className="ml-3">
+                        <Loader
+                            className={css.spinner}
+                            minHeight="20px"
+                            size="20px"
+                        />
+                        <span className="ml-2">{loadingMessage}</span>
+                    </div>
+                )}
+                <Button
+                    color="primary"
+                    disabled={loading || isEmpty}
+                    tabIndex={0}
+                    className={classnames(css.focusable, 'ml-auto')}
+                    onClick={handlePaymentSubmit()}
+                >
+                    Create order as paid
+                </Button>
+                <Button
+                    color="primary"
+                    disabled={loading || isEmpty}
+                    tabIndex={0}
+                    className={css.focusable}
+                    onClick={handlePaymentSubmit(true)}
+                >
+                    Create order as pending
+                </Button>
+            </ModalFooter>
+        </Modal>
+    )
+}
+
+DraftOrderModalContainer.contextTypes = {
+    integrationId: PropTypes.number.isRequired,
+    customerId: PropTypes.number.isRequired,
 }
 
 const connector = connect(
@@ -441,7 +373,10 @@ const connector = connect(
         ])(state),
         loading: getCreateOrderState(state).get('loading'),
         loadingMessage: getCreateOrderState(state).get('loadingMessage'),
-        payload: getCreateOrderState(state).get('payload') as Map<any, any>,
+        payload: getCreateOrderState(state).get('payload') as Map<
+            any,
+            any
+        > | null,
         products: getCreateOrderState(state).get('products'),
     }),
     {
