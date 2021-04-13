@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip.js'
+import Tooltip from '../../../../common/components/Tooltip'
 import {formatDatetime} from '../../../../../utils'
 
 type Props = {

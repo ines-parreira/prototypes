@@ -5,7 +5,7 @@ import _some from 'lodash/some'
 import {FormGroup, FormText, Label} from 'reactstrap'
 
 import Select from '../../../../../common/components/ast/widget/ReactSelect.tsx'
-import Tooltip from '../../../../../common/components/Tooltip'
+import Tooltip from '../../../../../common/components/Tooltip.tsx'
 import JsonField from '../../../../../common/forms/JsonField'
 
 import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants'

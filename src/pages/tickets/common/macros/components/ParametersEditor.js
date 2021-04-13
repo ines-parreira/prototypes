@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 import {Row, Col, Button} from 'reactstrap'
 
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 import InputField from '../../../../common/forms/InputField'
 import {MAX_HEADER_LENGTH} from '../../../../../config.ts'
 import {hasUnicodeChars} from '../../../../../utils.ts'

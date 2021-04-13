@@ -20,7 +20,7 @@ import {
     OBSERVER_AGENT_ROLE,
 } from '../../../config/user.ts'
 import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import Tooltip from '../components/Tooltip'
+import Tooltip from '../components/Tooltip.tsx'
 import Avatar from '../components/Avatar'
 import {
     formatDatetime,
@@ -30,7 +30,7 @@ import {
 } from '../../../utils.ts'
 import * as customersHelpers from '../../../state/customers/helpers.ts'
 import {DEFAULT_TAG_COLOR} from '../../../config.ts'
-import SourceIcon from '../components/SourceIcon'
+import SourceIcon from '../components/SourceIcon.tsx'
 import type {SourceType} from '../../../models/ticket/types'
 import {getAgents} from '../../../state/agents/selectors.ts'
 import {getTeams} from '../../../state/teams/selectors.ts'

@@ -7,7 +7,7 @@ import _truncate from 'lodash/truncate'
 import {Table} from 'reactstrap'
 import {Link, withRouter} from 'react-router-dom'
 
-import Tooltip from '../../../../../common/components/Tooltip'
+import Tooltip from '../../../../../common/components/Tooltip.tsx'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,

@@ -5,7 +5,7 @@ import {Map} from 'immutable'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
-import SourceIcon from '../../../common/components/SourceIcon.js'
+import SourceIcon from '../../../common/components/SourceIcon'
 import UpgradeButton from '../../../common/components/UpgradeButton'
 
 import css from './IntegrationListRow.less'

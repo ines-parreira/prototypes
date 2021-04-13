@@ -8,7 +8,7 @@ import {Map, List} from 'immutable'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {getPluralObjectName} from '../../../../utils'
-import Tooltip from '../Tooltip.js'
+import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager/index'
 import {moveIndex, MoveIndexDirection} from '../../utils/keyboard'
 import {

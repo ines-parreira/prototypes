@@ -8,7 +8,7 @@ import Alert from 'reactstrap/lib/Alert'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import history from '../../../../history.ts'
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'

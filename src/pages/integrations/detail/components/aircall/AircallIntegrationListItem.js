@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 
 export default class AircallIntegrationListItem extends React.Component {
     static propTypes = {

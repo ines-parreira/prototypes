@@ -12,6 +12,7 @@ export enum TicketMessageSourceType {
     FacebookMessenger = 'facebook-messenger',
     FacebookPost = 'facebook-post',
     FacebookReview = 'facebook-review',
+    Instagram = 'instagram',
     InstagramAdComment = 'instagram-ad-comment',
     InstagramAdMedia = 'instagram-ad-media',
     InstagramComment = 'instagram-comment',

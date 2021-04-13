@@ -35,7 +35,7 @@ import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch.tsx'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer.tsx'
-import UserRoleRequired from './common/components/UserRoleRequired'
+import withUserRoleRequired from './common/components/UserRoleRequired.tsx'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
 import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
@@ -354,7 +354,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/rules`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(RuleContainer, AGENT_ROLE),
+                    content: withUserRoleRequired(RuleContainer, AGENT_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -362,7 +362,10 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/self-service`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(SelfServiceContainer, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        SelfServiceContainer,
+                        ADMIN_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -394,7 +397,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/audit`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(UserAuditList, ADMIN_ROLE),
+                    content: withUserRoleRequired(UserAuditList, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -405,7 +408,10 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/manage-tags`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(ManageTagsContainer, AGENT_ROLE),
+                    content: withUserRoleRequired(
+                        ManageTagsContainer,
+                        AGENT_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -415,7 +421,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeatures.SatisfactionSurveys)(
-                        UserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)
+                        withUserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -423,7 +429,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route
                 path={`${path}/business-hours`}
                 render={appRender({
-                    content: UserRoleRequired(BusinessHours, ADMIN_ROLE),
+                    content: withUserRoleRequired(BusinessHours, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
                 exact
@@ -433,7 +439,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeatures.AutoAssignment)(
-                        UserRoleRequired(TicketAssignment, ADMIN_ROLE)
+                        withUserRoleRequired(TicketAssignment, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -451,7 +457,7 @@ export function IntegrationsSettingsRoutes({
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(
+                    content: withUserRoleRequired(
                         IntegrationListContainer,
                         ADMIN_ROLE
                     ),
@@ -462,7 +468,7 @@ export function IntegrationsSettingsRoutes({
                 path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(
+                    content: withUserRoleRequired(
                         IntegrationDetailContainer,
                         ADMIN_ROLE
                     ),
@@ -480,7 +486,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(
+                    content: withUserRoleRequired(
                         MacrosSettingsContent,
                         AGENT_ROLE
                     ),
@@ -491,7 +497,10 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/new`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
+                    content: withUserRoleRequired(
+                        MacrosSettingsForm,
+                        AGENT_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -499,7 +508,10 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:macroId`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
+                    content: withUserRoleRequired(
+                        MacrosSettingsForm,
+                        AGENT_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -515,7 +527,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeatures.Teams)(
-                        UserRoleRequired(Teams.List, ADMIN_ROLE)
+                        withUserRoleRequired(Teams.List, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -525,7 +537,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeatures.Teams)(
-                        UserRoleRequired(Teams.Form, ADMIN_ROLE)
+                        withUserRoleRequired(Teams.Form, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -535,7 +547,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeatures.Teams)(
-                        UserRoleRequired(Teams.Form, ADMIN_ROLE)
+                        withUserRoleRequired(Teams.Form, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -545,7 +557,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeatures.Teams)(
-                        UserRoleRequired(List, ADMIN_ROLE)
+                        withUserRoleRequired(List, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -561,7 +573,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(Team.List, ADMIN_ROLE),
+                    content: withUserRoleRequired(Team.List, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -569,7 +581,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/add`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(Team.Form, ADMIN_ROLE),
+                    content: withUserRoleRequired(Team.Form, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -577,7 +589,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(Team.Form, ADMIN_ROLE),
+                    content: withUserRoleRequired(Team.Form, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -592,7 +604,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(BillingContainer, ADMIN_ROLE),
+                    content: withUserRoleRequired(BillingContainer, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -600,7 +612,10 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/add-credit-card`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        CreditCardContainer,
+                        ADMIN_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -608,7 +623,10 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/update-credit-card`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        CreditCardContainer,
+                        ADMIN_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -616,7 +634,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/update-billing-details`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(
+                    content: withUserRoleRequired(
                         BillingDetailsFormContainer,
                         ADMIN_ROLE
                     ),
@@ -627,7 +645,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/plans`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(
+                    content: withUserRoleRequired(
                         BillingPlansContainer,
                         ADMIN_ROLE
                     ),
@@ -645,7 +663,10 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(ImportDataContainer, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        ImportDataContainer,
+                        ADMIN_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -653,7 +674,10 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/zendesk`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(ImportZendeskCreate, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        ImportZendeskCreate,
+                        ADMIN_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -661,7 +685,10 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/zendesk/:integrationId/:extra?`}
                 exact
                 render={appRender({
-                    content: UserRoleRequired(ImportZendeskDetail, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        ImportZendeskDetail,
+                        ADMIN_ROLE
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />

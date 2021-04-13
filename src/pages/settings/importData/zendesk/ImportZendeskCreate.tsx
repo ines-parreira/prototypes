@@ -15,7 +15,7 @@ import {RootState, StoreDispatch} from '../../../../state/types'
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
 
-import Tooltip from '../../../common/components/Tooltip.js'
+import Tooltip from '../../../common/components/Tooltip'
 
 import {ZENDESK_CONNECTION_TYPE} from './types'
 

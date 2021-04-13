@@ -2,7 +2,7 @@
 import React from 'react'
 
 import {formatDatetime} from '../../../../../utils.ts'
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 
 import css from './SeenIndicator.style.less'
 

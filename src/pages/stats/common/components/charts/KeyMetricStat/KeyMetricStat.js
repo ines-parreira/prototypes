@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
 
-import Tooltip from '../../../../../common/components/Tooltip'
+import Tooltip from '../../../../../common/components/Tooltip.tsx'
 import {
     comparedPeriodString,
     formatCurrency,

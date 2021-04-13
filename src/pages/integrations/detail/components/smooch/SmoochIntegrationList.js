@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
 import {parse} from 'query-string'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'

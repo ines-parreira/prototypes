@@ -8,7 +8,7 @@ import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels.js'
 import {stripHTML} from '../../../../utils'
 import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
 
-import SourceIcon from '../SourceIcon.js'
+import SourceIcon from '../SourceIcon'
 
 import css from './TimelineTicket.less'
 

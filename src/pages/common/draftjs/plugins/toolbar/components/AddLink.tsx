@@ -1,33 +1,32 @@
-//@flow
 import {EditorState, Modifier} from 'draft-js'
-import React from 'react'
+import React, {Component, KeyboardEvent} from 'react'
 import {Button} from 'reactstrap'
 
-import InputField from '../../../../forms/InputField'
-import {removeLink} from '../../utils'
+import InputField from '../../../../forms/InputField.js'
+import {removeLink} from '../../utils.js'
 import {
     getEntitySelectionState,
     getSelectedEntityKey,
     getSelectedText,
     linkify,
-} from '../../../../../../utils/editor.tsx'
-import type {ActionInjectedProps} from '../types'
+} from '../../../../../../utils/editor'
+import {ActionInjectedProps} from '../types'
 
 import css from './AddLink.less'
-import Popover from './ButtonPopover'
+import Popover from './ButtonPopover.js'
 
 type Props = {
-    entityKey?: string,
-    url: string,
-    onUrlChange: (string) => void,
-    text: string,
-    onTextChange: (string) => void,
-    isOpen: boolean,
-    onOpen: () => void,
-    onClose: () => void,
+    entityKey?: string
+    url: string
+    onUrlChange: (url: string) => void
+    text: string
+    onTextChange: (text: string) => void
+    isOpen: boolean
+    onOpen: () => void
+    onClose: () => void
 } & ActionInjectedProps
 
-export default class AddLink extends React.Component<Props> {
+export default class AddLink extends Component<Props> {
     _isValid = (): boolean =>
         !!(
             this.props.text.trim() &&
@@ -35,7 +34,7 @@ export default class AddLink extends React.Component<Props> {
             linkify.test(this.props.url)
         )
 
-    _getSelectedLinkEntityKey = (): ?string => {
+    _getSelectedLinkEntityKey = (): Maybe<string> => {
         const editorState = this.props.getEditorState()
         const contentState = editorState.getCurrentContent()
         const selection = editorState.getSelection()
@@ -67,7 +66,7 @@ export default class AddLink extends React.Component<Props> {
         this.props.onOpen()
     }
 
-    _onKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault()
             this._submit()
@@ -94,9 +93,9 @@ export default class AddLink extends React.Component<Props> {
     _updateLink = () => {
         let editorState = this.props.getEditorState()
         let contentState = editorState.getCurrentContent()
-        let {url, text, entityKey} = this.props
+        const {url, text, entityKey} = this.props
         // Use linkify to add protocol to the url
-        let parsedUrl = linkify.match(url)[0]?.url || url
+        const parsedUrl = linkify.match(url)?.[0]?.url || url
 
         if (!entityKey) {
             return
@@ -137,9 +136,9 @@ export default class AddLink extends React.Component<Props> {
     }
 
     _insertLink = () => {
-        let {url, text} = this.props
+        const {url, text} = this.props
         // Use linkify to add protocol to the url
-        let parsedUrl = linkify.match(url)[0]?.url || url
+        const parsedUrl = linkify.match(url)?.[0]?.url || url
 
         let editorState = this.props.getEditorState()
         const selection = editorState.getSelection()

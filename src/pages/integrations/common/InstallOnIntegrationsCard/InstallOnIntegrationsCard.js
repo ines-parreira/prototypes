@@ -7,7 +7,7 @@ import _capitalize from 'lodash/capitalize'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
 import * as integrationHelpers from '../../../../state/integrations/helpers.ts'
-import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleButton from '../../../common/components/ToggleButton.tsx'
 import history from '../../../history.ts'
 
 import {notify} from '../../../../state/notifications/actions.ts'

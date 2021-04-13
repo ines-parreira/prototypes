@@ -22,7 +22,7 @@ import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as billingSelectors from '../../../state/billing/selectors'
 import {RootState} from '../../../state/types'
 
-import ToggleButton from '../../../pages/common/components/ToggleButton.js'
+import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
 

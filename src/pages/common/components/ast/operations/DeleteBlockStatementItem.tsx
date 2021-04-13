@@ -3,7 +3,7 @@ import {Map, List} from 'immutable'
 
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import {RuleOperation} from '../../../../../state/rules/types'
-import Tooltip from '../../Tooltip.js'
+import Tooltip from '../../Tooltip'
 
 type Props = {
     rule: Map<any, any>

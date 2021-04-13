@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {Button, Alert} from 'reactstrap'
 import classnames from 'classnames'
 
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 
 import * as TicketActions from '../../../../../state/ticket/actions.ts'
 import * as NewMessageActions from '../../../../../state/newMessage/actions.ts'

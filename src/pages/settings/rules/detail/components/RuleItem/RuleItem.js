@@ -23,7 +23,7 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import * as rulesHelpers from '../../../../../../state/rules/helpers.ts'
 
 import {toJS} from '../../../../../../utils.ts'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
 import {getMomentUtcISOString} from '../../../../../../utils/date.ts'
 
 import css from './RuleItem.less'

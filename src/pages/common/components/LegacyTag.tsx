@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 
 import css from './LegacyTag.less'
-import Tooltip from './Tooltip.js'
+import Tooltip from './Tooltip'
 
 type Props = {
     label: string

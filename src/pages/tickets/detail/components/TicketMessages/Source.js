@@ -4,7 +4,7 @@ import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
-import SourceIcon from '../../../../common/components/SourceIcon'
+import SourceIcon from '../../../../common/components/SourceIcon.tsx'
 import {DatetimeLabel} from '../../../../common/utils/labels'
 import {type Source as SourceType} from '../../../../../models/ticket/types'
 import {getPersonLabelFromSource} from '../../../common/utils'

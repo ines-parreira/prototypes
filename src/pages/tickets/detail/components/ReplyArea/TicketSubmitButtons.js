@@ -15,7 +15,7 @@ import {
 } from '../../../../../state/currentUser/selectors.ts'
 import {isReady} from '../../../../../state/newMessage/selectors.ts'
 
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 
 import css from './TicketSubmitButtons.less'

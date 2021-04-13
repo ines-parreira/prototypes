@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom'
 import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 
-import ToggleButton from '../../../common/components/ToggleButton.js'
+import ToggleButton from '../../../common/components/ToggleButton'
 import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
 import {SelfServiceConfiguration} from '../../../../state/self_service/types'
 import * as SelfServiceActions from '../../../../state/self_service/actions'

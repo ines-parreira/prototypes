@@ -1,24 +1,23 @@
-// @flow
-import React from 'react'
+import React, {Component, MouseEvent} from 'react'
 import classnames from 'classnames'
 
 import css from './ToggleButton.less'
 
 type Props = {
-    disabled?: boolean,
-    onChange: (boolean) => ?Promise<*>,
-    value: boolean,
-    loading?: boolean,
-    className?: string,
-    label?: string,
-    name?: string,
+    disabled?: boolean
+    onChange: (isToggled: boolean) => Maybe<Promise<unknown>>
+    value: boolean
+    loading?: boolean
+    className?: string
+    label?: string
+    name?: string
 }
 
-export default class ToggleButton extends React.Component<Props> {
-    _onChange = (event: Event) => {
+export default class ToggleButton extends Component<Props> {
+    _onChange = (event: MouseEvent) => {
         event.preventDefault()
         if (!this.props.disabled) {
-            this.props.onChange(!this.props.value)
+            void this.props.onChange(!this.props.value)
         }
     }
 

@@ -19,7 +19,7 @@ import {
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import history from '../../../../../history.ts'
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import Pagination from '../../../../../common/components/Pagination.tsx'
 import BooleanField from '../../../../../common/forms/BooleanField'

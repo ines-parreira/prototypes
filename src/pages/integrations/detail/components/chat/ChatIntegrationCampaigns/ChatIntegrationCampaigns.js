@@ -10,7 +10,7 @@ import * as campaignActions from '../../../../../../state/campaigns/actions'
 
 import {AccountFeatures} from '../../../../../../state/currentAccount/types.ts'
 
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import ForwardIcon from '../../ForwardIcon'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'

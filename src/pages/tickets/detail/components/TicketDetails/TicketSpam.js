@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 
 type Props = {
     className: ?string,

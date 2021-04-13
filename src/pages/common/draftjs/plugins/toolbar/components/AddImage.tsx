@@ -1,28 +1,27 @@
-//@flow
-import React from 'react'
+import React, {KeyboardEvent, Component} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import FileField from '../../../../forms/FileField'
-import type {ActionInjectedProps} from '../types'
-import {getMaxAttachmentSize} from '../../../../../../utils/file.ts'
-import {addImage} from '../../utils'
+import FileField from '../../../../forms/FileField.js'
+import {ActionInjectedProps} from '../types'
+import {getMaxAttachmentSize} from '../../../../../../utils/file'
+import {addImage} from '../../utils.js'
 
 import css from './AddImage.less'
-import Popover from './ButtonPopover'
+import Popover from './ButtonPopover.js'
 
 type Props = {
-    attachments?: File[],
+    attachments?: File[]
 } & ActionInjectedProps
 
 type State = {
-    url: string,
-    mode: string,
-    maxSize: number,
-    isOpen: boolean,
+    url: string
+    mode: string
+    maxSize: number
+    isOpen: boolean
 }
 
-export default class AddImage extends React.Component<Props, State> {
+export default class AddImage extends Component<Props, State> {
     state: State = {
         url: '',
         mode: 'upload',
@@ -30,7 +29,7 @@ export default class AddImage extends React.Component<Props, State> {
         isOpen: false,
     }
 
-    inputRef: ?HTMLInputElement
+    inputRef: Maybe<HTMLInputElement>
 
     _updateMaxSize = () => {
         const editorState = this.props.getEditorState()
@@ -45,14 +44,14 @@ export default class AddImage extends React.Component<Props, State> {
         this.setState({mode})
     }
 
-    _handleImage = (files: Array<{url: string, size: number}>) => {
+    _handleImage = (files: Array<{url: string; size: number}>) => {
         files.forEach((file) => {
             this._addImage(file.url, file.size)
         })
         this.setState({isOpen: false})
     }
 
-    _addImage = (url: string, size: number = 0) => {
+    _addImage = (url: string, size = 0) => {
         const editorState = this.props.getEditorState()
         const newEditorState = addImage(editorState, url, size)
         this.props.setEditorState(newEditorState)
@@ -72,7 +71,7 @@ export default class AddImage extends React.Component<Props, State> {
         })
     }
 
-    _onKeyDown = (e: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
             e.preventDefault()
 

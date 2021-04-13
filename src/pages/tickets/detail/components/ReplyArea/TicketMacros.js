@@ -18,7 +18,7 @@ import type {TicketMessageSourceType} from '../../../../../business/types/ticket
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions.ts'
 import Preview from '../../../common/macros/Preview'
-import Tooltip from '../../../../common/components/Tooltip'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 import Loader from '../../../../common/components/Loader/Loader.tsx'
 import MacroList from '../../../common/macros/components/MacroList'
 import MacroNoResults from '../../../common/macros/components/MacroNoResults'

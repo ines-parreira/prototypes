@@ -12,8 +12,8 @@ import {RootState} from '../../../state/types'
 
 import {MAX_RECENT_CHATS} from '../../../config/recentChats'
 
-import Tooltip from './Tooltip.js'
-import SourceIcon from './SourceIcon.js'
+import Tooltip from './Tooltip'
+import SourceIcon from './SourceIcon'
 
 import css from './RecentChats.less'
 

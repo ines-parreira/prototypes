@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 
-import ToggleButton from '../../../common/components/ToggleButton.js'
+import ToggleButton from '../../../common/components/ToggleButton'
 import {SelfServiceConfiguration} from '../../../../state/self_service/types'
 import * as SelfServiceActions from '../../../../state/self_service/actions'
 

@@ -12,7 +12,7 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
 import shortcutManager from '../../../../services/shortcutManager'
 import ViewName from '../ViewName/ViewName'
-import Tooltip from '../Tooltip.js'
+import Tooltip from '../Tooltip'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
 

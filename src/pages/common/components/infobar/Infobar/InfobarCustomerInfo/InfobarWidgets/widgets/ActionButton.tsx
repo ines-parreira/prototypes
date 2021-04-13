@@ -31,7 +31,7 @@ import {executeAction} from '../../../../../../../../state/infobar/actions'
 import {makeGetPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'
 import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
 import {RootState} from '../../../../../../../../state/types'
-import Tooltip from '../../../../../Tooltip.js'
+import Tooltip from '../../../../../Tooltip'
 
 import css from './ActionButton.less'
 import {InfobarModalProps, Option, Parameter} from './types'

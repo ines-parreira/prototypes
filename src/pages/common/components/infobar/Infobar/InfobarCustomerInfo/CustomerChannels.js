@@ -13,8 +13,8 @@ import {
     TWITTER_CUSTOMER_CHANNEL_TYPE,
     INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE,
 } from '../../../../../../constants/user.ts'
-import SourceIcon from '../../../SourceIcon'
-import Tooltip from '../../../Tooltip'
+import SourceIcon from '../../../SourceIcon.tsx'
+import Tooltip from '../../../Tooltip.tsx'
 import css from '../../Infobar.less'
 import {getDisplayCustomerLastSeenOnChat, getLocalTime} from '../../utils'
 import {getCurrentUser} from '../../../../../../state/currentUser/selectors.ts'

@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
 import Carousel from '../../../common/Carousel'
-import ToggleButton from '../../../../common/components/ToggleButton'
+import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'

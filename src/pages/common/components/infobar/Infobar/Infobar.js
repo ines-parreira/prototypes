@@ -19,7 +19,7 @@ import history from '../../../../history.ts'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import Loader from '../../Loader/Loader.tsx'
-import Tooltip from '../../Tooltip'
+import Tooltip from '../../Tooltip.tsx'
 import InfobarLayout from '../InfobarLayout'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer.tsx'
 import Search from '../../Search.tsx'

@@ -23,7 +23,7 @@ import {ZENDESK_INTEGRATION_TYPE} from '../../../../constants/integration'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
 import Loader from '../../../common/components/Loader/Loader'
-import Tooltip from '../../../common/components/Tooltip.js'
+import Tooltip from '../../../common/components/Tooltip'
 
 import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'

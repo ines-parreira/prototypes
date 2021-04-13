@@ -10,7 +10,7 @@ import {notify} from '../../../../../../state/notifications/actions'
 import {RootState} from '../../../../../../state/types'
 import {GorgiasThunkDispatch} from '../../../../../../../../../../types/redux-thunk'
 
-import ToggleButton from '../../../../../common/components/ToggleButton.js'
+import ToggleButton from '../../../../../common/components/ToggleButton'
 import RuleItem from '../../../detail/components/RuleItem/RuleItem.js'
 
 import css from './RuleRow.less'
@@ -107,7 +107,7 @@ class RuleRow extends React.Component<Props, State> {
                 <td className="smallest align-middle position-relative">
                     <ToggleButton
                         value={!rule.get('deactivated_datetime')}
-                        onChange={this._toggleItemStatus as () => Promise<any>}
+                        onChange={this._toggleItemStatus as () => Promise<void>}
                     />
                     <div className={css.confirmationPopover} id={toggleId} />
                     <Popover
