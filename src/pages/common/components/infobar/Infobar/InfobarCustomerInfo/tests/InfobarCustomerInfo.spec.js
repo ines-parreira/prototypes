@@ -1,5 +1,5 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,9 +12,14 @@ import {
     SMILE_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
 
-import InfobarCustomerInfoContainer, {
-    InfobarCustomerInfo as InfobarCustomerInfoComponent,
-} from '../InfobarCustomerInfo'
+import InfobarCustomerInfo, {
+    InfobarCustomerInfoContainer,
+} from '../InfobarCustomerInfo.tsx'
+
+jest.mock('../CustomerChannels.js', () => () => <div>CustomerChannels</div>)
+jest.mock('../InfobarWidgets/InfobarWidgets.js', () => () => (
+    <div>InfobarWidgets</div>
+))
 
 const mockStore = configureMockStore([thunk])
 
@@ -32,7 +37,7 @@ describe('<InfobarCustomerInfo/>', () => {
 
     it('should not render because there is no passed customer', () => {
         const component = shallow(
-            <InfobarCustomerInfoComponent
+            <InfobarCustomerInfoContainer
                 actions={actions}
                 customer={null}
                 sources={fromJS({})}
@@ -47,7 +52,7 @@ describe('<InfobarCustomerInfo/>', () => {
 
     it('should not render because the passed customer is empty', () => {
         const component = shallow(
-            <InfobarCustomerInfoComponent
+            <InfobarCustomerInfoContainer
                 actions={actions}
                 sources={fromJS({})}
                 customer={fromJS({})}
@@ -87,7 +92,7 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = shallow(
-                <InfobarCustomerInfoComponent
+                <InfobarCustomerInfoContainer
                     actions={actions}
                     sources={sources}
                     widgets={widgets}
@@ -128,7 +133,7 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = shallow(
-                <InfobarCustomerInfoComponent
+                <InfobarCustomerInfoContainer
                     actions={actions}
                     sources={sources}
                     widgets={widgets}
@@ -165,7 +170,7 @@ describe('<InfobarCustomerInfo/>', () => {
             })
 
             const component = shallow(
-                <InfobarCustomerInfoComponent
+                <InfobarCustomerInfoContainer
                     actions={actions}
                     sources={sources}
                     widgets={widgets}
@@ -209,8 +214,8 @@ describe('<InfobarCustomerInfo/>', () => {
                 ],
             })
 
-            const component = shallow(
-                <InfobarCustomerInfoComponent
+            const component = mount(
+                <InfobarCustomerInfoContainer
                     actions={actions}
                     sources={sources}
                     widgets={widgets}
@@ -229,7 +234,7 @@ describe('<InfobarCustomerInfo/>', () => {
             'configured for the account',
         () => {
             const component = shallow(
-                <InfobarCustomerInfoComponent
+                <InfobarCustomerInfoContainer
                     actions={actions}
                     sources={fromJS({})}
                     widgets={fromJS({currentContext: 'ticket'})}
@@ -248,7 +253,7 @@ describe('<InfobarCustomerInfo/>', () => {
             'and there is no data integrations configured for the account',
         () => {
             const component = shallow(
-                <InfobarCustomerInfoComponent
+                <InfobarCustomerInfoContainer
                     actions={actions}
                     sources={fromJS({})}
                     widgets={fromJS({currentContext: 'ticket'})}
@@ -272,7 +277,7 @@ describe('<InfobarCustomerInfo/>', () => {
         'should pass `hasIntegrations=true` because there is an active integration of type %s',
         (integrationType) => {
             const component = shallow(
-                <InfobarCustomerInfoContainer
+                <InfobarCustomerInfo
                     store={mockStore({
                         integrations: fromJS({
                             integrations: [{type: integrationType}],
@@ -292,7 +297,7 @@ describe('<InfobarCustomerInfo/>', () => {
 
     it('should pass `hasIntegrations=false` because there is no active data integration', () => {
         const component = shallow(
-            <InfobarCustomerInfoContainer
+            <InfobarCustomerInfo
                 store={mockStore({
                     integrations: fromJS({
                         integrations: [],

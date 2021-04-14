@@ -10,7 +10,7 @@ import {
 } from '../../../../../../state/infobar/constants'
 import Search from '../../../Search.tsx'
 import InfobarLayout from '../../InfobarLayout'
-import InfobarCustomerInfo from '../InfobarCustomerInfo'
+import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo.tsx'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import {Infobar} from '../Infobar'
 
@@ -22,7 +22,7 @@ jest.mock(
 )
 
 jest.mock(
-    '../InfobarCustomerInfo',
+    '../InfobarCustomerInfo/InfobarCustomerInfo.tsx',
     () => ({customer}: ElementProps<typeof InfobarCustomerInfo>) => (
         <div data-testid="InfobarCustomerInfo">
             InfobarCustomerInfo<div>customer: {JSON.stringify(customer)}</div>

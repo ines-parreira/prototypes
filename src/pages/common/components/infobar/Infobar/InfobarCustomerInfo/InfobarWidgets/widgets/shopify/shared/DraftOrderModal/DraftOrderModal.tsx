@@ -1,4 +1,4 @@
-import React, {useMemo, useCallback} from 'react'
+import React, {useCallback, useContext, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Button, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
@@ -31,6 +31,7 @@ import {
 } from '../../../../../../../../../../../models/integration/types'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
 import {DatetimeLabel} from '../../../../../../../../../utils/labels.js'
+import {CustomerContext} from '../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
@@ -80,8 +81,9 @@ export function DraftOrderModalContainer(
     }: Omit<InfobarModalProps, 'data'> &
         OwnProps &
         ConnectedProps<typeof connector>,
-    {integrationId, customerId}: {integrationId: number; customerId: number}
+    {integrationId}: {integrationId: number}
 ) {
+    const {customerId} = useContext(CustomerContext)
     const currentIntegration = useMemo(
         () =>
             integrations.find(
@@ -122,16 +124,18 @@ export function DraftOrderModalContainer(
     )
     const handleInvoiceSubmit = useCallback(
         (invoicePayload: Map<any, any>) => {
-            void onEmailInvoice(
-                integrationId,
-                customerId,
-                data.order ? data.order.get('id') : null,
-                invoicePayload,
-                () => {
-                    onClose()
-                    handleReset()
-                }
-            )
+            if (customerId) {
+                void onEmailInvoice(
+                    integrationId,
+                    customerId,
+                    data.order ? data.order.get('id') : null,
+                    invoicePayload,
+                    () => {
+                        onClose()
+                        handleReset()
+                    }
+                )
+            }
         },
         [integrationId, customerId, data, onClose]
     )
@@ -363,7 +367,6 @@ export function DraftOrderModalContainer(
 
 DraftOrderModalContainer.contextTypes = {
     integrationId: PropTypes.number.isRequired,
-    customerId: PropTypes.number.isRequired,
 }
 
 const connector = connect(

@@ -1,5 +1,5 @@
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Badge} from 'reactstrap'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
@@ -176,7 +176,7 @@ export function isBoolean(string) {
  * @returns {*|boolean}
  */
 export function areSourcesReady(
-    sources: Map<*, *>,
+    sources: Map<any, any>,
     context: string,
     everySources = false
 ): boolean {

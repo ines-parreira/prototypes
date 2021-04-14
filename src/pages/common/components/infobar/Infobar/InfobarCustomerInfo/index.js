@@ -1,1 +1,1 @@
-export default from './InfobarCustomerInfo'
+export default from './InfobarCustomerInfo.tsx'

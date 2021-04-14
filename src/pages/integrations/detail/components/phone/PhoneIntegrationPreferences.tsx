@@ -139,9 +139,6 @@ export default function PhoneIntegrationPreferences({
 
         setIsInitialized(true)
 
-        // Copy phone number
-        // TODO we use an outdated version of the package "clipboard", which is not typed correctly
-        /*eslint-disable */
         const clipboard = new Clipboard('.copy-phone-number-button')
 
         clipboard.on('success', () => {
@@ -155,7 +152,6 @@ export default function PhoneIntegrationPreferences({
         return () => {
             clipboard.destroy()
         }
-        /*eslint-enable */
     }, [
         integration,
         isInitialized,

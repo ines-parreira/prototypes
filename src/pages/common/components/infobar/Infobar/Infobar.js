@@ -28,7 +28,7 @@ import {areSourcesReady} from '../utils'
 import css from '../Infobar.less'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'
-import InfobarCustomerInfo from './InfobarCustomerInfo'
+import InfobarCustomerInfo from './InfobarCustomerInfo/InfobarCustomerInfo.tsx'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
 import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton.tsx'

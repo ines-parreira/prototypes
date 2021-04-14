@@ -32,6 +32,7 @@ import {makeGetPendingActionCallbacks} from '../../../../../../../../state/infob
 import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
 import {RootState} from '../../../../../../../../state/types'
 import Tooltip from '../../../../../Tooltip'
+import {CustomerContext} from '../../InfobarCustomerInfo'
 
 import css from './ActionButton.less'
 import {InfobarModalProps, Option, Parameter} from './types'
@@ -54,6 +55,7 @@ type Props = {
     popover?: string
     title: ReactNode
     actionError?: string
+    customerId?: number
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -81,7 +83,6 @@ export class ActionButtonContainer extends Component<Props, State> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
         integrationId: PropTypes.number.isRequired,
-        customerId: PropTypes.number.isRequired,
     }
 
     constructor(props: Props) {
@@ -147,7 +148,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         const data = {
             action_name: state.actionName,
             // TODO(customers-migration): update `user_id` when we update our REST API
-            user_id: context.customerId,
+            user_id: this.props.customerId?.toString(),
             integration_id: context.integrationId,
             payload: {
                 ...props.payload,
@@ -171,7 +172,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         void this.props.executeAction(
             this.state.actionName,
             (this.context as {integrationId: string}).integrationId,
-            (this.context as {customerId: string}).customerId,
+            this.props.customerId?.toString(),
             payload as any
         )
 
@@ -403,8 +404,15 @@ export class ActionButtonContainer extends Component<Props, State> {
 export const withActionButtonContext = (Component: any) => {
     return (props: any) => {
         const {actionError} = React.useContext(ActionButtonContext)
+        const {customerId} = React.useContext(CustomerContext)
 
-        return <Component actionError={actionError} {...props} />
+        return (
+            <Component
+                actionError={actionError}
+                customerId={customerId}
+                {...props}
+            />
+        )
     }
 }
 

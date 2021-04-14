@@ -2,9 +2,11 @@ import React, {ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import {render, cleanup} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import PropTypes from 'prop-types'
 
+import {CustomerContext} from '../../../InfobarCustomerInfo.tsx'
 import {
     ActionButtonContainer,
     ActionButtonContext,
@@ -14,7 +16,6 @@ import {
 type Props = {
     integration: Map<*, *>,
     integrationId: number,
-    customerId: number,
     children: ReactNode,
 }
 
@@ -23,7 +24,6 @@ class ActionButtonContextProvider extends React.Component<Props> {
         return {
             integration: this.props.integration,
             integrationId: this.props.integrationId,
-            customerId: this.props.customerId,
         }
     }
 
@@ -35,7 +35,6 @@ class ActionButtonContextProvider extends React.Component<Props> {
 ActionButtonContextProvider.childContextTypes = {
     integration: ImmutablePropTypes.map.isRequired,
     integrationId: PropTypes.number.isRequired,
-    customerId: PropTypes.number.isRequired,
 }
 
 describe('ActionButton component', () => {
@@ -58,7 +57,6 @@ describe('ActionButton component', () => {
     const defaultContext = {
         integration: fromJS({}),
         integrationId: 1,
-        customerId: 1,
     }
 
     // TODO(context-migration): Should be removed.
@@ -494,5 +492,64 @@ describe('ActionButton component', () => {
         )
 
         expect(getByRole('button').hasAttribute('disabled')).toBeFalsy()
+    })
+
+    it('should call executeAction when confirming action', () => {
+        const action = {
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'text',
+                            defaultValue: 'hello',
+                            placeholder: 'Just a param',
+                            required: true,
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
+        }
+        const customerId = 43
+        const executeAction = jest.fn()
+        const Modal = ({onSubmit}: any) => <div onClick={onSubmit}>Modal</div>
+        const payload = {
+            little_id: 12,
+        }
+
+        const {getByText} = render(
+            <CustomerContext.Provider value={{customerId: 43}}>
+                <ActionButtonContext.Provider value={{actionError: null}}>
+                    <ActionButtonWithContextAdapter
+                        key={action.key}
+                        options={action.options}
+                        popover={action.popover}
+                        tooltip={action.tooltip}
+                        title={action.title}
+                        payload={payload}
+                        executeAction={executeAction}
+                        modal={Modal}
+                    >
+                        {action.child}
+                    </ActionButtonWithContextAdapter>
+                </ActionButtonContext.Provider>
+            </CustomerContext.Provider>
+        )
+
+        userEvent.click(getByText('Modal'))
+
+        expect(executeAction).toHaveBeenCalledWith(
+            action.options[0].value,
+            defaultContext.integrationId,
+            customerId.toString(),
+            {
+                ...payload,
+                [action.options[0].parameters[0].name]:
+                    action.options[0].parameters[0].defaultValue,
+            }
+        )
     })
 })

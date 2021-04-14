@@ -15,10 +15,11 @@ import {
 import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
+import ProductSearchInput from '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
+import * as utils from '../../../../../../../../../../utils/labels.js'
+import {CustomerContext} from '../../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {ShopifyActionType} from '../../../types'
 import {DraftOrderModalContainer} from '../DraftOrderModal'
-import * as utils from '../../../../../../../../../../utils/labels.js'
-import ProductSearchInput from '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
 import AddCustomItemPopover from '../AddCustomItemPopover/AddCustomItemPopover'
 import EmailInvoicePopover from '../EmailInvoicePopover/EmailInvoicePopover'
 import OrderFooter from '../OrderFooter/OrderFooter'
@@ -170,11 +171,10 @@ function getProducts(order: Map<any, any>) {
 
 class MockLegacyContextWrapper extends Component<{
     children: ReactNode
-    value?: {integrationId?: number; customerId?: number}
+    value?: {integrationId?: number}
 }> {
     static childContextTypes = {
         integrationId: PropTypes.number.isRequired,
-        customerId: PropTypes.number.isRequired,
     }
 
     static defaultProps = {value: {}}
@@ -182,7 +182,7 @@ class MockLegacyContextWrapper extends Component<{
     getChildContext() {
         const {value} = this.props
 
-        return {integrationId: 1, customerId: 2, ...value}
+        return {integrationId: 1, ...value}
     }
 
     render() {
@@ -241,9 +241,11 @@ describe('<DraftOrderModal/>', () => {
 
     it('should not render when the modal is closed', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer {...minProps} isOpen={false} />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer {...minProps} isOpen={false} />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -251,9 +253,11 @@ describe('<DraftOrderModal/>', () => {
 
     it('should render a spinner when missing data', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer {...minProps} />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer {...minProps} />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -261,13 +265,15 @@ describe('<DraftOrderModal/>', () => {
 
     it('should render with a populated order table when data is populated', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -282,13 +288,15 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {container} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -296,18 +304,20 @@ describe('<DraftOrderModal/>', () => {
 
     it('should render with a default currency if missing from integrations', () => {
         const {container} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    integrations={minProps.integrations.removeIn([
-                        0,
-                        'meta',
-                        'currency',
-                    ])}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        integrations={minProps.integrations.removeIn([
+                            0,
+                            'meta',
+                            'currency',
+                        ])}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -319,14 +329,16 @@ describe('<DraftOrderModal/>', () => {
             .set('invoice_sent_at', '2020-02-26T21:31:34-05:00')
         const payload = getDuplicateOrderPayload(draftOrder)
         const {container} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    draftOrder={draftOrder}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        draftOrder={draftOrder}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(container).toMatchSnapshot()
@@ -334,25 +346,29 @@ describe('<DraftOrderModal/>', () => {
 
     it('should call onInit when modal is opened', () => {
         const {rerender} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    isOpen={false}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        isOpen={false}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         rerender(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    isOpen
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        isOpen
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         expect(minProps.onInit).toBeCalledWith(
@@ -369,13 +385,15 @@ describe('<DraftOrderModal/>', () => {
         const product = item.data
         const variant = product.variants[0]
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByTestId('ProductSearchInput_result'))
@@ -392,13 +410,15 @@ describe('<DraftOrderModal/>', () => {
         const payload = getDuplicateOrderPayload(draftOrder)
         const lineItem = fromJS(shopifyCustomLineItemFixture())
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByTestId('AddCustomItemPopover_submit'))
@@ -412,14 +432,16 @@ describe('<DraftOrderModal/>', () => {
         const payload = getDuplicateOrderPayload(draftOrder)
         const invoicePayload = fromJS(shopifyInvoicePayloadFixture())
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    draftOrder={draftOrder}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        draftOrder={draftOrder}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByTestId('EmailInvoicePopover_submit'))
@@ -438,13 +460,15 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {getByText} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByText(/Create order as paid/i))
@@ -465,13 +489,15 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {getByText} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByText(/Create order as pending/i))
@@ -492,13 +518,15 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByTestId('Modal'))
@@ -515,13 +543,15 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {getByText} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByText(/Cancel/i))
@@ -538,16 +568,21 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const {getByTestId} = render(
-            <MockLegacyContextWrapper>
-                <DraftOrderModalContainer
-                    {...minProps}
-                    integrations={(integrationsStateWithShopify.get(
-                        'integrations'
-                    ) as List<any>).setIn([0, 'meta', 'oauth', 'scope'], 'foo')}
-                    products={products}
-                    payload={payload}
-                />
-            </MockLegacyContextWrapper>
+            <CustomerContext.Provider value={{customerId: 2}}>
+                <MockLegacyContextWrapper>
+                    <DraftOrderModalContainer
+                        {...minProps}
+                        integrations={(integrationsStateWithShopify.get(
+                            'integrations'
+                        ) as List<any>).setIn(
+                            [0, 'meta', 'oauth', 'scope'],
+                            'foo'
+                        )}
+                        products={products}
+                        payload={payload}
+                    />
+                </MockLegacyContextWrapper>
+            </CustomerContext.Provider>
         )
 
         fireEvent.click(getByTestId('Modal'))
