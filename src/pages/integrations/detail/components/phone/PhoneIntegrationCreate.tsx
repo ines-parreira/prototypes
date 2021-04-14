@@ -101,6 +101,12 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 voicemail_outside_business_hours: true,
                                 record_outbound_calls: true,
                             },
+                            voicemail: {
+                                voicemail_type: null,
+                                voice_recording_file_path: null,
+                                text_to_speech_content: null,
+                                allow_to_leave_voicemail: false,
+                            },
                         },
                     })
                 )

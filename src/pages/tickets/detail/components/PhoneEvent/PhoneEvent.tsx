@@ -11,12 +11,14 @@ import callIncomingIcon from './icons/call-incoming.svg'
 import callOutgoingIcon from './icons/call-outgoing.svg'
 import callCompletedIcon from './icons/call-completed.svg'
 import callMissedIcon from './icons/call-missed.svg'
+import voicemailLeftIcon from './icons/voicemail-left.svg'
 
 const icons = new window.Map<string, string>([
     [PhoneIntegrationEvent.IncomingPhoneCall, callIncomingIcon],
     [PhoneIntegrationEvent.OutgoingPhoneCall, callOutgoingIcon],
     [PhoneIntegrationEvent.CompletedPhoneCall, callCompletedIcon],
     [PhoneIntegrationEvent.MissedPhoneCall, callMissedIcon],
+    [PhoneIntegrationEvent.VoicemailRecording, voicemailLeftIcon],
 ])
 
 const names = new window.Map<string, string>([
@@ -24,6 +26,7 @@ const names = new window.Map<string, string>([
     [PhoneIntegrationEvent.OutgoingPhoneCall, 'Outgoing call'],
     [PhoneIntegrationEvent.CompletedPhoneCall, 'Call ended'],
     [PhoneIntegrationEvent.MissedPhoneCall, 'Missed call'],
+    [PhoneIntegrationEvent.VoicemailRecording, 'Voicemail left by a customer'],
 ])
 
 type Props = {

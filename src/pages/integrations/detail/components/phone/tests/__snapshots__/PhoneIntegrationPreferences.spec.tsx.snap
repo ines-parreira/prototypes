@@ -63,6 +63,13 @@ exports[`<PhoneIntegrationPreferences/> render() should render 1`] = `
     >
       Preferences
     </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/phone/1/voicemail"
+    >
+      Voicemail
+    </a>
   </nav>
   <div
     class="page-container container-fluid"

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updatePhoneVoicemailConfiguration Should dispatch an error notification because API returned 400 1`] = `
+Array [
+  Array [
+    Object {
+      "error": [Error: Request failed with status code 400],
+      "type": "UPDATE_INTEGRATION_ERROR",
+      "verbose": true,
+    },
+  ],
+]
+`;
+
+exports[`updatePhoneVoicemailConfiguration Should dispatch success notification because integration was successfully updated 1`] = `
+Array [
+  Array [
+    Object {
+      "message": "Voicemail configuration successfully updated.",
+      "status": "success",
+    },
+  ],
+]
+`;

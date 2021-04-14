@@ -481,7 +481,6 @@ class IntegrationDetailContainer extends React.Component {
                     if (params.extra === TAB_PHONE_VOICEMAIL) {
                         return (
                             <PhoneIntegrationVoicemail
-                                actions={actions}
                                 loading={commonProps.loading}
                                 integration={commonProps.integration}
                             />

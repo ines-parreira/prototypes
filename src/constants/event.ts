@@ -23,6 +23,7 @@ export const INCOMING_PHONE_CALL = 'incoming-phone-call'
 export const OUTGOING_PHONE_CALL = 'outgoing-phone-call'
 export const COMPLETED_PHONE_CALL = 'completed-phone-call'
 export const MISSED_PHONE_CALL = 'missed-phone-call'
+export const VOICEMAIL_RECORDING = 'voicemail-recording'
 
 //$TsFixMe fallback value for js, use TicketAuditLogEvent enum instead
 export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
@@ -56,6 +57,7 @@ export const PHONE_EVENTS_MAP = Object.freeze({
     OUTGOING_PHONE_CALL,
     COMPLETED_PHONE_CALL,
     MISSED_PHONE_CALL,
+    VOICEMAIL_RECORDING,
 })
 
 export const PHONE_EVENTS = Object.freeze(Object.values(PHONE_EVENTS_MAP))

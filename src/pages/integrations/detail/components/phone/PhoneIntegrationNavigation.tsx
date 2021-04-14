@@ -18,7 +18,7 @@ export default function PhoneIntegrationNavigation({
     return (
         <SecondaryNavbar>
             <Link to={`${baseURL}/preferences`}>Preferences</Link>
-            {/*<Link to={`${baseURL}/voicemail`}>Voicemail</Link>*/}
+            <Link to={`${baseURL}/voicemail`}>Voicemail</Link>
         </SecondaryNavbar>
     )
 }
