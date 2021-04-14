@@ -35,6 +35,7 @@ import {updateOrCreateIntegration} from '../../../../../state/integrations/actio
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors.ts'
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 import ToggleButton from '../../../../common/components/ToggleButton.tsx'
+import Tooltip from '../../../../common/components/Tooltip.tsx'
 import RadioField from '../../../../common/forms/RadioField'
 import SelectField from '../../../../common/forms/SelectField'
 import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration.ts'
@@ -289,7 +290,32 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         <Col>
                             <Form onSubmit={this._submitPreferences}>
                                 <div className="mb-4">
-                                    <h4>Email capture</h4>
+                                    <h4>
+                                        Email capture{' '}
+                                        <i
+                                            id="email-capture-help"
+                                            className="material-icons-outlined"
+                                        >
+                                            error_outline
+                                        </i>
+                                        <Tooltip
+                                            autohide={false}
+                                            delay={100}
+                                            target="email-capture-help"
+                                            placement="top-start"
+                                        >
+                                            You can change the email capture
+                                            message by adjusting the chat
+                                            default text values.{' '}
+                                            <a
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                href="https://docs.gorgias.com/video-tutorials/change-email-capture-message-on-chat"
+                                            >
+                                                Read more
+                                            </a>
+                                        </Tooltip>
+                                    </h4>
                                     <p>
                                         Ask your customers to leave their email
                                         before starting a chat

@@ -1,6 +1,8 @@
 import React from 'react'
 import {FormGroup, Input, Label, FormText} from 'reactstrap'
 
+import css from './RadioField.less'
+
 type Props = {
     options: Array<{
         value: any,
@@ -51,7 +53,10 @@ export default class RadioField extends React.Component<Props> {
                         >
                             {option.label}
                             {option.description && (
-                                <FormText color="muted">
+                                <FormText
+                                    className={css.description}
+                                    color="muted"
+                                >
                                     {option.description}
                                 </FormText>
                             )}

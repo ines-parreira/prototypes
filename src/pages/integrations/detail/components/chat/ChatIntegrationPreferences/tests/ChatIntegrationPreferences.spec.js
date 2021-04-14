@@ -350,6 +350,9 @@ describe('<ChatIntegrationPreferences/>', () => {
 
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
+            const mockedTooltip = document.createElement('div')
+            mockedTooltip.setAttribute('id', 'email-capture-help')
+            document.body.appendChild(mockedTooltip)
             const component = mount(
                 <ChatIntegrationPreferences
                     updateOrCreateIntegration={() => {}}
