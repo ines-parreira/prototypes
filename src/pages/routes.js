@@ -56,6 +56,7 @@ import BusinessHours from './settings/businessHours'
 import TicketAssignment from './settings/ticketAssignment'
 
 import withPaywall from './common/utils/withPaywall.tsx'
+import OnboardingContent from './onboarding/OnboardingContent.tsx'
 
 const appRender = (props: {
     navbar: ComponentType<any>,
@@ -97,6 +98,14 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/tickets`} render={TicketsRoutes} />
             <Route path={`${path}/stats`} render={StatsRoutes} />
             <Route path={`${path}/settings`} render={SettingsRoutes} />
+            <Route
+                path={`${path}/home`}
+                exact
+                render={appRender({
+                    content: OnboardingContent,
+                    navbar: TicketNavbar,
+                })}
+            />
             <Route component={NoMatch} />
         </Switch>
     )
