@@ -5,7 +5,7 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
   class="container btn btn-secondary disabled"
   disabled=""
   href="#"
-  id="private-reply-button"
+  id="private-reply-button-1"
 >
   <img
     alt="Messenger icon"
@@ -21,7 +21,7 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
   class="container btn btn-secondary disabled"
   disabled=""
   href="#"
-  id="private-reply-button"
+  id="private-reply-button-1"
 >
   <img
     alt="Messenger icon"
@@ -36,7 +36,7 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
 <a
   class="container btn btn-secondary"
   href="#"
-  id="private-reply-button"
+  id="private-reply-button-1"
 >
   <img
     alt="Messenger icon"

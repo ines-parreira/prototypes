@@ -63,7 +63,7 @@ export default function PrivateReplyButton({
                 className={css.container}
                 onClick={toggle}
                 disabled={isAlreadySent || isMessageTooOld}
-                id="private-reply-button"
+                id={`private-reply-button-${ticketMessageId}`}
                 href="#"
             >
                 <img
@@ -91,7 +91,9 @@ export default function PrivateReplyButton({
                 />
             )}
             {(isAlreadySent || isMessageTooOld) && (
-                <UncontrolledTooltip target="private-reply-button">
+                <UncontrolledTooltip
+                    target={`private-reply-button-${ticketMessageId}`}
+                >
                     {tooltipMessage}
                 </UncontrolledTooltip>
             )}
