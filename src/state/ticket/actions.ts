@@ -647,7 +647,8 @@ export const fetchTicket = (ticketId: string, discreetly = false) => (
                 }
 
                 const sourceTypeOfResponse = getSourceTypeOfResponse(
-                    resp.messages
+                    resp.messages,
+                    resp.via
                 )
 
                 if (
@@ -786,7 +787,8 @@ export const _goToNextOrPrevTicket = (
                         dispatch(newMessageActions.initializeMessageDraft())
 
                         const sourceTypeOfResponse = getSourceTypeOfResponse(
-                            ticket.messages
+                            ticket.messages,
+                            ticket.via
                         )
 
                         if (

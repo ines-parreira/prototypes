@@ -5,6 +5,7 @@ import {createImmutableSelector} from '../../utils'
 import {getNewMessageState} from '../newMessage/selectors'
 import {NewMessageState} from '../newMessage/types'
 import {RootState} from '../types'
+import {TicketVia} from '../../business/types/ticket'
 
 import {TicketState} from './types'
 
@@ -105,6 +106,12 @@ export const getMessages = createImmutableSelector<
     List<any>,
     TicketState
 >(getTicketState, (state) => (state.get('messages') || fromJS([])) as List<any>)
+
+export const getVia = createImmutableSelector<
+    RootState,
+    TicketVia,
+    TicketState
+>(getTicketState, (state) => state.get('via') as TicketVia)
 
 export const getCustomerMessages = createImmutableSelector<
     RootState,

@@ -4,6 +4,7 @@ import _isObject from 'lodash/isObject'
 import _isBoolean from 'lodash/isBoolean'
 import {Map} from 'immutable'
 
+import {TicketMessageSourceType, TicketVia} from '../../business/types/ticket'
 import {TicketMessage} from '../../models/ticket/types'
 import * as ticketConfig from '../ticket'
 
@@ -293,6 +294,50 @@ describe('Config: ticket', () => {
             expect(result).toHaveProperty('name', config.name)
             expect(result).toHaveProperty('value', config.value)
             expect(result).toHaveProperty('fullName', config.fullName)
+        })
+    })
+
+    describe('responseSourceType()', () => {
+        it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
+            const messages: TicketMessage[] = []
+            const via = TicketVia.Twilio
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.InternalNote
+            )
+        })
+
+        it('should return message source type "internal-note" for Twilio ticket that has one internal note', () => {
+            const message = {
+                source: {type: TicketMessageSourceType.InternalNote},
+            } as TicketMessage
+            const messages: TicketMessage[] = [message]
+            const via = TicketVia.Twilio
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.InternalNote
+            )
+        })
+
+        it('should return default message source type for email ticket that has no message', () => {
+            const messages: TicketMessage[] = []
+            const via = TicketVia.Email
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                ticketConfig.DEFAULT_SOURCE_TYPE
+            )
+        })
+
+        it('should return default message source type for email ticket that has one email message', () => {
+            const message = {
+                source: {type: TicketMessageSourceType.Email},
+            } as TicketMessage
+            const messages: TicketMessage[] = [message]
+            const via = TicketVia.Email
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                ticketConfig.DEFAULT_SOURCE_TYPE
+            )
         })
     })
 })

@@ -2028,6 +2028,7 @@ Array [
     "retry": false,
     "status": undefined,
     "ticketId": 12,
+    "ticketVia": "helpdesk",
     "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START",
   },
   Object {

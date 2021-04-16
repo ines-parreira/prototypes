@@ -5,6 +5,7 @@ import {
     TicketMessageSourceType,
     TicketChannel,
     TicketStatus,
+    TicketVia,
 } from '../business/types/ticket'
 import {TicketMessage} from '../models/ticket/types'
 import {compare, getLastMessage, toImmutable} from '../utils'
@@ -309,17 +310,22 @@ export function sourceTypeToChannel(
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
 export function responseSourceType(
-    messages: Array<TicketMessage>
+    messages: Array<TicketMessage>,
+    via: TicketVia
 ): TicketMessageSourceType {
-    if (!messages) {
-        return DEFAULT_SOURCE_TYPE
+    if (!messages.length) {
+        return via === TicketVia.Twilio
+            ? TicketMessageSourceType.InternalNote
+            : DEFAULT_SOURCE_TYPE
     }
 
     const lastMessage = lastNonSystemTypeMessage(messages)
 
     // some messages don't have sources - failed imports, api, etc..
     if (!lastMessage || !lastMessage.get('source')) {
-        return DEFAULT_SOURCE_TYPE
+        return via === TicketVia.Twilio
+            ? TicketMessageSourceType.InternalNote
+            : DEFAULT_SOURCE_TYPE
     }
 
     const lastSourceType = lastMessage.getIn([

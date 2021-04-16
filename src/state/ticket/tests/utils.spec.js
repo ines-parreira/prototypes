@@ -5,18 +5,23 @@ import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration.ts'
 import {getChannels} from '../../integrations/selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations.ts'
 import {
-    guessReceiversFromTicket,
-    receiversValueFromState,
-    receiversStateFromValue,
-    getPreferredChannel,
     getNewMessageSender,
+    getPreferredChannel,
+    getSourceTypeOfResponse,
+    guessReceiversFromTicket,
     isForwardedMessage,
-    replaceIntegrationVariables,
     persistLastSenderChannel,
+    receiversStateFromValue,
+    receiversValueFromState,
+    replaceIntegrationVariables,
 } from '../utils'
 import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
+import {
+    TicketMessageSourceType,
+    TicketVia,
+} from '../../../business/types/ticket.ts'
 
-import {smoochTicket, emailTicket, facebookPost} from './fixtures'
+import {emailTicket, facebookPost, smoochTicket} from './fixtures'
 
 jest.addMatchers(immutableMatchers)
 
@@ -192,6 +197,28 @@ const receiversStateExample = {
 const channels = getChannels({integrations: fromJS(integrationsState)})
 
 describe('ticket utils', () => {
+    describe('getSourceTypeOfResponse()', () => {
+        it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
+            const messages = []
+            const via = TicketVia.Twilio
+
+            expect(getSourceTypeOfResponse(messages, via)).toEqual(
+                TicketMessageSourceType.InternalNote
+            )
+        })
+
+        it('should return message source type "internal-note" for Twilio ticket that has one internal note', () => {
+            const messages = [
+                {source: {type: TicketMessageSourceType.InternalNote}},
+            ]
+            const via = TicketVia.Twilio
+
+            expect(getSourceTypeOfResponse(messages, via)).toEqual(
+                TicketMessageSourceType.InternalNote
+            )
+        })
+    })
+
     describe('guessReceiversFromTicket()', () => {
         it('guess receivers empty', () => {
             const updatedTicket = ticket.delete('messages').delete('customer')

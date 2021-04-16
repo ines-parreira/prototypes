@@ -12,12 +12,10 @@ import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
 import * as ticketConfig from '../../config/ticket.ts'
 import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration.ts'
 import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
-import {getActionTemplate, toImmutable} from '../../utils.ts'
+import {getActionTemplate, isImmutable, toImmutable} from '../../utils.ts'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {tryLocalStorage} from '../../services/common/utils.ts'
-
 import * as responseUtils from '../newMessage/responseUtils.ts'
-
 import {TicketMessageSourceType} from '../../business/types/ticket.ts'
 
 import {getProperty} from './selectors.ts'
@@ -74,8 +72,10 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * A utility function that gives the source type we should set on a **new** message based on the
  * source type of the message we're responding to.
  */
-export function getSourceTypeOfResponse(messages) {
-    const immutableMessages = toImmutable(messages)
+export function getSourceTypeOfResponse(messages, via) {
+    const immutableMessages = isImmutable(messages)
+        ? messages
+        : toImmutable(messages)
     const ticketId = immutableMessages.getIn([0, 'ticket_id'])
     if (ticketId) {
         const cachedSourceType = responseUtils.getSourceTypeCache(ticketId)
@@ -83,7 +83,7 @@ export function getSourceTypeOfResponse(messages) {
             return cachedSourceType
         }
     }
-    return ticketConfig.responseSourceType(immutableMessages)
+    return ticketConfig.responseSourceType(immutableMessages.toJS(), via)
 }
 
 /**

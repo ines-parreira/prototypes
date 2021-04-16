@@ -3,6 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
+import {TicketVia} from '../../../business/types/ticket'
 
 jest.addMatchers(immutableMatchers)
 
@@ -71,6 +72,7 @@ describe('ticket selectors', () => {
                 state: {
                     dirty: false,
                 },
+                via: TicketVia.Email,
             }),
         }
     })
@@ -152,6 +154,12 @@ describe('ticket selectors', () => {
             state.ticket.get('messages')
         )
         expect(selectors.getMessages({})).toEqualImmutable(fromJS([]))
+    })
+
+    it('getVia', () => {
+        expect(selectors.getVia(state)).toEqualImmutable(
+            state.ticket.get('via')
+        )
     })
 
     it('getPendingMessages', () => {

@@ -199,20 +199,9 @@ export class ReplyMessageChannelContainer extends React.Component {
     }
 
     render() {
-        const {
-            messages,
-            prepareNewMessage,
-            isForward,
-            className,
-            ticket,
-        } = this.props
+        const {prepareNewMessage, isForward, className, ticket} = this.props
 
         const isTicketExisting = !!ticket.get('id')
-
-        if (isTicketExisting && messages.isEmpty()) {
-            return null
-        }
-
         const replyOptions = ticket.get('reply_options')
 
         const suggestEmail = !isTicketExisting || !!replyOptions.get('email')

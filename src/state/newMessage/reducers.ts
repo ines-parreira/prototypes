@@ -15,6 +15,7 @@ import {
 import {
     TicketMessageSourceType,
     TicketChannel,
+    TicketVia,
 } from '../../business/types/ticket'
 import * as ticketTypes from '../ticket/constants'
 import * as ticketConfig from '../../config/ticket'
@@ -189,6 +190,7 @@ export default function reducer(
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             const messages = fromJS(action.messages) as List<any>
+            const via = action.ticketVia
             // clear the reply cache
             responseUtils.deleteReplyCache(
                 (action.ticketId as unknown) as string
@@ -208,7 +210,8 @@ export default function reducer(
 
             //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
             const sourceType = getSourceTypeOfResponse(
-                messages
+                messages,
+                via
             ) as TicketMessageSourceType
             return resetContentState(state).set(
                 'newMessage',
@@ -229,10 +232,12 @@ export default function reducer(
 
         case types.NEW_MESSAGE_RESET_FROM_TICKET: {
             const {ticket} = action
+            const via = ticket?.get('via')
             const messages = ticket?.get('messages') || fromJS([])
 
             const messageType = state.getIn(['newMessage', 'source', 'type'])
-            const sourceType = messageType || getSourceTypeOfResponse(messages)
+            const sourceType =
+                messageType || getSourceTypeOfResponse(messages, via)
 
             const newMessage = makeNewMessage(
                 //$TsFixMe remove casting once getChannelFromSourceType is migrated
@@ -249,7 +254,10 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
-            const {channel} = action.resp as {channel: TicketChannel}
+            const {channel, via} = action.resp as {
+                channel: TicketChannel
+                via: TicketVia
+            }
             const messages = fromJS(
                 (action.resp as {messages: unknown[]}).messages
             )
@@ -273,16 +281,23 @@ export default function reducer(
                 //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
                 makeNewMessage(
                     channel,
-                    getSourceTypeOfResponse(messages) as TicketMessageSourceType
+                    getSourceTypeOfResponse(
+                        messages,
+                        via
+                    ) as TicketMessageSourceType
                 )
             )
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
-            const {messages} = action.resp as {messages: unknown[]}
+            const {messages, via} = action.resp as {
+                messages: unknown[]
+                via: TicketVia
+            }
             //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
             const sourceType = getSourceTypeOfResponse(
-                messages
+                messages,
+                via
             ) as TicketMessageSourceType
 
             return resetContentState(state).set(

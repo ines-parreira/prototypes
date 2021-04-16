@@ -825,6 +825,7 @@ export function prepareTicketMessage(
                     state: RootState
                 ) => List<any>)(state),
                 ticketId: ticket.get('id'),
+                ticketVia: ticket.get('via'),
             })
 
             onMessageSent(dispatch)
@@ -892,6 +893,7 @@ export function sendTicketMessage(
                             const messages = (ticketSelectors.getMessages as (
                                 state: RootState
                             ) => List<any>)(state)
+                            const via = ticketSelectors.getVia(state)
 
                             dispatch({
                                 type:
@@ -903,7 +905,8 @@ export function sendTicketMessage(
                             })
                             //$TsFixMe remove casting once utils are migrated
                             const sourceTypeOfResponse = getSourceTypeOfResponse(
-                                messages
+                                messages,
+                                via
                             ) as TicketMessageSourceType
 
                             if (

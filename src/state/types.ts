@@ -2,7 +2,7 @@ import {Map, List} from 'immutable'
 import {Action} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
-import {TicketMessageSourceType} from '../business/types/ticket'
+import {TicketMessageSourceType, TicketVia} from '../business/types/ticket'
 import {Integration, IntegrationType} from '../models/integration/types'
 import {PaginationMeta, OrderDirection} from '../models/api/types'
 
@@ -67,6 +67,7 @@ export type GorgiasAction = {
     tickets?: List<any>
     ticket?: Map<any, any>
     ticketId?: number | string
+    ticketVia?: TicketVia
     userId?: number
     subscription?: Subscription
     setting?: AccountSetting

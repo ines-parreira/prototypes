@@ -54,4 +54,5 @@ export enum TicketVia {
     Email = 'email',
     Helpdesk = 'helpdesk',
     Facebook = 'facebook',
+    Twilio = 'twilio',
 }
