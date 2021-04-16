@@ -256,14 +256,6 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-updated',
         onReceive: function (json) {
-            if (isCurrentlyOnTicket((json as TicketUpdatedEvent).ticket.id)) {
-                ;((this as unknown) as SocketManager).send(
-                    SocketEventType.TicketViewed,
-                    ((json as TicketUpdatedEvent).ticket
-                        .id as unknown) as string
-                )
-            }
-
             typeSafeReduxStore.dispatch(
                 ticketActions.mergeTicket(
                     (json as TicketUpdatedEvent).ticket
