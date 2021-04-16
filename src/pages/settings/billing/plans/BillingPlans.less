@@ -1,31 +1,42 @@
-@import "~css/new/colors";
+@import '~css/new/colors';
 
 :local {
-  .interval-toggle {
-    text-align: center;
-    padding-bottom: 35px;
-    max-width: 1164px;
-  }
-
-  .plans-container {
-    background-color: @darkWhite;
-    padding-bottom: 1px;
-    padding-top: 35px;
-    margin-bottom: 45px;
-    margin-top: -20px;
-  }
-
-  .faq {
-    dt {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 12px;
+    .interval-toggle {
+        text-align: center;
+        padding-bottom: 35px;
     }
 
-    dd {
-      font-size: 14px;
-      font-weight: normal;
-      margin-bottom: 25px;
+    .plans-container {
+        background-color: @darkWhite;
+        padding-bottom: 1px;
+        padding-top: 35px;
+        margin-bottom: 45px;
+        margin-top: -20px;
     }
-  }
+
+    .faq {
+        [class*='col'] {
+            @media (min-width: 1366px) {
+                flex: 0 0 percentage(1/3);
+                max-width: percentage(1/3);
+            }
+
+            @media (min-width: 1920px) {
+                flex: 0 0 25%;
+                max-width: 25%;
+            }
+        }
+
+        dt {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        dd {
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+    }
 }
