@@ -23,7 +23,7 @@ import SelfServiceContainer from './settings/selfService/SelfServiceContainer.ts
 import CustomerListContainer from './customers/list/CustomerListContainer'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer.tsx'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer.tsx'
-import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
+import CustomerSourceContainer from './customers/detail/CustomerSourceContainer.tsx'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 import StatsPage from './stats/StatsPage'
 
