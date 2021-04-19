@@ -189,8 +189,6 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
         nextStep = '/installation'
     } else if (resp.type === IntegrationType.SmoochIntegrationType) {
         nextStep = '/overview'
-    } else if (resp.type === IntegrationType.PhoneIntegrationType) {
-        nextStep = '/preferences'
     }
 
     history.push(
@@ -628,6 +626,44 @@ export function verifyEmailIntegration(token: string) {
                 },
                 (error: AxiosError) => {
                     return dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: (fromJS(error.response) as Map<
+                                any,
+                                any
+                            >).getIn(['data', 'error', 'msg']),
+                        })
+                    )
+                }
+            )
+    }
+}
+
+export function klaviyoSyncHistoricalEvent() {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const state = getState()
+        const integration = integrationSelectors.getCurrentIntegration(state)
+
+        return axios
+            .post(
+                `/api/integrations/klaviyo/${
+                    integration.get('id') as number
+                }/sync/`
+            )
+            .then(
+                () => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'Syncing process has started!',
+                        })
+                    )
+                },
+                (error: AxiosError) => {
+                    void dispatch(
                         notify({
                             status: NotificationStatus.Error,
                             message: (fromJS(error.response) as Map<

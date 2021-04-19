@@ -26,12 +26,17 @@ import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {
+    KLAVIYO_INITIAL_SYNC_SYNCED,
+    KLAVIYO_INITIAL_SYNC_SYNCING,
+} from '../../../../../config/integrations/klaviyo'
 
 interface IActions {
     updateOrCreateIntegration: (
         data: Map<string, unknown> | unknown
     ) => AxiosPromise
     deleteIntegration: (integration: Map<string, unknown>) => AxiosPromise
+    klaviyoSyncHistoricalEvent: () => AxiosPromise
 }
 
 type Props = {
@@ -46,6 +51,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
         isSubmitting: false,
         isActivating: false,
         isDeleting: false,
+        isSyncing: null,
         name: '',
         apiPublicKey: '',
         apiPrivateKey: '',
@@ -59,6 +65,14 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
     }
 
     isInitialized = false
+
+    _syncHistorical = () => {
+        const {actions} = this.props
+        this.setState({isSyncing: KLAVIYO_INITIAL_SYNC_SYNCING})
+        return actions.klaviyoSyncHistoricalEvent().then((res: unknown) => {
+            return res
+        })
+    }
 
     _deleteIntegration = () => {
         const {actions, integration} = this.props
@@ -122,6 +136,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
     _getIntegration = (integration: Map<string, unknown>) => {
         return {
             name: integration.get('name', ''),
+            isSyncing: integration.getIn(['meta', 'sync_status'], null),
             apiPublicKey: integration.getIn(['meta', 'api', 'public_key'], ''),
             ticketCreated: integration.getIn(
                 ['meta', 'event_sync', 'ticket_created'],
@@ -183,6 +198,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
             isSubmitting,
             isActivating,
             isDeleting,
+            isSyncing,
             name,
             apiPublicKey,
             apiPrivateKey,
@@ -197,8 +213,6 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
 
         const isLoading = false
         const isActive = !integration.get('deactivated_datetime')
-        const isExporting = false
-        const isShowing = false
 
         return (
             <div className="full-width">
@@ -241,25 +255,35 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                     or contact us.
                                 </p>
                             ) : null}
-                            {isShowing && (
+                            {isUpdate && (
                                 <div>
                                     <h3>Historical data sync</h3>
-                                    <p>
-                                        We will export the last{' '}
-                                        <strong>2 years </strong>of events and
-                                        customers from Gorgias to Klaviyo.
-                                    </p>
-                                    <ConfirmButton
-                                        color="primary"
-                                        loading={isLoading}
-                                        confirm={() => {
-                                            return undefined
-                                        }}
-                                        content="Are you sure you want to sync historical data?"
-                                    >
-                                        Sync historical data
-                                    </ConfirmButton>
-                                    {isExporting && (
+                                    {!(
+                                        isSyncing ===
+                                        KLAVIYO_INITIAL_SYNC_SYNCING
+                                    ) && (
+                                        <div>
+                                            <p>
+                                                We will export the last{' '}
+                                                <strong>2 years </strong>of
+                                                events and customers from
+                                                Gorgias to Klaviyo.
+                                            </p>
+                                            <ConfirmButton
+                                                color="primary"
+                                                loading={isLoading}
+                                                confirm={this._syncHistorical}
+                                                content="Are you sure you want to sync historical data?"
+                                            >
+                                                {isSyncing ===
+                                                KLAVIYO_INITIAL_SYNC_SYNCED
+                                                    ? 'Resync historical data'
+                                                    : 'Sync historical data'}
+                                            </ConfirmButton>
+                                        </div>
+                                    )}
+                                    {isSyncing ===
+                                        KLAVIYO_INITIAL_SYNC_SYNCING && (
                                         <Alert color="info" className="mb-4">
                                             <p>
                                                 <b className="alert-heading">
