@@ -152,6 +152,7 @@ export function shouldHidePhoneIntegration() {
         'illiatststore.gorgias.com',
         'zachbanov.gorgias.com',
         'test-martin.gorgias.com',
+        'bakehouse.gorgias.com',
     ]
 
     return isProd && !phoneAllowedHostnames.includes(location.hostname)
