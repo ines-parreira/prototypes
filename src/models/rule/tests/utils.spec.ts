@@ -1,6 +1,6 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
-import {rule} from '../../../fixtures/rule'
+import {rule, businessHourRule} from '../../../fixtures/rule'
 import {RuleObject, IdentifierCategoryKey} from '../types'
 import {getAstPath, getFormattedRule, getCategoryFromPath} from '../utils'
 
@@ -76,6 +76,59 @@ describe('rule utils', () => {
                     fromJS(['body', 0, 'test', 'arguments', 0])
                 )
             ).toMatchSnapshot()
+        })
+        it('should not keep the second argument of a binary operator when switching to a unary operator', () => {
+            const path = fromJS(['body', '0', 'test', 'arguments', '0'])
+            const value = 'message.text'
+            const binaryOperatorRule = getFormattedRule(
+                fromJS(businessHourRule),
+                value,
+                path
+            )
+            const unaryOperatorRule = getFormattedRule(
+                fromJS(binaryOperatorRule),
+                'message.created_datetime',
+                path
+            )
+            expect(
+                unaryOperatorRule.getIn([
+                    'code_ast',
+                    'body',
+                    0,
+                    'test',
+                    'callee',
+                    'name',
+                ])
+            ).toBe('duringBusinessHours')
+            expect(
+                (unaryOperatorRule.getIn([
+                    'code_ast',
+                    'body',
+                    0,
+                    'test',
+                    'arguments',
+                ]) as List<any>).size
+            ).toBe(1)
+        })
+        it('should set the second argument of a binary operator to null when changing the left operand', () => {
+            const path = fromJS(['body', '0', 'test', 'arguments', '0'])
+            const value = 'message.text'
+            const binaryOperatorRule = getFormattedRule(
+                fromJS(rule),
+                value,
+                path
+            )
+            expect(
+                binaryOperatorRule.getIn([
+                    'code_ast',
+                    'body',
+                    0,
+                    'test',
+                    'arguments',
+                    1,
+                    'value',
+                ])
+            ).toBe(null)
         })
     })
 

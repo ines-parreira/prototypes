@@ -317,3 +317,78 @@ export const rule = {
     description: 'Set tags',
     updated_datetime: '2021-02-11T13:15:46.420156+00:00',
 }
+
+export const businessHourRule = {
+    priority: 22,
+    deactivated_datetime: '2021-04-16T09:03:03+00:00',
+    name: 'fixture',
+    uri: '/api/rules/23/',
+    code: 'if (duringBusinessHours(message.created_datetime)) {\n}',
+    code_ast: {
+        loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+        type: 'Program',
+        body: [
+            {
+                loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+                type: 'IfStatement',
+                test: {
+                    loc: {
+                        start: {line: 1, column: 4},
+                        end: {line: 1, column: 49},
+                    },
+                    type: 'CallExpression',
+                    callee: {
+                        loc: {
+                            start: {line: 1, column: 4},
+                            end: {line: 1, column: 23},
+                        },
+                        type: 'Identifier',
+                        name: 'duringBusinessHours',
+                    },
+                    arguments: [
+                        {
+                            loc: {
+                                start: {line: 1, column: 24},
+                                end: {line: 1, column: 48},
+                            },
+                            type: 'MemberExpression',
+                            computed: false,
+                            object: {
+                                loc: {
+                                    start: {line: 1, column: 24},
+                                    end: {line: 1, column: 31},
+                                },
+                                type: 'Identifier',
+                                name: 'message',
+                            },
+                            property: {
+                                loc: {
+                                    start: {line: 1, column: 32},
+                                    end: {line: 1, column: 48},
+                                },
+                                type: 'Identifier',
+                                name: 'created_datetime',
+                            },
+                        },
+                    ],
+                },
+                consequent: {
+                    loc: {
+                        start: {line: 1, column: 51},
+                        end: {line: 2, column: 1},
+                    },
+                    type: 'BlockStatement',
+                    body: [],
+                },
+                alternate: null,
+            },
+        ],
+        sourceType: 'script',
+    },
+    created_datetime: '2021-04-16T09:03:03.759930+00:00',
+    event_types: 'ticket-created',
+    type: 'user',
+    id: 23,
+    description: '',
+    updated_datetime: '2021-04-16T09:03:03.759945+00:00',
+}

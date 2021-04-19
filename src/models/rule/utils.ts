@@ -2,10 +2,15 @@ import esprima from 'esprima'
 import escodegen from 'escodegen'
 import {fromJS, Map, List} from 'immutable'
 import _set from 'lodash/set'
+import _get from 'lodash/get'
 
 import {ObjectExpressionPropertyKey, Rule} from '../../state/rules/types'
 
+import {UNARY_OPERATORS} from '../../config'
+
 import {RuleObject, IdentifierCategoryKey} from './types'
+
+const unaryOperatorsNames = Object.keys(UNARY_OPERATORS)
 
 export function getAstPath<T>(
     property: ObjectExpressionPropertyKey,
@@ -52,11 +57,18 @@ export function getFormattedRule(
         formattedPath,
         generateExpression(value.split('.').reverse())
     )
-    _set(code_ast, formattedPath.slice(0, -1).concat(['1']), {
-        raw: "'null'",
-        type: 'Literal',
-        value: null,
-    })
+    const operatorName: string = _get(
+        code_ast,
+        formattedPath.slice(0, -2).concat(['callee', 'name'])
+    )
+
+    if (!unaryOperatorsNames.includes(operatorName)) {
+        _set(code_ast, formattedPath.slice(0, -1).concat(['1']), {
+            raw: "'null'",
+            type: 'Literal',
+            value: null,
+        })
+    }
     const code = escodegen.generate(code_ast, {format: {semicolons: false}})
 
     return fromJS({
