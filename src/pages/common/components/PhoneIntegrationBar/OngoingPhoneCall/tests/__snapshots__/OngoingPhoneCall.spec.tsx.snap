@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OngoingPhoneCall/> should render 1`] = `
+<div
+  class="container"
+  data-testid="ongoing-phone-call"
+>
+  <div
+    class="inner"
+  >
+    <span
+      class="container"
+    >
+      <span
+        class="mr-2"
+      >
+        ❤️
+      </span>
+      My Phone Integration
+    </span>
+    <span
+      class="container"
+    >
+      <span
+        class="name"
+      >
+        Bob
+      </span>
+       (
+      +1 415 888 0101
+      )
+    </span>
+    <button
+      class="mute btn btn-secondary"
+      data-testid="mute-call-button"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        mic
+      </i>
+    </button>
+    <button
+      class="btn btn-danger"
+      data-testid="end-call-button"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        call_end
+      </i>
+    </button>
+  </div>
+  <div
+    class="container"
+    style="width: 350px;"
+  >
+    <div
+      class="inner"
+    >
+      <span>
+        Connected
+      </span>
+      <span>
+        xx:xx
+      </span>
+    </div>
+  </div>
+</div>
+`;

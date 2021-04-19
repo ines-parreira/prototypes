@@ -7,6 +7,7 @@ import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types
 
 import css from '../Event.less'
 
+import callAnsweredIcon from './icons/call-answered.svg'
 import callIncomingIcon from './icons/call-incoming.svg'
 import callOutgoingIcon from './icons/call-outgoing.svg'
 import callCompletedIcon from './icons/call-completed.svg'
@@ -19,6 +20,7 @@ const icons = new window.Map<string, string>([
     [PhoneIntegrationEvent.CompletedPhoneCall, callCompletedIcon],
     [PhoneIntegrationEvent.MissedPhoneCall, callMissedIcon],
     [PhoneIntegrationEvent.VoicemailRecording, voicemailLeftIcon],
+    [PhoneIntegrationEvent.PhoneCallAnswered, callAnsweredIcon],
 ])
 
 const names = new window.Map<string, string>([
@@ -27,6 +29,7 @@ const names = new window.Map<string, string>([
     [PhoneIntegrationEvent.CompletedPhoneCall, 'Call ended'],
     [PhoneIntegrationEvent.MissedPhoneCall, 'Missed call'],
     [PhoneIntegrationEvent.VoicemailRecording, 'Voicemail left by a customer'],
+    [PhoneIntegrationEvent.PhoneCallAnswered, 'Call answered'],
 ])
 
 type Props = {

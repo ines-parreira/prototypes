@@ -26,4 +26,5 @@ export enum PhoneIntegrationEvent {
     CompletedPhoneCall = 'completed-phone-call',
     MissedPhoneCall = 'missed-phone-call',
     VoicemailRecording = 'voicemail-recording',
+    PhoneCallAnswered = 'phone-call-answered',
 }

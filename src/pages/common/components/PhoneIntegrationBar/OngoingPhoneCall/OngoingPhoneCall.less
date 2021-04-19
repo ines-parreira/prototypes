@@ -1,0 +1,31 @@
+@import '~css/new/colors.less';
+
+:local {
+  .container {
+    background-color: @neutral0;
+    color: @neutral10;
+    display: flex;
+    position: relative;
+
+    &::before {
+      content: '';
+      background: linear-gradient(180deg, rgba(21, 32, 101, 0) 36.1%, rgba(21, 32, 101, 0.1) 133.33%);
+      height: 6px;
+      width: 100%;
+      position: absolute;
+      top: -6px;
+    }
+
+    .inner {
+      padding: 0.875rem 1.25rem;
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .mute {
+        margin-left: auto;
+        margin-right: 1rem;
+      }
+    }
+  }
+}

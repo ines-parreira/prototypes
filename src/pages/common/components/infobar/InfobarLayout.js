@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import _max from 'lodash/max'
 
 import {tryLocalStorage} from '../../../../services/common/utils.ts'
 import * as layoutSelectors from '../../../../state/layout/selectors.ts'
 import {ErrorBoundary} from '../../../ErrorBoundary'
 
+import {getInfobarMinWidth, getInfobarWidth} from './utils'
 import css from './Infobar.less'
 
 @connect((state) => ({
@@ -27,14 +27,12 @@ export default class InfobarLayout extends React.Component {
 
         this.cursorX = null
         this.originalWidth = 0
-        this.minWidth = _max([window.innerWidth / 5.1, 350])
+        this.minWidth = getInfobarMinWidth()
         this.maxWidth = window.innerWidth / 2
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        const width =
-            window.localStorage.getItem('infobar-width') || this.minWidth
-
+        const width = getInfobarWidth() || this.minWidth
         this.state = {width}
     }
 

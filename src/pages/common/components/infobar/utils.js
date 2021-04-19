@@ -21,6 +21,7 @@ import _sortBy from 'lodash/sortBy'
 import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
+import _max from 'lodash/max'
 
 import momentTimezone from 'moment-timezone'
 import moment from 'moment'
@@ -827,4 +828,12 @@ export function getDisplayCustomerLastSeenOnChat(
         : customerLastSeenOnChatUtcDateTime.calendar(referenceDay, {
               lastWeek: 'dddd',
           })
+}
+
+export function getInfobarMinWidth() {
+    return _max([window.innerWidth / 5.1, 350])
+}
+
+export function getInfobarWidth() {
+    return window.localStorage.getItem('infobar-width')
 }

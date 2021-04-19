@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneCustomerName/> should render 1`] = `
+<span
+  class="container"
+>
+  <span
+    class="name"
+  >
+    Bob
+  </span>
+   (
+  +1 415 888 0101
+  )
+</span>
+`;
+
+exports[`<PhoneCustomerName/> should render 2`] = `
+<span
+  class="container"
+>
+  <span
+    class="name"
+  >
+    Bob
+  </span>
+   (
+  +33 6 11 22 33 44
+  )
+</span>
+`;

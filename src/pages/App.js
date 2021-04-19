@@ -1,6 +1,6 @@
 // @flow
 import classnames from 'classnames'
-import React, {type Node, type ComponentType} from 'react'
+import React, {type ComponentType, type Node} from 'react'
 import DocumentTitle from 'react-document-title'
 import {connect} from 'react-redux'
 import {Button, Container} from 'reactstrap'
@@ -21,6 +21,8 @@ import * as segmentTracker from '../store/middlewares/segmentTracker'
 import type {reactRouterLocation} from '../types'
 import {injectInterceptor} from '../utils/axios.ts'
 import {handleUsageBanner} from '../state/notifications/actions.ts'
+import {hasIntegrationOfTypes} from '../state/integrations/selectors.ts'
+import {IntegrationType} from '../models/integration/types.ts'
 
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/'
@@ -29,6 +31,7 @@ import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp.tsx'
 import ModalNotification from './common/components/ModalNotification.tsx'
 import notificationsTheme from './common/components/Notifications.ts'
 import {ErrorBoundary} from './ErrorBoundary'
+import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar.tsx'
 
 type Props = {
     // current logged in user
@@ -44,6 +47,7 @@ type Props = {
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
     gotoActiveView: typeof viewsActions.gotoActiveView,
+    hasPhoneIntegration: boolean,
 
     openedPanel?: string,
 
@@ -127,6 +131,8 @@ class App extends React.Component<Props> {
             content: Content,
             navbar: Navbar,
             infobar: Infobar,
+            hasPhoneIntegration,
+            children,
         } = this.props
         const bannerNotifications = notifications.filter(
             (notif) => notif.style === 'banner'
@@ -134,6 +140,12 @@ class App extends React.Component<Props> {
         const modalNotifications = notifications.filter(
             (notif) => notif.style === 'modal'
         )
+
+        const Wrapper = containerPadding ? FullPage : Container
+        const wrapperProps = containerPadding
+            ? {noContainerWidthLimit}
+            : {fluid: true, className: classnames(css['main-content'])}
+        const content = !!Content ? <Content /> : children
 
         const hasOpenedPanel = !!openedPanel
 
@@ -155,73 +167,68 @@ class App extends React.Component<Props> {
                         <div className={css.app}>
                             <Navbar />
 
-                            <div
-                                className={classnames(
-                                    'app-content',
-                                    css.content
-                                )}
-                            >
-                                <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
-                                    <Button
-                                        className="mr-3"
-                                        type="button"
-                                        color="link"
-                                        onClick={() =>
-                                            this.props.openPanel('navbar')
-                                        }
-                                    >
-                                        <i className="material-icons">menu</i>
-                                    </Button>
-                                    {infobarOnMobile && (
-                                        <Button
-                                            className="ml-3"
-                                            type="button"
-                                            color="link"
-                                            onClick={() =>
-                                                this.props.openPanel('infobar')
-                                            }
-                                        >
-                                            More info
-                                        </Button>
-                                    )}
-                                </div>
-                                {containerPadding ? (
-                                    <FullPage
-                                        noContainerWidthLimit={
-                                            !!noContainerWidthLimit
-                                        }
-                                    >
-                                        <ErrorBoundary>
-                                            {!!Content ? (
-                                                <Content />
-                                            ) : (
-                                                this.props.children
-                                            )}
-                                        </ErrorBoundary>
-                                    </FullPage>
-                                ) : (
-                                    <Container
-                                        fluid
+                            <div className="d-flex flex-grow-1 flex-column">
+                                <div
+                                    className="d-flex flex-grow-1"
+                                    style={{
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    <div
                                         className={classnames(
-                                            css['main-content']
+                                            'app-content',
+                                            css.content
                                         )}
                                     >
-                                        <ErrorBoundary>
-                                            {!!Content ? (
-                                                <Content />
-                                            ) : (
-                                                this.props.children
+                                        <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
+                                            <Button
+                                                className="mr-3"
+                                                type="button"
+                                                color="link"
+                                                onClick={() =>
+                                                    this.props.openPanel(
+                                                        'navbar'
+                                                    )
+                                                }
+                                            >
+                                                <i className="material-icons">
+                                                    menu
+                                                </i>
+                                            </Button>
+                                            {infobarOnMobile && (
+                                                <Button
+                                                    className="ml-3"
+                                                    type="button"
+                                                    color="link"
+                                                    onClick={() =>
+                                                        this.props.openPanel(
+                                                            'infobar'
+                                                        )
+                                                    }
+                                                >
+                                                    More info
+                                                </Button>
                                             )}
-                                        </ErrorBoundary>
-                                    </Container>
-                                )}
-                            </div>
+                                        </div>
 
-                            {!!Infobar && (
-                                <Infobar
-                                    isEditingWidgets={!!isEditingWidgets}
-                                />
-                            )}
+                                        <Wrapper {...wrapperProps}>
+                                            <ErrorBoundary>
+                                                {content}
+                                            </ErrorBoundary>
+                                        </Wrapper>
+                                    </div>
+
+                                    {!!Infobar && (
+                                        <Infobar
+                                            isEditingWidgets={
+                                                !!isEditingWidgets
+                                            }
+                                        />
+                                    )}
+                                </div>
+
+                                {hasPhoneIntegration && <PhoneIntegrationBar />}
+                            </div>
 
                             <div
                                 className={classnames(css.backdrop, {
@@ -251,6 +258,9 @@ function mapStateToProps(state) {
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
         activeView: viewsSelectors.getActiveView(state),
+        hasPhoneIntegration: hasIntegrationOfTypes(
+            IntegrationType.PhoneIntegrationType
+        )(state),
     }
 }
 

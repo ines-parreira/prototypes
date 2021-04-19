@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IncomingPhoneCall/> should render 1`] = `
+<div
+  class="container"
+  data-testid="incoming-phone-call"
+>
+  <div
+    class="inner"
+  >
+    <span
+      class="container primary"
+    >
+      <span
+        class="mr-2"
+      >
+        ❤️
+      </span>
+      My Phone Integration
+    </span>
+    <span
+      class="container"
+    >
+      <span
+        class="name"
+      >
+        Bob
+      </span>
+       (
+      +1 415 888 0101
+      )
+    </span>
+    <button
+      class="accept btn btn-secondary"
+      data-testid="accept-call-button"
+      type="button"
+    >
+      <i
+        class="material-icons mr-2"
+      >
+        phone
+      </i>
+      Accept
+    </button>
+    <button
+      class="decline btn btn-secondary"
+      data-testid="decline-call-button"
+      type="button"
+    >
+      <i
+        class="material-icons mr-2"
+      >
+        call_end
+      </i>
+      Decline
+    </button>
+  </div>
+  <div
+    class="container primary"
+    style="width: 350px;"
+  >
+    <div
+      class="inner"
+    >
+      <span>
+        Incoming call...
+      </span>
+      <span>
+        Waiting for xx:xx
+      </span>
+    </div>
+  </div>
+</div>
+`;

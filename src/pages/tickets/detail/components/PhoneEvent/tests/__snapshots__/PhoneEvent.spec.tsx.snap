@@ -139,3 +139,31 @@ exports[`<PhoneEvent/> render() should render 5`] = `
   </div>
 </div>
 `;
+
+exports[`<PhoneEvent/> render() should render 6`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="Call answered"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Call answered
+      </span>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationName/> should render 1`] = `
+<span
+  class="container"
+>
+  <span
+    class="mr-2"
+  >
+    ❤️
+  </span>
+  My Phone Integration
+</span>
+`;
+
+exports[`<PhoneIntegrationName/> should render as primary 1`] = `
+<span
+  class="container primary"
+>
+  <span
+    class="mr-2"
+  >
+    ❤️
+  </span>
+  My Phone Integration
+</span>
+`;

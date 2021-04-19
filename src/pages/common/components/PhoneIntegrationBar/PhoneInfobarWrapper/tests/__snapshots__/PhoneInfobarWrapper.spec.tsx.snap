@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneInfobarWrapper/> should render 1`] = `
+<div
+  class="container"
+  style="width: 350px;"
+>
+  <div
+    class="inner"
+  >
+    Foo...
+  </div>
+</div>
+`;
+
+exports[`<PhoneInfobarWrapper/> should render as primary 1`] = `
+<div
+  class="container primary"
+  style="width: 350px;"
+>
+  <div
+    class="inner"
+  >
+    Foo...
+  </div>
+</div>
+`;
+
+exports[`<PhoneInfobarWrapper/> should render with current infobar size 1`] = `
+<div
+  class="container"
+  style="width: 500px;"
+>
+  <div
+    class="inner"
+  >
+    Foo...
+  </div>
+</div>
+`;
