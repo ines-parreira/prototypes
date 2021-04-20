@@ -41,11 +41,6 @@ export default class YotpoIntegrationList extends React.Component<
 
                 <ul>
                     <li>
-                        Respond from Gorgias to Yotpo reviews under a certain
-                        rating (e.g. negative reviews), shoppers questions, past
-                        buyers answers, reviews picked up by profanity detectors
-                    </li>
-                    <li>
                         Display relevant customer information in custom Gorgias
                         widget
                     </li>

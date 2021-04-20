@@ -261,7 +261,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description:
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
         image: 'integrations/yotpo.png',
-        hide: true,
     },
     {
         title: 'BigCommerce',
