@@ -167,7 +167,12 @@ class App extends React.Component<Props> {
                         <div className={css.app}>
                             <Navbar />
 
-                            <div className="d-flex flex-grow-1 flex-column">
+                            <div
+                                className={classnames(
+                                    'd-flex flex-grow-1 flex-column',
+                                    css.container
+                                )}
+                            >
                                 <div
                                     className="d-flex flex-grow-1"
                                     style={{
@@ -226,7 +231,6 @@ class App extends React.Component<Props> {
                                         />
                                     )}
                                 </div>
-
                                 {hasPhoneIntegration && <PhoneIntegrationBar />}
                             </div>
 
