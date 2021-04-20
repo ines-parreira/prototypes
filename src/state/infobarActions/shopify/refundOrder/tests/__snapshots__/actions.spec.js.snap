@@ -168,7 +168,7 @@ Array [
         },
       ],
       "shipping": Immutable.Map {
-        "amount": "0.00",
+        "amount": "2.00",
       },
       "transactions": Immutable.List [
         Immutable.Map {
@@ -256,7 +256,7 @@ Array [
       "shipping": Immutable.Map {
         "amount": "0.00",
         "tax": "0.00",
-        "maximum_refundable": "0.00",
+        "maximum_refundable": "2.00",
       },
       "refund_line_items": Immutable.List [
         Immutable.Map {
@@ -334,7 +334,7 @@ Array [
         },
       ],
       "shipping": Immutable.Map {
-        "amount": "0.00",
+        "amount": "2.00",
       },
       "transactions": Immutable.List [
         Immutable.Map {
@@ -422,7 +422,7 @@ Array [
       "shipping": Immutable.Map {
         "amount": "0.00",
         "tax": "0.00",
-        "maximum_refundable": "0.00",
+        "maximum_refundable": "2.00",
       },
       "refund_line_items": Immutable.List [
         Immutable.Map {

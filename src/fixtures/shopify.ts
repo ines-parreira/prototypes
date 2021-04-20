@@ -29,6 +29,7 @@ import {
     RestockType,
     CancelReason,
     TransactionKind,
+    ShippingLine,
 } from '../constants/integrations/types/shopify'
 import {
     IntegrationDataItem,
@@ -124,7 +125,9 @@ export const shopifyCustomerFixture = () =>
         currency: 'USD',
     } as Customer)
 
-export const shopifyOrderFixture = ({shippingLines = []} = {}): Order =>
+export const shopifyOrderFixture = ({
+    shippingLines = [],
+}: {shippingLines?: Partial<ShippingLine>[]} = {}): Order =>
     ({
         id: 1894175539223,
         name: '#1684',
@@ -838,15 +841,15 @@ export const shopifyLineItemFixture = ({
     }
 
     if (currencyCode) {
-        ;(lineItem as Record<
-            string,
-            unknown
-        >).price_set = shopifyPriceSetFixture({
+        const setPrice = shopifyPriceSetFixture({
             amount: price,
             currencyCode,
             presentmentAmount: presentmentPrice || price,
             presentmentCurrencyCode: presentmentCurrencyCode || currencyCode,
         } as any)
+
+        ;(lineItem as Record<string, unknown>).price_set = setPrice
+        ;(lineItem as Record<string, unknown>).total_discount_set = setPrice
     }
 
     return (lineItem as unknown) as LineItem
@@ -1134,7 +1137,7 @@ export const shopifySuggestedRefundFixture = ({
         shipping: {
             amount: '0.00',
             tax: '0.00',
-            maximum_refundable: '0.00',
+            maximum_refundable: '2.00',
         },
         refund_line_items: [
             {

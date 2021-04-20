@@ -1,5 +1,6 @@
 import {fromJS, Map as ImmutableMap, List} from 'immutable'
 
+import {IntegrationType} from '../models/integration/types'
 import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
 import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers'
 import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers'
@@ -7,7 +8,6 @@ import {CreateOrderState} from '../state/infobarActions/shopify/createOrder/type
 import {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
 import {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'
 import {InfobarActionsState} from '../state/infobarActions/types'
-import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
 
 export const infobarActionsStateFixture = ({
     cancelOrderState = cancelOrderInitialState,
@@ -18,7 +18,7 @@ export const infobarActionsStateFixture = ({
     createOrderState?: typeof createOrderInitialState
     refundOrderState?: typeof refundOrderInitialState
 } = {}): InfobarActionsState => ({
-    [SHOPIFY_INTEGRATION_TYPE]: {
+    [IntegrationType.ShopifyIntegrationType]: {
         cancelOrder: cancelOrderState,
         createOrder: createOrderState,
         refundOrder: refundOrderState,

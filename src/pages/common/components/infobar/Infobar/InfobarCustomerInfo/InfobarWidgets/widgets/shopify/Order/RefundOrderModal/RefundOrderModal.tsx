@@ -1,9 +1,10 @@
-import React, {ChangeEvent} from 'react'
+import React, {ChangeEvent, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
+import {useUpdateEffect, usePrevious} from 'react-use'
 
 import {
     onCancel,
@@ -35,192 +36,168 @@ type OwnProps = Omit<InfobarModalProps, 'data'> & {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export class RefundOrderModalContainer extends React.PureComponent<Props> {
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
-
-    static defaultProps = {
-        data: {
+export const RefundOrderModalContainer = (
+    {
+        data = {
             actionName: null,
             order: fromJS({}),
         },
-    }
+        header,
+        integrations,
+        isOpen,
+        lineItems,
+        loading,
+        loadingMessage,
+        onCancel,
+        onChange,
+        onClose,
+        onInit,
+        onLineItemsChange,
+        onOpen,
+        onPayloadChange,
+        onReset,
+        onSubmit,
+        payload,
+        refund,
+        setPayload,
+    }: Props,
+    {integrationId}: {integrationId: number}
+) => {
+    const previousIsOpen = usePrevious(isOpen)
 
-    componentWillReceiveProps(nextProps: Props) {
-        const {
-            isOpen,
-            data: {actionName, order},
-            onOpen,
-            onInit,
-            onChange,
-        } = this.props
-        const {integrationId} = this.context
-
-        if (!isOpen && nextProps.isOpen) {
-            onOpen(actionName as string)
-            void onInit(integrationId, order)
-            onChange('order_id', order.get('id'))
+    useUpdateEffect(() => {
+        if (!previousIsOpen && isOpen) {
+            onOpen(data.actionName as string)
+            void onInit(integrationId, data.order)
+            onChange('order_id', data.order.get('id'))
             shortcutManager.pause()
         }
-    }
+    }, [data, integrationId, isOpen, onChange, onOpen, previousIsOpen])
 
-    _getIntegration() {
-        const {integrations} = this.props
-        const {integrationId} = this.context
+    const integration = useMemo(
+        () =>
+            integrations.find(
+                (integration: Map<any, any>) =>
+                    integration.get('id') === integrationId
+            ) as Map<any, any>,
+        [integrationId, integrations]
+    )
 
-        return integrations.find(
-            (integration: Map<any, any>) =>
-                integration.get('id') === integrationId
-        ) as Map<any, any>
-    }
+    const shopName = useMemo(
+        () => integration.getIn(['meta', 'shop_name']) as string,
+        [integration]
+    )
 
-    _onLineItemsChange = (lineItems: List<any>) => {
-        const {onLineItemsChange} = this.props
-        const {integrationId} = this.context
-
-        void onLineItemsChange(integrationId, lineItems)
-    }
-
-    _onPayloadChange = (payload: Map<any, any>) => {
-        const {onPayloadChange} = this.props
-        const {integrationId} = this.context
-
-        void onPayloadChange(integrationId, payload)
-    }
-
-    _onReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {payload, setPayload} = this.props
+    const handleReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {value} = event.target
-        const newPayload = payload.set('note', value)
+        const newPayload = payload?.set('note', value)
 
-        setPayload(newPayload)
+        newPayload && setPayload(newPayload)
     }
 
-    _onNotifyChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {payload, setPayload} = this.props
+    const handleNotifyChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {checked} = event.target
-        const newPayload = payload.set('notify', checked)
+        const newPayload = payload?.set('notify', checked)
 
-        setPayload(newPayload)
+        newPayload && setPayload(newPayload)
     }
 
-    _onCancel(via: string) {
-        const {onCancel, onClose} = this.props
-
+    const handleCancel = (via: string) => {
         onCancel(via)
         onClose()
-        this._onClose()
+        handleClose()
     }
 
-    _onCancelViaHeader = () => {
-        this._onCancel('header')
-    }
-
-    _onCancelViaFooter = () => {
-        this._onCancel('footer')
-    }
-
-    _onClose() {
-        const {onReset} = this.props
-
+    const handleClose = () => {
         shortcutManager.unpause()
         onReset()
     }
 
-    _onSubmit = (event: ChangeEvent<HTMLFormElement>) => {
-        const {payload, refund, onChange, onSubmit} = this.props
-        const finalPayload = getFinalRefundOrderPayload(payload, refund)
+    const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+        if (payload) {
+            const finalPayload = getFinalRefundOrderPayload(payload, refund)
 
-        event.preventDefault()
+            event.preventDefault()
 
-        onChange('payload', finalPayload.toJS(), () => {
-            onSubmit()
-            this._onClose()
-        })
-    }
-
-    render() {
-        const {
-            header,
-            isOpen,
-            payload,
-            refund,
-            lineItems,
-            loading,
-            loadingMessage,
-            data: {order, actionName},
-            setPayload,
-        } = this.props
-
-        const integration = this._getIntegration()
-        if (!integration) {
-            return null
+            onChange('payload', finalPayload.toJS(), () => {
+                onSubmit()
+                handleClose()
+            })
         }
-
-        const shopName = integration.getIn(['meta', 'shop_name'])
-
-        return (
-            <Modal
-                header={header}
-                isOpen={isOpen}
-                onClose={this._onCancelViaHeader}
-                keyboard={false}
-                size="xl"
-                bodyClassName="p-0"
-                backdrop="static"
-            >
-                <Form onSubmit={this._onSubmit}>
-                    {payload && lineItems && (
-                        <RefundOrderForm
-                            shopName={shopName}
-                            actionName={actionName}
-                            reason={payload.get('note', '')}
-                            notify={payload.get('notify')}
-                            loading={loading}
-                            payload={payload}
-                            order={order}
-                            refund={refund}
-                            lineItems={lineItems}
-                            setPayload={setPayload}
-                            onPayloadChange={this._onPayloadChange}
-                            onLineItemsChange={this._onLineItemsChange}
-                            onReasonChange={this._onReasonChange}
-                            onNotifyChange={this._onNotifyChange}
-                        />
-                    )}
-                    <ModalFooter className={css.footer}>
-                        <Button
-                            tabIndex={0}
-                            className={css.focusable}
-                            onClick={this._onCancelViaFooter}
-                        >
-                            Cancel
-                        </Button>
-                        {loading && (
-                            <div className="ml-3">
-                                <Loader
-                                    className={css.spinner}
-                                    minHeight="20px"
-                                    size="20px"
-                                />
-                                <span className="ml-2">{loadingMessage}</span>
-                            </div>
-                        )}
-                        <Button
-                            color="primary"
-                            type="submit"
-                            disabled={loading}
-                            tabIndex={0}
-                            className={classnames(css.focusable, 'ml-auto')}
-                        >
-                            Refund
-                        </Button>
-                    </ModalFooter>
-                </Form>
-            </Modal>
-        )
     }
+
+    return integration ? (
+        <Modal
+            header={header}
+            isOpen={isOpen}
+            onClose={() => {
+                handleCancel('header')
+            }}
+            keyboard={false}
+            size="xl"
+            bodyClassName="p-0"
+            backdrop="static"
+        >
+            <Form onSubmit={handleSubmit}>
+                {payload && lineItems && (
+                    <RefundOrderForm
+                        shopName={shopName}
+                        actionName={data.actionName}
+                        reason={payload.get('note', '')}
+                        notify={payload.get('notify')}
+                        loading={loading}
+                        payload={payload}
+                        order={data.order}
+                        refund={refund}
+                        lineItems={lineItems}
+                        setPayload={setPayload}
+                        onPayloadChange={(payload) => {
+                            void onPayloadChange(integrationId, payload)
+                        }}
+                        onLineItemsChange={(lineItems) => {
+                            void onLineItemsChange(integrationId, lineItems)
+                        }}
+                        onReasonChange={handleReasonChange}
+                        onNotifyChange={handleNotifyChange}
+                    />
+                )}
+                <ModalFooter className={css.footer}>
+                    <Button
+                        tabIndex={0}
+                        className={css.focusable}
+                        onClick={() => {
+                            handleCancel('footer')
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                    {loading && (
+                        <div className="ml-3">
+                            <Loader
+                                className={css.spinner}
+                                minHeight="20px"
+                                size="20px"
+                            />
+                            <span className="ml-2">{loadingMessage}</span>
+                        </div>
+                    )}
+                    <Button
+                        color="primary"
+                        type="submit"
+                        disabled={loading}
+                        tabIndex={0}
+                        className={classnames(css.focusable, 'ml-auto')}
+                    >
+                        Refund
+                    </Button>
+                </ModalFooter>
+            </Form>
+        </Modal>
+    ) : null
+}
+
+RefundOrderModalContainer.contextTypes = {
+    integrationId: PropTypes.number.isRequired,
 }
 
 const connector = connect(
@@ -232,7 +209,10 @@ const connector = connect(
         loadingMessage: getRefundOrderState(state).get(
             'loadingMessage'
         ) as string,
-        payload: getRefundOrderState(state).get('payload') as Map<any, any>,
+        payload: getRefundOrderState(state).get('payload') as Map<
+            any,
+            any
+        > | null,
         lineItems: getRefundOrderState(state).get('lineItems') as List<any>,
         refund: getRefundOrderState(state).get('refund') as Map<any, any>,
     }),

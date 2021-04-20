@@ -49,7 +49,7 @@ exports[`<OrderTable/> render() should render 1`] = `
           "shipping": Immutable.Map {
             "amount": "0.00",
             "tax": "0.00",
-            "maximum_refundable": "0.00",
+            "maximum_refundable": "2.00",
           },
           "refund_line_items": Immutable.List [
             Immutable.Map {
@@ -107,7 +107,7 @@ exports[`<OrderTable/> render() should render 1`] = `
           "shipping": Immutable.Map {
             "amount": "0.00",
             "tax": "0.00",
-            "maximum_refundable": "0.00",
+            "maximum_refundable": "2.00",
           },
           "refund_line_items": Immutable.List [
             Immutable.Map {
@@ -193,7 +193,7 @@ exports[`<OrderTable/> render() should render for multi-currency order 1`] = `
           "shipping": Immutable.Map {
             "amount": "0.00",
             "tax": "0.00",
-            "maximum_refundable": "0.00",
+            "maximum_refundable": "2.00",
           },
           "refund_line_items": Immutable.List [
             Immutable.Map {
@@ -251,7 +251,7 @@ exports[`<OrderTable/> render() should render for multi-currency order 1`] = `
           "shipping": Immutable.Map {
             "amount": "0.00",
             "tax": "0.00",
-            "maximum_refundable": "0.00",
+            "maximum_refundable": "2.00",
           },
           "refund_line_items": Immutable.List [
             Immutable.Map {

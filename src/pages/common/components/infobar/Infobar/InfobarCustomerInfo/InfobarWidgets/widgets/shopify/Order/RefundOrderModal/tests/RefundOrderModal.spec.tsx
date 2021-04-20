@@ -1,15 +1,8 @@
-import React, {ComponentProps} from 'react'
-import {shallow, ShallowWrapper} from 'enzyme'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import {fromJS, Map} from 'immutable'
-import {Form} from 'reactstrap'
+import React, {Component, ReactNode} from 'react'
+import PropTypes from 'prop-types'
+import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fromJS, List, Map} from 'immutable'
 
-import {getRefundOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
-import {
-    infobarActionsStateFixture,
-    refundOrderStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
@@ -21,15 +14,86 @@ import {
     initRefundOrderLineItems,
     initRefundOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
-import {RootState} from '../../../../../../../../../../../../state/types'
-import {IntegrationType} from '../../../../../../../../../../../../models/integration/types'
-import RefundOrderModal, {RefundOrderModalContainer} from '../RefundOrderModal'
+import * as utils from '../../../../../../../../../../utils/labels.js'
 import {ShopifyActionType} from '../../../types'
+import {RefundOrderModalContainer} from '../RefundOrderModal'
 
-function initActions() {
-    return {
+jest.spyOn(utils, 'DatetimeLabel').mockImplementation((({
+    datetime,
+}: {
+    datetime: string
+}) => {
+    return <div data-testid="DatetimeLabel">{datetime}</div>
+}) as any)
+
+jest.mock(
+    '../../../../../../../../../Modal',
+    () => ({
+        isOpen,
+        children,
+        onClose,
+    }: {
+        isOpen: boolean
+        children: ReactNode
+        onClose: () => void
+    }) => {
+        if (isOpen) {
+            return (
+                <div data-testid="Modal" onClick={onClose}>
+                    {children}
+                </div>
+            )
+        }
+        return null
+    }
+)
+
+class MockLegacyContextWrapper extends Component<{
+    children: ReactNode
+    value?: {integrationId?: number}
+}> {
+    static childContextTypes = {
+        integrationId: PropTypes.number.isRequired,
+    }
+
+    static defaultProps = {value: {}}
+
+    getChildContext() {
+        const {value} = this.props
+
+        return {integrationId: 1, ...value}
+    }
+
+    render() {
+        const {children} = this.props
+        return children
+    }
+}
+
+describe('<RefundOrderModal />', () => {
+    const order = fromJS(
+        shopifyOrderFixture({shippingLines: [{price: '0.00'}]})
+    )
+    const payload = initRefundOrderPayload(order)
+    const lineItems = initRefundOrderLineItems(order)
+    const refund = fromJS(shopifySuggestedRefundFixture())
+
+    const minProps = {
+        data: {
+            actionName: ShopifyActionType.RefundOrder,
+            order,
+        },
+        header: 'Refund order',
+        integrations: integrationsStateWithShopify.get('integrations') as List<
+            any
+        >,
+        isOpen: true,
+        lineItems: fromJS([]),
+        loading: false,
+        loadingMessage: '',
+        payload: null,
+        refund: fromJS({}),
         onBulkChange: jest.fn(),
         onCancel: jest.fn(),
         onChange: jest
@@ -40,9 +104,7 @@ function initActions() {
                     value: string | number | boolean | Record<string, unknown>,
                     callback?: () => void
                 ) => {
-                    if (callback) {
-                        callback()
-                    }
+                    callback?.()
                 }
             ),
         onClose: jest.fn(),
@@ -54,336 +116,225 @@ function initActions() {
         onSubmit: jest.fn(),
         setPayload: jest.fn(),
     }
-}
-
-describe('<RefundOrderModal/>', () => {
-    const middlewares = [thunk]
-    const mockStore = configureMockStore(middlewares)
-    let actions: ReturnType<typeof initActions>
 
     beforeEach(() => {
-        actions = initActions()
+        jest.clearAllMocks()
     })
 
-    describe('render()', () => {
-        it('should render as closed', () => {
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(),
-            })
+    it('should not render when the modal is closed', () => {
+        const {container} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer {...minProps} isOpen={false} />
+            </MockLegacyContextWrapper>
+        )
 
-            const component = shallow(
-                <RefundOrderModal
-                    {...({store} as any)}
-                    header="Refund order"
-                    isOpen={false}
-                    data={{
-                        actionName: ShopifyActionType.RefundOrder,
-                        order: fromJS(shopifyOrderFixture()),
-                    }}
-                    {...actions}
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a spinner when missing data', () => {
+        const {container} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer {...minProps} loading />
+            </MockLegacyContextWrapper>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render with an empty order table when data is empty', () => {
+        const {container} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer {...minProps} payload={payload} />
+            </MockLegacyContextWrapper>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render with a populated order table when data is populated', () => {
+        const {container} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={payload}
+                    lineItems={lineItems}
                 />
-            )
+            </MockLegacyContextWrapper>
+        )
 
-            expect(component).toMatchSnapshot()
-        })
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
-        it('should render as open', () => {
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(),
-            })
+    it('should call onPayloadChange when shipping amount is changed', async () => {
+        const payload: Map<any, any> = fromJS(
+            shopifyRefundOrderPayloadFixture()
+        )
 
-            const component = shallow(
-                <RefundOrderModal
-                    {...({store} as any)}
-                    header="Refund order"
-                    isOpen
-                    data={{
-                        actionName: ShopifyActionType.RefundOrder,
-                        order: fromJS(shopifyOrderFixture()),
-                    }}
-                    {...actions}
+        const {getByLabelText} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={payload}
+                    lineItems={lineItems}
+                    refund={refund}
                 />
-            )
+            </MockLegacyContextWrapper>
+        )
+        const newPayload = payload.setIn(['shipping', 'amount'], '1.00')
 
-            expect(component).toMatchSnapshot()
+        fireEvent.change(getByLabelText(/Shipping/i), {
+            target: {value: '1.00'},
         })
-    })
-})
 
-describe('<RefundOrderModalComponent/>', () => {
-    const middlewares = [thunk]
-    const mockStore = configureMockStore(middlewares)
-    const context = {integrationId: 1}
-    let actions: ReturnType<typeof initActions>
-
-    beforeEach(() => {
-        actions = initActions()
+        await waitFor(() =>
+            expect(minProps.onPayloadChange).toHaveBeenCalledWith(1, newPayload)
+        )
     })
 
-    describe('render()', () => {
-        it('should render as closed', () => {
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(),
-            })
+    it('should call onLineItemsChange() when quantity of a product is changed', async () => {
+        const lineItems = fromJS([
+            shopifyLineItemFixture({currencyCode: 'USD'}),
+        ]) as List<Map<any, any>>
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
-            const state = store.getState() as RootState
-
-            const component = shallow(
+        const {getByText} = render(
+            <MockLegacyContextWrapper>
                 <RefundOrderModalContainer
-                    integrations={getIntegrationsByTypes([
-                        IntegrationType.ShopifyIntegrationType,
-                    ])(state)}
-                    loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get(
-                        'loadingMessage'
-                    )}
-                    payload={getRefundOrderState(state).get('payload')}
-                    lineItems={getRefundOrderState(state).get('lineItems')}
-                    refund={getRefundOrderState(state).get('refund')}
-                    header="Refund order"
-                    isOpen={false}
-                    data={{
-                        actionName: ShopifyActionType.RefundOrder,
-                        order: fromJS(shopifyOrderFixture()),
-                    }}
-                    {...actions}
-                />,
-                {context}
+                    {...minProps}
+                    payload={payload}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </MockLegacyContextWrapper>
+        )
+
+        fireEvent.click(getByText('▼'))
+
+        const newLineItems = lineItems.setIn(
+            ['0', 'quantity'],
+            lineItems.getIn(['0', 'quantity']) - 1
+        )
+
+        await waitFor(() =>
+            expect(minProps.onLineItemsChange).toHaveBeenCalledWith(
+                1,
+                newLineItems
             )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render as open, without order table', () => {
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(),
-            })
-
-            const state = store.getState() as RootState
-
-            const component = shallow(
-                <RefundOrderModalContainer
-                    integrations={getIntegrationsByTypes([
-                        IntegrationType.ShopifyIntegrationType,
-                    ])(state)}
-                    loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get(
-                        'loadingMessage'
-                    )}
-                    payload={getRefundOrderState(state).get('payload')}
-                    lineItems={getRefundOrderState(state).get('lineItems')}
-                    refund={getRefundOrderState(state).get('refund')}
-                    header="Refund order"
-                    isOpen
-                    data={{
-                        actionName: ShopifyActionType.RefundOrder,
-                        order: fromJS(shopifyOrderFixture()),
-                    }}
-                    {...actions}
-                />,
-                {context}
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render as open, with order table', () => {
-            const order = fromJS(shopifyOrderFixture())
-            const payload = initRefundOrderPayload(order)
-            const lineItems = initRefundOrderLineItems(order)
-            const refundOrderState = refundOrderStateFixture({
-                payload,
-                lineItems,
-            })
-
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture({refundOrderState}),
-            })
-
-            const state = store.getState() as RootState
-
-            const component = shallow(
-                <RefundOrderModalContainer
-                    integrations={getIntegrationsByTypes([
-                        IntegrationType.ShopifyIntegrationType,
-                    ])(state)}
-                    loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get(
-                        'loadingMessage'
-                    )}
-                    payload={getRefundOrderState(state).get('payload')}
-                    lineItems={getRefundOrderState(state).get('lineItems')}
-                    refund={getRefundOrderState(state).get('refund')}
-                    header="Refund order"
-                    isOpen
-                    data={{
-                        actionName: ShopifyActionType.RefundOrder,
-                        order,
-                    }}
-                    {...actions}
-                />,
-                {context}
-            )
-
-            expect(component).toMatchSnapshot()
-        })
+        )
     })
 
-    describe('actions', () => {
-        let order
-        let payload: Map<any, any>
-        let refund: Map<any, any>
-        let component: ShallowWrapper<
-            ComponentProps<typeof RefundOrderModalContainer>,
+    it('should call setPayload() when reason is changed', () => {
+        const payload: Map<any, any> = fromJS(
+            shopifyRefundOrderPayloadFixture()
+        )
+
+        render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={payload}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </MockLegacyContextWrapper>
+        )
+
+        const value = "I don't like this product anymore"
+        document.getElementById('reason')
+        const newPayload = payload.set('note', value)
+
+        fireEvent.change(document.getElementById('reason') as HTMLElement, {
+            target: {value},
+        })
+
+        expect(minProps.setPayload).toHaveBeenCalledWith(newPayload)
+    })
+
+    it('should call setPayload() when notify checkbox is updated', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
             any,
-            RefundOrderModalContainer
+            any
         >
 
-        beforeEach(() => {
-            order = fromJS(shopifyOrderFixture())
-            payload = initRefundOrderPayload(order)
-            refund = fromJS(shopifySuggestedRefundFixture())
-
-            const lineItems = initRefundOrderLineItems(order)
-            const refundOrderState = refundOrderStateFixture({
-                payload,
-                lineItems,
-                refund,
-            })
-
-            const store = mockStore({
-                integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture({refundOrderState}),
-            })
-
-            const state = store.getState() as RootState
-
-            component = shallow(
+        const {getByLabelText} = render(
+            <MockLegacyContextWrapper>
                 <RefundOrderModalContainer
-                    integrations={getIntegrationsByTypes([
-                        IntegrationType.ShopifyIntegrationType,
-                    ])(state)}
-                    loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get(
-                        'loadingMessage'
-                    )}
-                    payload={getRefundOrderState(state).get('payload')}
-                    lineItems={getRefundOrderState(state).get('lineItems')}
-                    refund={getRefundOrderState(state).get('refund')}
-                    header="Refund order"
-                    isOpen
-                    data={{
-                        actionName: ShopifyActionType.RefundOrder,
-                        order,
-                    }}
-                    {...actions}
-                />,
-                {context}
-            )
-        })
+                    {...minProps}
+                    payload={payload}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </MockLegacyContextWrapper>
+        )
+        const newPayload = payload.set('notify', false)
 
-        describe('_onPayloadChange()', () => {
-            it('should call onPayloadChange()', () => {
-                const payload = fromJS(shopifyRefundOrderPayloadFixture())
-                component.instance()._onPayloadChange(payload)
+        fireEvent.click(getByLabelText(/Send notification/i))
 
-                expect(actions.onPayloadChange).toHaveBeenCalledWith(
-                    context.integrationId,
-                    payload
-                )
-            })
-        })
+        expect(minProps.setPayload).toHaveBeenCalledWith(newPayload)
+    })
 
-        describe('_onLineItemsChange()', () => {
-            it('should call onLineItemsChange()', () => {
-                const lineItems = fromJS([shopifyLineItemFixture()])
-                component.instance()._onLineItemsChange(lineItems)
+    it('should call onSubmit() when submitting the form', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
-                expect(actions.onLineItemsChange).toHaveBeenCalledWith(
-                    context.integrationId,
-                    lineItems
-                )
-            })
-        })
+        const {getByText} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={payload}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </MockLegacyContextWrapper>
+        )
 
-        describe('_onReasonChange()', () => {
-            it('should call setPayload()', () => {
-                const event = {target: {value: 'foo bar'}} as any
-                component.instance()._onReasonChange(event)
+        fireEvent.click(getByText('Refund'))
 
-                const newPayload = payload.set('note', 'foo bar')
-                expect(actions.setPayload).toHaveBeenCalledWith(newPayload)
-            })
-        })
+        const finalPayload = getFinalRefundOrderPayload(payload, refund).toJS()
 
-        describe('_onNotifyChange()', () => {
-            it('should call setPayload()', () => {
-                const event = {target: {checked: false}} as any
-                component.instance()._onNotifyChange(event)
+        expect(minProps.onChange).toHaveBeenCalledWith(
+            'payload',
+            finalPayload,
+            expect.any(Function)
+        )
+        expect(minProps.onSubmit).toHaveBeenCalled()
+        expect(minProps.onReset).toHaveBeenCalled()
+    })
 
-                const newPayload = payload.set('notify', false)
-                expect(actions.setPayload).toHaveBeenCalledWith(newPayload)
-            })
-        })
+    it('should call onCancel() when clicking on cancel button', () => {
+        const {getByText} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={fromJS(shopifyRefundOrderPayloadFixture())}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </MockLegacyContextWrapper>
+        )
 
-        describe('_onSubmit()', () => {
-            it('should call onSubmit()', () => {
-                // Click on "Submit"
-                component
-                    .find(Form)
-                    .at(0)
-                    .simulate('submit', {
-                        preventDefault: () => undefined,
-                    })
+        fireEvent.click(getByText('Cancel'))
 
-                const finalPayload = getFinalRefundOrderPayload(
-                    payload,
-                    refund
-                ).toJS()
+        expect(minProps.onCancel).toHaveBeenCalledWith('footer')
+        expect(minProps.onClose).toHaveBeenCalled()
+        expect(minProps.onReset).toHaveBeenCalled()
+    })
 
-                expect(actions.onChange).toHaveBeenCalledWith(
-                    'payload',
-                    finalPayload,
-                    expect.any(Function)
-                )
-                expect(actions.onSubmit).toHaveBeenCalled()
-                expect(actions.onReset).toHaveBeenCalled()
-            })
-        })
+    it('should call onCancel() when clicking on header button', () => {
+        const {getByTestId} = render(
+            <MockLegacyContextWrapper>
+                <RefundOrderModalContainer
+                    {...minProps}
+                    payload={fromJS(shopifyRefundOrderPayloadFixture())}
+                    lineItems={lineItems}
+                    refund={refund}
+                />
+            </MockLegacyContextWrapper>
+        )
 
-        describe('_onCancel()', () => {
-            it('should call onCancel()', () => {
-                component.instance()._onCancel('foo')
+        fireEvent.click(getByTestId('Modal'))
 
-                expect(actions.onCancel).toHaveBeenCalledWith('foo')
-                expect(actions.onClose).toHaveBeenCalled()
-                expect(actions.onReset).toHaveBeenCalled()
-            })
-        })
-
-        describe('_onCancelViaHeader()', () => {
-            it('should call onCancel()', () => {
-                component.instance()._onCancelViaHeader()
-
-                expect(actions.onCancel).toHaveBeenCalledWith('header')
-                expect(actions.onClose).toHaveBeenCalled()
-                expect(actions.onReset).toHaveBeenCalled()
-            })
-        })
-
-        describe('_onCancelViaFooter()', () => {
-            it('should call onCancel()', () => {
-                component.instance()._onCancelViaFooter()
-
-                expect(actions.onCancel).toHaveBeenCalledWith('footer')
-                expect(actions.onClose).toHaveBeenCalled()
-                expect(actions.onReset).toHaveBeenCalled()
-            })
-        })
+        expect(minProps.onCancel).toHaveBeenCalledWith('header')
+        expect(minProps.onClose).toHaveBeenCalled()
+        expect(minProps.onReset).toHaveBeenCalled()
     })
 })

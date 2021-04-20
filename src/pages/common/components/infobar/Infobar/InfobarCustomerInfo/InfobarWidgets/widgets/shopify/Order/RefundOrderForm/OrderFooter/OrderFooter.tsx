@@ -216,8 +216,9 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                     </FormText>
                                 </FormGroup>
                                 <FormGroup check className="mb-3">
-                                    <Label check>
+                                    <Label for="notify-customer" check>
                                         <Input
+                                            id="notify-customer"
                                             type="checkbox"
                                             checked={notify}
                                             onChange={onNotifyChange}
