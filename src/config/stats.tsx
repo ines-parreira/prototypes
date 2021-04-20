@@ -822,7 +822,14 @@ How many surveys have been sent, response rate, average scores and more. `,
 helping customers through the purchasing journey.`,
         url: 'https://docs.gorgias.com/statistics/revenue-statistics',
         filters: [
-            {type: 'integrations', options: STORE_INTEGRATION_TYPES},
+            {
+                type: 'integrations',
+                options: {
+                    allowedTypes: STORE_INTEGRATION_TYPES,
+                    isMultiple: false,
+                    isRequired: true,
+                },
+            },
             {type: 'channels'},
             {type: 'tags'},
             {type: 'period'},

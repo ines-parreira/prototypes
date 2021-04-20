@@ -2,9 +2,8 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Link} from 'react-router-dom'
 import moment from 'moment'
-import {fromJS, List} from 'immutable'
+import {fromJS} from 'immutable'
 
-import {getHashOfObj} from '../../utils.ts'
 import {views, STORE_INTEGRATION_TYPES} from '../../config/stats.tsx'
 import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions.ts'
@@ -16,8 +15,7 @@ import withPaywall from '../common/utils/withPaywall.tsx'
 
 import RestrictedFeature from '../common/components/RestrictedFeature.tsx'
 
-import StatsFilters from './StatsFilters'
-import Stats from './Stats'
+import StatsComponent from './StatsComponent.tsx'
 
 type Props = {
     match: Object,
@@ -27,19 +25,6 @@ type Props = {
     resetStatsFilters: typeof resetStatsFilters,
     storeIntegrations: Map[],
 }
-
-const StatsComponent = ({
-    view,
-    globalFilters,
-}: {
-    view: string,
-    globalFilters: Map,
-}) => (
-    <div className="stats full-width">
-        <StatsFilters />
-        <Stats key={`${view}-${getHashOfObj(globalFilters.toJS())}`} />
-    </div>
-)
 
 const SatisfactionSurveysStats = withPaywall(
     AccountFeatures.SatisfactionSurveys
@@ -63,11 +48,6 @@ export class StatsPage extends Component<Props> {
             },
         }
 
-        if (props.storeIntegrations.size) {
-            defaultFilters.integrations = [
-                props.storeIntegrations.getIn([0, 'id']),
-            ]
-        }
         props.setStatsFilters(fromJS(defaultFilters))
     }
 
@@ -81,18 +61,15 @@ export class StatsPage extends Component<Props> {
             match: {
                 params: {view},
             },
+            storeIntegrations,
         } = this.props
-
-        const hasRequiredStoreIntegration =
-            globalFilters &&
-            globalFilters.get('integrations', List()).size === 1
 
         const isOnSatisfactionSurveyPage =
             view === views.getIn(['satisfaction', 'link'])
         const isOnRevenuePage = view === views.getIn(['revenue', 'link'])
 
         const revenueStats = () => {
-            if (!hasRequiredStoreIntegration) {
+            if (storeIntegrations == null || storeIntegrations.size === 0) {
                 const assetsURL = window.GORGIAS_ASSETS_URL || ''
                 const imagesURL = [
                     `${assetsURL}/static/private/img/presentationals/revenue-presentation.png`,

@@ -279,10 +279,11 @@ const StatsFiltersContainer = ({
                     </SelectFilter>
                 )
             case 'integrations': {
-                const options = filter.get('options')
-                const data = options
+                const options = filter.get('options', fromJS({}))
+                const allowedTypes = options.get('allowedTypes')
+                const data = allowedTypes
                     ? integrations.filter((integration) =>
-                          options.includes(integration.type)
+                          allowedTypes.includes(integration.type)
                       )
                     : integrations
 
@@ -291,8 +292,8 @@ const StatsFiltersContainer = ({
                         key={filterType}
                         plural="integrations"
                         singular="integration"
-                        isMultiple={false}
-                        isRequired
+                        isMultiple={options.get('isMultiple', true)}
+                        isRequired={options.get('isRequired', false)}
                         onChange={handleFilterChange('integrations')}
                         value={filters.get('integrations', fromJS([])).toJS()}
                     >

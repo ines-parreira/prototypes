@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`selectors stats getViewfilters() should add an integration in the filters because it's a required field 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    2,
+  ],
+  "period": Immutable.Map {
+    "start_datetime": "2019-03-09",
+    "end_datetime": "2019-03-10",
+  },
+}
+`;
+
+exports[`selectors stats getViewfilters() should remove integrations when they are not allowed in filters 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    1,
+  ],
+  "period": Immutable.Map {
+    "start_datetime": "2019-03-09",
+    "end_datetime": "2019-03-10",
+  },
+}
+`;
+
 exports[`selectors stats getViewfilters() should return filters for the given view 1`] = `
 Immutable.Map {
   "tags": Immutable.List [

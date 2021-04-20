@@ -386,24 +386,28 @@ const SelectFilter = ({
                                 value={search}
                             />
                         </DropdownItem>
-                        <QuickSelectionOption
-                            className={css.quickSelectionOption}
-                            totalItemsCount={items.length}
-                            selectedItemsCount={value.length}
-                            onClick={() => {
-                                if (value.length) {
-                                    onChange([])
-                                    setSelectedGroupIds([])
-                                } else {
-                                    onChange(
-                                        items.map(({props: {value}}) => value)
-                                    )
-                                    setSelectedGroupIds(
-                                        groups.map(({value}) => value)
-                                    )
-                                }
-                            }}
-                        />
+                        {!isRequired && (
+                            <QuickSelectionOption
+                                className={css.quickSelectionOption}
+                                totalItemsCount={items.length}
+                                selectedItemsCount={value.length}
+                                onClick={() => {
+                                    if (value.length) {
+                                        onChange([])
+                                        setSelectedGroupIds([])
+                                    } else {
+                                        onChange(
+                                            items.map(
+                                                ({props: {value}}) => value
+                                            )
+                                        )
+                                        setSelectedGroupIds(
+                                            groups.map(({value}) => value)
+                                        )
+                                    }
+                                }}
+                            />
+                        )}
                         <DropdownItem divider className={css.dropdownDivider} />
                         <div className={css.content}>{children}</div>
                     </DropdownMenuComponent>

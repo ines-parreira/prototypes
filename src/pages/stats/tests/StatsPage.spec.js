@@ -20,7 +20,7 @@ describe('StatsPage', () => {
         globalFilters: null,
         setStatsFilters: jest.fn(),
         resetStatsFilters: jest.fn(),
-        storeIntegrations: fromJS([]),
+        storeIntegrations: fromJS([{id: 1}]),
     }
 
     describe('testing default filters', () => {
@@ -33,17 +33,6 @@ describe('StatsPage', () => {
                 <StatsPage
                     {...defaultProps}
                     match={{params: {view: 'satisfaction'}}}
-                />
-            )
-            expect(defaultProps.setStatsFilters).toMatchSnapshot()
-        })
-
-        it('should ensure that the filters contain a store integration when possible', () => {
-            shallow(
-                <StatsPage
-                    {...defaultProps}
-                    match={{params: {view: 'satisfaction'}}}
-                    storeIntegrations={fromJS([{id: 1}, {id: 2}, {id: 3}])}
                 />
             )
             expect(defaultProps.setStatsFilters).toMatchSnapshot()
@@ -104,6 +93,7 @@ describe('StatsPage', () => {
                     link: 'revenue',
                     stats: [],
                 })}
+                storeIntegrations={fromJS([])}
             />
         )
 

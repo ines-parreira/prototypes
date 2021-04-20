@@ -3,7 +3,7 @@
 exports[`StatsPage should not render statistics because there is no filter 1`] = `""`;
 
 exports[`StatsPage should render "Overview" statistics 1`] = `
-<StatsComponent
+<Connect(StatsComponentContainer)
   globalFilters={
     Immutable.Map {
       "agents": Immutable.List [
@@ -56,30 +56,6 @@ exports[`StatsPage should restrict access to revenue stats because the account d
   }
   info="Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example."
 />
-`;
-
-exports[`StatsPage testing default filters should ensure that the filters contain a store integration when possible 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      Immutable.Map {
-        "period": Immutable.Map {
-          "start_datetime": "2019-08-28T00:00:00-07:00",
-          "end_datetime": "2019-09-03T23:59:59-07:00",
-        },
-        "integrations": Immutable.List [
-          1,
-        ],
-      },
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
 `;
 
 exports[`StatsPage testing default filters should ensure the default value 1`] = `
