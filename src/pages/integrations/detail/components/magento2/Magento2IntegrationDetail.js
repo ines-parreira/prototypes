@@ -2,13 +2,10 @@
 import React from 'react'
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import classNames from 'classnames'
 import {type Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
-    Form,
-    Button,
     Breadcrumb,
     BreadcrumbItem,
     Container,
@@ -18,13 +15,15 @@ import {
 import {parse} from 'query-string'
 
 import Loader from '../../../../common/components/Loader/Loader.tsx'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
-import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 import {notify} from '../../../../../state/notifications/actions.ts'
-import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
 import history from '../../../../history.ts'
+
+import css from './Magento2ManualSelectionButton.less'
+import Magento2ManualIntegrationForm from './Magento2ManualIntegrationForm.tsx'
+import Magento2OneClickIntegrationForm from './Magento2OneClickIntegrationForm.tsx'
+import Magento2ModeSelectionButton from './Magento2ModeSelectionButton.tsx'
 
 type Props = {
     integration: Map<*, *>,
@@ -34,8 +33,6 @@ type Props = {
 
     redirectUri: string,
 
-    getExistingMagento2Integration: (string) => Map<*, *>,
-
     // Router
     location: Object,
 
@@ -44,18 +41,14 @@ type Props = {
 }
 
 type State = {
-    adminUrl: string,
-    url: string,
-    adminUrlSuffix: string,
+    isManual: boolean,
     isInitialized: boolean,
 }
 
 export class Magento2IntegrationDetail extends React.Component<Props, State> {
     state = {
-        adminUrl: '',
-        url: '',
-        adminUrlSuffix: '',
         isInitialized: false,
+        isManual: false,
     }
 
     componentDidMount() {
@@ -101,79 +94,26 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
             !loading.get('integration')
         ) {
             this.setState({
-                url: integration.getIn(['meta', 'store_url']),
-                adminUrlSuffix: integration.getIn(['meta', 'admin_url_suffix']),
+                isManual: integration.getIn(['meta', 'is_manual']),
                 isInitialized: true,
             })
         }
     }
 
-    _handleCreate = (evt: Event): void => {
-        const {adminUrl} = this.state
-        evt.preventDefault()
-
-        const splitAdminUrl = adminUrl.split('/')
-        const url = splitAdminUrl[0]
-        const adminUrlSuffix = splitAdminUrl[1]
-
-        window.location.href = this.props.redirectUri.concat(
-            `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`
-        )
-    }
-
-    _handleUpdate = (evt: Event): void => {
-        evt.preventDefault()
-        const {integration, actions} = this.props
-
-        actions.updateOrCreateIntegration(
-            integration.mergeDeep({
-                meta: {
-                    admin_url_suffix: this.state.adminUrlSuffix,
-                },
-            })
-        )
-    }
-
-    _setAdminUrl = (adminUrl: string): void => {
-        this.setState({
-            adminUrl: adminUrl
-                .replace('http://', '')
-                .replace('https://', '')
-                .trim(),
-        })
-    }
-
     render() {
-        const {
-            actions,
-            integration,
-            isUpdate,
-            loading,
-            getExistingMagento2Integration,
-        } = this.props
-        const {adminUrl, url, adminUrlSuffix} = this.state
+        const {actions, integration, isUpdate, loading} = this.props
 
         const isSubmitting = !!loading.get('updateIntegration')
 
-        const isActive = !integration.get('deactivated_datetime')
         const isSyncOver = integration.getIn([
             'meta',
             'import_state',
             'is_over',
         ])
 
-        const ctaIsLoading = isSubmitting
-
         if (loading.get('integration')) {
             return <Loader />
         }
-
-        const error =
-            !isUpdate && !getExistingMagento2Integration(url).isEmpty()
-                ? 'There is already an integration for this Magento 2 store'
-                : null
-
-        const submitIsDisabled = isSubmitting || !!error
 
         return (
             <div className="full-width">
@@ -272,116 +212,68 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                     </Alert>
                                 )
                             ) : null}
-
-                            <Form
-                                onSubmit={
-                                    isUpdate
-                                        ? this._handleUpdate
-                                        : this._handleCreate
-                                }
-                            >
-                                <div className="mb-4">
-                                    {isUpdate ? (
-                                        <InputField
-                                            key="input"
-                                            type="text"
-                                            name="adminUrlSuffix"
-                                            label="Store admin URL"
-                                            placeholder={'ex: admin_45f1c'}
-                                            leftAddon={`https://${url}/`}
-                                            value={adminUrlSuffix}
-                                            error={error}
-                                            onChange={(adminUrlSuffix) =>
-                                                this.setState({adminUrlSuffix})
-                                            }
-                                            required
-                                        />
-                                    ) : (
-                                        <InputField
-                                            type="text"
-                                            name="name"
-                                            label="Store admin URL"
-                                            placeholder={
-                                                'ex: acme.com/admin_45f1c'
-                                            }
-                                            value={adminUrl}
-                                            error={error}
-                                            leftAddon="https://"
-                                            onChange={this._setAdminUrl}
-                                            pattern="^[a-z.0-9-]*\.[a-z0-9]*\/(index\.php)?[\/\w\d_-]*$"
-                                            required
-                                        />
-                                    )}
-                                </div>
-
-                                <div>
-                                    <Button
-                                        type="submit"
-                                        color="success"
-                                        className={classNames('mr-2', {
-                                            'btn-loading': ctaIsLoading,
-                                        })}
-                                        disabled={submitIsDisabled}
+                            {!isUpdate && (
+                                <>
+                                    <span>
+                                        How do you want to add this integration?
+                                    </span>
+                                    <div
+                                        className={
+                                            css['selection-button-group']
+                                        }
                                     >
-                                        {isUpdate
-                                            ? 'Update integration'
-                                            : 'Add integration'}
-                                    </Button>
+                                        <Magento2ModeSelectionButton
+                                            text="One-click installation"
+                                            icon="storefront"
+                                            selected={
+                                                this.state.isManual === false
+                                            }
+                                            onClick={() =>
+                                                this.setState({isManual: false})
+                                            }
+                                        />
+                                        <Magento2ModeSelectionButton
+                                            text="Manual installation"
+                                            icon="build"
+                                            selected={
+                                                this.state.isManual === true
+                                            }
+                                            onClick={() =>
+                                                this.setState({isManual: true})
+                                            }
+                                        />
+                                    </div>
+                                </>
+                            )}
 
-                                    {isUpdate && isActive ? (
-                                        <Button
-                                            type="button"
-                                            color="warning"
-                                            outline
-                                            className={classNames({
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            disabled={isSubmitting}
-                                            onClick={() =>
-                                                actions.deactivateIntegration(
-                                                    integration.get('id')
-                                                )
-                                            }
-                                        >
-                                            Deactivate integration
-                                        </Button>
-                                    ) : null}
-                                    {isUpdate && !isActive ? (
-                                        <Button
-                                            type="button"
-                                            color="success"
-                                            className={classNames({
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            disabled={isSubmitting}
-                                            onClick={() =>
-                                                actions.activateIntegration(
-                                                    integration.get('id')
-                                                )
-                                            }
-                                        >
-                                            Re-activate integration
-                                        </Button>
-                                    ) : null}
-                                    {isUpdate ? (
-                                        <ConfirmButton
-                                            className="float-right"
-                                            color="secondary"
-                                            confirm={() =>
-                                                actions.deleteIntegration(
-                                                    integration
-                                                )
-                                            }
-                                            content="Are you sure you want to delete this integration?"
-                                        >
-                                            <i className="material-icons mr-1 text-danger">
-                                                delete
-                                            </i>
-                                            Delete integration
-                                        </ConfirmButton>
-                                    ) : null}
-                                </div>
-                            </Form>
+                            {!isUpdate && this.state.isManual && (
+                                <Alert
+                                    color="warning"
+                                    style={{marginBottom: '15px'}}
+                                >
+                                    This option is useful if you have a firewall
+                                    configured on your Magento store that
+                                    prevents you from adding the integration
+                                    using the one-click installation process.
+                                </Alert>
+                            )}
+
+                            {this.state.isManual ? (
+                                <Magento2ManualIntegrationForm
+                                    integration={integration}
+                                    isUpdate={isUpdate}
+                                    actions={actions}
+                                    isSubmitting={isSubmitting}
+                                />
+                            ) : (
+                                <Magento2OneClickIntegrationForm
+                                    integration={integration}
+                                    isUpdate={isUpdate}
+                                    actions={actions}
+                                    isSubmitting={isSubmitting}
+                                    redirectUri={this.props.redirectUri}
+                                />
+                            )}
                         </Col>
                     </Row>
                 </Container>
@@ -390,15 +282,4 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(
-    connect(
-        (state) => {
-            return {
-                getExistingMagento2Integration: integrationSelectors.makeGetMagento2IntegrationByStoreUrl(
-                    state
-                ),
-            }
-        },
-        {notify}
-    )(Magento2IntegrationDetail)
-)
+export default withRouter(connect(null, {notify})(Magento2IntegrationDetail))

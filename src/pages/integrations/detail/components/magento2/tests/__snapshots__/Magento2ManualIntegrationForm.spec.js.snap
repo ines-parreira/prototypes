@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Magento2ManualIntegrationForm/> render() should render the page to create a new manual integration 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="mb-4"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Store admin URL
+        </label>
+        <div
+          class="input-group"
+        >
+          <span
+            class="input-group-append"
+          >
+            <span
+              class="input-group-text"
+            >
+              https://
+            </span>
+          </span>
+          <input
+            class="form-control"
+            id="id-name"
+            pattern="^[a-z.0-9-]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
+            placeholder="ex: acme.com/admin_45f1c"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-4"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-consumerKey"
+        >
+          Consumer Key
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-consumerKey"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-4"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-consumerSecret"
+        >
+          Consumer Secret
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-consumerSecret"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-4"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-accessToken"
+        >
+          Access Token
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-accessToken"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mb-4"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-accessTokenSecret"
+        >
+          Access Token Secret
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-accessTokenSecret"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <button
+        class="mr-2 btn btn-success"
+        type="submit"
+      >
+        Add integration
+      </button>
+    </div>
+  </form>
+</div>
+`;

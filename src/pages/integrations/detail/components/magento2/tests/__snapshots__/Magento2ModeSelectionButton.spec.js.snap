@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Magento2ModeSelectionButton/> render() should render the magento2 mode selection button 1`] = `
+<div>
+  <span
+    class="selection-button selected-button"
+  >
+    <i
+      class="selection-button-icon material-icons blue"
+    >
+      icon-name
+    </i>
+    Some button text
+  </span>
+</div>
+`;

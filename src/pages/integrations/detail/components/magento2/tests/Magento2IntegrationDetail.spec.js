@@ -16,7 +16,6 @@ describe('<Magento2IntegrationDetail/>', () => {
             deactivateIntegration: jest.fn(),
             deleteIntegration: jest.fn(),
         },
-        getExistingMagento2Integration: jest.fn().mockReturnValue(fromJS({})),
         loading: fromJS({}),
     }
 

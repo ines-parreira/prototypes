@@ -77,61 +77,30 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
             Review your customers.
           </Link>
         </p>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
-        >
-          <div
-            className="mb-4"
-          >
-            <InputField
-              error={null}
-              key="input"
-              label="Store admin URL"
-              leftAddon="https://magento.gorgi.us/"
-              name="adminUrlSuffix"
-              onChange={[Function]}
-              placeholder="ex: admin_45f1c"
-              required={true}
-              type="text"
-              value="admin_12fg"
-            />
-          </div>
-          <div>
-            <Button
-              className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Update integration
-            </Button>
-            <Button
-              className=""
-              color="success"
-              disabled={false}
-              onClick={[Function]}
-              tag="button"
-              type="button"
-            >
-              Re-activate integration
-            </Button>
-            <ConfirmButton
-              className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration?"
-            >
-              <i
-                className="material-icons mr-1 text-danger"
-              >
-                delete
-              </i>
-              Delete integration
-            </ConfirmButton>
-          </div>
-        </Form>
+        <Connect(Magento2OneClickIntegrationForm)
+          actions={
+            Object {
+              "activateIntegration": [MockFunction],
+              "deactivateIntegration": [MockFunction],
+              "deleteIntegration": [MockFunction],
+            }
+          }
+          integration={
+            Immutable.Map {
+              "id": 1,
+              "name": "magento.gorgi.us",
+              "meta": Immutable.Map {
+                "import_state": Immutable.Map {
+                  "is_over": true,
+                },
+              },
+              "deactivated_datetime": "2018-01-01T18:52:17",
+            }
+          }
+          isSubmitting={false}
+          isUpdate={true}
+          redirectUri="gorgias.io"
+        />
       </Col>
     </Row>
   </Container>
@@ -260,38 +229,38 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             for more details about how to do that.
           </Alert>
         </div>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        <span>
+          How do you want to add this integration?
+        </span>
+        <div
+          className="selection-button-group"
         >
-          <div
-            className="mb-4"
-          >
-            <InputField
-              error={null}
-              label="Store admin URL"
-              leftAddon="https://"
-              name="name"
-              onChange={[Function]}
-              pattern="^[a-z.0-9-]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
-              placeholder="ex: acme.com/admin_45f1c"
-              required={true}
-              type="text"
-              value=""
-            />
-          </div>
-          <div>
-            <Button
-              className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Add integration
-            </Button>
-          </div>
-        </Form>
+          <Magento2ModeSelectionButton
+            icon="storefront"
+            onClick={[Function]}
+            selected={true}
+            text="One-click installation"
+          />
+          <Magento2ModeSelectionButton
+            icon="build"
+            onClick={[Function]}
+            selected={false}
+            text="Manual installation"
+          />
+        </div>
+        <Connect(Magento2OneClickIntegrationForm)
+          actions={
+            Object {
+              "activateIntegration": [MockFunction],
+              "deactivateIntegration": [MockFunction],
+              "deleteIntegration": [MockFunction],
+            }
+          }
+          integration={Immutable.Map {}}
+          isSubmitting={false}
+          isUpdate={false}
+          redirectUri="gorgias.io"
+        />
       </Col>
     </Row>
   </Container>
@@ -416,62 +385,29 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             </Link>
           </p>
         </Alert>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
-        >
-          <div
-            className="mb-4"
-          >
-            <InputField
-              error={null}
-              key="input"
-              label="Store admin URL"
-              leftAddon="https://magento.gorgi.us/"
-              name="adminUrlSuffix"
-              onChange={[Function]}
-              placeholder="ex: admin_45f1c"
-              required={true}
-              type="text"
-              value="admin_12fg"
-            />
-          </div>
-          <div>
-            <Button
-              className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Update integration
-            </Button>
-            <Button
-              className=""
-              color="warning"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-              type="button"
-            >
-              Deactivate integration
-            </Button>
-            <ConfirmButton
-              className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration?"
-            >
-              <i
-                className="material-icons mr-1 text-danger"
-              >
-                delete
-              </i>
-              Delete integration
-            </ConfirmButton>
-          </div>
-        </Form>
+        <Connect(Magento2OneClickIntegrationForm)
+          actions={
+            Object {
+              "activateIntegration": [MockFunction],
+              "deactivateIntegration": [MockFunction],
+              "deleteIntegration": [MockFunction],
+            }
+          }
+          integration={
+            Immutable.Map {
+              "id": 1,
+              "name": "magento.gorgi.us",
+              "meta": Immutable.Map {
+                "import_state": Immutable.Map {
+                  "is_over": false,
+                },
+              },
+            }
+          }
+          isSubmitting={false}
+          isUpdate={true}
+          redirectUri="gorgias.io"
+        />
       </Col>
     </Row>
   </Container>
@@ -600,38 +536,38 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
             for more details about how to do that.
           </Alert>
         </div>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        <span>
+          How do you want to add this integration?
+        </span>
+        <div
+          className="selection-button-group"
         >
-          <div
-            className="mb-4"
-          >
-            <InputField
-              error={null}
-              label="Store admin URL"
-              leftAddon="https://"
-              name="name"
-              onChange={[Function]}
-              pattern="^[a-z.0-9-]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
-              placeholder="ex: acme.com/admin_45f1c"
-              required={true}
-              type="text"
-              value=""
-            />
-          </div>
-          <div>
-            <Button
-              className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Add integration
-            </Button>
-          </div>
-        </Form>
+          <Magento2ModeSelectionButton
+            icon="storefront"
+            onClick={[Function]}
+            selected={true}
+            text="One-click installation"
+          />
+          <Magento2ModeSelectionButton
+            icon="build"
+            onClick={[Function]}
+            selected={false}
+            text="Manual installation"
+          />
+        </div>
+        <Connect(Magento2OneClickIntegrationForm)
+          actions={
+            Object {
+              "activateIntegration": [MockFunction],
+              "deactivateIntegration": [MockFunction],
+              "deleteIntegration": [MockFunction],
+            }
+          }
+          integration={Immutable.Map {}}
+          isSubmitting={false}
+          isUpdate={false}
+          redirectUri="gorgias.io"
+        />
       </Col>
     </Row>
   </Container>
@@ -715,62 +651,29 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
             Review your customers.
           </Link>
         </p>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
-        >
-          <div
-            className="mb-4"
-          >
-            <InputField
-              error={null}
-              key="input"
-              label="Store admin URL"
-              leftAddon="https://magento.gorgi.us/"
-              name="adminUrlSuffix"
-              onChange={[Function]}
-              placeholder="ex: admin_45f1c"
-              required={true}
-              type="text"
-              value="admin_12fg"
-            />
-          </div>
-          <div>
-            <Button
-              className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
-              type="submit"
-            >
-              Update integration
-            </Button>
-            <Button
-              className=""
-              color="warning"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-              type="button"
-            >
-              Deactivate integration
-            </Button>
-            <ConfirmButton
-              className="float-right"
-              color="secondary"
-              confirm={[Function]}
-              content="Are you sure you want to delete this integration?"
-            >
-              <i
-                className="material-icons mr-1 text-danger"
-              >
-                delete
-              </i>
-              Delete integration
-            </ConfirmButton>
-          </div>
-        </Form>
+        <Connect(Magento2OneClickIntegrationForm)
+          actions={
+            Object {
+              "activateIntegration": [MockFunction],
+              "deactivateIntegration": [MockFunction],
+              "deleteIntegration": [MockFunction],
+            }
+          }
+          integration={
+            Immutable.Map {
+              "id": 1,
+              "name": "magento.gorgi.us",
+              "meta": Immutable.Map {
+                "import_state": Immutable.Map {
+                  "is_over": true,
+                },
+              },
+            }
+          }
+          isSubmitting={false}
+          isUpdate={true}
+          redirectUri="gorgias.io"
+        />
       </Col>
     </Row>
   </Container>
