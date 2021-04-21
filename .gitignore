@@ -29,6 +29,7 @@ __pycache__/
 .installed.cfg
 *.egg
 .virtualenvs
+.venv
 .local/share/
 
 # PyInstaller
@@ -81,8 +82,9 @@ g/static/public/web-app/*
 # docker-compose env_file
 .env
 
-# docker-compose override
+# docker-compose override & local dev
 docker-compose.override.yml
+docker-compose.dev.yml
 
 # linters and other code inspection tools
 .mypy_cache/
