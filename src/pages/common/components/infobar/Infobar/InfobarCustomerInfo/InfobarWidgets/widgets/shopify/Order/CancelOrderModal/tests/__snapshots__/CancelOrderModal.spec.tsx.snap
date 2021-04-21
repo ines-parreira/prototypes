@@ -1,1500 +1,896 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CancelOrderModal/> render() should render as closed 1`] = `
-<CancelOrderModalComponent
-  data={
-    Object {
-      "actionName": "shopifyCancelOrder",
-      "order": Immutable.Map {
-        "checkout_token": null,
-        "total_tip_received": "0.0",
-        "cancelled_at": null,
-        "discount_applications": Immutable.List [],
-        "taxes_included": false,
-        "landing_site_ref": null,
-        "shipping_address": Immutable.Map {
-          "zip": null,
-          "city": null,
-          "name": "Apu Nahasapeemapetilon",
-          "latitude": null,
-          "phone": null,
-          "longitude": null,
-          "province": null,
-          "last_name": "Nahasapeemapetilon",
-          "country_code": "FR",
-          "country": "France",
-          "first_name": "Apu",
-          "province_code": null,
-          "company": null,
-          "address1": null,
-          "address2": null,
-        },
-        "gateway": "manual",
-        "processed_at": "2019-12-13T13:54:05-08:00",
-        "device_id": null,
-        "note_attributes": Immutable.List [],
-        "location_id": null,
-        "admin_graphql_api_id": "gid://shopify/Order/1894175539223",
-        "buyer_accepts_marketing": false,
-        "closed_at": null,
-        "financial_status": "partially_paid",
-        "discount_codes": Immutable.List [],
-        "number": 684,
-        "cancel_reason": null,
-        "created_at": "2019-12-13T13:54:05-08:00",
-        "tax_lines": Immutable.List [
-          Immutable.Map {
-            "rate": 0.2,
-            "price": "1.00",
-            "title": "TVA",
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-          },
-        ],
-        "name": "#1684",
-        "reference": null,
-        "source_url": null,
-        "source_identifier": null,
-        "processing_method": "manual",
-        "total_price": "6.00",
-        "shipping_lines": Immutable.List [],
-        "phone": null,
-        "subtotal_price": "5.00",
-        "source_name": "shopify_draft_order",
-        "landing_site": null,
-        "user_id": 95205899,
-        "total_tax": "1.00",
-        "billing_address": Immutable.Map {
-          "zip": null,
-          "city": null,
-          "name": "Apu Nahasapeemapetilon",
-          "latitude": null,
-          "phone": null,
-          "longitude": null,
-          "province": null,
-          "last_name": "Nahasapeemapetilon",
-          "country_code": "FR",
-          "country": "France",
-          "first_name": "Apu",
-          "province_code": null,
-          "company": null,
-          "address1": null,
-          "address2": null,
-        },
-        "currency": "USD",
-        "total_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "6.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "6.00",
-            "currency_code": "USD",
-          },
-        },
-        "subtotal_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-        },
-        "test": false,
-        "note": "ahahah??",
-        "order_status_url": "https://storegorgias3.myshopify.com/17817573/orders/46a2ba4414e9539325b3a03975da8657/authenticate?key=b422672687af40802905f0ba54c1b2a9",
-        "fulfillment_status": null,
-        "total_tax_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "1.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "1.00",
-            "currency_code": "USD",
-          },
-        },
-        "total_weight": 50,
-        "checkout_id": null,
-        "payment_gateway_names": Immutable.List [
-          "manual",
-        ],
-        "total_price_usd": "6.00",
-        "fulfillments": Immutable.List [],
-        "line_items": Immutable.List [
-          Immutable.Map {
-            "variant_inventory_management": "shopify",
-            "taxable": true,
-            "admin_graphql_api_id": "gid://shopify/LineItem/4193100136471",
-            "vendor": "storegorgias3",
-            "price": "1.00",
-            "quantity": 1,
-            "tax_lines": Immutable.List [
-              Immutable.Map {
-                "rate": 0.2,
-                "price": "0.20",
-                "title": "TVA",
-                "price_set": Immutable.Map {
-                  "shop_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                  "presentment_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                },
-              },
-            ],
-            "product_id": 8345093387,
-            "name": "Acidulous candy - Red / A",
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-            "product_exists": true,
-            "fulfillable_quantity": 1,
-            "properties": Immutable.List [],
-            "fulfillment_status": null,
-            "fulfillment_service": "manual",
-            "discount_allocations": Immutable.List [],
-            "variant_id": 31128766316567,
-            "title": "Acidulous candy",
-            "id": 4193100136471,
-            "grams": 10,
-            "total_discount": "0.00",
-            "sku": "0987654321-1",
-            "variant_title": "Red / A",
-            "gift_card": false,
-            "total_discount_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-            },
-            "requires_shipping": true,
-          },
-          Immutable.Map {
-            "variant_inventory_management": "shopify",
-            "taxable": true,
-            "admin_graphql_api_id": "gid://shopify/LineItem/4193100169239",
-            "vendor": "storegorgias3",
-            "price": "1.00",
-            "quantity": 4,
-            "tax_lines": Immutable.List [
-              Immutable.Map {
-                "rate": 0.2,
-                "price": "0.60",
-                "title": "TVA",
-                "price_set": Immutable.Map {
-                  "shop_money": Immutable.Map {
-                    "amount": "0.6",
-                    "currency_code": "USD",
-                  },
-                  "presentment_money": Immutable.Map {
-                    "amount": "0.6",
-                    "currency_code": "USD",
-                  },
-                },
-              },
-              Immutable.Map {
-                "rate": 0.2,
-                "price": "0.20",
-                "title": "TVA",
-                "price_set": Immutable.Map {
-                  "shop_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                  "presentment_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                },
-              },
-            ],
-            "product_id": 8345093387,
-            "name": "Acidulous candy - Red / B",
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-            "product_exists": true,
-            "fulfillable_quantity": 4,
-            "properties": Immutable.List [],
-            "fulfillment_status": null,
-            "fulfillment_service": "manual",
-            "discount_allocations": Immutable.List [],
-            "variant_id": 31128766349335,
-            "title": "Acidulous candy",
-            "id": 4193100169239,
-            "grams": 10,
-            "total_discount": "0.00",
-            "sku": "0987654321-2",
-            "variant_title": "Red / B",
-            "gift_card": false,
-            "total_discount_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-            },
-            "requires_shipping": true,
-          },
-        ],
-        "referring_site": null,
-        "total_shipping_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-        },
-        "total_discounts": "0.00",
-        "presentment_currency": "USD",
-        "updated_at": "2019-12-13T13:56:10-08:00",
-        "tags": "",
-        "token": "46a2ba4414e9539325b3a03975da8657",
-        "app_id": 1354745,
-        "cart_token": null,
-        "total_discounts_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-        },
-        "order_number": 1684,
-        "total_line_items_price": "5.00",
-        "id": 1894175539223,
-        "customer_locale": null,
-        "refunds": Immutable.List [],
-        "email": "apu@gorgias.com",
-        "total_line_items_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-        },
-        "contact_email": "apu@gorgias.com",
-        "browser_ip": null,
-        "customer": Immutable.Map {
-          "accepts_marketing_updated_at": "2019-12-13T13:52:15-08:00",
-          "last_order_name": "#1684",
-          "verified_email": true,
-          "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
-          "created_at": "2019-12-13T13:52:15-08:00",
-          "phone": null,
-          "marketing_opt_in_level": null,
-          "currency": "USD",
-          "state": "disabled",
-          "accepts_marketing": false,
-          "note": "hello",
-          "total_spent": "6.00",
-          "tax_exempt": false,
-          "last_name": "Nahasapeemapetilon",
-          "orders_count": 1,
-          "last_order_id": 1894175539223,
-          "default_address": Immutable.Map {
-            "default": true,
-            "zip": "",
-            "city": "",
-            "name": "Apu Nahasapeemapetilon",
-            "phone": "",
-            "province": "",
-            "country_name": "France",
-            "last_name": "Nahasapeemapetilon",
-            "country_code": "FR",
-            "country": "France",
-            "first_name": "Apu",
-            "id": 2888869838871,
-            "customer_id": 2721145061399,
-            "province_code": null,
-            "company": "",
-            "address1": "",
-            "address2": "",
-          },
-          "updated_at": "2019-12-13T13:57:02-08:00",
-          "tags": "",
-          "first_name": "Apu",
-          "id": 2721145061399,
-          "email": "apu@gorgias.com",
-          "multipass_identifier": null,
-        },
-        "confirmed": true,
-      },
-    }
-  }
-  header="Cancel order"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "deleted_datetime": null,
-        "mappings": Immutable.List [],
-        "meta": Immutable.Map {
-          "sync_customer_notes": true,
-          "shop_id": 54899465,
-          "uses_multi_currency": true,
-          "shop_domain": "gorgiastest.com",
-          "currency": "USD",
-          "shop_display_name": "Store Gorgias 3",
-          "shop_plan": "affiliate",
-          "shop_name": "gorgiastest",
-          "oauth": Immutable.Map {
-            "scope": Immutable.List [
-              "read_all_orders",
-              "read_orders",
-              "write_orders",
-              "read_customers",
-              "write_customers",
-              "read_themes",
-              "write_themes",
-              "read_products",
-              "read_draft_orders",
-              "write_draft_orders",
-            ],
-            "status": "success",
-          },
-          "import_state": Immutable.Map {
-            "customers": Immutable.Map {
-              "is_over": true,
-              "oldest_created_at": "2017-03-17T18:26:16-07:00",
-            },
-            "products": Immutable.Map {
-              "is_over": true,
-              "oldest_created_at": "2020-01-07T16:36:31-08:00",
-            },
-          },
-          "is_used_for_billing": true,
-          "need_scope_update": false,
-        },
-        "facebook": null,
-        "http": null,
-        "deactivated_datetime": null,
-        "name": "My Shop",
-        "uri": "/api/integrations/1/",
-        "decoration": null,
-        "locked_datetime": null,
-        "created_datetime": "2020-01-28T22:19:15.604153+00:00",
-        "type": "shopify",
-        "id": 1,
-        "description": null,
-        "updated_datetime": "2020-01-28T22:19:15.604157+00:00",
-      },
-    ]
-  }
-  isOpen={false}
-  lineItems={null}
-  loading={false}
-  loadingMessage={null}
-  onBulkChange={[MockFunction]}
-  onCancel={[Function]}
-  onChange={[MockFunction]}
-  onClose={[MockFunction]}
-  onInit={[Function]}
-  onLineItemsChange={[Function]}
-  onOpen={[MockFunction]}
-  onPayloadChange={[Function]}
-  onReset={[Function]}
-  onSubmit={[MockFunction]}
-  payload={null}
-  refund={Immutable.Map {}}
-  setPayload={[Function]}
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
-/>
-`;
+exports[`<CancelOrderContainer /> should not render when modal is closed 1`] = `null`;
 
-exports[`<CancelOrderModal/> render() should render as open 1`] = `
-<CancelOrderModalComponent
-  data={
-    Object {
-      "actionName": "shopifyCancelOrder",
-      "order": Immutable.Map {
-        "checkout_token": null,
-        "total_tip_received": "0.0",
-        "cancelled_at": null,
-        "discount_applications": Immutable.List [],
-        "taxes_included": false,
-        "landing_site_ref": null,
-        "shipping_address": Immutable.Map {
-          "zip": null,
-          "city": null,
-          "name": "Apu Nahasapeemapetilon",
-          "latitude": null,
-          "phone": null,
-          "longitude": null,
-          "province": null,
-          "last_name": "Nahasapeemapetilon",
-          "country_code": "FR",
-          "country": "France",
-          "first_name": "Apu",
-          "province_code": null,
-          "company": null,
-          "address1": null,
-          "address2": null,
-        },
-        "gateway": "manual",
-        "processed_at": "2019-12-13T13:54:05-08:00",
-        "device_id": null,
-        "note_attributes": Immutable.List [],
-        "location_id": null,
-        "admin_graphql_api_id": "gid://shopify/Order/1894175539223",
-        "buyer_accepts_marketing": false,
-        "closed_at": null,
-        "financial_status": "partially_paid",
-        "discount_codes": Immutable.List [],
-        "number": 684,
-        "cancel_reason": null,
-        "created_at": "2019-12-13T13:54:05-08:00",
-        "tax_lines": Immutable.List [
-          Immutable.Map {
-            "rate": 0.2,
-            "price": "1.00",
-            "title": "TVA",
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-          },
-        ],
-        "name": "#1684",
-        "reference": null,
-        "source_url": null,
-        "source_identifier": null,
-        "processing_method": "manual",
-        "total_price": "6.00",
-        "shipping_lines": Immutable.List [],
-        "phone": null,
-        "subtotal_price": "5.00",
-        "source_name": "shopify_draft_order",
-        "landing_site": null,
-        "user_id": 95205899,
-        "total_tax": "1.00",
-        "billing_address": Immutable.Map {
-          "zip": null,
-          "city": null,
-          "name": "Apu Nahasapeemapetilon",
-          "latitude": null,
-          "phone": null,
-          "longitude": null,
-          "province": null,
-          "last_name": "Nahasapeemapetilon",
-          "country_code": "FR",
-          "country": "France",
-          "first_name": "Apu",
-          "province_code": null,
-          "company": null,
-          "address1": null,
-          "address2": null,
-        },
-        "currency": "USD",
-        "total_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "6.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "6.00",
-            "currency_code": "USD",
-          },
-        },
-        "subtotal_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-        },
-        "test": false,
-        "note": "ahahah??",
-        "order_status_url": "https://storegorgias3.myshopify.com/17817573/orders/46a2ba4414e9539325b3a03975da8657/authenticate?key=b422672687af40802905f0ba54c1b2a9",
-        "fulfillment_status": null,
-        "total_tax_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "1.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "1.00",
-            "currency_code": "USD",
-          },
-        },
-        "total_weight": 50,
-        "checkout_id": null,
-        "payment_gateway_names": Immutable.List [
-          "manual",
-        ],
-        "total_price_usd": "6.00",
-        "fulfillments": Immutable.List [],
-        "line_items": Immutable.List [
-          Immutable.Map {
-            "variant_inventory_management": "shopify",
-            "taxable": true,
-            "admin_graphql_api_id": "gid://shopify/LineItem/4193100136471",
-            "vendor": "storegorgias3",
-            "price": "1.00",
-            "quantity": 1,
-            "tax_lines": Immutable.List [
-              Immutable.Map {
-                "rate": 0.2,
-                "price": "0.20",
-                "title": "TVA",
-                "price_set": Immutable.Map {
-                  "shop_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                  "presentment_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                },
-              },
-            ],
-            "product_id": 8345093387,
-            "name": "Acidulous candy - Red / A",
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-            "product_exists": true,
-            "fulfillable_quantity": 1,
-            "properties": Immutable.List [],
-            "fulfillment_status": null,
-            "fulfillment_service": "manual",
-            "discount_allocations": Immutable.List [],
-            "variant_id": 31128766316567,
-            "title": "Acidulous candy",
-            "id": 4193100136471,
-            "grams": 10,
-            "total_discount": "0.00",
-            "sku": "0987654321-1",
-            "variant_title": "Red / A",
-            "gift_card": false,
-            "total_discount_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-            },
-            "requires_shipping": true,
-          },
-          Immutable.Map {
-            "variant_inventory_management": "shopify",
-            "taxable": true,
-            "admin_graphql_api_id": "gid://shopify/LineItem/4193100169239",
-            "vendor": "storegorgias3",
-            "price": "1.00",
-            "quantity": 4,
-            "tax_lines": Immutable.List [
-              Immutable.Map {
-                "rate": 0.2,
-                "price": "0.60",
-                "title": "TVA",
-                "price_set": Immutable.Map {
-                  "shop_money": Immutable.Map {
-                    "amount": "0.6",
-                    "currency_code": "USD",
-                  },
-                  "presentment_money": Immutable.Map {
-                    "amount": "0.6",
-                    "currency_code": "USD",
-                  },
-                },
-              },
-              Immutable.Map {
-                "rate": 0.2,
-                "price": "0.20",
-                "title": "TVA",
-                "price_set": Immutable.Map {
-                  "shop_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                  "presentment_money": Immutable.Map {
-                    "amount": "0.2",
-                    "currency_code": "USD",
-                  },
-                },
-              },
-            ],
-            "product_id": 8345093387,
-            "name": "Acidulous candy - Red / B",
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-            "product_exists": true,
-            "fulfillable_quantity": 4,
-            "properties": Immutable.List [],
-            "fulfillment_status": null,
-            "fulfillment_service": "manual",
-            "discount_allocations": Immutable.List [],
-            "variant_id": 31128766349335,
-            "title": "Acidulous candy",
-            "id": 4193100169239,
-            "grams": 10,
-            "total_discount": "0.00",
-            "sku": "0987654321-2",
-            "variant_title": "Red / B",
-            "gift_card": false,
-            "total_discount_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-            },
-            "requires_shipping": true,
-          },
-        ],
-        "referring_site": null,
-        "total_shipping_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-        },
-        "total_discounts": "0.00",
-        "presentment_currency": "USD",
-        "updated_at": "2019-12-13T13:56:10-08:00",
-        "tags": "",
-        "token": "46a2ba4414e9539325b3a03975da8657",
-        "app_id": 1354745,
-        "cart_token": null,
-        "total_discounts_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.00",
-            "currency_code": "USD",
-          },
-        },
-        "order_number": 1684,
-        "total_line_items_price": "5.00",
-        "id": 1894175539223,
-        "customer_locale": null,
-        "refunds": Immutable.List [],
-        "email": "apu@gorgias.com",
-        "total_line_items_price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "5.00",
-            "currency_code": "USD",
-          },
-        },
-        "contact_email": "apu@gorgias.com",
-        "browser_ip": null,
-        "customer": Immutable.Map {
-          "accepts_marketing_updated_at": "2019-12-13T13:52:15-08:00",
-          "last_order_name": "#1684",
-          "verified_email": true,
-          "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
-          "created_at": "2019-12-13T13:52:15-08:00",
-          "phone": null,
-          "marketing_opt_in_level": null,
-          "currency": "USD",
-          "state": "disabled",
-          "accepts_marketing": false,
-          "note": "hello",
-          "total_spent": "6.00",
-          "tax_exempt": false,
-          "last_name": "Nahasapeemapetilon",
-          "orders_count": 1,
-          "last_order_id": 1894175539223,
-          "default_address": Immutable.Map {
-            "default": true,
-            "zip": "",
-            "city": "",
-            "name": "Apu Nahasapeemapetilon",
-            "phone": "",
-            "province": "",
-            "country_name": "France",
-            "last_name": "Nahasapeemapetilon",
-            "country_code": "FR",
-            "country": "France",
-            "first_name": "Apu",
-            "id": 2888869838871,
-            "customer_id": 2721145061399,
-            "province_code": null,
-            "company": "",
-            "address1": "",
-            "address2": "",
-          },
-          "updated_at": "2019-12-13T13:57:02-08:00",
-          "tags": "",
-          "first_name": "Apu",
-          "id": 2721145061399,
-          "email": "apu@gorgias.com",
-          "multipass_identifier": null,
-        },
-        "confirmed": true,
-      },
-    }
-  }
-  header="Cancel order"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "deleted_datetime": null,
-        "mappings": Immutable.List [],
-        "meta": Immutable.Map {
-          "sync_customer_notes": true,
-          "shop_id": 54899465,
-          "uses_multi_currency": true,
-          "shop_domain": "gorgiastest.com",
-          "currency": "USD",
-          "shop_display_name": "Store Gorgias 3",
-          "shop_plan": "affiliate",
-          "shop_name": "gorgiastest",
-          "oauth": Immutable.Map {
-            "scope": Immutable.List [
-              "read_all_orders",
-              "read_orders",
-              "write_orders",
-              "read_customers",
-              "write_customers",
-              "read_themes",
-              "write_themes",
-              "read_products",
-              "read_draft_orders",
-              "write_draft_orders",
-            ],
-            "status": "success",
-          },
-          "import_state": Immutable.Map {
-            "customers": Immutable.Map {
-              "is_over": true,
-              "oldest_created_at": "2017-03-17T18:26:16-07:00",
-            },
-            "products": Immutable.Map {
-              "is_over": true,
-              "oldest_created_at": "2020-01-07T16:36:31-08:00",
-            },
-          },
-          "is_used_for_billing": true,
-          "need_scope_update": false,
-        },
-        "facebook": null,
-        "http": null,
-        "deactivated_datetime": null,
-        "name": "My Shop",
-        "uri": "/api/integrations/1/",
-        "decoration": null,
-        "locked_datetime": null,
-        "created_datetime": "2020-01-28T22:19:15.604153+00:00",
-        "type": "shopify",
-        "id": 1,
-        "description": null,
-        "updated_datetime": "2020-01-28T22:19:15.604157+00:00",
-      },
-    ]
-  }
-  isOpen={true}
-  lineItems={null}
-  loading={false}
-  loadingMessage={null}
-  onBulkChange={[MockFunction]}
-  onCancel={[Function]}
-  onChange={[MockFunction]}
-  onClose={[MockFunction]}
-  onInit={[Function]}
-  onLineItemsChange={[Function]}
-  onOpen={[MockFunction]}
-  onPayloadChange={[Function]}
-  onReset={[Function]}
-  onSubmit={[MockFunction]}
-  payload={null}
-  refund={Immutable.Map {}}
-  setPayload={[Function]}
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
-/>
-`;
-
-exports[`<CancelOrderModalComponent/> render() should render as closed 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Cancel order"
-  isOpen={false}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
+exports[`<CancelOrderContainer /> should render a spinner when missing data 1`] = `
+<div
+  data-testid="Modal"
 >
-  <Form
-    onSubmit={[Function]}
-    tag="form"
+  <form
+    class=""
   >
-    <ModalFooter
-      className="footer"
-      tag="div"
+    <div
+      class="footer modal-footer"
     >
-      <Button
-        className="focusable"
-        color="secondary"
-        onClick={[Function]}
-        tabIndex={0}
-        tag="button"
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
       >
         Keep order
-      </Button>
-      <Button
-        className="focusable ml-auto"
-        color="primary"
-        disabled={false}
-        tabIndex={0}
-        tag="button"
+      </button>
+      <div
+        class="ml-3"
+      >
+        <div
+          class="container spinner"
+        >
+          <div
+            class="inner"
+            style="min-height: 20px;"
+          >
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 20px;"
+            />
+          </div>
+        </div>
+        <span
+          class="ml-2"
+        />
+      </div>
+      <button
+        class="focusable ml-auto btn btn-primary disabled"
+        disabled=""
+        tabindex="0"
         type="submit"
       >
         Cancel order
-      </Button>
-    </ModalFooter>
-  </Form>
-</Modal>
+      </button>
+    </div>
+  </form>
+</div>
 `;
 
-exports[`<CancelOrderModalComponent/> render() should render as open, with order table 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Cancel order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
+exports[`<CancelOrderContainer /> should render with a populated order table when data is populated 1`] = `
+<div
+  data-testid="Modal"
 >
-  <Form
-    onSubmit={[Function]}
-    tag="form"
+  <form
+    class=""
   >
-    <RefundOrderForm
-      actionName="shopifyCancelOrder"
-      lineItems={
-        Immutable.List [
-          Immutable.Map {
-            "quantity": 1,
-            "product_id": 8345093387,
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-            "variant_id": 31128766316567,
-            "title": "Acidulous candy",
-            "id": 4193100136471,
-            "sku": "0987654321-1",
-            "variant_title": "Red / A",
-            "total_discount_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-            },
-          },
-          Immutable.Map {
-            "quantity": 4,
-            "product_id": 8345093387,
-            "price_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "1.0",
-                "currency_code": "USD",
-              },
-            },
-            "variant_id": 31128766349335,
-            "title": "Acidulous candy",
-            "id": 4193100169239,
-            "sku": "0987654321-2",
-            "variant_title": "Red / B",
-            "total_discount_set": Immutable.Map {
-              "shop_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-              "presentment_money": Immutable.Map {
-                "amount": "0.0",
-                "currency_code": "USD",
-              },
-            },
-          },
-        ]
-      }
-      loading={false}
-      notify={true}
-      onLineItemsChange={[Function]}
-      onNotifyChange={[Function]}
-      onPayloadChange={[Function]}
-      onReasonChange={[Function]}
-      order={
-        Immutable.Map {
-          "checkout_token": null,
-          "total_tip_received": "0.0",
-          "cancelled_at": null,
-          "discount_applications": Immutable.List [],
-          "taxes_included": false,
-          "landing_site_ref": null,
-          "shipping_address": Immutable.Map {
-            "zip": null,
-            "city": null,
-            "name": "Apu Nahasapeemapetilon",
-            "latitude": null,
-            "phone": null,
-            "longitude": null,
-            "province": null,
-            "last_name": "Nahasapeemapetilon",
-            "country_code": "FR",
-            "country": "France",
-            "first_name": "Apu",
-            "province_code": null,
-            "company": null,
-            "address1": null,
-            "address2": null,
-          },
-          "gateway": "manual",
-          "processed_at": "2019-12-13T13:54:05-08:00",
-          "device_id": null,
-          "note_attributes": Immutable.List [],
-          "location_id": null,
-          "admin_graphql_api_id": "gid://shopify/Order/1894175539223",
-          "buyer_accepts_marketing": false,
-          "closed_at": null,
-          "financial_status": "partially_paid",
-          "discount_codes": Immutable.List [],
-          "number": 684,
-          "cancel_reason": null,
-          "created_at": "2019-12-13T13:54:05-08:00",
-          "tax_lines": Immutable.List [
-            Immutable.Map {
-              "rate": 0.2,
-              "price": "1.00",
-              "title": "TVA",
-              "price_set": Immutable.Map {
-                "shop_money": Immutable.Map {
-                  "amount": "1.0",
-                  "currency_code": "USD",
-                },
-                "presentment_money": Immutable.Map {
-                  "amount": "1.0",
-                  "currency_code": "USD",
-                },
-              },
-            },
-          ],
-          "name": "#1684",
-          "reference": null,
-          "source_url": null,
-          "source_identifier": null,
-          "processing_method": "manual",
-          "total_price": "6.00",
-          "shipping_lines": Immutable.List [],
-          "phone": null,
-          "subtotal_price": "5.00",
-          "source_name": "shopify_draft_order",
-          "landing_site": null,
-          "user_id": 95205899,
-          "total_tax": "1.00",
-          "billing_address": Immutable.Map {
-            "zip": null,
-            "city": null,
-            "name": "Apu Nahasapeemapetilon",
-            "latitude": null,
-            "phone": null,
-            "longitude": null,
-            "province": null,
-            "last_name": "Nahasapeemapetilon",
-            "country_code": "FR",
-            "country": "France",
-            "first_name": "Apu",
-            "province_code": null,
-            "company": null,
-            "address1": null,
-            "address2": null,
-          },
-          "currency": "USD",
-          "total_price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "6.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "6.00",
-              "currency_code": "USD",
-            },
-          },
-          "subtotal_price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "5.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "5.00",
-              "currency_code": "USD",
-            },
-          },
-          "test": false,
-          "note": "ahahah??",
-          "order_status_url": "https://storegorgias3.myshopify.com/17817573/orders/46a2ba4414e9539325b3a03975da8657/authenticate?key=b422672687af40802905f0ba54c1b2a9",
-          "fulfillment_status": null,
-          "total_tax_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "1.00",
-              "currency_code": "USD",
-            },
-          },
-          "total_weight": 50,
-          "checkout_id": null,
-          "payment_gateway_names": Immutable.List [
-            "manual",
-          ],
-          "total_price_usd": "6.00",
-          "fulfillments": Immutable.List [],
-          "line_items": Immutable.List [
-            Immutable.Map {
-              "variant_inventory_management": "shopify",
-              "taxable": true,
-              "admin_graphql_api_id": "gid://shopify/LineItem/4193100136471",
-              "vendor": "storegorgias3",
-              "price": "1.00",
-              "quantity": 1,
-              "tax_lines": Immutable.List [
-                Immutable.Map {
-                  "rate": 0.2,
-                  "price": "0.20",
-                  "title": "TVA",
-                  "price_set": Immutable.Map {
-                    "shop_money": Immutable.Map {
-                      "amount": "0.2",
-                      "currency_code": "USD",
-                    },
-                    "presentment_money": Immutable.Map {
-                      "amount": "0.2",
-                      "currency_code": "USD",
-                    },
-                  },
-                },
-              ],
-              "product_id": 8345093387,
-              "name": "Acidulous candy - Red / A",
-              "price_set": Immutable.Map {
-                "shop_money": Immutable.Map {
-                  "amount": "1.0",
-                  "currency_code": "USD",
-                },
-                "presentment_money": Immutable.Map {
-                  "amount": "1.0",
-                  "currency_code": "USD",
-                },
-              },
-              "product_exists": true,
-              "fulfillable_quantity": 1,
-              "properties": Immutable.List [],
-              "fulfillment_status": null,
-              "fulfillment_service": "manual",
-              "discount_allocations": Immutable.List [],
-              "variant_id": 31128766316567,
-              "title": "Acidulous candy",
-              "id": 4193100136471,
-              "grams": 10,
-              "total_discount": "0.00",
-              "sku": "0987654321-1",
-              "variant_title": "Red / A",
-              "gift_card": false,
-              "total_discount_set": Immutable.Map {
-                "shop_money": Immutable.Map {
-                  "amount": "0.0",
-                  "currency_code": "USD",
-                },
-                "presentment_money": Immutable.Map {
-                  "amount": "0.0",
-                  "currency_code": "USD",
-                },
-              },
-              "requires_shipping": true,
-            },
-            Immutable.Map {
-              "variant_inventory_management": "shopify",
-              "taxable": true,
-              "admin_graphql_api_id": "gid://shopify/LineItem/4193100169239",
-              "vendor": "storegorgias3",
-              "price": "1.00",
-              "quantity": 4,
-              "tax_lines": Immutable.List [
-                Immutable.Map {
-                  "rate": 0.2,
-                  "price": "0.60",
-                  "title": "TVA",
-                  "price_set": Immutable.Map {
-                    "shop_money": Immutable.Map {
-                      "amount": "0.6",
-                      "currency_code": "USD",
-                    },
-                    "presentment_money": Immutable.Map {
-                      "amount": "0.6",
-                      "currency_code": "USD",
-                    },
-                  },
-                },
-                Immutable.Map {
-                  "rate": 0.2,
-                  "price": "0.20",
-                  "title": "TVA",
-                  "price_set": Immutable.Map {
-                    "shop_money": Immutable.Map {
-                      "amount": "0.2",
-                      "currency_code": "USD",
-                    },
-                    "presentment_money": Immutable.Map {
-                      "amount": "0.2",
-                      "currency_code": "USD",
-                    },
-                  },
-                },
-              ],
-              "product_id": 8345093387,
-              "name": "Acidulous candy - Red / B",
-              "price_set": Immutable.Map {
-                "shop_money": Immutable.Map {
-                  "amount": "1.0",
-                  "currency_code": "USD",
-                },
-                "presentment_money": Immutable.Map {
-                  "amount": "1.0",
-                  "currency_code": "USD",
-                },
-              },
-              "product_exists": true,
-              "fulfillable_quantity": 4,
-              "properties": Immutable.List [],
-              "fulfillment_status": null,
-              "fulfillment_service": "manual",
-              "discount_allocations": Immutable.List [],
-              "variant_id": 31128766349335,
-              "title": "Acidulous candy",
-              "id": 4193100169239,
-              "grams": 10,
-              "total_discount": "0.00",
-              "sku": "0987654321-2",
-              "variant_title": "Red / B",
-              "gift_card": false,
-              "total_discount_set": Immutable.Map {
-                "shop_money": Immutable.Map {
-                  "amount": "0.0",
-                  "currency_code": "USD",
-                },
-                "presentment_money": Immutable.Map {
-                  "amount": "0.0",
-                  "currency_code": "USD",
-                },
-              },
-              "requires_shipping": true,
-            },
-          ],
-          "referring_site": null,
-          "total_shipping_price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "0.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "0.00",
-              "currency_code": "USD",
-            },
-          },
-          "total_discounts": "0.00",
-          "presentment_currency": "USD",
-          "updated_at": "2019-12-13T13:56:10-08:00",
-          "tags": "",
-          "token": "46a2ba4414e9539325b3a03975da8657",
-          "app_id": 1354745,
-          "cart_token": null,
-          "total_discounts_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "0.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "0.00",
-              "currency_code": "USD",
-            },
-          },
-          "order_number": 1684,
-          "total_line_items_price": "5.00",
-          "id": 1894175539223,
-          "customer_locale": null,
-          "refunds": Immutable.List [],
-          "email": "apu@gorgias.com",
-          "total_line_items_price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "5.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "5.00",
-              "currency_code": "USD",
-            },
-          },
-          "contact_email": "apu@gorgias.com",
-          "browser_ip": null,
-          "customer": Immutable.Map {
-            "accepts_marketing_updated_at": "2019-12-13T13:52:15-08:00",
-            "last_order_name": "#1684",
-            "verified_email": true,
-            "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
-            "created_at": "2019-12-13T13:52:15-08:00",
-            "phone": null,
-            "marketing_opt_in_level": null,
-            "currency": "USD",
-            "state": "disabled",
-            "accepts_marketing": false,
-            "note": "hello",
-            "total_spent": "6.00",
-            "tax_exempt": false,
-            "last_name": "Nahasapeemapetilon",
-            "orders_count": 1,
-            "last_order_id": 1894175539223,
-            "default_address": Immutable.Map {
-              "default": true,
-              "zip": "",
-              "city": "",
-              "name": "Apu Nahasapeemapetilon",
-              "phone": "",
-              "province": "",
-              "country_name": "France",
-              "last_name": "Nahasapeemapetilon",
-              "country_code": "FR",
-              "country": "France",
-              "first_name": "Apu",
-              "id": 2888869838871,
-              "customer_id": 2721145061399,
-              "province_code": null,
-              "company": "",
-              "address1": "",
-              "address2": "",
-            },
-            "updated_at": "2019-12-13T13:57:02-08:00",
-            "tags": "",
-            "first_name": "Apu",
-            "id": 2721145061399,
-            "email": "apu@gorgias.com",
-            "multipass_identifier": null,
-          },
-          "confirmed": true,
-        }
-      }
-      payload={
-        Immutable.Map {
-          "currency": "USD",
-          "restock": true,
-          "notify": false,
-          "refund_line_items": Immutable.List [
-            Immutable.Map {
-              "line_item_id": 4193100136471,
-              "fulfillment_status": null,
-              "restock_type": "cancel",
-              "quantity": 1,
-            },
-            Immutable.Map {
-              "line_item_id": 4193100169239,
-              "fulfillment_status": null,
-              "restock_type": "cancel",
-              "quantity": 4,
-            },
-          ],
-          "shipping": Immutable.Map {
-            "amount": "0.00",
-          },
-          "transactions": Immutable.List [
-            Immutable.Map {
-              "amount": "",
-            },
-          ],
-        }
-      }
-      reason="customer"
-      refund={null}
-      setPayload={[Function]}
-      shopName="gorgiastest"
-    />
-    <ModalFooter
-      className="footer"
-      tag="div"
+    <table
+      class="table table table-hover"
     >
-      <Button
-        className="focusable"
-        color="secondary"
-        onClick={[Function]}
-        tabIndex={0}
-        tag="button"
+      <thead>
+        <tr>
+          <th>
+            Product
+          </th>
+          <th>
+            Item price
+          </th>
+          <th>
+            Qty
+          </th>
+          <th>
+            Item total
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            class="container"
+          >
+            <div
+              class="legend"
+            >
+              <div>
+                <a
+                  class="title"
+                  href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766316567"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Acidulous candy
+                </a>
+              </div>
+              <div
+                class="subtitle"
+              >
+                Red / A
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 
+                0987654321-1
+              </div>
+            </div>
+          </td>
+          <td
+            class="numberCol"
+          >
+            <div
+              class="d-flex"
+            >
+              <div
+                class="d-inline-block text-center"
+              >
+                <small
+                  class="d-block text-muted"
+                >
+                  <del>
+                    <span>
+                      $1.00
+                    </span>
+                  </del>
+                </small>
+                <span>
+                  $1.00
+                </span>
+              </div>
+              <span
+                class="times"
+              >
+                x
+              </span>
+            </div>
+          </td>
+          <td
+            class="quantityCol"
+          >
+            <div
+              class="input-group"
+            >
+              <span
+                class="quantityContainer"
+              >
+                <input
+                  class="quantityInput form-control"
+                  pattern="\\\\d+"
+                  type="text"
+                  value="1"
+                />
+                <span
+                  class="quantityMax"
+                >
+                  / 
+                  1
+                </span>
+              </span>
+              <div
+                class="quantityButtonsContainer input-group-append"
+              >
+                <button
+                  class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+                  disabled=""
+                  tabindex="0"
+                  type="button"
+                >
+                  ▲
+                </button>
+                <button
+                  class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+                  tabindex="0"
+                  type="button"
+                >
+                  ▼
+                </button>
+              </div>
+            </div>
+          </td>
+          <td
+            class="numberCol"
+          >
+            <div
+              class="d-flex"
+            >
+              <strong
+                class="mt-auto mb-auto ml-auto"
+              >
+                <span>
+                  $1.00
+                </span>
+              </strong>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="container"
+          >
+            <div
+              class="legend"
+            >
+              <div>
+                <a
+                  class="title"
+                  href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766349335"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Acidulous candy
+                </a>
+              </div>
+              <div
+                class="subtitle"
+              >
+                Red / B
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 
+                0987654321-2
+              </div>
+            </div>
+          </td>
+          <td
+            class="numberCol"
+          >
+            <div
+              class="d-flex"
+            >
+              <div
+                class="d-inline-block text-center"
+              >
+                <small
+                  class="d-block text-muted"
+                >
+                  <del>
+                    <span>
+                      $1.00
+                    </span>
+                  </del>
+                </small>
+                <span>
+                  $1.00
+                </span>
+              </div>
+              <span
+                class="times"
+              >
+                x
+              </span>
+            </div>
+          </td>
+          <td
+            class="quantityCol"
+          >
+            <div
+              class="input-group"
+            >
+              <span
+                class="quantityContainer"
+              >
+                <input
+                  class="quantityInput form-control"
+                  pattern="\\\\d+"
+                  type="text"
+                  value="4"
+                />
+                <span
+                  class="quantityMax"
+                >
+                  / 
+                  4
+                </span>
+              </span>
+              <div
+                class="quantityButtonsContainer input-group-append"
+              >
+                <button
+                  class="focusable quantityBtn quantityBtnUp btn btn-secondary disabled"
+                  disabled=""
+                  tabindex="0"
+                  type="button"
+                >
+                  ▲
+                </button>
+                <button
+                  class="focusable quantityBtn quantityBtnDown btn btn-secondary"
+                  tabindex="0"
+                  type="button"
+                >
+                  ▼
+                </button>
+              </div>
+            </div>
+          </td>
+          <td
+            class="numberCol"
+          >
+            <div
+              class="d-flex"
+            >
+              <strong
+                class="mt-auto mb-auto ml-auto"
+              >
+                <span>
+                  $4.00
+                </span>
+              </strong>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      class="container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-12 order-2 col-xl-7 order-xl-1"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-12 col-lg-6"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class=""
+                  for="amount"
+                >
+                  Refund with: Manual
+                </label>
+                <div
+                  class="container amountInput"
+                >
+                  <span
+                    class="leftLabel"
+                    style="width: 2rem;"
+                  >
+                    $
+                  </span>
+                  <input
+                    class="input form-control"
+                    id="amount"
+                    min="0"
+                    required=""
+                    step="0.01"
+                    style="padding-left: 2rem;"
+                    type="number"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-12 col-lg-6"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class=""
+                  for="reason"
+                >
+                  Reason for canceling this order
+                </label>
+                <select
+                  class="form-control"
+                  id="reason"
+                >
+                  <option
+                    value="customer"
+                  >
+                    Customer changed/canceled order
+                  </option>
+                  <option
+                    value="fraud"
+                  >
+                    Fraudulent order
+                  </option>
+                  <option
+                    value="inventory"
+                  >
+                    Items unavailable
+                  </option>
+                  <option
+                    value="declined"
+                  >
+                    Payment declined
+                  </option>
+                  <option
+                    value="other"
+                  >
+                    Other
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-12"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class=""
+                  for="discrepancy-reason"
+                >
+                  Reason for custom refund amount
+                </label>
+                <select
+                  class="discrepancyReasonInput form-control"
+                  id="discrepancy-reason"
+                >
+                  <option
+                    value="restock"
+                  >
+                    Restocking fee
+                  </option>
+                  <option
+                    value="damage"
+                  >
+                    Damaged goods
+                  </option>
+                  <option
+                    value="customer"
+                  >
+                    Customer satisfaction
+                  </option>
+                  <option
+                    value="other"
+                  >
+                    Other
+                  </option>
+                </select>
+                <small
+                  class="form-text text-muted"
+                >
+                  The amount being refunded is different from the value of items being returned.
+                </small>
+              </div>
+              <div
+                class="mb-3 form-check"
+              >
+                <label
+                  class="form-check-label"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    type="checkbox"
+                  />
+                  <span
+                    class="ml-1"
+                  >
+                    Restock items
+                  </span>
+                </label>
+                <small
+                  class="form-text text-muted"
+                >
+                  The claimed quantity for products in this order will be restocked back to your store.
+                </small>
+              </div>
+              <div
+                class="mb-3 form-check"
+              >
+                <label
+                  class="form-check-label"
+                  for="notify-customer"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    id="notify-customer"
+                    type="checkbox"
+                  />
+                  <span
+                    class="ml-1"
+                  >
+                    Send notification to customer
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
+        >
+          <dl
+            class="row text-right mb-0"
+          >
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Subtotal
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              <span>
+                $0.00
+              </span>
+            </dd>
+            <dt
+              class="col-7 grey mb-2"
+            >
+              <label
+                class="d-inline"
+                for="shipping"
+              >
+                Shipping
+                 
+              </label>
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Discounts
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Tax
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Total available to refund
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              <span>
+                $0.00
+              </span>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer modal-footer"
+    >
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
       >
         Keep order
-      </Button>
-      <Button
-        className="focusable ml-auto"
-        color="primary"
-        disabled={false}
-        tabIndex={0}
-        tag="button"
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary"
+        tabindex="0"
         type="submit"
       >
         Cancel order
-      </Button>
-    </ModalFooter>
-  </Form>
-</Modal>
+      </button>
+    </div>
+  </form>
+</div>
 `;
 
-exports[`<CancelOrderModalComponent/> render() should render as open, without order table 1`] = `
-<Modal
-  backdrop="static"
-  bodyClassName="p-0"
-  dismissible={true}
-  header="Cancel order"
-  isOpen={true}
-  keyboard={false}
-  onClose={[Function]}
-  size="xl"
+exports[`<CancelOrderContainer /> should render with an empty order table when data is empty 1`] = `
+<div
+  data-testid="Modal"
 >
-  <Form
-    onSubmit={[Function]}
-    tag="form"
+  <form
+    class=""
   >
-    <ModalFooter
-      className="footer"
-      tag="div"
+    <table
+      class="table table table-hover"
     >
-      <Button
-        className="focusable"
-        color="secondary"
-        onClick={[Function]}
-        tabIndex={0}
-        tag="button"
+      <thead>
+        <tr>
+          <th>
+            Product
+          </th>
+          <th>
+            Item price
+          </th>
+          <th>
+            Qty
+          </th>
+          <th>
+            Item total
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+    <div
+      class="container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-12 order-2 col-xl-7 order-xl-1"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-12 col-lg-6"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class=""
+                  for="amount"
+                >
+                  Refund with: Manual
+                </label>
+                <div
+                  class="container amountInput"
+                >
+                  <span
+                    class="leftLabel"
+                    style="width: 2rem;"
+                  >
+                    $
+                  </span>
+                  <input
+                    class="input form-control"
+                    id="amount"
+                    min="0"
+                    required=""
+                    step="0.01"
+                    style="padding-left: 2rem;"
+                    type="number"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-12 col-lg-6"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class=""
+                  for="reason"
+                >
+                  Reason for canceling this order
+                </label>
+                <select
+                  class="form-control"
+                  id="reason"
+                >
+                  <option
+                    value="customer"
+                  >
+                    Customer changed/canceled order
+                  </option>
+                  <option
+                    value="fraud"
+                  >
+                    Fraudulent order
+                  </option>
+                  <option
+                    value="inventory"
+                  >
+                    Items unavailable
+                  </option>
+                  <option
+                    value="declined"
+                  >
+                    Payment declined
+                  </option>
+                  <option
+                    value="other"
+                  >
+                    Other
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-12"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class=""
+                  for="discrepancy-reason"
+                >
+                  Reason for custom refund amount
+                </label>
+                <select
+                  class="discrepancyReasonInput form-control"
+                  id="discrepancy-reason"
+                >
+                  <option
+                    value="restock"
+                  >
+                    Restocking fee
+                  </option>
+                  <option
+                    value="damage"
+                  >
+                    Damaged goods
+                  </option>
+                  <option
+                    value="customer"
+                  >
+                    Customer satisfaction
+                  </option>
+                  <option
+                    value="other"
+                  >
+                    Other
+                  </option>
+                </select>
+                <small
+                  class="form-text text-muted"
+                >
+                  The amount being refunded is different from the value of items being returned.
+                </small>
+              </div>
+              <div
+                class="mb-3 form-check"
+              >
+                <label
+                  class="form-check-label"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    type="checkbox"
+                  />
+                  <span
+                    class="ml-1"
+                  >
+                    Restock items
+                  </span>
+                </label>
+                <small
+                  class="form-text text-muted"
+                >
+                  The claimed quantity for products in this order will be restocked back to your store.
+                </small>
+              </div>
+              <div
+                class="mb-3 form-check"
+              >
+                <label
+                  class="form-check-label"
+                  for="notify-customer"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    id="notify-customer"
+                    type="checkbox"
+                  />
+                  <span
+                    class="ml-1"
+                  >
+                    Send notification to customer
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
+        >
+          <dl
+            class="row text-right mb-0"
+          >
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Subtotal
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              <span>
+                $0.00
+              </span>
+            </dd>
+            <dt
+              class="col-7 grey mb-2"
+            >
+              <label
+                class="d-inline"
+                for="shipping"
+              >
+                Shipping
+                 
+              </label>
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Discounts
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Tax
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Total available to refund
+            </dt>
+            <dd
+              class="col-5 mb-2"
+            >
+              <span>
+                $0.00
+              </span>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer modal-footer"
+    >
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
       >
         Keep order
-      </Button>
-      <Button
-        className="focusable ml-auto"
-        color="primary"
-        disabled={false}
-        tabIndex={0}
-        tag="button"
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary"
+        tabindex="0"
         type="submit"
       >
         Cancel order
-      </Button>
-    </ModalFooter>
-  </Form>
-</Modal>
+      </button>
+    </div>
+  </form>
+</div>
 `;
