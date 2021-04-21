@@ -33,6 +33,7 @@ const defaultProps = {
         firstname: 'some_sender_firstname',
         lastname: 'some_sender_lastname',
     },
+    isFacebookComment: true,
     executeAction: infobarActions.executeAction,
 }
 

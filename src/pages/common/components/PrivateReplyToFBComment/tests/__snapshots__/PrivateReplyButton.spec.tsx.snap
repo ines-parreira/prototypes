@@ -8,7 +8,7 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
   id="private-reply-button-1"
 >
   <img
-    alt="Messenger icon"
+    alt="private message icon"
     class="messengerIcon"
     src="test-file-stub"
   />
@@ -24,7 +24,7 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
   id="private-reply-button-1"
 >
   <img
-    alt="Messenger icon"
+    alt="private message icon"
     class="messengerIcon"
     src="test-file-stub"
   />
@@ -39,7 +39,7 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
   id="private-reply-button-1"
 >
   <img
-    alt="Messenger icon"
+    alt="private message icon"
     class="messengerIcon"
     src="test-file-stub"
   />

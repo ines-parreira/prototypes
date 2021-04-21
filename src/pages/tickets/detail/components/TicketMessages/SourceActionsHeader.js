@@ -16,6 +16,8 @@ import {
 
 import PrivateReplyButton from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyButton.tsx'
 
+import {INSTAGRAM_PRIVATE_REPLY_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants'
+
 import css from './SourceActions.less'
 
 const classNames = classNamesBind.bind(css)
@@ -33,6 +35,7 @@ type Props = {
     bodyText?: string,
     sender: Actor,
     messageCreatedDatetime: string,
+    currentAccountDomain: string,
 }
 
 export class SourceActionsHeader extends React.Component<Props> {
@@ -70,6 +73,7 @@ export class SourceActionsHeader extends React.Component<Props> {
             bodyText,
             sender,
             messageCreatedDatetime,
+            currentAccountDomain,
         } = this.props
 
         const widgets = []
@@ -86,7 +90,7 @@ export class SourceActionsHeader extends React.Component<Props> {
 
         // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.
         // So we don't even display the `hide` button to avoid frustration.
-        if (isInstagramComment || (isFacebookComment && !fromAgent)) {
+        if ((isInstagramComment || isFacebookComment) && !fromAgent) {
             let hiddenDatetime = null
             let actionIcon = hideIcon
             let actionText = 'Hide'
@@ -102,7 +106,13 @@ export class SourceActionsHeader extends React.Component<Props> {
                 actionText = 'Unhide'
             }
 
-            if (isFacebookComment && !fromAgent) {
+            if (
+                (isInstagramComment &&
+                    INSTAGRAM_PRIVATE_REPLY_ALLOWED_DOMAINS.includes(
+                        currentAccountDomain
+                    )) ||
+                isFacebookComment
+            ) {
                 widgets.push(
                     <span
                         key="private_reply-action"
@@ -123,6 +133,7 @@ export class SourceActionsHeader extends React.Component<Props> {
                             meta={meta}
                             messageCreatedDatetime={messageCreatedDatetime}
                             executeAction={this.props.executeAction}
+                            isFacebookComment={isFacebookComment}
                         />
                     </span>
                 )
@@ -147,6 +158,12 @@ export class SourceActionsHeader extends React.Component<Props> {
     }
 }
 
-export default connect(null, {executeAction: infobarActions.executeAction})(
-    SourceActionsHeader
-)
+const mapStateToProps = (state) => {
+    return {
+        currentAccountDomain: state.currentAccount.get('domain'),
+    }
+}
+
+export default connect(mapStateToProps, {
+    executeAction: infobarActions.executeAction,
+})(SourceActionsHeader)

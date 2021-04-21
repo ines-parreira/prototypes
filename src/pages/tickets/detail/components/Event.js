@@ -16,7 +16,9 @@ import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 import {getIntegrationById} from '../../../../state/integrations/selectors.ts'
 import {getIntegrationDataByIntegrationId} from '../../../../state/ticket/selectors.ts'
 
-import facebookMessengerEvent from '../../../../../img/integrations/facebook-messenger-blue-icon.svg'
+import facebookMessengerIcon from '../../../../../img/integrations/facebook-messenger-blue-icon.svg'
+import InstagramDirectMessageIcon from '../../../../../img/integrations/Instagram-direct-message-blue.svg'
+import InstagramIcon from '../../../../../img/integrations/instagram-icon-blue.svg'
 
 import css from './Event.less'
 
@@ -218,24 +220,56 @@ export class EventContainer extends React.Component {
                 }
             } else if (integration.get('type') === 'facebook') {
                 shouldDisplayIntegration = false
-                objectLabel += `Messenger`
+
+                let privateReplyTicketId = '#'
+                let icon
 
                 const messengerTicketId = event.getIn([
                     'data',
                     'messenger_ticket_id',
                 ])
 
-                objectLink = `${
-                    messengerTicketId != null ? messengerTicketId : '#'
-                }`
+                const instagramDirectMessageTicketId = event.getIn([
+                    'data',
+                    'instagram_direct_message_ticket_id',
+                ])
+
+                const instagramCommentTicketId = event.getIn([
+                    'data',
+                    'instagram_comment_ticket_id',
+                ])
+
+                const isInstagramPrivateReplyEvent =
+                    instagramDirectMessageTicketId != null
+                const isInstagramPrivateReplyEventInDirectMessageTicket =
+                    instagramCommentTicketId != null
+
+                if (isInstagramPrivateReplyEvent) {
+                    objectLabel += `Direct Message`
+                    privateReplyTicketId = instagramDirectMessageTicketId
+                    icon = InstagramDirectMessageIcon
+                } else if (isInstagramPrivateReplyEventInDirectMessageTicket) {
+                    actionLabel = 'Responding to an'
+                    objectLabel += `Instagram Comment`
+                    privateReplyTicketId = instagramCommentTicketId
+                    icon = InstagramIcon
+                } else {
+                    objectLabel += `Messenger`
+                    privateReplyTicketId = !!messengerTicketId
+                        ? messengerTicketId
+                        : privateReplyTicketId
+                    icon = facebookMessengerIcon
+                }
+
+                objectLink = `${privateReplyTicketId}`
 
                 if (isError === false) {
                     eventIcon = (
-                        <div className={css.replyViaMessengerIcon}>
+                        <div className={css.privateReplyEventIcon}>
                             <img
-                                src={facebookMessengerEvent}
-                                alt="Reply via Messenger"
-                                key="reply-via-messenger-event"
+                                src={icon}
+                                alt="private reply event"
+                                key="private-reply-event"
                             />
                         </div>
                     )

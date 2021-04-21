@@ -5,6 +5,7 @@ import {Button, UncontrolledTooltip} from 'reactstrap'
 import moment from 'moment'
 
 import messengerIcon from '../../../../../img/integrations/facebook-messenger-dark-icon.svg'
+import instagramDirectMessageIcon from '../../../../../img/integrations/Instagram-direct-message-blue.svg'
 import type {Actor, Meta, Source} from '../../../../models/ticket/types'
 
 import * as infobarActions from '../../../../state/infobar/actions'
@@ -24,6 +25,7 @@ type Props = {
     sender: Actor
     meta?: Meta
     messageCreatedDatetime: string
+    isFacebookComment: boolean
     executeAction: typeof infobarActions.executeAction
 }
 
@@ -38,10 +40,13 @@ export default function PrivateReplyButton({
     sender,
     meta,
     messageCreatedDatetime,
+    isFacebookComment,
     executeAction,
 }: Props) {
     const [isOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!isOpen)
+    const icon = isFacebookComment ? messengerIcon : instagramDirectMessageIcon
+    const buttonText = isFacebookComment ? 'Message' : 'Direct message'
 
     let isAlreadySent = false
 
@@ -67,11 +72,15 @@ export default function PrivateReplyButton({
                 href="#"
             >
                 <img
-                    className={css.messengerIcon}
-                    src={messengerIcon}
-                    alt="Messenger icon"
+                    className={
+                        isFacebookComment
+                            ? css.messengerIcon
+                            : css.instagramDirectMessageIcon
+                    }
+                    src={icon}
+                    alt="private message icon"
                 />
-                Message
+                {buttonText}
             </Button>
             {isOpen && (
                 <PrivateReplyModal
@@ -88,6 +97,7 @@ export default function PrivateReplyButton({
                     meta={meta}
                     messageCreatedDatetime={messageCreatedDatetime}
                     executeAction={executeAction}
+                    isFacebookComment={isFacebookComment}
                 />
             )}
             {(isAlreadySent || isMessageTooOld) && (

@@ -76,6 +76,11 @@ export const actions = [
         label: 'Replied via',
         objectType: 'message',
     },
+    {
+        name: 'instagramPrivateReply',
+        label: 'Replied via',
+        objectType: 'message',
+    },
 ]
 
 export const getActionByName = (name: string) => {

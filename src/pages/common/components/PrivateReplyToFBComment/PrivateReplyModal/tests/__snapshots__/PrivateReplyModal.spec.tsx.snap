@@ -56,7 +56,8 @@ exports[`<PrivateReplyModal/> render should render the modal 1`] = `
             toggle={[MockFunction]}
             wrapTag="div"
           >
-            Message 
+            Message
+             
             some_sender_firstname
              
             some_sender_lastname
@@ -100,7 +101,7 @@ exports[`<PrivateReplyModal/> render should render the modal 1`] = `
                         some_sender_lastname
                       </span>
                       <img
-                        alt="Facebook icon"
+                        alt="social media icon"
                         className="facebookIcon"
                         src="test-file-stub"
                       />
@@ -133,7 +134,7 @@ exports[`<PrivateReplyModal/> render should render the modal 1`] = `
                       </div>
                     </div>
                     <div
-                      className="row flexContainerColumn facebookComment"
+                      className="row flexContainerColumn comment"
                     >
                       some comment
                     </div>
@@ -145,7 +146,7 @@ exports[`<PrivateReplyModal/> render should render the modal 1`] = `
               className="form-control privateReplyTextarea"
               maxLength={2000}
               onChange={[Function]}
-              placeholder="Reply via Facebook Messenger..."
+              placeholder="Reply via Facebook Messenger"
               rows={4}
             />
           </ModalBody>

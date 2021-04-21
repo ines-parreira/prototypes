@@ -19,6 +19,7 @@ import {Actor, Meta, Source} from '../../../../../models/ticket/types'
 import {default as TicketMessageMeta} from '../../../../tickets/detail/components/TicketMessages/Meta.js'
 import {DatetimeLabel} from '../../../utils/labels.js'
 import facebookIcon from '../../../../../../img/integrations/facebook-feed-round-icon.svg'
+import instagramIcon from '../../../../../../img/integrations/instagram-icon-grey.svg'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
 
@@ -37,6 +38,7 @@ type Props = {
     toggle: () => void
     meta?: Meta
     messageCreatedDatetime: string
+    isFacebookComment: boolean
     executeAction: typeof infobarActions.executeAction
 }
 
@@ -53,6 +55,7 @@ export default function PrivateReplyModal({
     toggle,
     meta,
     messageCreatedDatetime,
+    isFacebookComment,
     executeAction,
 }: Props) {
     const {
@@ -68,15 +71,21 @@ export default function PrivateReplyModal({
         senderId,
         executeAction,
         facebookComment,
-        toggle
+        toggle,
+        isFacebookComment
     )
 
     const senderMeta = sender.meta ? fromJS(sender.meta) : fromJS({})
+    const placeholder = isFacebookComment
+        ? 'Reply via Facebook Messenger'
+        : 'Reply via Instagram direct message'
+    const icon = isFacebookComment ? facebookIcon : instagramIcon
+    const modalHeaderText = isFacebookComment ? 'Message' : 'Direct message'
 
     return (
         <Modal isOpen={isOpen} toggle={toggle}>
             <ModalHeader toggle={toggle}>
-                Message {sender.firstname} {sender.lastname}
+                {modalHeaderText} {sender.firstname} {sender.lastname}
             </ModalHeader>
             <ModalBody className="p-0">
                 <Card className={css.commentCard}>
@@ -107,9 +116,13 @@ export default function PrivateReplyModal({
                                         {sender.firstname} {sender.lastname}
                                     </span>
                                     <img
-                                        src={facebookIcon}
-                                        className={css.facebookIcon}
-                                        alt="Facebook icon"
+                                        src={icon}
+                                        className={
+                                            isFacebookComment
+                                                ? css.facebookIcon
+                                                : css.instagramIcon
+                                        }
+                                        alt="social media icon"
                                     />
                                     <TicketMessageMeta
                                         messageId={messageId}
@@ -133,7 +146,7 @@ export default function PrivateReplyModal({
                                     className={classnames(
                                         'row',
                                         css.flexContainerColumn,
-                                        css.facebookComment
+                                        css.comment
                                     )}
                                 >
                                     {facebookComment}
@@ -149,7 +162,7 @@ export default function PrivateReplyModal({
                         css.privateReplyTextarea
                     )}
                     maxLength={FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH}
-                    placeholder="Reply via Facebook Messenger..."
+                    placeholder={placeholder}
                     onChange={(e) => inputOnChange(e.target.value)}
                 />
             </ModalBody>
@@ -176,11 +189,27 @@ function usePrivateReply(
     senderId: number,
     executeAction: typeof infobarActions.executeAction,
     body_text: string,
-    toggle: () => void
+    toggle: () => void,
+    isFacebookComment: boolean
 ) {
     const [isSending, setIsSending] = useState(false)
     const [privateReplyMessage, setPrivateReplyMessage] = useState('')
     const [canSend, setCanSend] = useState(false)
+    const actionName = isFacebookComment
+        ? 'facebookPrivateReply'
+        : 'instagramPrivateReply'
+
+    const actionPayload = isFacebookComment
+        ? {
+              facebook_comment: body_text,
+              messenger_reply: privateReplyMessage.trim(),
+              from_ticket_message_id: ticketMessageId,
+          }
+        : {
+              instagram_comment: body_text,
+              instagram_direct_message_reply: privateReplyMessage.trim(),
+              from_ticket_message_id: ticketMessageId,
+          }
 
     const inputOnChange = useCallback(
         (value: string) => {
@@ -202,14 +231,10 @@ function usePrivateReply(
         //  how to do call executeAction properly (typing issue)
         // eslint-disable-next-line
         executeAction(
-            'facebookPrivateReply',
+            actionName,
             integrationId.toString(),
             senderId.toString(),
-            {
-                facebook_comment: body_text,
-                messenger_reply: privateReplyMessage.trim(),
-                from_ticket_message_id: ticketMessageId,
-            }
+            actionPayload
             // @ts-ignore
         ).finally(() => {
             setIsSending(false)
