@@ -1,0 +1,44 @@
+@import '~css/new/colors';
+
+:local {
+    .description {
+        font-weight: lighter;
+        font-size: 12px;
+        letter-spacing: normal;
+        color: @neutral6;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-top: 0.5em;
+    }
+
+    .action {
+        float: right;
+        font-size: 16px;
+    }
+
+    .dropdownItemWrapper {
+        font-weight: 500;
+        font-size: 14px;
+        padding: 8px;
+        color: @neutral10;
+    }
+
+    .dropdownItemLabel {
+        line-height: 20px;
+    }
+
+    .label {
+        text-transform: capitalize;
+    }
+
+    .hoverable:hover {
+        background-color: @neutral1;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .disabled {
+        color: @neutral6;
+    }
+}

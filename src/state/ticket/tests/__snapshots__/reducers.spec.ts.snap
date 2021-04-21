@@ -235,6 +235,70 @@ Object {
 }
 `;
 
+exports[`ticket reducers action SEND_INTENT_FEEDBACK_SUCCESS should update the intents with the new ones 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [
+    Object {
+      "id": 1,
+      "intents": Array [
+        Object {
+          "is_user_feedback": false,
+          "name": "return/request",
+          "rejected": false,
+        },
+        Object {
+          "is_user_feedback": false,
+          "name": "return/status",
+          "rejected": true,
+        },
+        Object {
+          "is_user_feedback": false,
+          "name": "shipping/change",
+          "rejected": true,
+        },
+      ],
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
 exports[`ticket reducers action TICKET_MESSAGE_DELETED should remove message 1`] = `
 Object {
   "_internal": Object {

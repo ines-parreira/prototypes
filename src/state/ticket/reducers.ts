@@ -554,6 +554,18 @@ export default function reducer(
                 }
             )
 
+        case types.SEND_INTENT_FEEDBACK_SUCCESS:
+            return state.update('messages', (messages: List<any>) =>
+                messages.map((message: Map<any, any>) => {
+                    const {messageId, intents} = action.payload as {
+                        messageId: number
+                        intents: any
+                    }
+                    return message.get('id') === messageId
+                        ? message.set('intents', fromJS(intents))
+                        : message
+                })
+            )
         default:
             return state
     }

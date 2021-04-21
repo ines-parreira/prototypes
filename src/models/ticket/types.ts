@@ -81,6 +81,13 @@ export type TicketMessage = {
         id: number
     }
     isMessage: true
+    intents?: TicketMessageIntent[]
+}
+
+export type TicketMessageIntent = {
+    name: string
+    is_user_feedback: boolean
+    rejected: boolean | null
 }
 
 export type TicketEvent = Omit<TicketMessage, 'isMessage'> & {

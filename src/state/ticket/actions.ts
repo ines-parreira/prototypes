@@ -24,7 +24,12 @@ import * as viewsSelectors from '../views/selectors'
 import * as segmentTracker from '../../store/middlewares/segmentTracker.js'
 
 import {ApiListResponsePagination} from '../../models/api/types'
-import {Action, Ticket, TicketMessage} from '../../models/ticket/types'
+import {
+    Action,
+    Ticket,
+    TicketMessage,
+    TicketMessageIntent,
+} from '../../models/ticket/types'
 import {View} from '../../models/view/types'
 import {Macro} from '../macro/types'
 import {StoreDispatch, RootState} from '../types'
@@ -1102,3 +1107,8 @@ export const findAndSetCustomer = (email: string) => (
         })
 
 export const messageDeleted = createAction<string>(types.TICKET_MESSAGE_DELETED)
+
+export const sendIntentFeedbackSuccess = createAction<{
+    messageId: number
+    intents: TicketMessageIntent[]
+}>(types.SEND_INTENT_FEEDBACK_SUCCESS)

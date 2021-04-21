@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TooltipWrapper/> should show the tooltip on hover when show is true 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  information message
+</div>
+`;
+
+exports[`<TooltipWrapper/> should show the trigger 1`] = `
+<span
+  id="tooltip-foo"
+>
+  trigger
+</span>
+`;

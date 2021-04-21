@@ -974,4 +974,40 @@ describe('ticket reducers', () => {
             expect(nextState.toJS()).toMatchSnapshot()
         })
     })
+
+    describe('action SEND_INTENT_FEEDBACK_SUCCESS', () => {
+        it('should update the intents with the new ones', () => {
+            const payload = {
+                messageId: 1,
+                intents: [
+                    {
+                        name: 'return/request',
+                        rejected: false,
+                        is_user_feedback: false,
+                    },
+                    {
+                        name: 'return/status',
+                        rejected: true,
+                        is_user_feedback: false,
+                    },
+                    {
+                        name: 'shipping/change',
+                        rejected: true,
+                        is_user_feedback: false,
+                    },
+                ],
+            }
+
+            const action = {
+                type: types.SEND_INTENT_FEEDBACK_SUCCESS,
+                payload,
+            }
+
+            const nextState = reducer(
+                initialState.set('messages', fromJS([{id: 1, intents: []}])),
+                action
+            )
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
+    })
 })

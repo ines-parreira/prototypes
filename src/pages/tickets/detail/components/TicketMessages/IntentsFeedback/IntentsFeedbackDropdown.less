@@ -1,0 +1,61 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        line-height: 0.8em;
+        color: @indigo;
+
+        .menu {
+            line-height: 0.8em;
+            padding: 0em;
+            margin-top: 0px;
+        }
+
+        .toggleMenu {
+            font-weight: 500;
+            text-transform: capitalize;
+            padding: 0 0.3em 0 0.5em;
+            line-height: 1.3em;
+            background-color: @neutral1;
+            border-radius: 4px;
+            border: 1px solid @neutral4;
+        }
+
+        .menuLabel {
+            padding-right: 0.5em;
+            font-size: 12px;
+        }
+
+        .caret {
+            border-left: 1px solid @neutral5;
+            line-height: 1.3em;
+            float: right;
+            height: 100%;
+            padding-left: 0.3em;
+        }
+    }
+
+    .header {
+        background: @neutral1;
+        border-bottom: 1px solid @neutral3;
+        box-sizing: border-box;
+        color: @neutral8;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 12px;
+        width: 100%;
+    }
+
+    .subheader {
+        text-transform: uppercase;
+    }
+
+    .options {
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        padding: 8px 0px 8px 8px;
+        width: 312px;
+        height: 440px;
+    }
+}

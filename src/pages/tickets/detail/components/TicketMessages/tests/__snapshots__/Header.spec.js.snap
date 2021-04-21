@@ -1,5 +1,126 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Header should correctly display intents 1`] = `
+<div
+  className="header"
+>
+  <div
+    className="headerDetails"
+  >
+    <div
+      className="author"
+    >
+      <CustomerLabel
+        customer={
+          Immutable.Map {
+            "id": 1,
+            "email": "john.doe@example.com",
+            "name": "John Doe",
+            "firstname": "John",
+            "lastname": "Doe",
+          }
+        }
+      />
+    </div>
+    <Meta
+      integrationId={null}
+      messageCreatedDatetime=""
+      meta={null}
+      ruleId={null}
+      via="email"
+    />
+  </div>
+  <div
+    className="intents"
+  >
+    <Connect(IntentsFeedbackContainer)
+      message={
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 1,
+          "integration_id": null,
+          "isMessage": true,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+    />
+  </div>
+  <SourceDetailsHeader
+    className="sourceDetails"
+    isLastRead={false}
+    isMessageDeleted={false}
+    message={
+      Object {
+        "actions": null,
+        "attachments": Array [],
+        "channel": "email",
+        "created_datetime": "",
+        "external_id": null,
+        "failed_datetime": null,
+        "from_agent": false,
+        "id": 1,
+        "integration_id": null,
+        "isMessage": true,
+        "meta": null,
+        "opened_datetime": null,
+        "public": true,
+        "receiver": Object {
+          "email": "mary.poppins@example.com",
+          "firstname": "Mary",
+          "id": 2,
+          "lastname": "Poppins",
+          "name": "Mary Poppins",
+        },
+        "rule_id": null,
+        "sender": Object {
+          "email": "john.doe@example.com",
+          "firstname": "John",
+          "id": 1,
+          "lastname": "Doe",
+          "name": "John Doe",
+        },
+        "stripped_html": null,
+        "stripped_signature": null,
+        "stripped_text": null,
+        "subject": "Some subject",
+        "uri": "http://example.com/messages/1",
+        "via": "email",
+      }
+    }
+    timezone="America/Los_Angeles"
+  />
+</div>
+`;
+
 exports[`Header should display header 1`] = `
 <div
   className="header"
