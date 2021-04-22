@@ -12,7 +12,7 @@ import {AccountFeatures} from '../state/currentAccount/types.ts'
 
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
-import IntegrationListContainer from './integrations/list/IntegrationListContainer'
+import IntegrationListContainer from './integrations/list/IntegrationListContainer.tsx'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer.tsx'
