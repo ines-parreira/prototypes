@@ -5,7 +5,7 @@ import {tryLocalStorage} from '../../services/common/utils'
 
 const CACHE_KEY_SEPARATOR = '~'
 const CACHE_KEY_PREFIX = `G${CACHE_KEY_SEPARATOR}`
-export const CACHE_MAX_ITEMS = 5
+export const CACHE_MAX_ITEMS = 30
 
 export type RawCachedTicket = {
     contentState: RawDraftContentState | null
