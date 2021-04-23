@@ -15,8 +15,6 @@ describe('<PhoneIntegrationList/>', () => {
     const mockStore = configureMockStore(middlewares)
 
     let integrations: List<Map<string, any>>
-    let activate: jest.MockedFunction<any>
-    let deactivate: jest.MockedFunction<any>
 
     beforeEach(() => {
         const integration = {
@@ -24,9 +22,6 @@ describe('<PhoneIntegrationList/>', () => {
             type: IntegrationType.PhoneIntegrationType,
         }
         integrations = fromJS([integration])
-
-        activate = jest.fn()
-        deactivate = jest.fn()
     })
 
     describe('render()', () => {
@@ -38,9 +33,7 @@ describe('<PhoneIntegrationList/>', () => {
             const {container} = render(
                 <PhoneIntegrationList
                     integrations={integrations}
-                    loading={false}
-                    activate={activate}
-                    deactivate={deactivate}
+                    loading={fromJS({})}
                 />,
                 {
                     wrapper: (props) => (

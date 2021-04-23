@@ -271,12 +271,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                to="/app/settings/integrations/smooch_inside/2/quick-replies"
+                to="/app/settings/integrations/smooch_inside/2/quick_replies"
               >
                 <a
                   activeClassName="disabled"
                   className="nav-link"
-                  to="/app/settings/integrations/smooch_inside/2/quick-replies"
+                  to="/app/settings/integrations/smooch_inside/2/quick_replies"
                 >
                   Quick replies
                 </a>

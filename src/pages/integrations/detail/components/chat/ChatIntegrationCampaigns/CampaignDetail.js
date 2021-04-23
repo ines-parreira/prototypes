@@ -209,8 +209,12 @@ export class CampaignDetail extends React.Component {
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/smooch_inside/${integration.get('id')}">
-                                    Chat
+                                <Link
+                                    to={`/app/settings/integrations/smooch_inside/${integration.get(
+                                        'id'
+                                    )}`}
+                                >
+                                    Chat (Deprecated)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

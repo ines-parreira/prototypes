@@ -264,12 +264,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                to="/app/settings/integrations/smooch_inside/7/quick-replies"
+                to="/app/settings/integrations/smooch_inside/7/quick_replies"
               >
                 <a
                   activeClassName="disabled"
                   className="nav-link"
-                  to="/app/settings/integrations/smooch_inside/7/quick-replies"
+                  to="/app/settings/integrations/smooch_inside/7/quick_replies"
                 >
                   Quick replies
                 </a>
@@ -1209,12 +1209,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                to="/app/settings/integrations/smooch_inside/7/quick-replies"
+                to="/app/settings/integrations/smooch_inside/7/quick_replies"
               >
                 <a
                   activeClassName="disabled"
                   className="nav-link"
-                  to="/app/settings/integrations/smooch_inside/7/quick-replies"
+                  to="/app/settings/integrations/smooch_inside/7/quick_replies"
                 >
                   Quick replies
                 </a>

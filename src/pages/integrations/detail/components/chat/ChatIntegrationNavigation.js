@@ -22,7 +22,7 @@ export default class ChatIntegrationNavigation extends React.Component<Props> {
                 <Link to={`${baseURL}/installation`}>Installation</Link>
                 <Link to={`${baseURL}/preferences`}>Preferences</Link>
                 <Link to={`${baseURL}/campaigns`}>Campaigns</Link>
-                <Link to={`${baseURL}/quick-replies`}>Quick replies</Link>
+                <Link to={`${baseURL}/quick_replies`}>Quick replies</Link>
             </SecondaryNavbar>
         )
     }

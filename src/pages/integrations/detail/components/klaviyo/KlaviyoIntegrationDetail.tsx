@@ -19,8 +19,6 @@ import classNames from 'classnames'
 
 import type {Map} from 'immutable'
 
-import {AxiosPromise} from 'axios'
-
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
@@ -31,12 +29,16 @@ import {
     KLAVIYO_INITIAL_SYNC_SYNCING,
 } from '../../../../../config/integrations/klaviyo'
 
+import {
+    deleteIntegration,
+    klaviyoSyncHistoricalEvent,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
+
 interface IActions {
-    updateOrCreateIntegration: (
-        data: Map<string, unknown> | unknown
-    ) => AxiosPromise
-    deleteIntegration: (integration: Map<string, unknown>) => AxiosPromise
-    klaviyoSyncHistoricalEvent: () => AxiosPromise
+    updateOrCreateIntegration: typeof updateOrCreateIntegration
+    deleteIntegration: typeof deleteIntegration
+    klaviyoSyncHistoricalEvent: typeof klaviyoSyncHistoricalEvent
 }
 
 type Props = {
@@ -66,21 +68,21 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
 
     isInitialized = false
 
-    _syncHistorical = () => {
+    _syncHistorical = async () => {
         const {actions} = this.props
         this.setState({isSyncing: KLAVIYO_INITIAL_SYNC_SYNCING})
-        return actions.klaviyoSyncHistoricalEvent().then((res: unknown) => {
-            return res
-        })
+        await ((actions.klaviyoSyncHistoricalEvent() as unknown) as Promise<
+            any
+        >)
     }
 
-    _deleteIntegration = () => {
+    _deleteIntegration = async () => {
         const {actions, integration} = this.props
         this.setState({isDeleting: true})
-        return actions.deleteIntegration(integration).then((res: unknown) => {
-            this.setState({isDeleting: false})
-            return res
-        })
+        await ((actions.deleteIntegration(integration) as unknown) as Promise<
+            any
+        >)
+        this.setState({isDeleting: false})
     }
 
     _getFormValues = (): Map<string, unknown> => {
@@ -121,16 +123,14 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
         return form
     }
 
-    _handleSubmit = (e: React.FormEvent<HTMLFormElement>): Promise<unknown> => {
+    _handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const {updateOrCreateIntegration} = this.props.actions
         this.setState({isSubmitting: true})
-        return updateOrCreateIntegration(this._getFormValues()).then(
-            (res: unknown) => {
-                this.setState({isSubmitting: false})
-                return res
-            }
-        )
+        await ((updateOrCreateIntegration(
+            this._getFormValues()
+        ) as unknown) as Promise<any>)
+        this.setState({isSubmitting: false})
     }
 
     _getIntegration = (integration: Map<string, unknown>) => {

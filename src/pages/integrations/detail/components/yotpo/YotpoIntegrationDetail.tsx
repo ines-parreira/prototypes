@@ -17,19 +17,25 @@ import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField.js'
 import PageHeader from '../../../../common/components/PageHeader'
+import {
+    deleteIntegration,
+    fetchIntegration,
+    triggerCreateSuccess,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
 
 interface IActions {
-    updateOrCreateIntegration: (data: Map<string, string> | undefined) => void
-    fetchIntegration: (s1: string, s2: string, b: boolean) => () => string
-    triggerCreateSuccess: (j: JSON) => void
-    deleteIntegration: (integration: Map<string, unknown>) => void
+    deleteIntegration: typeof deleteIntegration
+    fetchIntegration: typeof fetchIntegration
+    triggerCreateSuccess: typeof triggerCreateSuccess
+    updateOrCreateIntegration: typeof updateOrCreateIntegration
 }
 
 type Props = {
     integration: Map<string, unknown>
     loading: Map<string, string>
     actions: IActions
-    redirectUri: Location
+    redirectUri: string
 } & RouteComponentProps
 
 export class YotpoIntegrationDetailComponent extends React.Component<Props> {
@@ -57,14 +63,13 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
 
             if (isAuthenticating) {
                 if (authenticationRequired) {
-                    setTimeout(
+                    setTimeout(() => {
                         nextProps.actions.fetchIntegration(
                             nextProps.integration.get('id') as string,
                             nextProps.integration.get('type') as string,
                             true
-                        ),
-                        3000
-                    )
+                        )
+                    }, 3000)
                 } else {
                     nextProps.actions.triggerCreateSuccess(
                         nextProps.integration.toJS()
@@ -146,7 +151,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                         'btn-loading': isSubmitting,
                                     })}
                                     onClick={() =>
-                                        (window.location = this.props.redirectUri)
+                                        (window.location.href = this.props.redirectUri)
                                     }
                                     disabled={!!isSubmitting}
                                 >
@@ -156,7 +161,9 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
-                                        actions.deleteIntegration(integration)
+                                        void actions.deleteIntegration(
+                                            integration
+                                        )
                                     }
                                     content="Are you sure you want to delete this integration?"
                                     disabled={!!isSubmitting}

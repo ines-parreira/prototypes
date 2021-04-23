@@ -30,7 +30,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
             <a
               to="/app/settings/integrations/smooch_inside"
             >
-              Chat
+              Chat (Deprecated)
             </a>
           </li>
           <li
@@ -96,7 +96,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
       <a
         activeclassname="disabled"
         class="nav-link"
-        to="/app/settings/integrations/smooch_inside/118/quick-replies"
+        to="/app/settings/integrations/smooch_inside/118/quick_replies"
       >
         Quick replies
       </a>
@@ -145,7 +145,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             <a
               to="/app/settings/integrations/smooch_inside"
             >
-              Chat
+              Chat (Deprecated)
             </a>
           </li>
           <li
@@ -211,7 +211,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
       <a
         activeclassname="disabled"
         class="nav-link"
-        to="/app/settings/integrations/smooch_inside/118/quick-replies"
+        to="/app/settings/integrations/smooch_inside/118/quick_replies"
       >
         Quick replies
       </a>

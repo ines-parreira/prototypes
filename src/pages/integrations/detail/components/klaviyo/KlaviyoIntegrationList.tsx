@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Link} from 'react-router-dom'
-import {List} from 'immutable'
+import {List, Map} from 'immutable'
 
 import history from '../../../../history'
 

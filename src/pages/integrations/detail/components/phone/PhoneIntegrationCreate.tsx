@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {
     Alert,
@@ -15,6 +15,7 @@ import {
     Row,
 } from 'reactstrap'
 
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
@@ -43,9 +44,7 @@ const areaCodeOptions: AreaCodeOptions = rawAreaCodeOptions
 
 type Props = {
     actions: {
-        updateOrCreateIntegration: (
-            integration: Map<string, any>
-        ) => Promise<void>
+        updateOrCreateIntegration: typeof updateOrCreateIntegration
     }
 }
 
@@ -83,8 +82,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
             try {
                 setIsLoading(true)
                 setError(null)
-
-                await actions.updateOrCreateIntegration(
+                await ((actions.updateOrCreateIntegration(
                     fromJS({
                         type: IntegrationType.PhoneIntegrationType,
                         name: title,
@@ -109,7 +107,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             },
                         },
                     })
-                )
+                ) as unknown) as Promise<any>)
             } catch (error) {
                 setError(error)
             } finally {

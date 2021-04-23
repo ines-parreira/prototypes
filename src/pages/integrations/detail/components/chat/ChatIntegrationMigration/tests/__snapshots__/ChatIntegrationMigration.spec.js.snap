@@ -88,7 +88,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
       <a
         activeclassname="disabled"
         class="nav-link"
-        to="/app/settings/integrations/smooch_inside/1/quick-replies"
+        to="/app/settings/integrations/smooch_inside/1/quick_replies"
       >
         Quick replies
       </a>

@@ -134,6 +134,8 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             'should set the name of the integration the state and set a timeout to fetch the integration because ' +
                 'the action in the URL is set to `authentication` and the integration is not yet authenticated',
             () => {
+                jest.useFakeTimers()
+
                 const integration = fromJS({
                     id: 1,
                     type: SMILE_INTEGRATION_TYPE,
@@ -158,6 +160,8 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 })
 
                 expect(component.state()).toMatchSnapshot()
+
+                jest.runAllTimers()
                 expect(
                     defaultProps.actions.fetchIntegration
                 ).toHaveBeenCalledWith(
@@ -165,6 +169,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     integration.get('type'),
                     true
                 )
+
                 expect(
                     defaultProps.actions.triggerCreateSuccess
                 ).not.toHaveBeenCalled()

@@ -9,9 +9,7 @@ import PhoneIntegrationListItem from './PhoneIntegrationListItem'
 
 type Props = {
     integrations: List<Map<string, any>>
-    loading: boolean
-    activate: (id: number) => void
-    deactivate: (id: number) => void
+    loading: Map<any, any>
 }
 
 export default function PhoneIntegrationList({

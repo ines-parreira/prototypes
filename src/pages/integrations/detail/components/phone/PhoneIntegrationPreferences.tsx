@@ -26,16 +26,18 @@ import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import BooleanField from '../../../../common/forms/BooleanField.js'
+import {
+    deleteIntegration,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 
 type Props = {
     integration: Map<string, any>
     actions: {
-        deleteIntegration: (integration: Map<string, any>) => Promise<void>
-        updateOrCreateIntegration: (
-            integration: Map<string, any>
-        ) => Promise<void>
+        deleteIntegration: typeof deleteIntegration
+        updateOrCreateIntegration: typeof updateOrCreateIntegration
     }
 }
 
@@ -63,8 +65,7 @@ export default function PhoneIntegrationPreferences({
             try {
                 setIsLoading(true)
                 setError(null)
-
-                await actions.updateOrCreateIntegration(
+                await ((actions.updateOrCreateIntegration(
                     fromJS({
                         id: integration.get('id'),
                         name: title,
@@ -77,7 +78,7 @@ export default function PhoneIntegrationPreferences({
                             },
                         },
                     })
-                )
+                ) as unknown) as Promise<any>)
             } catch (error) {
                 console.error(error)
                 setError(error)
@@ -102,8 +103,9 @@ export default function PhoneIntegrationPreferences({
         try {
             setIsLoading(true)
             setError(null)
-
-            await actions.deleteIntegration(integration)
+            await ((actions.deleteIntegration(
+                integration
+            ) as unknown) as Promise<any>)
         } catch (error) {
             setError(error)
         } finally {

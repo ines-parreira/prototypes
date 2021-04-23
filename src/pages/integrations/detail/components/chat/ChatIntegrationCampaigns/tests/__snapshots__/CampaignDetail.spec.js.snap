@@ -28,9 +28,9 @@ exports[`CampaignDetail component should display default value when it's a new c
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
+              to="/app/settings/integrations/smooch_inside/1"
             >
-              Chat
+              Chat (Deprecated)
             </a>
           </li>
           <li
@@ -97,7 +97,7 @@ exports[`CampaignDetail component should display default value when it's a new c
       <a
         activeclassname="disabled"
         class="nav-link"
-        to="/app/settings/integrations/smooch_inside/1/quick-replies"
+        to="/app/settings/integrations/smooch_inside/1/quick_replies"
       >
         Quick replies
       </a>
@@ -677,9 +677,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
+              to="/app/settings/integrations/smooch_inside/1"
             >
-              Chat
+              Chat (Deprecated)
             </a>
           </li>
           <li
@@ -746,7 +746,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
       <a
         activeclassname="disabled"
         class="nav-link"
-        to="/app/settings/integrations/smooch_inside/1/quick-replies"
+        to="/app/settings/integrations/smooch_inside/1/quick_replies"
       >
         Quick replies
       </a>
@@ -1430,9 +1430,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
+              to="/app/settings/integrations/smooch_inside/1"
             >
-              Chat
+              Chat (Deprecated)
             </a>
           </li>
           <li
@@ -1499,7 +1499,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
       <a
         activeclassname="disabled"
         class="nav-link"
-        to="/app/settings/integrations/smooch_inside/1/quick-replies"
+        to="/app/settings/integrations/smooch_inside/1/quick_replies"
       >
         Quick replies
       </a>

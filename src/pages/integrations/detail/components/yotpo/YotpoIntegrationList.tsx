@@ -1,22 +1,18 @@
 import React from 'react'
 
-import {List} from 'immutable'
+import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import {Button} from 'reactstrap'
 
+import {IntegrationType} from '../../../../../models/integration/types'
 import IntegrationList from '../IntegrationList.js'
 import ForwardIcon from '../ForwardIcon.js'
-import {YOTPO_INTEGRATION_TYPE} from '../../../../../constants/integration'
 
-interface IActions {
-    activateIntegration: (i: string | undefined) => void
-}
-
-interface IReceivedProps {
+type IReceivedProps = {
     integrations: List<Map<string, string>>
-    loading: Map<string, string>
-    redirectUri: Location
+    loading: Map<any, any>
+    redirectUri: string
 }
 
 export default class YotpoIntegrationList extends React.Component<
@@ -27,7 +23,7 @@ export default class YotpoIntegrationList extends React.Component<
         const isSubmitting = loading.get('updateIntegration')
 
         const yotpoIntegrations = integrations.filter(
-            (v) => v?.get('type') === YOTPO_INTEGRATION_TYPE
+            (v) => v?.get('type') === IntegrationType.YotpoIntegrationType
         )
 
         const longTypeDescription = (
@@ -73,7 +69,7 @@ export default class YotpoIntegrationList extends React.Component<
                                 type="button"
                                 color="success"
                                 onClick={() =>
-                                    (window.location = this.props.redirectUri)
+                                    (window.location.href = this.props.redirectUri)
                                 }
                                 disabled={!!isSubmitting}
                             >
@@ -94,7 +90,7 @@ export default class YotpoIntegrationList extends React.Component<
                 integrationType="yotpo"
                 integrations={yotpoIntegrations}
                 createIntegration={() =>
-                    (window.location = this.props.redirectUri)
+                    (window.location.href = this.props.redirectUri)
                 }
                 createIntegrationButtonContent="Add Yotpo account"
                 integrationToItemDisplay={integrationToItemDisplay}
