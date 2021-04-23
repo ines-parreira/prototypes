@@ -569,17 +569,17 @@ export const Infobar = ({
                         </>
                     ) : null}
                 </div>
+                {isEditing && (
+                    <InfobarWidgetsEditionTools
+                        actions={{
+                            startEditionMode,
+                            submitWidgets,
+                        }}
+                        widgets={widgets}
+                        context={currentContext}
+                    />
+                )}
             </div>
-            {isEditing && (
-                <InfobarWidgetsEditionTools
-                    actions={{
-                        startEditionMode,
-                        submitWidgets,
-                    }}
-                    widgets={widgets}
-                    context={currentContext}
-                />
-            )}
         </InfobarLayout>
     )
 }

@@ -10,11 +10,11 @@ type Props = {
 }
 
 export function CardHeaderYotpoRatingThumbs({children, label}: Props) {
-    return (
-        <span className={css.container}>
-            {label ? <span className={css.label}>{label}: </span> : null}
-            <strong>{children}</strong>
-            {parseFloat(children) > 2.5 ? (
+    const missingData = typeof children === 'undefined'
+    let thumb = null
+    if (!missingData) {
+        thumb =
+            parseFloat(children) > 2.5 ? (
                 <span className={`material-icons ${css.greenThumb}`}>
                     thumb_up{' '}
                 </span>
@@ -22,7 +22,15 @@ export function CardHeaderYotpoRatingThumbs({children, label}: Props) {
                 <span className={`material-icons ${css.redThumb}`}>
                     thumb_down{' '}
                 </span>
-            )}
+            )
+    }
+    return (
+        <span
+            className={`${css.container} ${missingData ? css.missingData : ''}`}
+        >
+            {label ? <span className={css.label}>{label}: </span> : null}
+            <strong>{missingData ? 'N/A' : children}</strong>
+            {thumb}
         </span>
     )
 }

@@ -192,11 +192,6 @@ exports[`<BeforeContent/> render() should render images correctly 1`] = `
   <div
     className="reviewFooter"
   >
-    <a
-      href="#"
-    >
-      View reply
-    </a>
     <span
       className="reviewFooterThumbs"
     >
@@ -240,11 +235,6 @@ exports[`<BeforeContent/> render() should render votes down correctly 1`] = `
   <div
     className="reviewFooter"
   >
-    <a
-      href="#"
-    >
-      View reply
-    </a>
     <span
       className="reviewFooterThumbs"
     >
@@ -288,11 +278,6 @@ exports[`<BeforeContent/> render() should render votes up correctly 1`] = `
   <div
     className="reviewFooter"
   >
-    <a
-      href="#"
-    >
-      View reply
-    </a>
     <span
       className="reviewFooterThumbs"
     >
@@ -336,11 +321,6 @@ exports[`<BeforeContent/> render() should render with both votes up and down cor
   <div
     className="reviewFooter"
   >
-    <a
-      href="#"
-    >
-      View reply
-    </a>
     <span
       className="reviewFooterThumbs"
     >
@@ -384,11 +364,6 @@ exports[`<BeforeContent/> render() should render with no images 1`] = `
   <div
     className="reviewFooter"
   >
-    <a
-      href="#"
-    >
-      View reply
-    </a>
     <span
       className="reviewFooterThumbs"
     >
@@ -419,8 +394,10 @@ exports[`<TitleWrapper/> render() should render both visible and invisible revie
 <div
   className="titleContainer"
 >
-  <span
+  <a
     className="titleOff"
+    href="#"
+    target="_self"
   >
     <span
       className="material-icons inventory"
@@ -433,7 +410,7 @@ exports[`<TitleWrapper/> render() should render both visible and invisible revie
       color="secondary"
       iconName="visibility_off"
     />
-  </span>
+  </a>
 </div>
 `;
 
@@ -441,8 +418,10 @@ exports[`<TitleWrapper/> render() should render both visible and invisible revie
 <div
   className="titleContainer"
 >
-  <span
+  <a
     className="titleOff"
+    href="#"
+    target="_self"
   >
     <span
       className="material-icons inventory"
@@ -455,6 +434,6 @@ exports[`<TitleWrapper/> render() should render both visible and invisible revie
       color="secondary"
       iconName="visibility_off"
     />
-  </span>
+  </a>
 </div>
 `;

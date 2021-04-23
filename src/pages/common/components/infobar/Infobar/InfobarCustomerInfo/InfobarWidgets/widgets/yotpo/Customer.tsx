@@ -13,12 +13,14 @@ import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel.js'
 import {CardHeaderValue} from '../CardHeaderValue'
 
 import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs.js'
+import css from './Customer.less'
 
 export default function Customer() {
     return {
         editionHiddenFields: ['link'],
         TitleWrapper,
         AfterTitle,
+        BeforeContent,
     }
 }
 
@@ -40,7 +42,10 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         ])}
                     </CardHeaderYotpoRatingThumbs>
                     <CardHeaderValue label="Reviews">
-                        {source.getIn(['reviews_statistics', 'total_reviews'])}
+                        {source.getIn(
+                            ['reviews_statistics', 'total_reviews'],
+                            'N/A'
+                        )}
                     </CardHeaderValue>
                 </CardHeaderDetails>
             </>
@@ -73,12 +78,31 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
                 <CardHeaderIcon src={logo} alt="Yotpo" />
                 <CardHeaderTitle>Yotpo</CardHeaderTitle>
 
-                <CardHeaderBadge iconName="stars">
-                    {parseFloat(pointBalance).toLocaleString()}
-                </CardHeaderBadge>
+                {pointBalance > 0 && (
+                    <CardHeaderBadge iconName="stars">
+                        {parseFloat(pointBalance).toLocaleString()}
+                    </CardHeaderBadge>
+                )}
                 <CardHeaderStatusLabel>{vipTierName}</CardHeaderStatusLabel>
                 <ExpandAllButton />
             </>
         )
+    }
+}
+
+type BeforeContentProps = {
+    source: Map<string, any>
+}
+class BeforeContent extends React.Component<BeforeContentProps> {
+    render() {
+        const {source} = this.props
+        if (source.size < 2) {
+            return (
+                <div className={css.emptyStateContainer}>
+                    <span>No statistic data are available right now.</span>
+                </div>
+            )
+        }
+        return null
     }
 }

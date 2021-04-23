@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<TitleWrapper/> render() should render empty state cause no data is available 1`] = `
+<Fragment>
+  <CardHeaderIcon
+    alt="Yotpo"
+    src="test-file-stub"
+  />
+  <CardHeaderTitle>
+    Yotpo
+  </CardHeaderTitle>
+  <CardHeaderStatusLabel />
+  <ExpandAllButton />
+</Fragment>
+`;
+
+exports[`<TitleWrapper/> render() should render empty state cause no data is available 2`] = `
+<div
+  className="emptyStateContainer"
+>
+  <span>
+    No statistic data are available right now.
+  </span>
+</div>
+`;
+
 exports[`<TitleWrapper/> render() should render icon, points and not tier because data is missing 1`] = `
 <Fragment>
   <CardHeaderIcon
@@ -39,3 +63,5 @@ exports[`<TitleWrapper/> render() should render icon, points and tier because da
   <ExpandAllButton />
 </Fragment>
 `;
+
+exports[`<TitleWrapper/> render() should render nothing cause data is available 1`] = `""`;

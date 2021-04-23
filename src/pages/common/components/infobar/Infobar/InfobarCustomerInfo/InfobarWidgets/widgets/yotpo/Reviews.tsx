@@ -37,6 +37,21 @@ function starRatingProps(value: any) {
     }
 }
 
+type ReviewSearchURL = {
+    url: string
+    target: string
+}
+
+function makeReviewSearchURL(searchTerm: string): ReviewSearchURL {
+    if (!searchTerm) {
+        return {url: '#', target: '_self'}
+    }
+    return {
+        url: `https://reviews.yotpo.com/#/moderation/reviews?query=${searchTerm}&sort_by=review_creation_date`,
+        target: '_blank',
+    }
+}
+
 type TitleWrapperProps = {
     source: Map<string, any>
 }
@@ -45,10 +60,14 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {source} = this.props
         const visible = source.get('published')
-
+        const reviewSearchURL = makeReviewSearchURL(source.get('title'))
         return (
             <div className={css.titleContainer}>
-                <span className={(visible && css.title) || css.titleOff}>
+                <a
+                    className={(visible && css.title) || css.titleOff}
+                    target={reviewSearchURL.target}
+                    href={reviewSearchURL.url}
+                >
                     <span className={`material-icons ${css.inventory}`}>
                         inventory
                     </span>
@@ -58,7 +77,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
                         iconName={visible ? `visibility` : `visibility_off`}
                         color={visible ? `primary` : `secondary`}
                     />
-                </span>
+                </a>
             </div>
         )
     }
@@ -117,7 +136,10 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
                     </div>
                 )}
                 <div className={css.reviewFooter}>
-                    <a href="#">View reply</a>
+                    {/*
+                        Commented out while waiting for Yotpo to implement the feature
+                        <a href={makeReviewSearchURL(source.get('title'))} target="_blank">View reply</a>
+                    */}
                     <span className={css.reviewFooterThumbs}>
                         <span
                             className={`material-icons ${css.reviewFooterThumb}`}
