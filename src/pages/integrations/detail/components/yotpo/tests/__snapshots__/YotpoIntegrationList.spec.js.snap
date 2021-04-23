@@ -1,0 +1,182 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<YotpoIntegrationList/> render() should not render an integration cause the one passed is not a Yotpo integration 1`] = `
+<withRouter(Connect(IntegrationList))
+  createIntegration={[Function]}
+  createIntegrationButtonContent="Add Yotpo account"
+  integrationToItemDisplay={[Function]}
+  integrationType="yotpo"
+  integrations={Immutable.List []}
+  loading={Immutable.Map {}}
+  longTypeDescription={
+    <div>
+      <p>
+        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+      </p>
+      <p>
+        Integration benefits:
+      </p>
+      <ul>
+        <li>
+          Display relevant customer information in custom Gorgias widget
+        </li>
+        <li>
+          Display latest reviews from customers in the widget
+        </li>
+      </ul>
+      <h4>
+        Your Yotpo integrations
+      </h4>
+    </div>
+  }
+/>
+`;
+
+exports[`<YotpoIntegrationList/> render() should render a deactivated integration that can be reenabled 1`] = `
+<withRouter(Connect(IntegrationList))
+  createIntegration={[Function]}
+  createIntegrationButtonContent="Add Yotpo account"
+  integrationToItemDisplay={[Function]}
+  integrationType="yotpo"
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "type": "yotpo",
+        "id": 1,
+        "name": "Yotpo",
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "status": "success",
+          },
+          "import_state": Immutable.Map {
+            "is_over": true,
+          },
+        },
+        "deactivated_datetime": "2018-01-01 10:12",
+      },
+    ]
+  }
+  loading={Immutable.Map {}}
+  longTypeDescription={
+    <div>
+      <p>
+        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+      </p>
+      <p>
+        Integration benefits:
+      </p>
+      <ul>
+        <li>
+          Display relevant customer information in custom Gorgias widget
+        </li>
+        <li>
+          Display latest reviews from customers in the widget
+        </li>
+      </ul>
+      <h4>
+        Your Yotpo integrations
+      </h4>
+    </div>
+  }
+/>
+`;
+
+exports[`<YotpoIntegrationList/> render() should render a loader because the integration is loading 1`] = `
+<withRouter(Connect(IntegrationList))
+  createIntegration={[Function]}
+  createIntegrationButtonContent="Add Yotpo account"
+  integrationToItemDisplay={[Function]}
+  integrationType="yotpo"
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "type": "yotpo",
+        "id": 1,
+        "name": "Yotpo",
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "status": "success",
+          },
+          "import_state": Immutable.Map {
+            "is_over": false,
+          },
+        },
+      },
+    ]
+  }
+  loading={
+    Immutable.Map {
+      "updateIntegration": true,
+    }
+  }
+  longTypeDescription={
+    <div>
+      <p>
+        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+      </p>
+      <p>
+        Integration benefits:
+      </p>
+      <ul>
+        <li>
+          Display relevant customer information in custom Gorgias widget
+        </li>
+        <li>
+          Display latest reviews from customers in the widget
+        </li>
+      </ul>
+      <h4>
+        Your Yotpo integrations
+      </h4>
+    </div>
+  }
+/>
+`;
+
+exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`] = `
+<withRouter(Connect(IntegrationList))
+  createIntegration={[Function]}
+  createIntegrationButtonContent="Add Yotpo account"
+  integrationToItemDisplay={[Function]}
+  integrationType="yotpo"
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "type": "yotpo",
+        "id": 1,
+        "name": "Yotpo",
+        "meta": Immutable.Map {
+          "oauth": Immutable.Map {
+            "status": "success",
+          },
+          "import_state": Immutable.Map {
+            "is_over": true,
+          },
+        },
+      },
+    ]
+  }
+  loading={Immutable.Map {}}
+  longTypeDescription={
+    <div>
+      <p>
+        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+      </p>
+      <p>
+        Integration benefits:
+      </p>
+      <ul>
+        <li>
+          Display relevant customer information in custom Gorgias widget
+        </li>
+        <li>
+          Display latest reviews from customers in the widget
+        </li>
+      </ul>
+      <h4>
+        Your Yotpo integrations
+      </h4>
+    </div>
+  }
+/>
+`;
