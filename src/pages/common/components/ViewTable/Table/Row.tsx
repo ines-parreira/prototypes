@@ -17,20 +17,20 @@ import {RootState} from '../../../../../state/types'
 import Cell from './Cell'
 
 type OwnProps = {
-    onItemClick: (item: Map<any, any>) => void
-    itemUrl: string | null | undefined
+    onItemClick?: (item: Map<any, any>) => void
+    itemUrl: Maybe<string>
     fields: List<any>
     item: Map<any, any>
     isSelected: boolean
     hasCursor: boolean
-    selectable: boolean | null | undefined
+    selectable: boolean | null
     type: string
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export class RowContainer extends Component<Props> {
-    static defaultProps: Partial<Props> = {
+    static defaultProps: Pick<Props, 'item' | 'selectable'> = {
         item: fromJS({}),
         selectable: true,
     }

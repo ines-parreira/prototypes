@@ -91,6 +91,24 @@ enum Foo {
 - You may want to keep some code in order to prevent existing JavaScript to break, (such as keeping a `Object.freeze` declaration instead of an `enum`). You can flag the relevant part with the `$TsFixMe explaination` comment.
 - When migrating types you may find some missing/wrong types, if the changes are too much for the current scope we are flagging these in issue [6221](https://github.com/gorgias/gorgias/issues/6221)
 
+#### Typing defaultProps of the class components
+
+When typing out `defaultProps` please use the following form:
+
+```js
+type Props = {
+    prop1: T
+    prop2: U
+    prop3: V
+}
+
+static defaultProps: Pick<Props, 'prop1' | 'prop2'>
+```
+
+You can see more info on the reasoning behind this in the official TypeScript [docs](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#caveats).
+
+- Additionally if a prop is **optional**, and you provide a **defaultProp** for it - you can leave it as required (no question mark), as it will never be `undefined`.
+
 ## Migration from Enzyme to react-testing-library
 
 Please use [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro)

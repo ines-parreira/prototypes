@@ -1,5 +1,5 @@
 import {fromJS, List, Map} from 'immutable'
-import React, {ComponentType} from 'react'
+import React, {ComponentType, Component} from 'react'
 import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
@@ -39,8 +39,8 @@ type State = {
     enum: Maybe<List<any>>
 }
 
-class FilterDropdown extends React.Component<Props, State> {
-    static defaultProps: Partial<Props> = {
+class FilterDropdown extends Component<Props, State> {
+    static defaultProps: Pick<Props, 'menu'> = {
         menu: DropdownMenu,
     }
 

@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import {fromJS, Map, List} from 'immutable'
-import React from 'react'
+import React, {Component} from 'react'
 
 import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
 
@@ -8,7 +8,7 @@ import css from './Timeline.less'
 import TimelineTicket from './TimelineTicket'
 
 type Props = {
-    actions?: Maybe<{
+    actions: Maybe<{
         displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
     }>
     customerHistory: Map<any, any>
@@ -17,8 +17,11 @@ type Props = {
     revert: boolean
 }
 
-export default class Timeline extends React.Component<Props> {
-    static defaultProps = {
+export default class Timeline extends Component<Props> {
+    static defaultProps: Pick<
+        Props,
+        'actions' | 'currentTicketId' | 'displayAll' | 'revert'
+    > = {
         actions: {},
         currentTicketId: 0,
         displayAll: false,

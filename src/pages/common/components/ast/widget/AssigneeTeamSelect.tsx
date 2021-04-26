@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 
@@ -11,13 +11,13 @@ type OwnProps = {
     onChange: (value: number) => void
     value?: string | number
     className?: string
-    allowUnassign?: boolean
+    allowUnassign: boolean
 }
 
-export class AssigneeTeamSelectContainer extends React.Component<
-    OwnProps & ConnectedProps<typeof connector>
-> {
-    static defaultProps = {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export class AssigneeTeamSelectContainer extends Component<Props> {
+    static defaultProps: Pick<Props, 'allowUnassign'> = {
         allowUnassign: true,
     }
 

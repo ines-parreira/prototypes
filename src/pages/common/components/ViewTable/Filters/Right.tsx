@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react'
+import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Expression, Identifier, Literal} from 'estree'
 import {List, Map, Seq} from 'immutable'
@@ -45,8 +45,8 @@ type State = {
     dropdownOpen: boolean
 }
 
-class Right extends React.Component<Props, State> {
-    static defaultProps: Partial<Props> = {
+class Right extends Component<Props, State> {
+    static defaultProps: Pick<Props, 'empty'> = {
         empty: false,
     }
 
@@ -126,7 +126,7 @@ class Right extends React.Component<Props, State> {
             )
         }
 
-        let displayedValue: Literal['value'] | ReactElement = (node as Literal)
+        let displayedValue: Literal['value'] | ReactNode = (node as Literal)
             .value
 
         if (displayedValue === '{{current_user.id}}') {

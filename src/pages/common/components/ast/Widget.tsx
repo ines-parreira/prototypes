@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, {Component, ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {List, Map} from 'immutable'
 import drop from 'lodash/drop'
@@ -65,8 +65,8 @@ type State = {
     textFieldParent: Array<string>
 }
 
-export class Widget extends React.Component<Props, State> {
-    static defaultProps = {
+export class Widget extends Component<Props, State> {
+    static defaultProps: Pick<Props, 'config' | 'properties'> = {
         config: {},
         properties: [],
     }

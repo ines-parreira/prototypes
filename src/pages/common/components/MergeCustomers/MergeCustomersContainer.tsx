@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {fromJS, List, Map, Set} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
@@ -18,8 +18,8 @@ type Props = ConnectedProps<typeof connector> & {
     isTicketContext: boolean
 }
 
-class MergeCustomersContainer extends React.Component<Props> {
-    static defaultProps: Partial<Props> = {
+class MergeCustomersContainer extends Component<Props> {
+    static defaultProps: Pick<Props, 'display' | 'isTicketContext'> = {
         display: false,
         isTicketContext: false,
     }

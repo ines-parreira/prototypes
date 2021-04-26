@@ -49,7 +49,7 @@ type State = {
 export default class ShippingPopover extends Component<Props, State> {
     static _FREE_SHIPPING_TITLE = 'Free shipping'
 
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'placement'> = {
         placement: 'bottom',
     }
 

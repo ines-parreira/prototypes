@@ -12,7 +12,7 @@ import css from './AmountInput.less'
 type Props = {
     id: string
     value: string
-    min?: number
+    min: number
     max?: number
     className: string | null
     required: boolean
@@ -24,10 +24,18 @@ type Props = {
 }
 
 export default class AmountInput extends PureComponent<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<
+        Props,
+        | 'id'
+        | 'min'
+        | 'className'
+        | 'required'
+        | 'disabled'
+        | 'symbol'
+        | 'saveInputRef'
+    > = {
         id: 'amount',
         min: 0,
-        max: null,
         className: null,
         required: true,
         disabled: false,

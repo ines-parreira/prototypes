@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map, List} from 'immutable'
 import _omit from 'lodash/omit'
@@ -16,7 +16,7 @@ describe('ViewTable::Table::Cell', () => {
         type: viewConfig.get('name'),
         item: fromJS(ticketFixtures.ticket),
         field: (viewConfig.get('fields') as List<any>).first(),
-    }
+    } as ComponentProps<typeof CellContainer>
 
     it('should use default props', () => {
         const props = {..._omit(minProps, ['item'])}

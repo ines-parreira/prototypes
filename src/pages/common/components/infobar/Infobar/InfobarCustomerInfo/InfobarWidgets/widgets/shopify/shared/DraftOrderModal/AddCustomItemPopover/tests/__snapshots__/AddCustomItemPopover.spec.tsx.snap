@@ -91,7 +91,6 @@ exports[`<AddCustomItemPopover/> render() should render 1`] = `
               currencyCode="USD"
               disabled={false}
               id="price"
-              max={null}
               min={0}
               onChange={[Function]}
               required={true}

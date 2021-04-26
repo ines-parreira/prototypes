@@ -19,7 +19,6 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
     disabled={false}
     id="amount"
     innerRef={[Function]}
-    max={null}
     min={0}
     onBlur={[Function]}
     onChange={[Function]}

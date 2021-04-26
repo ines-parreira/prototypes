@@ -1,4 +1,4 @@
-import React, {CSSProperties} from 'react'
+import React, {Component, CSSProperties} from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
@@ -9,9 +9,9 @@ type Props = {
     email: string
     name: string | null
     size: number
-    url?: string
+    url: string
     className?: string
-    style?: CSSProperties
+    style: CSSProperties
     badgeColor?: string
 }
 
@@ -19,11 +19,14 @@ type State = {
     imageUrl: Maybe<string>
 }
 
-export default class Avatar extends React.Component<Props, State> {
+export default class Avatar extends Component<Props, State> {
     component: Maybe<HTMLDivElement>
     isMounted: boolean
 
-    static defaultProps = {
+    static defaultProps: Pick<
+        Props,
+        'url' | 'email' | 'name' | 'size' | 'style'
+    > = {
         url: '',
         email: '',
         name: '',

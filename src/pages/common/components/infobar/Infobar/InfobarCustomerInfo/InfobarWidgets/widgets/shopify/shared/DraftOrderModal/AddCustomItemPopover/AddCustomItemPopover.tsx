@@ -44,7 +44,7 @@ type State = {
 }
 
 export default class AddCustomItemPopover extends PureComponent<Props, State> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'placement' | 'className'> = {
         placement: 'bottom',
         className: null,
     }

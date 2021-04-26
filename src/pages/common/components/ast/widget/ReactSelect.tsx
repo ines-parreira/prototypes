@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {List} from 'immutable'
 import sortBy from 'lodash/sortBy'
 import _isObject from 'lodash/isObject'
@@ -21,8 +21,8 @@ type Props = {
     focusedPlaceholder?: string
 }
 
-export default class Select extends React.Component<Props> {
-    static defaultProps = {
+export default class Select extends Component<Props> {
+    static defaultProps: Pick<Props, 'onSearchChange'> = {
         onSearchChange: _noop,
     }
 

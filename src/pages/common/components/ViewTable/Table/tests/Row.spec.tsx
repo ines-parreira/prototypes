@@ -1,6 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map, List} from 'immutable'
+import _noop from 'lodash/noop'
 
 import * as viewsConfig from '../../../../../../config/views'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
@@ -10,13 +11,19 @@ import {RowContainer} from '../Row'
 describe('ViewTable::Table::Row', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
 
-    const minProps = {
+    const minProps: JSX.LibraryManagedAttributes<
+        typeof RowContainer,
+        ComponentProps<typeof RowContainer>
+    > = {
         type: viewConfig.get('name'),
         fields: (viewConfig.get('fields') as List<any>).take(3) as List<any>,
         item: fromJS(ticketFixtures.ticket),
         isSelected: false,
         getAgentsViewing: jest.fn().mockReturnValue(fromJS([])),
         toggleIdInSelectedItemsIds: jest.fn(),
+        itemUrl: '/app/ticket/123',
+        onItemClick: _noop,
+        hasCursor: false,
     }
 
     beforeEach(() => {

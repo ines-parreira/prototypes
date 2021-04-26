@@ -1,5 +1,5 @@
 import _memoize from 'lodash/memoize'
-import React, {ReactNode} from 'react'
+import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
@@ -56,10 +56,10 @@ type OwnProps = {
 //$TsFixMe waiting on config.js to be migrated
 const typeSafeActionTemplates = ACTION_TEMPLATES as ActionTemplate[]
 
-export class MacroEdit extends React.Component<
+export class MacroEdit extends Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
-    static defaultProps = {
+    static defaultProps: Pick<OwnProps, 'intents'> = {
         intents: (window.GORGIAS_CONSTANTS || {}).INTENTS,
     }
 

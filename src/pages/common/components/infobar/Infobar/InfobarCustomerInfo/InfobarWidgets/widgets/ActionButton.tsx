@@ -76,7 +76,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         actionId: 'initialActionId',
     }
 
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'tag'> = {
         tag: Button,
     }
 

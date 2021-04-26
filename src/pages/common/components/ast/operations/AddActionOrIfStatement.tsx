@@ -1,4 +1,4 @@
-import React, {ComponentType} from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {List, Map} from 'immutable'
 import {
@@ -19,12 +19,12 @@ type Props = {
     parent: List<any>
     title: string
     depth: number
-    removable?: boolean
+    removable: boolean
     hoverableClassName?: string
 }
 
-export class AddActionOrIfStatement extends React.Component<Props> {
-    static defaultProps = {
+export class AddActionOrIfStatement extends Component<Props> {
+    static defaultProps: Pick<Props, 'removable'> = {
         removable: false,
     }
 
@@ -157,4 +157,4 @@ export class AddActionOrIfStatement extends React.Component<Props> {
     }
 }
 
-export default Hoverable(AddActionOrIfStatement) as ComponentType<Props>
+export default Hoverable(AddActionOrIfStatement)

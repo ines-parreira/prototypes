@@ -6,13 +6,13 @@ import css from './Loader.less'
 type Props = {
     inline: boolean
     message?: Record<string, unknown> | string
-    minHeight?: string
-    size?: string
+    minHeight: string
+    size: string
     className?: string
 }
 
 export default class Loader extends Component<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'inline' | 'minHeight' | 'size'> = {
         inline: false,
         minHeight: '500px',
         size: '40px',

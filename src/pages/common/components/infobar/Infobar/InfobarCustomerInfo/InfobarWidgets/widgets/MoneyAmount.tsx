@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default class MoneyAmount extends Component<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'negative' | 'renderIfZero'> = {
         negative: false,
         renderIfZero: false,
     }

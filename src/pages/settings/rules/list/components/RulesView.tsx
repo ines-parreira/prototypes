@@ -1,4 +1,4 @@
-import React, {ComponentType} from 'react'
+import React, {Component, ComponentType} from 'react'
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import classnames from 'classnames'
@@ -37,8 +37,8 @@ type State = {
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
-export class RulesView extends React.Component<Props, State> {
-    static defaultProps: Partial<Props> = {
+export class RulesView extends Component<Props, State> {
+    static defaultProps: Pick<Props, 'rules'> = {
         rules: fromJS([]),
     }
 

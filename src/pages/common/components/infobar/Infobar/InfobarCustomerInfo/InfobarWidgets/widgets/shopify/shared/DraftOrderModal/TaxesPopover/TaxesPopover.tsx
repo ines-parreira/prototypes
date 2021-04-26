@@ -39,7 +39,7 @@ type State = {
 }
 
 export default class TaxesPopover extends Component<Props, State> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'placement'> = {
         placement: 'bottom',
     }
 

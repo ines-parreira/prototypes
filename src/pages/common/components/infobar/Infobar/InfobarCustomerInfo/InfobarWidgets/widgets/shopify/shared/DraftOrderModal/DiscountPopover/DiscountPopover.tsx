@@ -59,7 +59,7 @@ type State = {
 }
 
 export default class DiscountPopover extends PureComponent<Props, State> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'placement'> = {
         placement: 'bottom',
     }
 

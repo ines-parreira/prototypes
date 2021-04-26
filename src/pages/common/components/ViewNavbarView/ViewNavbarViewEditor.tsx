@@ -31,7 +31,7 @@ type State = {
 }
 
 class ViewNavbarViewEditor extends Component<Props, State> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'setting'> = {
         setting: fromJS({}),
     }
 

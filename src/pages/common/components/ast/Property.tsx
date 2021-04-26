@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 import _isFunction from 'lodash/isFunction'
 import {List, Map} from 'immutable'
@@ -22,8 +22,8 @@ type Props = {
     leftsiblings: List<any>
 }
 
-export default class Property extends React.Component<Props> {
-    static defaultProps = {
+export default class Property extends Component<Props> {
+    static defaultProps: Pick<Props, 'compact'> = {
         compact: false,
     }
 

@@ -549,7 +549,9 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "updated_datetime": "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    itemUrl="/app/ticket/123"
     key="152-details"
+    onClick={[Function]}
     type="ticket"
   />
   <Connect(CellContainer)
@@ -1087,7 +1089,9 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "updated_datetime": "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    itemUrl="/app/ticket/123"
     key="152-subject"
+    onClick={[Function]}
     type="ticket"
   />
   <Connect(CellContainer)
@@ -1632,7 +1636,9 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "updated_datetime": "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    itemUrl="/app/ticket/123"
     key="152-integrations"
+    onClick={[Function]}
     type="ticket"
   />
 </tr>
@@ -2197,7 +2203,9 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "updated_datetime": "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    itemUrl="/app/ticket/123"
     key="1-details"
+    onClick={[Function]}
     type="ticket"
   />
   <Connect(CellContainer)
@@ -2735,7 +2743,9 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "updated_datetime": "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    itemUrl="/app/ticket/123"
     key="1-subject"
+    onClick={[Function]}
     type="ticket"
   />
   <Connect(CellContainer)
@@ -3280,7 +3290,9 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "updated_datetime": "2017-07-31T23:07:37.253131+00:00",
       }
     }
+    itemUrl="/app/ticket/123"
     key="1-integrations"
+    onClick={[Function]}
     type="ticket"
   />
 </tr>

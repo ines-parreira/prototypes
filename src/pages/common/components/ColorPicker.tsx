@@ -34,7 +34,7 @@ type State = {
 }
 
 export default class ColorPicker extends Component<Props, State> {
-    static defaultProps: Partial<Props> = {
+    static defaultProps: Pick<Props, 'colors'> = {
         colors,
     }
 

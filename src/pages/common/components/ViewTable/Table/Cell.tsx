@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
@@ -20,8 +20,8 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export class CellContainer extends React.Component<Props> {
-    static defaultProps: Partial<Props> = {
+export class CellContainer extends Component<Props> {
+    static defaultProps: Pick<Props, 'item'> = {
         item: fromJS({}),
     }
 

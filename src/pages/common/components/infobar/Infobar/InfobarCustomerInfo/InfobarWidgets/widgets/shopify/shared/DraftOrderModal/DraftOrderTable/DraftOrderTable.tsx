@@ -18,7 +18,7 @@ type Props = {
 }
 
 export default class DraftOrderTable extends PureComponent<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'products'> = {
         products: fromJS({}),
     }
 

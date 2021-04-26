@@ -1,4 +1,4 @@
-import React, {MouseEvent} from 'react'
+import React, {Component, MouseEvent} from 'react'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 import {Map} from 'immutable'
@@ -20,8 +20,8 @@ type Props = {
     ticket: Map<any, any>
 }
 
-export default class TimelineTicket extends React.Component<Props> {
-    static defaultProps: Partial<Props> = {isCurrent: false}
+export default class TimelineTicket extends Component<Props> {
+    static defaultProps: Pick<Props, 'isCurrent'> = {isCurrent: false}
 
     _goToTicket = (e: MouseEvent) => {
         e.preventDefault()

@@ -1,4 +1,4 @@
-import React, {ComponentType, ReactNode} from 'react'
+import React, {Component, ComponentType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
@@ -48,8 +48,8 @@ type Props = OwnProps &
         typeof viewsActions.fetchViewItems
     >
 
-export class ViewTableContainer extends React.Component<Props> {
-    static defaultProps = {
+export class ViewTableContainer extends Component<Props> {
+    static defaultProps: Pick<Props, 'items' | 'type'> = {
         items: fromJS([]),
         type: 'ticket',
     }
