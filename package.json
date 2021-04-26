@@ -23,7 +23,7 @@
         "test:ci:cover": "yarn run jest --coverage --no-cache --ci --runInBand",
         "dll": "webpack --env.dll",
         "postinstall": "run-s dll",
-        "build": "(export NODE_ENV=production; run-s dll && webpack && webpack --config webpack.sharedWorker.config.js)",
+        "build": "NODE_ENV=production run-s dll && NODE_ENV=production webpack && NODE_ENV=production webpack --config webpack.sharedWorker.config.js",
         "serve": "webpack --config webpack.sharedWorker.config.js; webpack-dev-server --inline --hot --progress --debug",
         "serve:sharedWorker": "webpack -w --config webpack.sharedWorker.config.js",
         "uglify-file": "terser --compress --mangle --"
