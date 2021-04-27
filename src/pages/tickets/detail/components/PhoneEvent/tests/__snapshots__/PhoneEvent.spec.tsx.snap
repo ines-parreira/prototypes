@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneEvent/> render() should render 1`] = `
+exports[`<PhoneEvent/> render() should render with closed details 1`] = `
 <div
   class="component"
 >
@@ -14,7 +14,7 @@ exports[`<PhoneEvent/> render() should render 1`] = `
         class="icon"
       >
         <img
-          alt="Incoming call"
+          alt="incoming-phone-call"
           src="test-file-stub"
         />
       </div>
@@ -23,12 +23,19 @@ exports[`<PhoneEvent/> render() should render 1`] = `
       >
         Incoming call
       </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
+      </span>
     </div>
   </div>
 </div>
 `;
 
-exports[`<PhoneEvent/> render() should render 2`] = `
+exports[`<PhoneEvent/> render() should render with closed details 2`] = `
 <div
   class="component"
 >
@@ -42,7 +49,7 @@ exports[`<PhoneEvent/> render() should render 2`] = `
         class="icon"
       >
         <img
-          alt="Outgoing call"
+          alt="outgoing-phone-call"
           src="test-file-stub"
         />
       </div>
@@ -51,12 +58,19 @@ exports[`<PhoneEvent/> render() should render 2`] = `
       >
         Outgoing call
       </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
+      </span>
     </div>
   </div>
 </div>
 `;
 
-exports[`<PhoneEvent/> render() should render 3`] = `
+exports[`<PhoneEvent/> render() should render with closed details 3`] = `
 <div
   class="component"
 >
@@ -70,7 +84,7 @@ exports[`<PhoneEvent/> render() should render 3`] = `
         class="icon"
       >
         <img
-          alt="Call ended"
+          alt="completed-phone-call"
           src="test-file-stub"
         />
       </div>
@@ -79,12 +93,19 @@ exports[`<PhoneEvent/> render() should render 3`] = `
       >
         Call ended
       </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
+      </span>
     </div>
   </div>
 </div>
 `;
 
-exports[`<PhoneEvent/> render() should render 4`] = `
+exports[`<PhoneEvent/> render() should render with closed details 4`] = `
 <div
   class="component"
 >
@@ -98,7 +119,7 @@ exports[`<PhoneEvent/> render() should render 4`] = `
         class="icon"
       >
         <img
-          alt="Missed call"
+          alt="missed-phone-call"
           src="test-file-stub"
         />
       </div>
@@ -112,7 +133,7 @@ exports[`<PhoneEvent/> render() should render 4`] = `
 </div>
 `;
 
-exports[`<PhoneEvent/> render() should render 5`] = `
+exports[`<PhoneEvent/> render() should render with closed details 5`] = `
 <div
   class="component"
 >
@@ -126,21 +147,28 @@ exports[`<PhoneEvent/> render() should render 5`] = `
         class="icon"
       >
         <img
-          alt="Voicemail left by a customer"
+          alt="voicemail-recording"
           src="test-file-stub"
         />
       </div>
       <span
         class="actionName"
       >
-        Voicemail left by a customer
+        Voicemail left
+      </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
       </span>
     </div>
   </div>
 </div>
 `;
 
-exports[`<PhoneEvent/> render() should render 6`] = `
+exports[`<PhoneEvent/> render() should render with closed details 6`] = `
 <div
   class="component"
 >
@@ -154,7 +182,7 @@ exports[`<PhoneEvent/> render() should render 6`] = `
         class="icon"
       >
         <img
-          alt="Call answered"
+          alt="phone-call-answered"
           src="test-file-stub"
         />
       </div>
@@ -163,6 +191,196 @@ exports[`<PhoneEvent/> render() should render 6`] = `
       >
         Call answered
       </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render with opened details 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="voicemail-recording"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Voicemail left by Michael Gorgias
+      </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_up
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    class="eventDetails"
+  >
+    <div
+      class="content"
+    >
+      <div>
+        <b>
+          Michael Gorgias
+          :
+        </b>
+         
+        +1 662 442 4075
+      </div>
+      <div>
+        <b>
+          Duration:
+        </b>
+         
+        0min 0s
+      </div>
+      <div
+        class="d-flex flex-column"
+      >
+        <div
+          class="mb-3"
+        >
+          <b>
+            Voicemail:
+          </b>
+        </div>
+        <div>
+          <audio
+            controls=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render with opened details 2`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="incoming-phone-call"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Incoming call from Michael Gorgias
+      </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_up
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    class="eventDetails"
+  >
+    <div
+      class="content"
+    >
+      <div>
+        <b>
+          Michael Gorgias
+          :
+        </b>
+         
+        +1 662 442 4075
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render with opened details 3`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="completed-phone-call"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Call ended
+      </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_up
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    class="eventDetails"
+  >
+    <div
+      class="content"
+    >
+      <div>
+        <b>
+          Michael Gorgias
+          :
+        </b>
+         
+        +1 662 442 4075
+      </div>
+      <div>
+        <b>
+          Duration:
+        </b>
+         
+        0min 0s
+      </div>
     </div>
   </div>
 </div>

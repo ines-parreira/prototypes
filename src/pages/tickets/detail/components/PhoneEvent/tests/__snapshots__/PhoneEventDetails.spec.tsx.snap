@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneEventDetails/> render() should render completed call event details 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+    <div>
+      <b>
+        Duration:
+      </b>
+       
+      0min 6s
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render details for the rest of events 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render details for the rest of events 2`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render voicemail event details 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+    <div>
+      <b>
+        Duration:
+      </b>
+       
+      0min 6s
+    </div>
+    <div
+      class="d-flex flex-column"
+    >
+      <div
+        class="mb-3"
+      >
+        <b>
+          Voicemail:
+        </b>
+      </div>
+      <div>
+        <audio
+          controls=""
+          src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/RE6fac6a901e0b886cec366ceb6365a8cd-a358dc82-a84b-4975-baef-7852d7c9c180"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

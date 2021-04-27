@@ -145,6 +145,10 @@ async function onAccept(connection: Connection) {
         const integrationId = parseInt(
             connection.customParameters.get('integration_id') as string
         )
+        const customerPhoneNumber = connection.parameters.From
+        const customerName = connection.customParameters.get(
+            'customer_name'
+        ) as string
         const ticketId = parseInt(
             connection.customParameters.get('ticket_id') as string
         )
@@ -154,6 +158,10 @@ async function onAccept(connection: Connection) {
             integration_id: integrationId,
             ticket_id: ticketId,
             call_sid: callSid,
+            customer: {
+                phone_number: customerPhoneNumber,
+                name: customerName,
+            },
         })
     } catch (error) {
         console.error(error)

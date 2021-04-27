@@ -21,9 +21,12 @@ describe('<PhoneEvent/>', () => {
 
     describe('render()', () => {
         it.each(Object.values(PhoneIntegrationEvent))(
-            'should render',
+            'should render with closed details',
             (eventType) => {
-                const event = fromJS({type: eventType})
+                const event = fromJS({
+                    type: eventType,
+                    customer: {name: 'Michael Gorgias'},
+                })
                 const {container} = render(
                     <Provider store={store}>
                         <PhoneEvent event={event} isLast={false} />
@@ -33,5 +36,28 @@ describe('<PhoneEvent/>', () => {
                 expect(container.firstChild).toMatchSnapshot()
             }
         )
+        it.each([
+            PhoneIntegrationEvent.VoicemailRecording,
+            PhoneIntegrationEvent.IncomingPhoneCall,
+            PhoneIntegrationEvent.CompletedPhoneCall,
+        ])('should render with opened details', (eventType) => {
+            const event = fromJS({
+                type: eventType,
+                data: {
+                    customer: {
+                        name: 'Michael Gorgias',
+                        phone_number: '+16624424075',
+                    },
+                },
+            })
+            const {container, getByText} = render(
+                <Provider store={store}>
+                    <PhoneEvent event={event} isLast={false} />
+                </Provider>
+            )
+            getByText('keyboard_arrow_down').click()
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })
