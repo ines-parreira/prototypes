@@ -93,7 +93,7 @@ exports[`IntegrationListRow should display an external integration 1`] = `
 </a>
 `;
 
-exports[`IntegrationListRow should display an integration section 1`] = `
+exports[`IntegrationListRow should display an integration with upgrade requirement 1`] = `
 <div
   class="component card d-flex flex-row align-items-center mb-3"
 >

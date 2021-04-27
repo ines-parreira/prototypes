@@ -22,6 +22,7 @@ export enum AccountFeatures {
     FacebookComment = 'facebook_comment',
     InstagramComment = 'instagram_comment',
     MagentoIntegration = 'magento_integration',
+    YotpoIntegration = 'yotpo_integration',
     RevenueStatistics = 'revenue_statistics',
     SatisfactionSurveys = 'satisfaction_surveys',
     Teams = 'teams',

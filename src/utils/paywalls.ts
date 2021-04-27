@@ -10,3 +10,7 @@ export const getCheaperPlanForFeature = (
         .sort((planA, planB) => planA.amount - planB.amount)
         .find((plan) => plan.features[feature])!.name
 }
+
+export const isLegacyPlan = (plan: Plan): boolean => {
+    return !plan.public && plan.id !== 'enterprise'
+}

@@ -19,11 +19,13 @@ import {
 import Loader from '../../common/components/Loader/Loader.tsx'
 import LegacyTag from '../../common/components/LegacyTag.tsx'
 import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
-import {openChat} from '../../../utils.ts'
+import {openChat, toJS} from '../../../utils.ts'
 import * as integrationSelectors from '../../../state/integrations/selectors.ts'
 import * as billingSelectors from '../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import history from '../../history.ts'
+
+import {isLegacyPlan} from '../../../utils/paywalls.ts'
 
 import css from './BillingUsage.less'
 
@@ -283,7 +285,7 @@ export class BillingUsage extends Component {
                     )}
                 >
                     <CardBody>
-                        {!currentPlan.get('public') && (
+                        {isLegacyPlan(toJS(currentPlan)) && (
                             <LegacyTag
                                 label="Legacy Plan"
                                 labelIcon="warning"

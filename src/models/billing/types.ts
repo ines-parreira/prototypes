@@ -5,6 +5,7 @@ export enum PlanInterval {
 }
 
 export type Plan = {
+    id: string
     cost_per_ticket: number
     interval: PlanInterval
     public: boolean

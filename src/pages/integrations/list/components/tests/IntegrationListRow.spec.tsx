@@ -5,19 +5,6 @@ import {fromJS} from 'immutable'
 import IntegrationListRow from '../IntegrationListRow'
 
 describe('IntegrationListRow', () => {
-    it('should display an integration section', () => {
-        const integrationConfig = fromJS({
-            title: 'an integration',
-            requiredPlanName: 'Pro',
-            description: 'this is a cool integration',
-        })
-
-        const {container} = render(
-            <IntegrationListRow integrationConfig={integrationConfig} />
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should display the integration row as a link', () => {
         const integrationConfig = fromJS({
             title: 'an integration',
@@ -46,10 +33,22 @@ describe('IntegrationListRow', () => {
     it('should display an early access integration link', () => {
         const integrationConfig = fromJS({
             title: 'an integration',
-            displayUpgrade: false,
             description: 'this is a cool integration',
             url: 'http://www.foo.bar',
             isEarlyAccess: true,
+        })
+
+        const {container} = render(
+            <IntegrationListRow integrationConfig={integrationConfig} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display an integration with upgrade requirement', () => {
+        const integrationConfig = fromJS({
+            title: 'an integration',
+            description: 'this is a cool integration',
+            requiredPlanName: 'Basic',
         })
 
         const {container} = render(

@@ -6,8 +6,6 @@ import {Alert, Container, Row, Col} from 'reactstrap'
 import type {List, Map} from 'immutable'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import {IntegrationType} from '../../../../models/integration/types.ts'
-import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
 import {getCheaperPlanForFeature} from '../../../../utils/paywalls.ts'
 import {toJS} from '../../../../utils.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
@@ -138,16 +136,15 @@ export default class IntegrationList extends React.Component<Props> {
                 return !integration.get('hide')
             })
             .map((integration) => {
+                const requiredFeature = integration.get('requiredFeature')
+
                 if (
-                    integration.get('type') ===
-                        IntegrationType.Magento2IntegrationType &&
+                    requiredFeature &&
                     (currentPlan.isEmpty() ||
-                        !currentPlan
-                            .get('features')
-                            .get(AccountFeatures.MagentoIntegration))
+                        !currentPlan.get('features').get(requiredFeature))
                 ) {
                     const requiredPlanName = getCheaperPlanForFeature(
-                        AccountFeatures.MagentoIntegration,
+                        requiredFeature,
                         toJS(plans)
                     )
                     return integration.set('requiredPlanName', requiredPlanName)

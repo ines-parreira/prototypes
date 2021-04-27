@@ -14,7 +14,8 @@ import _omitBy from 'lodash/omitBy'
 
 import LegacyTag from '../../../common/components/LegacyTag.tsx'
 import './Plan.less'
-import {openChat} from '../../../../utils.ts'
+import {openChat, toJS} from '../../../../utils.ts'
+import {isLegacyPlan} from '../../../../utils/paywalls.ts'
 
 type Props = {
     plan: Map<any, any>,
@@ -231,7 +232,7 @@ export function Plan(props: Props) {
                     'featured-header': isFeatured,
                 })}
             >
-                {!plan.get('public') && !isEnterprisePlan && (
+                {isLegacyPlan(toJS(plan)) && (
                     <LegacyTag label="Legacy Plan" labelIcon="warning" />
                 )}
                 {isFeatured && plan.get('public') && (

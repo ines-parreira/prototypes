@@ -4,6 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
+
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,7 +15,11 @@ import {
     Container,
     Row,
 } from 'reactstrap'
+
 import classnames from 'classnames'
+
+import {toJS} from '../../../../utils.ts'
+import {isLegacyPlan} from '../../../../utils/paywalls.ts'
 
 import {isAccountCreatedBeforeFeatureBasedPlans} from '../../../../utils/account.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
@@ -244,7 +249,8 @@ export class BillingPlans extends React.Component<Props, State> {
                                     isPopoverDisplayed={
                                         state &&
                                         state.openedPlanPopover ===
-                                            plan.get('name')
+                                            plan.get('name') &&
+                                        !isLegacyPlan(toJS(plan))
                                     }
                                 />,
                             ]

@@ -49,6 +49,7 @@ export const account: Account = {
         [AccountFeatures.ChatCampaigns]: true,
         [AccountFeatures.InstagramComment]: true,
         [AccountFeatures.MagentoIntegration]: true,
+        [AccountFeatures.YotpoIntegration]: true,
         [AccountFeatures.RevenueStatistics]: true,
         [AccountFeatures.SatisfactionSurveys]: true,
         [AccountFeatures.Teams]: true,
