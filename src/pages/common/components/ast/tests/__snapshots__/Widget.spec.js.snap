@@ -87,6 +87,7 @@ exports[`ast Widget should render RichFieldWithVariables 1`] = `
       "ticket.customer",
       "shopify",
       "recharge",
+      "magento2",
     ]
   }
 />

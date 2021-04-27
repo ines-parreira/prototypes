@@ -202,6 +202,10 @@ export class Widget extends Component<Props, State> {
             variableTypes.push('recharge')
         }
 
+        if (hasIntegrationOfTypes(IntegrationType.Magento2IntegrationType)) {
+            variableTypes.push('magento2')
+        }
+
         return (
             <RichFieldWithVariables
                 allowExternalChanges
