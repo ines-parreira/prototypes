@@ -1,14 +1,18 @@
 // @flow
 import React from 'react'
+import {connect} from 'react-redux'
 import moment from 'moment-timezone'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import {Button} from 'reactstrap'
+
+import {getTimezone} from '../../../state/currentUser/selectors.ts'
 
 type Props = {
     isDisabled: boolean,
     endDatetime: moment,
     onChange: ({start_datetime: string, end_datetime: string}) => void,
     startDatetime: moment,
+    userTimezone: string,
 }
 
 type State = {
@@ -20,7 +24,7 @@ type State = {
 /**
  * The period picker allows to select a period which will set a start and an end datetime
  */
-export default class PeriodPicker extends React.Component<Props, State> {
+export class PeriodPickerContainer extends React.Component<Props, State> {
     static defaultProps = {
         isDisabled: false,
     }
@@ -68,13 +72,18 @@ export default class PeriodPicker extends React.Component<Props, State> {
         event: Event,
         picker: {startDate: moment, endDate: moment}
     ) => {
+        const {userTimezone} = this.props
         this.props.onChange({
             start_datetime: moment(
                 picker.startDate.startOf('day').format('YYYY-MM-DD HH:mm:ss')
-            ).format(),
+            )
+                .tz(userTimezone)
+                .format(),
             end_datetime: moment(
                 picker.endDate.endOf('day').format('YYYY-MM-DD HH:mm:ss')
-            ).format(),
+            )
+                .tz(userTimezone)
+                .format(),
         })
     }
 
@@ -120,3 +129,9 @@ export default class PeriodPicker extends React.Component<Props, State> {
         )
     }
 }
+
+const connector = connect((state) => ({
+    userTimezone: getTimezone(state),
+}))
+
+export default connector(PeriodPickerContainer)

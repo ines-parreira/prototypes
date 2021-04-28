@@ -4,7 +4,7 @@ import React, {type ElementProps} from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment-timezone'
 
-import PeriodPicker from '../PeriodPicker'
+import {PeriodPickerContainer} from '../PeriodPicker'
 
 jest.mock(
     'react-bootstrap-daterangepicker',
@@ -21,10 +21,11 @@ describe('PeriodPicker', () => {
     it("it should select dates with user's timezone", () => {
         const onChange = jest.fn()
         const component = mount(
-            <PeriodPicker
+            <PeriodPickerContainer
                 startDatetime={moment()}
                 onChange={onChange}
                 endDatetime={moment()}
+                userTimezone="America/Creston"
             />
         )
 

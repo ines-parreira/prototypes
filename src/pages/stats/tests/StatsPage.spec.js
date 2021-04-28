@@ -1,11 +1,17 @@
-import React, {ComponentType} from 'react'
+// @flow
+import React, {type ComponentType} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {StatsPage} from '../StatsPage'
 
-jest.mock('moment', () => {
-    return () => require.requireActual('moment')('2019-09-03')
+jest.mock('moment-timezone', () => {
+    const moment = jest.requireActual('moment-timezone')
+    return () => ({
+        tz: (timezone) => {
+            return moment('2019-09-03').tz(timezone)
+        },
+    })
 })
 
 jest.mock(
@@ -17,10 +23,12 @@ jest.mock(
 
 describe('StatsPage', () => {
     const defaultProps = {
+        config: fromJS({}),
         globalFilters: null,
         setStatsFilters: jest.fn(),
         resetStatsFilters: jest.fn(),
         storeIntegrations: fromJS([{id: 1}]),
+        userTimezone: 'America/Los_Angeles',
     }
 
     describe('testing default filters', () => {
@@ -33,6 +41,17 @@ describe('StatsPage', () => {
                 <StatsPage
                     {...defaultProps}
                     match={{params: {view: 'satisfaction'}}}
+                />
+            )
+            expect(defaultProps.setStatsFilters).toMatchSnapshot()
+        })
+
+        it("should ensure the default period is using user's timezone", () => {
+            shallow(
+                <StatsPage
+                    {...defaultProps}
+                    match={{params: {view: 'satisfaction'}}}
+                    userTimezone="Europe/Paris"
                 />
             )
             expect(defaultProps.setStatsFilters).toMatchSnapshot()
