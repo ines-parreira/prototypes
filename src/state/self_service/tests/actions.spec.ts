@@ -1,20 +1,29 @@
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
 
-import {initialState} from '../reducers.ts'
-import * as actions from '../actions.ts'
-import * as constants from '../constants.ts'
-import {mockStore} from '../../../utils/testing.tsx'
+import {MockStore} from 'redux-mock-store'
+
+import {AnyAction} from 'redux'
+
+import {initialState} from '../reducers'
+import * as actions from '../actions'
+import * as constants from '../constants'
+import {mockStore} from '../../../utils/testing'
+import {SelfServiceConfiguration} from '../types'
 
 window.location = {
     pathname: '/self-service',
-}
+} as Location
 
 describe('self service configurations actions', () => {
-    let store, mockServer, mockConfiguration
+    let store: MockStore,
+        mockServer: MockAdapter,
+        mockConfiguration: SelfServiceConfiguration
 
     beforeEach(() => {
-        store = mockStore({self_service_configurations: initialState})
+        store = mockStore(({
+            self_service_configurations: initialState,
+        } as unknown) as MockStore)
         mockServer = new MockAdapter(axios)
         mockConfiguration = {
             id: 1,
@@ -23,6 +32,18 @@ describe('self service configurations actions', () => {
             created_datetime: new Date(2021, 1, 1).toISOString(),
             updated_datetime: new Date(2021, 1, 1).toISOString(),
             deactivated_datetime: null,
+            report_issue_policy: {
+                enabled: true,
+            },
+            track_order_policy: {
+                enabled: true,
+            },
+            return_order_policy: {
+                enabled: true,
+            },
+            cancel_order_policy: {
+                enabled: true,
+            },
         }
     })
 
@@ -31,16 +52,22 @@ describe('self service configurations actions', () => {
             .onGet('/api/self_service_configurations/')
             .reply(200, {data: [{id: 1, store_name: 'mystore'}]})
 
-        return store
-            .dispatch(actions.fetchSelfServiceConfigurations())
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        store
+            .dispatch(
+                (actions.fetchSelfServiceConfigurations() as unknown) as AnyAction
+            )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('tries to fetch self service configurations but fails', () => {
         mockServer.onGet('/api/self_service_configurations/').reply(500)
 
-        return store
-            .dispatch(actions.fetchSelfServiceConfigurations())
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        store
+            .dispatch(
+                (actions.fetchSelfServiceConfigurations() as unknown) as AnyAction
+            )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -49,14 +76,17 @@ describe('self service configurations actions', () => {
             .onPut('/api/self_service_configurations/1')
             .reply(200, mockConfiguration)
 
-        return store
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        store
             .dispatch(
-                actions.updateSelfServiceConfigurations(mockConfiguration)
+                (actions.updateSelfServiceConfigurations(
+                    mockConfiguration
+                ) as unknown) as AnyAction
             )
             .then(() => {
                 const dispatchedActions = store
                     .getActions()
-                    .map((action) => action.type)
+                    .map((action: AnyAction) => action.type as string)
 
                 expect(
                     dispatchedActions.includes(
@@ -77,14 +107,17 @@ describe('self service configurations actions', () => {
     it('tries to update a self service configuration but fails', () => {
         mockServer.onGet('/api/self_service_configurations/1').reply(500)
 
-        return store
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        store
             .dispatch(
-                actions.updateSelfServiceConfigurations(mockConfiguration)
+                (actions.updateSelfServiceConfigurations(
+                    mockConfiguration
+                ) as unknown) as AnyAction
             )
             .then(() => {
                 const dispatchedActions = store
                     .getActions()
-                    .map((action) => action.type)
+                    .map((action: AnyAction) => action.type as string)
 
                 expect(
                     dispatchedActions.includes(

@@ -11,7 +11,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
       <h1
         class="d-flex align-items-center"
       >
-        Self-Service
+        Self-service
       </h1>
     </div>
     <div
@@ -30,13 +30,13 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
             <h5>
-              Enable Self-Service
+              Enable Self-service
             </h5>
             <p>
-              Self-Service is only available to stores that have a Shopify store integration.
+              Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
               class="table"
@@ -47,7 +47,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
                       <div>
                         <b>
@@ -69,7 +69,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -84,7 +84,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
                       <div>
                         <b>
@@ -106,7 +106,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -121,7 +121,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
                       <div>
                         <b>
@@ -143,7 +143,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -158,7 +158,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore4/preferences"
                     >
                       <div>
                         <b>
@@ -180,7 +180,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore4/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -198,7 +198,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
           class="col"
         >
           <img
-            alt="Self-Service example"
+            alt="Self-service example"
             height="689"
             src="test-file-stub"
             width="442"
@@ -221,7 +221,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
       <h1
         class="d-flex align-items-center"
       >
-        Self-Service
+        Self-service
       </h1>
     </div>
     <div
@@ -240,13 +240,13 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
             <h5>
-              Enable Self-Service
+              Enable Self-service
             </h5>
             <p>
-              Self-Service is only available to stores that have a Shopify store integration.
+              Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
               class="table"
@@ -257,7 +257,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
                       <div>
                         <b>
@@ -279,7 +279,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -294,7 +294,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
                       <div>
                         <b>
@@ -316,7 +316,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -331,7 +331,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
                       <div>
                         <b>
@@ -353,7 +353,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -368,7 +368,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore4/preferences"
                     >
                       <div>
                         <b>
@@ -390,7 +390,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore4/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -408,7 +408,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
           class="col"
         >
           <img
-            alt="Self-Service example"
+            alt="Self-service example"
             height="689"
             src="test-file-stub"
             width="442"
@@ -431,7 +431,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
       <h1
         class="d-flex align-items-center"
       >
-        Self-Service
+        Self-service
       </h1>
     </div>
     <div
@@ -450,13 +450,13 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
             <h5>
-              Enable Self-Service
+              Enable Self-service
             </h5>
             <p>
-              Self-Service is only available to stores that have a Shopify store integration.
+              Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
               class="table"
@@ -467,7 +467,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
                       <div>
                         <b>
@@ -489,7 +489,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -504,7 +504,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
                       <div>
                         <b>
@@ -526,7 +526,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -541,7 +541,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="link-full-td"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
                       <div>
                         <b>
@@ -563,7 +563,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     class="smallest align-middle"
                   >
                     <a
-                      to="/app/settings/self-service"
+                      to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
                       <i
                         class="material-icons md-2 align-middle icon-go-forward"
@@ -581,7 +581,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
           class="col"
         >
           <img
-            alt="Self-Service example"
+            alt="Self-service example"
             height="689"
             src="test-file-stub"
             width="442"
@@ -604,7 +604,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
       <h1
         class="d-flex align-items-center"
       >
-        Self-Service
+        Self-service
       </h1>
     </div>
     <div
@@ -623,10 +623,10 @@ exports[`<SelfServiceView/> render() should render the default message when ther
               Most ecommerce support requests are about the same 20 types of issues.
             </p>
             <p>
-              Self-Service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
             <h5>
-              Enable Self-Service
+              Enable Self-service
             </h5>
             <div
               class="alert alert-warning fade"
@@ -640,7 +640,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
           class="col"
         >
           <img
-            alt="Self-Service example"
+            alt="Self-service example"
             height="689"
             src="test-file-stub"
             width="442"

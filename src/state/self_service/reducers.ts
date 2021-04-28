@@ -13,10 +13,39 @@ export default function reducer(
     action: GorgiasAction
 ): SelfServiceState {
     switch (action.type) {
+        case constants.FETCH_SELF_SERVICE_CONFIGURATION_START:
+            return {...state, loading: true}
         case constants.FETCH_SELF_SERVICE_CONFIGURATIONS_START:
             return {...state, loading: true}
         case constants.FETCH_SELF_SERVICE_CONFIGURATIONS_ERROR:
             return {...state, loading: false}
+        case constants.FETCH_SELF_SERVICE_CONFIGURATION_ERROR:
+            return {...state, loading: false}
+        case constants.FETCH_SELF_SERVICE_CONFIGURATION_SUCCESS: {
+            const configuration = action.resp as SelfServiceConfiguration
+
+            const configurationInStoreIndex = state.self_service_configurations.findIndex(
+                (configurationInStore) =>
+                    configurationInStore.id === configuration.id
+            )
+
+            let newConfigurations: SelfServiceConfiguration[] = []
+            if (configurationInStoreIndex === -1) {
+                newConfigurations = [
+                    ...state.self_service_configurations,
+                    configuration,
+                ]
+            } else {
+                newConfigurations = [...state.self_service_configurations]
+                newConfigurations[configurationInStoreIndex] = configuration
+            }
+
+            return {
+                ...state,
+                self_service_configurations: newConfigurations,
+                loading: false,
+            }
+        }
         case constants.FETCH_SELF_SERVICE_CONFIGURATIONS_SUCCESS: {
             const configurations = (action.resp as {data: unknown[]})
                 .data as SelfServiceConfiguration[]

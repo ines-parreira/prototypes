@@ -8,6 +8,36 @@ import {StoreDispatch} from '../types'
 import * as constants from './constants'
 import {ApiListResponse, SelfServiceConfiguration} from './types'
 
+export function fetchSelfServiceConfiguration(integrationId: string) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({
+            type: constants.FETCH_SELF_SERVICE_CONFIGURATION_START,
+        })
+
+        return axios
+            .get<ApiListResponse<SelfServiceConfiguration[]>>(
+                `/api/self_service_configurations/${integrationId}`
+            )
+            .then((json) => json?.data)
+            .then(
+                (resp) => {
+                    dispatch({
+                        type:
+                            constants.FETCH_SELF_SERVICE_CONFIGURATION_SUCCESS,
+                        resp,
+                    })
+                },
+                (error: AxiosError) => {
+                    dispatch({
+                        type: constants.FETCH_SELF_SERVICE_CONFIGURATION_ERROR,
+                        error,
+                        reason: 'Failed to fetch Self-service configuration',
+                    })
+                }
+            )
+    }
+}
+
 export function fetchSelfServiceConfigurations() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({

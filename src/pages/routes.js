@@ -57,6 +57,9 @@ import TicketAssignment from './settings/ticketAssignment'
 
 import withPaywall from './common/utils/withPaywall.tsx'
 import OnboardingContent from './onboarding/OnboardingContent.tsx'
+import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView.tsx'
+import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView.tsx'
+import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView.tsx'
 
 const appRender = (props: {
     navbar: ComponentType<any>,
@@ -373,6 +376,39 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/self-service/:integrationType/:shopName/preferences`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServicePreferencesContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/self-service/:integrationType/:shopName/preferences/cancellations`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceCancellationsPolicyContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/self-service/:integrationType/:shopName/preferences/returns`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceReturnsPolicyContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

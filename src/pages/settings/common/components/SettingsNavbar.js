@@ -71,22 +71,11 @@ export default class SettingsNavbar extends React.Component<Props> {
                     },
                     {
                         requiredRole: AGENT_ROLE,
-                        to: 'rules',
-                        text: 'Rules',
-                        className: 'd-none d-md-block',
-                    },
-                    {
-                        requiredRole: AGENT_ROLE,
                         to: 'manage-tags',
                         text: 'Tags',
                         className: 'd-none d-md-block',
                     },
-                    {
-                        requiredRole: AGENT_ROLE,
-                        to: 'macros',
-                        text: 'Macros',
-                        className: 'd-none d-md-block',
-                    },
+
                     {
                         requiredRole: ADMIN_ROLE,
                         to: 'satisfaction-surveys',
@@ -103,6 +92,30 @@ export default class SettingsNavbar extends React.Component<Props> {
                         requiredRole: ADMIN_ROLE,
                         to: 'import-data',
                         text: 'Import data',
+                        className: 'd-none d-md-block',
+                    },
+                ],
+            },
+            {
+                name: 'Automation',
+                icon: 'bolt',
+                links: [
+                    {
+                        requiredRole: ADMIN_ROLE,
+                        to: 'self-service',
+                        text: 'Self-service',
+                        className: 'd-none d-md-block',
+                    },
+                    {
+                        requiredRole: AGENT_ROLE,
+                        to: 'rules',
+                        text: 'Rules',
+                        className: 'd-none d-md-block',
+                    },
+                    {
+                        requiredRole: AGENT_ROLE,
+                        to: 'macros',
+                        text: 'Macros',
                         className: 'd-none d-md-block',
                     },
                 ],

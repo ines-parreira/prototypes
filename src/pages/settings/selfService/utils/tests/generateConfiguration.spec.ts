@@ -13,6 +13,18 @@ describe('generateConfiguration()', () => {
             updated_datetime: expect.any(String),
             created_datetime: expect.any(String),
             deactivated_datetime: null,
+            report_issue_policy: {
+                enabled: true,
+            },
+            track_order_policy: {
+                enabled: true,
+            },
+            return_order_policy: {
+                enabled: true,
+            },
+            cancel_order_policy: {
+                enabled: true,
+            },
         })
     })
 })

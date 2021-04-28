@@ -1,0 +1,479 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate the report issue policy on the mystore3 store 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/self-service"
+            >
+              Self-service
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            mystore3
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <h4
+              class="preferencesTitle"
+            >
+              Preferences
+            </h4>
+            <p
+              class="preferencesDescription"
+              id="email-capture-help"
+            >
+              Choose preferences of the actions your customers will be able to take with the Self-service portal. Note that actions available for each
+              <span
+                id="orders-shipments"
+              >
+                <b>
+                   order’s shipments
+                </b>
+              </span>
+               
+              depend on their statuses.
+               
+              <a
+                href=""
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
+               
+              about all existing order shipment statuses & corresponding available actions.
+            </p>
+            <table
+              class="table"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <span
+                        class="policyName"
+                      >
+                        Track order
+                      </span>
+                      <span
+                        class="policyDescription"
+                      >
+                        Let customers track orders directly from the chat portal
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <span
+                        class="policyName"
+                      >
+                        Report issue
+                      </span>
+                      <span
+                        class="policyDescription"
+                      >
+                        Let customers report an issue with an order
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore3/preferences/returns"
+                    >
+                      <div
+                        class="policyRowInfo"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Returns
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers request returns directly from the chat portal
+                        </span>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore3/preferences/returns"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore3/preferences/cancellations"
+                    >
+                      <div
+                        class="policyRowInfo"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Cancellations
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers request order cancellations directly from the chat portal
+                        </span>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore3/preferences/cancellations"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows, 2 active and 2 inactive 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/self-service"
+            >
+              Self-service
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            mystore1
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <h4
+              class="preferencesTitle"
+            >
+              Preferences
+            </h4>
+            <p
+              class="preferencesDescription"
+              id="email-capture-help"
+            >
+              Choose preferences of the actions your customers will be able to take with the Self-service portal. Note that actions available for each
+              <span
+                id="orders-shipments"
+              >
+                <b>
+                   order’s shipments
+                </b>
+              </span>
+               
+              depend on their statuses.
+               
+              <a
+                href=""
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
+               
+              about all existing order shipment statuses & corresponding available actions.
+            </p>
+            <table
+              class="table"
+            >
+              <tbody>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <span
+                        class="policyName"
+                      >
+                        Track order
+                      </span>
+                      <span
+                        class="policyDescription"
+                      >
+                        Let customers track orders directly from the chat portal
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <span
+                        class="policyName"
+                      >
+                        Report issue
+                      </span>
+                      <span
+                        class="policyDescription"
+                      >
+                        Let customers report an issue with an order
+                      </span>
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore1/preferences/returns"
+                    >
+                      <div
+                        class="policyRowInfo"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Returns
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers request returns directly from the chat portal
+                        </span>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore1/preferences/returns"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="policyTd"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore1/preferences/cancellations"
+                    >
+                      <div
+                        class="policyRowInfo"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Cancellations
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers request order cancellations directly from the chat portal
+                        </span>
+                      </div>
+                    </a>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <a
+                      to="/app/settings/self-service/shopify/mystore1/preferences/cancellations"
+                    >
+                      <i
+                        class="material-icons md-2 align-middle icon-go-forward"
+                      >
+                        keyboard_arrow_right
+                      </i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

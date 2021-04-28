@@ -3,6 +3,7 @@ import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {SelfServiceView} from '../SelfServiceView'
+import {ShopType} from '../../../../../state/self_service/types'
 
 jest.mock('../../../../common/components/ToggleButton', () => {
     return ({
@@ -39,11 +40,23 @@ const createShopifyIntegrationFixtures = (length: number) => {
 const createSelfServiceConfigurationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
         id: i + 1,
-        type: 'shopify',
+        type: 'shopify' as ShopType,
         shop_name: `mystore${i + 1}`,
         created_datetime: '2021-01-26T00:29:00Z',
         updated_datetime: '2021-01-26T00:29:30Z',
         deactivated_datetime: i % 2 === 0 ? null : '2021-01-26T00:30:00Z',
+        report_issue_policy: {
+            enabled: false,
+        },
+        track_order_policy: {
+            enabled: false,
+        },
+        cancel_order_policy: {
+            enabled: false,
+        },
+        return_order_policy: {
+            enabled: false,
+        },
     }))
 }
 
@@ -119,10 +132,22 @@ describe('<SelfServiceView/>', () => {
                 .toMatchInlineSnapshot(`
                 Array [
                   Object {
+                    "cancel_order_policy": Object {
+                      "enabled": false,
+                    },
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": "2021-01-26T00:30:00Z",
                     "id": 1,
+                    "report_issue_policy": Object {
+                      "enabled": false,
+                    },
+                    "return_order_policy": Object {
+                      "enabled": false,
+                    },
                     "shop_name": "mystore1",
+                    "track_order_policy": Object {
+                      "enabled": false,
+                    },
                     "type": "shopify",
                     "updated_datetime": "2021-01-26T00:29:30Z",
                   },
@@ -151,10 +176,22 @@ describe('<SelfServiceView/>', () => {
                 .toMatchInlineSnapshot(`
                 Array [
                   Object {
+                    "cancel_order_policy": Object {
+                      "enabled": false,
+                    },
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": null,
                     "id": 2,
+                    "report_issue_policy": Object {
+                      "enabled": false,
+                    },
+                    "return_order_policy": Object {
+                      "enabled": false,
+                    },
                     "shop_name": "mystore2",
+                    "track_order_policy": Object {
+                      "enabled": false,
+                    },
                     "type": "shopify",
                     "updated_datetime": "2021-01-26T00:29:30Z",
                   },

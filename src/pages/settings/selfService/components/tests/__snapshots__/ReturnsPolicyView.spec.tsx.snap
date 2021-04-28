@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/self-service"
+            >
+              Self-service
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/self-service/shopify/myStore1/preferences"
+            >
+              myStore1
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Returns
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <h4
+              class="returnsPolicyTitle"
+            >
+              Returns
+            </h4>
+            <p>
+              Let customers request returns directly from the chat portal. Returns can only be initiated if the order has been delivered.
+            </p>
+            <br />
+            <h5
+              class="eligibilityWindowTitle"
+            >
+              Eligibility window
+            </h5>
+            <p
+              class="eligibilityWindowDescription"
+            >
+              Timeframe through which customers will be able to initiate a return.
+            </p>
+            <form
+              class=""
+            >
+              <div
+                class="eligibilityWindowContainer"
+              >
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="returnConditionSelectField"
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          Order created
+                        </span>
+                        <input
+                          autocomplete="chrome-off"
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Order delivered
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style="font-weight: bold;"
+                >
+                  less than
+                </div>
+                <input
+                  class="returnConditionInput form-control"
+                  min="1"
+                  type="number"
+                  value="15"
+                />
+                <div
+                  style="font-weight: bold;"
+                >
+                  day(s) ago
+                </div>
+              </div>
+              <button
+                class="mr-2 btn btn-success"
+                type="submit"
+              >
+                Save changes
+              </button>
+              <button
+                class="btn btn-secondary disabled"
+                disabled=""
+                type="button"
+              >
+                Cancel
+              </button>
+            </form>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,13 +1,16 @@
+import {CombinedState} from 'redux'
+
 import {
     getSelfServiceState,
     getSelfServiceConfigurations,
     getLoading,
-} from '../selectors.ts'
-import {selfServiceState} from '../../../fixtures/self_service_configurations.ts'
+} from '../selectors'
+import {selfServiceState} from '../../../fixtures/self_service_configurations'
+import {StoreState} from '../../types'
 
 const state = {
     selfService: selfServiceState,
-}
+} as CombinedState<StoreState>
 
 describe('self-service selectors', () => {
     it('should get the self-service state', () => {

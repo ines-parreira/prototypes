@@ -54,7 +54,7 @@ export const SelfServiceView = ({
 
     return (
         <div className="full-width">
-            <PageHeader title="Self-Service" />
+            <PageHeader title="Self-service" />
 
             <Container fluid className="page-container">
                 <Row>
@@ -65,12 +65,12 @@ export const SelfServiceView = ({
                                 same 20 types of issues.
                             </p>
                             <p>
-                                Self-Service enables your customers to browse
+                                Self-service enables your customers to browse
                                 their orders and select the type of issue they
                                 are having. It will then create a chat ticket
                                 for your team to handle.
                             </p>
-                            <h5>Enable Self-Service</h5>
+                            <h5>Enable Self-service</h5>
                             {shopifyIntegrations.size === 0 ? (
                                 <Alert color="warning">
                                     No active Shopify store detected. Please
@@ -80,7 +80,7 @@ export const SelfServiceView = ({
                             ) : (
                                 <>
                                     <p>
-                                        Self-Service is only available to stores
+                                        Self-service is only available to stores
                                         that have a Shopify store integration.
                                     </p>
                                     <Table>
@@ -123,7 +123,7 @@ export const SelfServiceView = ({
                             src={selfServiceMock}
                             width="442"
                             height="689"
-                            alt="Self-Service example"
+                            alt="Self-service example"
                         />
                     </Col>
                 </Row>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GorgiasChatIntegrationSelfService/> render() should render the 1 feature enabled and 1 disabled 1`] = `
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the product update message 1`] = `
 <div
   class="full-width"
 >
@@ -96,232 +96,46 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the 1 featu
     class="page-container container-fluid"
   >
     <div
-      class="row"
+      class="alert alert-warning fade"
+      role="alert"
     >
-      <div
-        class="col"
+      <span
+        aria-label="warning"
+        role="img"
       >
-        <div
-          class="mb-4"
-        >
-          <h4>
-            Self-service
-          </h4>
-          <p>
-            Most e-commerce support requests are about the same 20 types of issues.
-            <br />
-            <br />
-            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
-          </p>
-        </div>
-        <h5>
-          Enable Self-service
-        </h5>
-        <p>
-          Self-service is only available for Shopify stores with an active chat integration. If you installed the chat widget manually, please refer to
-           
-          <a
-            href="https://docs.gorgias.com/article/48muw8we2j-installing-and-using-the-self-service-chat-portal"
-          >
-            this documentation
-          </a>
-           
-          for the extra steps required to enable the Self-service feature.
-        </p>
-        <table
-          class="table-integrations mt-3 table table-hover"
-        >
-          <tbody>
-            <tr>
-              <td
-                class="pl-0"
-              >
-                <div>
-                  <b>
-                    myshop1
-                  </b>
-                </div>
-              </td>
-              <td
-                class="smallest align-middle"
-              >
-                <div
-                  data-testid="toggle-button"
-                >
-                  ToggleButtonMock value=true
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td
-                class="pl-0"
-              >
-                <div>
-                  <b>
-                    myshop2
-                  </b>
-                </div>
-              </td>
-              <td
-                class="smallest align-middle"
-              >
-                <div
-                  data-testid="toggle-button"
-                >
-                  ToggleButtonMock value=false
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        class="col"
+        ⚠️
+      </span>
+       
+      Product Update: the Self-service features have moved to
+       
+      <a
+        to="/app/settings/self-service"
       >
-        <img
-          alt="Self-service Mock"
-          height="689"
-          src="test-file-stub"
-          width="442"
-        />
-      </div>
+        a new settings page
+      </a>
     </div>
-  </div>
-</div>
-`;
-
-exports[`<GorgiasChatIntegrationSelfService/> render() should render the default message when there is no shopify integration - %# 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/gorgias_chat"
-          >
-            Chat
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          my chat integration
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Self-service
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <nav
-    class="navbar navbar"
-  >
+    We're moving the Self-service settings outside of the chat integrations' settings page for better visibility and clarity. Access the Self-service settings by clicking the "Self-service" menu item in the settings sidebar. Self-service features will be specific to each connected Shopify store and available in different channels.
+    <br />
+    <br />
+    Read more about it
+     
     <a
-      activeclassname="disabled"
-      class="nav-link"
-      to="/app/settings/integrations/gorgias_chat/7/appearance"
+      href="https://docs.gorgias.com/self-service/installing-and-using-the-self-service-chat-portal"
+      rel="noopener noreferrer"
+      target="_blank"
     >
-      Appearance
+      here
     </a>
-    <a
-      activeclassname="disabled"
-      class="nav-link"
-      to="/app/settings/integrations/gorgias_chat/7/installation"
+     
+    and don't hesitate to reach-out for questions.
+    <br />
+    <br />
+    <button
+      class="btn btn-success"
+      type="button"
     >
-      Installation
-    </a>
-    <a
-      activeclassname="disabled"
-      class="nav-link"
-      to="/app/settings/integrations/gorgias_chat/7/preferences"
-    >
-      Preferences
-    </a>
-    <a
-      activeclassname="disabled"
-      class="nav-link"
-      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
-    >
-      Quick replies
-    </a>
-    <a
-      activeclassname="disabled"
-      class="nav-link"
-      to="/app/settings/integrations/gorgias_chat/7/campaigns"
-    >
-      Campaigns
-    </a>
-    <a
-      activeclassname="disabled"
-      class="nav-link"
-      to="/app/settings/integrations/gorgias_chat/7/self_service"
-    >
-      Self-service
-    </a>
-  </nav>
-  <div
-    class="page-container container-fluid"
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="col"
-      >
-        <div
-          class="mb-4"
-        >
-          <h4>
-            Self-service
-          </h4>
-          <p>
-            Most e-commerce support requests are about the same 20 types of issues.
-            <br />
-            <br />
-            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
-          </p>
-        </div>
-        <div
-          class="alert alert-warning fade"
-          role="alert"
-        >
-          No active Shopify store detected. Please make sure to add a Shopify integration to access the Self-service features.
-        </div>
-      </div>
-      <div
-        class="col"
-      >
-        <img
-          alt="Self-service Mock"
-          height="689"
-          src="test-file-stub"
-          width="442"
-        />
-      </div>
-    </div>
+      Go to the new Self-service page
+    </button>
   </div>
 </div>
 `;
