@@ -1,7 +1,12 @@
-import React, {CSSProperties, Component, KeyboardEvent} from 'react'
+import React, {
+    CSSProperties,
+    Component,
+    KeyboardEvent,
+    InputHTMLAttributes,
+} from 'react'
 import ReactDOM from 'react-dom'
 import classnames from 'classnames'
-import {Input} from 'reactstrap'
+import {Input, InputProps} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
@@ -24,7 +29,7 @@ type Props = {
     // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
     location?: string
     style: CSSProperties
-}
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'>
 
 export default class Search extends Component<Props> {
     private isInitialized: boolean
@@ -138,6 +143,7 @@ export default class Search extends Component<Props> {
             bindKey, // eslint-disable-line
             searchDebounceTime, // eslint-disable-line
             location, // eslint-disable-line
+            type,
             ...rest
         } = this.props
 
@@ -151,7 +157,7 @@ export default class Search extends Component<Props> {
                 </i>
                 <Input
                     ref={(ref) => (this.searchInputRef = ref)}
-                    type="text"
+                    type={(type || 'text') as InputProps['type']}
                     className={css.input}
                     value={this.state.search}
                     onChange={(e) => this._handleChange(e.target.value)}

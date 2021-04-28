@@ -1,10 +1,8 @@
-// @flow
-
-import {type Map} from 'immutable'
+import {Map} from 'immutable'
 import _isObject from 'lodash/isObject'
 import _isFunction from 'lodash/isFunction'
 
-export function infobarWidgetShouldRender(source: Map<*, *>): boolean {
+export function infobarWidgetShouldRender(source: Map<any, any>): boolean {
     // prevent buggy display if source...
     // ... is empty
     if (!source) {
@@ -17,6 +15,7 @@ export function infobarWidgetShouldRender(source: Map<*, *>): boolean {
     }
 
     // ... is not immutable
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     if (!source.isEmpty || (source.isEmpty && !_isFunction(source.isEmpty))) {
         return false
     }

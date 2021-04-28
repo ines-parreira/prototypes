@@ -28,7 +28,7 @@ import shopify from './widgets/shopify'
 import smile from './widgets/smile'
 import smoochInside from './widgets/smoochInside'
 import yotpo from './widgets/yotpo'
-import {infobarWidgetShouldRender} from './predicates'
+import {infobarWidgetShouldRender} from './predicates.ts'
 
 export default class InfobarWidget extends React.Component {
     static propTypes = {

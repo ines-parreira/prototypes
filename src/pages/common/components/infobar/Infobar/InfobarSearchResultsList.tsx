@@ -1,18 +1,17 @@
-// @flow
 import React from 'react'
-import {type List, type Map} from 'immutable'
+import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle, Badge} from 'reactstrap'
 
-import {getDisplayName} from '../../../../../state/customers/helpers.ts'
+import {getDisplayName} from '../../../../../state/customers/helpers'
 
 import css from '../Infobar.less'
 
-export type Props = {
-    errorMessage: ?string,
-    searchResults: List<*>,
-    defaultCustomerId: ?number,
-    onCustomerClick: (Map<*, *>) => Promise<void>,
+type Props = {
+    errorMessage: Maybe<string>
+    searchResults: List<Map<any, any>>
+    defaultCustomerId: Maybe<number>
+    onCustomerClick: (map: Map<any, any>) => Promise<void>
 }
 
 export default class InfobarSearchResultsList extends React.Component<Props> {
@@ -40,7 +39,7 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
                 <div className="mt-3">
                     {searchResults.map((customer, idx) => {
                         const isDefaultCustomer =
-                            customer.get('id') === defaultCustomerId
+                            customer!.get('id') === defaultCustomerId
                         const className = classnames('clickable mb-2', {
                             'current-customer': isDefaultCustomer,
                         })
@@ -49,7 +48,7 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
                             <Card
                                 className={className}
                                 key={idx}
-                                onClick={() => onCustomerClick(customer)}
+                                onClick={() => onCustomerClick(customer!)}
                             >
                                 <CardBody>
                                     {
@@ -59,7 +58,7 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
                                                 'd-block mb-1 text-truncate'
                                             )}
                                         >
-                                            {getDisplayName(customer)}
+                                            {getDisplayName(customer!)}
                                             {isDefaultCustomer && (
                                                 <Badge
                                                     color="info"
@@ -70,14 +69,14 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
                                             )}
                                         </span>
                                     }
-                                    {customer.get('email') && (
+                                    {customer!.get('email') && (
                                         <div
                                             className={classnames(
                                                 css.detail,
                                                 'd-block text-truncate'
                                             )}
                                         >
-                                            {customer.get('email')}
+                                            {customer!.get('email')}
                                         </div>
                                     )}
                                 </CardBody>

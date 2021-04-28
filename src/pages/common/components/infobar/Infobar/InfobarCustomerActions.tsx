@@ -1,19 +1,18 @@
-// @flow
 import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {Button} from 'reactstrap'
 
-import {isCurrentlyOnTicket} from '../../../../../utils.ts'
-import ConfirmButton from '../../ConfirmButton.tsx'
+import {isCurrentlyOnTicket} from '../../../../../utils'
+import ConfirmButton from '../../ConfirmButton'
 
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
 
 type Props = {
-    customer: Map<*, *>,
-    sources: Map<*, *>,
-    selectedCustomer: Map<*, *>,
-    toggleMergeCustomerModal: (boolean) => void,
-    setCustomer: () => void,
+    customer: Map<any, any>
+    sources: Map<any, any>
+    selectedCustomer: Map<any, any>
+    toggleMergeCustomerModal: (toggle: boolean) => void
+    setCustomer: () => void
 }
 
 export default class InfobarCustomerActions extends React.Component<Props> {
@@ -27,11 +26,11 @@ export default class InfobarCustomerActions extends React.Component<Props> {
         } = this.props
 
         const ticketId = sources.getIn(['ticket', 'id'])
-        const customerName = sources.getIn(['ticket', 'customer', 'name']) || ''
-        const hasCustomer = !(
-            sources.getIn(['ticket', 'customer']) || fromJS({})
-        ).isEmpty()
-        const newCustomer = selectedCustomer.get('name') || ''
+        const customerName: string =
+            sources.getIn(['ticket', 'customer', 'name']) || ''
+        const hasCustomer = !((sources.getIn(['ticket', 'customer']) ||
+            fromJS({})) as Map<any, any>).isEmpty()
+        const newCustomer: string = selectedCustomer.get('name') || ''
         const hasDestinationCustomer = !customer.isEmpty()
 
         const isDifferentCustomer =
@@ -64,7 +63,7 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                             toggleMergeCustomerModal(true)
                             // TODO(customers-migration): ask confirmation to update this event
                             segmentTracker.logEvent(
-                                segmentTracker.EVENTS.USER_MERGE_CLICK,
+                                segmentTracker.EVENTS.USER_MERGE_CLICKED,
                                 {
                                     location: 'user searched in infobar',
                                 }

@@ -1,22 +1,20 @@
-// @flow
-
 import React from 'react'
-import {type List} from 'immutable'
+import {List, Map} from 'immutable'
 import {Nav, Navbar, NavItem, NavLink} from 'reactstrap'
 
-import {getWidgetLabel} from '../../../../../../../state/widgets/predicates.ts'
+import {getWidgetLabel} from '../../../../../../../state/widgets/predicates'
 
 import css from './InfobarTabs.less'
 
 type Props = {
-    preparedDisplayList: List<*>,
+    preparedDisplayList: List<Map<any, any>>
 }
 
 export function InfobarTabs({preparedDisplayList}: Props) {
-    const types = preparedDisplayList.map((item) =>
-        item.getIn(['widget', 'type'])
+    const types = preparedDisplayList.map(
+        (item) => item!.getIn(['widget', 'type']) as string
     )
-    const tabs = new Set(types)
+    const tabs: Set<string> = new Set(types as any)
 
     if (tabs.size < 2) {
         return null

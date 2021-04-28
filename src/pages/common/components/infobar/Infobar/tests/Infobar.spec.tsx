@@ -1,29 +1,33 @@
-//@flow
-import React, {type ElementProps} from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import {renderWithRouter} from '../../../../../../utils/testing.tsx'
+import {renderWithRouter} from '../../../../../../utils/testing'
 import {
     FETCH_PREVIEW_CUSTOMER_ERROR,
     FETCH_PREVIEW_CUSTOMER_SUCCESS,
-} from '../../../../../../state/infobar/constants'
-import Search from '../../../Search.tsx'
-import InfobarLayout from '../../InfobarLayout'
-import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo.tsx'
+} from '../../../../../../state/infobar/constants.js'
+import Search from '../../../Search'
+import InfobarLayout from '../../InfobarLayout.js'
+import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import {Infobar} from '../Infobar'
+import {WidgetContextType} from '../../../../../../state/widgets/types'
 
 jest.mock(
     '../../../Search.tsx',
-    () => ({onChange, ...other}: ElementProps<typeof Search>) => (
-        <input data-testid="Search" {...other} onChange={onChange} />
+    () => ({onChange, ...other}: ComponentProps<typeof Search>) => (
+        <input
+            data-testid="Search"
+            {...other}
+            onChange={(e) => onChange(e.target.value)}
+        />
     )
 )
 
 jest.mock(
     '../InfobarCustomerInfo/InfobarCustomerInfo.tsx',
-    () => ({customer}: ElementProps<typeof InfobarCustomerInfo>) => (
+    () => ({customer}: ComponentProps<typeof InfobarCustomerInfo>) => (
         <div data-testid="InfobarCustomerInfo">
             InfobarCustomerInfo<div>customer: {JSON.stringify(customer)}</div>
         </div>
@@ -32,7 +36,7 @@ jest.mock(
 
 jest.mock(
     '../../InfobarLayout',
-    () => ({children}: ElementProps<typeof InfobarLayout>) => (
+    () => ({children}: ComponentProps<typeof InfobarLayout>) => (
         <div data-testid="InfobarLayout">{children}</div>
     )
 )
@@ -50,10 +54,12 @@ jest.mock(
         defaultCustomerId,
         onCustomerClick,
         searchResults,
-    }: ElementProps<typeof InfobarSearchResultsList>) => (
+    }: ComponentProps<typeof InfobarSearchResultsList>) => (
         <div
             data-testid="InfobarSearchResultsList"
-            onClick={() => onCustomerClick(mockCustomer)}
+            onClick={() => {
+                void onCustomerClick(mockCustomer)
+            }}
         >
             <div>errorMessage: {errorMessage}</div>
             <div>defaultCustomerId: {defaultCustomerId}</div>
@@ -62,7 +68,7 @@ jest.mock(
     )
 )
 
-const commonProps = {
+const commonProps = ({
     actions: {
         fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
         widgets: {
@@ -115,7 +121,7 @@ const commonProps = {
             hasFetchedWidgets: true,
         },
     }),
-}
+} as unknown) as ComponentProps<typeof Infobar>
 
 describe('<Infobar/>', () => {
     beforeEach(() => {
@@ -130,7 +136,7 @@ describe('<Infobar/>', () => {
 
     it('should render customer context', () => {
         const {container} = renderWithRouter(
-            <Infobar {...commonProps} context="customer" />
+            <Infobar {...commonProps} context={WidgetContextType.Customer} />
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -260,12 +266,12 @@ describe('<Infobar/>', () => {
     })
 
     describe('onSearchResultClick()', () => {
-        let customer: Map
+        let customer: Map<any, any>
         let customerId = 5
 
         beforeEach(() => {
             customerId = 5
-            customer = new Map()
+            customer = fromJS({})
             customer.set('id', customerId)
         })
 

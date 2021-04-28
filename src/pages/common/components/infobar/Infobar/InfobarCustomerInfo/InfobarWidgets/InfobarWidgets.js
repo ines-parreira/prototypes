@@ -13,9 +13,9 @@ import * as integrationsSelectors from '../../../../../../../state/integrations/
 
 import InfobarWidget from './InfobarWidget'
 import PlaceholderWidget from './widgets/PlaceholderWidget.tsx'
-import {infobarWidgetShouldRender} from './predicates'
+import {infobarWidgetShouldRender} from './predicates.ts'
 import css from './InfobarWidgets.less'
-import {InfobarTabs} from './InfobarTabs'
+import {InfobarTabs} from './InfobarTabs.tsx'
 
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {

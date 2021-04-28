@@ -37,7 +37,9 @@ import {CustomerContext} from '../../InfobarCustomerInfo'
 import css from './ActionButton.less'
 import {InfobarModalProps, Option, Parameter} from './types'
 
-export const ActionButtonContext = React.createContext({
+export const ActionButtonContext = React.createContext<{
+    actionError: string | null
+}>({
     actionError: null,
 })
 

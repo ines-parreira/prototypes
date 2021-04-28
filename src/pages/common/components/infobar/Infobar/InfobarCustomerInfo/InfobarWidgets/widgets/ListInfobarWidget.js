@@ -5,7 +5,7 @@ import {List} from 'immutable'
 
 import {compare} from '../../../../../../../../utils.ts'
 import InfobarWidget from '../InfobarWidget'
-import {ShowMore} from '../../ShowMore'
+import {ShowMore} from '../../ShowMore.tsx'
 
 import css from './ListInfobarWidget.less'
 

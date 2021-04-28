@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import InfobarWidgetsEditionTools from '../InfobarWidgetsEditionTools'
+import InfobarWidgetsEditionTools from '../InfobarWidgetsEditionTools.tsx'
 
 const commonProps = {
     widgets: fromJS({

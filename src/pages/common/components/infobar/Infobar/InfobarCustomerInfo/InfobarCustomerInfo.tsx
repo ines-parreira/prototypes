@@ -19,7 +19,7 @@ import {areSourcesReady, canDrop, jsonToWidgets} from '../../utils.js'
 import CustomerChannels from './CustomerChannels.js'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets.js'
-import AddIntegrationSuggestion from './AddIntegrationSuggestion.js'
+import AddIntegrationSuggestion from './AddIntegrationSuggestion'
 
 interface ICustomerContext {
     customerId: number | null
@@ -71,7 +71,7 @@ type OwnProps = {
         generateAndSetWidgets: (sources: Map<any, any>, context: string) => void
     }
     customer: Map<any, any>
-    displayTabs: boolean
+    displayTabs?: boolean
     hasIntegrations: boolean
     isEditing: boolean
     sources: Map<any, any>

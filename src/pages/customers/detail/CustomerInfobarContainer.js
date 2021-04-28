@@ -1,3 +1,5 @@
+//@flow
+//$FlowFixMe
 import React, {useEffect} from 'react'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -33,7 +35,6 @@ export const CustomerInfobarContainer = ({
     actions,
     activeCustomer,
     activeCustomerId,
-    infobar,
     isEditingWidgets,
     sources,
     widgets,
@@ -52,7 +53,6 @@ export const CustomerInfobarContainer = ({
     return (
         <Infobar
             actions={actions}
-            infobar={infobar}
             sources={sources}
             isRouteEditingWidgets={!!isEditingWidgets}
             identifier={identifier}
@@ -65,7 +65,6 @@ export const CustomerInfobarContainer = ({
 
 const connector = connect(
     (state) => ({
-        infobar: state.infobar,
         widgets: state.widgets,
         activeCustomer: getActiveCustomer(state),
         activeCustomerId: getActiveCustomerId(state),

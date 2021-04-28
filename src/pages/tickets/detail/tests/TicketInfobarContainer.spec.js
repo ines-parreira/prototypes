@@ -30,7 +30,6 @@ describe('TicketInfobarContainer component', () => {
             },
             fetchPreviewCustomer: jest.fn(),
         },
-        infobar: fromJS({}),
         ticket: fromJS({}),
         widgets: fromJS({}),
         match: {

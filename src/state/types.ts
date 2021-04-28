@@ -173,5 +173,10 @@ export type CurrentUser = Map<any, any>
 export type CurrentAccount = Map<any, any>
 
 export type StoreDispatch = ThunkDispatch<StoreState, undefined, Action>
+export type ConnectedAction<
+    T extends (
+        ...args: any
+    ) => (dispatch: StoreDispatch, getState: () => RootState) => any
+> = (...args: ArgumentsOf<T>) => ReturnType<ReturnType<T>>
 
 export type RootState = ReturnType<typeof rootReducer>

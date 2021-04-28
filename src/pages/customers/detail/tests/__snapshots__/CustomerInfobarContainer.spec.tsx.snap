@@ -12,10 +12,6 @@ exports[`<CustomerInfobarContainer /> should render infobar for active customer 
     {"widgets":{}}
   </div>
   <div>
-    infobar: 
-    {}
-  </div>
-  <div>
     sources: 
     {"ticket":{"customer":{}},"customer":{}}
   </div>

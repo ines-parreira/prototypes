@@ -3,13 +3,12 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
 import {CustomerInfobarContainer} from '../CustomerInfobarContainer.js'
-import {Infobar} from '../../../common/components/infobar/Infobar/Infobar.js'
+import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
 
 jest.mock(
     '../../../common/components/infobar/Infobar',
     () => ({
         actions,
-        infobar,
         sources,
         isRouteEditingWidgets,
         identifier,
@@ -20,7 +19,6 @@ jest.mock(
         <div>
             <div>Infobar</div>
             <div>actions: {JSON.stringify(actions)}</div>
-            <div>infobar: {JSON.stringify(infobar)}</div>
             <div>sources: {JSON.stringify(sources)}</div>
             <div>isRouteEditingWidgets: {isRouteEditingWidgets}</div>
             <div>identifier: {identifier}</div>
@@ -56,7 +54,6 @@ describe('<CustomerInfobarContainer />', () => {
         },
         activeCustomer: fromJS({name: 'Don Draper'}),
         activeCustomerId: 1,
-        infobar: fromJS({}),
         isEditingWidgets: false,
         sources: fromJS({
             ticket: fromJS({

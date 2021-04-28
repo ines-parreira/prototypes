@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {InfobarTabs} from '../InfobarTabs'
+import {InfobarTabs} from '../InfobarTabs.tsx'
 import {
     CUSTOM_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,

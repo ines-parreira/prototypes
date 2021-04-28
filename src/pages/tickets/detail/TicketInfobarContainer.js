@@ -1,16 +1,18 @@
+//@flow
+//$FlowFixMe
 import React, {useEffect, useMemo} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import {withRouter} from 'react-router-dom'
 
 import Infobar from '../../common/components/infobar/Infobar'
 
 import * as WidgetActions from '../../../state/widgets/actions.ts'
 import {fetchPreviewCustomer} from '../../../state/infobar/actions.ts'
-import {InfobarState} from '../../../state/infobar/types.ts'
+import {type InfobarState} from '../../../state/infobar/types.ts'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors.ts'
-import {WidgetsState} from '../../../state/widgets/types.ts'
+import {type WidgetsState} from '../../../state/widgets/types.ts'
 
 type Props = {
     actions: {
@@ -31,7 +33,6 @@ type Props = {
 
 export const TicketInfobarContainer = ({
     actions,
-    infobar,
     isEditingWidgets,
     match: {
         params: {ticketId},
@@ -53,7 +54,6 @@ export const TicketInfobarContainer = ({
     return (
         <Infobar
             actions={actions}
-            infobar={infobar}
             sources={sources}
             isRouteEditingWidgets={!!isEditingWidgets}
             identifier={ticket.get('id', ticketId || '').toString()}
@@ -66,7 +66,6 @@ export const TicketInfobarContainer = ({
 
 function mapStateToProps(state) {
     return {
-        infobar: state.infobar,
         ticket: state.ticket,
         widgets: state.widgets,
         sources: getSourcesWithCustomer(state),

@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react'
+import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
@@ -9,9 +7,9 @@ import expandDown from '../../../../../../../img/infobar/expand-down.svg'
 import css from './ShowMore.less'
 
 type Props = {
-    children: Node,
-    className?: string,
-    onClick: () => void,
+    children: ReactNode
+    className?: string
+    onClick: () => void
 }
 
 export function ShowMore({children, className, onClick}: Props) {

@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 
-import {infobarWidgetShouldRender} from '../predicates'
+import {infobarWidgetShouldRender} from '../predicates.ts'
 
 describe('infobarWidgetShouldRender()', () => {
     const invalidSources = [

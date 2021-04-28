@@ -1,14 +1,12 @@
-// @flow
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
-import type {Props} from '../InfobarSearchResultsList'
 
-const commonProps: Props = {
+const commonProps = {
     errorMessage: '',
-    searchResults: [],
+    searchResults: fromJS([]),
     defaultCustomerId: 1,
     onCustomerClick: jest.fn(),
 }
