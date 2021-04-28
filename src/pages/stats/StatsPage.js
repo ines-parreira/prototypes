@@ -1,15 +1,14 @@
-// @flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Link} from 'react-router-dom'
-import moment from 'moment-timezone'
-import {fromJS, type Map, type List} from 'immutable'
+import moment from 'moment'
+import {fromJS} from 'immutable'
 
 import {views, STORE_INTEGRATION_TYPES} from '../../config/stats.tsx'
 import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions.ts'
 import {getFilters} from '../../state/stats/selectors.ts'
-import {getTimezone} from '../../state/currentUser/selectors.ts'
+
 import {AccountFeatures} from '../../state/currentAccount/types.ts'
 
 import withPaywall from '../common/utils/withPaywall.tsx'
@@ -20,12 +19,11 @@ import StatsComponent from './StatsComponent.tsx'
 
 type Props = {
     match: Object,
-    config: ?Object,
-    globalFilters: Map<any, any>,
+    config: Object,
+    globalFilters: Map,
     setStatsFilters: typeof setStatsFilters,
     resetStatsFilters: typeof resetStatsFilters,
-    storeIntegrations: List<any>,
-    userTimezone: string,
+    storeIntegrations: Map[],
 }
 
 const SatisfactionSurveysStats = withPaywall(
@@ -37,18 +35,16 @@ const RevenueStats = withPaywall(AccountFeatures.RevenueStatistics)(
 )
 
 export class StatsPage extends Component<Props> {
-    constructor(props: Props) {
+    constructor(props) {
         super(props)
-        const currentDay = moment().tz(props.userTimezone)
         let defaultFilters = {
             period: {
                 // default period: last 7 days
-                start_datetime: currentDay
-                    .clone()
+                start_datetime: moment()
                     .startOf('day')
                     .subtract(6, 'days')
                     .format(),
-                end_datetime: currentDay.clone().endOf('day').format(),
+                end_datetime: moment().endOf('day').format(),
             },
         }
 
@@ -126,7 +122,6 @@ export class StatsPage extends Component<Props> {
 
 const mapStateToProps = (state) => {
     return {
-        userTimezone: getTimezone(state),
         globalFilters: getFilters(state),
         storeIntegrations: getIntegrations(state).filter((integration) => {
             return STORE_INTEGRATION_TYPES.includes(integration.get('type'))
