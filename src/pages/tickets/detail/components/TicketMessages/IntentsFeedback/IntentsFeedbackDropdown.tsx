@@ -1,10 +1,5 @@
 import React, {ReactNode, useState} from 'react'
-import {
-    ButtonDropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import classnames from 'classnames'
 
 import {TooltipWrapper} from './TooltipWrapper'
@@ -40,13 +35,12 @@ export const IntentsFeedbackDropdown = ({
     return (
         <div className={css.wrapper}>
             <div id={tooltipContainer} />
-            <ButtonDropdown
-                size="sm"
+            <Dropdown
                 toggle={() => toggle(!isOpen)}
                 isOpen={isOpen}
                 onMouseLeave={() => toggle(false)}
             >
-                <DropdownToggle className={css.toggleMenu}>
+                <DropdownToggle className={classnames(css.toggleMenu)}>
                     <span className={classnames('mr-1', css.menuLabel)}>
                         {label}
                     </span>
@@ -93,7 +87,7 @@ export const IntentsFeedbackDropdown = ({
                         {availableIntentsNames.map(renderAvailableIntent)}
                     </div>
                 </DropdownMenu>
-            </ButtonDropdown>
+            </Dropdown>
         </div>
     )
 }

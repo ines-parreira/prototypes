@@ -48,7 +48,7 @@ exports[`<IntentsFeedback /> First curation should display a confirmed icon on c
     id="intent-tooltip-1"
   />
   <div
-    class="btn-group btn-group-sm"
+    class="dropdown"
   >
     <button
       aria-expanded="false"
@@ -292,7 +292,7 @@ exports[`<IntentsFeedback /> First curation should render active and available i
     id="intent-tooltip-1"
   />
   <div
-    class="btn-group btn-group-sm"
+    class="dropdown"
   >
     <button
       aria-expanded="false"
@@ -536,7 +536,7 @@ exports[`<IntentsFeedback /> Further curation should add an intent on click add 
       id="intent-tooltip-1"
     />
     <div
-      class="btn-group btn-group-sm"
+      class="dropdown"
     >
       <button
         aria-expanded="false"
@@ -778,7 +778,7 @@ exports[`<IntentsFeedback /> Further curation should remove an intent on click r
       id="intent-tooltip-1"
     />
     <div
-      class="btn-group btn-group-sm"
+      class="dropdown"
     >
       <button
         aria-expanded="false"
@@ -1007,7 +1007,7 @@ exports[`<IntentsFeedback /> Further curation should render active and available
     id="intent-tooltip-1"
   />
   <div
-    class="btn-group btn-group-sm"
+    class="dropdown"
   >
     <button
       aria-expanded="false"

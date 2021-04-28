@@ -5,8 +5,6 @@ import {connect} from 'react-redux'
 
 import * as infobarActions from '../../../../../state/infobar/actions.ts'
 import type {Actor, Meta, Source} from '../../../../../models/ticket/types'
-import hideIcon from '../../../../../../img/integrations/facebook-action-hide.svg'
-import unhideIcon from '../../../../../../img/integrations/facebook-action-unhide.svg'
 
 import {
     FACEBOOK_COMMENT_SOURCE,
@@ -92,19 +90,12 @@ export class SourceActionsHeader extends React.Component<Props> {
         // So we don't even display the `hide` button to avoid frustration.
         if ((isInstagramComment || isFacebookComment) && !fromAgent) {
             let hiddenDatetime = null
-            let actionIcon = hideIcon
-            let actionText = 'Hide'
 
             if (meta && meta.hidden_datetime) {
                 hiddenDatetime = meta.hidden_datetime
             }
 
             const shouldHide = !hiddenDatetime
-
-            if (!shouldHide) {
-                actionIcon = unhideIcon
-                actionText = 'Unhide'
-            }
 
             if (
                 (isInstagramComment &&
@@ -114,42 +105,54 @@ export class SourceActionsHeader extends React.Component<Props> {
                 isFacebookComment
             ) {
                 widgets.push(
-                    <span
+                    <PrivateReplyButton
                         key="private_reply-action"
+                        integrationId={integrationId}
+                        messageId={messageId}
+                        ticketMessageId={ticketMessageId}
+                        senderId={senderId}
+                        ticketId={ticketId}
+                        facebookComment={bodyText}
+                        source={source}
+                        sender={sender}
+                        meta={meta}
+                        messageCreatedDatetime={messageCreatedDatetime}
+                        executeAction={this.props.executeAction}
+                        isFacebookComment={isFacebookComment}
                         className={classNames(
                             'hidden-sm-down',
-                            css.actionButton
+                            css.actionButton,
+                            css.replyButton
                         )}
-                    >
-                        <PrivateReplyButton
-                            integrationId={integrationId}
-                            messageId={messageId}
-                            ticketMessageId={ticketMessageId}
-                            senderId={senderId}
-                            ticketId={ticketId}
-                            facebookComment={bodyText}
-                            source={source}
-                            sender={sender}
-                            meta={meta}
-                            messageCreatedDatetime={messageCreatedDatetime}
-                            executeAction={this.props.executeAction}
-                            isFacebookComment={isFacebookComment}
-                        />
-                    </span>
+                    />
                 )
             }
 
             widgets.push(
                 <span
                     key="hide-action"
-                    className={classNames('hidden-sm-down', css.actionButton)}
+                    className={classNames(
+                        'btn',
+                        'btn-secondary',
+                        'hidden-sm-down',
+                        css.visibilityButton,
+                        css.actionButton
+                    )}
                     onClick={() =>
                         isInstagramComment
                             ? this._toggleInstagramHideComment(shouldHide)
                             : this._toggleFacebookHideComment(shouldHide)
                     }
                 >
-                    <img src={actionIcon} title={actionText} alt={actionText} />
+                    {shouldHide ? (
+                        <i className="material-icons md-36" title="Hide">
+                            visibility_off
+                        </i>
+                    ) : (
+                        <i className="material-icons md-36" title="Unhide">
+                            visibility
+                        </i>
+                    )}
                 </span>
             )
         }

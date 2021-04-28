@@ -8,7 +8,7 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
     id="intent-tooltip-1"
   />
   <div
-    class="btn-group btn-group-sm"
+    class="dropdown"
   >
     <button
       aria-expanded="false"
@@ -86,7 +86,7 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
     id="intent-tooltip-1"
   />
   <div
-    class="btn-group btn-group-sm"
+    class="dropdown"
   >
     <button
       aria-expanded="false"

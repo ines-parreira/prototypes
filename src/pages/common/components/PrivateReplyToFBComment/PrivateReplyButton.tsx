@@ -4,6 +4,8 @@ import {Button, UncontrolledTooltip} from 'reactstrap'
 
 import moment from 'moment'
 
+import classnames from 'classnames'
+
 import messengerIcon from '../../../../../img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from '../../../../../img/integrations/Instagram-direct-message-blue.svg'
 import type {Actor, Meta, Source} from '../../../../models/ticket/types'
@@ -26,6 +28,7 @@ type Props = {
     meta?: Meta
     messageCreatedDatetime: string
     isFacebookComment: boolean
+    className?: string
     executeAction: typeof infobarActions.executeAction
 }
 
@@ -42,6 +45,7 @@ export default function PrivateReplyButton({
     messageCreatedDatetime,
     isFacebookComment,
     executeAction,
+    className,
 }: Props) {
     const [isOpen, setOpen] = useState(false)
     const toggle = () => setOpen(!isOpen)
@@ -65,7 +69,7 @@ export default function PrivateReplyButton({
     return (
         <>
             <Button
-                className={css.container}
+                className={classnames(css.container, className)}
                 onClick={toggle}
                 disabled={isAlreadySent || isMessageTooOld}
                 id={`private-reply-button-${ticketMessageId}`}

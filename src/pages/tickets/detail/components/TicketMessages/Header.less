@@ -2,12 +2,14 @@
 
 :local .header {
   display: flex;
+  align-items: center;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   overflow: visible;
   padding-bottom: .5em;
   transition: padding .16s ease-out;
+  line-height: 26px;
 
   &.hasError div {
     color: @lightPurple2;
@@ -26,7 +28,6 @@
 
   .author {
     margin-right: .8em;
-    line-height: 1em;
     font-weight: bold;
     flex-shrink: 0;
   }
