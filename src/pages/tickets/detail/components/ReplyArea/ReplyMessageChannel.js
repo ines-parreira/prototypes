@@ -17,7 +17,7 @@ import {getMessages} from '../../../../../state/ticket/selectors.ts'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts.tsx'
 import SourceIcon from '../../../../common/components/SourceIcon.tsx'
-
+import {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
 import {
     API_SOURCE,
     CHAT_SOURCE,
@@ -40,6 +40,11 @@ import {
 import MessageSourceFields from './MessageSourceFields/'
 
 import css from './ReplyMessageChannel.less'
+
+const changeReceiversAllowedSourceTypes = [
+    TicketMessageSourceType.Email,
+    TicketMessageSourceType.Phone,
+]
 
 export class ReplyMessageChannelContainer extends React.Component {
     static propTypes = {
@@ -93,7 +98,7 @@ export class ReplyMessageChannelContainer extends React.Component {
     }
 
     _canChangeReceivers = () => {
-        return this.props.sourceType === 'email'
+        return changeReceiversAllowedSourceTypes.includes(this.props.sourceType)
     }
 
     /**
@@ -221,6 +226,9 @@ export class ReplyMessageChannelContainer extends React.Component {
             isTicketExisting && !!replyOptions.get('instagram-direct-message')
         const suggestInstagramMention =
             isTicketExisting && !!replyOptions.get('instagram-mention-comment')
+        const suggestPhone =
+            isTicketExisting &&
+            !!replyOptions.get(TicketMessageSourceType.Phone)
         const suggestForwardByEmail = isTicketExisting
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
 
@@ -386,6 +394,21 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 >
                                     <SourceIcon type={INTERNAL_NOTE_SOURCE} />
                                     Leave an internal note
+                                </DropdownItem>
+                            )}
+                            {suggestPhone && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.Phone
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={TicketMessageSourceType.Phone}
+                                    />
+                                    Make outbound call
                                 </DropdownItem>
                             )}
                         </DropdownMenu>

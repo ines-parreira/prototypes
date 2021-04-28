@@ -254,6 +254,19 @@ export const getEmailIntegrations = createSelector<
         ) as List<any>
 )
 
+export const getPhoneIntegrations = createSelector<
+    RootState,
+    List<any>,
+    List<any>
+>(
+    getIntegrations,
+    (state) =>
+        state.filter(
+            (integration: Map<any, any>) =>
+                integration.get('type') === IntegrationType.PhoneIntegrationType
+        ) as List<any>
+)
+
 export const getBaseEmailIntegration = createSelector<
     RootState,
     Map<any, any>,
@@ -269,7 +282,7 @@ export const getBaseEmailIntegration = createSelector<
 )
 
 // return email and gmail integrations formatted as channel
-export const getChannels = createSelector<
+export const getEmailChannels = createSelector<
     RootState,
     List<any>,
     Map<any, any>,
@@ -312,10 +325,38 @@ export const getChannels = createSelector<
         }) as List<any>
     }
 )
+// return phone integrations formatted as channel
+export const getPhoneChannels = createSelector<
+    RootState,
+    List<any>,
+    Map<any, any>,
+    Map<any, any>,
+    List<any>
+>(
+    (state: RootState) => state.ticket || fromJS({}),
+    getCurrentUserState,
+    getPhoneIntegrations,
+    (currentTicket, currentUser, integrations) => {
+        return integrations.map(
+            (integration: Map<any, any>) =>
+                fromJS({
+                    id: integration.get('id'),
+                    type: integration.get('type'),
+                    name: integration.get('name'),
+                    address: integration.getIn([
+                        'meta',
+                        'twilio',
+                        'incoming_phone_number',
+                        'phone_number',
+                    ]),
+                }) as Map<any, any>
+        ) as List<any>
+    }
+)
 
 export const getChannelsByType = (type: string) =>
     createSelector<RootState, List<any>, List<any>>(
-        getChannels,
+        getEmailChannels,
         (state) =>
             state.filter(
                 (integration: Map<any, any>) => integration.get('type') === type
@@ -327,7 +368,7 @@ export const getChannelByTypeAndAddress = (
     address: string
 ) =>
     createSelector<RootState, Map<any, any>, List<any>>(
-        getChannels,
+        getEmailChannels,
         (channels) =>
             (channels
                 .filter(

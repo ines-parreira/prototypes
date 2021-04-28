@@ -1,5 +1,7 @@
 import {fromJS, Map} from 'immutable'
 
+import {IntegrationType} from '../models/integration/types'
+
 export const integrationsState = {
     authentication: {
         facebook: {
@@ -254,6 +256,48 @@ export const integrationsState = {
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
             smooch: null,
+        },
+        {
+            deleted_datetime: null,
+            mappings: [],
+            meta: {
+                area_code: 510,
+                country: 'US',
+                emoji: '🤠',
+                preferences: {
+                    record_inbound_calls: true,
+                    record_outbound_calls: true,
+                    voicemail_outside_business_hours: true,
+                },
+                state: 'CA',
+                twilio: {
+                    incoming_phone_number: {
+                        deleted_datetime: null,
+                        friendly_name: '(415) 111-2222',
+                        phone_number: '+14151112222',
+                        sid: 'PN_FAKE_PHONE_NUMBER_SID_XXXXXXXXX',
+                    },
+                },
+                type: 'Local',
+                voicemail: {
+                    allow_to_leave_voicemail: true,
+                    text_to_speech_content:
+                        'We are not available, please leave a message.',
+                    voice_recording_file_path: null,
+                    voicemail_type: 'text_to_speech',
+                },
+            },
+            http: null,
+            deactivated_datetime: null,
+            name: 'Acme Phone',
+            uri: '/api/integrations/6/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2021-04-20T01:45:48.846020+00:00',
+            type: IntegrationType.PhoneIntegrationType,
+            id: 6,
+            description: null,
+            updated_datetime: '2021-04-26T19:19:33.451511+00:00',
         },
     ],
     state: {

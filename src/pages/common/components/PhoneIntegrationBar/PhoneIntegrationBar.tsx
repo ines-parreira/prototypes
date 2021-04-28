@@ -5,6 +5,7 @@ import {Connection, Device} from 'twilio-client'
 import {
     setConnection,
     setDevice,
+    setIsDialing,
     setIsRinging,
 } from '../../../../state/twilio/actions'
 import {RootState} from '../../../../state/types'
@@ -12,21 +13,28 @@ import client from '../../../../models/api/resources'
 
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
+import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
 
 type Props = ConnectedProps<typeof connector>
 
 function PhoneIntegrationBar({
     device,
     connection,
+    isDialing,
     isRinging,
     setDevice,
     setConnection,
+    setIsDialing,
     setIsRinging,
 }: Props): JSX.Element | null {
-    useDevice(device, setDevice, setConnection, setIsRinging)
+    useDevice(device, setDevice, setConnection, setIsDialing, setIsRinging)
 
     if (!connection) {
         return null
+    }
+
+    if (isDialing) {
+        return <OutgoingPhoneCall connection={connection} />
     }
 
     if (isRinging) {
@@ -40,6 +48,7 @@ const mapStateToProps = (state: RootState) => state.twilio
 const mapDispatchToProps = {
     setDevice,
     setConnection,
+    setIsDialing,
     setIsRinging,
 }
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -49,6 +58,7 @@ function useDevice(
     device: Device | null,
     setDevice: (device: Device | null) => void,
     setConnection: (connection: Connection | null) => void,
+    setIsDialing: (isDialing: boolean) => void,
     setIsRinging: (isRinging: boolean) => void
 ) {
     useEffect(() => {
@@ -58,13 +68,15 @@ function useDevice(
 
         async function init() {
             const token = await getToken()
-            if (!token) {
+            const isHttps = window.location.protocol.startsWith('https')
+            if (!token || !isHttps) {
                 return null
             }
 
             const newDevice = instantiateDevice(
                 token,
                 setConnection,
+                setIsDialing,
                 setIsRinging
             )
 
@@ -91,6 +103,7 @@ async function getToken(): Promise<string | null> {
 function instantiateDevice(
     token: string,
     setConnection: (connection: Connection | null) => void,
+    setIsDialing: (isDialing: boolean) => void,
     setIsRinging: (isRinging: boolean) => void
 ): Device {
     const device = new Device(token, {
@@ -112,6 +125,10 @@ function instantiateDevice(
                 }
             })
             .catch(console.error)
+    })
+
+    device.on('connect', () => {
+        setIsDialing(false)
     })
 
     device.on('incoming', (connection: Connection) => {

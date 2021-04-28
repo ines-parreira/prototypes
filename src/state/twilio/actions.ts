@@ -3,6 +3,7 @@ import {Connection, Device} from 'twilio-client'
 import {
     SET_TWILIO_CONNECTION,
     SET_TWILIO_DEVICE,
+    SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RINGING,
 } from './constants'
 
@@ -16,6 +17,11 @@ export type SetConnectionAction = {
     payload: Connection | null
 }
 
+export type SetIsDialingAction = {
+    type: string
+    payload: boolean
+}
+
 export type SetIsRingingAction = {
     type: string
     payload: boolean
@@ -24,6 +30,7 @@ export type SetIsRingingAction = {
 export type TwilioAction =
     | SetDeviceAction
     | SetConnectionAction
+    | SetIsDialingAction
     | SetIsRingingAction
 
 export function setDevice(device: Device | null): SetDeviceAction {
@@ -39,6 +46,13 @@ export function setConnection(
     return {
         type: SET_TWILIO_CONNECTION,
         payload: connection,
+    }
+}
+
+export function setIsDialing(isDialing: boolean): SetIsDialingAction {
+    return {
+        type: SET_TWILIO_IS_DIALING,
+        payload: isDialing,
     }
 }
 

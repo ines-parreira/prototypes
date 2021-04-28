@@ -5,16 +5,20 @@ import {fromJS, Map} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {TicketMessageSourceType} from '../../../business/types/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../business/types/ticket'
 import * as utils from '../../../utils'
 import * as actions from '../actions'
 import * as types from '../constants'
-import {initialState} from '../reducers'
+import {initialState, makeNewMessage} from '../reducers'
 import {initialState as ticketInitialState} from '../../ticket/reducers'
 import {RootState, StoreDispatch} from '../../types'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
+import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
 import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils.js'
 import {
     emailTicket,
@@ -22,7 +26,7 @@ import {
     smoochTicket,
 } from '../../ticket/tests/fixtures.js'
 import socketManager from '../../../services/socketManager/socketManager'
-import {Integration} from '../../../models/integration/types'
+import {Integration, IntegrationType} from '../../../models/integration/types'
 import {ticket} from '../../../fixtures/ticket'
 import * as emailExtraUtils from '../emailExtraUtils'
 import {convertFromHTML} from '../../../utils/editor'
@@ -72,7 +76,7 @@ describe('actions', () => {
     })
 
     describe('new message', () => {
-        const channels = integrationSelectors.getChannels({
+        const channels = integrationSelectors.getEmailChannels({
             integrations: fromJS(integrationsState),
         } as RootState)
 
@@ -475,6 +479,36 @@ describe('actions', () => {
 
                 store.dispatch(actions.setSender(expectedChannel))
                 expect(getLastSenderChannel()).toEqual(expectedChannel)
+            })
+
+            it('should handle phone channel', () => {
+                const phoneIntegration = integrationsState.integrations.find(
+                    (integration) =>
+                        integration.type ===
+                        IntegrationType.PhoneIntegrationType
+                )
+
+                store = mockStore({
+                    integrations: fromJS(integrationsState),
+                    ticket: fromJS({
+                        events: [
+                            {
+                                type: PhoneIntegrationEvent.IncomingPhoneCall,
+                                data: {integration: {id: phoneIntegration?.id}},
+                            },
+                        ],
+                    }),
+                    newMessage: initialState.set(
+                        'newMessage',
+                        makeNewMessage(
+                            TicketChannel.Phone,
+                            TicketMessageSourceType.Phone
+                        )
+                    ),
+                })
+                store.dispatch(actions.setSender())
+
+                expect(store.getActions()).toMatchSnapshot()
             })
         })
 

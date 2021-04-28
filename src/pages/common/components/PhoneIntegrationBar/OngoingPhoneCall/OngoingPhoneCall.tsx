@@ -48,11 +48,7 @@ export default function OngoingPhoneCall({connection}: Props): JSX.Element {
                 </Button>
             </div>
             <PhoneInfobarWrapper>
-                <>
-                    <span>Connected</span>
-                    {/* TODO(@samy): render actual call duration*/}
-                    <span>xx:xx</span>
-                </>
+                <span>Connected</span>
             </PhoneInfobarWrapper>
         </div>
     )

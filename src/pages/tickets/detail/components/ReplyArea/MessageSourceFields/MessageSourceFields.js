@@ -19,6 +19,7 @@ import {
 } from '../../../../../../state/newMessage/selectors.ts'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 import {getPersonLabelFromSource} from '../../../../common/utils'
+import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 
 import SenderSelectField from './components/SenderSelectField'
 import ReceiversSelectField from './components/ReceiversSelectField'
@@ -251,7 +252,10 @@ const mapStateToProps = (state, ownProps) => {
     return {
         isNewTicket: !state.ticket.get('id'),
         sourceType: type,
-        accountChannels: integrationSelectors.getChannels(state),
+        accountChannels:
+            type === TicketMessageSourceType.Phone
+                ? integrationSelectors.getPhoneChannels(state)
+                : integrationSelectors.getEmailChannels(state),
         channel: getNewMessageChannel(state),
         getNewMessageSourceProperty: makeGetNewMessageSourceProperty(state),
         allRecipients: getNewMessageRecipients(state),

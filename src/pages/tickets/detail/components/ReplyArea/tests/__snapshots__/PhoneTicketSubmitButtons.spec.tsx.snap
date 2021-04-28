@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneTicketSubmitButtons/> should render 1`] = `
+<div
+  class="component d-flex align-items-center justify-content-between"
+>
+  <button
+    class="btn btn-success"
+    data-testid="outbound-call-button"
+    type="submit"
+  >
+    Call
+  </button>
+</div>
+`;
+
+exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state is invalid 1`] = `
+<div
+  class="component d-flex align-items-center justify-content-between"
+>
+  <button
+    class="btn btn-success disabled"
+    data-testid="outbound-call-button"
+    disabled=""
+    type="submit"
+  >
+    Call
+  </button>
+</div>
+`;
+
+exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state is invalid 2`] = `
+<div
+  class="component d-flex align-items-center justify-content-between"
+>
+  <button
+    class="btn btn-success disabled"
+    data-testid="outbound-call-button"
+    disabled=""
+    type="submit"
+  >
+    Call
+  </button>
+</div>
+`;
+
+exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state is invalid 3`] = `
+<div
+  class="component d-flex align-items-center justify-content-between"
+>
+  <button
+    class="btn btn-success disabled"
+    data-testid="outbound-call-button"
+    disabled=""
+    type="submit"
+  >
+    Call
+  </button>
+</div>
+`;
+
+exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state is invalid 4`] = `
+<div
+  class="component d-flex align-items-center justify-content-between"
+>
+  <button
+    class="btn btn-success disabled"
+    data-testid="outbound-call-button"
+    disabled=""
+    type="submit"
+  >
+    Call
+  </button>
+</div>
+`;

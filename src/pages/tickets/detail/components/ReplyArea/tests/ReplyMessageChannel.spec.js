@@ -14,6 +14,7 @@ import {
     INSTAGRAM_MEDIA_SOURCE,
 } from '../../../../../../config/ticket.ts'
 import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
+import {TicketMessageSourceType} from '../../../../../../business/types/ticket.ts'
 
 const baseReply = {
     email: {answerable: true},
@@ -142,6 +143,22 @@ describe('ReplyMessageChannel component', () => {
                     },
                 ])}
                 sourceType={'chat'}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render option "Make outbound call" for existing phone ticket', () => {
+        const component = shallow(
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 12,
+                    reply_options: {
+                        [TicketMessageSourceType.Phone]: true,
+                    },
+                })}
+                messages={fromJS([])}
             />
         )
         expect(component).toMatchSnapshot()

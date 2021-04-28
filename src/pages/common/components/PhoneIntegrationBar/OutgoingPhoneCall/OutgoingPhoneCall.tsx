@@ -7,15 +7,14 @@ import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import {useConnectionParameters} from '../hooks'
 
-import css from './IncomingPhoneCall.less'
+import css from './OutgoingPhoneCall.less'
 
 type Props = {
     connection: Connection
 }
 
-export default function IncomingPhoneCall({connection}: Props): JSX.Element {
-    const {onAccept} = useAccept(connection)
-    const {onDecline} = useDecline(connection)
+export default function OutgoingPhoneCall({connection}: Props): JSX.Element {
+    const {onDisconnect} = useDisconnect(connection)
     const {
         integrationId,
         customerName,
@@ -23,49 +22,34 @@ export default function IncomingPhoneCall({connection}: Props): JSX.Element {
     } = useConnectionParameters(connection)
 
     return (
-        <div data-testid="incoming-phone-call" className={css.container}>
+        <div data-testid="outgoing-phone-call" className={css.container}>
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} primary />
+                <span className="mr-1">Outgoing call to</span>
                 <PhoneCustomerName
                     name={customerName}
                     phoneNumber={customerPhoneNumber}
                 />
                 <Button
-                    data-testid="accept-call-button"
-                    className={css.accept}
-                    onClick={onAccept}
-                >
-                    <i className="material-icons mr-2">phone</i>
-                    Accept
-                </Button>
-                <Button
-                    data-testid="decline-call-button"
-                    className={css.decline}
-                    onClick={onDecline}
+                    data-testid="end-call-button"
+                    className={css.end}
+                    onClick={onDisconnect}
                 >
                     <i className="material-icons mr-2">call_end</i>
-                    Decline
+                    End Call
                 </Button>
             </div>
             <PhoneInfobarWrapper primary>
-                <span>Incoming call...</span>
+                <span>Dialing up...</span>
             </PhoneInfobarWrapper>
         </div>
     )
 }
 
-function useAccept(connection: Connection) {
-    const onAccept = useCallback(() => {
-        connection.accept()
+function useDisconnect(connection: Connection) {
+    const onDisconnect = useCallback(() => {
+        connection.disconnect()
     }, [connection])
 
-    return {onAccept}
-}
-
-function useDecline(connection: Connection) {
-    const onDecline = useCallback(() => {
-        connection.ignore()
-    }, [connection])
-
-    return {onDecline}
+    return {onDisconnect}
 }

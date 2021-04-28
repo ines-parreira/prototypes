@@ -63,9 +63,6 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       <span>
         Connected
       </span>
-      <span>
-        xx:xx
-      </span>
     </div>
   </div>
 </div>

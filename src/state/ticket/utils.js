@@ -17,6 +17,7 @@ import {renderTemplate} from '../../pages/common/utils/template'
 import {tryLocalStorage} from '../../services/common/utils.ts'
 import * as responseUtils from '../newMessage/responseUtils.ts'
 import {TicketMessageSourceType} from '../../business/types/ticket.ts'
+import {PHONE_EVENTS} from '../../constants/event.ts'
 
 import {getProperty} from './selectors.ts'
 
@@ -358,6 +359,34 @@ export const getLastSenderChannel = () => {
     return null
 }
 
+export function getOutboundCallFrom(ticket, channels) {
+    if (!channels.size) {
+        return fromJS({
+            id: null,
+            name: '',
+            address: '',
+        })
+    }
+
+    const events = ticket.get('events') || fromJS([])
+    const phoneEvents = events.filter((event) =>
+        PHONE_EVENTS.includes(event.get('type'))
+    )
+
+    if (!phoneEvents.size) {
+        return channels.get(0)
+    }
+
+    const lastIndex = phoneEvents.size - 1
+    const lastEvent = phoneEvents.get(lastIndex)
+    const integrationId = lastEvent.getIn(['data', 'integration', 'id'])
+    const channel = channels.find(
+        (channel) => channel.get('id') === integrationId
+    )
+
+    return channel || channels.get(0)
+}
+
 /**
  * Return sender based on ticket messages and available channels
  * @param ticket
@@ -371,6 +400,10 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
             name: '',
             address: '',
         })
+    }
+
+    if (newMessageSourceType === TicketMessageSourceType.Phone) {
+        return getOutboundCallFrom(ticket, channels)
     }
 
     const preferredChannel =

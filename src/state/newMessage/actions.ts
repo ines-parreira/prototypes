@@ -237,8 +237,11 @@ export const setSender = (sender?: Maybe<string>) => (
 ): ReturnType<StoreDispatch> => {
     const state = getState()
     const {ticket} = state
-    const channels = integrationSelectors.getChannels(state)
     const sourceType = selectors.getNewMessageType(state)
+    const channels =
+        sourceType === TicketMessageSourceType.Phone
+            ? integrationSelectors.getPhoneChannels(state)
+            : integrationSelectors.getEmailChannels(state)
     let _sender: Map<any, any> = fromJS({})
 
     if (sender) {
@@ -285,10 +288,16 @@ export const setSender = (sender?: Maybe<string>) => (
     }
 
     if (!_sender.isEmpty()) {
+        const id = _sender.get('id')
+
         _sender = fromJS({
             name: _sender.get('name', ''),
             address: _sender.get('address', ''),
         })
+
+        if (sourceType === TicketMessageSourceType.Phone) {
+            _sender = _sender.set('id', id)
+        }
 
         // persist `_sender` only if it's explicitly set on the function call (i.e: when user selects value from dropdown)
         if (sender) {

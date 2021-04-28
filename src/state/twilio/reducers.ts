@@ -1,12 +1,14 @@
 import {
     SetConnectionAction,
     SetDeviceAction,
+    SetIsDialingAction,
     SetIsRingingAction,
     TwilioAction,
 } from './actions'
 import {
     SET_TWILIO_CONNECTION,
     SET_TWILIO_DEVICE,
+    SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RINGING,
 } from './constants'
 import {TwilioState} from './types'
@@ -14,6 +16,7 @@ import {TwilioState} from './types'
 export const initialState: TwilioState = {
     device: null,
     connection: null,
+    isDialing: false,
     isRinging: false,
 }
 
@@ -31,6 +34,11 @@ export default function reducer(
             return {
                 ...state,
                 connection: (action as SetConnectionAction).payload,
+            }
+        case SET_TWILIO_IS_DIALING:
+            return {
+                ...state,
+                isDialing: (action as SetIsDialingAction).payload,
             }
         case SET_TWILIO_IS_RINGING:
             return {

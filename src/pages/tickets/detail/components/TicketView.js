@@ -13,12 +13,18 @@ import * as tagsSelectors from '../../../../state/tags/selectors.ts'
 import * as customersSelectors from '../../../../state/customers/selectors.ts'
 import * as agentSelectors from '../../../../state/agents/selectors.ts'
 import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
+import * as newMessageSelectors from '../../../../state/newMessage/selectors.ts'
+import {
+    TicketMessageSourceType,
+    TicketVia,
+} from '../../../../business/types/ticket.ts'
 
 import appCss from '../../../App.less'
 
 import css from './TicketView.less'
 import HistoryButton from './HistoryButton'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
+import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons.tsx'
 import TicketReplyArea from './ReplyArea/TicketReplyArea'
 import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import TicketBody from './TicketBody'
@@ -41,6 +47,7 @@ export class TicketViewContainer extends React.Component {
         setStatus: PropTypes.func.isRequired,
         view: PropTypes.object,
         isHistoryDisplayed: PropTypes.bool,
+        sourceType: PropTypes.string.isRequired,
     }
 
     static defaultProps = {
@@ -255,11 +262,15 @@ export class TicketViewContainer extends React.Component {
             isTicketHidden,
             setStatus,
             isHistoryDisplayed,
+            sourceType,
         } = this.props
         const isExistingTicket = !!ticket.get('id')
 
         const customerHistory = customers.get('customerHistory') || fromJS({})
         const hideHistoryButton = !ticket.get('id')
+        const isViaTwilio = ticket.get('via') === TicketVia.Twilio
+        const isPhoneSourceType = sourceType === TicketMessageSourceType.Phone
+        const shouldRenderPhoneButtons = isViaTwilio && isPhoneSourceType
 
         return (
             <div
@@ -342,17 +353,22 @@ export class TicketViewContainer extends React.Component {
                     >
                         <ReplyMessageChannel actions={this.props.actions} />
 
-                        <TicketReplyArea
-                            actions={actions}
-                            currentUser={currentUser}
-                            customers={customers}
-                            ticket={ticket}
-                        />
-
-                        <TicketSubmitButtons
-                            ticket={ticket}
-                            submit={this._handlePreSubmit}
-                        />
+                        {shouldRenderPhoneButtons ? (
+                            <PhoneTicketSubmitButtons />
+                        ) : (
+                            <>
+                                <TicketReplyArea
+                                    actions={actions}
+                                    currentUser={currentUser}
+                                    customers={customers}
+                                    ticket={ticket}
+                                />
+                                <TicketSubmitButtons
+                                    ticket={ticket}
+                                    submit={this._handlePreSubmit}
+                                />
+                            </>
+                        )}
                     </form>
                 </div>
             </div>
@@ -376,6 +392,7 @@ const connector = connect((state) => ({
     ticket: state.ticket,
     ticketBody: ticketSelectors.getBody(state),
     views: state.views,
+    sourceType: newMessageSelectors.getNewMessageType(state),
 }))
 
 export default connector(TicketViewContainer)

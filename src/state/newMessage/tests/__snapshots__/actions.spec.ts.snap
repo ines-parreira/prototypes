@@ -2602,6 +2602,19 @@ Array [
 ]
 `;
 
+exports[`actions new message setSender action should handle phone channel 1`] = `
+Array [
+  Object {
+    "sender": Immutable.Map {
+      "name": "Acme Phone",
+      "address": "+14151112222",
+      "id": 6,
+    },
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
 exports[`actions new message setSender action with address 1`] = `
 Array [
   Object {

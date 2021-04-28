@@ -12,7 +12,7 @@ import {
 import {
     getBaseEmailIntegration,
     getChannelByTypeAndAddress,
-    getChannels,
+    getEmailChannels,
     getChannelSignature,
     getChatIntegrationCampaignById,
     getChatIntegrationCampaigns,
@@ -30,8 +30,10 @@ import {
     getShopifyIntegrationsWithoutFacebook,
     hasAtLeastOneEmailIntegration,
     getMessagingIntegrations,
+    getPhoneIntegrations,
 } from '../selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations.ts'
+import {IntegrationType} from '../../../models/integration/types.ts'
 
 const state = {
     integrations: fromJS(integrationsState),
@@ -58,17 +60,18 @@ describe('integrations selectors', () => {
             const integrations = getMessagingIntegrations(state)
             const expected = getIntegrations(state).filter((inte) =>
                 [
-                    'email',
-                    'outlook',
-                    'gmail',
-                    'aircall',
-                    'smooch_inside',
-                    'smooch',
-                    'facebook',
+                    IntegrationType.EmailIntegrationType,
+                    IntegrationType.OutlookIntegrationType,
+                    IntegrationType.GmailIntegrationType,
+                    IntegrationType.AircallIntegrationType,
+                    IntegrationType.SmoochInsideIntegrationType,
+                    IntegrationType.SmoochIntegrationType,
+                    IntegrationType.FacebookIntegrationType,
+                    IntegrationType.PhoneIntegrationType,
                 ].includes(inte.get('type', ''))
             )
 
-            expect(integrations.equals(expected)).toEqual(true)
+            expect(integrations).toEqual(expected)
         })
     })
 
@@ -80,6 +83,19 @@ describe('integrations selectors', () => {
             )
 
             expect(integrations.equals(expected)).toEqual(true)
+        })
+    })
+
+    describe('getPhoneIntegrations()', () => {
+        it('should get phone integrations', () => {
+            const integrations = getPhoneIntegrations(state)
+            const expected = getIntegrations(state).filter(
+                (integration) =>
+                    integration.get('type') ===
+                    IntegrationType.PhoneIntegrationType
+            )
+
+            expect(integrations).toEqual(expected)
         })
     })
 
@@ -122,7 +138,7 @@ describe('integrations selectors', () => {
     })
 
     it('should get channels', () => {
-        expect(getChannels(state)).toMatchSnapshot()
+        expect(getEmailChannels(state)).toMatchSnapshot()
     })
 
     it('should get channel by type and address', () => {

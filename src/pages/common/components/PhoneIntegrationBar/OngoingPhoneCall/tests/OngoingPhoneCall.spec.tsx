@@ -6,7 +6,7 @@ import {Provider} from 'react-redux'
 import {Connection} from 'twilio-client'
 import {fromJS} from 'immutable'
 
-import {mockConnection} from '../../../../../../tests/twilioMocks'
+import {mockIncomingConnection} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import OngoingPhoneCall from '../OngoingPhoneCall'
 
@@ -36,7 +36,7 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should render', () => {
-        const connection = mockConnection(integrationId) as Connection
+        const connection = mockIncomingConnection(integrationId) as Connection
 
         const {container} = render(
             <Provider store={store}>
@@ -48,7 +48,7 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should mute call', () => {
-        const connection = mockConnection(integrationId) as Connection
+        const connection = mockIncomingConnection(integrationId) as Connection
 
         const {getByTestId} = render(
             <Provider store={store}>
@@ -61,7 +61,7 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should end call', () => {
-        const connection = mockConnection(integrationId) as Connection
+        const connection = mockIncomingConnection(integrationId) as Connection
 
         const {getByTestId} = render(
             <Provider store={store}>

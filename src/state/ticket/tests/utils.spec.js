@@ -1,11 +1,13 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
+import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration.ts'
-import {getChannels} from '../../integrations/selectors.ts'
+import {getEmailChannels} from '../../integrations/selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations.ts'
 import {
     getNewMessageSender,
+    getOutboundCallFrom,
     getPreferredChannel,
     getSourceTypeOfResponse,
     guessReceiversFromTicket,
@@ -194,7 +196,7 @@ const receiversStateExample = {
         },
     ],
 }
-const channels = getChannels({integrations: fromJS(integrationsState)})
+const channels = getEmailChannels({integrations: fromJS(integrationsState)})
 
 describe('ticket utils', () => {
     describe('getSourceTypeOfResponse()', () => {
@@ -510,6 +512,29 @@ describe('ticket utils', () => {
                 )
             ).toEqualImmutable(testChannel)
         })
+
+        it('should get the sender channel from ticket events', () => {
+            const integrationId = 1
+            const ticket = fromJS({
+                events: [
+                    {
+                        type: PhoneIntegrationEvent.IncomingPhoneCall,
+                        data: {integration: {id: integrationId}},
+                    },
+                ],
+            })
+            const newMessageSourceType = TicketMessageSourceType.Phone
+            const expectedSender = fromJS({
+                id: integrationId,
+                name: 'Acme Phone',
+                address: '+14151112222',
+            })
+            const channels = fromJS([expectedSender])
+
+            expect(
+                getNewMessageSender(ticket, newMessageSourceType, channels)
+            ).toEqual(expectedSender)
+        })
     })
 
     describe('isForwardedMessage()', () => {
@@ -761,6 +786,43 @@ describe('ticket utils', () => {
                 '{{ticket.customer.integrations[15].customer.foo|datetime_format("MM")}}'
             )
             expect(notifySpy).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('getOutboundCallFrom()', () => {
+        const emptySender = fromJS({id: null, name: '', address: ''})
+        const getValidSender = (id: number) =>
+            fromJS({id, name: 'Acme Phone', address: '+14151112222'})
+        const getPhoneEvent = (integrationId: number) => ({
+            type: PhoneIntegrationEvent.IncomingPhoneCall,
+            data: {integration: {id: integrationId}},
+        })
+
+        it('should return empty sender because there is no channel', () => {
+            const ticket = fromJS({})
+            const channels = fromJS([])
+            expect(getOutboundCallFrom(ticket, channels)).toEqual(emptySender)
+        })
+
+        it('should return first channel because there is no phone event', () => {
+            const ticket = fromJS({})
+            const channel = getValidSender(1)
+            const channels = fromJS([channel])
+            expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
+        })
+
+        it('should return first channel because ticket channel is not defined in the channels list', () => {
+            const ticket = fromJS({events: [getPhoneEvent(1)]})
+            const channel = getValidSender(2)
+            const channels = fromJS([channel])
+            expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
+        })
+
+        it('should return ticket channel because it is defined in the channels list', () => {
+            const ticket = fromJS({events: [getPhoneEvent(2)]})
+            const channel = getValidSender(2)
+            const channels = fromJS([getValidSender(1), channel])
+            expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
         })
     })
 })

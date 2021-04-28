@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<IncomingPhoneCall/> should render 1`] = `
+exports[`<OutgoingPhoneCall/> should render 1`] = `
 <div
   class="container"
-  data-testid="incoming-phone-call"
+  data-testid="outgoing-phone-call"
 >
   <div
     class="inner"
@@ -19,6 +19,11 @@ exports[`<IncomingPhoneCall/> should render 1`] = `
       My Phone Integration
     </span>
     <span
+      class="mr-1"
+    >
+      Outgoing call to
+    </span>
+    <span
       class="container"
     >
       <span
@@ -31,20 +36,8 @@ exports[`<IncomingPhoneCall/> should render 1`] = `
       )
     </span>
     <button
-      class="accept btn btn-secondary"
-      data-testid="accept-call-button"
-      type="button"
-    >
-      <i
-        class="material-icons mr-2"
-      >
-        phone
-      </i>
-      Accept
-    </button>
-    <button
-      class="decline btn btn-secondary"
-      data-testid="decline-call-button"
+      class="end btn btn-secondary"
+      data-testid="end-call-button"
       type="button"
     >
       <i
@@ -52,7 +45,7 @@ exports[`<IncomingPhoneCall/> should render 1`] = `
       >
         call_end
       </i>
-      Decline
+      End Call
     </button>
   </div>
   <div
@@ -63,7 +56,7 @@ exports[`<IncomingPhoneCall/> should render 1`] = `
       class="inner"
     >
       <span>
-        Incoming call...
+        Dialing up...
       </span>
     </div>
   </div>

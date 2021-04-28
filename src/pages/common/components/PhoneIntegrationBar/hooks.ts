@@ -15,7 +15,10 @@ export function useConnectionParameters(
     const customerName = connection.customParameters.get(
         'customer_name'
     ) as string
-    const customerPhoneNumber: string = connection.parameters.From
+    const customerPhoneNumber =
+        connection.direction === Connection.CallDirection.Incoming
+            ? connection.parameters.From
+            : (connection.customParameters.get('To') as string)
 
     return {integrationId, customerName, customerPhoneNumber}
 }
