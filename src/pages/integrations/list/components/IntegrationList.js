@@ -72,23 +72,24 @@ export default class IntegrationList extends React.Component<Props> {
         )
     }
 
+    _hasActiveSmoochInsideIntegrations = () => {
+        return this.props.integrations
+            .filter(
+                (integration) =>
+                    integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+            )
+            .find(
+                (integration) =>
+                    integration.get('deactivated_datetime') === null ||
+                    integration.getIn([
+                        'meta',
+                        'shopify_integration_ids',
+                        'size',
+                    ])
+            )
+    }
+
     _deprecatedChatWarning = () => {
-        const smoochInsideIntegrations = this.props.integrations.filter(
-            (integration) =>
-                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
-        )
-
-        // active means that the integration is either enabled or installed on a shopify store
-        const hasActiveSmoochInsideIntegrations = smoochInsideIntegrations.find(
-            (integration) =>
-                integration.get('deactivated_datetime') === null ||
-                integration.getIn(['meta', 'shopify_integration_ids', 'size'])
-        )
-
-        if (!hasActiveSmoochInsideIntegrations) {
-            return null
-        }
-
         return (
             <Alert color="danger">
                 <span>
@@ -113,23 +114,16 @@ export default class IntegrationList extends React.Component<Props> {
     }
 
     render() {
-        const {
-            currentPlan,
-            integrations,
-            integrationsConfig,
-            plans,
-        } = this.props
-        const hasSmoochInsideIntegration = integrations.find(
-            (integration) =>
-                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
-        )
+        const {currentPlan, integrationsConfig, plans} = this.props
+        const hasActiveSmoochInsideIntegrations = this._hasActiveSmoochInsideIntegrations()
         const displayList = integrationsConfig
             .filter((integration) => {
-                // do not return the smooch inside integration if none has ever been created
+                // do not return the smooch inside integration
+                // if there is no active integration of it
                 if (
                     integration.get('type') ===
                         SMOOCH_INSIDE_INTEGRATION_TYPE &&
-                    !hasSmoochInsideIntegration
+                    !hasActiveSmoochInsideIntegrations
                 ) {
                     return false
                 }
@@ -171,9 +165,11 @@ export default class IntegrationList extends React.Component<Props> {
                             {this._limitWarning()}
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>{this._deprecatedChatWarning()}</Col>
-                    </Row>
+                    {hasActiveSmoochInsideIntegrations && (
+                        <Row>
+                            <Col>{this._deprecatedChatWarning()}</Col>
+                        </Row>
+                    )}
                     <Row>
                         <Col>
                             {displayList.map((config, index) => {

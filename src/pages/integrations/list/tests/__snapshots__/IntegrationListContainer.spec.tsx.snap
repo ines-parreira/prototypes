@@ -32,13 +32,6 @@ exports[`<IntegrationListContainer /> should display content 1`] = `
     >
       <div
         class="col"
-      />
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="col"
       >
         <a
           class="component link card d-flex flex-row align-items-center mb-3"

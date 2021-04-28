@@ -3,7 +3,6 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
-import Alert from 'reactstrap/lib/Alert'
 
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
@@ -30,29 +29,9 @@ export default class GorgiasChatIntegrationList extends React.Component<Props> {
 
         const longTypeDescription = (
             <div>
-                <Alert color="success">
-                    <span role="img" aria-label="white check mark">
-                        ✅
-                    </span>{' '}
-                    Welcome to our new, remodeled chat integration. We've made
-                    significant improvements to the back-end, it's faster and
-                    lighter and has new features like customer location with
-                    more to come very soon. Note that, if you're migrating from
-                    our legacy chat, you will need to follow the steps outlined
-                    in this article.{' '}
-                    <a
-                        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/c/79-chatbot-self-service-flows-to-automate-50-of-tickets"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        We'll be adding more features very soon!
-                    </a>
-                </Alert>
-                <span>
-                    Live chat with your customers by adding our Chat widget on
-                    your website. Every time a customer starts a conversation on
-                    your website, it opens a ticket in Gorgias.
-                </span>
+                Live chat with your customers by adding our Chat widget on your
+                website. Every time a customer starts a conversation on your
+                website, it opens a ticket in Gorgias.
             </div>
         )
 
