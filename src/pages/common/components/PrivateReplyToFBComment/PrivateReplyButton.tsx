@@ -10,8 +10,6 @@ import messengerIcon from '../../../../../img/integrations/facebook-messenger-da
 import instagramDirectMessageIcon from '../../../../../img/integrations/Instagram-direct-message-blue.svg'
 import type {Actor, Meta, Source} from '../../../../models/ticket/types'
 
-import * as infobarActions from '../../../../state/infobar/actions'
-
 import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'
 
 import css from './PrivateReplyButton.less'
@@ -22,14 +20,13 @@ type Props = {
     ticketMessageId: number
     senderId: number
     ticketId: number
-    facebookComment: string
+    commentMessage: string
     source: Source
     sender: Actor
     meta?: Meta
     messageCreatedDatetime: string
     isFacebookComment: boolean
     className?: string
-    executeAction: typeof infobarActions.executeAction
 }
 
 export default function PrivateReplyButton({
@@ -38,13 +35,12 @@ export default function PrivateReplyButton({
     ticketMessageId,
     senderId,
     ticketId,
-    facebookComment,
+    commentMessage,
     source,
     sender,
     meta,
     messageCreatedDatetime,
     isFacebookComment,
-    executeAction,
     className,
 }: Props) {
     const [isOpen, setOpen] = useState(false)
@@ -95,12 +91,11 @@ export default function PrivateReplyButton({
                     isOpen={isOpen}
                     toggle={toggle}
                     ticketId={ticketId}
-                    facebookComment={facebookComment}
+                    commentMessage={commentMessage}
                     source={source}
                     sender={sender}
                     meta={meta}
                     messageCreatedDatetime={messageCreatedDatetime}
-                    executeAction={executeAction}
                     isFacebookComment={isFacebookComment}
                 />
             )}

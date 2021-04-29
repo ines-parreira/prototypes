@@ -1,62 +1,57 @@
 import React, {useCallback, useState} from 'react'
-import {
-    Button,
-    Card,
-    CardBody,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-} from 'reactstrap'
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 
 import classnames from 'classnames'
 
-import {fromJS} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
-import Avatar from '../../../components/Avatar/Avatar'
 import {FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH} from '../../../../../config/integrations/facebook'
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
-import {default as TicketMessageMeta} from '../../../../tickets/detail/components/TicketMessages/Meta.js'
-import {DatetimeLabel} from '../../../utils/labels.js'
-import facebookIcon from '../../../../../../img/integrations/facebook-feed-round-icon.svg'
-import instagramIcon from '../../../../../../img/integrations/instagram-icon-grey.svg'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
 
+import CommentCard from '../CommentCard/CommentCard'
+import {StoreDispatch} from '../../../../../state/types'
+import {goToNextTicket, setStatus} from '../../../../../state/ticket/actions'
+import {COMMENT_TICKET_PRIVATE_REPLY_EVENT} from '../../../../tickets/detail/components/PrivateReplyEvent/constants'
+
 import css from './PrivateReplyModal.less'
 
-type Props = {
+type OwnProps = {
     integrationId: number
     messageId: string
     ticketMessageId: number
     senderId: number
     isOpen: boolean
     ticketId: number
-    facebookComment: string
+    commentMessage: string
     source: Source
     sender: Actor
     toggle: () => void
     meta?: Meta
     messageCreatedDatetime: string
     isFacebookComment: boolean
-    executeAction: typeof infobarActions.executeAction
 }
 
-export default function PrivateReplyModal({
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+function PrivateReplyModal({
     integrationId,
     messageId,
     ticketMessageId,
     senderId,
     isOpen,
     ticketId,
-    facebookComment,
+    commentMessage,
     source,
     sender,
     toggle,
     meta,
     messageCreatedDatetime,
+    executePrivateReplyAction,
     isFacebookComment,
-    executeAction,
+    goToNextTicket,
+    setClosedStatus,
 }: Props) {
     const {
         isSending,
@@ -69,17 +64,21 @@ export default function PrivateReplyModal({
         ticketId,
         ticketMessageId,
         senderId,
-        executeAction,
-        facebookComment,
+        executePrivateReplyAction,
+        commentMessage,
         toggle,
-        isFacebookComment
+        isFacebookComment,
+        source,
+        sender,
+        messageCreatedDatetime,
+        setClosedStatus,
+        goToNextTicket,
+        meta
     )
 
-    const senderMeta = sender.meta ? fromJS(sender.meta) : fromJS({})
     const placeholder = isFacebookComment
         ? 'Reply via Facebook Messenger'
         : 'Reply via Instagram direct message'
-    const icon = isFacebookComment ? facebookIcon : instagramIcon
     const modalHeaderText = isFacebookComment ? 'Message' : 'Direct message'
 
     return (
@@ -88,73 +87,16 @@ export default function PrivateReplyModal({
                 {modalHeaderText} {sender.firstname} {sender.lastname}
             </ModalHeader>
             <ModalBody className="p-0">
-                <Card className={css.commentCard}>
-                    <CardBody>
-                        <div className="row">
-                            <div
-                                className={classnames(
-                                    'col-1',
-                                    css.avatarContainer
-                                )}
-                            >
-                                <Avatar
-                                    email={sender.email}
-                                    name={sender.name}
-                                    url={senderMeta.get('profile_picture_url')} // eslint-disable-line
-                                    size={36}
-                                />
-                            </div>
-                            <div className="col-11">
-                                <div
-                                    className={classnames(
-                                        'row',
-                                        css.flexContainerRow,
-                                        css.metaInfo
-                                    )}
-                                >
-                                    <span className={css.customerNameBody}>
-                                        {sender.firstname} {sender.lastname}
-                                    </span>
-                                    <img
-                                        src={icon}
-                                        className={
-                                            isFacebookComment
-                                                ? css.facebookIcon
-                                                : css.instagramIcon
-                                        }
-                                        alt="social media icon"
-                                    />
-                                    <TicketMessageMeta
-                                        messageId={messageId}
-                                        meta={meta}
-                                        source={source}
-                                        integrationId={integrationId.toString()}
-                                        via={''}
-                                    />
-                                    <div
-                                        className={classnames(
-                                            css.right,
-                                            css.wrapper
-                                        )}
-                                    >
-                                        <DatetimeLabel
-                                            dateTime={messageCreatedDatetime}
-                                        />
-                                    </div>
-                                </div>
-                                <div
-                                    className={classnames(
-                                        'row',
-                                        css.flexContainerColumn,
-                                        css.comment
-                                    )}
-                                >
-                                    {facebookComment}
-                                </div>
-                            </div>
-                        </div>
-                    </CardBody>
-                </Card>
+                <CommentCard
+                    integrationId={integrationId}
+                    messageId={messageId}
+                    commentMessage={commentMessage}
+                    source={source}
+                    sender={sender}
+                    meta={meta}
+                    messageCreatedDatetime={messageCreatedDatetime}
+                    isFacebookComment={isFacebookComment}
+                />
                 <textarea
                     rows={4}
                     className={classnames(
@@ -170,11 +112,20 @@ export default function PrivateReplyModal({
                 <Button
                     color="success"
                     id="private-reply-submit"
-                    className={css.submit}
+                    className={classnames(css.submit, css.send)}
                     disabled={!canSend || isSending}
-                    onClick={() => sendPrivateReply()}
+                    onClick={() => sendPrivateReply(false)}
                 >
                     Send
+                </Button>
+                <Button
+                    color="secondary"
+                    id="send-private-reply-and-close-button"
+                    className={classnames(css.submit, css.sendAndClose)}
+                    disabled={!canSend || isSending}
+                    onClick={() => sendPrivateReply(true)}
+                >
+                    Send &amp; Close
                 </Button>
             </ModalFooter>
         </Modal>
@@ -187,10 +138,16 @@ function usePrivateReply(
     ticket_id: number,
     ticketMessageId: number,
     senderId: number,
-    executeAction: typeof infobarActions.executeAction,
-    body_text: string,
+    executePrivateReplyAction: Props['executePrivateReplyAction'],
+    comment: string,
     toggle: () => void,
-    isFacebookComment: boolean
+    isFacebookComment: boolean,
+    source: Source,
+    sender: Actor,
+    messageCreatedDatetime: string,
+    setClosedStatus: Props['setClosedStatus'],
+    goToNextTicket: Props['goToNextTicket'],
+    meta?: Meta
 ) {
     const [isSending, setIsSending] = useState(false)
     const [privateReplyMessage, setPrivateReplyMessage] = useState('')
@@ -199,17 +156,27 @@ function usePrivateReply(
         ? 'facebookPrivateReply'
         : 'instagramPrivateReply'
 
-    const actionPayload = isFacebookComment
+    const commonPayload = {
+        message_id: messageId,
+        from_ticket_message_id: ticketMessageId,
+        comment_message_source: source,
+        comment_message_sender: sender,
+        comment_message_meta: meta,
+        comment_message_datetime: messageCreatedDatetime,
+        private_reply_event_type: COMMENT_TICKET_PRIVATE_REPLY_EVENT,
+    }
+
+    const specificPayload = isFacebookComment
         ? {
-              facebook_comment: body_text,
+              facebook_comment: comment,
               messenger_reply: privateReplyMessage.trim(),
-              from_ticket_message_id: ticketMessageId,
           }
         : {
-              instagram_comment: body_text,
+              instagram_comment: comment,
               instagram_direct_message_reply: privateReplyMessage.trim(),
-              from_ticket_message_id: ticketMessageId,
           }
+
+    const actionPayload = {...commonPayload, ...specificPayload}
 
     const inputOnChange = useCallback(
         (value: string) => {
@@ -224,23 +191,47 @@ function usePrivateReply(
         [setPrivateReplyMessage, setCanSend]
     )
 
-    const sendPrivateReply = () => {
+    const sendPrivateReply = (sendAndClose: boolean) => {
         setIsSending(true)
 
-        // TODO(@Mehdi) remove eslint and ts-ignore after checking
-        //  how to do call executeAction properly (typing issue)
-        // eslint-disable-next-line
-        executeAction(
+        executePrivateReplyAction(
             actionName,
-            integrationId.toString(),
-            senderId.toString(),
+            integrationId,
+            senderId,
             actionPayload
-            // @ts-ignore
-        ).finally(() => {
-            setIsSending(false)
-            toggle()
-        })
+        )
+            .then(sendAndClose ? void setClosedStatus() : null)
+            .finally(() => {
+                setIsSending(false)
+                toggle()
+                if (sendAndClose) {
+                    void goToNextTicket()
+                }
+            })
     }
 
     return {isSending, sendPrivateReply, inputOnChange, canSend}
 }
+
+const mapDispatchToProps = (dispatch: StoreDispatch, props: OwnProps) => ({
+    goToNextTicket: () => dispatch(goToNextTicket(props.ticketId)),
+    setClosedStatus: () => dispatch(setStatus('closed')),
+    executePrivateReplyAction: (
+        actionName: string,
+        integrationId: number,
+        senderId: number,
+        actionPayload: any
+    ) =>
+        dispatch(
+            infobarActions.executeAction(
+                actionName,
+                integrationId.toString(),
+                senderId.toString(),
+                actionPayload
+            )
+        ),
+})
+
+const connector = connect(null, mapDispatchToProps)
+
+export default connector(PrivateReplyModal)

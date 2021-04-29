@@ -12,7 +12,7 @@ const defaultProps = {
     ticketMessageId: 1,
     senderId: 1,
     ticketId: 1,
-    facebookComment: 'some comment',
+    commentMessage: 'some comment',
     source: {
         type: TicketMessageSourceType.FacebookComment,
         from: {
