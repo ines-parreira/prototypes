@@ -3,11 +3,14 @@ import {Connection, Device} from 'twilio-client'
 export const mockDevice = (): Partial<Device> => ({})
 
 export const mockIncomingConnection = (
-    integrationId = 1
+    integrationId = 1,
+    ticketId = 2
 ): Partial<Connection> => ({
     direction: Connection.CallDirection.Incoming,
     customParameters: new Map([
         ['integration_id', integrationId.toString()],
+        ['ticket_id', ticketId.toString()],
+        ['call_sid', 'fake-call-sid'],
         ['customer_name', 'Bob'],
     ]),
     parameters: {From: '+14158880101'},

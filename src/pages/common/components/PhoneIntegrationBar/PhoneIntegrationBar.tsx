@@ -91,7 +91,7 @@ function useDevice(
                 setDevice(null)
             }
         }
-    }, [device, setConnection, setDevice, setIsRinging])
+    }, [device, setConnection, setDevice, setIsDialing, setIsRinging])
 }
 
 async function getToken(): Promise<string | null> {

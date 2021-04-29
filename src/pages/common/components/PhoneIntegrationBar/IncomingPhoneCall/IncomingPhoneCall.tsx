@@ -2,6 +2,7 @@ import React, {useCallback} from 'react'
 import {Connection} from 'twilio-client'
 import {Button} from 'reactstrap'
 
+import client from '../../../../../models/api/resources'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
@@ -65,7 +66,24 @@ function useAccept(connection: Connection) {
 function useDecline(connection: Connection) {
     const onDecline = useCallback(() => {
         connection.ignore()
+        onIgnore(connection).catch(console.error)
     }, [connection])
 
     return {onDecline}
+}
+
+async function onIgnore(connection: Connection) {
+    try {
+        const ticketId = parseInt(
+            connection.customParameters.get('ticket_id') as string
+        )
+        const callSid = connection.customParameters.get('call_sid') as string
+
+        await client.post('/integrations/phone/call/declined', {
+            ticket_id: ticketId,
+            call_sid: callSid,
+        })
+    } catch (error) {
+        console.error(error)
+    }
 }

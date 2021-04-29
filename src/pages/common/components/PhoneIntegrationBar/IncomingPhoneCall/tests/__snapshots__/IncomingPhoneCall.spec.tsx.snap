@@ -1,5 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<IncomingPhoneCall/> should decline call 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"ticket_id\\":2,\\"call_sid\\":\\"fake-call-sid\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/integrations/phone/call/declined",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
 exports[`<IncomingPhoneCall/> should render 1`] = `
 <div
   class="container"
