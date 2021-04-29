@@ -15,5 +15,17 @@ describe('<CardContentYotpoReviewTopics/>', () => {
 
             expect(component).toMatchSnapshot()
         })
+        it.each([null, undefined, []])(
+            'should render correctly if children is empty/null',
+            (topics) => {
+                const component = shallow(
+                    <CardContentYotpoReviewTopics>
+                        {topics}
+                    </CardContentYotpoReviewTopics>
+                )
+
+                expect(component).toMatchSnapshot()
+            }
+        )
     })
 })

@@ -9,6 +9,14 @@ exports[`<AfterContent/> render() should render top topics for reviews 1`] = `
 </Fragment>
 `;
 
+exports[`<AfterContent/> render() should render top topics sections even with no data 1`] = `
+<Fragment>
+  <CardContentYotpoReviewTopics>
+    <Component />
+  </CardContentYotpoReviewTopics>
+</Fragment>
+`;
+
 exports[`<TitleWrapper/> render() should render header total reviews 1`] = `
 <Fragment>
   <CardHeaderYotpoReviewStatistics>

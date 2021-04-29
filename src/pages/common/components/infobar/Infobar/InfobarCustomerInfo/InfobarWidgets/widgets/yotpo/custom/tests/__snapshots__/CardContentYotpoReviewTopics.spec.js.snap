@@ -42,3 +42,75 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
   </span>
 </div>
 `;
+
+exports[`<CardContentYotpoReviewTopics/> render() should render correctly if children is empty/null 1`] = `
+<div
+  className="topTopicsContainer"
+>
+  <span
+    className="container"
+  >
+    <span
+      className="label"
+    >
+      <span
+        className="material-icons favorite"
+      >
+        favorite
+      </span>
+      Top Topics
+    </span>
+  </span>
+  <span
+    className="topics"
+  />
+</div>
+`;
+
+exports[`<CardContentYotpoReviewTopics/> render() should render correctly if children is empty/null 2`] = `
+<div
+  className="topTopicsContainer"
+>
+  <span
+    className="container"
+  >
+    <span
+      className="label"
+    >
+      <span
+        className="material-icons favorite"
+      >
+        favorite
+      </span>
+      Top Topics
+    </span>
+  </span>
+  <span
+    className="topics"
+  />
+</div>
+`;
+
+exports[`<CardContentYotpoReviewTopics/> render() should render correctly if children is empty/null 3`] = `
+<div
+  className="topTopicsContainer"
+>
+  <span
+    className="container"
+  >
+    <span
+      className="label"
+    >
+      <span
+        className="material-icons favorite"
+      >
+        favorite
+      </span>
+      Top Topics
+    </span>
+  </span>
+  <span
+    className="topics"
+  />
+</div>
+`;

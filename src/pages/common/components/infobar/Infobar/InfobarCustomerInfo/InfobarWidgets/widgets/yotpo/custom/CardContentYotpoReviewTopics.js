@@ -11,13 +11,15 @@ type Props = {
 export function CardContentYotpoReviewTopics({children}: Props) {
     let topics = []
 
-    Object.keys(children).forEach((key) => {
-        topics.push(
-            <Badge key={key} className={css.topic}>
-                {children[key]}
-            </Badge>
-        )
-    })
+    if (children) {
+        Object.keys(children).forEach((key) => {
+            topics.push(
+                <Badge key={key} className={css.topic}>
+                    {children[key]}
+                </Badge>
+            )
+        })
+    }
 
     return (
         <div className={css.topTopicsContainer}>

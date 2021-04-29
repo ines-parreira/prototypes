@@ -36,5 +36,10 @@ describe('<AfterContent/>', () => {
 
             expect(component).toMatchSnapshot()
         })
+        it('should render top topics sections even with no data', () => {
+            const component = shallow(<AfterContent source={fromJS({})} />)
+
+            expect(component).toMatchSnapshot()
+        })
     })
 })

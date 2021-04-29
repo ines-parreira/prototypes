@@ -42,7 +42,7 @@ class AfterContent extends React.Component<AfterContentReviewStatisticsProps> {
         return (
             <>
                 <CardContentYotpoReviewTopics>
-                    {toJS(source.getIn(['top_topics']))}
+                    {toJS(source.getIn(['top_topics'], {}))}
                 </CardContentYotpoReviewTopics>
             </>
         )
