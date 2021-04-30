@@ -107,6 +107,9 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                       ToggleButtonMock value=true
                     </div>
                   </td>
+                  <td
+                    class="smallest align-middle"
+                  />
                 </tr>
                 <tr>
                   <td
@@ -136,6 +139,9 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                       ToggleButtonMock value=false
                     </div>
                   </td>
+                  <td
+                    class="smallest align-middle"
+                  />
                 </tr>
                 <tr>
                   <td
@@ -346,6 +352,9 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                       ToggleButtonMock value=true
                     </div>
                   </td>
+                  <td
+                    class="smallest align-middle"
+                  />
                 </tr>
                 <tr>
                   <td
@@ -375,6 +384,9 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                       ToggleButtonMock value=false
                     </div>
                   </td>
+                  <td
+                    class="smallest align-middle"
+                  />
                 </tr>
                 <tr>
                   <td

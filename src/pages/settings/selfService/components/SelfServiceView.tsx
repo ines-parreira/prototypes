@@ -6,6 +6,7 @@ import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import PageHeader from '../../../common/components/PageHeader'
+import Tooltip from '../../../common/components/Tooltip'
 import {RootState} from '../../../../state/types'
 
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
@@ -25,6 +26,7 @@ import {
 import {SelfServiceConfiguration} from '../../../../state/self_service/types'
 
 import {IntegrationRow} from './IntegrationRow'
+import css from './SelfServiceView.less'
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
@@ -70,7 +72,25 @@ export const SelfServiceView = ({
                                 are having. It will then create a chat ticket
                                 for your team to handle.
                             </p>
-                            <h5>Enable Self-service</h5>
+                            <h5>
+                                Enable Self-service{' '}
+                                <i
+                                    id="enable-self-service-icon"
+                                    className={`material-icons-outlined ${css.enableSelfServiceIcon}`}
+                                >
+                                    info
+                                </i>
+                                <Tooltip
+                                    target="enable-self-service-icon"
+                                    placement="top"
+                                    popperClassName={
+                                        css.enableSelfServiceTooltip
+                                    }
+                                >
+                                    Self-Service is currently only available for
+                                    chat.
+                                </Tooltip>
+                            </h5>
                             {shopifyIntegrations.size === 0 ? (
                                 <Alert color="warning">
                                     No active Shopify store detected. Please
@@ -83,7 +103,7 @@ export const SelfServiceView = ({
                                         Self-service is only available to stores
                                         that have a Shopify store integration.
                                     </p>
-                                    <Table>
+                                    <Table className="table-hover table-integrations">
                                         <tbody>
                                             {shopifyIntegrations
                                                 .valueSeq()

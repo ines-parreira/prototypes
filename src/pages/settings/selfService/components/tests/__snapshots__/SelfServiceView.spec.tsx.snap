@@ -34,12 +34,19 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
             </p>
             <h5>
               Enable Self-service
+               
+              <i
+                class="material-icons-outlined enableSelfServiceIcon"
+                id="enable-self-service-icon"
+              >
+                info
+              </i>
             </h5>
             <p>
               Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
-              class="table"
+              class="table-hover table-integrations table"
             >
               <tbody>
                 <tr>
@@ -244,12 +251,19 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
             </p>
             <h5>
               Enable Self-service
+               
+              <i
+                class="material-icons-outlined enableSelfServiceIcon"
+                id="enable-self-service-icon"
+              >
+                info
+              </i>
             </h5>
             <p>
               Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
-              class="table"
+              class="table-hover table-integrations table"
             >
               <tbody>
                 <tr>
@@ -454,12 +468,19 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
             </p>
             <h5>
               Enable Self-service
+               
+              <i
+                class="material-icons-outlined enableSelfServiceIcon"
+                id="enable-self-service-icon"
+              >
+                info
+              </i>
             </h5>
             <p>
               Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
-              class="table"
+              class="table-hover table-integrations table"
             >
               <tbody>
                 <tr>
@@ -627,6 +648,13 @@ exports[`<SelfServiceView/> render() should render the default message when ther
             </p>
             <h5>
               Enable Self-service
+               
+              <i
+                class="material-icons-outlined enableSelfServiceIcon"
+                id="enable-self-service-icon"
+              >
+                info
+              </i>
             </h5>
             <div
               class="alert alert-warning fade"

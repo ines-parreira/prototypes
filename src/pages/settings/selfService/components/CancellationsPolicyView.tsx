@@ -197,7 +197,7 @@ export const CancellationsPolicyView = ({
                                                 id="order-status"
                                                 className={css.orderStatus}
                                             >
-                                                Order status is:
+                                                Order status is
                                             </div>
                                             <Tooltip
                                                 autohide={false}
@@ -233,7 +233,7 @@ export const CancellationsPolicyView = ({
                                         </div>
                                         <Button
                                             type="submit"
-                                            color="success"
+                                            color="primary"
                                             className={classNames('mr-2', {
                                                 'btn-loading': loading,
                                             })}

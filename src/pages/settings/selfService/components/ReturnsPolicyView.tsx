@@ -80,19 +80,26 @@ export const ReturnsPolicyView = ({
         )
 
         setEligibilityWindowCondition(eligibilityFilter?.key || '')
-        setShowLessThan(Boolean(eligibilityFilter?.key))
         setEligibilityWindowConditionValue(eligibilityFilter?.value || '1')
-
         setStoredEligibility({
             value: eligibilityFilter?.value || '1',
             condition: eligibilityFilter?.key || '',
         })
     }, [configuration])
 
-    const [loading, setLoading] = useState(true)
+    useEffect(() => {
+        setShowLessThan(Boolean(eligibilityWindowCondition))
+    }, [eligibilityWindowCondition])
+
     useEffect(() => {
         setLoading(isLoadingConfig)
     }, [isLoadingConfig])
+
+    const [loading, setLoading] = useState(true)
+
+    const formHasChanged =
+        storedEligibility.value !== eligibilityWindowConditionValue ||
+        storedEligibility.condition !== eligibilityWindowCondition
 
     const onCancel = () => {
         setEligibilityWindowConditionValue(storedEligibility.value)
@@ -263,11 +270,13 @@ export const ReturnsPolicyView = ({
                                         </div>
                                         <Button
                                             type="submit"
-                                            color="success"
+                                            color="primary"
                                             className={classNames('mr-2', {
                                                 'btn-loading': loading,
                                             })}
-                                            disabled={loading}
+                                            disabled={
+                                                loading || !formHasChanged
+                                            }
                                         >
                                             Save changes
                                         </Button>
@@ -277,11 +286,7 @@ export const ReturnsPolicyView = ({
                                                 'btn-loading': loading,
                                             })}
                                             disabled={
-                                                loading ||
-                                                (eligibilityWindowConditionValue ===
-                                                    storedEligibility.value &&
-                                                    eligibilityWindowCondition ===
-                                                        storedEligibility.condition)
+                                                loading || !formHasChanged
                                             }
                                             onClick={onCancel}
                                         >

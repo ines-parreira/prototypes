@@ -143,7 +143,8 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
                 </div>
               </div>
               <button
-                class="mr-2 btn btn-success"
+                class="mr-2 btn btn-primary disabled"
+                disabled=""
                 type="submit"
               >
                 Save changes

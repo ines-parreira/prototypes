@@ -85,7 +85,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                   class="orderStatus"
                   id="order-status"
                 >
-                  Order status is:
+                  Order status is
                 </div>
                 <div>
                   <div
@@ -143,7 +143,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                 </div>
               </div>
               <button
-                class="mr-2 btn btn-success disabled"
+                class="mr-2 btn btn-primary disabled"
                 disabled=""
                 type="submit"
               >
@@ -251,7 +251,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                   class="orderStatus"
                   id="order-status"
                 >
-                  Order status is:
+                  Order status is
                 </div>
                 <div>
                   <div
@@ -309,7 +309,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                 </div>
               </div>
               <button
-                class="mr-2 btn btn-success disabled"
+                class="mr-2 btn btn-primary disabled"
                 disabled=""
                 type="submit"
               >

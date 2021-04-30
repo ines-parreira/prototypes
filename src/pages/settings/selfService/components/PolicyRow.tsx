@@ -90,19 +90,19 @@ export const PolicyRow = ({
             <td className="smallest align-middle">
                 <ToggleButton value={enabled} onChange={_onChange} />
             </td>
-            {policyKey === PolicyEnum.CANCEL_ORDER_POLICY ? (
-                <td className="smallest align-middle">
+
+            <td className="smallest align-middle">
+                {policyKey === PolicyEnum.CANCEL_ORDER_POLICY && (
                     <ForwardIcon
                         href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/cancellations`}
                     />
-                </td>
-            ) : policyKey === PolicyEnum.RETURN_ORDER_POLICY ? (
-                <td className="smallest align-middle">
+                )}
+                {policyKey === PolicyEnum.RETURN_ORDER_POLICY && (
                     <ForwardIcon
                         href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/returns`}
                     />
-                </td>
-            ) : null}
+                )}
+            </td>
         </tr>
     )
 }
