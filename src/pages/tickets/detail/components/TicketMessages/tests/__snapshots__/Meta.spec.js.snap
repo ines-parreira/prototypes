@@ -2,59 +2,6 @@
 
 exports[`ticket message meta facebook should not display link when IDs are missing 1`] = `null`;
 
-exports[`ticket message meta facebook should render "go to comment" and "replied via Messenger" link 1`] = `
-Array [
-  <span
-    class="from"
-  >
-    <span
-      class="fromLabel"
-    >
-      go to
-    </span>
-     
-    <span
-      class="fromValue"
-    >
-      <a
-        href="https://facebook.com/871900732905218/posts/2750858871676052?comment_id=2823237684438170"
-        rel="noopener noreferrer"
-        target="_blank"
-        title="https://facebook.com/871900732905218/posts/2750858871676052?comment_id=2823237684438170"
-      >
-        comment
-      </a>
-    </span>
-  </span>,
-  <span
-    class="repliedViaMessenger"
-  >
-    <span
-      class="from"
-    >
-      <span
-        class="fromLabel"
-      >
-        replied via
-      </span>
-       
-      <span
-        class="fromValue"
-      >
-        <a
-          href="178"
-          rel="noopener noreferrer"
-          target="_blank"
-          title="178"
-        >
-          Messenger
-        </a>
-      </span>
-    </span>
-  </span>,
-]
-`;
-
 exports[`ticket message meta should add a -sent via campaign- label because the message was sent by a campaign on a gorgias-chat integration 1`] = `
 <From
   key="via-widget"

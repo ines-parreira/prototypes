@@ -56,7 +56,3 @@ export const INSTAGRAM_DM_ALLOWED_DOMAINS = [
     'angelus-direct',
     'love-wellness',
 ]
-
-//Todo(@Mehdi): use `INSTAGRAM_DM_ALLOWED_DOMAINS` instead when we want private reply feature to be visible
-// for accounts that are allowed to use IG DM
-export const INSTAGRAM_PRIVATE_REPLY_ALLOWED_DOMAINS = ['acme', 'facebooktest']

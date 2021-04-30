@@ -37,6 +37,8 @@ import AuditLogEvent from './AuditLogEvent'
 import type {HighlightedElements} from './AuditLogEvent'
 import Event from './Event'
 import PhoneEvent from './PhoneEvent/PhoneEvent.tsx'
+import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent.tsx'
+import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants.ts'
 
 type Props = {
     currentUser: Map<*, *>,
@@ -230,6 +232,10 @@ export class TicketBody extends React.Component<Props, State> {
                         const elementId = elementMap.get('id')
                         const isLast = index === elements.size - 1
                         const key = `event-${elementId}`
+                        const action_name = elementMap.getIn([
+                            'data',
+                            'action_name',
+                        ])
 
                         if (isTicketSatisfactionSurvey(element)) {
                             return (
@@ -259,6 +265,19 @@ export class TicketBody extends React.Component<Props, State> {
                             if (PHONE_EVENTS.includes(elementType)) {
                                 return (
                                     <PhoneEvent
+                                        key={key}
+                                        event={elementMap}
+                                        isLast={isLast}
+                                    />
+                                )
+                            }
+
+                            if (
+                                !!action_name &&
+                                PRIVATE_REPLY_ACTIONS.includes(action_name)
+                            ) {
+                                return (
+                                    <PrivateReplyEvent
                                         key={key}
                                         event={elementMap}
                                         isLast={isLast}
