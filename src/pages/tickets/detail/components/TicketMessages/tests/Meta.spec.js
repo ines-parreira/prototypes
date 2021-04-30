@@ -1,5 +1,5 @@
 //@flow
-import {shallow} from 'enzyme'
+import {shallow, render} from 'enzyme'
 import React from 'react'
 
 import {TicketVias} from '../../../../../../business/ticket.ts'
@@ -154,6 +154,43 @@ describe('ticket message meta', () => {
 
             const component = shallow(
                 <Meta via="facebook" integrationId={118} source={source} />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render "go to comment" and "replied via Messenger" link', () => {
+            const pageId = '871900732905218'
+            const postId = '2750858871676052'
+            const userId = '2941872749234184'
+            const commentId = '2823237684438170'
+            const source = {
+                extra: {
+                    page_id: pageId,
+                    post_id: `${pageId}_${postId}`,
+                    parent_id: `${pageId}_${postId}`,
+                },
+                from: {address: `${pageId}-${userId}`, name: 'Foo Bar'},
+                type: 'facebook-comment',
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+            }
+
+            const meta = {
+                private_reply: {
+                    already_sent: true,
+                    sent_datetime: '2020-11-18 04:30:58.978109',
+                    messenger_ticket_id: 178,
+                },
+            }
+
+            const component = render(
+                <Meta
+                    messageId={`${postId}_${commentId}`}
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    meta={meta}
+                />
             )
 
             expect(component).toMatchSnapshot()

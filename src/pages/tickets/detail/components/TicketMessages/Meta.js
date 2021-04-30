@@ -180,6 +180,26 @@ export default function Meta(props: Props) {
         )
     }
 
+    if (
+        meta?.private_reply?.sent_datetime &&
+        meta?.private_reply?.messenger_ticket_id
+    ) {
+        widgets.push(
+            <span className={css.repliedViaMessenger}>
+                <From label="replied via" key="ref-widget">
+                    <a
+                        target="_blank"
+                        href={meta?.private_reply?.messenger_ticket_id}
+                        title={meta?.private_reply?.messenger_ticket_id}
+                        rel="noopener noreferrer"
+                    >
+                        Messenger
+                    </a>
+                </From>
+            </span>
+        )
+    }
+
     let sentViaLabel
     let sentViaLink
 

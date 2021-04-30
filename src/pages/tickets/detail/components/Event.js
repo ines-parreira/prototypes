@@ -16,58 +16,11 @@ import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 import {getIntegrationById} from '../../../../state/integrations/selectors.ts'
 import {getIntegrationDataByIntegrationId} from '../../../../state/ticket/selectors.ts'
 
+import facebookMessengerIcon from '../../../../../img/integrations/facebook-messenger-blue-icon.svg'
+import InstagramDirectMessageIcon from '../../../../../img/integrations/Instagram-direct-message-blue.svg'
+import InstagramIcon from '../../../../../img/integrations/instagram-icon-blue.svg'
+
 import css from './Event.less'
-
-export function renderDetails(isError, eventData) {
-    const payload = eventData.get('payload') || fromJS({})
-    const content = []
-
-    if (isError) {
-        content.push(
-            <div key="error">
-                <b className="text-danger">Error:</b>{' '}
-                {stripErrorMessage(eventData.get('msg'))}
-            </div>
-        )
-    }
-
-    if (!payload.isEmpty()) {
-        content.push(
-            <div key="payload">
-                <div>
-                    {payload
-                        .map((value, key) => {
-                            let formattedValue
-
-                            // Necessary to display correctly booleans
-                            if (typeof value === 'boolean') {
-                                formattedValue = value.toString()
-                            } else if (_isObject(value)) {
-                                formattedValue = (
-                                    <JSONPretty
-                                        data={value.toJS()}
-                                        className="d-inline-flex"
-                                    />
-                                )
-                            } else {
-                                formattedValue = value
-                            }
-
-                            return (
-                                <div key={key}>
-                                    <b>{humanizeString(key)}</b>:{' '}
-                                    {formattedValue}
-                                </div>
-                            )
-                        })
-                        .toList()}
-                </div>
-            </div>
-        )
-    }
-
-    return content
-}
 
 export class EventContainer extends React.Component {
     static propTypes = {
@@ -121,6 +74,57 @@ export class EventContainer extends React.Component {
                 (charge) => charge.get('id').toString() === chargeId.toString()
             ) || fromJS({})
         )
+    }
+
+    _renderDetails = (isError, eventData) => {
+        const payload = eventData.get('payload') || fromJS({})
+        const content = []
+
+        if (isError) {
+            content.push(
+                <div key="error">
+                    <b className="text-danger">Error:</b>{' '}
+                    {stripErrorMessage(eventData.get('msg'))}
+                </div>
+            )
+        }
+
+        if (!payload.isEmpty()) {
+            content.push(
+                <div key="payload">
+                    <div>
+                        {payload
+                            .map((value, key) => {
+                                let formattedValue
+
+                                // Necessary to display correctly booleans
+                                if (typeof value === 'boolean') {
+                                    formattedValue = value.toString()
+                                } else if (_isObject(value)) {
+                                    formattedValue = (
+                                        <JSONPretty
+                                            data={value.toJS()}
+                                            className="d-inline-flex"
+                                        />
+                                    )
+                                } else {
+                                    formattedValue = value
+                                }
+
+                                return (
+                                    <div key={key}>
+                                        <b>{humanizeString(key)}</b>:{' '}
+                                        {formattedValue}
+                                    </div>
+                                )
+                            })
+                            .toList()}
+                    </div>
+                </div>
+            )
+        }
+
+        return content
     }
 
     getDisplayableType(integrationType) {
@@ -214,6 +218,62 @@ export class EventContainer extends React.Component {
                     objectLabel += charge.get('id')
                     objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/orders`
                 }
+            } else if (integration.get('type') === 'facebook') {
+                shouldDisplayIntegration = false
+
+                let privateReplyTicketId = '#'
+                let icon
+
+                const messengerTicketId = event.getIn([
+                    'data',
+                    'messenger_ticket_id',
+                ])
+
+                const instagramDirectMessageTicketId = event.getIn([
+                    'data',
+                    'instagram_direct_message_ticket_id',
+                ])
+
+                const instagramCommentTicketId = event.getIn([
+                    'data',
+                    'instagram_comment_ticket_id',
+                ])
+
+                const isInstagramPrivateReplyEvent =
+                    instagramDirectMessageTicketId != null
+                const isInstagramPrivateReplyEventInDirectMessageTicket =
+                    instagramCommentTicketId != null
+
+                if (isInstagramPrivateReplyEvent) {
+                    objectLabel += `Direct Message`
+                    privateReplyTicketId = instagramDirectMessageTicketId
+                    icon = InstagramDirectMessageIcon
+                } else if (isInstagramPrivateReplyEventInDirectMessageTicket) {
+                    actionLabel = 'Responding to an'
+                    objectLabel += `Instagram Comment`
+                    privateReplyTicketId = instagramCommentTicketId
+                    icon = InstagramIcon
+                } else {
+                    objectLabel += `Messenger`
+                    privateReplyTicketId = !!messengerTicketId
+                        ? messengerTicketId
+                        : privateReplyTicketId
+                    icon = facebookMessengerIcon
+                }
+
+                objectLink = `${privateReplyTicketId}`
+
+                if (isError === false) {
+                    eventIcon = (
+                        <div className={css.privateReplyEventIcon}>
+                            <img
+                                src={icon}
+                                alt="private reply event"
+                                key="private-reply-event"
+                            />
+                        </div>
+                    )
+                }
             }
         } else {
             actionLabel += ` #${payload.get('order_id')} (deleted integration)`
@@ -293,7 +353,7 @@ export class EventContainer extends React.Component {
                     })}
                 >
                     <CardBody>
-                        {renderDetails(isError, event.get('data'))}
+                        {this._renderDetails(isError, event.get('data'))}
                     </CardBody>
                 </Card>
             </div>

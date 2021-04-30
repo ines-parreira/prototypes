@@ -14,7 +14,7 @@ import {
 
 import PrivateReplyButton from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyButton.tsx'
 
-import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants'
+import {INSTAGRAM_PRIVATE_REPLY_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants'
 
 import css from './SourceActions.less'
 
@@ -99,7 +99,7 @@ export class SourceActionsHeader extends React.Component<Props> {
 
             if (
                 (isInstagramComment &&
-                    INSTAGRAM_DM_ALLOWED_DOMAINS.includes(
+                    INSTAGRAM_PRIVATE_REPLY_ALLOWED_DOMAINS.includes(
                         currentAccountDomain
                     )) ||
                 isFacebookComment
@@ -112,11 +112,12 @@ export class SourceActionsHeader extends React.Component<Props> {
                         ticketMessageId={ticketMessageId}
                         senderId={senderId}
                         ticketId={ticketId}
-                        commentMessage={bodyText}
+                        facebookComment={bodyText}
                         source={source}
                         sender={sender}
                         meta={meta}
                         messageCreatedDatetime={messageCreatedDatetime}
+                        executeAction={this.props.executeAction}
                         isFacebookComment={isFacebookComment}
                         className={classNames(
                             'hidden-sm-down',
