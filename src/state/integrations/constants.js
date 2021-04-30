@@ -144,4 +144,5 @@ export const INSTAGRAM_DM_ALLOWED_DOMAINS = [
     'tog24',
     'wethenew',
     'siete',
+    'kitsch',
 ]
