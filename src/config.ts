@@ -144,21 +144,8 @@ export const DEFAULT_SOURCE_PATHS = {
  * Integration-related
  */
 
-export function shouldHidePhoneIntegration() {
-    const isProd =
-        location.hostname.endsWith('.gorgias.io') ||
-        location.hostname.endsWith('.gorgias.com')
-    const phoneAllowedHostnames = [
-        'test-samy.gorgias.com',
-        'illiatststore.gorgias.com',
-        'zachbanov.gorgias.com',
-        'test-martin.gorgias.com',
-        'bakehouse.gorgias.com',
-        'artemisathletix.gorgias.com',
-    ]
-
-    return isProd && !phoneAllowedHostnames.includes(location.hostname)
-}
+const hasPhoneEarlyAccess = !!window.GORGIAS_STATE?.integrations.extra.phone
+    ?.has_early_access
 
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
@@ -171,6 +158,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
             'https://gorgias.typeform.com/to/IbJV4T8S?utm_source=in_app_settings_integrations',
         image: 'integrations/phone.png',
         isEarlyAccess: true,
+        hide: hasPhoneEarlyAccess,
     },
     {
         type: IntegrationType.EmailIntegrationType,
@@ -188,7 +176,8 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Phone',
         description: 'Chat with your customers over the phone from Gorgias.',
         image: 'integrations/phone.png',
-        hide: shouldHidePhoneIntegration(),
+        hide: !hasPhoneEarlyAccess,
+        requiredFeature: AccountFeatures.PhoneIntegration,
     },
     {
         type: IntegrationType.GorgiasChatIntegrationType,

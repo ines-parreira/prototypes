@@ -48,6 +48,7 @@ export const account: Account = {
         [AccountFeatures.FacebookComment]: true,
         [AccountFeatures.ChatCampaigns]: true,
         [AccountFeatures.InstagramComment]: true,
+        [AccountFeatures.PhoneIntegration]: true,
         [AccountFeatures.MagentoIntegration]: true,
         [AccountFeatures.YotpoIntegration]: true,
         [AccountFeatures.RevenueStatistics]: true,

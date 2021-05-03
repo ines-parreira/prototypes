@@ -679,6 +679,18 @@ exports[`<BillingPlans/> should display plans with product features 1`] = `
               <i
                 class="material-icons feature-icon mr-3"
               >
+                widgets
+              </i>
+              <strong>
+                Phone integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
                 insert_emoticon
               </i>
               <strong>

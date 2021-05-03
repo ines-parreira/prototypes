@@ -149,6 +149,18 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
+          widgets
+        </i>
+        <strong>
+          Phone integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
           insert_emoticon
         </i>
         <strong>
@@ -279,6 +291,18 @@ exports[`<Plan/> should render a plan different from the current plan 1`] = `
         </i>
         <strong>
           Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Phone integration
         </strong>
       </li>
       <li
@@ -429,6 +453,18 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
+          widgets
+        </i>
+        <strong>
+          Phone integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
           insert_emoticon
         </i>
         <strong>
@@ -558,6 +594,18 @@ exports[`<Plan/> should render a plan identical to the current plan 1`] = `
         </i>
         <strong>
           Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Phone integration
         </strong>
       </li>
       <li
@@ -709,6 +757,18 @@ exports[`<Plan/> should render a plan with cheaper plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
+          widgets
+        </i>
+        <strong>
+          Phone integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
           insert_emoticon
         </i>
         <strong>
@@ -838,6 +898,18 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         </i>
         <strong>
           Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Phone integration
         </strong>
       </li>
       <li
@@ -983,6 +1055,18 @@ exports[`<Plan/> should render a plan with default props 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
+          widgets
+        </i>
+        <strong>
+          Phone integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
           insert_emoticon
         </i>
         <strong>
@@ -1120,6 +1204,18 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
+          widgets
+        </i>
+        <strong>
+          Phone integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
           insert_emoticon
         </i>
         <strong>
@@ -1249,6 +1345,18 @@ exports[`<Plan/> should render a plan with no footer 1`] = `
         </i>
         <strong>
           Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Phone integration
         </strong>
       </li>
       <li

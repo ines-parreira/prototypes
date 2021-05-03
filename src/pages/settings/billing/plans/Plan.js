@@ -97,6 +97,11 @@ const featuresConfig = [
         label: 'Magento integration',
     },
     {
+        name: 'phone_integration',
+        icon: 'widgets',
+        label: 'Phone integration',
+    },
+    {
         name: 'satisfaction_surveys',
         icon: 'insert_emoticon',
         label: 'Satisfaction surveys',

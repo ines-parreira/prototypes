@@ -142,4 +142,8 @@ export type IntegrationExtra<
           chatUrl: string
           wsUrl: string
       }
+    : T extends IntegrationType.PhoneIntegrationType
+    ? {
+          has_early_access: boolean
+      }
     : never
