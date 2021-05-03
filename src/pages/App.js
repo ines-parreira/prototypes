@@ -66,7 +66,7 @@ type Props = {
 }
 
 class App extends React.Component<Props> {
-    componentWillMount() {
+    componentDidMount() {
         this.props.injectInterceptor()
 
         const item = this.props.currentAccount
@@ -84,9 +84,6 @@ class App extends React.Component<Props> {
 
         // ask for the newest view counts
         this.props.fetchVisibleViewsCounts()
-    }
-
-    componentDidMount() {
         shortcutManager.bind('App', {
             GO_VIEW: {
                 action: (e) => {
