@@ -95,7 +95,7 @@ class TicketListInfobarContainer extends Component<Props> {
 
         return (
             <InfobarLayout>
-                <div className={classnames(css.page, 'infobar-content')}>
+                <div className={css.page}>
                     <div className={css.content}>
                         <h1>
                             Welcome

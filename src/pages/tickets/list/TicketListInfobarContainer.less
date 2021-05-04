@@ -1,70 +1,71 @@
 :local .page {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-
-  .content {
-    flex: 1;
-    padding-top: 30px;
-    text-align: center;
-    display: flex;
-    flex-basis: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  h1 {
-    margin-bottom: 26px;
-  }
-
-  .buttons {
-    width: 280px;
     display: flex;
     flex-direction: column;
-
-    .button {
-      display: inline-flex;
-      justify-content: flex-start;
-      align-items: center;
-      border-radius: 3px;
-      background-color: #FFF;
-      border: 1px solid #F0F0F0;
-      height: 60px;
-      padding: 0 16px;
-      font-size: 19px;
-      color: inherit;
-      font-weight: bold;
-      margin-bottom: 12px;
-
-      &:hover {
-        background-color: #F3F3F3;
-        border-color: #e9eaea;
-      }
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      :global .text-success {
-        color: #2DCF57 !important;
-      }
-
-      div {
-        flex-grow: 2;
-      }
-    }
-  }
-
-  .bottom {
     width: 100%;
-    padding: 30px;
-    text-align: center;
+    height: 100%;
+    overflow-y: auto;
 
-    a {
-      cursor: pointer;
+    .content {
+        flex: 1;
+        padding-top: 30px;
+        text-align: center;
+        display: flex;
+        flex-basis: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
     }
-  }
+
+    h1 {
+        margin-bottom: 26px;
+    }
+
+    .buttons {
+        width: 280px;
+        display: flex;
+        flex-direction: column;
+
+        .button {
+            display: inline-flex;
+            justify-content: flex-start;
+            align-items: center;
+            border-radius: 3px;
+            background-color: #fff;
+            border: 1px solid #f0f0f0;
+            height: 60px;
+            padding: 0 16px;
+            font-size: 19px;
+            color: inherit;
+            font-weight: bold;
+            margin-bottom: 12px;
+
+            &:hover {
+                background-color: #f3f3f3;
+                border-color: #e9eaea;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            :global .text-success {
+                color: #2dcf57 !important;
+            }
+
+            div {
+                flex-grow: 2;
+            }
+        }
+    }
+
+    .bottom {
+        width: 100%;
+        padding: 30px;
+        text-align: center;
+
+        a {
+            cursor: pointer;
+        }
+    }
 }
