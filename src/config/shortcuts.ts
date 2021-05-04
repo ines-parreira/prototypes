@@ -93,6 +93,14 @@ const shortcuts: Record<string, KeyMap> = {
                 key: 'c',
                 description: 'Close selected tickets.',
             },
+            MARK_TICKET_READ: {
+                key: 'shift+i',
+                description: 'Mark selected tickets as read.',
+            },
+            MARK_TICKET_UNREAD: {
+                key: 'shift+u',
+                description: 'Mark selected tickets as unread.',
+            },
             DELETE_TICKET: {
                 key: '#',
                 description: 'Delete selected tickets.',

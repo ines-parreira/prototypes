@@ -2,7 +2,7 @@
 
 exports[`ViewTable::Table::Row default row displays 1`] = `
 <tr
-  className=""
+  className="highlighted"
 >
   <td
     className="cell-wrapper cell-short clickable d-none d-md-table-cell"
@@ -25,6 +25,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
       Immutable.Map {
         "trashed_datetime": null,
         "channel": "email",
+        "is_unread": true,
         "meta": null,
         "last_received_message_datetime": null,
         "subject": "Great ticket",
@@ -565,6 +566,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
       Immutable.Map {
         "trashed_datetime": null,
         "channel": "email",
+        "is_unread": true,
         "meta": null,
         "last_received_message_datetime": null,
         "subject": "Great ticket",
@@ -1112,6 +1114,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
       Immutable.Map {
         "trashed_datetime": null,
         "channel": "email",
+        "is_unread": true,
         "meta": null,
         "last_received_message_datetime": null,
         "subject": "Great ticket",
@@ -1646,7 +1649,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
 
 exports[`ViewTable::Table::Row display agents viewing 1`] = `
 <tr
-  className=""
+  className="highlighted"
 >
   <td
     className="cell-wrapper cell-short clickable d-none d-md-table-cell"
@@ -1679,6 +1682,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
       Immutable.Map {
         "trashed_datetime": null,
         "channel": "email",
+        "is_unread": true,
         "meta": null,
         "last_received_message_datetime": null,
         "subject": "Great ticket",
@@ -2219,6 +2223,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
       Immutable.Map {
         "trashed_datetime": null,
         "channel": "email",
+        "is_unread": true,
         "meta": null,
         "last_received_message_datetime": null,
         "subject": "Great ticket",
@@ -2766,6 +2771,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
       Immutable.Map {
         "trashed_datetime": null,
         "channel": "email",
+        "is_unread": true,
         "meta": null,
         "last_received_message_datetime": null,
         "subject": "Great ticket",

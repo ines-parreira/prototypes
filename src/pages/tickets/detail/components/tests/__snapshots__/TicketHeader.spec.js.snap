@@ -1,5 +1,224 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TicketHeader component should render an unread ticket without the "Mark as unread" action 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex justify-content-between mb-2"
+  >
+    <EditableTitle
+      className="mr-2 editableTitle"
+      focus={false}
+      placeholder="Subject"
+      size="xl"
+      style={Object {}}
+      title="foo"
+      update={[Function]}
+    />
+    <TicketSnooze
+      className="headerIcon"
+      timezone="America/Los_Angeles"
+    />
+    <TicketTrash
+      className="headerIcon"
+      trashed={false}
+    />
+    <TicketSpam
+      className="headerIcon"
+      spam={false}
+    />
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        className="btn-transparent"
+        color="secondary"
+        id="ticket-actions-button"
+        size="sm"
+        type="button"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          more_vert
+        </i>
+      </DropdownToggle>
+      <TicketSnoozePicker
+        isOpen={false}
+        onApply={[Function]}
+        timezone="America/Los_Angeles"
+        toggle={[Function]}
+      />
+      <DropdownMenu
+        className="actionsDropdown"
+        flip={true}
+        right={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            snooze
+          </i>
+          Snooze
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            call_merge
+          </i>
+          Merge ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            event_note
+          </i>
+          Display
+           
+          all events
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            print
+          </i>
+          Print ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <span>
+            <i
+              className="icon material-icons"
+            >
+              not_interested
+            </i>
+            Mark as spam
+          </span>
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <div
+            className="text-danger"
+          >
+            <i
+              className="icon material-icons"
+            >
+              delete
+            </i>
+            Delete
+          </div>
+          <Popover
+            fade={false}
+            isOpen={false}
+            placement="bottom"
+            placementPrefix="bs-popover"
+            target="ticket-actions-button"
+            toggle={[Function]}
+            trigger="legacy"
+          >
+            <PopoverHeader
+              tag="h3"
+            >
+              Are you sure?
+            </PopoverHeader>
+            <PopoverBody
+              tag="div"
+            >
+              <p>
+                You are about to
+                 
+                <b>
+                  delete
+                </b>
+                 this ticket.
+              </p>
+              <Button
+                autoFocus={true}
+                color="success"
+                onClick={[Function]}
+                tag="button"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </PopoverBody>
+          </Popover>
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="d-flex justify-content-between"
+  >
+    <div
+      className="d-inline-flex"
+    >
+      <TicketStatus
+        currentStatus="open"
+        setQuickStatus={[Function]}
+      />
+      <Connect(Component)
+        transparent={true}
+      />
+    </div>
+    <div
+      className="d-inline-flex align-items-top"
+    >
+      <Connect(TicketAssignee)
+        className="assignee"
+        direction="right"
+        transparent={true}
+      />
+    </div>
+  </div>
+  <Connect(MergeTicketsContainer)
+    isOpen={false}
+    sourceTicket={
+      Immutable.Map {
+        "id": 1,
+        "is_unread": true,
+        "subject": "foo",
+        "status": "open",
+      }
+    }
+    toggleModal={[Function]}
+  />
+</div>
+`;
+
 exports[`TicketHeader component should render existing ticket 1`] = `
 <div
   className="component"
@@ -80,6 +299,19 @@ exports[`TicketHeader component should render existing ticket 1`] = `
             call_merge
           </i>
           Merge ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            markunread_mailbox
+          </i>
+          Mark as unread
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -370,6 +602,19 @@ exports[`TicketHeader component should render spam ticket 1`] = `
           <i
             className="icon material-icons"
           >
+            markunread_mailbox
+          </i>
+          Mark as unread
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
             event_note
           </i>
           Display
@@ -579,6 +824,19 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
             call_merge
           </i>
           Merge ticket
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <i
+            className="icon material-icons"
+          >
+            markunread_mailbox
+          </i>
+          Mark as unread
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}

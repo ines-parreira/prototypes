@@ -41,6 +41,7 @@ import withCancellableRequest, {
 } from '../../../common/utils/withCancellableRequest'
 import history from '../../../history'
 import {JobType} from '../../../../models/job/types'
+import {getTickets} from '../../../../state/tickets/selectors'
 
 import css from './TicketListActions.less'
 
@@ -83,6 +84,7 @@ export const TicketListActionsContainer = ({
     currentUser,
     isActiveViewTrashView,
     searchTagsDebounceDelay = 300,
+    tickets,
 }: Props) => {
     const [openDropdown, setOpenDropdown] = useState<ActionDropdown | null>(
         null
@@ -124,6 +126,32 @@ export const TicketListActionsContainer = ({
             ? getViewCount(activeView.get('id'))
             : selectedItemsIds.size
     }, [allViewItemsSelected, getViewCount, selectedItemsIds.size])
+
+    const selectedTickets = useMemo<List<Map<any, any>>>(() => {
+        return selectedItemsIds
+            .map((id) => {
+                return tickets.find(
+                    (ticket: Map<any, any>) => ticket.get('id') === id
+                ) as Map<any, any> | undefined
+            })
+            .filter((ticket) => !!ticket) as List<Map<any, any>>
+    }, [tickets, selectedItemsIds])
+
+    const isMarkAsReadActionAvailable = useMemo<boolean>(() => {
+        return (
+            allViewItemsSelected ||
+            !!selectedTickets.find(
+                (ticket) => ticket!.get('is_unread') as boolean
+            )
+        )
+    }, [selectedTickets, allViewItemsSelected])
+
+    const isMarkAsUnreadActionAvailable = useMemo<boolean>(() => {
+        return (
+            allViewItemsSelected ||
+            !!selectedTickets.find((ticket) => !ticket!.get('is_unread'))
+        )
+    }, [selectedTickets, allViewItemsSelected])
 
     const toggleDropdown = (dropdown: ActionDropdown): boolean => {
         const newOpenDropdown = openDropdown !== dropdown ? dropdown : null
@@ -291,6 +319,24 @@ export const TicketListActionsContainer = ({
                 key: 'esc',
                 action: () => {
                     setOpenDropdown(null)
+                },
+            },
+            MARK_TICKET_READ: {
+                action: (event) => {
+                    if (!isMarkAsReadActionAvailable) {
+                        return
+                    }
+                    event.preventDefault()
+                    bulkUpdate('is_unread', false)
+                },
+            },
+            MARK_TICKET_UNREAD: {
+                action: (event) => {
+                    if (!isMarkAsUnreadActionAvailable) {
+                        return
+                    }
+                    event.preventDefault()
+                    bulkUpdate('is_unread', true)
                 },
             },
         })
@@ -620,6 +666,22 @@ export const TicketListActionsContainer = ({
                         <DropdownItem type="button" onClick={openMacroModal}>
                             Apply macro
                         </DropdownItem>
+                        {isMarkAsReadActionAvailable && (
+                            <DropdownItem
+                                type="button"
+                                onClick={() => bulkUpdate('is_unread', false)}
+                            >
+                                Mark as read
+                            </DropdownItem>
+                        )}
+                        {isMarkAsUnreadActionAvailable && (
+                            <DropdownItem
+                                type="button"
+                                onClick={() => bulkUpdate('is_unread', true)}
+                            >
+                                Mark as unread
+                            </DropdownItem>
+                        )}
                         {hasRole(currentUser, AGENT_ROLE) && (
                             <DropdownItem type="button" onClick={bulkExport}>
                                 Export tickets
@@ -703,6 +765,7 @@ const connector = connect(
             areFiltersValid: viewsSelectors.areFiltersValid(state),
             activeView: viewsSelectors.getActiveView(state),
             getViewCount: viewsSelectors.makeGetViewCount(state),
+            tickets: getTickets(state),
         }
     },
     (dispatch) => {

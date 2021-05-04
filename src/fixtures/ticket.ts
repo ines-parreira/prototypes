@@ -533,4 +533,5 @@ export const ticket: Ticket = {
         },
     },
     updated_datetime: '2017-07-31T23:07:37.253131+00:00',
+    is_unread: true,
 }

@@ -21,7 +21,11 @@ import {
 } from '../../../models/event/types'
 import {StoreDispatch} from '../../types'
 import {Ticket, TicketMessage} from '../../../models/ticket/types'
-import {TicketMessageFailedEvent} from '../../../services/socketManager/types'
+import socketManager from '../../../services/socketManager/socketManager'
+import {
+    TicketMessageFailedEvent,
+    SocketEventType,
+} from '../../../services/socketManager/types'
 import history from '../../../pages/history'
 
 type MockedRootState = {
@@ -499,6 +503,39 @@ describe('ticket actions', () => {
                     ).toBeUndefined()
                 )
         })
+
+        it('should send ticket-viewed event when ticket is unread', () => {
+            mockServer
+                .onGet('/api/tickets/1/')
+                .reply(200, {id: 1, messages: [], is_unread: true})
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
+            })
+            return store
+                .dispatch(actions.fetchTicket('1'))
+                .then(() =>
+                    expect(socketManager.send).toHaveBeenCalledWith(
+                        SocketEventType.TicketViewed,
+                        1
+                    )
+                )
+        })
+
+        it('should not send ticket-viewed event when ticket is read', () => {
+            mockServer
+                .onGet('/api/tickets/1/')
+                .reply(200, {id: 1, messages: [], is_unread: false})
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
+            })
+            return store
+                .dispatch(actions.fetchTicket('1'))
+                .then(() => expect(socketManager.send).not.toHaveBeenCalled())
+        })
     })
 
     describe('handleMessageError()', () => {
@@ -704,6 +741,43 @@ describe('ticket actions', () => {
                 done()
             })
         })
+
+        it('should send ticket-viewed event when ticket is unread', () => {
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {
+                id: 2,
+                customerId: 1,
+                messages: [],
+                is_unread: true,
+            })
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1}}),
+            })
+
+            return store.dispatch(actions.goToNextTicket(1)).then(() => {
+                expect(socketManager.send).toHaveBeenCalledWith(
+                    SocketEventType.TicketViewed,
+                    2
+                )
+            })
+        })
+
+        it('should not send ticket-viewed event when ticket is read', () => {
+            mockServer.onPut('/api/views/1/tickets/1/next').reply(200, {
+                id: 2,
+                customerId: 1,
+                messages: [],
+                is_unread: false,
+            })
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1}}),
+            })
+
+            return store.dispatch(actions.goToNextTicket(1)).then(() => {
+                expect(socketManager.send).not.toHaveBeenCalled()
+            })
+        })
     })
 
     describe('goToPrevTicket()', () => {
@@ -803,6 +877,43 @@ describe('ticket actions', () => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(history.push).toHaveBeenCalledWith('/app/ticket/1')
                 done()
+            })
+        })
+
+        it('should send ticket-viewed event when ticket is unread', () => {
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {
+                id: 2,
+                customerId: 1,
+                messages: [],
+                is_unread: true,
+            })
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1}}),
+            })
+
+            return store.dispatch(actions.goToPrevTicket(2)).then(() => {
+                expect(socketManager.send).toHaveBeenCalledWith(
+                    SocketEventType.TicketViewed,
+                    2
+                )
+            })
+        })
+
+        it('should not send ticket-viewed event when ticket is read', () => {
+            mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, {
+                id: 2,
+                customerId: 1,
+                messages: [],
+                is_unread: false,
+            })
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {id: 1}}),
+            })
+
+            return store.dispatch(actions.goToPrevTicket(2)).then(() => {
+                expect(socketManager.send).not.toHaveBeenCalled()
             })
         })
     })

@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {
     act,
     fireEvent,
@@ -12,12 +12,13 @@ import _noop from 'lodash/noop'
 
 import {initialState as currentUser} from '../../../../../state/currentUser/reducers'
 import {TicketListActionsContainer} from '../TicketListActions'
-import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user'
+import {AGENT_ROLE, LITE_AGENT_ROLE} from '../../../../../config/user'
 import * as viewsActions from '../../../../../state/views/actions'
 import * as ticketsActions from '../../../../../state/tickets/actions.js'
 import {JobType} from '../../../../../models/job/types'
 import shortcutManager from '../../../../../services/shortcutManager/shortcutManager'
 import history from '../../../../history'
+import {ticket} from '../../../../../fixtures/ticket'
 
 jest.mock('../../../../../services/shortcutManager/shortcutManager')
 jest.mock('../../../../../state/views/actions')
@@ -54,6 +55,7 @@ describe('TicketListActions component', () => {
             views: viewsActionsMock,
             tickets: ticketsActionsMock,
         },
+        tickets: fromJS([]),
     }
 
     const expectAllActionsToHaveEnabledState = (
@@ -600,6 +602,98 @@ describe('TicketListActions component', () => {
                 updates: {status: 'closed'},
             },
         ],
+        [
+            JobType.UpdateTicket,
+            'mark as read dropdown item click',
+            (props) => ({
+                ...props,
+                selectedItemsIds: fromJS([1]),
+                tickets: fromJS([
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: true,
+                    },
+                ]),
+            }),
+            ({getByText}) => {
+                fireEvent.click(getByText('Mark as read'))
+            },
+            {
+                updates: {
+                    is_unread: false,
+                },
+            },
+        ],
+        [
+            JobType.UpdateTicket,
+            'mark as unread dropdown item click',
+            (props) => ({
+                ...props,
+                selectedItemsIds: fromJS([1]),
+                tickets: fromJS([
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: false,
+                    },
+                ]),
+            }),
+            ({getByText}) => {
+                fireEvent.click(getByText('Mark as unread'))
+            },
+            {
+                updates: {
+                    is_unread: true,
+                },
+            },
+        ],
+        [
+            JobType.UpdateTicket,
+            'mark tickets read shortcut',
+            (props) => ({
+                ...props,
+                selectedItemsIds: fromJS([1]),
+                tickets: fromJS([
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: true,
+                    },
+                ]),
+            }),
+            () => {
+                hitShortcut('MARK_TICKET_READ')
+            },
+            {
+                updates: {
+                    is_unread: false,
+                },
+            },
+        ],
+        [
+            JobType.UpdateTicket,
+            'mark tickets unread shortcut',
+            (props) => ({
+                ...props,
+                selectedItemsIds: fromJS([1]),
+                tickets: fromJS([
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: false,
+                    },
+                ]),
+            }),
+            () => {
+                hitShortcut('MARK_TICKET_UNREAD')
+            },
+            {
+                updates: {
+                    is_unread: true,
+                },
+            },
+        ],
     ] as CreateJobTestSuite[])(
         'create %s job on %s',
         (jobType, suiteName, getTestProps, testActions, jobParams) => {
@@ -690,5 +784,198 @@ describe('TicketListActions component', () => {
         expect(minProps.openMacroModal).toHaveBeenLastCalledWith(
             expect.anything()
         )
+    })
+
+    describe('read and unread tickets selected', () => {
+        const props = {
+            ...minProps,
+            selectedItemsIds: fromJS([1, 2]),
+            tickets: fromJS([
+                {
+                    ...ticket,
+                    id: 1,
+                    is_unread: true,
+                },
+                {
+                    ...ticket,
+                    id: 2,
+                    is_unread: false,
+                },
+            ]),
+        }
+
+        it('should render mark as read and mark as unread dropdown items', () => {
+            const {queryByText} = render(
+                <TicketListActionsContainer {...props} />
+            )
+
+            expect(queryByText('Mark as read')).not.toBe(null)
+            expect(queryByText('Mark as unread')).not.toBe(null)
+        })
+
+        it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
+            const {queryByText} = render(
+                <TicketListActionsContainer {...props} allViewItemsSelected />
+            )
+
+            expect(queryByText('Mark as read')).not.toBe(null)
+            expect(queryByText('Mark as unread')).not.toBe(null)
+        })
+
+        it('should create a job on mark as read shortcut', () => {
+            render(<TicketListActionsContainer {...props} />)
+
+            hitShortcut('MARK_TICKET_READ')
+
+            expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
+            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+        })
+
+        it('should create a job on mark as unread shortcut', () => {
+            render(<TicketListActionsContainer {...props} />)
+
+            hitShortcut('MARK_TICKET_UNREAD')
+
+            expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
+            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+        })
+    })
+
+    describe('only unread tickets selected', () => {
+        const props = {
+            ...minProps,
+            selectedItemsIds: fromJS([1]),
+            tickets: fromJS([
+                {
+                    ...ticket,
+                    id: 1,
+                    is_unread: true,
+                },
+            ]),
+        }
+
+        it('should render mark as read dropdown item', () => {
+            const {queryByText} = render(
+                <TicketListActionsContainer {...props} />
+            )
+
+            expect(queryByText('Mark as read')).not.toBe(null)
+            expect(queryByText('Mark as unread')).toBe(null)
+        })
+
+        it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
+            const {queryByText} = render(
+                <TicketListActionsContainer {...props} allViewItemsSelected />
+            )
+
+            expect(queryByText('Mark as read')).not.toBe(null)
+            expect(queryByText('Mark as unread')).not.toBe(null)
+        })
+
+        it('should create a job on mark as read shortcut', () => {
+            render(<TicketListActionsContainer {...props} />)
+
+            hitShortcut('MARK_TICKET_READ')
+
+            expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
+            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+        })
+
+        it('should not create a job on mark as unread shortcut', () => {
+            render(<TicketListActionsContainer {...props} />)
+
+            hitShortcut('MARK_TICKET_UNREAD')
+
+            expect(shortcutEventMock.preventDefault).not.toHaveBeenCalled()
+            expect(ticketsActionsMock.createJob).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('only read tickets selected', () => {
+        const props = {
+            ...minProps,
+            selectedItemsIds: fromJS([1]),
+            tickets: fromJS([
+                {
+                    ...ticket,
+                    id: 1,
+                    is_unread: false,
+                },
+            ]),
+        }
+
+        it('should render mark as read dropdown item', () => {
+            const {queryByText} = render(
+                <TicketListActionsContainer {...props} />
+            )
+
+            expect(queryByText('Mark as read')).toBe(null)
+            expect(queryByText('Mark as unread')).not.toBe(null)
+        })
+
+        it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
+            const {queryByText} = render(
+                <TicketListActionsContainer {...props} allViewItemsSelected />
+            )
+
+            expect(queryByText('Mark as read')).not.toBe(null)
+            expect(queryByText('Mark as unread')).not.toBe(null)
+        })
+
+        it('should not create a job on mark as read shortcut', () => {
+            render(<TicketListActionsContainer {...props} />)
+
+            hitShortcut('MARK_TICKET_READ')
+
+            expect(shortcutEventMock.preventDefault).not.toHaveBeenCalled()
+            expect(ticketsActionsMock.createJob).not.toHaveBeenCalled()
+        })
+
+        it('should create a job on mark as unread shortcut', () => {
+            render(<TicketListActionsContainer {...props} />)
+
+            hitShortcut('MARK_TICKET_UNREAD')
+
+            expect(shortcutEventMock.preventDefault).toHaveBeenCalled()
+            expect(ticketsActionsMock.createJob).toHaveBeenCalled()
+        })
+    })
+
+    it('should render mark as read dropdown item when only unread tickets are selected', () => {
+        const {queryByText} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                selectedItemsIds={fromJS([1])}
+                tickets={fromJS([
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: true,
+                    },
+                ])}
+            />
+        )
+
+        expect(queryByText('Mark as read')).not.toBe(null)
+        expect(queryByText('Mark as unread')).toBe(null)
+    })
+
+    it('should render mark as unread dropdown item when only read tickets are selected', () => {
+        const {queryByText} = render(
+            <TicketListActionsContainer
+                {...minProps}
+                selectedItemsIds={fromJS([1])}
+                tickets={fromJS([
+                    {
+                        ...ticket,
+                        id: 1,
+                        is_unread: false,
+                    },
+                ])}
+            />
+        )
+
+        expect(queryByText('Mark as read')).toBe(null)
+        expect(queryByText('Mark as unread')).not.toBe(null)
     })
 })

@@ -256,10 +256,14 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-updated',
         onReceive: function (json) {
+            const {ticket} = json as TicketUpdatedEvent
+            if (ticket.is_unread) {
+                typeSafeReduxStore.dispatch(
+                    chatsActions.markChatAsUnread(ticket.id)
+                )
+            }
             typeSafeReduxStore.dispatch(
-                ticketActions.mergeTicket(
-                    (json as TicketUpdatedEvent).ticket
-                ) as any
+                ticketActions.mergeTicket(ticket) as any
             )
         },
     },

@@ -619,6 +619,7 @@ Array [
           "external_id": null,
           "from_agent": true,
           "id": 152,
+          "is_unread": true,
           "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
           "last_received_message_datetime": null,
           "messages": Array [
@@ -2052,6 +2053,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {

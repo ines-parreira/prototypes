@@ -55,6 +55,7 @@ export const initialState: TicketState = fromJS({
             answerable: true,
         },
     },
+    is_unread: false,
 })
 
 export default function reducer(

@@ -50,6 +50,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -103,6 +104,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -188,6 +190,7 @@ Object {
   "ticket": Immutable.Map {
     "trashed_datetime": null,
     "channel": "email",
+    "is_unread": false,
     "priority": "normal",
     "reply_options": Immutable.Map {
       "email": Immutable.Map {
@@ -362,6 +365,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -481,6 +485,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -552,6 +557,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -662,6 +668,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -764,6 +771,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -873,6 +881,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -979,6 +988,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -1081,6 +1091,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -1190,6 +1201,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -1287,6 +1299,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
@@ -1378,6 +1391,7 @@ Array [
     "ticket": Immutable.Map {
       "trashed_datetime": null,
       "channel": "email",
+      "is_unread": false,
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {

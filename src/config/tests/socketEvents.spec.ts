@@ -37,22 +37,15 @@ import {
     sectionDeleted,
     sectionUpdated,
 } from '../../state/entities/sections/actions'
+import * as ticketActions from '../../state/ticket/actions'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
-jest.mock('../../state/chats/actions', () => {
-    //eslint-disable-next-line @typescript-eslint/no-var-requires
-    const _identity: <T>(v: T) => T = require('lodash/identity')
-
-    return {
-        addChat: jest.fn(() => _identity),
-        removeChat: jest.fn(() => _identity),
-        fetchChatsThrottled: jest.fn(() => _identity),
-    }
-})
+jest.mock('../../state/chats/actions')
 jest.mock('../../state/views/actions')
 jest.mock('../../state/entities/viewsCount/actions')
+jest.mock('../../state/ticket/actions')
 
 jest.mock('../../init', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
@@ -704,6 +697,27 @@ describe('Config: socketEvents', () => {
             it('should dispatch the deleted view', () => {
                 handler.onReceive({view} as any)
                 expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
+            })
+        })
+
+        describe('ticket-updated', () => {
+            const handler = _find(receivedEvents, {
+                name: 'ticket-updated',
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch the updated ticket', () => {
+                handler.onReceive({ticket: {id: 1}} as any)
+                expect(ticketActions.mergeTicket).toHaveBeenNthCalledWith(1, {
+                    id: 1,
+                })
+            })
+
+            it('should dispatch the updated chat when is unread', () => {
+                handler.onReceive({ticket: {id: 1, is_unread: true}} as any)
+                expect(chatActions.markChatAsUnread).toHaveBeenNthCalledWith(
+                    1,
+                    1
+                )
             })
         })
     })

@@ -1,7 +1,9 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {DropdownItem, DropdownToggle} from 'reactstrap'
 
+import {NOTIFICATION_STATUS} from '../../../../../state/notifications/constants.ts'
 import {TicketHeaderContainer} from '../TicketHeader'
 
 // mock Date object
@@ -16,6 +18,8 @@ describe('TicketHeader component', () => {
                 setSubject: () => {},
             },
         },
+        ticketPartialUpdate: jest.fn().mockResolvedValue(),
+        notify: jest.fn(),
         timezone: 'America/Los_Angeles',
     }
 
@@ -76,5 +80,44 @@ describe('TicketHeader component', () => {
         )
 
         expect(component).toMatchSnapshot()
+    })
+
+    it('should render an unread ticket without the "Mark as unread" action', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...commonProps}
+                ticket={fromJS({
+                    id: 1,
+                    is_unread: true,
+                    ...commonTicketProps,
+                })}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should mark a ticket as unread when clicking "Mark as unread" button', (done) => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...commonProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                })}
+            />
+        )
+        component.find(DropdownToggle).simulate('click')
+        component.find(DropdownItem).at(2).simulate('click')
+        setImmediate(() => {
+            expect(commonProps.ticketPartialUpdate).toHaveBeenNthCalledWith(1, {
+                is_unread: true,
+            })
+            expect(commonProps.notify).toHaveBeenNthCalledWith(1, {
+                message: 'Ticket has been marked as unread',
+                status: NOTIFICATION_STATUS.SUCCESS,
+            })
+            done()
+        })
     })
 })

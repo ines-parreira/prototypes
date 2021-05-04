@@ -544,6 +544,7 @@ Some signature",
           "external_id": null,
           "from_agent": true,
           "id": 152,
+          "is_unread": true,
           "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
           "last_received_message_datetime": null,
           "messages": Array [

@@ -44,6 +44,7 @@ Object {
       "user_id": 1,
     },
   ],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -99,6 +100,7 @@ Object {
       "user_id": 1,
     },
   ],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -156,6 +158,7 @@ Object {
       "user_id": 1,
     },
   ],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -211,6 +214,7 @@ Object {
       "user_id": 1,
     },
   ],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -254,6 +258,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [
     Object {
       "id": 1,
@@ -318,6 +323,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -361,6 +367,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -411,6 +418,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -461,6 +469,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -508,6 +517,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -553,6 +563,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -598,6 +609,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -641,6 +653,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -684,6 +697,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -736,6 +750,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [
     Object {
       "id": 1,
@@ -792,6 +807,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -835,6 +851,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -878,6 +895,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -921,6 +939,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -970,6 +989,7 @@ Object {
   },
   "events": Array [],
   "id": 1,
+  "is_unread": false,
   "messages": Array [
     Object {
       "body_html": "<div>hello</div>",
@@ -1020,6 +1040,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1063,6 +1084,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1106,6 +1128,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1149,6 +1172,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1195,6 +1219,7 @@ Object {
     "name": "Alex",
   },
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1238,6 +1263,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1284,6 +1310,7 @@ Object {
     "name": "Alex",
   },
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1333,6 +1360,7 @@ Object {
   },
   "events": Array [],
   "id": 1,
+  "is_unread": false,
   "messages": Array [
     Object {
       "body_html": "<div>hi</div>",
@@ -1397,6 +1425,7 @@ Object {
   },
   "events": Array [],
   "id": 1,
+  "is_unread": false,
   "messages": Array [
     Object {
       "body_html": "<div>hi</div>",
@@ -1474,6 +1503,7 @@ Object {
     },
   ],
   "id": 1,
+  "is_unread": false,
   "messages": Array [
     Object {
       "body_html": "<div>hi</div>",
@@ -1570,6 +1600,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1652,6 +1683,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1733,6 +1765,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1777,6 +1810,7 @@ Object {
   "customer": null,
   "events": Array [],
   "id": 12,
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1820,6 +1854,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [
     Object {
       "id": 1,
@@ -1868,6 +1903,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1915,6 +1951,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -1964,6 +2001,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2007,6 +2045,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2055,6 +2094,7 @@ Object {
     "id": 1,
   },
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2098,6 +2138,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2141,6 +2182,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2184,6 +2226,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2227,6 +2270,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2270,6 +2314,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2315,6 +2360,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2358,6 +2404,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2401,6 +2448,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [
     Object {
       "id": 1,
@@ -2449,6 +2497,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2492,6 +2541,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2535,6 +2585,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2578,6 +2629,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {
@@ -2630,6 +2682,7 @@ Object {
   "channel": "email",
   "customer": null,
   "events": Array [],
+  "is_unread": false,
   "messages": Array [],
   "priority": "normal",
   "reply_options": Object {

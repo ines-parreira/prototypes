@@ -423,7 +423,7 @@ export const snoozeTicket = (
         void dispatch(
             notify({
                 status: NotificationStatus.Success,
-                message: 'The ticket has been closed and snoozed.',
+                message: 'Ticket has been closed and snoozed',
             })
         )
     })
@@ -666,7 +666,12 @@ export const fetchTicket = (ticketId: string, discreetly = false) => (
                 }
 
                 // Notify the server that we viewed this ticket
-                socketManager.send(SocketEventType.TicketViewed, parsedTicketId)
+                if (resp.is_unread) {
+                    socketManager.send(
+                        SocketEventType.TicketViewed,
+                        parsedTicketId
+                    )
+                }
 
                 return dispatch(newMessageActions.resetReceiversAndSender)
             },
@@ -808,10 +813,12 @@ export const _goToNextOrPrevTicket = (
                         }
 
                         // Notify the server that we viewed this ticket
-                        socketManager.send(
-                            SocketEventType.TicketViewed,
-                            ticket.id
-                        )
+                        if (ticket.is_unread) {
+                            socketManager.send(
+                                SocketEventType.TicketViewed,
+                                ticket.id
+                            )
+                        }
                         dispatch(newMessageActions.resetReceiversAndSender)
 
                         history.push(`/app/ticket/${ticket.id}`)

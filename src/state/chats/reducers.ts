@@ -63,6 +63,7 @@ export default function reducer(
             )
         }
 
+        case constants.MARK_CHAT_AS_UNREAD:
         case constants.MARK_CHAT_AS_READ: {
             const ticketId = parseInt(
                 (action.ticketId as unknown) as string,
@@ -72,7 +73,10 @@ export default function reducer(
             return state.update('tickets', (tickets: List<any>) => {
                 return tickets.map((ticket: Map<any, any>) => {
                     if (ticket.get('id') === ticketId) {
-                        return ticket.set('is_unread', false)
+                        return ticket.set(
+                            'is_unread',
+                            action.type === constants.MARK_CHAT_AS_UNREAD
+                        )
                     }
 
                     return ticket

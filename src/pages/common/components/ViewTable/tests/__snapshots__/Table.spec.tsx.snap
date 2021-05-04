@@ -165,6 +165,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
           Immutable.Map {
             "trashed_datetime": null,
             "channel": "email",
+            "is_unread": true,
             "meta": null,
             "last_received_message_datetime": null,
             "subject": "Great ticket",
@@ -875,6 +876,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
           Immutable.Map {
             "trashed_datetime": null,
             "channel": "email",
+            "is_unread": true,
             "meta": null,
             "last_received_message_datetime": null,
             "subject": "Great ticket",
@@ -1470,6 +1472,7 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
           Immutable.Map {
             "trashed_datetime": null,
             "channel": "email",
+            "is_unread": true,
             "meta": null,
             "last_received_message_datetime": null,
             "subject": "Great ticket",

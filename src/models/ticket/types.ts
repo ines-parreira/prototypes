@@ -31,6 +31,7 @@ export type Ticket = {
     uri: string
     external_id: string | null
     via: TicketVia
+    is_unread: boolean
 }
 
 export type TicketAssignee = {

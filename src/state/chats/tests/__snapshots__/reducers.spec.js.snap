@@ -24,6 +24,17 @@ Object {
 }
 `;
 
+exports[`reducers chats should handle MARK_CHAT_AS_UNREAD 1`] = `
+Object {
+  "tickets": Array [
+    Object {
+      "id": 1,
+      "is_unread": true,
+    },
+  ],
+}
+`;
+
 exports[`reducers chats should handle REMOVE_CHAT 1`] = `
 Object {
   "tickets": Array [

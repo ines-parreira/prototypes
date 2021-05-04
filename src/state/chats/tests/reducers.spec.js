@@ -78,5 +78,18 @@ describe('reducers', () => {
 
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })
+
+        it('should handle MARK_CHAT_AS_UNREAD', () => {
+            const action = {
+                type: types.MARK_CHAT_AS_UNREAD,
+                ticketId: 1,
+            }
+            const state = initialState.set(
+                'tickets',
+                fromJS([{id: 1, is_unread: false}])
+            )
+
+            expect(reducer(state, action).toJS()).toMatchSnapshot()
+        })
     })
 })

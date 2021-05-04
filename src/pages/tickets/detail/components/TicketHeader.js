@@ -23,6 +23,7 @@ import {notify} from '../../../../state/notifications/actions.ts'
 import * as ticketActions from '../../../../state/ticket/actions.ts'
 import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors.ts'
 import {getTimezone} from '../../../../state/currentUser/selectors.ts'
+import {NOTIFICATION_STATUS} from '../../../../state/notifications/constants.ts'
 
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
@@ -45,6 +46,7 @@ type Props = {
     setSpam: typeof ticketActions.setSpam,
     clearTicket: typeof ticketActions.clearTicket,
     goToNextTicket: typeof ticketActions.goToNextTicket,
+    ticketPartialUpdate: typeof ticketActions.ticketPartialUpdate,
     displayAuditLogEvents: (ticketId: number) => void,
     hideAuditLogEvents: () => void,
     hideTicket: () => Promise<*>,
@@ -97,7 +99,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         return this.props.actions.ticket.setStatus(status, () => {
             notify({
                 status: 'success',
-                message: 'The ticket has been closed.',
+                message: 'Ticket has been closed',
             })
             this._goToNextTicket()
         })
@@ -204,6 +206,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             className,
             shouldDisplayAuditLogEvents,
             timezone,
+            notify,
+            ticketPartialUpdate,
         } = this.props
         const {showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
@@ -279,6 +283,27 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                     </i>
                                     Merge ticket
                                 </DropdownItem>
+                                {!ticket.get('is_unread') && (
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={async () => {
+                                            await ticketPartialUpdate({
+                                                is_unread: true,
+                                            })
+                                            void notify({
+                                                status:
+                                                    NOTIFICATION_STATUS.SUCCESS,
+                                                message:
+                                                    'Ticket has been marked as unread',
+                                            })
+                                        }}
+                                    >
+                                        <i className="icon material-icons">
+                                            markunread_mailbox
+                                        </i>
+                                        Mark as unread
+                                    </DropdownItem>
+                                )}
                                 <DropdownItem
                                     type="button"
                                     onClick={this._toggleAuditLogEvents}
@@ -441,6 +466,7 @@ const connector = connect(
         displayAuditLogEvents: ticketActions.displayAuditLogEvents,
         hideAuditLogEvents: ticketActions.hideAuditLogEvents,
         notify,
+        ticketPartialUpdate: ticketActions.ticketPartialUpdate,
     }
 )
 

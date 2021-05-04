@@ -37,7 +37,7 @@ export const addChat = (ticket: RecentChatTicket, notify = true) => (
 ) => {
     dispatch({
         type: constants.ADD_CHAT,
-        ticket: ticket,
+        ticket,
     })
     if (notify) {
         browserNotification.newMessage({
@@ -54,10 +54,15 @@ export const setChats = (tickets: Ticket[]) => ({
 })
 export const removeChat = (ticketId: number) => ({
     type: constants.REMOVE_CHAT,
-    ticketId: ticketId,
+    ticketId,
 })
 
 export const markChatAsRead = (ticketId: number) => ({
     type: constants.MARK_CHAT_AS_READ,
-    ticketId: ticketId,
+    ticketId,
+})
+
+export const markChatAsUnread = (ticketId: number) => ({
+    type: constants.MARK_CHAT_AS_UNREAD,
+    ticketId,
 })
