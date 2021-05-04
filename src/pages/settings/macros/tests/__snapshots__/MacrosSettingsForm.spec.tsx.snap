@@ -626,7 +626,6 @@ Sincerely,
               }
               name="New macro"
               setActions={[Function]}
-              setIntent={[Function]}
               setName={[Function]}
             >
               MacroEdit
@@ -776,7 +775,6 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
         }
         name="New macro"
         setActions={[Function]}
-        setIntent={[Function]}
         setName={[Function]}
       />
       <FormGroup

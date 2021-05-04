@@ -16,7 +16,6 @@ import {
 
 import {DEFAULT_ACTIONS} from '../../../config'
 import {GorgiasError} from '../../../models/api/types'
-import {IntentName} from '../../../models/intent/types'
 import {
     createMacro,
     deleteMacro,
@@ -134,11 +133,10 @@ export function MacrosSettingsFormContainer({
         if (!macroId) {
             return
         }
-        const {actions, intent, name} = macros[macroId]
+        const {actions, name} = macros[macroId]
         try {
             const res = await createMacro({
                 actions,
-                intent,
                 name: `${name} (copy)`,
             })
             macroCreated(res)
@@ -182,10 +180,9 @@ export function MacrosSettingsFormContainer({
     }, [macroId])
     useEffect(() => {
         if (macroId && macros[macroId]) {
-            const {actions, intent, name} = macros[macroId]
+            const {actions, name} = macros[macroId]
             setMacroForm({
                 actions,
-                intent,
                 name,
             })
         }
@@ -230,7 +227,6 @@ export function MacrosSettingsFormContainer({
                             actions={fromJS(macroForm.actions)}
                             agents={agents}
                             currentMacro={fromJS(macroForm)}
-                            intent={macroForm.intent}
                             name={macroForm.name}
                             setActions={(actions) =>
                                 !isActionDisabled &&
@@ -239,10 +235,6 @@ export function MacrosSettingsFormContainer({
                             setName={(name: string) =>
                                 !isActionDisabled &&
                                 setMacroForm({...macroForm, name})
-                            }
-                            setIntent={(intent: Maybe<IntentName>) =>
-                                !isActionDisabled &&
-                                setMacroForm({...macroForm, intent})
                             }
                         />
                         <FormGroup className="mt-5">

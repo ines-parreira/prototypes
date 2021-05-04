@@ -76,11 +76,10 @@ export function MacrosSettingsTableContainer({
         if (!macro) {
             return
         }
-        const {actions, intent, name} = macro
+        const {actions, name} = macro
         try {
             const res = await createMacro({
                 actions,
-                intent,
                 name: `${name} (copy)`,
             })
             macroCreated(res)

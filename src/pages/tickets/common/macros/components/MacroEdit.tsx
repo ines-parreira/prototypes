@@ -1,5 +1,4 @@
-import _memoize from 'lodash/memoize'
-import React, {Component, ReactNode} from 'react'
+import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
@@ -16,15 +15,12 @@ import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config'
-import RichDropdown from '../../../../common/components/RichDropdown/RichDropdown.js'
-import {OptionGroup} from '../../../../common/components/RichDropdown/types'
 import InputField from '../../../../common/forms/InputField.js'
 import {getSortedIntegrationActionsNames} from '../../utils.js'
 import {Attachment, ActionTemplate} from '../../../../../types'
 import {getActionTemplate, humanizeString} from '../../../../../utils'
 import {RootState} from '../../../../../state/types.js'
 import {IntegrationType} from '../../../../../models/integration/types'
-import {IntentName} from '../../../../../models/intent/types'
 import {MacroActionName} from '../../../../../models/macroAction/types'
 
 import SetStatusAction from './actions/SetStatusAction.js'
@@ -39,17 +35,12 @@ import SnoozeTicketAction from './actions/SnoozeTicketAction'
 
 import css from './MacroEdit.less'
 
-type Intents = {[key: string]: string}
-
 type OwnProps = {
     actions: List<any>
     agents: List<any>
     currentMacro: Map<any, any>
-    intent: Maybe<IntentName>
-    intents: Intents
     name: string
     setActions: (actions: List<any>) => void
-    setIntent: (intent: Maybe<IntentName>) => void
     setName: (name: string) => void
 }
 
@@ -59,10 +50,6 @@ const typeSafeActionTemplates = ACTION_TEMPLATES as ActionTemplate[]
 export class MacroEdit extends Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
-    static defaultProps: Pick<OwnProps, 'intents'> = {
-        intents: (window.GORGIAS_CONSTANTS || {}).INTENTS,
-    }
-
     _updateActionArguments = (index: number, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
@@ -101,37 +88,6 @@ export class MacroEdit extends Component<
         )
         this.props.setActions(actions)
     }
-
-    getIntentOptionsFromGlobal = _memoize((intents: Intents): OptionGroup[] =>
-        Object.values(
-            Object.keys(intents).reduce(
-                (acc: {[key: string]: OptionGroup}, intent) => {
-                    const [intentCategory, intentName] = intent.split('/')
-                    if (acc[intentCategory]) {
-                        acc[intentCategory].options.push({
-                            description: intents[intent],
-                            key: intent,
-                            label: humanizeString(intentName),
-                        })
-                    } else {
-                        acc[intentCategory] = {
-                            key: intentCategory,
-                            label: intentCategory.toUpperCase(),
-                            options: [
-                                {
-                                    description: intents[intent],
-                                    key: intent,
-                                    label: humanizeString(intentName),
-                                },
-                            ],
-                        }
-                    }
-                    return acc
-                },
-                {}
-            )
-        )
-    )
 
     renderNewActionMenu = () => {
         // front actions executed on client
@@ -194,13 +150,7 @@ export class MacroEdit extends Component<
     }
 
     render() {
-        const {
-            currentMacro,
-            hasIntegrationOfTypes,
-            intent,
-            intents,
-            setIntent,
-        } = this.props
+        const {currentMacro, hasIntegrationOfTypes} = this.props
 
         if (!currentMacro) {
             return null
@@ -237,39 +187,6 @@ export class MacroEdit extends Component<
                             required
                         />
                     </div>
-
-                    <RichDropdown
-                        options={this.getIntentOptionsFromGlobal(intents)}
-                        onClick={(intent: string) =>
-                            setIntent(intent as IntentName)
-                        }
-                        renderMenuItems={(menuItems: ReactNode) => (
-                            <>
-                                <DropdownItem
-                                    onClick={() => setIntent(null)}
-                                    type="button"
-                                >
-                                    <i className="icon material-icons">clear</i>
-                                    {humanizeString('clear intent')}
-                                </DropdownItem>
-                                {menuItems}
-                            </>
-                        )}
-                        value={
-                            (intent &&
-                                humanizeString(intent.replace('/', ' - '))) ||
-                            'Choose intent'
-                        }
-                    >
-                        <div className={classnames('mb-2', css.title)}>
-                            Intent
-                        </div>
-                        <div className={css.description}>
-                            Choose an intent to describe in which cases this
-                            macro will be used.
-                        </div>
-                    </RichDropdown>
-
                     {this.props.actions.map(
                         (action: Map<any, any>, index: Maybe<number>) => {
                             if (index == null) {

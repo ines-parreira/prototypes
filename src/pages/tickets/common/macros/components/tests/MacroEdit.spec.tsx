@@ -11,14 +11,8 @@ describe('MacroEdit component', () => {
         agents: fromJS({}),
         currentMacro: fromJS({id: 1}),
         hasIntegrationOfTypes: _noop,
-        intents: {
-            'catOne/intentOne': 'description one',
-            'catOne/intentTwo': 'description two',
-            'catTwo/intentTWo': 'description three',
-        },
         name: 'Pizza Pepperoni',
         setActions: _noop,
-        setIntent: _noop,
         setName: _noop,
     } as any) as ComponentProps<typeof MacroEdit>
 

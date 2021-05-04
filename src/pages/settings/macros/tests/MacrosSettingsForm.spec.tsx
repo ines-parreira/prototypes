@@ -39,7 +39,6 @@ describe('<MacrosSettingsForm/>', () => {
         updated_datetime: '',
         uri: '',
         usage: 0,
-        intent: null,
     }
     const duplicatedMacroFixture = {
         ...macrosFixtures[0],
@@ -334,10 +333,9 @@ describe('<MacrosSettingsForm/>', () => {
         setImmediate(() => {
             component.update()
             component.find(Button).at(1).simulate('click')
-            const {actions, intent, name} = macrosFixtures[0]
+            const {actions, name} = macrosFixtures[0]
             expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
                 actions,
-                intent,
                 name: `${name} (copy)`,
             })
             setImmediate(() => {
