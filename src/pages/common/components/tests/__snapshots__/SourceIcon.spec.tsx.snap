@@ -34,13 +34,13 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 2`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 3`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook"
+  className="icon d-inline-block icon-custom icon-facebook-feed"
 />
 `;
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 4`] = `
 <i
-  className="icon d-inline-block icon-custom icon-facebook"
+  className="icon d-inline-block icon-custom icon-facebook-feed"
 />
 `;
 

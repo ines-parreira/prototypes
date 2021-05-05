@@ -57,7 +57,7 @@ const sourceTypeToIcon = (
         case TicketMessageSourceType.FacebookPost:
         case TicketMessageSourceType.FacebookRecommendations:
             icon.custom = true
-            icon.name = 'facebook'
+            icon.name = 'facebook-feed'
             break
         case TicketMessageSourceType.FacebookMessage:
         case TicketMessageSourceType.FacebookMessenger:

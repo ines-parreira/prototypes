@@ -343,7 +343,7 @@ exports[`components utils : labels RenderLabel ValueRendered should display the 
       type="facebook"
     >
       <i
-        className="icon d-inline-block icon-custom icon-facebook mr-2"
+        className="icon d-inline-block icon-custom icon-facebook-feed mr-2"
       />
     </SourceIcon>
     common
