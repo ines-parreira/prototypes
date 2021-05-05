@@ -7,6 +7,7 @@ import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
 import {useConnectionParameters} from '../hooks'
 
+import DialPad from './DialPad/DialPad'
 import css from './OngoingPhoneCall.less'
 
 type Props = {
@@ -30,6 +31,7 @@ export default function OngoingPhoneCall({connection}: Props): JSX.Element {
                     name={customerName}
                     phoneNumber={customerPhoneNumber}
                 />
+                <DialPad className={css.dialPad} connection={connection} />
                 <Button
                     data-testid="mute-call-button"
                     className={css.mute}
