@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useConnectionParameters() should return parameters for an incoming connection 1`] = `
+Object {
+  "customerName": "Bob",
+  "customerPhoneNumber": "+14158880101",
+  "integrationId": 1,
+  "ticketId": 2,
+}
+`;
+
+exports[`useConnectionParameters() should return parameters for an outgoing connection 1`] = `
+Object {
+  "customerName": "Bob",
+  "customerPhoneNumber": "+14158880101",
+  "integrationId": 1,
+  "ticketId": null,
+}
+`;

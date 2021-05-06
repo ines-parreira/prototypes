@@ -1,6 +1,7 @@
-import React, {useCallback} from 'react'
+import React, {SyntheticEvent, useCallback} from 'react'
 import {Connection} from 'twilio-client'
 import {Button} from 'reactstrap'
+import {useHistory} from 'react-router-dom'
 
 import client from '../../../../../models/api/resources'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
@@ -17,6 +18,7 @@ type Props = {
 export default function IncomingPhoneCall({connection}: Props): JSX.Element {
     const {onAccept} = useAccept(connection)
     const {onDecline} = useDecline(connection)
+    const {onOpenTicket} = useOpenTicket(connection)
     const {
         integrationId,
         customerName,
@@ -24,7 +26,11 @@ export default function IncomingPhoneCall({connection}: Props): JSX.Element {
     } = useConnectionParameters(connection)
 
     return (
-        <div data-testid="incoming-phone-call" className={css.container}>
+        <div
+            data-testid="incoming-phone-call"
+            className={css.container}
+            onClick={onOpenTicket}
+        >
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} primary />
                 <PhoneCustomerName
@@ -64,12 +70,29 @@ function useAccept(connection: Connection) {
 }
 
 function useDecline(connection: Connection) {
-    const onDecline = useCallback(() => {
-        connection.ignore()
-        onIgnore(connection).catch(console.error)
-    }, [connection])
+    const onDecline = useCallback(
+        (event: SyntheticEvent<HTMLButtonElement>) => {
+            event.stopPropagation()
+            connection.ignore()
+            onIgnore(connection).catch(console.error)
+        },
+        [connection]
+    )
 
     return {onDecline}
+}
+
+function useOpenTicket(connection: Connection) {
+    const history = useHistory()
+    const {ticketId} = useConnectionParameters(connection)
+
+    const onOpenTicket = useCallback(() => {
+        if (ticketId) {
+            history.push(`/app/ticket/${ticketId}`)
+        }
+    }, [history, ticketId])
+
+    return {onOpenTicket}
 }
 
 async function onIgnore(connection: Connection) {
