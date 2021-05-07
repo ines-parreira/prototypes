@@ -2,19 +2,7 @@
 
 exports[`StatsPage should not render statistics because there is no filter 1`] = `""`;
 
-exports[`StatsPage should render "Overview" statistics 1`] = `
-<Connect(StatsComponentContainer)
-  globalFilters={
-    Immutable.Map {
-      "agents": Immutable.List [
-        1,
-        2,
-      ],
-    }
-  }
-  view="overview"
-/>
-`;
+exports[`StatsPage should render "Overview" statistics 1`] = `<StatsComponentContainer />`;
 
 exports[`StatsPage should render "Revenue" statistics 1`] = `
 <Component

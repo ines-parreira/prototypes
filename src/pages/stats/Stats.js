@@ -1,10 +1,10 @@
 // @flow
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 import {Container} from 'reactstrap'
 import {withRouter} from 'react-router-dom'
-
+import _debounce from 'lodash/debounce'
 import axios from 'axios'
 
 import {
@@ -31,27 +31,46 @@ type State = {
     stats: Map<*, *>,
 }
 
+const initialState = {
+    fetchingStates: fromJS({}),
+    stats: fromJS({}),
+}
+
 export class StatsContainer extends React.Component<Props, State> {
     gorgiasApi = new GorgiasApi()
-    state = {
-        fetchingStates: fromJS({}), // Store fetching state of each stat on the view.
-        stats: fromJS({}),
-    }
+    state = initialState
 
     componentDidMount() {
+        this.handleFetchStats()
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        const {filters, match} = this.props
+
+        if (prevProps.match.params.view !== match.params.view) {
+            this.handleFetchStats()
+        } else if (!prevProps.filters.equals(filters)) {
+            this.handleFetchStatsDebounced()
+        }
+    }
+
+    componentWillUnmount() {
+        this.gorgiasApi.cancelPendingRequests()
+    }
+
+    handleFetchStats = () => {
         const {
             match: {params},
             filters,
         } = this.props
+        this.setState(initialState)
         const viewConfig = statViewsConfig.get(params.view)
         viewConfig
             .get('stats')
             .forEach((statName) => this._fetchStat(statName, filters))
     }
 
-    componentWillUnmount() {
-        this.gorgiasApi.cancelPendingRequests()
-    }
+    handleFetchStatsDebounced = _debounce(this.handleFetchStats, 1000)
 
     _fetchStat = (statName: string, filters: Object) => {
         const {notify} = this.props

@@ -10,6 +10,8 @@ import {StatsContainer} from '../Stats'
 import {views as statsViewsConfig} from '../../../config/stats.tsx'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
 
+jest.mock('lodash/debounce', () => (fn) => () => fn())
+
 describe('<Stats/>', () => {
     const channelsStatView = statsViewsConfig.getIn(['channels', 'link'])
     const defaultProps = {
@@ -90,6 +92,71 @@ describe('<Stats/>', () => {
                 )
                 expect(defaultProps.notify.mock.calls).toMatchSnapshot()
                 done()
+            })
+        })
+    })
+
+    describe('componentDidUpdate', () => {
+        it('should fetch stats when view parameter change', (done) => {
+            apiMock.onAny().reply(200, firstResponseTimeStat)
+
+            const componentWrapper = shallow(
+                <StatsContainer
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
+            )
+
+            setTimeout(() => {
+                componentWrapper.setProps({
+                    match: {
+                        params: {
+                            view: statsViewsConfig.getIn(['agents', 'link']),
+                        },
+                    },
+                })
+                const component = componentWrapper.instance()
+                expect(component.state).toMatchSnapshot(
+                    'should contain loading stats'
+                )
+                setTimeout(() => {
+                    expect(component.state).toMatchSnapshot(
+                        'should contain data of stats and be marked as not loading'
+                    )
+                    done()
+                })
+            })
+        })
+
+        it('should fetch stats when filters change', (done) => {
+            apiMock.onAny().reply(200, firstResponseTimeStat)
+
+            const componentWrapper = shallow(
+                <StatsContainer
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
+            )
+
+            setTimeout(() => {
+                componentWrapper.setProps({
+                    filters: fromJS({
+                        period: {
+                            start_datetime: '2019-03-10',
+                            end_datetime: '2019-03-11',
+                        },
+                    }),
+                })
+                const component = componentWrapper.instance()
+                expect(component.state).toMatchSnapshot(
+                    'should contain loading stats'
+                )
+                setTimeout(() => {
+                    expect(component.state).toMatchSnapshot(
+                        'should contain data of stats and be marked as not loading'
+                    )
+                    done()
+                })
             })
         })
     })

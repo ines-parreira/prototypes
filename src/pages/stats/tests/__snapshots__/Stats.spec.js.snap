@@ -185,6 +185,268 @@ Object {
 }
 `;
 
+exports[`<Stats/> componentDidUpdate should fetch stats when filters change: should contain data of stats and be marked as not loading 1`] = `
+Object {
+  "fetchingStates": Immutable.Map {
+    "tickets-created-per-channel-per-day": false,
+    "tickets-created-per-channel": false,
+  },
+  "stats": Immutable.Map {
+    "tickets-created-per-channel-per-day": Immutable.Map {
+      "meta": Immutable.Map {
+        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+        "end_datetime": "2019-05-31T23:59:59-05:00",
+        "start_datetime": "2019-05-25T00:00:00-05:00",
+      },
+      "label": "First response time (percentiles)",
+      "legend": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": "",
+          "y": "First response time",
+        },
+      },
+      "data": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": Immutable.List [
+            1558760400,
+            1558846800,
+            1558933200,
+            1559019600,
+            1559106000,
+            1559192400,
+            1559278800,
+          ],
+          "y": Immutable.List [],
+        },
+        "lines": Immutable.List [
+          Immutable.Map {
+            "name": "50%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              44772,
+              0,
+            ],
+          },
+          Immutable.Map {
+            "name": "90%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              80567,
+              0,
+            ],
+          },
+        ],
+      },
+    },
+    "tickets-created-per-channel": Immutable.Map {
+      "meta": Immutable.Map {
+        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+        "end_datetime": "2019-05-31T23:59:59-05:00",
+        "start_datetime": "2019-05-25T00:00:00-05:00",
+      },
+      "label": "First response time (percentiles)",
+      "legend": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": "",
+          "y": "First response time",
+        },
+      },
+      "data": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": Immutable.List [
+            1558760400,
+            1558846800,
+            1558933200,
+            1559019600,
+            1559106000,
+            1559192400,
+            1559278800,
+          ],
+          "y": Immutable.List [],
+        },
+        "lines": Immutable.List [
+          Immutable.Map {
+            "name": "50%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              44772,
+              0,
+            ],
+          },
+          Immutable.Map {
+            "name": "90%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              80567,
+              0,
+            ],
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`<Stats/> componentDidUpdate should fetch stats when filters change: should contain loading stats 1`] = `
+Object {
+  "fetchingStates": Immutable.Map {
+    "tickets-created-per-channel-per-day": true,
+    "tickets-created-per-channel": true,
+  },
+  "stats": Immutable.Map {},
+}
+`;
+
+exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change: should contain data of stats and be marked as not loading 1`] = `
+Object {
+  "fetchingStates": Immutable.Map {
+    "tickets-closed-per-agent-per-day": false,
+    "tickets-closed-per-agent": false,
+  },
+  "stats": Immutable.Map {
+    "tickets-closed-per-agent-per-day": Immutable.Map {
+      "meta": Immutable.Map {
+        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+        "end_datetime": "2019-05-31T23:59:59-05:00",
+        "start_datetime": "2019-05-25T00:00:00-05:00",
+      },
+      "label": "First response time (percentiles)",
+      "legend": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": "",
+          "y": "First response time",
+        },
+      },
+      "data": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": Immutable.List [
+            1558760400,
+            1558846800,
+            1558933200,
+            1559019600,
+            1559106000,
+            1559192400,
+            1559278800,
+          ],
+          "y": Immutable.List [],
+        },
+        "lines": Immutable.List [
+          Immutable.Map {
+            "name": "50%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              44772,
+              0,
+            ],
+          },
+          Immutable.Map {
+            "name": "90%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              80567,
+              0,
+            ],
+          },
+        ],
+      },
+    },
+    "tickets-closed-per-agent": Immutable.Map {
+      "meta": Immutable.Map {
+        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+        "end_datetime": "2019-05-31T23:59:59-05:00",
+        "start_datetime": "2019-05-25T00:00:00-05:00",
+      },
+      "label": "First response time (percentiles)",
+      "legend": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": "",
+          "y": "First response time",
+        },
+      },
+      "data": Immutable.Map {
+        "axes": Immutable.Map {
+          "x": Immutable.List [
+            1558760400,
+            1558846800,
+            1558933200,
+            1559019600,
+            1559106000,
+            1559192400,
+            1559278800,
+          ],
+          "y": Immutable.List [],
+        },
+        "lines": Immutable.List [
+          Immutable.Map {
+            "name": "50%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              44772,
+              0,
+            ],
+          },
+          Immutable.Map {
+            "name": "90%",
+            "data": Immutable.List [
+              0,
+              0,
+              0,
+              0,
+              1563,
+              80567,
+              0,
+            ],
+          },
+        ],
+      },
+    },
+  },
+}
+`;
+
+exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change: should contain loading stats 1`] = `
+Object {
+  "fetchingStates": Immutable.Map {
+    "tickets-closed-per-agent-per-day": true,
+    "tickets-closed-per-agent": true,
+  },
+  "stats": Immutable.Map {},
+}
+`;
+
 exports[`<Stats/> render() should not render stats because there is no stat to render and it's not fetching stats 1`] = `
 <div
   className="container-fluid"

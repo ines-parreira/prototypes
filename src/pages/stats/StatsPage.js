@@ -123,7 +123,7 @@ export class StatsPage extends Component<Props> {
             return revenueStats()
         }
 
-        return <StatsComponent view={view} globalFilters={globalFilters} />
+        return <StatsComponent />
     }
 }
 
