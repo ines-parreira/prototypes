@@ -17,6 +17,7 @@ export const TICKET_UNASSIGNED = 'ticket-unassigned'
 export const TICKET_UNMARKED_SPAM = 'ticket-unmarked-spam'
 export const TICKET_UNTRASHED = 'ticket-untrashed'
 export const TICKET_UPDATED = 'ticket-updated'
+export const TICKET_SUBJECT_UPDATED = 'ticket-subject-updated'
 export const TICKET_MESSAGE_SUMMARY_CREATED = 'ticket-message-summary-created'
 
 export const INCOMING_PHONE_CALL = 'incoming-phone-call'
@@ -46,6 +47,7 @@ export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     TICKET_UNMARKED_SPAM,
     TICKET_UNTRASHED,
     TICKET_MESSAGE_SUMMARY_CREATED,
+    TICKET_SUBJECT_UPDATED,
 })
 
 export const TICKET_AUDIT_LOG_EVENTS = Object.freeze(

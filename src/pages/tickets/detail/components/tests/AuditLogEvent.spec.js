@@ -73,6 +73,13 @@ describe('<AuditLogEvent/>', () => {
                         case constants.TICKET_MESSAGE_SUMMARY_CREATED:
                             event.data = {first_unseen_id: 1, last_unseen_id: 2}
                             break
+                        case constants.TICKET_SUBJECT_UPDATED:
+                            event.data = {
+                                old_subject: 'foo',
+                                new_subject: 'bar',
+                            }
+                            break
+
                         default:
                             break
                     }

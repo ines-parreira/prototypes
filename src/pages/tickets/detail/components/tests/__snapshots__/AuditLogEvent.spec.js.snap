@@ -724,6 +724,77 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type ticket-subject-updated 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          mode
+        </i>
+      </div>
+      <ActionName
+        key="name"
+      >
+        Subject updated
+      </ActionName>
+      <span
+        className="equalFiller"
+        key="from"
+      >
+        from
+      </span>
+      <span
+        className="actionName"
+        key="old"
+      >
+        foo
+      </span>
+      <span
+        className="equalFiller"
+        key="to"
+      >
+        to
+      </span>
+      <span
+        className="actionName"
+        key="new"
+      >
+        bar
+      </span>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-tags-added 1`] = `
 <div
   className="component"

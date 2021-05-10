@@ -70,6 +70,7 @@ export class AuditLogEventContainer extends React.Component<Props> {
         [constants.TICKET_UNMARKED_SPAM]: ['undo'],
         [constants.TICKET_UNTRASHED]: ['undo'],
         [constants.TICKET_MESSAGE_SUMMARY_CREATED]: ['email'],
+        [constants.TICKET_SUBJECT_UPDATED]: ['mode'],
     }
 
     _CONTENT_RENDERERS = {
@@ -104,6 +105,8 @@ export class AuditLogEventContainer extends React.Component<Props> {
         [constants.TICKET_UNTRASHED]: () => <ActionName>Undeleted</ActionName>,
         [constants.TICKET_MESSAGE_SUMMARY_CREATED]: () =>
             this._renderTicketMessageSummaryCreatedEvent(),
+        [constants.TICKET_SUBJECT_UPDATED]: () =>
+            this._renderTicketSubjectUpdated(),
     }
 
     _getIcon() {
@@ -220,6 +223,30 @@ export class AuditLogEventContainer extends React.Component<Props> {
             })
         }
 
+        return elements
+    }
+
+    _renderTicketSubjectUpdated() {
+        const {old_subject, new_subject} = this.props.event.get('data').toJS()
+        const elements = [<ActionName key="name">Subject updated</ActionName>]
+        if (old_subject) {
+            elements.push(
+                <span className={css.equalFiller} key="from">
+                    from
+                </span>,
+                <span className={css.actionName} key="old">
+                    {old_subject}
+                </span>
+            )
+        }
+        elements.push(
+            <span className={css.equalFiller} key="to">
+                to
+            </span>,
+            <span className={css.actionName} key="new">
+                {new_subject}
+            </span>
+        )
         return elements
     }
 

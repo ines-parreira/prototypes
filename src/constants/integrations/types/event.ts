@@ -18,6 +18,7 @@ export enum TicketAuditLogEvent {
     TicketUnmarkedSpam = 'ticket-unmarked-spam',
     TicketUntrashed = 'ticket-untrashed',
     TicketUpdated = 'ticket-updated',
+    TicketSubjectUpdated = 'ticket-subject-updated',
 }
 
 export enum PhoneIntegrationEvent {
