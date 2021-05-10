@@ -2,17 +2,7 @@
 
 exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and focus editor when called 1`] = `
 <TicketReplyArea
-  actions={
-    Object {
-      "customers": Object {},
-      "macro": Object {},
-      "newMessage": Object {},
-      "tag": Object {},
-      "ticket": Object {},
-      "views": Object {},
-    }
-  }
-  applyMacro={[Function]}
+  applyMacro={[MockFunction]}
   cacheAdded={false}
   currentMacro={Object {}}
   currentTicket={Immutable.Map {}}
@@ -24,7 +14,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
   notify={[Function]}
   page={1}
   preferences={Object {}}
-  selectMacro={[Function]}
+  selectMacro={[MockFunction]}
   ticket={Immutable.Map {}}
   totalPages={1}
 >
@@ -65,16 +55,6 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
       className="content"
     >
       <TicketReplyMock
-        actions={
-          Object {
-            "customers": Object {},
-            "macro": Object {},
-            "newMessage": Object {},
-            "tag": Object {},
-            "ticket": Object {},
-            "views": Object {},
-          }
-        }
         customers={Object {}}
         richAreaRef={[Function]}
         ticket={Immutable.Map {}}
@@ -90,17 +70,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
 
 exports[`<TicketReplyArea/> should block the reply area because the customer is required on ticket creation with an internal-note 1`] = `
 <TicketReplyArea
-  actions={
-    Object {
-      "customers": Object {},
-      "macro": Object {},
-      "newMessage": Object {},
-      "tag": Object {},
-      "ticket": Object {},
-      "views": Object {},
-    }
-  }
-  applyMacro={[Function]}
+  applyMacro={[MockFunction]}
   cacheAdded={false}
   currentMacro={Object {}}
   currentTicket={
@@ -117,7 +87,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   notify={[Function]}
   page={1}
   preferences={Object {}}
-  selectMacro={[Function]}
+  selectMacro={[MockFunction]}
   ticket={Immutable.Map {}}
   totalPages={1}
 >
@@ -206,16 +176,6 @@ exports[`<TicketReplyArea/> should render 1`] = `
     className="content"
   >
     <TicketReplyMock
-      actions={
-        Object {
-          "customers": Object {},
-          "macro": Object {},
-          "newMessage": Object {},
-          "tag": Object {},
-          "ticket": Object {},
-          "views": Object {},
-        }
-      }
       customers={Object {}}
       richAreaRef={[Function]}
       ticket={Immutable.Map {}}

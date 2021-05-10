@@ -31,7 +31,6 @@ describe('TicketReplyEditor component', () => {
     it('should render empty ticket', () => {
         const component = shallow(
             <TicketReplyEditorContainer
-                actions={{}}
                 ticket={fromJS({})}
                 newMessage={fromJS({
                     state: {
@@ -58,7 +57,6 @@ describe('TicketReplyEditor component', () => {
     it('should not allow attachments for instagram comments', () => {
         const component = shallow(
             <TicketReplyEditorContainer
-                actions={{}}
                 ticket={fromJS({})}
                 newMessage={fromJS({
                     state: {
@@ -85,7 +83,6 @@ describe('TicketReplyEditor component', () => {
     it('should not allow attachments for instagram mentions', () => {
         const component = shallow(
             <TicketReplyEditorContainer
-                actions={{}}
                 ticket={fromJS({})}
                 newMessage={fromJS({
                     state: {
@@ -148,7 +145,6 @@ describe('TicketReplyEditor component', () => {
                 newMessageType="email"
                 newMessage={newMessage}
                 agents={[]}
-                actions={{}}
                 ticket={ticket}
                 addAttachments={_noop}
                 notify={_noop}
@@ -215,7 +211,6 @@ describe('TicketReplyEditor component', () => {
                 newMessageType={TicketMessageSourceType.FacebookMessenger}
                 newMessage={newMessage}
                 agents={[]}
-                actions={{}}
                 ticket={ticket}
                 addAttachments={_noop}
                 notify={_noop}
@@ -270,7 +265,6 @@ describe('TicketReplyEditor component', () => {
                 newMessageType={TicketMessageSourceType.Aircall}
                 newMessage={newMessage}
                 agents={[]}
-                actions={{}}
                 ticket={ticket}
                 addAttachments={_noop}
                 notify={_noop}

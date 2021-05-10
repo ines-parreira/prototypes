@@ -29,7 +29,7 @@ type Props = {
     messageId: number,
     messageActions: Array<*>,
 
-    setStatus: (string) => void,
+    setStatus?: (string) => void,
 
     retry?: boolean,
     force?: boolean,
@@ -88,7 +88,7 @@ class Error extends React.Component<Props, State> {
 
         const status = message.getIn(['_internal', 'status'])
         return actions.newMessage.retrySubmitTicketMessage(message).then(() => {
-            if (status) {
+            if (status && setStatus) {
                 return setStatus(status)
             }
 

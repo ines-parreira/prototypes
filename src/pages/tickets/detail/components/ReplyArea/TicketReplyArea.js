@@ -34,7 +34,6 @@ import css from './TicketReplyArea.less'
 const CONTENT_STATE_PATH = ['state', 'contentState']
 
 type Props = {
-    actions: Object,
     ticket: Object,
     currentUser: Object,
     customers: Object,
@@ -407,7 +406,6 @@ export class TicketReplyArea extends React.Component<Props, State> {
                         />
                     ) : (
                         <TicketReply
-                            actions={this.props.actions}
                             ticket={this.props.ticket}
                             appliedMacro={this.props.ticket.getIn([
                                 'state',

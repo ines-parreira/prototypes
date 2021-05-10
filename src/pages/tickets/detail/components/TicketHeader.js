@@ -20,7 +20,22 @@ import shortcutManager from '../../../../services/shortcutManager/index.ts'
 import EditableTitle from '../../../common/components/EditableTitle.tsx'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer.tsx'
 import {notify} from '../../../../state/notifications/actions.ts'
-import * as ticketActions from '../../../../state/ticket/actions.ts'
+import {
+    addTags,
+    clearTicket,
+    displayAuditLogEvents,
+    goToNextTicket,
+    hideAuditLogEvents,
+    removeTag,
+    setAgent,
+    setSpam,
+    setStatus,
+    setSubject,
+    setTeam,
+    setTrashed,
+    snoozeTicket,
+    ticketPartialUpdate,
+} from '../../../../state/ticket/actions.ts'
 import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors.ts'
 import {getTimezone} from '../../../../state/currentUser/selectors.ts'
 import {NOTIFICATION_STATUS} from '../../../../state/notifications/constants.ts'
@@ -36,22 +51,26 @@ import TicketTrash from './TicketDetails/TicketTrash'
 import css from './TicketHeader.less'
 
 type Props = {
-    ticket: Map<*, *>,
+    ticket: Map<any, any>,
     timezone: string,
-    shouldDisplayAuditLogEvents: boolean,
-    actions: {
-        ticket: typeof ticketActions,
-    },
-    setTrashed: typeof ticketActions.setTrashed,
-    setSpam: typeof ticketActions.setSpam,
-    clearTicket: typeof ticketActions.clearTicket,
-    goToNextTicket: typeof ticketActions.goToNextTicket,
-    ticketPartialUpdate: typeof ticketActions.ticketPartialUpdate,
-    displayAuditLogEvents: (ticketId: number) => void,
-    hideAuditLogEvents: () => void,
-    hideTicket: () => Promise<*>,
+    addTags: typeof addTags,
     className: string,
+    clearTicket: typeof clearTicket,
+    displayAuditLogEvents: typeof displayAuditLogEvents,
+    goToNextTicket: typeof goToNextTicket,
+    hideAuditLogEvents: typeof hideAuditLogEvents,
+    hideTicket: () => Promise<*>,
     notify: typeof notify,
+    removeTag: typeof removeTag,
+    setAgent: typeof setAgent,
+    setSpam: typeof setSpam,
+    setStatus: typeof setStatus,
+    setSubject: typeof setSubject,
+    setTeam: typeof setTeam,
+    setTrashed: typeof setTrashed,
+    shouldDisplayAuditLogEvents: boolean,
+    snoozeTicket: typeof snoozeTicket,
+    ticketPartialUpdate: typeof ticketPartialUpdate,
 }
 
 type State = {
@@ -94,9 +113,9 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
     }
 
     _setStatus = (status: string) => {
-        const {notify} = this.props
+        const {notify, setStatus} = this.props
 
-        return this.props.actions.ticket.setStatus(status, () => {
+        return setStatus(status, () => {
             notify({
                 status: 'success',
                 message: 'Ticket has been closed',
@@ -123,12 +142,9 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
     }
 
     _snoozeTicket = (event: Object, picker: Object) => {
-        return this.props.actions.ticket.snoozeTicket(
-            picker.endDate.format(),
-            () => {
-                this._goToNextTicket()
-            }
-        )
+        return this.props.snoozeTicket(picker.endDate.format(), () => {
+            this._goToNextTicket()
+        })
     }
 
     _toggleSnoozePicker = () => {
@@ -201,10 +217,14 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
     render() {
         const {
-            ticket,
-            actions,
+            addTags,
             className,
+            removeTag,
+            setAgent,
+            setSubject,
+            setTeam,
             shouldDisplayAuditLogEvents,
+            ticket,
             timezone,
             notify,
             ticketPartialUpdate,
@@ -220,7 +240,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                         className={classnames('mr-2', css.editableTitle)}
                         title={ticket.get('subject')}
                         placeholder="Subject"
-                        update={actions.ticket.setSubject}
+                        update={setSubject}
                         focus={!ticket.get('id')}
                     />
 
@@ -420,8 +440,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}
-                            addTags={actions.ticket.addTags}
-                            removeTag={actions.ticket.removeTag}
+                            addTags={addTags}
+                            removeTag={removeTag}
                             transparent
                         />
                     </div>
@@ -435,8 +455,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                 'meta',
                                 'profile_picture_url',
                             ])}
-                            setUser={actions.ticket.setAgent}
-                            setTeam={actions.ticket.setTeam}
+                            setUser={setAgent}
+                            setTeam={setTeam}
                             className={css.assignee}
                             transparent
                         />
@@ -459,14 +479,21 @@ const connector = connect(
         shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
     }),
     {
-        setTrashed: ticketActions.setTrashed,
-        setSpam: ticketActions.setSpam,
-        clearTicket: ticketActions.clearTicket,
-        goToNextTicket: ticketActions.goToNextTicket,
-        displayAuditLogEvents: ticketActions.displayAuditLogEvents,
-        hideAuditLogEvents: ticketActions.hideAuditLogEvents,
+        addTags,
+        clearTicket,
+        displayAuditLogEvents,
+        goToNextTicket,
+        hideAuditLogEvents,
         notify,
-        ticketPartialUpdate: ticketActions.ticketPartialUpdate,
+        removeTag,
+        setAgent,
+        setSpam,
+        setStatus,
+        setSubject,
+        setTeam,
+        setTrashed,
+        snoozeTicket,
+        ticketPartialUpdate,
     }
 )
 

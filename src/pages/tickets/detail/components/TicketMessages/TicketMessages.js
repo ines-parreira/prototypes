@@ -20,7 +20,7 @@ type Props = {
     isLastReadMessage: boolean,
     hasCursor: boolean,
     lastMessageDatetimeAfterMount: ?moment$Moment,
-    setStatus: () => void,
+    setStatus?: () => void,
     lastReadMessageId?: number,
     highlightedElements: HighlightedElements,
 }

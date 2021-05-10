@@ -21,7 +21,7 @@ const classNames = classNamesBind.bind(css)
 type Props = {
     message: TicketMessage,
     ticketId: number,
-    setStatus: () => void,
+    setStatus?: (status: string) => void,
     showSourceDetails: boolean,
     isLastRead: boolean,
     timezone: string,

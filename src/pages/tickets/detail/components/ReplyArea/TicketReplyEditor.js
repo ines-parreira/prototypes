@@ -10,8 +10,14 @@ import {type TicketMessageSourceType} from '../../../../../business/types/ticket
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket.ts'
 import {getOtherAgents} from '../../../../../state/agents/selectors.ts'
 import type {agentsType} from '../../../../../state/agents/types'
-import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
+import {
+    addAttachments,
+    setResponseText,
+} from '../../../../../state/newMessage/actions.ts'
+import {
+    getNewMessageType,
+    getNewMessageAttachments,
+} from '../../../../../state/newMessage/selectors.ts'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import type {attachmentType} from '../../../../../types'
 import {
@@ -54,7 +60,6 @@ type filesType = Array<attachmentType>
 type validationRegexType = string | RegExp
 
 type Props = {
-    actions: {},
     agents: agentsType,
     newMessage: Map<*, *>,
     newMessageType: TicketMessageSourceType,
@@ -62,9 +67,9 @@ type Props = {
     predictionContext: Map<*, *>,
     attachments: List<*>,
 
-    addAttachments: typeof newMessageActions.addAttachments,
+    addAttachments: typeof addAttachments,
     notify: ({}) => void,
-    setResponseText: typeof newMessageActions.setResponseText,
+    setResponseText: typeof setResponseText,
 
     richAreaRef: (T: richAreaType) => void,
 }
@@ -372,23 +377,20 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-        attachments: newMessageSelectors.getNewMessageAttachments(state),
+const connector = connect(
+    (state) => ({
+        newMessageType: getNewMessageType(state),
+        attachments: getNewMessageAttachments(state),
         newMessage: state.newMessage,
         agents: getOtherAgents(state),
         predictionContext: getContext(state),
+    }),
+
+    {
+        addAttachments,
+        notify,
+        setResponseText,
     }
-}
+)
 
-const mapDispatchToProps = {
-    addAttachments: newMessageActions.addAttachments,
-    notify,
-    setResponseText: newMessageActions.setResponseText,
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TicketReplyEditorContainer)
+export default connector(TicketReplyEditorContainer)

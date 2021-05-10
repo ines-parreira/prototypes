@@ -1,7 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
-import _noop from 'lodash/noop'
 
 import {TicketMessageSourceTypes} from '../../../../../../business/ticket.ts'
 import {TicketReplyContainer} from '../TicketReply'
@@ -12,10 +11,10 @@ describe('<TicketReply/>', () => {
     const answerableSourceType = 'email'
     const nonAnswerableSourceType = 'chat'
 
-    const commonProps = {
-        actions: {},
-        deleteAttachment: _noop,
-        richAreaRef: _noop,
+    const minProps = {
+        deleteActionOnApplied: jest.fn(),
+        deleteAttachment: jest.fn(),
+        richAreaRef: jest.fn(),
         ticket: fromJS({
             reply_options: {
                 [answerableSourceType]: {answerable: true},
@@ -28,12 +27,13 @@ describe('<TicketReply/>', () => {
                 },
             },
         }),
+        updateActionArgsOnApplied: jest.fn(),
     }
 
     it('should render the editor', () => {
         const component = shallow(
             <TicketReplyContainer
-                {...commonProps}
+                {...minProps}
                 isNewMessagePublic={true}
                 newMessageType={answerableSourceType}
                 newMessageAttachments={fromJS([])}

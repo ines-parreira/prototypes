@@ -13,9 +13,7 @@ import SourceIcon from '../SourceIcon'
 import css from './TimelineTicket.less'
 
 type Props = {
-    actions?: Maybe<{
-        displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
-    }>
+    displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
     isCurrent: boolean
     ticket: Map<any, any>
 }
@@ -26,8 +24,8 @@ export default class TimelineTicket extends Component<Props> {
     _goToTicket = (e: MouseEvent) => {
         e.preventDefault()
 
-        if (this.props.actions?.displayHistoryOnNextPage) {
-            this.props.actions.displayHistoryOnNextPage(true)
+        if (this.props.displayHistoryOnNextPage) {
+            this.props.displayHistoryOnNextPage(true)
         }
 
         history.push(`/app/ticket/${this.props.ticket.get('id') as number}`)

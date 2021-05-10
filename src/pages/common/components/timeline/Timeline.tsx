@@ -8,9 +8,7 @@ import css from './Timeline.less'
 import TimelineTicket from './TimelineTicket'
 
 type Props = {
-    actions: Maybe<{
-        displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
-    }>
+    displayHistoryOnNextPage?: typeof displayHistoryOnNextPage
     customerHistory: Map<any, any>
     currentTicketId: number
     displayAll: boolean
@@ -20,9 +18,8 @@ type Props = {
 export default class Timeline extends Component<Props> {
     static defaultProps: Pick<
         Props,
-        'actions' | 'currentTicketId' | 'displayAll' | 'revert'
+        'currentTicketId' | 'displayAll' | 'revert'
     > = {
-        actions: {},
         currentTicketId: 0,
         displayAll: false,
         revert: false,
@@ -30,9 +27,9 @@ export default class Timeline extends Component<Props> {
 
     render() {
         const {
-            actions,
             currentTicketId,
             customerHistory,
+            displayHistoryOnNextPage,
             displayAll,
             revert,
         } = this.props
@@ -54,7 +51,9 @@ export default class Timeline extends Component<Props> {
                         if (obj.get('channel')) {
                             return (
                                 <TimelineTicket
-                                    actions={actions}
+                                    displayHistoryOnNextPage={
+                                        displayHistoryOnNextPage
+                                    }
                                     isCurrent={
                                         currentTicketId === obj.get('id')
                                     }

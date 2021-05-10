@@ -5,6 +5,10 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import {canReply} from '../../../../../business/ticket.ts'
+import {
+    deleteActionOnApplied,
+    updateActionArgsOnApplied,
+} from '../../../../../state/ticket/actions.ts'
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
 import {deleteAttachment} from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
@@ -16,7 +20,6 @@ import TicketReplyAction from './TicketReplyAction'
 import TicketReplyEditor from './TicketReplyEditor'
 
 type Props = {
-    actions: Object,
     deleteAttachment?: (number) => void,
     className?: string,
     ticket: Map<*, *>,
@@ -25,6 +28,8 @@ type Props = {
     appliedMacro: ?Map<*, *>,
     isNewMessagePublic: boolean,
     richAreaRef: () => void,
+    deleteActionOnApplied: typeof deleteActionOnApplied,
+    updateActionArgsOnApplied: typeof updateActionArgsOnApplied,
 }
 export class TicketReplyContainer extends React.Component<Props> {
     _renderAttachments = () => {
@@ -41,7 +46,12 @@ export class TicketReplyContainer extends React.Component<Props> {
     }
 
     _renderActions = () => {
-        const {ticket, appliedMacro, actions} = this.props
+        const {
+            ticket,
+            appliedMacro,
+            deleteActionOnApplied,
+            updateActionArgsOnApplied,
+        } = this.props
 
         const backendActions = appliedMacro
             ? appliedMacro.get('actions').filter((action) => {
@@ -61,8 +71,8 @@ export class TicketReplyContainer extends React.Component<Props> {
                         key={key}
                         index={appliedMacro.get('actions').indexOf(action)}
                         action={action}
-                        update={actions.ticket.updateActionArgsOnApplied}
-                        remove={actions.ticket.deleteActionOnApplied}
+                        update={updateActionArgsOnApplied}
+                        remove={deleteActionOnApplied}
                         ticketId={ticket.get('id')}
                     />
                 ))}
@@ -74,7 +84,6 @@ export class TicketReplyContainer extends React.Component<Props> {
         const {
             ticket,
             isNewMessagePublic,
-            actions,
             richAreaRef,
             className: passedClassName,
             newMessageType,
@@ -98,7 +107,6 @@ export class TicketReplyContainer extends React.Component<Props> {
                     <div className={css.alert}>{canReplyResult.message}</div>
                 ) : (
                     <TicketReplyEditor
-                        actions={actions}
                         ticket={ticket}
                         richAreaRef={richAreaRef}
                     />
@@ -121,7 +129,9 @@ const connector = connect(
         }
     },
     {
+        deleteActionOnApplied,
         deleteAttachment,
+        updateActionArgsOnApplied,
     }
 )
 

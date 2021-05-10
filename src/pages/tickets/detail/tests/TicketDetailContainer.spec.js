@@ -10,7 +10,7 @@ import {renderWithRouter} from '../../../../utils/testing.tsx'
 import {initialState as currentUser} from '../../../../state/currentUser/reducers.ts'
 import pendingMessageManager from '../../../../services/pendingMessageManager'
 import {TicketDetailContainer} from '../TicketDetailContainer'
-import TicketView from '../components/TicketView'
+import TicketView from '../components/TicketView.tsx'
 
 jest.useFakeTimers()
 
@@ -33,87 +33,18 @@ jest.mock('../../../../services/pendingMessageManager', () => ({
 
 describe('TicketDetailContainer component', () => {
     const minProps: any = {
-        isTicketDirty: false,
+        activeCustomer: fromJS({}),
+        activeView: fromJS({}),
         canSendMessage: false,
-        actions: {
-            customers: {
-                fetchCustomer: jest.fn(),
-                fetchCustomers: jest.fn(),
-            },
-            macro: {
-                createMacro: jest.fn(),
-                deleteMacro: jest.fn(),
-                fetchMacros: jest.fn(),
-                getMacro: jest.fn(),
-                updateMacro: jest.fn(),
-            },
-            newMessage: {
-                setReceivers: jest.fn(),
-                submitTicket: jest.fn(),
-                prepareTicketMessage: jest.fn(),
-                resetReceiversAndSender: jest.fn(),
-                sendTicketMessage: jest.fn(),
-            },
-            tag: {
-                addTags: jest.fn(),
-                bulkDelete: jest.fn(),
-                cancel: jest.fn(),
-                create: jest.fn(),
-                edit: jest.fn(),
-                fetchTags: jest.fn(),
-                merge: jest.fn(),
-                remove: jest.fn(),
-                save: jest.fn(),
-                select: jest.fn(),
-                selectAll: jest.fn(),
-                setPage: jest.fn(),
-            },
-            ticket: {
-                fetchTicket: jest.fn(),
-                clearTicket: jest.fn(),
-                setCustomer: jest.fn().mockResolvedValue(undefined),
-                setStatus: jest.fn(),
-                goToNextTicket: jest.fn(),
-                findAndSetCustomer: jest.fn(),
-                messageDeleted: jest.fn(),
-            },
-            views: {
-                addFieldFilter: jest.fn(),
-                addRecentView: jest.fn(),
-                createJob: jest.fn(),
-                deleteView: jest.fn(),
-                deleteViewSuccess: jest.fn(),
-                fetchActiveViewTickets: jest.fn(),
-                fetchRecentViewsCounts: jest.fn(),
-                fetchViewItems: jest.fn(),
-                fetchViews: jest.fn(),
-                fetchViewsSuccess: jest.fn(),
-                fetchVisibleViewsCounts: jest.fn(),
-                fieldEnumSearch: jest.fn(),
-                gotoActiveView: jest.fn(),
-                handleViewsCount: jest.fn(),
-                removeFieldFilter: jest.fn(),
-                resetView: jest.fn(),
-                setFieldVisibility: jest.fn(),
-                setOrderDirection: jest.fn(),
-                setPage: jest.fn(),
-                setViewActive: jest.fn(),
-                setViewEditMode: jest.fn(),
-                submitView: jest.fn(),
-                toggleIdInSelectedItemsIds: jest.fn(),
-                toggleViewSelection: jest.fn(),
-                updateFieldFilter: jest.fn(),
-                updateFieldFilterOperator: jest.fn(),
-                updateRecentViews: jest.fn(),
-                updateSelectedItemsIds: jest.fn(),
-                updateView: jest.fn(),
-            },
-        },
-        updateActiveViewCursor: jest.fn(),
-        submitTicket: jest.fn(),
-        ticket: fromJS({
-            messages: [],
-        }),
+        clearTicket: jest.fn(),
+        customers: fromJS({}),
+        fetchCustomer: jest.fn(),
+        fetchCustomerHistory: jest.fn(),
+        fetchTags: jest.fn(),
+        fetchTicket: jest.fn(),
+        findAndSetCustomer: jest.fn(),
+        goToNextTicket: jest.fn(),
+        goToPrevTicket: jest.fn(),
         newMessage: fromJS({
             newMessage: {
                 source: {
@@ -121,10 +52,17 @@ describe('TicketDetailContainer component', () => {
                 },
             },
         }),
-        activeView: fromJS({}),
-        activeCustomer: fromJS({}),
         newMessageSource: fromJS({}),
-        customers: fromJS({}),
+        prepareTicketMessage: jest.fn(),
+        sendTicketMessage: jest.fn(),
+        setCustomer: jest.fn().mockResolvedValue(undefined),
+        setReceivers: jest.fn(),
+        setStatus: jest.fn(),
+        submitTicket: jest.fn(),
+        ticket: fromJS({
+            messages: [],
+        }),
+        updateCursor: jest.fn(),
     }
     const preparedData = {
         messageId: 1,
@@ -201,7 +139,7 @@ describe('TicketDetailContainer component', () => {
             route: '/foo/new?customer=1',
         })
 
-        expect(minProps.actions.customers.fetchCustomer).toBeCalledWith('1')
+        expect(minProps.fetchCustomer).toBeCalledWith('1')
     })
 
     it('should set activeCustomer as customer', () => {
@@ -226,13 +164,13 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(minProps.actions.ticket.setCustomer).toBeCalledWith(
+        expect(minProps.setCustomer).toBeCalledWith(
             activeCustomer.set('address', activeCustomer.get('email'))
         )
     })
 
     it('should not go to next ticket when setting status=closed and history is open', () => {
-        minProps.actions.ticket.setStatus.mockImplementationOnce((v, cb) => {
+        minProps.setStatus.mockImplementationOnce((v, cb) => {
             act(cb)
         })
 
@@ -263,11 +201,11 @@ describe('TicketDetailContainer component', () => {
         )
 
         userEvent.click(getByTestId('TicketView-close'))
-        expect(minProps.actions.ticket.goToNextTicket).not.toHaveBeenCalled()
+        expect(minProps.goToNextTicket).not.toHaveBeenCalled()
     })
 
     it('should go to next ticket when setting status=closed and history is closed', async () => {
-        minProps.actions.ticket.setStatus.mockImplementationOnce((v, cb) => {
+        minProps.setStatus.mockImplementationOnce((v, cb) => {
             act(cb)
         })
 
@@ -298,9 +236,7 @@ describe('TicketDetailContainer component', () => {
         )
 
         userEvent.click(getByTestId('TicketView-close'))
-        await waitFor(() =>
-            expect(minProps.actions.ticket.goToNextTicket).toHaveBeenCalled()
-        )
+        await waitFor(() => expect(minProps.goToNextTicket).toHaveBeenCalled())
     })
 
     it('should set activeCustomer as receiver', () => {
@@ -337,10 +273,10 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(minProps.actions.ticket.setCustomer).toBeCalledWith(
+        expect(minProps.setCustomer).toBeCalledWith(
             activeCustomer.set('address', activeCustomer.get('email'))
         )
-        expect(minProps.actions.newMessage.setReceivers).toBeCalledWith({
+        expect(minProps.setReceivers).toBeCalledWith({
             to: [expectedReceiver],
         })
     })
@@ -364,7 +300,7 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(minProps.updateActiveViewCursor).toBeCalledWith(
+        expect(minProps.updateCursor).toBeCalledWith(
             newTicket.get(activeView.get('order_by'))
         )
     })
@@ -389,7 +325,7 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(minProps.updateActiveViewCursor).not.toHaveBeenCalled()
+        expect(minProps.updateCursor).not.toHaveBeenCalled()
     })
 
     it(
@@ -418,9 +354,7 @@ describe('TicketDetailContainer component', () => {
                 />
             )
 
-            expect(minProps.actions.ticket.findAndSetCustomer).toBeCalledWith(
-                'foo@gorgias.io'
-            )
+            expect(minProps.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
         }
     )
 
@@ -468,9 +402,7 @@ describe('TicketDetailContainer component', () => {
                     })}
                 />
             )
-            expect(minProps.actions.ticket.findAndSetCustomer).toBeCalledWith(
-                'foo@gorgias.io'
-            )
+            expect(minProps.findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
         }
     )
 
@@ -517,9 +449,7 @@ describe('TicketDetailContainer component', () => {
                 />
             )
 
-            expect(
-                minProps.actions.ticket.findAndSetCustomer
-            ).not.toHaveBeenCalled()
+            expect(minProps.findAndSetCustomer).not.toHaveBeenCalled()
         }
     )
 
@@ -570,7 +500,7 @@ describe('TicketDetailContainer component', () => {
                 route: '/foo/new?customer=1',
             }
         )
-        expect(props.actions.ticket.setCustomer).not.toHaveBeenCalled()
+        expect(minProps.setCustomer).not.toHaveBeenCalled()
 
         rerender(
             <TicketDetailContainer
@@ -582,7 +512,7 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(props.actions.ticket.setCustomer).toHaveBeenCalledWith(
+        expect(minProps.setCustomer).toHaveBeenCalledWith(
             fromJS({
                 ...activeCustomer,
                 address: activeCustomer.email,
@@ -634,9 +564,7 @@ describe('TicketDetailContainer component', () => {
                 />
             )
 
-            expect(
-                minProps.actions.ticket.findAndSetCustomer
-            ).not.toHaveBeenCalled()
+            expect(minProps.findAndSetCustomer).not.toHaveBeenCalled()
         }
     )
 
@@ -681,7 +609,7 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(minProps.actions.ticket.setCustomer).toBeCalledWith(null)
+        expect(minProps.setCustomer).toBeCalledWith(null)
     })
 
     it('should not unset the customer because the ticket is new and the new message is an internal note', () => {
@@ -707,7 +635,7 @@ describe('TicketDetailContainer component', () => {
             }
         )
 
-        expect(minProps.actions.ticket.setCustomer).not.toBeCalled()
+        expect(minProps.setCustomer).not.toBeCalled()
     })
 
     it('should set the customer as first recipient because the ticket is new and the customer has changed', () => {
@@ -753,7 +681,7 @@ describe('TicketDetailContainer component', () => {
             />
         )
 
-        expect(minProps.actions.newMessage.setReceivers).toBeCalledWith({
+        expect(minProps.setReceivers).toBeCalledWith({
             to: [
                 {
                     name: 'foo',
@@ -776,9 +704,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should defer sending new message when new message is of type email', async () => {
-        minProps.actions.newMessage.prepareTicketMessage.mockReturnValueOnce(
-            preparedData
-        )
+        minProps.prepareTicketMessage.mockReturnValueOnce(preparedData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
@@ -840,9 +766,7 @@ describe('TicketDetailContainer component', () => {
             },
             type: 'foo',
         }
-        minProps.actions.newMessage.prepareTicketMessage.mockReturnValueOnce(
-            preparedFacebookData
-        )
+        minProps.prepareTicketMessage.mockReturnValueOnce(preparedFacebookData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
@@ -866,9 +790,7 @@ describe('TicketDetailContainer component', () => {
 
         userEvent.click(getByTestId('TicketView-close'))
         await waitFor(() =>
-            expect(
-                minProps.actions.newMessage.sendTicketMessage
-            ).toHaveBeenNthCalledWith(
+            expect(minProps.sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
                 1,
                 preparedFacebookData.messageToSend,
@@ -879,9 +801,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should send a deferred message when sending a new deferred message', async () => {
-        minProps.actions.newMessage.prepareTicketMessage.mockReturnValue(
-            preparedData
-        )
+        minProps.prepareTicketMessage.mockReturnValue(preparedData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
@@ -938,13 +858,7 @@ describe('TicketDetailContainer component', () => {
                 currentUser={currentUser}
                 canSendMessage
                 submitTicket={submitTicketMock}
-                actions={{
-                    ...minProps.actions,
-                    ticket: {
-                        ...minProps.actions.ticket,
-                        setStatus,
-                    },
-                }}
+                setStatus={setStatus}
             />,
             {
                 path: '/foo/:ticketId',
@@ -963,9 +877,10 @@ describe('TicketDetailContainer component', () => {
                 'closed',
                 expect.any(Function)
             )
-            expect(
-                minProps.actions.ticket.goToNextTicket
-            ).toHaveBeenLastCalledWith(123, expect.any(Promise))
+            expect(minProps.goToNextTicket).toHaveBeenLastCalledWith(
+                123,
+                expect.any(Promise)
+            )
         })
     })
 })

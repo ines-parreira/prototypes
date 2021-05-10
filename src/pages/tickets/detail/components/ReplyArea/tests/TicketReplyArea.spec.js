@@ -2,7 +2,6 @@
 import React from 'react'
 import {shallow, mount, type ReactWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
@@ -47,14 +46,6 @@ jest.mock('../TicketMacros', () => ({onClearMacro}: TicketMacrosMockProps) => (
 ))
 
 const minProps = {
-    actions: {
-        customers: {},
-        macro: {},
-        newMessage: {},
-        tag: {},
-        ticket: {},
-        views: {},
-    },
     ticket: fromJS({}),
     currentUser: fromJS({}),
     customers: {},
@@ -65,9 +56,9 @@ const minProps = {
     currentMacro: {},
     page: 1,
     totalPages: 1,
-    selectMacro: _noop,
+    selectMacro: jest.fn(),
     fetchMacrosCancellable: () => Promise.resolve(),
-    applyMacro: _noop,
+    applyMacro: jest.fn(),
     currentTicket: fromJS({}),
     cacheAdded: false,
 }

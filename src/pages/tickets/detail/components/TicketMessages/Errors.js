@@ -11,7 +11,7 @@ type Props = {
     ticketId: number,
     loading: boolean,
     hasActionError: boolean,
-    setStatus: () => void,
+    setStatus?: (status: string) => void,
 }
 
 const Errors = (props: Props) => {

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import css from './HistoryButton.less'
 

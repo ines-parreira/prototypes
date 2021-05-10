@@ -45,7 +45,7 @@ type Props = {
     // TODO (@pwlmaciejewski): After bumping immutable to v4 it can be a List<RecordOf<TicketElement>>
     elements: List<*>,
     ticket: Map<*, *>,
-    setStatus: (string) => void,
+    setStatus?: (string) => void,
     lastReadMessage: Map<*, *>,
     messageGroupingChannels: Channel[],
     messageGroupingDuration: string,

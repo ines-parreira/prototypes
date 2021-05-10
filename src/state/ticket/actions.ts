@@ -1038,7 +1038,7 @@ export function clearTicket() {
     }
 }
 
-export function toggleHistory(state: boolean) {
+export function toggleHistory(state?: boolean) {
     return {
         type: types.TOGGLE_HISTORY,
         state,

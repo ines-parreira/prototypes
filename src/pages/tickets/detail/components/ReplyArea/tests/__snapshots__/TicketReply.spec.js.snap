@@ -5,8 +5,7 @@ exports[`<TicketReply/> should render the editor 1`] = `
   className="component"
 >
   <Connect(TicketReplyEditorContainer)
-    actions={Object {}}
-    richAreaRef={[Function]}
+    richAreaRef={[MockFunction]}
     ticket={
       Immutable.Map {
         "reply_options": Immutable.Map {
@@ -27,7 +26,7 @@ exports[`<TicketReply/> should render the editor 1`] = `
   <TicketAttachments
     attachments={Immutable.List []}
     className="p-2"
-    deleteAttachment={[Function]}
+    deleteAttachment={[MockFunction]}
     removable={true}
   />
 </div>
