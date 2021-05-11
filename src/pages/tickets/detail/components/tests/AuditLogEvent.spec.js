@@ -244,6 +244,18 @@ describe('<AuditLogEvent/>', () => {
 
                 expect(component).toMatchSnapshot()
             })
+
+            it('when the ticket subject updated data is null', () => {
+                const event = getEvent(constants.TICKET_SUBJECT_UPDATED)
+                const component = shallow(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+                expect(component).toMatchSnapshot()
+            })
         })
 
         describe('should not render', () => {

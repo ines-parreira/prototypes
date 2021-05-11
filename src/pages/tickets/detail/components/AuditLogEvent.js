@@ -227,26 +227,31 @@ export class AuditLogEventContainer extends React.Component<Props> {
     }
 
     _renderTicketSubjectUpdated() {
-        const {old_subject, new_subject} = this.props.event.get('data').toJS()
+        const {event} = this.props
+        const oldSubject = event.getIn(['data', 'old_subject'])
+        const newSubject = event.getIn(['data', 'new_subject'])
+
         const elements = [<ActionName key="name">Subject updated</ActionName>]
-        if (old_subject) {
+        if (oldSubject) {
             elements.push(
                 <span className={css.equalFiller} key="from">
                     from
                 </span>,
                 <span className={css.actionName} key="old">
-                    {old_subject}
+                    {oldSubject}
                 </span>
             )
         }
-        elements.push(
-            <span className={css.equalFiller} key="to">
-                to
-            </span>,
-            <span className={css.actionName} key="new">
-                {new_subject}
-            </span>
-        )
+        if (newSubject) {
+            elements.push(
+                <span className={css.equalFiller} key="to">
+                    to
+                </span>,
+                <span className={css.actionName} key="new">
+                    {newSubject}
+                </span>
+            )
+        }
         return elements
     }
 
