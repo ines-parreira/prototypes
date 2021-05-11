@@ -45,6 +45,7 @@ import ChatIntegrationPreview from './GorgiasChatIntegrationPreview'
 import OptionalEmailCapturePreview from './GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from './GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from './GorgiasChatIntegrationPreview/AutoResponder'
+import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [
     {
@@ -296,13 +297,20 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             id="email-capture-help"
                                             className="material-icons-outlined"
                                         >
-                                            error_outline
+                                            info
                                         </i>
                                         <Tooltip
                                             autohide={false}
                                             delay={100}
                                             target="email-capture-help"
                                             placement="top-start"
+                                            popperClassName={css.tooltip}
+                                            innerClassName={
+                                                css['tooltip-inner']
+                                            }
+                                            arrowClassName={
+                                                css['tooltip-arrow']
+                                            }
                                         >
                                             You can change the email capture
                                             message by adjusting the chat
