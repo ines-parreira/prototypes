@@ -2,69 +2,69 @@
 @import '~css/new/mixins';
 
 :local .header {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  overflow: visible;
-  padding-bottom: .5em;
-  transition: padding .16s ease-out;
-  line-height: 26px;
-
-  &.hasError div {
-    color: @lightPurple2;
-  }
-
-  .headerDetails {
     display: flex;
-    min-width: 200px;
     align-items: center;
-    align-self: start;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    overflow: visible;
+    padding-bottom: 0.5em;
+    transition: padding 0.16s ease-out;
+    line-height: 26px;
 
-    & > * {
-      margin-right: 6px;
+    &.hasError div {
+        color: @lightPurple2;
     }
-  }
 
-  .author {
-    margin-right: .8em;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
+    .headerDetails {
+        display: flex;
+        min-width: 200px;
+        align-items: center;
+        align-self: start;
 
-  .isAgent {
-    color: @blue;
-  }
+        & > * {
+            margin-right: 6px;
+        }
+    }
 
-  .agentIcon {
-    margin-right: 6px;
-    vertical-align: text-bottom;
-  }
+    .author {
+        margin-right: 0.8em;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
 
-  .sourceDetails {
-    flex-shrink: 0;
-  }
+    .isAgent {
+        color: @blue;
+    }
 
-  .hiddenMessage {
-    color: darken(@lightGrey, 8%);
-  }
+    .agentIcon {
+        margin-right: 6px;
+        vertical-align: text-bottom;
+    }
 
-  .deletedMessage {
-    color: darken(@ultraLightRed, 25%);
-  }
+    .sourceDetails {
+        flex-shrink: 0;
+    }
 
-  @media @large-desktops {
+    .hiddenMessage {
+        color: darken(@lightGrey, 8%);
+    }
+
+    .deletedMessage {
+        color: darken(@ultraLightRed, 25%);
+    }
+
+    @media @large-desktops {
+        .intents {
+            margin-left: auto;
+            margin-right: 10px;
+            .ticket-message:hover & {
+                display: block;
+            }
+        }
+    }
+
     .intents {
-      margin-left: auto;
-      margin-right: 10px;
-      .ticket-message:hover & {
-        display:block;
-      }
+        display: none;
     }
-  }
-
-  .intents {
-    display: none;
-  }
 }

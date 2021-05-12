@@ -1,74 +1,73 @@
 @import '~css/new/colors';
 
 :local .component {
-  display: block;
-  padding: 1em 30px;
-  border-bottom: 1px solid @darkQuartz2;
+    display: block;
+    padding: 1em 30px;
+    border-bottom: 1px solid @darkQuartz2;
 
-  &:hover {
-    background: @tableRowBgHover;
-  }
+    &:hover {
+        background: @tableRowBgHover;
+    }
 
-  .avatar {
-    margin-right: 20px;
-  }
+    .avatar {
+        margin-right: 20px;
+    }
 
-  .name {
-    margin-bottom: 0;
-
-    color: @indigo;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-
-  .email {
-    margin-bottom: 0;
-
-    font-size: 13px;
-  }
-
-  .name,
-  .email {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .meta {
-    width: 30%;
-    min-width: 200px;
-  }
-
-  .role {
-    min-width: 50px;
-  }
-
-  .delete {
-    margin-left: auto;
-
-    :global .btn {
-      box-shadow: none;
-
-      .material-icons,
-      .material-icons-outlined {
-        transition: .2s all;
-        opacity: .3;
+    .name {
+        margin-bottom: 0;
 
         color: @indigo;
-      }
-
-      &:hover .material-icons {
-        opacity: 1;
-
-        color: @lightRed;
-      }
-
-      /* hide icon while loading */
-      &.btn-loading .material-icons {
-        opacity: 0;
-      }
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.3;
     }
-  }
 
+    .email {
+        margin-bottom: 0;
+
+        font-size: 13px;
+    }
+
+    .name,
+    .email {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .meta {
+        width: 30%;
+        min-width: 200px;
+    }
+
+    .role {
+        min-width: 50px;
+    }
+
+    .delete {
+        margin-left: auto;
+
+        :global .btn {
+            box-shadow: none;
+
+            .material-icons,
+            .material-icons-outlined {
+                transition: 0.2s all;
+                opacity: 0.3;
+
+                color: @indigo;
+            }
+
+            &:hover .material-icons {
+                opacity: 1;
+
+                color: @lightRed;
+            }
+
+            /* hide icon while loading */
+            &.btn-loading .material-icons {
+                opacity: 0;
+            }
+        }
+    }
 }

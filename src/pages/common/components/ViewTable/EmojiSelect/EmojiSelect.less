@@ -3,37 +3,36 @@
 @fontSize: 20px;
 @size: @fontSize + 4px;
 
-
 :local .picker {
-  width: @size;
-  height: @size;
-  display: block;
-  text-align: center;
+    width: @size;
+    height: @size;
+    display: block;
+    text-align: center;
 
-  .icon {
-    color: @darkGrey;
-    font-size: @fontSize;
-    line-height: @size;
-    transition: .2s all;
-    cursor: pointer;
+    .icon {
+        color: @darkGrey;
+        font-size: @fontSize;
+        line-height: @size;
+        transition: 0.2s all;
+        cursor: pointer;
 
-    &.empty:hover {
-      font-size: @size;
-      color: @indigo;
+        &.empty:hover {
+            font-size: @size;
+            color: @indigo;
+        }
     }
-  }
 }
 
 :local .popover {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  .clearButton {
-    margin: 0;
-    border-radius: 0;
-  }
+    .clearButton {
+        margin: 0;
+        border-radius: 0;
+    }
 
-  .clearInner {
-    margin-left: -1em; // Move left by icon width to center the button text
-  }
+    .clearInner {
+        margin-left: -1em; // Move left by icon width to center the button text
+    }
 }

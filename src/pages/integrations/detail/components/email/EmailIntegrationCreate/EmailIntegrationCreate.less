@@ -3,49 +3,48 @@
 }
 
 :local .connectButton {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    height: 50px;
 
-  &.gmailButton {
-    background: #4285F4;
-    border-color: #4285F4;
+    &.gmailButton {
+        background: #4285f4;
+        border-color: #4285f4;
+
+        span {
+            color: white;
+        }
+
+        &:hover {
+            background-color: #3f80db !important;
+            border-color: #3f80db !important;
+        }
+    }
+
+    &.outlookButton {
+        background-color: #eb3c02;
+        border-color: #eb3c02;
+
+        span {
+            color: white;
+        }
+
+        &:hover {
+            background-color: #e13c02 !important;
+            border-color: #e13c02 !important;
+        }
+    }
+
+    img {
+        width: 46px;
+    }
 
     span {
-      color: white;
+        width: 100%;
     }
-
-    &:hover {
-      background-color: #3f80db !important;
-      border-color: #3f80db !important;
-    }
-  }
-
-  &.outlookButton {
-    background-color: #EB3C02;
-    border-color: #EB3C02;
-
-    span {
-      color: white;
-    }
-
-    &:hover {
-      background-color: #e13c02 !important;
-      border-color: #e13c02 !important;
-    }
-  }
-
-  img {
-    width: 46px;
-  }
-
-  span {
-    width: 100%;
-  }
 }
-
 
 :local .gmail-icon {
     /* perfect alignment */

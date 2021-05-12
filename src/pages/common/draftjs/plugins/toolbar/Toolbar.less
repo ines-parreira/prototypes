@@ -1,83 +1,82 @@
 @import '~css/new/colors';
-@import "~css/new/mixins";
+@import '~css/new/mixins';
 
 .editor-toolbar {
-  .icon {
-    font-size: 14px;
-  }
-
-  .attachment {
-    label {
-      cursor: pointer;
+    .icon {
+        font-size: 14px;
     }
 
-    input {
-      display: none;
+    .attachment {
+        label {
+            cursor: pointer;
+        }
+
+        input {
+            display: none;
+        }
     }
-  }
 }
 
 :local .page {
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 2px 7px 5px;
-
-  .button {
-    padding: .2em .4em;
-    opacity: .6;
-    transition: all .1s linear;
-
-    &:hover {
-      cursor: pointer;
-      opacity: .9;
-    }
-
-    &.active {
-      opacity: 1;
-    }
-
-    &.disabled {
-      opacity: .2;
-      cursor: not-allowed;
-    }
-  }
-
-  .actions {
     display: flex;
+    width: 100%;
     flex-direction: row;
-
-    @media @mobiles {
-      display: none !important;
-    }
-  }
-
-
-  &.isHovered .hoverOverlay {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  .hoverOverlay {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
-    width: ~'calc(100% - 8px)';
-    height: 100%;
-    margin: 0 4px;
-    padding: .1em;
-    background: rgba(255, 255, 255, .8);
-    border: 3px dashed @grey;
-    visibility: hidden;
-    opacity: 0;
-    transition: all .1s ease-out;
+    padding: 2px 7px 5px;
 
-    color: @grey;
-    font-weight: bold;
-    text-align: center;
-    line-height: 1.9;
-  }
+    .button {
+        padding: 0.2em 0.4em;
+        opacity: 0.6;
+        transition: all 0.1s linear;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+
+        &.disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: row;
+
+        @media @mobiles {
+            display: none !important;
+        }
+    }
+
+    &.isHovered .hoverOverlay {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .hoverOverlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: ~'calc(100% - 8px)';
+        height: 100%;
+        margin: 0 4px;
+        padding: 0.1em;
+        background: rgba(255, 255, 255, 0.8);
+        border: 3px dashed @grey;
+        visibility: hidden;
+        opacity: 0;
+        transition: all 0.1s ease-out;
+
+        color: @grey;
+        font-weight: bold;
+        text-align: center;
+        line-height: 1.9;
+    }
 }

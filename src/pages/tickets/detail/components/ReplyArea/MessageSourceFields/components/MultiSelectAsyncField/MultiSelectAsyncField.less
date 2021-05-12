@@ -1,86 +1,86 @@
 @import '~css/new/colors';
 
 :local .field {
-  position: relative;
-  width: 100%;
-  min-height: 27px;
-
-  .values {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .input {
-    min-width: 30px;
-    flex-grow: 2;
-    height: 23px;
-    border: none;
-    outline: none;
-
-    &:invalid {
-      background-color: initial !important;
-      border-color: initial !important;
-    }
-  }
-
-  .item {
     position: relative;
-    padding: .38em 24px .38em .76em;
-    background: @quartz;
-    margin: 0 4px 2px 0;
-    cursor: pointer;
-    outline: none !important; // prevent outline from focus
-
-    color: @indigo;
-    font-weight: 500;
-    white-space: nowrap;
-
-    &.item--focused {
-      background: @darkQuartz;
-    }
-
-    .item-remove-button {
-      position: absolute;
-      margin-left: 4px;
-
-      cursor: pointer;
-      font-size: 14px;
-
-      &:hover {
-        color: #7BB3EE;
-      }
-    }
-  }
-
-  .suggestions {
-    position: absolute;
-    z-index: 10;
     width: 100%;
-    border-radius: 3px;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
-    border: 1px solid @darkQuartz;
+    min-height: 27px;
 
-    text-overflow: ellipsis;
-
-    &.suggestions--hidden {
-      display: none;
+    .values {
+        display: flex;
+        flex-wrap: wrap;
     }
 
-    & > .suggestion {
-      padding: 6px 8px;
-      cursor: pointer;
+    .input {
+        min-width: 30px;
+        flex-grow: 2;
+        height: 23px;
+        border: none;
+        outline: none;
 
-      color: @indigo;
-      font-weight: 500;
-      white-space: nowrap;
+        &:invalid {
+            background-color: initial !important;
+            border-color: initial !important;
+        }
+    }
 
-      &.suggestion--focused {
-        background-color: @quartz;
+    .item {
+        position: relative;
+        padding: 0.38em 24px 0.38em 0.76em;
+        background: @quartz;
+        margin: 0 4px 2px 0;
+        cursor: pointer;
+        outline: none !important; // prevent outline from focus
 
         color: @indigo;
-      }
+        font-weight: 500;
+        white-space: nowrap;
+
+        &.item--focused {
+            background: @darkQuartz;
+        }
+
+        .item-remove-button {
+            position: absolute;
+            margin-left: 4px;
+
+            cursor: pointer;
+            font-size: 14px;
+
+            &:hover {
+                color: #7bb3ee;
+            }
+        }
     }
-  }
+
+    .suggestions {
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        border-radius: 3px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 2px 3px rgba(21, 32, 101, 0.2);
+        border: 1px solid @darkQuartz;
+
+        text-overflow: ellipsis;
+
+        &.suggestions--hidden {
+            display: none;
+        }
+
+        & > .suggestion {
+            padding: 6px 8px;
+            cursor: pointer;
+
+            color: @indigo;
+            font-weight: 500;
+            white-space: nowrap;
+
+            &.suggestion--focused {
+                background-color: @quartz;
+
+                color: @indigo;
+            }
+        }
+    }
 }

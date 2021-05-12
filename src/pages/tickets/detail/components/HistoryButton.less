@@ -1,33 +1,32 @@
-@import "~css/new/colors";
+@import '~css/new/colors';
 
 :local .component {
-  position: relative;
-  border-color: @darkQuartz2;
-  transition-duration: 0s;
+    position: relative;
+    border-color: @darkQuartz2;
+    transition-duration: 0s;
 
-  line-height: 1;
+    line-height: 1;
 
-  &:disabled {
-    pointer-events: none;
-  }
+    &:disabled {
+        pointer-events: none;
+    }
 
-  &:disabled .icon {
-    opacity: 0.5;
-  }
+    &:disabled .icon {
+        opacity: 0.5;
+    }
 
-  .icon {
-    transition: 0.2s opacity;
+    .icon {
+        transition: 0.2s opacity;
 
-    color: @indigo;
-  }
+        color: @indigo;
+    }
 
-  .iconArrowDown,
-  &:hover .iconHistory {
-    display: none;
-  }
+    .iconArrowDown,
+    &:hover .iconHistory {
+        display: none;
+    }
 
-  &:hover .iconArrowDown {
-    display: block;
-  }
-
+    &:hover .iconArrowDown {
+        display: block;
+    }
 }

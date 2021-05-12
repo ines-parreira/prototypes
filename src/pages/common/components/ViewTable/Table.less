@@ -1,48 +1,48 @@
 @import '~css/new/colors';
 
 :local .table {
-  tr {
-    td {
-      &.limit-overflow {
-        &,
-        & * {
-          max-width: 360px;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
+    tr {
+        td {
+            &.limit-overflow {
+                &,
+                & * {
+                    max-width: 360px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
 
-          @media (min-width: 2000px) {
-            max-width: 600px;
-          }
+                    @media (min-width: 2000px) {
+                        max-width: 600px;
+                    }
+                }
+            }
         }
-      }
+
+        &.has-cursor {
+            box-shadow: inset 4px 0 0 #0b8ef7;
+        }
     }
 
-    &.has-cursor {
-      box-shadow: inset 4px 0 0 #0B8EF7;
-    }
-  }
+    .viewers {
+        @size: 30px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: @indigo;
+        width: 0;
+        height: 0;
+        border-top: @size solid @collisionColor;
+        border-right: @size solid transparent;
 
-  .viewers {
-    @size: 30px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: @indigo;
-    width: 0;
-    height: 0;
-    border-top: @size solid @collisionColor;
-    border-right: @size solid transparent;
-
-    i {
-      position: absolute;
-      top: -25px;
-      left: 2px;
-      font-size: 11px;
+        i {
+            position: absolute;
+            top: -25px;
+            left: 2px;
+            font-size: 11px;
+        }
     }
-  }
 }
 
 :local .pagination {
-  margin-left: -10px;
+    margin-left: -10px;
 }

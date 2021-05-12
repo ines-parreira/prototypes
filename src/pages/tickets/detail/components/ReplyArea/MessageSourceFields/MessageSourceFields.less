@@ -1,40 +1,40 @@
 @import '~css/new/colors';
 
 :local .component {
-  position: relative;
-  flex-grow: 100;
-
-  font-size: 13px;
-
-  .sourceField {
+    position: relative;
     flex-grow: 100;
-    display: flex;
-    align-items: flex-start;
 
-    & + .sourceField {
-      margin-top: 6px;
+    font-size: 13px;
+
+    .sourceField {
+        flex-grow: 100;
+        display: flex;
+        align-items: flex-start;
+
+        & + .sourceField {
+            margin-top: 6px;
+        }
+
+        .label {
+            min-width: 2.85rem;
+            margin-right: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+
+            color: @indigo;
+            text-overflow: ellipsis;
+            text-align: right;
+            font-weight: 500;
+            line-height: 2;
+        }
     }
 
-    .label {
-      min-width: 2.85rem;
-      margin-right: 10px;
-      overflow: hidden;
-      flex-shrink: 0;
+    .optionalFields {
+        position: absolute;
+        right: 0;
+        top: 0;
 
-      color: @indigo;
-      text-overflow: ellipsis;
-      text-align: right;
-      font-weight: 500;
-      line-height: 2;
+        color: @lightPurple;
+        line-height: 2;
     }
-  }
-
-  .optionalFields {
-    position: absolute;
-    right: 0;
-    top: 0;
-
-    color: @lightPurple;
-    line-height: 2;
-  }
 }

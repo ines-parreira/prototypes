@@ -1,115 +1,115 @@
 @import '~css/new/colors';
 
 :local .component {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding: 18px 0 18px 18px;
-  margin-left: 15px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    border-left: 1px solid @darkQuartz;
-  }
-
-  &.last::before {
-    height: 30px;
-  }
-
-  .date {
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-  .more {
-    line-height: 1;
-  }
-
-  .event {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    position: relative;
+    padding: 18px 0 18px 18px;
+    margin-left: 15px;
 
-    .content {
-      display: flex;
-      align-items: center;
-
-      .icon {
-        @size: 20px;
-        position: relative;
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-        width: @size;
-        height: @size;
-        margin-left: -27px;
-        margin-right: 28px;
-        border-radius: 50%;
-        background-color: @indigo;
-
-        font-size: 14px;
-        color: white;
-
-        &.success {
-          background-color: @green;
-        }
-
-        &.danger {
-          background-color: @red;
-        }
-
-        &.warning {
-          background-color: @orange;
-        }
-      }
-
-      .privateReplyEventIcon {
-        @size: 20px;
-        position: relative;
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-        width: @size;
-        height: @size;
-        margin-left: -27px;
-        margin-right: 28px;
-
-        font-size: 14px;
-        color: white;
-      }
-
-      .actionName {
-        font-weight: bold;
-      }
-
-      .filler {
-        margin-left: 3px;
-        margin-right: 6px;
-      }
-
-      .equalFiller {
-        margin-left: 3px;
-        margin-right: 3px;
-      }
-
-      .assigneeLabel {
-        position: relative;
-        top: -0.0625rem;
-      }
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        border-left: 1px solid @darkQuartz;
     }
-  }
 
-  .details {
-    margin-top: 12px;
-    margin-left: 3px;
-  }
-  .eventDetailsIcon {
-    margin-left: 2px;
-  }
+    &.last::before {
+        height: 30px;
+    }
+
+    .date {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .more {
+        line-height: 1;
+    }
+
+    .event {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .content {
+            display: flex;
+            align-items: center;
+
+            .icon {
+                @size: 20px;
+                position: relative;
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                width: @size;
+                height: @size;
+                margin-left: -27px;
+                margin-right: 28px;
+                border-radius: 50%;
+                background-color: @indigo;
+
+                font-size: 14px;
+                color: white;
+
+                &.success {
+                    background-color: @green;
+                }
+
+                &.danger {
+                    background-color: @red;
+                }
+
+                &.warning {
+                    background-color: @orange;
+                }
+            }
+
+            .privateReplyEventIcon {
+                @size: 20px;
+                position: relative;
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                width: @size;
+                height: @size;
+                margin-left: -27px;
+                margin-right: 28px;
+
+                font-size: 14px;
+                color: white;
+            }
+
+            .actionName {
+                font-weight: bold;
+            }
+
+            .filler {
+                margin-left: 3px;
+                margin-right: 6px;
+            }
+
+            .equalFiller {
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+
+            .assigneeLabel {
+                position: relative;
+                top: -0.0625rem;
+            }
+        }
+    }
+
+    .details {
+        margin-top: 12px;
+        margin-left: 3px;
+    }
+    .eventDetailsIcon {
+        margin-left: 2px;
+    }
 }

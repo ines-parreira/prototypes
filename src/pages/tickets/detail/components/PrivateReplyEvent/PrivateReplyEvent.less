@@ -1,108 +1,106 @@
 @import '~css/new/colors';
 
 :local .component {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  padding: 18px 0 18px 18px;
-  margin-left: 15px;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    border-left: 1px solid @darkQuartz;
-  }
-
-  &.last::before {
-    height: 30px;
-  }
-
-  .event {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    position: relative;
+    padding: 18px 0 18px 18px;
+    margin-left: 15px;
 
-    .content {
-      display: flex;
-      align-items: center;
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        border-left: 1px solid @darkQuartz;
+    }
 
-      .icon {
-        @size: 20px;
-        position: relative;
+    &.last::before {
+        height: 30px;
+    }
+
+    .event {
         display: flex;
-        flex-shrink: 0;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        width: @size;
-        height: @size;
-        margin-left: -27px;
-        margin-right: 28px;
-        border-radius: 50%;
-        background-color: @indigo;
-        font-size: 14px;
-        color: white;
 
-        &.danger {
-          background-color: @red;
+        .content {
+            display: flex;
+            align-items: center;
+
+            .icon {
+                @size: 20px;
+                position: relative;
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                width: @size;
+                height: @size;
+                margin-left: -27px;
+                margin-right: 28px;
+                border-radius: 50%;
+                background-color: @indigo;
+                font-size: 14px;
+                color: white;
+
+                &.danger {
+                    background-color: @red;
+                }
+            }
+
+            .more {
+                line-height: 1;
+            }
+
+            .privateReplyEventIcon {
+                @size: 20px;
+                position: relative;
+                display: flex;
+                flex-shrink: 0;
+                align-items: center;
+                justify-content: center;
+                width: @size;
+                height: @size;
+                margin-left: -27px;
+                margin-right: 28px;
+            }
+
+            .actionName {
+                font-weight: bold;
+            }
+
+            .filler {
+                margin-left: 3px;
+                margin-right: 6px;
+            }
+
+            .separator {
+                margin-left: 5px;
+                margin-right: 5px;
+                color: #4a8df9;
+            }
+
+            .ticketLink {
+                color: #4a8df9;
+                text-decoration: underline;
+            }
         }
 
-      }
+        .date {
+            font-size: 12px;
+            font-weight: 500;
+        }
+    }
 
-      .more {
-        line-height: 1;
-      }
+    .eventDetails {
+        display: inline-block;
+        margin-left: 12px;
+    }
 
-      .privateReplyEventIcon {
-        @size: 20px;
-        position: relative;
-        display: flex;
-        flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
-        width: @size;
-        height: @size;
-        margin-left: -27px;
-        margin-right: 28px;
-      }
-
-      .actionName {
-        font-weight: bold;
-      }
-
-      .filler {
+    .errorDetails {
+        margin-top: 12px;
         margin-left: 3px;
-        margin-right: 6px;
-      }
-
-      .separator {
-        margin-left: 5px;
-        margin-right: 5px;
-        color: #4A8DF9;
-      }
-
-      .ticketLink {
-        color: #4A8DF9;
-        text-decoration: underline;
-      }
     }
-
-    .date {
-      font-size: 12px;
-      font-weight: 500;
-    }
-  }
-
-  .eventDetails {
-    display: inline-block;
-    margin-left: 12px;
-  }
-
-  .errorDetails {
-    margin-top: 12px;
-    margin-left: 3px;
-  }
-
 }

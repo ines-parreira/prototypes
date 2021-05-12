@@ -1,21 +1,21 @@
-@import "../../../../../css/new/mixins";
+@import '../../../../../css/new/mixins';
 
 :local .component {
-  @media @desktops {
-    max-width: 840px !important;
-  }
-
-  div > span.combo {
-    font-family: monospace !important;
-  }
-
-  .group {
-    break-inside: avoid;
-  }
-
-  .content {
     @media @desktops {
-      columns: 2 2em;
+        max-width: 840px !important;
     }
-  }
+
+    div > span.combo {
+        font-family: monospace !important;
+    }
+
+    .group {
+        break-inside: avoid;
+    }
+
+    .content {
+        @media @desktops {
+            columns: 2 2em;
+        }
+    }
 }

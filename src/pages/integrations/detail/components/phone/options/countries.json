@@ -1,10 +1,10 @@
 [
-  {
-    "value": "CA",
-    "label": "Canada"
-  },
-  {
-    "value": "US",
-    "label": "United States"
-  }
+    {
+        "value": "CA",
+        "label": "Canada"
+    },
+    {
+        "value": "US",
+        "label": "United States"
+    }
 ]

@@ -1,143 +1,143 @@
 @import '~css/new/mixins';
 
 :local .component {
-  width: 100%;
+    width: 100%;
 
-  :global {
-    .header {
-      padding: 14px;
-    }
-
-    .header .placeholder {
-      color: #b4b4b4;
-    }
-
-    .action-buttons {
-      position: relative;
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 8px;
-      padding-right: 24px;
-
-      @media @desktops {
-        padding-right: 0;
-      }
-
-      .action-button {
-        padding: 5px 9px;
-        margin-bottom: .4rem;
-        flex: 0;
-
-        @media @desktops {
-          margin-bottom: 0;
+    :global {
+        .header {
+            padding: 14px;
         }
 
-        &:focus {
-          outline: none;
+        .header .placeholder {
+            color: #b4b4b4;
         }
-      }
 
-      .action-dropdown {
-        position: absolute;
-        right: 0;
+        .action-buttons {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            padding-right: 24px;
 
-        @media @desktops {
-          position: relative;
+            @media @desktops {
+                padding-right: 0;
+            }
+
+            .action-button {
+                padding: 5px 9px;
+                margin-bottom: 0.4rem;
+                flex: 0;
+
+                @media @desktops {
+                    margin-bottom: 0;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            .action-dropdown {
+                position: absolute;
+                right: 0;
+
+                @media @desktops {
+                    position: relative;
+                }
+            }
         }
-      }
+
+        .content {
+            height: auto;
+            opacity: 1;
+
+            font-size: 13px;
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        &,
+        .content,
+        .dropdown-icon {
+            transition: all 0.1s linear;
+        }
     }
 
-    .content {
-      height: auto;
-      opacity: 1;
+    &:global.closed {
+        overflow: hidden;
 
-      font-size: 13px;
+        .content {
+            opacity: 0;
+            height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .header {
+            border-color: transparent;
+        }
+
+        .dropdown-icon {
+            transform: rotate(-180deg);
+        }
+
+        .action-dropdown {
+            display: none;
+        }
     }
 
-    .dropdown-icon {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-    }
-
-    &,
-    .content,
-    .dropdown-icon {
-      transition: all .1s linear;
-    }
-  }
-
-  &:global.closed {
-    overflow: hidden;
-
-    .content {
-      opacity: 0;
-      height: 0;
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-
-    .header {
-      border-color: transparent;
-    }
-
-    .dropdown-icon {
-      transform: rotate(-180deg);
-    }
-
-    .action-dropdown {
-      display: none;
-    }
-  }
-
-  &:global.transparent {
-    background: transparent;
-    border: none;
-    margin: 0;
-
-    & > .content {
-      border: none;
-    }
-
-    &:not(.wrapper) > .content {
-      padding: 0;
-    }
-  }
-
-  &:global.wrapper {
-    box-sizing: content-box;
-
-    border-radius: 0;
-    transition: all .2s linear;
-
-    & > .header {
-      padding-top: 0 !important;
-      border: none;
-    }
-
-    & > .content {
-      box-sizing: border-box;
-      padding-right: 0;
-      padding-left: 0;
-      padding-top: 0;
-
-      & > .header {
+    &:global.transparent {
+        background: transparent;
         border: none;
-        padding: 0;
+        margin: 0;
 
-        & > .tools {
-          transition: all .2s linear;
+        & > .content {
+            border: none;
         }
-      }
+
+        &:not(.wrapper) > .content {
+            padding: 0;
+        }
     }
-  }
+
+    &:global.wrapper {
+        box-sizing: content-box;
+
+        border-radius: 0;
+        transition: all 0.2s linear;
+
+        & > .header {
+            padding-top: 0 !important;
+            border: none;
+        }
+
+        & > .content {
+            box-sizing: border-box;
+            padding-right: 0;
+            padding-left: 0;
+            padding-top: 0;
+
+            & > .header {
+                border: none;
+                padding: 0;
+
+                & > .tools {
+                    transition: all 0.2s linear;
+                }
+            }
+        }
+    }
 }
 
 :local .placeholder {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 
-  .title {
-    margin-bottom: 0;
-  }
+    .title {
+        margin-bottom: 0;
+    }
 }

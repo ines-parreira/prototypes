@@ -1,33 +1,33 @@
 :local .header {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 :local .viewItem {
-  cursor: pointer;
-  border-top: 1px dashed transparent !important;
-  border-bottom: 1px dashed transparent !important;
-  padding: 4px 1.33333333em !important;
-  line-height: initial !important;
+    cursor: pointer;
+    border-top: 1px dashed transparent !important;
+    border-bottom: 1px dashed transparent !important;
+    padding: 4px 1.33333333em !important;
+    line-height: initial !important;
 
-  &:hover {
-    .viewItemName {
-      color: #ffffff !important;
+    &:hover {
+        .viewItemName {
+            color: #ffffff !important;
+        }
     }
-  }
 
-  &.draggable {
-    cursor: move;
-    &:hover:not(.chosen) {
-      border-color: rgba(255, 255, 255, .5) !important;
+    &.draggable {
+        cursor: move;
+        &:hover:not(.chosen) {
+            border-color: rgba(255, 255, 255, 0.5) !important;
+        }
+        &.chosen {
+            background: #1c4969 !important;
+            & .viewItemName {
+                color: #ffffff !important;
+            }
+        }
+        &.ghost {
+            opacity: 0;
+        }
     }
-    &.chosen {
-      background: #1c4969 !important;
-      & .viewItemName {
-        color: #ffffff !important;
-      }
-    }
-    &.ghost {
-      opacity: 0;
-    }
-  }
 }

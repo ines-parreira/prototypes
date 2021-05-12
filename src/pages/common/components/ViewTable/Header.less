@@ -1,66 +1,66 @@
 @import '~css/new/colors';
 
 :local .component {
-  .titleWrapper {
-    position: relative;
-  }
-
-  .title {
-    margin-left: -10px;
-    padding: 0 8px;
-    color: @indigo;
-    font-size: 20px;
-    font-weight: 500;
-    vertical-align: top;
-    height: 34px;
-
-    &.withEmojiPicker {
-      padding-left: 37px;
+    .titleWrapper {
+        position: relative;
     }
-  }
 
-  .emojiPicker {
-    position: absolute;
-    top: 50%;
-    left: -2px;
-    transform: translateY(-50%);
-  }
+    .title {
+        margin-left: -10px;
+        padding: 0 8px;
+        color: @indigo;
+        font-size: 20px;
+        font-weight: 500;
+        vertical-align: top;
+        height: 34px;
 
-  .titleWrapper {
-    flex-grow: 1;
-  }
-
-  .headerSearch.isSearching {
-    max-width: unset;
-
-    i {
-      font-size: 21px;
-      color: @indigo;
-      left: -2px;
+        &.withEmojiPicker {
+            padding-left: 37px;
+        }
     }
-    input {
-      border-width: 0;
-      color: @indigo;
-      font-size: 20px;
-      max-height: 34px;
-      padding-left: 1.6rem;
 
-      &:focus {
-        outline: 0;
-        box-shadow: unset;
-      }
+    .emojiPicker {
+        position: absolute;
+        top: 50%;
+        left: -2px;
+        transform: translateY(-50%);
     }
-  }
 
-  .closeIcon {
-    cursor: pointer;
-    line-height: 34px;
-    font-size: 20px;
-    color: @neutral6;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: @indigo;
+    .titleWrapper {
+        flex-grow: 1;
     }
-  }
+
+    .headerSearch.isSearching {
+        max-width: unset;
+
+        i {
+            font-size: 21px;
+            color: @indigo;
+            left: -2px;
+        }
+        input {
+            border-width: 0;
+            color: @indigo;
+            font-size: 20px;
+            max-height: 34px;
+            padding-left: 1.6rem;
+
+            &:focus {
+                outline: 0;
+                box-shadow: unset;
+            }
+        }
+    }
+
+    .closeIcon {
+        cursor: pointer;
+        line-height: 34px;
+        font-size: 20px;
+        color: @neutral6;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: @indigo;
+        }
+    }
 }

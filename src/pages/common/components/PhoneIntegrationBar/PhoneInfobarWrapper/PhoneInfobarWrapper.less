@@ -1,22 +1,22 @@
 @import '~css/new/colors.less';
 
 :local {
-  .container {
-    border-left: 1px solid @neutral2;
+    .container {
+        border-left: 1px solid @neutral2;
 
-    &.primary {
-      border-left: 1px solid #0C7E5A;
+        &.primary {
+            border-left: 1px solid #0c7e5a;
+        }
+
+        .inner {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            padding: 0.875rem 1.25rem;
+
+            :first-child {
+                flex: 1;
+            }
+        }
     }
-
-    .inner {
-      display: flex;
-      height: 100%;
-      align-items: center;
-      padding: 0.875rem 1.25rem;
-
-      :first-child {
-        flex: 1;
-      }
-    }
-  }
 }

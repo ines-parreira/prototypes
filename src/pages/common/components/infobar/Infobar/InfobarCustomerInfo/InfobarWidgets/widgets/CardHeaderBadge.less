@@ -1,31 +1,30 @@
 @import '~css/new/colors.less';
 
 :local {
-  .container {
-    border-radius: 9px;
-    padding: 2px;
-    height: 18px;
-    &:global(.primary) {
-      background: rgba(74, 141, 249, 0.1);
-      color: @yotpoBlue;
+    .container {
+        border-radius: 9px;
+        padding: 2px;
+        height: 18px;
+        &:global(.primary) {
+            background: rgba(74, 141, 249, 0.1);
+            color: @yotpoBlue;
+        }
+        &:global(.secondary) {
+            background-color: fade(@neutral6, 10%);
+            color: @neutral6;
+        }
     }
-    &:global(.secondary) {
-      background-color: fade(@neutral6, 10%);
-      color: @neutral6;
+    .children {
+        padding-left: 3px;
+        padding-right: 3px;
+        opacity: 1;
+        font-weight: 500;
+        font-size: 12px;
     }
-  }
-  .children {
-    padding-left: 3px;
-    padding-right: 3px;
-    opacity: 1;
-    font-weight: 500;
-    font-size: 12px;
-
-  }
-  .icon{
-    padding-top: 1px;
-    font-size: 14px;
-    vertical-align: text-top;
-    opacity: 1;
-  }
+    .icon {
+        padding-top: 1px;
+        font-size: 14px;
+        vertical-align: text-top;
+        opacity: 1;
+    }
 }

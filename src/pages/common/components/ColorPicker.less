@@ -1,40 +1,40 @@
 :local {
-  .button {
-    padding: .5rem;
-  }
-
-  .color {
-    background-color: #cdcdcd;
-    height: 17px;
-    width: 80px;
-  }
-
-  .popover-content {
-    padding: 4px;
-  }
-
-  .popup {
-    @choices-per-row: 8;
-    @choice-size: 30px;
-    @choice-margin: 3px;
-    @choice-width: @choice-size + (@choice-margin * 2);
-
-    display: flex;
-    flex-wrap: wrap;
-    width: @choice-width * @choices-per-row;
-
-    .choice {
-      height: @choice-size;
-      width: @choice-size;
-      border-radius: 3px;
-      margin: @choice-margin;
-      cursor: pointer;
+    .button {
+        padding: 0.5rem;
     }
 
-    .input {
-      margin: @choice-margin;
-      width: @choice-width * 3;
-      flex: 1;
+    .color {
+        background-color: #cdcdcd;
+        height: 17px;
+        width: 80px;
     }
-  }
+
+    .popover-content {
+        padding: 4px;
+    }
+
+    .popup {
+        @choices-per-row: 8;
+        @choice-size: 30px;
+        @choice-margin: 3px;
+        @choice-width: @choice-size + (@choice-margin * 2);
+
+        display: flex;
+        flex-wrap: wrap;
+        width: @choice-width * @choices-per-row;
+
+        .choice {
+            height: @choice-size;
+            width: @choice-size;
+            border-radius: 3px;
+            margin: @choice-margin;
+            cursor: pointer;
+        }
+
+        .input {
+            margin: @choice-margin;
+            width: @choice-width * 3;
+            flex: 1;
+        }
+    }
 }

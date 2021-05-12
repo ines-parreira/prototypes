@@ -1,24 +1,24 @@
-@import "~css/new/mixins";
+@import '~css/new/mixins';
 
 :local .component {
-  transition: all .2s linear;
+    transition: all 0.2s linear;
 
-  .not-editable {
-    border-color: transparent;
-    padding-left: 0;
-  }
+    .not-editable {
+        border-color: transparent;
+        padding-left: 0;
+    }
 
-  &:global(.form-control-xl) {
-    padding: 0 8px;
-  }
+    &:global(.form-control-xl) {
+        padding: 0 8px;
+    }
 
-  &:not(:hover):not(:focus):not(.edit-mode) {
-    .not-editable;
-  }
+    &:not(:hover):not(:focus):not(.edit-mode) {
+        .not-editable;
+    }
 
-  &:disabled {
-    .not-editable;
-    cursor: default !important;
-    background-color: initial !important;
-  }
+    &:disabled {
+        .not-editable;
+        cursor: default !important;
+        background-color: initial !important;
+    }
 }

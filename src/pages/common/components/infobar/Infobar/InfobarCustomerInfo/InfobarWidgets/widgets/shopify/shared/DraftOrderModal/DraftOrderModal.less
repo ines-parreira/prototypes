@@ -1,47 +1,47 @@
 @import '~css/new/colors';
 
 :local {
-  .focusable {
-    &:focus {
-      outline: auto 5px -webkit-focus-ring-color;
-    }
-  }
-
-  .formHeader {
-    display: flex;
-    padding: 1rem;
-
-    .searchInput {
-      flex: 1;
+    .focusable {
+        &:focus {
+            outline: auto 5px -webkit-focus-ring-color;
+        }
     }
 
-    .headerButton {
-      margin-left: 1rem;
+    .formHeader {
+        display: flex;
+        padding: 1rem;
+
+        .searchInput {
+            flex: 1;
+        }
+
+        .headerButton {
+            margin-left: 1rem;
+        }
     }
-  }
 
-  .formHeader,
-  .formFooter {
-    background-color: @quartz;
-  }
-
-  .spinner {
-    display: inline-block;
-    width: 20px;
-  }
-
-  .emailInvoiceContainer {
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #dee2e6;
-    padding: 1.375rem;
-
-    h4 {
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 17px;
-      color: @indigo;
-      margin: auto 0;
+    .formHeader,
+    .formFooter {
+        background-color: @quartz;
     }
-  }
+
+    .spinner {
+        display: inline-block;
+        width: 20px;
+    }
+
+    .emailInvoiceContainer {
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #dee2e6;
+        padding: 1.375rem;
+
+        h4 {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 17px;
+            color: @indigo;
+            margin: auto 0;
+        }
+    }
 }

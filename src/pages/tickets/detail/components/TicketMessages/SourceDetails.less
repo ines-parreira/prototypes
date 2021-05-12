@@ -1,33 +1,32 @@
 @import '~css/new/colors';
 
 :local .wrapper {
-  font-size: 12px;
-  font-weight: 500;
-  color: @lightPurple2;
-  display: flex;
+    font-size: 12px;
+    font-weight: 500;
+    color: @lightPurple2;
+    display: flex;
 }
 
 :local .from {
-  color: darken(@lightGrey, 8%);
-  font-size: 1rem;
-  display: flex;
-  min-width: 0;
-
-  .fromLabel {
-    flex-shrink: 0;
-    margin-right: 4px;
-  }
-
-  .fromValue {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-  a {
-    font-weight: 600;
     color: darken(@lightGrey, 8%);
-    text-decoration: underline !important;
-  }
-}
+    font-size: 1rem;
+    display: flex;
+    min-width: 0;
 
+    .fromLabel {
+        flex-shrink: 0;
+        margin-right: 4px;
+    }
+
+    .fromValue {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    a {
+        font-weight: 600;
+        color: darken(@lightGrey, 8%);
+        text-decoration: underline !important;
+    }
+}

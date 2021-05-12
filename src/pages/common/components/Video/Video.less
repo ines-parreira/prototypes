@@ -2,80 +2,80 @@
 @import '~css/new/mixins';
 
 :local {
-  .preview {
-    width: 200px;
-    height: 140px;
-    padding: 3px;
-    border: solid 1px @darkWhite;
-    box-shadow: 0 2px 3px 0 rgba(21, 32, 101, 0.2);
-    margin-bottom: 15px;
-    cursor: pointer;
+    .preview {
+        width: 200px;
+        height: 140px;
+        padding: 3px;
+        border: solid 1px @darkWhite;
+        box-shadow: 0 2px 3px 0 rgba(21, 32, 101, 0.2);
+        margin-bottom: 15px;
+        cursor: pointer;
 
-    .screenshot {
-      width: 193px;
-      height: 110px;
-      border-radius: 2px;
-      background-color: @blue;
-      margin-bottom: 5px;
-      overflow: hidden;
-      position: relative;
+        .screenshot {
+            width: 193px;
+            height: 110px;
+            border-radius: 2px;
+            background-color: @blue;
+            margin-bottom: 5px;
+            overflow: hidden;
+            position: relative;
 
-      img {
-        object-fit: cover;
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+
+            .playIcon {
+                position: absolute;
+                color: @blue;
+                font-size: 50px;
+                width: 50px;
+                height: 50px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 2;
+            }
+
+            .iconBackground {
+                position: absolute;
+                width: 13px;
+                height: 20px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                z-index: 1;
+            }
+        }
+
+        .title {
+            margin-left: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: @blue;
+            text-align: left;
+        }
+    }
+
+    .modal {
+        max-width: 80%;
+    }
+
+    .modalBody {
+        position: relative;
+        padding: 60% 0 0 0;
+    }
+
+    .iframe {
+        position: absolute;
+        top: 0;
+        padding: 1rem;
         width: 100%;
         height: 100%;
-        opacity: .5;
-        transform: scale(1.2);
-      }
-
-      .playIcon {
-        position: absolute;
-        color: @blue;
-        font-size: 50px;
-        width: 50px;
-        height: 50px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-      }
-
-      .iconBackground {
-        position: absolute;
-        width: 13px;
-        height: 20px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        z-index: 1;
-      }
+        box-sizing: border-box;
     }
-
-    .title {
-      margin-left: 4px;
-      font-size: 12px;
-      font-weight: 500;
-      color: @blue;
-      text-align: left;
-    }
-  }
-
-  .modal {
-    max-width: 80%;
-  }
-
-  .modalBody {
-    position: relative;
-    padding: 60% 0 0 0;
-  }
-
-  .iframe {
-    position: absolute;
-    top: 0;
-    padding: 1rem;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-  }
 }

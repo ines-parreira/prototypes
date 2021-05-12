@@ -1,28 +1,28 @@
 @import '../../../../css/new/mixins';
 
 :local {
-  .container {
-    padding-top: 20px !important;
-    margin: inherit !important;
-  }
-
-  .row {
-    height: 100%;
-    width: 100%;
-    margin: 0 !important;
-
-    .col {
-      padding: 0 !important;
-
-      > div {
-        padding-bottom: 20px;
-      }
+    .container {
+        padding-top: 20px !important;
+        margin: inherit !important;
     }
 
-    &:not(.no-limit) {
-      @media @large-desktops {
-        padding-top: 10px;
-      }
+    .row {
+        height: 100%;
+        width: 100%;
+        margin: 0 !important;
+
+        .col {
+            padding: 0 !important;
+
+            > div {
+                padding-bottom: 20px;
+            }
+        }
+
+        &:not(.no-limit) {
+            @media @large-desktops {
+                padding-top: 10px;
+            }
+        }
     }
-  }
 }

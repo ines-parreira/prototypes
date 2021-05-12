@@ -2,47 +2,47 @@
 @import '~css/new/mixins';
 
 :local .component {
-  position: relative;
-  background: @quartz;
-  border-top: 1px solid #cfe0ee;
-  padding: 15px;
+    position: relative;
+    background: @quartz;
+    border-top: 1px solid #cfe0ee;
+    padding: 15px;
 
-  .notes {
-    margin-top: 10px;
-  }
-
-  .closeIcon {
-    position: absolute;
-    top: 18px;
-    right: 10px;
-    cursor: pointer;
-  }
-
-  .title {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    font-size: 1.1em;
-    font-weight: 700;
-  }
-
-  .actionLogo {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-  }
-
-  .argsWrapper {
-    margin-top: .5rem;
-  }
-
-  .argInput {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-
-    :global(.form-group) {
-      min-width: 50%;
+    .notes {
+        margin-top: 10px;
     }
-  }
+
+    .closeIcon {
+        position: absolute;
+        top: 18px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        font-size: 1.1em;
+        font-weight: 700;
+    }
+
+    .actionLogo {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+
+    .argsWrapper {
+        margin-top: 0.5rem;
+    }
+
+    .argInput {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        :global(.form-group) {
+            min-width: 50%;
+        }
+    }
 }

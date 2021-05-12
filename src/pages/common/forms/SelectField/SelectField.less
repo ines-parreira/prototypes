@@ -7,8 +7,8 @@
     width: 100%;
     line-height: 1.25;
     padding: 0 @select-padding;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: .25rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
     background-clip: padding-box;
     -webkit-background-clip: padding-box;
     background-image: none;
@@ -21,7 +21,7 @@
     &.selectFullWidth {
         .label {
             box-sizing: border-box;
-            width: ~"calc(100% - (@{select-padding} * 2) + @{base-input-width})";
+            width: ~'calc(100% - (@{select-padding} * 2) + @{base-input-width})';
         }
     }
 
@@ -32,7 +32,7 @@
         line-height: 2.25;
         width: @base-input-width; // input will grow dynamically with the min width
         max-width: 350px;
-        padding: .50rem 0;
+        padding: 0.5rem 0;
         margin: 0;
         outline: none;
         border: none;
@@ -40,16 +40,15 @@
         box-sizing: border-box;
     }
 
-
     .placeholder {
-        color: #A4AAAE;
+        color: #a4aaae;
     }
 
     .placeholder,
     .label {
         display: inline-block;
         position: relative;
-        top:0;
+        top: 0;
         left: 0;
         line-height: 2.25;
         height: 100%;
@@ -65,7 +64,6 @@
         width: 100%;
         max-width: 100%;
     }
-
 
     .option {
         &.option--focused {

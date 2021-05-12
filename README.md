@@ -1,15 +1,14 @@
-Gorgias JavaScript Application
-==============================
+# Gorgias JavaScript Application
 
 This js app is the frontend for the Gorgias helpdesk.
 It's built using ReactJS + Redux + many other smaller tools.
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Development](#development)
-* [Testing](#testing)
-* [Contributing](#contributing)
+-   [Installation](#installation)
+-   [Development](#development)
+-   [Testing](#testing)
+-   [Contributing](#contributing)
 
 ## Installation
 
@@ -41,5 +40,5 @@ yarn jest   # Only unit tests
 
 ## Contributing
 
-* [Gorgias Style Guide](https://github.com/gorgias/gorgias-style-guide).
-* [Project Kaizen](./KAIZEN.md)
+-   [Gorgias Style Guide](https://github.com/gorgias/gorgias-style-guide).
+-   [Project Kaizen](./KAIZEN.md)

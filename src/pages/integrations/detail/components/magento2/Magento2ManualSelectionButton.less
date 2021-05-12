@@ -1,43 +1,43 @@
 @import '~css/new/colors';
 
 :local {
-  .selection-button-group {
-    display: flex;
-    margin-bottom: 15px;
+    .selection-button-group {
+        display: flex;
+        margin-bottom: 15px;
 
-    .selection-button {
-      cursor: pointer;
-      justify-content: center;
-      display: flex;
-      width: 280px;
-      height: 72px;
-      margin: 0 16px 0 0;
-      align-items: center;
-      padding: 12px 20px;
-      border: 1px solid @grey;
-      box-sizing: border-box;
-      border-radius: 4px;
-      text-align: center;
-      background: #FFF;
+        .selection-button {
+            cursor: pointer;
+            justify-content: center;
+            display: flex;
+            width: 280px;
+            height: 72px;
+            margin: 0 16px 0 0;
+            align-items: center;
+            padding: 12px 20px;
+            border: 1px solid @grey;
+            box-sizing: border-box;
+            border-radius: 4px;
+            text-align: center;
+            background: #fff;
 
-      .selection-button-icon {
-        margin-right: 10px;
-        font-size: 22px;
-        display: block;
-        height: 60px;
-        width: 60px;
-        line-height: 60px;
+            .selection-button-icon {
+                margin-right: 10px;
+                font-size: 22px;
+                display: block;
+                height: 60px;
+                width: 60px;
+                line-height: 60px;
 
-        -moz-border-radius: 30px;
-        border-radius: 30px;
+                -moz-border-radius: 30px;
+                border-radius: 30px;
 
-        background-color: @blue0;
-        text-align: center;
-      }
+                background-color: @blue0;
+                text-align: center;
+            }
+        }
+
+        .selected-button {
+            border: 1px solid @blue;
+        }
     }
-
-    .selected-button {
-      border: 1px solid @blue;
-    }
-  }
 }

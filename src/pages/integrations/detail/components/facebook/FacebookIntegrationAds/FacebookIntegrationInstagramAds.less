@@ -1,53 +1,54 @@
 @import '~css/new/colors';
 
 :local {
-  // Overview
-  .legendContainer {
-    margin-top: 1rem;
-  }
-
-  .legend {
-    float: left;
-    margin-right: 2rem;
-    padding: 0.5rem;
-  }
-
-  .legendColor {
-    display: inline-block;
-    position: relative;
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.5rem;
-    top: 0.2rem;
-  }
-
-  // Table
-  .row {
-    box-shadow: inset 0 -1px 0 0 @darkQuartz2;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-
-    &:first-child {
-      box-shadow: inset 0 -1px 0 0 @darkQuartz2, inset 0 1px 0 0 @darkQuartz2;
+    // Overview
+    .legendContainer {
+        margin-top: 1rem;
     }
 
-    &:hover {
-      background: @quartz !important;
+    .legend {
+        float: left;
+        margin-right: 2rem;
+        padding: 0.5rem;
     }
 
-    td,
-    th {
-      border: none;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-
-      &:first-child {
-        padding-left: 2.14rem;
-      }
-
-      &:last-child {
-        padding-right: 2.14rem;
-      }
+    .legendColor {
+        display: inline-block;
+        position: relative;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+        top: 0.2rem;
     }
-  }
+
+    // Table
+    .row {
+        box-shadow: inset 0 -1px 0 0 @darkQuartz2;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+
+        &:first-child {
+            box-shadow: inset 0 -1px 0 0 @darkQuartz2,
+                inset 0 1px 0 0 @darkQuartz2;
+        }
+
+        &:hover {
+            background: @quartz !important;
+        }
+
+        td,
+        th {
+            border: none;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+
+            &:first-child {
+                padding-left: 2.14rem;
+            }
+
+            &:last-child {
+                padding-right: 2.14rem;
+            }
+        }
+    }
 }

@@ -2,58 +2,58 @@
 @import '~css/new/colors';
 
 :local {
-  .component {
-    margin-top: 20px;
-  }
-
-  .buttons {
-    @media @desktops {
-      white-space: nowrap;
+    .component {
+        margin-top: 20px;
     }
-  }
 
-  .toggleActions {
-    display: none;
-    margin-left: .4em;
-
-    cursor: pointer;
-    text-decoration: underline !important;
-
-    &:hover {
-      text-decoration: none !important;
+    .buttons {
+        @media @desktops {
+            white-space: nowrap;
+        }
     }
-  }
 
-  .hasActions .toggleActions {
-    display: inline-block;
-  }
+    .toggleActions {
+        display: none;
+        margin-left: 0.4em;
 
-  .actions {
-    display: none;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    height: 0;
-    opacity: 0;
-    transition: all .1s ease-out;
+        cursor: pointer;
+        text-decoration: underline !important;
 
-    @media @desktops {
-      padding-left: 2.6em;
+        &:hover {
+            text-decoration: none !important;
+        }
     }
-  }
 
-  .showActions .actions {
-    padding-top: 20px;
-    opacity: 1;
-    height: auto;
-  }
+    .hasActions .toggleActions {
+        display: inline-block;
+    }
 
-  .hasActions .actions {
-    display: block;
-  }
+    .actions {
+        display: none;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        height: 0;
+        opacity: 0;
+        transition: all 0.1s ease-out;
 
-  .actionError {
-    margin-bottom: 10px;
-    color: @darkRed;
-  }
+        @media @desktops {
+            padding-left: 2.6em;
+        }
+    }
+
+    .showActions .actions {
+        padding-top: 20px;
+        opacity: 1;
+        height: auto;
+    }
+
+    .hasActions .actions {
+        display: block;
+    }
+
+    .actionError {
+        margin-bottom: 10px;
+        color: @darkRed;
+    }
 }

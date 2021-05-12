@@ -2,51 +2,51 @@
 @import '~css/new/mixins';
 
 :local .component {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 170px;
-
-  &.macrosVisible {
-    height: 240px;
-  }
-
-  @media @mobiles {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
-  }
-
-  .content {
     position: relative;
     display: flex;
-    flex: 1;
-  }
+    flex-direction: column;
+    min-height: 170px;
 
-  .search {
-    position: relative;
-    height: 40px;
-    border-bottom: 1px solid @darkQuartz;
-
-    input {
-      height: 100%;
-      border: 0;
-      padding-left: 3rem;
+    &.macrosVisible {
+        height: 240px;
     }
-  }
 
-  .searchIcon {
-    position: absolute;
-    padding: .5rem;
-    pointer-events: none;
+    @media @mobiles {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
 
-    line-height: inherit;
-  }
+    .content {
+        position: relative;
+        display: flex;
+        flex: 1;
+    }
 
-  .replyAreaAlertMessage {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    padding: 15px;
-  }
+    .search {
+        position: relative;
+        height: 40px;
+        border-bottom: 1px solid @darkQuartz;
+
+        input {
+            height: 100%;
+            border: 0;
+            padding-left: 3rem;
+        }
+    }
+
+    .searchIcon {
+        position: absolute;
+        padding: 0.5rem;
+        pointer-events: none;
+
+        line-height: inherit;
+    }
+
+    .replyAreaAlertMessage {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 15px;
+    }
 }

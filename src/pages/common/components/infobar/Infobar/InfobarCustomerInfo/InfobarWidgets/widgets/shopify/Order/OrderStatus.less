@@ -1,64 +1,76 @@
-@import "~css/new/colors";
+@import '~css/new/colors';
 
 :local {
-  .badge {
-    position: relative;
-    top: -1px;
-    margin-left: 0.25rem;
+    .badge {
+        position: relative;
+        top: -1px;
+        margin-left: 0.25rem;
 
-    & + .badge {
-      margin-left: 0.25rem;
+        & + .badge {
+            margin-left: 0.25rem;
+        }
     }
-  }
 
-  .successBadge {
-    background-color: #eaf1fc;
-    color: #4A8DF9;
-  }
+    .successBadge {
+        background-color: #eaf1fc;
+        color: #4a8df9;
+    }
 
-  .secondaryBadge {
-    background-color: #ebedf0;
-    color: @secondaryGrey;
-  }
+    .secondaryBadge {
+        background-color: #ebedf0;
+        color: @secondaryGrey;
+    }
 
-  .cancelled {
-    background-color: #ffdcd4;
-    color: #ca1010;
-  }
+    .cancelled {
+        background-color: #ffdcd4;
+        color: #ca1010;
+    }
 
-  .icon {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    margin-left: -2px;
-    margin-right: 0.25rem;
-    position: relative;
-    top: 1px;
-  }
+    .icon {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        margin-left: -2px;
+        margin-right: 0.25rem;
+        position: relative;
+        top: 1px;
+    }
 
-  .fullIcon {
-    background: @blue;
-  }
+    .fullIcon {
+        background: @blue;
+    }
 
-  .fullIconSecondary {
-    background: @secondaryGrey;
-  }
+    .fullIconSecondary {
+        background: @secondaryGrey;
+    }
 
-  .partialIcon {
-    border: 2px solid @blue;
-    box-sizing: border-box;
-    background: linear-gradient(0deg, currentColor, currentColor 50%, transparent 0, transparent);
-  }
+    .partialIcon {
+        border: 2px solid @blue;
+        box-sizing: border-box;
+        background: linear-gradient(
+            0deg,
+            currentColor,
+            currentColor 50%,
+            transparent 0,
+            transparent
+        );
+    }
 
-  .partialIconSecondary {
-    border: 2px solid @secondaryGrey;
-    box-sizing: border-box;
-    background: linear-gradient(0deg, currentColor, currentColor 50%, transparent 0, transparent);
-  }
+    .partialIconSecondary {
+        border: 2px solid @secondaryGrey;
+        box-sizing: border-box;
+        background: linear-gradient(
+            0deg,
+            currentColor,
+            currentColor 50%,
+            transparent 0,
+            transparent
+        );
+    }
 
-  .emptyIcon {
-    border: 2px solid @secondaryGrey;
-    box-sizing: border-box;
-  }
+    .emptyIcon {
+        border: 2px solid @secondaryGrey;
+        box-sizing: border-box;
+    }
 }

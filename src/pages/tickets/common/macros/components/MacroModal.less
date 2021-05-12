@@ -1,50 +1,50 @@
 @import '~css/new/colors';
 
 :local .component {
-  max-width: 85% !important;
+    max-width: 85% !important;
 
-  div[class^="container"] {
-    width: 100%;
-  }
-
-  .body {
-    padding: 0;
-  }
-
-  .content {
-    // height of screen minus modal header, modal footer and vertical margin
-    height: ~"calc(100vh - 190px)";
-    overflow: auto;
-  }
-
-  .list,
-  .footer {
-    background-color: @quartz;
-  }
-
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .list,
-  .primaryAction {
-    position: relative;
-
-    &::after {
-      content: '';
-      width: 1px;
-      height: 100%;
-      right: 0;
-      bottom: 0;
-      top: 0;
-      position: absolute;
-      background: #eceeef;
+    div[class^='container'] {
+        width: 100%;
     }
-  }
 
-  .primaryAction::after {
-    top: -16px;
-    height: ~"calc(100% + 30px)";
-  }
+    .body {
+        padding: 0;
+    }
+
+    .content {
+        // height of screen minus modal header, modal footer and vertical margin
+        height: ~'calc(100vh - 190px)';
+        overflow: auto;
+    }
+
+    .list,
+    .footer {
+        background-color: @quartz;
+    }
+
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .list,
+    .primaryAction {
+        position: relative;
+
+        &::after {
+            content: '';
+            width: 1px;
+            height: 100%;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            position: absolute;
+            background: #eceeef;
+        }
+    }
+
+    .primaryAction::after {
+        top: -16px;
+        height: ~'calc(100% + 30px)';
+    }
 }

@@ -2,69 +2,69 @@
 @import '../../css/navbar';
 
 :local .page {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  .app {
-    display: flex;
-    flex: 1;
-    align-items: stretch;
-    max-height: 100%;
-    overflow: auto;
-  }
-
-  .container {
-    max-width: calc(100vw ~"-" @navbarWidth);
-    max-height: 100%;
-  }
-
-  .content {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    overflow: auto;
-    padding: 0;
+    height: 100%;
 
-    @media @mobiles {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
+    .app {
+        display: flex;
+        flex: 1;
+        align-items: stretch;
+        max-height: 100%;
+        overflow: auto;
     }
-  }
 
-  .main-content {
-    display: flex;
-    flex: 1;
-    overflow: auto;
-    width: 100%;
-    padding: 0;
-
-    @media @mobiles {
-      width: 100vw;
+    .container {
+        max-width: calc(100vw ~'-' @navbarWidth);
+        max-height: 100%;
     }
-  }
 
-  // block background to click on to close panels on mobile
-  .backdrop {
-    position: absolute;
-    background-color: rgba(0, 0, 0, .3);
-    opacity: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1030;
-    pointer-events: none;
-    transition: all .2s linear;
+    .content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow: auto;
+        padding: 0;
 
-    @media @mobiles {
-      &:not(.hidden) {
-        opacity: 1;
-        pointer-events: auto;
-      }
+        @media @mobiles {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
     }
-  }
+
+    .main-content {
+        display: flex;
+        flex: 1;
+        overflow: auto;
+        width: 100%;
+        padding: 0;
+
+        @media @mobiles {
+            width: 100vw;
+        }
+    }
+
+    // block background to click on to close panels on mobile
+    .backdrop {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1030;
+        pointer-events: none;
+        transition: all 0.2s linear;
+
+        @media @mobiles {
+            &:not(.hidden) {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+    }
 }

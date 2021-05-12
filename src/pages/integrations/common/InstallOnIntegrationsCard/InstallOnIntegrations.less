@@ -1,53 +1,53 @@
 @import '~css/new/colors';
 
 :local {
-  .integration-card {
-    margin-bottom: 15px;
-    transition: all .12s ease-out;
-    position: relative;
+    .integration-card {
+        margin-bottom: 15px;
+        transition: all 0.12s ease-out;
+        position: relative;
 
-    &:hover {
-      top: -1px;
-      box-shadow: #ddd 1px 1px 3px 1px;
-    }
-
-    .logo-wrapper {
-      min-width: 50px;
-      max-width: 50px;
-      margin-right: 20px;
-
-      img {
-        max-width: 100%;
-      }
-    }
-
-    .card-body {
-      display: flex;
-
-      .content-wrapper {
-        flex-grow: 1;
-
-        .integration-item {
-          display: flex;
-          background: @quartz;
-          align-items: center;
-          justify-content: space-between;
-          padding: 10px;
-          border-radius: 3px;
-          margin-bottom: 10px;
+        &:hover {
+            top: -1px;
+            box-shadow: #ddd 1px 1px 3px 1px;
         }
-      }
-    }
 
-    .show-more {
-      color: @lightBlue !important;
-      font-size: 13px;
-      font-weight: bold;
-      cursor: pointer;
+        .logo-wrapper {
+            min-width: 50px;
+            max-width: 50px;
+            margin-right: 20px;
 
-      &:hover {
-        color: @darkBlue !important;
-      }
+            img {
+                max-width: 100%;
+            }
+        }
+
+        .card-body {
+            display: flex;
+
+            .content-wrapper {
+                flex-grow: 1;
+
+                .integration-item {
+                    display: flex;
+                    background: @quartz;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 10px;
+                    border-radius: 3px;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        .show-more {
+            color: @lightBlue !important;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+
+            &:hover {
+                color: @darkBlue !important;
+            }
+        }
     }
-  }
 }

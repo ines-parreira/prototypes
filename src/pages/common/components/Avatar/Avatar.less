@@ -1,52 +1,52 @@
-@import "~css/new/colors";
+@import '~css/new/colors';
 
 :local .component {
-  position: relative;
-  background: @purple;
+    position: relative;
+    background: @purple;
 
-  &.hasImage {
-    background: transparent;
-  }
+    &.hasImage {
+        background: transparent;
+    }
 
-  &.hasImage .initials {
-    display: none;
-  }
+    &.hasImage .initials {
+        display: none;
+    }
 
-  &,
-  .gravatar {
-    border-radius: 2px !important;
-  }
+    &,
+    .gravatar {
+        border-radius: 2px !important;
+    }
 
-  .gravatar,
-  .initials {
-    width: 100%;
-    height: 100%;
-  }
+    .gravatar,
+    .initials {
+        width: 100%;
+        height: 100%;
+    }
 
-  .initials {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .initials {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    color: lighten(@purple, 20%);
-    font-size: 19px;
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-  }
+        color: lighten(@purple, 20%);
+        font-size: 19px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+    }
 
-  .gravatar {
-    text-align: center;
-  }
+    .gravatar {
+        text-align: center;
+    }
 
-  .badge {
-    position: absolute;
-    bottom: -6px;
-    right: -7px;
-    z-index: 2;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: solid 2px #1d365c;
-  }
+    .badge {
+        position: absolute;
+        bottom: -6px;
+        right: -7px;
+        z-index: 2;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: solid 2px #1d365c;
+    }
 }

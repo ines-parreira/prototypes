@@ -2,72 +2,72 @@
 @import '~css/new/mixins';
 
 :local .component {
-  display: flex;
-  position: relative;
-  padding: 4px 2em 16px 2em;
-  margin: 0 -30px;
-  word-break: break-word;
-  overflow-y: visible;
+    display: flex;
+    position: relative;
+    padding: 4px 2em 16px 2em;
+    margin: 0 -30px;
+    word-break: break-word;
+    overflow-y: visible;
 
-  @media @mobiles {
-    padding: .8em 16px;
-    margin: 0 -16px;
-  }
+    @media @mobiles {
+        padding: 0.8em 16px;
+        margin: 0 -16px;
+    }
 
-  &.fromAgent {
-    background: fade(@lightPurple, 2%);
-  }
-
-  &:hover {
-    background: @darkWhite;
-  }
-
-  &.internal {
-    background: @internalYellow;
-    box-shadow: inset 5px 0 0 0 #fd9b5a;
+    &.fromAgent {
+        background: fade(@lightPurple, 2%);
+    }
 
     &:hover {
-      background: darken(@internalYellow, 1%);
+        background: @darkWhite;
     }
 
-    :global {
-      .text-faded,
-      .gorgias-mention {
-        color: darken(@darkGrey, 10%) !important;
-      }
+    &.internal {
+        background: @internalYellow;
+        box-shadow: inset 5px 0 0 0 #fd9b5a;
+
+        &:hover {
+            background: darken(@internalYellow, 1%);
+        }
+
+        :global {
+            .text-faded,
+            .gorgias-mention {
+                color: darken(@darkGrey, 10%) !important;
+            }
+        }
     }
-  }
 
-  &.appear {
-    animation: appear .1s linear;
-    animation-fill-mode: forwards;
+    &.appear {
+        animation: appear 0.1s linear;
+        animation-fill-mode: forwards;
 
-    @keyframes appear {
-      from {
-        opacity: 0;
-      }
+        @keyframes appear {
+            from {
+                opacity: 0;
+            }
+        }
     }
-  }
 
-  &.hasError {
+    &.hasError {
+        .avatar {
+            opacity: 0.6;
+        }
+    }
+
     .avatar {
-      opacity: .6;
+        width: 56px;
+        flex-shrink: 0;
     }
-  }
 
-  .avatar {
-    width: 56px;
-    flex-shrink: 0;
-  }
+    .bodyWrapper {
+        max-width: ~'calc(100% - 56px)'; // 56px being the width of `.avatar` above
+        flex-grow: 1;
+    }
 
-  .bodyWrapper {
-    max-width: ~"calc(100% - 56px)";  // 56px being the width of `.avatar` above
-    flex-grow: 1;
-  }
-
-  .bodyWrapperForHiddenOrDeletedMessage {
-    margin-left: 56px;
-  }
+    .bodyWrapperForHiddenOrDeletedMessage {
+        margin-left: 56px;
+    }
 }
 
 /* loading state.
@@ -77,80 +77,80 @@
  */
 
 .ticketMessagesHighlighted {
-  animation-name: highlight-ticket;
-  animation-duration: 1s;
-  animation-delay: .3s;
+    animation-name: highlight-ticket;
+    animation-duration: 1s;
+    animation-delay: 0.3s;
 }
 
-@keyframes highlight-ticket{
-    from{
-      background-color: @highlightYellow;
+@keyframes highlight-ticket {
+    from {
+        background-color: @highlightYellow;
     }
-    to{
-      background-color: @white;
+    to {
+        background-color: @white;
     }
-  }
-
+}
 
 @keyframes ticket-message-loading-opacity {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: .6;
-  }
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.6;
+    }
 }
 
 @keyframes ticket-message-loading-spinner-opacity {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes ticket-message-loading-spin {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 // we display the "loading" state after a while only, fading and showing the loader
 .ticket-message-loading {
-  @delay: 2s;
-  position: relative;
-  animation: ticket-message-loading-opacity 0.4s @delay forwards linear;
+    @delay: 2s;
+    position: relative;
+    animation: ticket-message-loading-opacity 0.4s @delay forwards linear;
 
-  &:before {
-    content: '';
-    opacity: 0;
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    margin-top: -0.4em;
-    display: block;
-    width: 12px;
-    height: 12px;
-    border-radius: 100%;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.6) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
-    animation: ticket-message-loading-spin 0.4s infinite linear, ticket-message-loading-spinner-opacity 0.4s @delay forwards linear;
-  }
+    &:before {
+        content: '';
+        opacity: 0;
+        position: absolute;
+        left: 8px;
+        top: 50%;
+        margin-top: -0.4em;
+        display: block;
+        width: 12px;
+        height: 12px;
+        border-radius: 100%;
+        border-width: 2px;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, 0.6) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1);
+        animation: ticket-message-loading-spin 0.4s infinite linear,
+            ticket-message-loading-spinner-opacity 0.4s @delay forwards linear;
+    }
 }
 
 /* this is a special class that allows putting a maximum width for facebook stickers
  */
 .gorgias-facebook-share-image {
-  max-width: 120px;
+    max-width: 120px;
 }
 
 /* Mentioned agent's name text
  */
 .gorgias-mention {
-  color: @grey
+    color: @grey;
 }

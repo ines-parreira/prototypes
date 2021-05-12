@@ -1,78 +1,78 @@
 @import '~css/new/colors';
 
 :local .component {
-  background-color: @quartz;
-  border-color: @darkQuartz3;
-  box-shadow: 0 1px 1px fade(@darkQuartz3, 90%);
-  transition: .1s ease-out;
+    background-color: @quartz;
+    border-color: @darkQuartz3;
+    box-shadow: 0 1px 1px fade(@darkQuartz3, 90%);
+    transition: 0.1s ease-out;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  &,
-  &:hover {
-    color: @grey;
-  }
+    &,
+    &:hover {
+        color: @grey;
+    }
 
-  &:hover {
-    background-color: #fff;
-    box-shadow: 1px 1px 6px @darkQuartz3;
-  }
+    &:hover {
+        background-color: #fff;
+        box-shadow: 1px 1px 6px @darkQuartz3;
+    }
 
-  &:active {
-    box-shadow: inset 0 1px 1px fade(@darkQuartz3, 60%);
-  }
+    &:active {
+        box-shadow: inset 0 1px 1px fade(@darkQuartz3, 60%);
+    }
 
-  &.current {
-    background-color: #fff;
-    border-color: darken(@darkQuartz3, 8%);
-  }
+    &.current {
+        background-color: #fff;
+        border-color: darken(@darkQuartz3, 8%);
+    }
 
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
+    &:not(:last-child) {
+        margin-bottom: 20px;
+    }
 
-  .body {
-    padding: 14px 10px;
-  }
+    .body {
+        padding: 14px 10px;
+    }
 
-  .meta {
-    width: 25%;
-    max-width: 130px;
-    flex-shrink: 0;
-    padding-right: 16px;
+    .meta {
+        width: 25%;
+        max-width: 130px;
+        flex-shrink: 0;
+        padding-right: 16px;
 
-    font-size: 12px;
-  }
+        font-size: 12px;
+    }
 
-  .details {
-    position: relative;
-    flex-grow: 1;
-    overflow: hidden;
-  }
+    .details {
+        position: relative;
+        flex-grow: 1;
+        overflow: hidden;
+    }
 
-  .icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
+    .icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 
-  .subject,
-  .excerpt {
-    padding-right: 50px;
+    .subject,
+    .excerpt {
+        padding-right: 50px;
 
-    white-space: nowrap;
-    overflow: hidden;
-    margin: 0;
-    text-overflow: ellipsis;
-  }
+        white-space: nowrap;
+        overflow: hidden;
+        margin: 0;
+        text-overflow: ellipsis;
+    }
 
-  .subject {
-    color: @indigo;
-    font-size: 15px;
-    font-weight: 500;
-  }
+    .subject {
+        color: @indigo;
+        font-size: 15px;
+        font-weight: 500;
+    }
 
-  .excerpt {
-    font-size: 13px;
-  }
+    .excerpt {
+        font-size: 13px;
+    }
 }

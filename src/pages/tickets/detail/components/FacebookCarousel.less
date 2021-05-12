@@ -1,83 +1,83 @@
-@import "~slick-carousel/slick/slick.css";
-@import "~slick-carousel/slick/slick-theme.css";
+@import '~slick-carousel/slick/slick.css';
+@import '~slick-carousel/slick/slick-theme.css';
 
 @import '~css/new/icons';
 
 @margins: 4px;
 
 :local {
-  .carousel {
-    margin: 0 -@margins;
+    .carousel {
+        margin: 0 -@margins;
 
-    :global {
-      .slick-arrow {
-        width: 30px;
-        height: 30px;
-        z-index: 1;
-        background: #fff;
-        border: 1px solid rgba(0, 0, 0, .125);
-      }
+        :global {
+            .slick-arrow {
+                width: 30px;
+                height: 30px;
+                z-index: 1;
+                background: #fff;
+                border: 1px solid rgba(0, 0, 0, 0.125);
+            }
 
-      .slick-arrow.slick-disabled {
-        display: none !important;
-      }
+            .slick-arrow.slick-disabled {
+                display: none !important;
+            }
 
-      .slick-prev:before,
-      .slick-next:before {
-        .material-icons();
+            .slick-prev:before,
+            .slick-next:before {
+                .material-icons();
 
-        font-size: 20px;
-        color: #333;
-      }
+                font-size: 20px;
+                color: #333;
+            }
 
-      .slick-prev {
-        left: @margins;
-        border-radius: 0 3px 3px 0;
+            .slick-prev {
+                left: @margins;
+                border-radius: 0 3px 3px 0;
 
-        &:before {
-          content: '\e5cb';
+                &:before {
+                    content: '\e5cb';
+                }
+            }
+
+            .slick-next {
+                right: @margins;
+                border-radius: 3px 0 0 3px;
+
+                &:before {
+                    content: '\e5cc';
+                }
+            }
         }
-      }
+    }
 
-      .slick-next {
-        right: @margins;
-        border-radius: 3px 0 0 3px;
+    .carouselCardContainer {
+        /* bottom border is cut by slick-carousel */
+        padding: 0 @margins 1px;
+        max-width: 500px;
+    }
 
-        &:before {
-          content: '\e5cc';
+    .carouselCard {
+        .buttons {
+            width: 100%;
+
+            & > * {
+                border-left: 0;
+                border-right: 0;
+            }
+
+            :first-child {
+                border-radius: 0;
+            }
+
+            :last-child {
+                border-bottom: 0;
+            }
         }
-      }
     }
-  }
 
-  .carouselCardContainer {
-    /* bottom border is cut by slick-carousel */
-    padding: 0 @margins 1px;
-    max-width: 500px;
-  }
-
-  .carouselCard {
-    .buttons {
-      width: 100%;
-
-      & > * {
-        border-left: 0;
-        border-right: 0;
-      }
-
-      :first-child {
-        border-radius: 0;
-      }
-
-      :last-child {
-        border-bottom: 0;
-      }
+    .carouselImage {
+        width: auto;
+        margin: 0 auto;
+        max-height: 200px;
     }
-  }
-
-  .carouselImage {
-    width: auto;
-    margin: 0 auto;
-    max-height: 200px;
-  }
 }
