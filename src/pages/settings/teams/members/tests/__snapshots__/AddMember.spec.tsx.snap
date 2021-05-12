@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddMember /> should render 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="dropdown-toggle btn btn-success"
+    type="button"
+  >
+    Add team member
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    style="width: 230px;"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    />
+    <div
+      class="dropdown-divider"
+      tabindex="-1"
+    />
+    <div
+      class="content"
+    >
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="AgentLabel"
+        >
+          <div
+            class="component avatar"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span>
+                AP
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Alex Plugaru
+          </span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AddMember /> should render the dropdown on click 1`] = `
+<div
+  aria-hidden="false"
+  class="dropdown-menu dropdown-menu-right show"
+  role="menu"
+  style="width: 230px; position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
+  tabindex="-1"
+  x-placement="bottom-end"
+>
+  <h6
+    class="dropdown-header"
+    tabindex="-1"
+  >
+    <div
+      class="input-icon input-icon-right"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search user..."
+        type="text"
+        value=""
+      />
+    </div>
+  </h6>
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />
+  <div
+    class="content"
+  >
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width: 26px; height: 26px;"
+        >
+          <div
+            class="initials"
+            style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+          >
+            <span>
+              AP
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Alex Plugaru
+        </span>
+      </div>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<AddMember /> should render user with empty name 1`] = `
+<div
+  aria-hidden="false"
+  class="dropdown-menu dropdown-menu-right show"
+  role="menu"
+  style="width: 230px; position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
+  tabindex="-1"
+  x-placement="bottom-end"
+>
+  <h6
+    class="dropdown-header"
+    tabindex="-1"
+  >
+    <div
+      class="input-icon input-icon-right"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search user..."
+        type="text"
+        value=""
+      />
+    </div>
+  </h6>
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />
+  <div
+    class="content"
+  >
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width: 26px; height: 26px;"
+        >
+          <div
+            class="initials"
+            style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+          >
+            <span>
+              a
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          alex@gorgias.io
+        </span>
+      </div>
+    </button>
+  </div>
+</div>
+`;

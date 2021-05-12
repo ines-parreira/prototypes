@@ -41,16 +41,20 @@ export default class Row extends React.Component<Props> {
             <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">
                     <Avatar
-                        name={agent.get('name')}
+                        name={agent.get('name') || agent.get('email')}
                         url={agent.getIn(['meta', 'profile_picture_url'])}
                         size={36}
                         className={classnames(css.avatar, 'd-none d-md-block')}
                     />
                     <span className={css.meta}>
-                        <p className={css.name}>{agent.get('name')}</p>
-                        <p className={classnames(css.email, 'text-faded')}>
-                            {agent.get('email')}
+                        <p className={css.name}>
+                            {agent.get('name') || agent.get('email')}
                         </p>
+                        {agent.get('name') != null && (
+                            <p className={classnames(css.email, 'text-faded')}>
+                                {agent.get('email')}
+                            </p>
+                        )}
                     </span>
                     <span className={css.role}>
                         <RoleLabel roles={agent.get('roles')} />

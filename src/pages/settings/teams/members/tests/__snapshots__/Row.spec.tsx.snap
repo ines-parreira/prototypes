@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Row /> should render 1`] = `
+<a
+  class="component"
+  to="/app/settings/users/1"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <input
+      class="mr-4"
+      type="checkbox"
+    />
+    <div
+      class="component avatar d-none d-md-block"
+      style="width: 36px; height: 36px;"
+    >
+      <div
+        class="initials"
+        style="width: 36px; height: 36px; font-size: 15px;"
+      >
+        <span>
+          AS
+        </span>
+      </div>
+    </div>
+    <span
+      class="meta"
+    >
+      <p
+        class="name"
+      >
+        Acme Support
+      </p>
+      <p
+        class="email text-faded"
+      >
+        hello@acme.gorgias.io
+      </p>
+    </span>
+    <span
+      class="role"
+    >
+      <span
+        class="badge-pill badge badge-danger"
+      >
+        Admin
+      </span>
+    </span>
+    <span
+      class="delete"
+    >
+      <button
+        class="btn-transparent btn btn-secondary"
+        type="button"
+      >
+        <i
+          class="material-icons md-2"
+        >
+          delete
+        </i>
+      </button>
+    </span>
+  </span>
+</a>
+`;

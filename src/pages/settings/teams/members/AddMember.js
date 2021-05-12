@@ -29,7 +29,7 @@ type State = {
     search: string,
 }
 
-class AddMember extends Component<Props, State> {
+export class AddMemberContainer extends Component<Props, State> {
     state = {
         isOpen: false,
         isLoading: false,
@@ -38,7 +38,8 @@ class AddMember extends Component<Props, State> {
 
     _toggle = () => this.setState({isOpen: !this.state.isOpen})
 
-    _onSearch = (event) => this.setState({search: event.target.value})
+    _onSearch = (event: SyntheticInputEvent<HTMLInputElement>) =>
+        this.setState({search: event.target.value})
 
     _addTeamMember = (userId: number) => {
         this.setState({isLoading: true})
@@ -57,7 +58,7 @@ class AddMember extends Component<Props, State> {
             .map((member) => member.get('id'))
         const availableUsers = users.filter((user) => {
             return (
-                (user.get('name').toLowerCase().includes(search) ||
+                ((user.get('name') || '').toLowerCase().includes(search) ||
                     user.get('email').toLowerCase().includes(search)) &&
                 !teamMemberIds.includes(user.get('id'))
             )
@@ -107,7 +108,10 @@ class AddMember extends Component<Props, State> {
                                         }
                                     >
                                         <AgentLabel
-                                            name={user.get('name')}
+                                            name={
+                                                user.get('name') ||
+                                                user.get('email')
+                                            }
                                             profilePictureUrl={user.getIn([
                                                 'meta',
                                                 'profile_picture_url',
@@ -133,4 +137,4 @@ export default connect((state) => {
     return {
         users: agentSelectors.getAgents(state),
     }
-})(AddMember)
+})(AddMemberContainer)
