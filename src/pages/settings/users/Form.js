@@ -17,7 +17,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import {getCheaperPlanForFeature} from '../../../utils/paywalls.ts'
+import {getCheapestPlanForFeature} from '../../../utils/paywalls.ts'
 import {getBillingState} from '../../../state/billing/selectors.ts'
 import {toJS} from '../../../utils.ts'
 import Loader from '../../common/components/Loader/Loader.tsx'
@@ -31,12 +31,11 @@ import {
 } from '../../../config/user.ts'
 import type {MetaByAgentRole} from '../../../config/types/user'
 import {paywallConfigs} from '../../../config/paywalls.tsx'
-
 import InputField from '../../common/forms/InputField'
-
+import {currentAccountHasFeature} from '../../../state/currentAccount/selectors.ts'
 import * as actions from '../../../state/agents/actions.ts'
 import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
-import {AccountFeatures} from '../../../state/currentAccount/types.ts'
+import {AccountFeature} from '../../../state/currentAccount/types.ts'
 import * as helpers from '../../../state/agents/helpers.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import Popover from '../../common/components/Popover.tsx'
@@ -78,9 +77,9 @@ type State = {
             agentId: parseInt(ownProps.match.params.id),
             accountOwnerId: state.currentAccount.get('user_id'),
             currentUserId: state.currentUser.get('id'),
-            hasUserRolesFeature: state.currentAccount
-                .get('features')
-                .get(AccountFeatures.UserRoles),
+            hasUserRolesFeature: currentAccountHasFeature(
+                AccountFeature.UserRoles
+            )(state),
             plans: getBillingState(state).get('plans'),
         }
     },
@@ -197,9 +196,9 @@ export default class Form extends Component<Props, State> {
             this.props.accountOwnerId === this.props.currentUserId
         const isAgentAccountOwner =
             this.props.agentId === this.props.accountOwnerId
-        const paywallConfig = paywallConfigs[AccountFeatures.UserRoles]
-        const requiredPlanName = getCheaperPlanForFeature(
-            AccountFeatures.UserRoles,
+        const paywallConfig = paywallConfigs[AccountFeature.UserRoles]
+        const requiredPlanName = getCheapestPlanForFeature(
+            AccountFeature.UserRoles,
             toJS(plans)
         )
 

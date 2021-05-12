@@ -18,8 +18,8 @@ import {ViewVisibility, View} from '../../../../../models/view/types'
 import {Plan} from '../../../../../models/billing/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {viewUpdated} from '../../../../../state/entities/views/actions'
-import {AccountFeatures} from '../../../../../state/currentAccount/types'
-import {getCheaperPlanForFeature} from '../../../../../utils/paywalls'
+import {AccountFeature} from '../../../../../state/currentAccount/types'
+import {getCheapestPlanForFeature} from '../../../../../utils/paywalls'
 import {toJS} from '../../../../../utils'
 
 import UpgradeButton from '../../UpgradeButton/UpgradeButton'
@@ -78,8 +78,8 @@ export function ViewSharingModalContainer({
         toggle()
     }
 
-    const requiredPlanName = getCheaperPlanForFeature(
-        AccountFeatures.ViewSharing,
+    const requiredPlanName = getCheapestPlanForFeature(
+        AccountFeature.ViewSharing,
         plans as Record<string, Plan>
     )
 

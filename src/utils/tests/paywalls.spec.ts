@@ -4,23 +4,26 @@ import {
     basicPlan,
     proPlan,
 } from '../../fixtures/subscriptionPlan'
-import {AccountFeatures} from '../../state/currentAccount/types'
+import {AccountFeature} from '../../state/currentAccount/types'
 import {Plan} from '../../models/billing/types'
-import {getCheaperPlanForFeature, isLegacyPlan} from '../paywalls'
+import {getCheapestPlanForFeature, isLegacyPlan} from '../paywalls'
 import {toJS} from '../../utils'
 
-const publicPlans = ({
+const publicPlans: Record<string, Plan> = {
     [basicPlan.id]: basicPlan,
     [proPlan.id]: proPlan,
     [advancedPlan.id]: advancedPlan,
-} as unknown) as Record<string, Plan>
+}
 
-describe('getCheaperPlanForFeature()', () => {
-    it('should return the cheaper plan to access the feature', () => {
-        expect(
-            getCheaperPlanForFeature(AccountFeatures.ChatCampaigns, publicPlans)
-        ).toBe(proPlan.name)
-    })
+describe('getCheapestPlanForFeature()', () => {
+    it.each(Object.values(AccountFeature))(
+        'should return the cheaper plan to access the feature %s',
+        (feature) => {
+            expect(
+                getCheapestPlanForFeature(feature, publicPlans)
+            ).toMatchSnapshot()
+        }
+    )
 })
 
 describe('isLegacyPlan()', () => {

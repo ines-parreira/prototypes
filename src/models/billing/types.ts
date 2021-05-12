@@ -1,7 +1,16 @@
-import {AccountFeatures} from '../../state/currentAccount/types'
+import {
+    AccountFeature,
+    AccountFeatureMetadata,
+} from '../../state/currentAccount/types'
 
 export enum PlanInterval {
-    'Month' = 'month',
+    Month = 'month',
+}
+
+export type PlanLimits = {
+    default: number
+    max: number
+    min: number
 }
 
 export type Plan = {
@@ -9,20 +18,17 @@ export type Plan = {
     cost_per_ticket: number
     interval: PlanInterval
     public: boolean
+    custom?: boolean
     name: string
     trial_period_days: number
     order: number
     currency: string
     free_tickets: number
     limits: {
-        default: number
-        max: number
-        min: number
+        messages: PlanLimits
+        tickets: PlanLimits
     }
     amount: number
     integrations: number
-    features: Record<
-        string,
-        typeof AccountFeatures[keyof typeof AccountFeatures]
-    >
+    features: Record<AccountFeature, AccountFeatureMetadata>
 }

@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
-import {AccountFeatures} from '../state/currentAccount/types.ts'
+import {AccountFeature} from '../state/currentAccount/types.ts'
 
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer.tsx'
@@ -465,7 +465,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/satisfaction-surveys`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeatures.SatisfactionSurveys)(
+                    content: withPaywall(AccountFeature.SatisfactionSurveys)(
                         withUserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -483,7 +483,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeatures.AutoAssignment)(
+                    content: withPaywall(AccountFeature.AutoAssignment)(
                         withUserRoleRequired(TicketAssignment, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -571,7 +571,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeatures.Teams)(
+                    content: withPaywall(AccountFeature.Teams)(
                         withUserRoleRequired(Teams.List, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -581,7 +581,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/create`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeatures.Teams)(
+                    content: withPaywall(AccountFeature.Teams)(
                         withUserRoleRequired(Teams.Form, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -591,7 +591,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeatures.Teams)(
+                    content: withPaywall(AccountFeature.Teams)(
                         withUserRoleRequired(Teams.Form, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
@@ -601,7 +601,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id/members`}
                 exact
                 render={appRender({
-                    content: withPaywall(AccountFeatures.Teams)(
+                    content: withPaywall(AccountFeature.Teams)(
                         withUserRoleRequired(List, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,

@@ -14,7 +14,7 @@ import {Customer} from './state/customers/types'
 
 import {daysToHours, hoursToSeconds} from './utils'
 import {ActionTemplateExecution} from './types'
-import {AccountFeatures} from './state/currentAccount/types'
+import {AccountFeature} from './state/currentAccount/types'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
@@ -177,7 +177,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Chat with your customers over the phone from Gorgias.',
         image: 'integrations/phone.png',
         hide: !hasPhoneEarlyAccess,
-        requiredFeature: AccountFeatures.PhoneIntegration,
+        requiredFeature: AccountFeature.PhoneIntegration,
     },
     {
         type: IntegrationType.GorgiasChatIntegrationType,
@@ -223,7 +223,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
         image: 'integrations/magento.png',
-        requiredFeature: AccountFeatures.MagentoIntegration,
+        requiredFeature: AccountFeature.MagentoIntegration,
     },
     {
         type: 'recharge',
@@ -252,7 +252,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description:
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
         image: 'integrations/yotpo.png',
-        requiredFeature: AccountFeatures.YotpoIntegration,
+        requiredFeature: AccountFeature.YotpoIntegration,
     },
     {
         title: 'BigCommerce',

@@ -10,7 +10,7 @@ import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions.ts'
 import {getFilters} from '../../state/stats/selectors.ts'
 import {getTimezone} from '../../state/currentUser/selectors.ts'
-import {AccountFeatures} from '../../state/currentAccount/types.ts'
+import {AccountFeature} from '../../state/currentAccount/types.ts'
 
 import withPaywall from '../common/utils/withPaywall.tsx'
 
@@ -29,10 +29,10 @@ type Props = {
 }
 
 const SatisfactionSurveysStats = withPaywall(
-    AccountFeatures.SatisfactionSurveys
+    AccountFeature.SatisfactionSurveys
 )(StatsComponent)
 
-const RevenueStats = withPaywall(AccountFeatures.RevenueStatistics)(
+const RevenueStats = withPaywall(AccountFeature.RevenueStatistics)(
     StatsComponent
 )
 

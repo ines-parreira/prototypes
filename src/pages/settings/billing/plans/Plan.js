@@ -10,12 +10,13 @@ import {
     PopoverBody,
     PopoverHeader,
 } from 'reactstrap'
-import _omitBy from 'lodash/omitBy'
 
 import LegacyTag from '../../../common/components/LegacyTag.tsx'
 import './Plan.less'
 import {openChat, toJS} from '../../../../utils.ts'
 import {isLegacyPlan} from '../../../../utils/paywalls.ts'
+import {isFeatureEnabled} from '../../../../utils/account.ts'
+import {AccountFeature} from '../../../../state/currentAccount/types.ts'
 
 type Props = {
     plan: Map<any, any>,
@@ -81,70 +82,65 @@ const extraFeaturesPerPlan = {
 
 const featuresConfig = [
     {
-        name: 'facebook_comment',
+        name: AccountFeature.FacebookComment,
         icon: 'facebook',
         label: 'Facebook integration',
     },
     {
-        name: 'instagram_comment',
+        name: AccountFeature.InstagramComment,
         icon: 'icon-instagram',
         label: 'Instagram integration',
         isCustomIcon: true,
     },
     {
-        name: 'magento_integration',
+        name: AccountFeature.MagentoIntegration,
         icon: 'widgets',
         label: 'Magento integration',
     },
     {
-        name: 'phone_integration',
+        name: AccountFeature.PhoneIntegration,
         icon: 'widgets',
         label: 'Phone integration',
     },
     {
-        name: 'satisfaction_surveys',
+        name: AccountFeature.SatisfactionSurveys,
         icon: 'insert_emoticon',
         label: 'Satisfaction surveys',
     },
     {
-        name: 'chat_campaigns',
+        name: AccountFeature.ChatCampaigns,
         icon: 'chat',
         label: 'Chat campaigns',
     },
     {
-        name: 'user_roles',
+        name: AccountFeature.UserRoles,
         icon: 'lock',
         label: 'User permissions',
     },
     {
-        name: 'revenue_statistics',
+        name: AccountFeature.RevenueStatistics,
         icon: 'monetization_on',
         label: 'Revenue stats',
     },
     {
-        name: 'teams',
+        name: AccountFeature.Teams,
         icon: 'group',
         label: 'Teams',
     },
     {
-        name: 'auto_assignment',
+        name: AccountFeature.AutoAssignment,
         icon: 'assignment_turned_in',
         label: 'Auto-assignment',
     },
     {
-        name: 'view_sharing',
+        name: AccountFeature.ViewSharing,
         icon: 'visibility',
         label: 'View sharing',
     },
 ]
 
-const countFeatures = (plan: Map<any, any>) => {
-    return plan
-        .get('features')
-        .valueSeq()
-        .filter((hasFeature) => hasFeature)
-        .count()
-}
+export const countFeatures = (plan: Map<any, any>) =>
+    plan.get('features').valueSeq().filter(isFeatureEnabled).count()
 
 const getFeatures = (
     plan: Map<any, any>,
@@ -156,14 +152,14 @@ const getFeatures = (
         plan.get('cost_per_ticket') * costMultiplier
     ).toFixed(2)
     const isEnterprisePlan = plan.get('id') === 'enterprise'
-    const planFeatures = Object.keys(
-        _omitBy(plan.get('features').toJS(), (hasFeature, featureName) => {
-            return !(
-                hasFeature &&
+    const planFeatures = plan
+        .get('features')
+        .filter(
+            (featureMetadata, featureName) =>
+                isFeatureEnabled(featureMetadata) &&
                 (!cheaperPlan || !cheaperPlan.getIn(['features', featureName]))
-            )
-        })
-    )
+        )
+        .keySeq()
     let features = isEnterprisePlan
         ? []
         : [
@@ -179,9 +175,9 @@ const getFeatures = (
 
     if (includeProductFeatures) {
         features = features.concat(
-            featuresConfig.filter((feature) => {
-                return planFeatures.includes(feature.name)
-            })
+            featuresConfig.filter((feature) =>
+                planFeatures.includes(feature.name)
+            )
         )
 
         if (extraFeaturesPerPlan.hasOwnProperty(plan.get('name'))) {

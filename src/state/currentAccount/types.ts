@@ -16,7 +16,7 @@ export enum AccountSettingType {
     ViewsOrdering = 'views-ordering',
 }
 
-export enum AccountFeatures {
+export enum AccountFeature {
     AutoAssignment = 'auto_assignment',
     ChatCampaigns = 'chat_campaigns',
     FacebookComment = 'facebook_comment',
@@ -75,6 +75,15 @@ export type AccountViewsOrderingSettingData = {
     view_sections: Record<string, {display_order: number}>
 }
 
+export type AccountFeatureMetadata =
+    | boolean
+    | {
+          enabled: boolean
+          limit?: number
+      }
+
+export type AccountFeatures = Record<AccountFeature, AccountFeatureMetadata>
+
 export type Account = {
     current_subscription: {
         plan: string
@@ -94,8 +103,5 @@ export type Account = {
     stripe_id: string
     settings: AccountSetting[]
     user_id: number
-    features: Record<
-        typeof AccountFeatures[keyof typeof AccountFeatures],
-        boolean
-    >
+    features: AccountFeatures
 }

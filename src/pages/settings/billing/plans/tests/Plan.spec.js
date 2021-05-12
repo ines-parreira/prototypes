@@ -2,8 +2,14 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render, fireEvent, act} from '@testing-library/react'
 
-import {basicPlan, proPlan} from '../../../../../fixtures/subscriptionPlan.ts'
-import {Plan} from '../Plan'
+import {
+    advancedPlan,
+    basicPlan,
+    customPlan,
+    enterprisePlan,
+    proPlan,
+} from '../../../../../fixtures/subscriptionPlan.ts'
+import {countFeatures, Plan} from '../Plan'
 
 describe('<Plan/>', () => {
     it.each([
@@ -107,5 +113,17 @@ describe('<Plan/>', () => {
         const confirmButton = queryByTestId('confirm-choose-plan-button')
         expect(confirmButton).toBe(null)
         expect(mockedFunction).not.toHaveBeenCalled()
+    })
+})
+
+describe('countFeatures()', () => {
+    it.each([
+        [0, basicPlan],
+        [8, proPlan],
+        [12, advancedPlan],
+        [12, enterprisePlan],
+        [8, customPlan],
+    ])('should return %d features', (expected, plan) => {
+        expect(countFeatures(fromJS(plan))).toBe(expected)
     })
 })

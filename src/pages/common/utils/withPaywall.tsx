@@ -4,25 +4,23 @@ import {Col, Container, Row} from 'reactstrap'
 import Lightbox from 'react-images'
 import classnames from 'classnames'
 
+import {currentAccountHasFeature} from '../../../state/currentAccount/selectors'
 import {RootState} from '../../../state/types'
-import {AccountFeatures} from '../../../state/currentAccount/types'
+import {AccountFeature} from '../../../state/currentAccount/types'
 import {Plan} from '../../../models/billing/types'
 import {paywallConfigs} from '../../../config/paywalls'
 import UpgradeButton from '../components/UpgradeButton'
-import {getCheaperPlanForFeature} from '../../../utils/paywalls'
+import {getCheapestPlanForFeature} from '../../../utils/paywalls'
 import {toJS} from '../../../utils'
 
 import css from './withPaywall.less'
 
-export const withPaywall = (
-    feature: typeof AccountFeatures[keyof typeof AccountFeatures]
-) => {
+export const withPaywall = (feature: AccountFeature) => {
     const connector = connect((state: RootState) => {
-        const features = state.currentAccount.get('features') as Map<any, any>
-        const hasFeature: boolean | undefined = features.get(feature)
+        const hasFeature = currentAccountHasFeature(feature)(state)
         const paywallData = paywallConfigs[feature]
         const plans: Record<string, Plan> = toJS(state.billing.get('plans'))
-        const requiredPlanName = getCheaperPlanForFeature(feature, plans)
+        const requiredPlanName = getCheapestPlanForFeature(feature, plans)
         return {hasFeature, paywallData, requiredPlanName}
     })
 

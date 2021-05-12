@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from '../../../../state/types'
-import {AccountFeatures} from '../../../../state/currentAccount/types'
+import {AccountFeature} from '../../../../state/currentAccount/types'
 import {
     advancedPlan,
     basicPlan,
@@ -25,8 +25,8 @@ describe('withPaywall', () => {
         store: mockStore({
             currentAccount: fromJS({
                 features: fromJS({
-                    [AccountFeatures.InstagramComment]: true,
-                    [AccountFeatures.AutoAssignment]: false,
+                    [AccountFeature.InstagramComment]: true,
+                    [AccountFeature.AutoAssignment]: false,
                 }),
             }),
             billing: fromJS({
@@ -40,16 +40,16 @@ describe('withPaywall', () => {
     }
 
     it('should render the passed component when the feature is available', () => {
-        const PaywalledComponent = withPaywall(
-            AccountFeatures.InstagramComment
-        )(AnyComponent)
+        const PaywalledComponent = withPaywall(AccountFeature.InstagramComment)(
+            AnyComponent
+        )
         const {container} = render(<PaywalledComponent {...minProps} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should not render the passed component when the feature is unavailable', () => {
-        const PaywalledComponent = withPaywall(AccountFeatures.AutoAssignment)(
+        const PaywalledComponent = withPaywall(AccountFeature.AutoAssignment)(
             AnyComponent
         )
         const {container} = render(<PaywalledComponent {...minProps} />)

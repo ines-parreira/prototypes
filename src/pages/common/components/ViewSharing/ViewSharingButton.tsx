@@ -9,8 +9,8 @@ import {RootState} from '../../../../state/types'
 import {hasRole} from '../../../../utils'
 import {AGENT_ROLE} from '../../../../config/user'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-
-import {AccountFeatures} from '../../../../state/currentAccount/types'
+import {AccountFeature} from '../../../../state/currentAccount/types'
+import {currentAccountHasFeature} from '../../../../state/currentAccount/selectors'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
@@ -65,13 +65,11 @@ export function ViewSharingButtonContainer({
     )
 }
 
-const connector = connect((state: RootState) => {
-    const features = state.currentAccount.get('features') as Map<any, any>
-    const hasViewSharingFeature = features.get(AccountFeatures.ViewSharing)
-    return {
-        currentUser: state.currentUser,
-        hasViewSharingFeature,
-    }
-})
+const connector = connect((state: RootState) => ({
+    currentUser: state.currentUser,
+    hasViewSharingFeature: currentAccountHasFeature(AccountFeature.ViewSharing)(
+        state
+    ),
+}))
 
 export default connector(ViewSharingButtonContainer)

@@ -6,9 +6,10 @@ import {Alert, Container, Row, Col} from 'reactstrap'
 import type {List, Map} from 'immutable'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import {getCheaperPlanForFeature} from '../../../../utils/paywalls.ts'
+import {getCheapestPlanForFeature} from '../../../../utils/paywalls.ts'
 import {toJS} from '../../../../utils.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
+import {isFeatureEnabled} from '../../../../utils/account.ts'
 
 import IntegrationListRow from './IntegrationListRow.tsx'
 
@@ -135,9 +136,11 @@ export default class IntegrationList extends React.Component<Props> {
                 if (
                     requiredFeature &&
                     (currentPlan.isEmpty() ||
-                        !currentPlan.get('features').get(requiredFeature))
+                        !isFeatureEnabled(
+                            currentPlan.get('features').get(requiredFeature)
+                        ))
                 ) {
-                    const requiredPlanName = getCheaperPlanForFeature(
+                    const requiredPlanName = getCheapestPlanForFeature(
                         requiredFeature,
                         toJS(plans)
                     )

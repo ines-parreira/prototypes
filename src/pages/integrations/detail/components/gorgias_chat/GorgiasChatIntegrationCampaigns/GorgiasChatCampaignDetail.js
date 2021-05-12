@@ -33,7 +33,7 @@ import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
-import {AccountFeatures} from '../../../../../../state/currentAccount/types.ts'
+import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
@@ -245,7 +245,7 @@ export class GorgiasChatCampaignDetailComponent extends React.Component {
     }
 }
 
-@withPaywall(AccountFeatures.ChatCampaigns)
+@withPaywall(AccountFeature.ChatCampaigns)
 export class CampaignForm extends React.Component {
     static propTypes = {
         id: PropTypes.string.isRequired,

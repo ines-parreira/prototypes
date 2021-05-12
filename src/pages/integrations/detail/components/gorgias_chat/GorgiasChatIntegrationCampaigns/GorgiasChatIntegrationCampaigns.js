@@ -7,9 +7,7 @@ import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
 import * as campaignActions from '../../../../../../state/campaigns/actions'
-
-import {AccountFeatures} from '../../../../../../state/currentAccount/types.ts'
-
+import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import ForwardIcon from '../../ForwardIcon'
@@ -104,7 +102,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
             </>
         )
 
-        const PaywalledCampaigns = withPaywall(AccountFeatures.ChatCampaigns)(
+        const PaywalledCampaigns = withPaywall(AccountFeature.ChatCampaigns)(
             CampaignsContent
         )
 

@@ -8,6 +8,7 @@ import {
     SETTING_TYPE_BUSINESS_HOURS,
     SETTING_TYPE_SATISFACTION_SURVEYS,
 } from '../constants'
+import {AccountFeature} from '../types.ts'
 
 jest.addMatchers(immutableMatchers)
 
@@ -221,5 +222,26 @@ describe('current account selectors', () => {
         expect(selectors.getBusinessHoursSettings({})).toEqualImmutable(
             fromJS({})
         )
+    })
+
+    describe('currentAccountHasFeature()', () => {
+        it.each(Object.values(AccountFeature))(
+            'should return true for feature %s',
+            (feature) => {
+                expect(selectors.currentAccountHasFeature(feature)(state)).toBe(
+                    true
+                )
+            }
+        )
+
+        it('should return false', () => {
+            const feature = AccountFeature.AutoAssignment
+
+            expect(
+                selectors.currentAccountHasFeature(feature)(
+                    setStateWith(state, ['features', feature], false)
+                )
+            ).toBe(false)
+        })
     })
 })
