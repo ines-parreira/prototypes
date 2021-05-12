@@ -3,7 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     Breadcrumb,
@@ -21,7 +21,6 @@ import classnames from 'classnames'
 import {toJS} from '../../../../utils.ts'
 import {isLegacyPlan} from '../../../../utils/paywalls.ts'
 
-import {isAccountCreatedBeforeFeatureBasedPlans} from '../../../../utils/account.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
 import {updateSubscription} from '../../../../state/currentAccount/actions.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
@@ -235,10 +234,10 @@ export class BillingPlans extends React.Component<Props, State> {
                                     plan={plan}
                                     currentPlan={currentPlan}
                                     showProductFeatures={
-                                        !isAccountCreatedBeforeFeatureBasedPlans(
-                                            currentAccount.get(
-                                                'created_datetime'
-                                            )
+                                        currentPlan.get('public') &&
+                                        !currentAccount.getIn(
+                                            ['meta', 'has_legacy_features'],
+                                            false
                                         )
                                     }
                                     isUpdating={this.state.isUpdating}

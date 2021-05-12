@@ -15,8 +15,14 @@ describe('<BillingPlans/>', () => {
         [basicPlan.id]: basicPlan,
         [proPlan.id]: proPlan,
     }
-    const legacyAccount = fromJS(account).set('created_datetime', '2021-01-31')
-    const newAccount = fromJS(account).set('created_datetime', '2021-02-01')
+    const legacyAccount = fromJS(account).setIn(
+        ['meta', 'has_legacy_features'],
+        true
+    )
+    const newAccount = fromJS(account).setIn(
+        ['meta', 'has_legacy_features'],
+        false
+    )
 
     it.each([
         ['public plans', {plans: fromJS(publicPlans)}],

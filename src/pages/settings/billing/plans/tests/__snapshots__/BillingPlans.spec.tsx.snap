@@ -109,6 +109,66 @@ exports[`<BillingPlans /> should render a plan with default location 1`] = `
                 $25.00 per 100 extra tickets
               </strong>
             </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                all_inclusive
+              </i>
+              <strong>
+                Unlimited users
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                extension
+              </i>
+              <strong>
+                150 integrations included
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                widgets
+              </i>
+              <strong>
+                Shopify integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                chat
+              </i>
+              <strong>
+                Live chat
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                build
+              </i>
+              <strong>
+                Macros and rules
+              </strong>
+            </li>
           </ul>
         </div>
         <div
@@ -184,6 +244,88 @@ exports[`<BillingPlans /> should render a plan with default location 1`] = `
                 $23.00 per 100 extra tickets
               </strong>
             </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                facebook
+              </i>
+              <strong>
+                Facebook integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="feature-icon icon-custom mr-3 icon-instagram"
+              />
+              <strong>
+                Instagram integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                widgets
+              </i>
+              <strong>
+                Magento integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                widgets
+              </i>
+              <strong>
+                Phone integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                insert_emoticon
+              </i>
+              <strong>
+                Satisfaction surveys
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                chat
+              </i>
+              <strong>
+                Chat campaigns
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                lock
+              </i>
+              <strong>
+                User permissions
+              </strong>
+            </li>
           </ul>
         </div>
         <div
@@ -251,6 +393,66 @@ exports[`<BillingPlans /> should render a plan with default location 1`] = `
               </i>
               <strong>
                 $20.00 per 100 extra tickets
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                monetization_on
+              </i>
+              <strong>
+                Revenue stats
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                group
+              </i>
+              <strong>
+                Teams
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                assignment_turned_in
+              </i>
+              <strong>
+                Auto-assignment
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                visibility
+              </i>
+              <strong>
+                View sharing
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                call
+              </i>
+              <strong>
+                Customer success manager
               </strong>
             </li>
           </ul>
