@@ -137,7 +137,9 @@ export default class IntegrationList extends React.Component<Props> {
                     requiredFeature &&
                     (currentPlan.isEmpty() ||
                         !isFeatureEnabled(
-                            currentPlan.get('features').get(requiredFeature)
+                            currentPlan
+                                .getIn(['features', requiredFeature])
+                                .toJS()
                         ))
                 ) {
                     const requiredPlanName = getCheapestPlanForFeature(
