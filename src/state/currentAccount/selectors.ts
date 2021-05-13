@@ -2,7 +2,6 @@ import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
 
 import {RootState} from '../types'
-import {toJS} from '../../utils'
 import {isFeatureEnabled} from '../../utils/account'
 
 import * as constants from './constants.js'
@@ -34,7 +33,7 @@ export const getCurrentAccountFeatures = createSelector<
 export const currentAccountHasFeature = (feature: AccountFeature) =>
     createSelector<RootState, boolean, Map<any, any>>(
         getCurrentAccountFeatures,
-        (state) => isFeatureEnabled(toJS(state.get(feature)))
+        (state) => isFeatureEnabled(state.get(feature))
     )
 
 export const getAccountStatus = createSelector<

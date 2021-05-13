@@ -1,9 +1,9 @@
-import {AccountFeatureMetadata} from '../state/currentAccount/types'
+import {Map} from 'immutable'
 
 export function isFeatureEnabled(
-    featureMetadata: AccountFeatureMetadata
+    featureMetadata: boolean | Map<any, any>
 ): boolean {
     return typeof featureMetadata === 'boolean'
         ? featureMetadata
-        : featureMetadata.enabled
+        : (featureMetadata.get('enabled') as boolean)
 }
