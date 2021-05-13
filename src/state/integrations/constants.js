@@ -145,4 +145,8 @@ export const INSTAGRAM_DM_ALLOWED_DOMAINS = [
     'wethenew',
     'siete',
     'kitsch',
+    'bearaby',
+    'thebradery',
+    'teefury',
+    'legendairymilk',
 ]
