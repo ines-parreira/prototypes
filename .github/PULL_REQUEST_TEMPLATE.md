@@ -1,13 +1,11 @@
-#### Related GitHub issue(s): closes #
 #### Related Sentry issue(s): 
 
 #### Changes:
-
 - 
 
 #### Testing step-by-step guide:
-
 - 
+- [ ] All new or updated SQL queries use an index
 
 #### Deployment guide:
 <!-- 
