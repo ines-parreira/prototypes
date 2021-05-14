@@ -179,6 +179,10 @@ export class BillingPlans extends React.Component<Props, State> {
             name: 'Enterprise',
             features: [],
         })
+        const accountHasLegacyFeatures = currentAccount.getIn(
+            ['meta', 'has_legacy_features'],
+            false
+        )
         const isCustomPlan = currentPlan.get('custom', false)
         const plans = isCustomPlan
             ? this.props.plans.filter(
@@ -235,10 +239,12 @@ export class BillingPlans extends React.Component<Props, State> {
                                     currentPlan={currentPlan}
                                     showProductFeatures={
                                         currentPlan.get('public') &&
-                                        !currentAccount.getIn(
-                                            ['meta', 'has_legacy_features'],
-                                            false
-                                        )
+                                        !accountHasLegacyFeatures
+                                    }
+                                    showLegacyFeatures={
+                                        currentPlan.get('id') ===
+                                            plan.get('id') &&
+                                        accountHasLegacyFeatures
                                     }
                                     isUpdating={this.state.isUpdating}
                                     isFeatured={planId.includes('pro')}

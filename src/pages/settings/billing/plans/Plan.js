@@ -10,6 +10,7 @@ import {
     PopoverBody,
     PopoverHeader,
 } from 'reactstrap'
+import _pickBy from 'lodash/pickBy'
 
 import LegacyTag from '../../../common/components/LegacyTag.tsx'
 import './Plan.less'
@@ -24,6 +25,7 @@ type Props = {
     cheaperPlan: Map<any, any> | null,
     showFooter: boolean,
     showProductFeatures: boolean,
+    showLegacyFeatures: boolean,
     isFeatured?: boolean,
     isUpdating?: boolean,
     onClick?: Function,
@@ -140,26 +142,34 @@ const featuresConfig = [
 ]
 
 export const countFeatures = (plan: Map<any, any>) =>
-    plan.get('features').valueSeq().filter(isFeatureEnabled).count()
+    plan.get('features').valueSeq().toJS().filter(isFeatureEnabled).length
 
 const getFeatures = (
     plan: Map<any, any>,
     cheaperPlan: Map<any, any> | null,
-    includeProductFeatures: true
+    includeProductFeatures: true,
+    showLegacyFeatures: false
 ): Array<FeatureDetail> => {
     const costMultiplier = 100
     const costPerTicket = (
         plan.get('cost_per_ticket') * costMultiplier
     ).toFixed(2)
     const isEnterprisePlan = plan.get('id') === 'enterprise'
-    const planFeatures = plan
-        .get('features')
-        .filter(
-            (featureMetadata, featureName) =>
-                isFeatureEnabled(featureMetadata) &&
-                (!cheaperPlan || !cheaperPlan.getIn(['features', featureName]))
-        )
-        .keySeq()
+    const planLegacyFeatures = plan.get('legacy_features')
+    const planFeatures =
+        showLegacyFeatures && !!planLegacyFeatures
+            ? planLegacyFeatures
+            : plan.get('features')
+    const cheaperPlanFeatures = cheaperPlan ? cheaperPlan.get('features') : null
+    const exclusiveFeatures = _pickBy(
+        planFeatures.toJS(),
+        (featureMetadata, featureName) =>
+            isFeatureEnabled(featureMetadata) &&
+            (!cheaperPlanFeatures ||
+                !isFeatureEnabled(toJS(cheaperPlanFeatures.get(featureName))))
+    )
+    const exclusiveFeatureNames = Object.keys(exclusiveFeatures)
+
     let features = isEnterprisePlan
         ? []
         : [
@@ -175,9 +185,9 @@ const getFeatures = (
 
     if (includeProductFeatures) {
         features = features.concat(
-            featuresConfig.filter((feature) =>
-                planFeatures.includes(feature.name)
-            )
+            featuresConfig.filter((feature) => {
+                return exclusiveFeatureNames.includes(feature.name)
+            })
         )
 
         if (extraFeaturesPerPlan.hasOwnProperty(plan.get('name'))) {
@@ -198,6 +208,7 @@ export function Plan(props: Props) {
         showFooter,
         showProductFeatures,
         isPopoverDisplayed,
+        showLegacyFeatures,
     } = props
     const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
         isPopoverDisplayed
@@ -209,7 +220,12 @@ export function Plan(props: Props) {
     const isDowngrade = currentPlan.isEmpty()
         ? false
         : countFeatures(plan) < countFeatures(currentPlan)
-    const features = getFeatures(plan, cheaperPlan, showProductFeatures)
+    const features = getFeatures(
+        plan,
+        cheaperPlan,
+        showProductFeatures,
+        showLegacyFeatures
+    )
     const canChoosePlan = !isCurrentPlan && !isUpdating
 
     useEffect(() => {
@@ -365,4 +381,5 @@ Plan.defaultProps = {
     className: null,
     showFooter: true,
     showProductFeatures: true,
+    showLegacyFeatures: false,
 }
