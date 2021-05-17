@@ -163,8 +163,16 @@ export class RulesView extends Component<Props, State> {
                         </p>
 
                         <p>
-                            Rules are going to be executed in the order they are
-                            sorted by below.
+                            Rules are executed depending on triggering events
+                            and in the order they are listed on this page.{' '}
+                            <a
+                                href="https://docs.gorgias.com/rules/rules-faq"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                Learn more about rules execution
+                            </a>
+                            .
                         </p>
                         {limitStatus === RuleLimitStatus.Reaching && (
                             <Alert color="warning">

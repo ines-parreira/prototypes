@@ -43,7 +43,16 @@ exports[`<RulesView/> should not open a rule row because no ruleId is passed 1`]
         .
       </p>
       <p>
-        Rules are going to be executed in the order they are sorted by below.
+        Rules are executed depending on triggering events and in the order they are listed on this page.
+         
+        <a
+          href="https://docs.gorgias.com/rules/rules-faq"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more about rules execution
+        </a>
+        .
       </p>
     </div>
     <div>
@@ -153,7 +162,16 @@ exports[`<RulesView/> should open a rule row because a ruleId is passed and fetc
         .
       </p>
       <p>
-        Rules are going to be executed in the order they are sorted by below.
+        Rules are executed depending on triggering events and in the order they are listed on this page.
+         
+        <a
+          href="https://docs.gorgias.com/rules/rules-faq"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more about rules execution
+        </a>
+        .
       </p>
     </div>
     <div>
