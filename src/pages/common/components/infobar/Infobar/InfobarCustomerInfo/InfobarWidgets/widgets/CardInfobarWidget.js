@@ -16,10 +16,10 @@ import css from './CardInfobarWidget.less'
 
 export default class CardInfobarWidget extends React.Component {
     static propTypes = {
-        AfterTitle: PropTypes.func,
-        BeforeContent: PropTypes.func,
+        AfterTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+        BeforeContent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         AfterContent: PropTypes.func,
-        TitleWrapper: PropTypes.func,
+        TitleWrapper: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
         Wrapper: PropTypes.func,
 
         editing: PropTypes.object,

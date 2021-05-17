@@ -307,7 +307,9 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
            
           <div
             data-testid="DatetimeLabel"
-          />
+          >
+            2020-02-26T21:31:34-05:00
+          </div>
         </span>
         <div
           data-testid="EmailInvoicePopover"

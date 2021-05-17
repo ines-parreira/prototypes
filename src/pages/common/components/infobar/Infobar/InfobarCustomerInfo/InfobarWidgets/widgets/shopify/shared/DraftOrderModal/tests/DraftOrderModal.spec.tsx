@@ -16,7 +16,6 @@ import {getDuplicateOrderPayload} from '../../../../../../../../../../../../stat
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
 import ProductSearchInput from '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
-import * as utils from '../../../../../../../../../../utils/labels.js'
 import {CustomerContext} from '../../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {ShopifyActionType} from '../../../types'
 import {DraftOrderModalContainer} from '../DraftOrderModal'
@@ -24,13 +23,11 @@ import AddCustomItemPopover from '../AddCustomItemPopover/AddCustomItemPopover'
 import EmailInvoicePopover from '../EmailInvoicePopover/EmailInvoicePopover'
 import OrderFooter from '../OrderFooter/OrderFooter'
 
-jest.spyOn(utils, 'DatetimeLabel').mockImplementation((({
-    datetime,
-}: {
-    datetime: string
-}) => {
-    return <div data-testid="DatetimeLabel">{datetime}</div>
-}) as any)
+jest.mock('../../../../../../../../../../utils/labels.js', () => ({
+    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
+        <div data-testid="DatetimeLabel">{dateTime}</div>
+    ),
+}))
 
 jest.mock(
     '../../../../../../../../../Modal',

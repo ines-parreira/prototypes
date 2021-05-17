@@ -1,39 +1,35 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 
-import BlankStateContainer, {
-    TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS,
-} from '../BlankStateContainer.tsx'
-import {initialState} from '../../../../../state/currentUser/reducers.ts'
+import {BlankStateContainer} from '../BlankStateContainer.tsx'
+import {user} from '../../../../../fixtures/users.ts'
 
-const mockStore = configureMockStore([thunk])
+const mockedStats = fromJS({
+    data: {
+        data: {
+            lines: [
+                [
+                    {name: 'Steve', type: 'string'},
+                    {value: 45, type: 'number'},
+                ],
+            ],
+        },
+    },
+})
 
-describe('BlankStateContainer', () => {
-    it('should inject props from the redux state', () => {
-        const store = mockStore({
-            stats: fromJS({
-                [TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS]: {
-                    data: {
-                        lines: [
-                            [
-                                {name: 'Steve', type: 'string'},
-                                {value: 45, type: 'number'},
-                            ],
-                        ],
-                    },
-                },
-            }),
-            currentUser: initialState,
-        })
-        const component = shallow(
-            <Provider store={store}>
-                <BlankStateContainer />
-            </Provider>
+jest.mock('../../../../../services/gorgiasApi.ts', () => () => {
+    return {
+        getStatistic: jest.fn().mockResolvedValue(mockedStats),
+        cancelPendingRequests: jest.fn(),
+    }
+})
+
+describe('<BlankStateContainer />', () => {
+    it('should display', () => {
+        const {container} = render(
+            <BlankStateContainer currentUser={fromJS(user)} />
         )
-        expect(component.dive()).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

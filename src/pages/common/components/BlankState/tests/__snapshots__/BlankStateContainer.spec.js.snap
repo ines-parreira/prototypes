@@ -1,17 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BlankStateContainer should inject props from the redux state 1`] = `
-<BlankStateContainer
-  currentUser={
-    Immutable.Map {
-      "settings": Immutable.List [],
-      "_internal": Immutable.Map {
-        "loading": Immutable.Map {
-          "settings": Immutable.Map {},
-          "currentUser": false,
-        },
-      },
-    }
-  }
-/>
+exports[`<BlankStateContainer /> should display 1`] = `
+<div
+  class="blank-state"
+>
+  <div
+    class="blank-state-message"
+  >
+    <img
+      alt="Empty ticket list"
+      class="blank-state-message-icon"
+      src="test-file-stub"
+    />
+    <h2
+      class="blank-state-message-title"
+    >
+      This view is empty.
+    </h2>
+    <div
+      class="blank-state-message-text"
+    >
+      Enjoy your day!
+    </div>
+  </div>
+</div>
 `;

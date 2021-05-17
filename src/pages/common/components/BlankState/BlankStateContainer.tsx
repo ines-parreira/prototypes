@@ -11,9 +11,6 @@ import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
 import BlankState from './components/BlankState'
 
-export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS =
-    'ticket-closed-current-agent-7-days'
-
 type OwnProps = {
     message: ReactNode
 }
@@ -24,7 +21,7 @@ type State = {
     closedTicketsCount: number | null
 }
 
-class BlankStateContainer extends React.Component<Props, State> {
+export class BlankStateContainer extends React.Component<Props, State> {
     gorgiasApi = new GorgiasApi()
     state = {
         closedTicketsCount: null,

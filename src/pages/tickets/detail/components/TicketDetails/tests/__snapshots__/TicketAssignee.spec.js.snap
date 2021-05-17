@@ -832,57 +832,61 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
 `;
 
 exports[`<TicketAssignee/> should read data from the redux store correctly 1`] = `
-<TicketAssignee
-  currentUser={
-    Immutable.Map {
-      "id": 1,
-      "email": "steve@acme.gorgias.io",
-    }
-  }
-  direction="left"
-  dispatch={[Function]}
-  handleTeams={true}
-  handleUsers={true}
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
-  teams={
-    Immutable.Seq [
+<ContextProvider
+  value={null}
+>
+  <TicketAssignee
+    currentUser={
       Immutable.Map {
         "id": 1,
-        "name": "Team 1",
-        "decoration": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "Team 2",
-        "decoration": Immutable.Map {},
-      },
-    ]
-  }
-  transparent={false}
-  users={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "User 1",
-        "email": "email1@foo.com",
-        "meta": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "User 2",
-        "email": "email2@foo.com",
-        "meta": Immutable.Map {},
-      },
-    ]
-  }
-/>
+        "email": "steve@acme.gorgias.io",
+      }
+    }
+    direction="left"
+    dispatch={[Function]}
+    handleTeams={true}
+    handleUsers={true}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    teams={
+      Immutable.Seq [
+        Immutable.Map {
+          "id": 1,
+          "name": "Team 1",
+          "decoration": Immutable.Map {},
+        },
+        Immutable.Map {
+          "id": 2,
+          "name": "Team 2",
+          "decoration": Immutable.Map {},
+        },
+      ]
+    }
+    transparent={false}
+    users={
+      Immutable.List [
+        Immutable.Map {
+          "id": 1,
+          "name": "User 1",
+          "email": "email1@foo.com",
+          "meta": Immutable.Map {},
+        },
+        Immutable.Map {
+          "id": 2,
+          "name": "User 2",
+          "email": "email2@foo.com",
+          "meta": Immutable.Map {},
+        },
+      ]
+    }
+  />
+</ContextProvider>
 `;

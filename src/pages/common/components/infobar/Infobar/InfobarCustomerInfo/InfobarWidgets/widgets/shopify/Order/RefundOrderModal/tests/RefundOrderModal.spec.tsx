@@ -15,17 +15,14 @@ import {
     initRefundOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
-import * as utils from '../../../../../../../../../../utils/labels.js'
 import {ShopifyActionType} from '../../../types'
 import {RefundOrderModalContainer} from '../RefundOrderModal'
 
-jest.spyOn(utils, 'DatetimeLabel').mockImplementation((({
-    datetime,
-}: {
-    datetime: string
-}) => {
-    return <div data-testid="DatetimeLabel">{datetime}</div>
-}) as any)
+jest.mock('../../../../../../../../../../utils/labels.js', () => ({
+    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
+        <div data-testid="DatetimeLabel">{dateTime}</div>
+    ),
+}))
 
 jest.mock(
     '../../../../../../../../../Modal',

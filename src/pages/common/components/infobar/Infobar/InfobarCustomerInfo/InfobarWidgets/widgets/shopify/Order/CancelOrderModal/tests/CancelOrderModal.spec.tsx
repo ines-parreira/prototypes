@@ -17,15 +17,12 @@ import {
     initRefundOrderLineItems,
     initCancelOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
-import * as utils from '../../../../../../../../../../utils/labels.js'
 
-jest.spyOn(utils, 'DatetimeLabel').mockImplementation((({
-    datetime,
-}: {
-    datetime: string
-}) => {
-    return <div data-testid="DatetimeLabel">{datetime}</div>
-}) as any)
+jest.mock('../../../../../../../../../../utils/labels.js', () => ({
+    DatetimeLabel: ({dateTime}: {dateTime: string}) => (
+        <div data-testid="DatetimeLabel">{dateTime}</div>
+    ),
+}))
 
 jest.mock(
     '../../../../../../../../../Modal',
