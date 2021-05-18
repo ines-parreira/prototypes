@@ -288,7 +288,12 @@ export class CreditCard extends Component<Props, State> {
     }
 
     render() {
-        const {currentPlan, currentSubscription, location} = this.props
+        const {
+            currentAccount,
+            currentPlan,
+            currentSubscription,
+            location,
+        } = this.props
         const {isStripeLoaded, errors} = this.state
 
         const invalid = Object.keys(errors).length > 0
@@ -339,7 +344,9 @@ export class CreditCard extends Component<Props, State> {
                                     <Plan
                                         plan={currentPlan}
                                         currentPlan={currentPlan}
-                                        showFooter={false}
+                                        currentAccount={currentAccount}
+                                        isCurrentPlan
+                                        comparaisonMode={false}
                                     />
                                 </Col>
                             )}

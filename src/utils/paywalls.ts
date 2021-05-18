@@ -9,6 +9,3 @@ export const getCheapestPlanForFeature = (
         .filter((plan) => plan.interval === PlanInterval.Month)
         .sort((planA, planB) => planA.amount - planB.amount)
         .find((plan) => plan.features[feature])!.name
-
-export const isLegacyPlan = (plan: Plan): boolean =>
-    !plan.public && plan.id !== 'enterprise'

@@ -1,71 +1,81 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import {fromJS, Map} from 'immutable'
 import _noop from 'lodash/noop'
 
+import {BillingPlans} from '../BillingPlans.js'
 import {
     basicPlan,
     proPlan,
+    customPlan,
     advancedPlan,
+    legacyPlan,
 } from '../../../../../fixtures/subscriptionPlan'
-import {BillingPlans} from '../BillingPlans.js'
 import {account} from '../../../../../fixtures/account'
 
-describe('<BillingPlans />', () => {
-    it('should render a plan with default location', () => {
-        const {container} = render(
-            <BillingPlans
-                currentAccount={fromJS(account)}
-                currentPlan={fromJS(basicPlan)}
-                plans={fromJS({
-                    [basicPlan.id]: basicPlan,
-                    [proPlan.id]: proPlan,
-                    [advancedPlan.id]: advancedPlan,
-                })}
-                subscription={fromJS({})}
-                shouldPayWithShopify={false}
-                isTrialing={false}
-                notify={_noop}
-                isAllowedToChangePlan={_noop}
-                updateSubscription={_noop}
-                setFutureSubscriptionPlan={_noop}
-                location={fromJS({location: {state: {}}})}
-            />
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+describe('<BillingPlans/>', () => {
+    const publicPlans = {
+        [basicPlan.id]: basicPlan,
+        [proPlan.id]: proPlan,
+        [advancedPlan.id]: advancedPlan,
+    }
+    const accountWithLegacyFeatures = (fromJS(account) as Map<
+        string,
+        unknown
+    >).setIn(['meta', 'has_legacy_features'], true)
+    const accountWithNewFeatures = fromJS(account)
 
     it.each([
         [
-            'with opened popover on basic plan',
-            {location: {state: {openedPlanPopover: 'Basic'}}},
+            'with available plans (legacy plan)',
+            {
+                currentPlan: fromJS(legacyPlan),
+                plans: fromJS({
+                    [legacyPlan.id]: legacyPlan,
+                    ...publicPlans,
+                }),
+            },
         ],
         [
-            'with opened popover on pro plan',
-            {location: {state: {openedPlanPopover: 'Pro'}}},
+            'with available plans (plan with legacy features)',
+            {
+                currentAccount: accountWithLegacyFeatures,
+                currentPlan: fromJS(basicPlan),
+                plans: fromJS(publicPlans),
+            },
         ],
-    ])('should render a plan %s', (_, customProps) => {
-        const {getByRole} = render(
+        ['with available plans (public plan)', {}],
+        [
+            '(custom plan)',
+            {
+                currentPlan: fromJS(customPlan),
+                plans: fromJS({
+                    [customPlan.id]: customPlan,
+                    ...publicPlans,
+                }),
+            },
+        ],
+        [
+            'with available plans (with opened popover)',
+            {location: {state: {openedPlanPopover: proPlan.name}}},
+        ],
+    ])('should display current plan %s', (_, props) => {
+        const {container} = render(
             <BillingPlans
-                currentAccount={fromJS(account)}
+                currentAccount={accountWithNewFeatures}
+                plans={fromJS(publicPlans)}
+                subscription={fromJS({plan: basicPlan.id})}
                 currentPlan={fromJS(basicPlan)}
-                plans={fromJS({
-                    [basicPlan.id]: basicPlan,
-                    [proPlan.id]: proPlan,
-                    [advancedPlan.id]: advancedPlan,
-                })}
-                subscription={fromJS({})}
                 shouldPayWithShopify={false}
                 isTrialing={false}
                 notify={_noop}
-                isAllowedToChangePlan={_noop}
+                location={fromJS({location: {state: {}}})}
                 updateSubscription={_noop}
+                isAllowedToChangePlan={_noop}
                 setFutureSubscriptionPlan={_noop}
-                {...customProps}
-            />,
-            {container: document.body}
+                {...props}
+            />
         )
-        const tooltip = getByRole('tooltip')
-        expect(tooltip).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

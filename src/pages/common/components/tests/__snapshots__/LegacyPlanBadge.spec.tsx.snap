@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LegacyPlanBadge /> should render a badge 1`] = `
+<div
+  class="d-inline-flex"
+>
+  <span
+    class="d-inline-flex flex-row badge badge-danger"
+  >
+    <i
+      class="material-icons"
+    >
+      warning
+    </i>
+    <div
+      class="ml-1"
+    >
+      LEGACY PLAN
+    </div>
+  </span>
+</div>
+`;

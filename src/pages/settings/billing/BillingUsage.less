@@ -1,38 +1,15 @@
 @import 'colors';
+@import '../../../../css/new/colors';
 
 :local {
     .current-plan {
         max-width: 270px;
         color: #fff;
-    }
 
-    .Default {
-        background: @default;
-    }
-
-    .Missing {
-        background: @missing;
-    }
-
-    .Free {
-        background: @free;
-    }
-
-    .Basic {
-        background: @basic;
-    }
-
-    .Pro {
-        background: @pro;
-    }
-
-    .Advanced {
-        background: @advanced;
-    }
-
-    .Custom {
-        background: @enterprise;
-        color: @pro;
+        &.legacy {
+            color: @neutral10;
+            background: @neutral1;
+        }
     }
 
     .plan-usage-reset {
@@ -56,5 +33,25 @@
         position: relative;
         max-width: 52%;
         margin-bottom: 10px;
+    }
+
+    .free {
+        background: @free;
+    }
+
+    .basic {
+        background: @basic;
+    }
+
+    .pro {
+        background: @pro;
+    }
+
+    .advanced {
+        background: @advanced;
+    }
+
+    .custom {
+        background: @enterprise;
     }
 }

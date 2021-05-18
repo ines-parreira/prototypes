@@ -18,9 +18,6 @@ import {
 
 import classnames from 'classnames'
 
-import {toJS} from '../../../../utils.ts'
-import {isLegacyPlan} from '../../../../utils/paywalls.ts'
-
 import {notify} from '../../../../state/notifications/actions.ts'
 import {updateSubscription} from '../../../../state/currentAccount/actions.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
@@ -28,6 +25,7 @@ import * as currentAccountSelectors from '../../../../state/currentAccount/selec
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
 import history from '../../../history.ts'
+import {hasLegacyPlan} from '../../../../utils/account.ts'
 
 import {Plan} from './Plan'
 
@@ -170,8 +168,8 @@ export class BillingPlans extends React.Component<Props, State> {
         const {
             currentAccount,
             currentPlan,
-            subscription,
             location: {state},
+            plans,
         } = this.props
         const {selectedInterval} = this.state
         const enterprisePlan = fromJS({
@@ -179,17 +177,17 @@ export class BillingPlans extends React.Component<Props, State> {
             name: 'Enterprise',
             features: [],
         })
-        const accountHasLegacyFeatures = currentAccount.getIn(
-            ['meta', 'has_legacy_features'],
-            false
+        const accountHasLegacyPlan = hasLegacyPlan(
+            currentAccount.toJS(),
+            currentPlan.toJS()
         )
         const isCustomPlan = currentPlan.get('custom', false)
-        const plans = isCustomPlan
-            ? this.props.plans.filter(
-                  (plan) => plan.get('id') === subscription.get('plan')
-              )
-            : this.props.plans.filter(
-                  (plan) => plan.get('interval') === selectedInterval
+        let availablePlans = isCustomPlan
+            ? plans.filter((plan) => plan.get('id') === currentPlan.get('id'))
+            : plans.filter(
+                  (plan) =>
+                      plan.get('interval') === selectedInterval &&
+                      plan.get('public')
               )
 
         return (
@@ -222,51 +220,62 @@ export class BillingPlans extends React.Component<Props, State> {
                     </ButtonGroup>
                 </div>
                 <CardDeck className={classnames('mb-5', css['plans-cards'])}>
-                    {plans
-                        .mapEntries(([planId, plan], index) => {
-                            // Get the closest cheaper plan
-                            const cheaperPlan =
-                                index > 0
-                                    ? plans.toList().get(Math.max(0, index - 1))
-                                    : null
-                            return [
-                                planId,
-                                <Plan
-                                    key={planId.split('-')[0]}
-                                    className="mt-4"
-                                    cheaperPlan={cheaperPlan}
-                                    plan={plan}
-                                    currentPlan={currentPlan}
-                                    showProductFeatures={
-                                        currentPlan.get('public') &&
-                                        !accountHasLegacyFeatures
-                                    }
-                                    showLegacyFeatures={
-                                        currentPlan.get('id') ===
-                                            plan.get('id') &&
-                                        accountHasLegacyFeatures
-                                    }
-                                    isUpdating={this.state.isUpdating}
-                                    isFeatured={planId.includes('pro')}
-                                    onClick={() =>
-                                        this._updateSubscription(planId)
-                                    }
-                                    isPopoverDisplayed={
-                                        state &&
-                                        state.openedPlanPopover ===
-                                            plan.get('name') &&
-                                        !isLegacyPlan(toJS(plan))
-                                    }
-                                />,
-                            ]
-                        })
-                        .toList()}
+                    <>
+                        {accountHasLegacyPlan && (
+                            <Plan
+                                className="mt-4"
+                                plan={currentPlan}
+                                currentAccount={currentAccount}
+                                currentPlan={currentPlan}
+                                isCurrentPlan
+                                isUpdating={this.state.isUpdating}
+                            />
+                        )}
+                        {availablePlans
+                            .mapEntries(([planId, plan], idx) => {
+                                // Get the closest cheaper plan
+                                const cheaperPlan =
+                                    idx > 0
+                                        ? availablePlans.toList().get(idx - 1)
+                                        : null
+                                const isCurrentPlan =
+                                    !accountHasLegacyPlan &&
+                                    plan.get('id') === currentPlan.get('id')
+                                return [
+                                    planId,
+                                    <Plan
+                                        key={planId.split('-')[0]}
+                                        className="mt-4"
+                                        currentAccount={currentAccount}
+                                        currentPlan={currentPlan}
+                                        cheaperPlan={cheaperPlan}
+                                        plan={plan}
+                                        isCurrentPlan={isCurrentPlan}
+                                        isUpdating={this.state.isUpdating}
+                                        isFeatured={
+                                            !isCurrentPlan &&
+                                            planId.includes('pro')
+                                        }
+                                        onClick={() =>
+                                            this._updateSubscription(planId)
+                                        }
+                                        isPopoverDisplayed={
+                                            state &&
+                                            state.openedPlanPopover ===
+                                                plan.get('name')
+                                        }
+                                    />,
+                                ]
+                            })
+                            .toList()}
+                    </>
                     {!isCustomPlan && (
                         <Plan
                             className="mt-4"
-                            plan={enterprisePlan}
-                            cheaperPlan={plans.toList().last()}
                             currentPlan={currentPlan}
+                            currentAccount={currentAccount}
+                            plan={enterprisePlan}
+                            cheaperPlan={availablePlans.toList().last()}
                         />
                     )}
                 </CardDeck>

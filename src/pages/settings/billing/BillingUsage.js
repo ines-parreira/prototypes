@@ -17,15 +17,15 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../common/components/Loader/Loader.tsx'
-import LegacyTag from '../../common/components/LegacyTag.tsx'
+import LegacyTag from '../../common/components/LegacyPlanBadge.tsx'
 import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
-import {openChat, toJS} from '../../../utils.ts'
+import {openChat} from '../../../utils.ts'
 import * as integrationSelectors from '../../../state/integrations/selectors.ts'
 import * as billingSelectors from '../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import history from '../../history.ts'
 
-import {isLegacyPlan} from '../../../utils/paywalls.ts'
+import {hasLegacyPlan} from '../../../utils/account.ts'
 
 import css from './BillingUsage.less'
 
@@ -35,6 +35,7 @@ export class BillingUsage extends Component {
         activeIntegrations: PropTypes.object.isRequired,
         currentUsage: PropTypes.object.isRequired,
         currentPlan: PropTypes.object.isRequired,
+        currentAccount: PropTypes.object.isRequired,
         currentSubscription: PropTypes.object.isRequired,
     }
 
@@ -255,7 +256,12 @@ export class BillingUsage extends Component {
     }
 
     _render_active_subscription() {
-        const {currentUsage, currentSubscription, currentPlan} = this.props
+        const {
+            currentAccount,
+            currentUsage,
+            currentSubscription,
+            currentPlan,
+        } = this.props
 
         const dateFormat = 'MMM DD'
 
@@ -275,23 +281,23 @@ export class BillingUsage extends Component {
         const periodEnd = moment(
             currentUsage.getIn(['meta', 'end_datetime'])
         ).format(dateFormat)
-
+        const accountHasLegacyPlan = hasLegacyPlan(
+            currentAccount.toJS(),
+            currentPlan.toJS()
+        )
         return (
             <CardGroup className="mb-2">
                 <Card
                     className={classnames(
                         css['current-plan'],
-                        css[planName] || css['Default']
+                        css[planName.toLowerCase()],
+                        {
+                            [css.legacy]: accountHasLegacyPlan,
+                        }
                     )}
                 >
                     <CardBody>
-                        {isLegacyPlan(toJS(currentPlan)) && (
-                            <LegacyTag
-                                label="Legacy Plan"
-                                labelIcon="warning"
-                                className={css.usagePlans}
-                            />
-                        )}
+                        {accountHasLegacyPlan && <LegacyTag />}
                         <h4>{planTitle}</h4>
                         {isTrialing ? (
                             <div>
@@ -345,6 +351,7 @@ export default connect(
             state
         )
         return {
+            currentAccount: state.currentAccount,
             currentSubscription,
             activeIntegrations: integrationSelectors.getActiveIntegrations(
                 state

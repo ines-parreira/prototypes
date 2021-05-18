@@ -31,4 +31,5 @@ export type Plan = {
     amount: number
     integrations: number
     features: Record<AccountFeature, AccountFeatureMetadata>
+    legacy_features?: Record<AccountFeature, AccountFeatureMetadata>
 }

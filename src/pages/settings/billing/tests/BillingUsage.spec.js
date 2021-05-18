@@ -3,9 +3,11 @@ import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {BillingUsage} from '../BillingUsage'
+import {account} from '../../../../fixtures/account.ts'
 
-describe('BillingUsage component', () => {
+describe('<BillingUsage/>', () => {
     let container
+    const currentAccount = fromJS(account)
     let currentPlan = fromJS({
         name: 'Pro',
         free_tickets: 10,
@@ -28,6 +30,7 @@ describe('BillingUsage component', () => {
     it('should display loader', () => {
         const component = mount(
             <BillingUsage
+                currentAccount={fromJS({})}
                 currentUsage={fromJS({})}
                 fetchCurrentUsage={() => Promise.resolve()}
             />
@@ -38,6 +41,7 @@ describe('BillingUsage component', () => {
     it('should load with empty props', () => {
         const component = mount(
             <BillingUsage
+                currentAccount={currentAccount}
                 currentPlan={currentPlan}
                 currentSubscription={currentSubscription}
                 activeIntegrations={activeIntegrations}
@@ -58,6 +62,7 @@ describe('BillingUsage component', () => {
     it('should display price', () => {
         const component = mount(
             <BillingUsage
+                currentAccount={currentAccount}
                 currentPlan={currentPlan}
                 currentSubscription={currentSubscription}
                 currentUsage={fromJS({

@@ -41,6 +41,20 @@ export const basicPlan: Plan = {
         [AccountFeature.UserRoles]: false,
         [AccountFeature.ViewSharing]: false,
     },
+    legacy_features: {
+        [AccountFeature.AutoAssignment]: true,
+        [AccountFeature.ChatCampaigns]: true,
+        [AccountFeature.FacebookComment]: true,
+        [AccountFeature.InstagramComment]: true,
+        [AccountFeature.MagentoIntegration]: true,
+        [AccountFeature.PhoneIntegration]: true,
+        [AccountFeature.YotpoIntegration]: true,
+        [AccountFeature.RevenueStatistics]: false,
+        [AccountFeature.SatisfactionSurveys]: false,
+        [AccountFeature.Teams]: true,
+        [AccountFeature.UserRoles]: true,
+        [AccountFeature.ViewSharing]: true,
+    },
 }
 
 export const proPlan: Plan = {
@@ -69,6 +83,20 @@ export const proPlan: Plan = {
         [AccountFeature.Teams]: false,
         [AccountFeature.UserRoles]: true,
         [AccountFeature.ViewSharing]: false,
+    },
+    legacy_features: {
+        [AccountFeature.AutoAssignment]: true,
+        [AccountFeature.ChatCampaigns]: true,
+        [AccountFeature.FacebookComment]: true,
+        [AccountFeature.InstagramComment]: true,
+        [AccountFeature.MagentoIntegration]: true,
+        [AccountFeature.PhoneIntegration]: true,
+        [AccountFeature.YotpoIntegration]: true,
+        [AccountFeature.RevenueStatistics]: true,
+        [AccountFeature.SatisfactionSurveys]: true,
+        [AccountFeature.Teams]: true,
+        [AccountFeature.UserRoles]: true,
+        [AccountFeature.ViewSharing]: true,
     },
 }
 
@@ -157,5 +185,34 @@ export const customPlan: Plan = {
         [AccountFeature.Teams]: false,
         [AccountFeature.UserRoles]: true,
         [AccountFeature.ViewSharing]: false,
+    },
+}
+
+export const legacyPlan: Plan = {
+    id: 'standard-usd-1',
+    name: 'Standard',
+    amount: 3000,
+    currency: 'usd',
+    interval: PlanInterval.Month,
+    trial_period_days: 7,
+    order: 1,
+    free_tickets: 350,
+    cost_per_ticket: 0.25,
+    limits: ticketLimits,
+    integrations: 200,
+    public: false,
+    features: {
+        [AccountFeature.AutoAssignment]: true,
+        [AccountFeature.ChatCampaigns]: true,
+        [AccountFeature.FacebookComment]: true,
+        [AccountFeature.InstagramComment]: true,
+        [AccountFeature.MagentoIntegration]: true,
+        [AccountFeature.PhoneIntegration]: false,
+        [AccountFeature.YotpoIntegration]: true,
+        [AccountFeature.RevenueStatistics]: false,
+        [AccountFeature.SatisfactionSurveys]: false,
+        [AccountFeature.Teams]: true,
+        [AccountFeature.UserRoles]: true,
+        [AccountFeature.ViewSharing]: true,
     },
 }

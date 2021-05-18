@@ -10,30 +10,45 @@ import {
     proPlan,
 } from '../../../../../fixtures/subscriptionPlan.ts'
 import {countFeatures, Plan} from '../Plan'
+import {account} from '../../../../../fixtures/account.ts'
 
 describe('<Plan/>', () => {
+    const accountWithLegacyFeatures = fromJS(account).setIn(
+        ['meta', 'has_legacy_features'],
+        true
+    )
+    const accountWithNewFeatures = fromJS(account)
+
     it.each([
-        ['with default props', {}],
-        ['with no current plan', {currentPlan: fromJS({})}],
         [
-            'different from the current plan',
-            {plan: fromJS(proPlan), currentPlan: fromJS(basicPlan)},
+            'the current plan',
+            {
+                isCurrentPlan: true,
+            },
         ],
         [
-            'identical to the current plan',
-            {plan: fromJS(proPlan), currentPlan: fromJS(proPlan)},
+            'the current plan with legacy features',
+            {
+                currentAccount: accountWithLegacyFeatures,
+                isCurrentPlan: true,
+            },
         ],
-        ['with no footer', {showFooter: false}],
-        ['without product features', {showProductFeatures: false}],
-        ['featured', {isFeatured: true}],
-        ['being selected', {isUpdating: true}],
-        ['with custom class names', {className: 'custom-classname'}],
+        ['a plan featured', {isFeatured: true}],
+        ['a plan being selected', {isUpdating: true}],
+        ['a plan without comparaison mode', {comparaisonMode: false}],
+        ['a plan with custom class names', {className: 'custom-classname'}],
         [
-            'with cheaper plan',
+            'a plan with a cheaper plan',
             {plan: fromJS(proPlan), cheaperPlan: fromJS(basicPlan)},
         ],
         [
-            'Enterprise',
+            'a custom plan',
+            {
+                plan: fromJS(customPlan),
+            },
+        ],
+        [
+            'an enterprise plan',
             {
                 plan: fromJS({
                     id: 'enterprise',
@@ -42,10 +57,11 @@ describe('<Plan/>', () => {
                 }),
             },
         ],
-    ])('should render a plan %s', (_, customProps) => {
+    ])('should render %s', (_, customProps) => {
         const {container} = render(
             <Plan
-                plan={fromJS(proPlan)}
+                plan={fromJS(basicPlan)}
+                currentAccount={accountWithNewFeatures}
                 currentPlan={fromJS(basicPlan)}
                 {...customProps}
             />
@@ -70,6 +86,7 @@ describe('<Plan/>', () => {
                 <Plan
                     plan={fromJS(proPlan)}
                     currentPlan={fromJS(basicPlan)}
+                    currentAccount={accountWithNewFeatures}
                     onClick={() => mockedFunction()}
                     {...customProps}
                 />
@@ -86,34 +103,6 @@ describe('<Plan/>', () => {
             expect(mockedFunction).toHaveBeenCalledTimes(1)
         }
     )
-
-    it.each([
-        [
-            'subscription plan is the same',
-            {
-                plan: fromJS(proPlan),
-                currentPlan: fromJS(proPlan),
-            },
-        ],
-        ['subscription is being updated', {isUpdating: true}],
-    ])('should not allow to choose plan because %s', (_, customProps) => {
-        const mockedFunction = jest.fn()
-        const {queryByTestId} = render(
-            <Plan
-                plan={fromJS(basicPlan)}
-                currentPlan={fromJS(proPlan)}
-                onClick={() => mockedFunction()}
-                {...customProps}
-            />
-        )
-        const button = queryByTestId('choose-plan-button')
-        act(() => {
-            fireEvent.click(button)
-        })
-        const confirmButton = queryByTestId('confirm-choose-plan-button')
-        expect(confirmButton).toBe(null)
-        expect(mockedFunction).not.toHaveBeenCalled()
-    })
 })
 
 describe('countFeatures()', () => {
@@ -124,6 +113,6 @@ describe('countFeatures()', () => {
         [12, enterprisePlan],
         [8, customPlan],
     ])('should return %d features', (expected, plan) => {
-        expect(countFeatures(fromJS(plan))).toBe(expected)
+        expect(countFeatures(plan.features)).toBe(expected)
     })
 })

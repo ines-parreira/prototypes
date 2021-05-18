@@ -12,25 +12,24 @@ import {
 } from 'reactstrap'
 import _pickBy from 'lodash/pickBy'
 
-import LegacyTag from '../../../common/components/LegacyTag.tsx'
+import LegacyTag from '../../../common/components/LegacyPlanBadge.tsx'
 import './Plan.less'
 import {openChat, toJS} from '../../../../utils.ts'
-import {isLegacyPlan} from '../../../../utils/paywalls.ts'
-import {isFeatureEnabled} from '../../../../utils/account.ts'
+import {hasLegacyPlan, isFeatureEnabled} from '../../../../utils/account.ts'
 import {AccountFeature} from '../../../../state/currentAccount/types.ts'
 
 type Props = {
     plan: Map<any, any>,
+    currentAccount: Map<any, any>,
     currentPlan: Map<any, any>,
     cheaperPlan: Map<any, any> | null,
-    showFooter: boolean,
-    showProductFeatures: boolean,
-    showLegacyFeatures: boolean,
     isFeatured?: boolean,
     isUpdating?: boolean,
     onClick?: Function,
     className?: string,
     isPopoverDisplayed?: boolean,
+    isCurrentPlan?: boolean,
+    comparaisonMode: boolean,
 }
 
 type FeatureDetail = {
@@ -141,25 +140,22 @@ const featuresConfig = [
     },
 ]
 
-export const countFeatures = (plan: Map<any, any>) =>
-    plan.get('features').valueSeq().toJS().filter(isFeatureEnabled).length
+export const countFeatures = (features: AccountFeature) =>
+    Object.values(features).filter(isFeatureEnabled).length
 
 const getFeatures = (
     plan: Map<any, any>,
     cheaperPlan: Map<any, any> | null,
-    includeProductFeatures: true,
-    showLegacyFeatures: false
+    showPlanLegacyFeatures: false
 ): Array<FeatureDetail> => {
     const costMultiplier = 100
     const costPerTicket = (
         plan.get('cost_per_ticket') * costMultiplier
     ).toFixed(2)
     const isEnterprisePlan = plan.get('id') === 'enterprise'
-    const planLegacyFeatures = plan.get('legacy_features')
-    const planFeatures =
-        showLegacyFeatures && !!planLegacyFeatures
-            ? planLegacyFeatures
-            : plan.get('features')
+    const planFeatures = plan.get(
+        showPlanLegacyFeatures ? 'legacy_features' : 'features'
+    )
     const cheaperPlanFeatures = cheaperPlan ? cheaperPlan.get('features') : null
     const exclusiveFeatures = _pickBy(
         planFeatures.toJS(),
@@ -183,16 +179,14 @@ const getFeatures = (
               },
           ]
 
-    if (includeProductFeatures) {
-        features = features.concat(
-            featuresConfig.filter((feature) => {
-                return exclusiveFeatureNames.includes(feature.name)
-            })
-        )
+    features = features.concat(
+        featuresConfig.filter((feature) => {
+            return exclusiveFeatureNames.includes(feature.name)
+        })
+    )
 
-        if (extraFeaturesPerPlan.hasOwnProperty(plan.get('name'))) {
-            features = features.concat(extraFeaturesPerPlan[plan.get('name')])
-        }
+    if (extraFeaturesPerPlan.hasOwnProperty(plan.get('name'))) {
+        features = features.concat(extraFeaturesPerPlan[plan.get('name')])
     }
     return features
 }
@@ -200,15 +194,15 @@ const getFeatures = (
 export function Plan(props: Props) {
     const {
         className,
-        cheaperPlan,
         plan,
+        cheaperPlan,
         isUpdating,
+        currentAccount,
         currentPlan,
         isFeatured,
-        showFooter,
-        showProductFeatures,
         isPopoverDisplayed,
-        showLegacyFeatures,
+        isCurrentPlan,
+        comparaisonMode,
     } = props
     const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
         isPopoverDisplayed
@@ -216,17 +210,30 @@ export function Plan(props: Props) {
     const buttonRef = useRef()
     const [displayPopover, setDisplayPopover] = useState(false)
     const isEnterprisePlan = plan.get('id') === 'enterprise'
-    const isCurrentPlan = currentPlan.get('id') === plan.get('id')
-    const isDowngrade = currentPlan.isEmpty()
-        ? false
-        : countFeatures(plan) < countFeatures(currentPlan)
+    const accountHasLegacyFeatures = currentAccount.getIn(
+        ['meta', 'has_legacy_features'],
+        false
+    )
+    const isDowngrade =
+        !isCurrentPlan &&
+        countFeatures(plan.get('features').toJS()) <
+            countFeatures(
+                currentPlan
+                    .get(
+                        accountHasLegacyFeatures
+                            ? 'legacy_features'
+                            : 'features'
+                    )
+                    .toJS()
+            )
     const features = getFeatures(
         plan,
         cheaperPlan,
-        showProductFeatures,
-        showLegacyFeatures
+        isCurrentPlan && accountHasLegacyFeatures
     )
     const canChoosePlan = !isCurrentPlan && !isUpdating
+    const isCurrentPlanLegacy =
+        isCurrentPlan && hasLegacyPlan(currentAccount.toJS(), plan.toJS())
 
     useEffect(() => {
         setDisplayPopover(true)
@@ -240,6 +247,9 @@ export function Plan(props: Props) {
                 className,
                 {
                     featured: isFeatured,
+                    comparaisonMode: comparaisonMode,
+                    current: isCurrentPlan,
+                    legacy: isCurrentPlan && accountHasLegacyFeatures,
                 }
             )}
             outline
@@ -249,16 +259,19 @@ export function Plan(props: Props) {
                     'featured-header': isFeatured,
                 })}
             >
-                {isLegacyPlan(toJS(plan)) && (
-                    <LegacyTag label="Legacy Plan" labelIcon="warning" />
-                )}
+                <div className="plan-badge">
+                    {isCurrentPlanLegacy && <LegacyTag />}
+                </div>
                 {isFeatured && plan.get('public') && (
                     <div className="featured-header-title">Most Popular</div>
                 )}
                 <div className="header-text">
-                    <strong>{plan.get('name')}</strong>
-
-                    {plan.get('amount') && (
+                    <strong>
+                        {`${plan.get('name')}${
+                            isCurrentPlanLegacy ? ' legacy' : ''
+                        }`}
+                    </strong>
+                    {plan.get('amount') > 0 && (
                         <span className="float-right">
                             {plan.get('currencySign')}
                             {plan.get('amount')} /{' '}
@@ -296,7 +309,7 @@ export function Plan(props: Props) {
                     })}
                 </ul>
             </CardBody>
-            {!currentPlan.get('custom') && showFooter && (
+            {comparaisonMode && (
                 <CardFooter>
                     {isEnterprisePlan ? (
                         <Button color="link" onClick={openChat}>
@@ -321,8 +334,10 @@ export function Plan(props: Props) {
                                 }}
                             >
                                 {isCurrentPlan
-                                    ? 'Your current Plan'
-                                    : `Switch to ${plan.get('name')} Plan`}
+                                    ? 'Current Plan'
+                                    : `${
+                                          isDowngrade ? 'Downgrade' : 'Upgrade'
+                                      } to ${plan.get('name')} Plan`}
                             </Button>
                             {displayPopover && (
                                 <Popover
@@ -379,7 +394,6 @@ Plan.defaultProps = {
     isFeatured: false,
     isUpdating: false,
     className: null,
-    showFooter: true,
-    showProductFeatures: true,
-    showLegacyFeatures: false,
+    isCurrentPlan: false,
+    comparaisonMode: true,
 }

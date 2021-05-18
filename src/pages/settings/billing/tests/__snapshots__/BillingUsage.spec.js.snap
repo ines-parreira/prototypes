@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BillingUsage component should display loader 1`] = `
+exports[`<BillingUsage/> should display loader 1`] = `
 <BillingUsage
+  currentAccount={Immutable.Map {}}
   currentUsage={Immutable.Map {}}
   fetchCurrentUsage={[Function]}
 >
@@ -35,8 +36,63 @@ exports[`BillingUsage component should display loader 1`] = `
 </BillingUsage>
 `;
 
-exports[`BillingUsage component should display price 1`] = `
+exports[`<BillingUsage/> should display price 1`] = `
 <BillingUsage
+  currentAccount={
+    Immutable.Map {
+      "settings": Immutable.List [
+        Immutable.Map {
+          "id": 2,
+          "type": "business-hours",
+          "data": Immutable.Map {
+            "business_hours": Immutable.List [
+              Immutable.Map {
+                "days": "1,2,3,4,5",
+                "from_time": "00:00",
+                "to_time": "01:00",
+              },
+              Immutable.Map {
+                "days": "7",
+                "from_time": "07:00",
+                "to_time": "22:00",
+              },
+            ],
+            "timezone": "US/Pacific",
+          },
+        },
+      ],
+      "current_subscription": Immutable.Map {
+        "trial_start_datetime": "2017-08-23T01:38:53+00:00",
+        "trial_end_datetime": "2017-09-06T01:38:53+00:00",
+        "plan": "team-usd-1",
+        "status": "trialing",
+        "start_datetime": "2017-08-23T01:38:53+00:00",
+      },
+      "domain": "acme",
+      "meta": Immutable.Map {},
+      "deactivated_datetime": null,
+      "stripe_id": "cus_BGKUKAzUbK1bix",
+      "user_id": 1,
+      "created_datetime": "2017-08-23T01:38:52.479339+00:00",
+      "status": Immutable.Map {
+        "status": "active",
+      },
+      "features": Immutable.Map {
+        "view_sharing": true,
+        "phone_integration": true,
+        "revenue_statistics": true,
+        "facebook_comment": true,
+        "satisfaction_surveys": true,
+        "user_roles": true,
+        "magento_integration": true,
+        "instagram_comment": true,
+        "yotpo_integration": true,
+        "teams": true,
+        "chat_campaigns": true,
+        "auto_assignment": true,
+      },
+    }
+  }
   currentPlan={
     Immutable.Map {
       "name": "Pro",
@@ -83,11 +139,11 @@ exports[`BillingUsage component should display price 1`] = `
         className="mb-2 card-group"
       >
         <Card
-          className="current-plan Pro"
+          className="current-plan pro legacy"
           tag="div"
         >
           <div
-            className="current-plan Pro card"
+            className="current-plan pro legacy card"
           >
             <CardBody
               tag="div"
@@ -95,26 +151,33 @@ exports[`BillingUsage component should display price 1`] = `
               <div
                 className="card-body"
               >
-                <LegacyTag
-                  className="usagePlans"
-                  label="Legacy Plan"
-                  labelIcon="warning"
-                >
+                <LegacyPlanBadge>
                   <div
-                    className="legacyPlanTag usagePlans"
+                    className="d-inline-flex"
                   >
-                    <i
-                      className="material-icons"
+                    <Badge
+                      className="d-inline-flex flex-row"
+                      color="danger"
+                      pill={false}
+                      tag="span"
                     >
-                      warning
-                    </i>
-                    <div
-                      className="legacyPlanTagLabel"
-                    >
-                      Legacy Plan
-                    </div>
+                      <span
+                        className="d-inline-flex flex-row badge badge-danger"
+                      >
+                        <i
+                          className="material-icons"
+                        >
+                          warning
+                        </i>
+                        <div
+                          className="ml-1"
+                        >
+                          LEGACY PLAN
+                        </div>
+                      </span>
+                    </Badge>
                   </div>
-                </LegacyTag>
+                </LegacyPlanBadge>
                 <h4>
                   Pro monthly plan
                 </h4>
@@ -506,9 +569,64 @@ exports[`BillingUsage component should display price 1`] = `
 </BillingUsage>
 `;
 
-exports[`BillingUsage component should load with empty props 1`] = `
+exports[`<BillingUsage/> should load with empty props 1`] = `
 <BillingUsage
   activeIntegrations={Immutable.List []}
+  currentAccount={
+    Immutable.Map {
+      "settings": Immutable.List [
+        Immutable.Map {
+          "id": 2,
+          "type": "business-hours",
+          "data": Immutable.Map {
+            "business_hours": Immutable.List [
+              Immutable.Map {
+                "days": "1,2,3,4,5",
+                "from_time": "00:00",
+                "to_time": "01:00",
+              },
+              Immutable.Map {
+                "days": "7",
+                "from_time": "07:00",
+                "to_time": "22:00",
+              },
+            ],
+            "timezone": "US/Pacific",
+          },
+        },
+      ],
+      "current_subscription": Immutable.Map {
+        "trial_start_datetime": "2017-08-23T01:38:53+00:00",
+        "trial_end_datetime": "2017-09-06T01:38:53+00:00",
+        "plan": "team-usd-1",
+        "status": "trialing",
+        "start_datetime": "2017-08-23T01:38:53+00:00",
+      },
+      "domain": "acme",
+      "meta": Immutable.Map {},
+      "deactivated_datetime": null,
+      "stripe_id": "cus_BGKUKAzUbK1bix",
+      "user_id": 1,
+      "created_datetime": "2017-08-23T01:38:52.479339+00:00",
+      "status": Immutable.Map {
+        "status": "active",
+      },
+      "features": Immutable.Map {
+        "view_sharing": true,
+        "phone_integration": true,
+        "revenue_statistics": true,
+        "facebook_comment": true,
+        "satisfaction_surveys": true,
+        "user_roles": true,
+        "magento_integration": true,
+        "instagram_comment": true,
+        "yotpo_integration": true,
+        "teams": true,
+        "chat_campaigns": true,
+        "auto_assignment": true,
+      },
+    }
+  }
   currentPlan={
     Immutable.Map {
       "name": "Pro",
@@ -551,11 +669,11 @@ exports[`BillingUsage component should load with empty props 1`] = `
         className="mb-2 card-group"
       >
         <Card
-          className="current-plan Pro"
+          className="current-plan pro legacy"
           tag="div"
         >
           <div
-            className="current-plan Pro card"
+            className="current-plan pro legacy card"
           >
             <CardBody
               tag="div"
@@ -563,26 +681,33 @@ exports[`BillingUsage component should load with empty props 1`] = `
               <div
                 className="card-body"
               >
-                <LegacyTag
-                  className="usagePlans"
-                  label="Legacy Plan"
-                  labelIcon="warning"
-                >
+                <LegacyPlanBadge>
                   <div
-                    className="legacyPlanTag usagePlans"
+                    className="d-inline-flex"
                   >
-                    <i
-                      className="material-icons"
+                    <Badge
+                      className="d-inline-flex flex-row"
+                      color="danger"
+                      pill={false}
+                      tag="span"
                     >
-                      warning
-                    </i>
-                    <div
-                      className="legacyPlanTagLabel"
-                    >
-                      Legacy Plan
-                    </div>
+                      <span
+                        className="d-inline-flex flex-row badge badge-danger"
+                      >
+                        <i
+                          className="material-icons"
+                        >
+                          warning
+                        </i>
+                        <div
+                          className="ml-1"
+                        >
+                          LEGACY PLAN
+                        </div>
+                      </span>
+                    </Badge>
                   </div>
-                </LegacyTag>
+                </LegacyPlanBadge>
                 <h4>
                   Pro monthly plan
                 </h4>

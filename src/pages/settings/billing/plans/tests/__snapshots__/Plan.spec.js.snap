@@ -1,80 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Plan/> should render a plan Enterprise 1`] = `
+exports[`<Plan/> should render a custom plan 1`] = `
 <div
-  class="plan plan-Enterprise card"
+  class="plan plan-Custom comparaisonMode card"
 >
   <div
     class="plan-header card-header"
   >
     <div
-      class="header-text"
-    >
-      <strong>
-        Enterprise
-      </strong>
-    </div>
-  </div>
-  <div
-    class="card-body"
-  >
-    <ul>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          arrow_downward
-        </i>
-        <strong>
-          Discounted prices for volumes of 10.000+ tickets
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          beach_access
-        </i>
-        <strong>
-          Premium support
-        </strong>
-      </li>
-    </ul>
-  </div>
-  <div
-    class="card-footer"
-  >
-    <button
-      class="btn btn-link"
-      type="button"
-    >
-      Contact us
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<Plan/> should render a plan being selected 1`] = `
-<div
-  class="plan plan-Pro card"
->
-  <div
-    class="plan-header card-header"
-  >
+      class="plan-badge"
+    />
     <div
       class="header-text"
     >
       <strong>
-        Pro
+        Custom
       </strong>
       <span
         class="float-right"
       >
-        30000
+        54000
          /
          
         mo
@@ -189,6 +134,136 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         </i>
         <strong>
           User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      type="button"
+    >
+      Upgrade to Custom Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan being selected 1`] = `
+<div
+  class="plan plan-Basic comparaisonMode card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="plan-badge"
+    />
+    <div
+      class="header-text"
+    >
+      <strong>
+        Basic
+      </strong>
+      <span
+        class="float-right"
+      >
+        6000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          350 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $25.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          all_inclusive
+        </i>
+        <strong>
+          Unlimited users
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          extension
+        </i>
+        <strong>
+          150 integrations included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Shopify integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Live chat
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          build
+        </i>
+        <strong>
+          Macros and rules
         </strong>
       </li>
     </ul>
@@ -202,156 +277,7 @@ exports[`<Plan/> should render a plan being selected 1`] = `
       disabled=""
       type="button"
     >
-      Switch to Pro Plan
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<Plan/> should render a plan different from the current plan 1`] = `
-<div
-  class="plan plan-Pro card"
->
-  <div
-    class="plan-header card-header"
-  >
-    <div
-      class="header-text"
-    >
-      <strong>
-        Pro
-      </strong>
-      <span
-        class="float-right"
-      >
-        30000
-         /
-         
-        mo
-      </span>
-    </div>
-  </div>
-  <div
-    class="card-body"
-  >
-    <ul>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          playlist_add_check
-        </i>
-        <strong>
-          2000 tickets included
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          playlist_add
-        </i>
-        <strong>
-          $23.00 per 100 extra tickets
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          facebook
-        </i>
-        <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          widgets
-        </i>
-        <strong>
-          Magento integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          widgets
-        </i>
-        <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          chat
-        </i>
-        <strong>
-          Chat campaigns
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          lock
-        </i>
-        <strong>
-          User permissions
-        </strong>
-      </li>
-    </ul>
-  </div>
-  <div
-    class="card-footer"
-  >
-    <button
-      class="btn btn-link"
-      data-testid="choose-plan-button"
-      type="button"
-    >
-      Switch to Pro Plan
+      Upgrade to Basic Plan
     </button>
   </div>
 </div>
@@ -359,11 +285,14 @@ exports[`<Plan/> should render a plan different from the current plan 1`] = `
 
 exports[`<Plan/> should render a plan featured 1`] = `
 <div
-  class="plan plan-Pro featured card"
+  class="plan plan-Basic featured comparaisonMode card"
 >
   <div
     class="plan-header featured-header card-header"
   >
+    <div
+      class="plan-badge"
+    />
     <div
       class="featured-header-title"
     >
@@ -373,12 +302,12 @@ exports[`<Plan/> should render a plan featured 1`] = `
       class="header-text"
     >
       <strong>
-        Pro
+        Basic
       </strong>
       <span
         class="float-right"
       >
-        30000
+        6000
          /
          
         mo
@@ -398,7 +327,7 @@ exports[`<Plan/> should render a plan featured 1`] = `
           playlist_add_check
         </i>
         <strong>
-          2000 tickets included
+          350 tickets included
         </strong>
       </li>
       <li
@@ -410,7 +339,7 @@ exports[`<Plan/> should render a plan featured 1`] = `
           playlist_add
         </i>
         <strong>
-          $23.00 per 100 extra tickets
+          $25.00 per 100 extra tickets
         </strong>
       </li>
       <li
@@ -419,20 +348,10 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          all_inclusive
         </i>
         <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
+          Unlimited users
         </strong>
       </li>
       <li
@@ -441,10 +360,10 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          extension
         </i>
         <strong>
-          Magento integration
+          150 integrations included
         </strong>
       </li>
       <li
@@ -456,19 +375,7 @@ exports[`<Plan/> should render a plan featured 1`] = `
           widgets
         </i>
         <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
+          Shopify integration
         </strong>
       </li>
       <li
@@ -480,7 +387,7 @@ exports[`<Plan/> should render a plan featured 1`] = `
           chat
         </i>
         <strong>
-          Chat campaigns
+          Live chat
         </strong>
       </li>
       <li
@@ -489,10 +396,10 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          lock
+          build
         </i>
         <strong>
-          User permissions
+          Macros and rules
         </strong>
       </li>
     </ul>
@@ -505,169 +412,22 @@ exports[`<Plan/> should render a plan featured 1`] = `
       data-testid="choose-plan-button"
       type="button"
     >
-      Switch to Pro Plan
+      Upgrade to Basic Plan
     </button>
   </div>
 </div>
 `;
 
-exports[`<Plan/> should render a plan identical to the current plan 1`] = `
+exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
 <div
-  class="plan plan-Pro card"
+  class="plan plan-Pro comparaisonMode card"
 >
   <div
     class="plan-header card-header"
   >
     <div
-      class="header-text"
-    >
-      <strong>
-        Pro
-      </strong>
-      <span
-        class="float-right"
-      >
-        30000
-         /
-         
-        mo
-      </span>
-    </div>
-  </div>
-  <div
-    class="card-body"
-  >
-    <ul>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          playlist_add_check
-        </i>
-        <strong>
-          2000 tickets included
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          playlist_add
-        </i>
-        <strong>
-          $23.00 per 100 extra tickets
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          facebook
-        </i>
-        <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          widgets
-        </i>
-        <strong>
-          Magento integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          widgets
-        </i>
-        <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          chat
-        </i>
-        <strong>
-          Chat campaigns
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          lock
-        </i>
-        <strong>
-          User permissions
-        </strong>
-      </li>
-    </ul>
-  </div>
-  <div
-    class="card-footer"
-  >
-    <button
-      class="btn btn-link disabled"
-      data-testid="choose-plan-button"
-      disabled=""
-      type="button"
-    >
-      Your current Plan
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<Plan/> should render a plan with cheaper plan 1`] = `
-<div
-  class="plan plan-Pro card"
->
-  <div
-    class="plan-header card-header"
-  >
+      class="plan-badge"
+    />
     <div
       class="header-text"
     >
@@ -809,7 +569,7 @@ exports[`<Plan/> should render a plan with cheaper plan 1`] = `
       data-testid="choose-plan-button"
       type="button"
     >
-      Switch to Pro Plan
+      Upgrade to Pro Plan
     </button>
   </div>
 </div>
@@ -817,21 +577,24 @@ exports[`<Plan/> should render a plan with cheaper plan 1`] = `
 
 exports[`<Plan/> should render a plan with custom class names 1`] = `
 <div
-  class="plan plan-Pro custom-classname card"
+  class="plan plan-Basic custom-classname comparaisonMode card"
 >
   <div
     class="plan-header card-header"
   >
     <div
+      class="plan-badge"
+    />
+    <div
       class="header-text"
     >
       <strong>
-        Pro
+        Basic
       </strong>
       <span
         class="float-right"
       >
-        30000
+        6000
          /
          
         mo
@@ -851,7 +614,7 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
           playlist_add_check
         </i>
         <strong>
-          2000 tickets included
+          350 tickets included
         </strong>
       </li>
       <li
@@ -863,7 +626,7 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
           playlist_add
         </i>
         <strong>
-          $23.00 per 100 extra tickets
+          $25.00 per 100 extra tickets
         </strong>
       </li>
       <li
@@ -872,20 +635,10 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          all_inclusive
         </i>
         <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
+          Unlimited users
         </strong>
       </li>
       <li
@@ -894,10 +647,10 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          extension
         </i>
         <strong>
-          Magento integration
+          150 integrations included
         </strong>
       </li>
       <li
@@ -909,19 +662,7 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
           widgets
         </i>
         <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
+          Shopify integration
         </strong>
       </li>
       <li
@@ -933,7 +674,7 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
           chat
         </i>
         <strong>
-          Chat campaigns
+          Live chat
         </strong>
       </li>
       <li
@@ -942,10 +683,10 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          lock
+          build
         </i>
         <strong>
-          User permissions
+          Macros and rules
         </strong>
       </li>
     </ul>
@@ -958,29 +699,32 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
       data-testid="choose-plan-button"
       type="button"
     >
-      Switch to Pro Plan
+      Upgrade to Basic Plan
     </button>
   </div>
 </div>
 `;
 
-exports[`<Plan/> should render a plan with default props 1`] = `
+exports[`<Plan/> should render a plan without comparaison mode 1`] = `
 <div
-  class="plan plan-Pro card"
+  class="plan plan-Basic card"
 >
   <div
     class="plan-header card-header"
   >
     <div
+      class="plan-badge"
+    />
+    <div
       class="header-text"
     >
       <strong>
-        Pro
+        Basic
       </strong>
       <span
         class="float-right"
       >
-        30000
+        6000
          /
          
         mo
@@ -1000,7 +744,7 @@ exports[`<Plan/> should render a plan with default props 1`] = `
           playlist_add_check
         </i>
         <strong>
-          2000 tickets included
+          350 tickets included
         </strong>
       </li>
       <li
@@ -1012,7 +756,7 @@ exports[`<Plan/> should render a plan with default props 1`] = `
           playlist_add
         </i>
         <strong>
-          $23.00 per 100 extra tickets
+          $25.00 per 100 extra tickets
         </strong>
       </li>
       <li
@@ -1021,20 +765,10 @@ exports[`<Plan/> should render a plan with default props 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          all_inclusive
         </i>
         <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
+          Unlimited users
         </strong>
       </li>
       <li
@@ -1043,10 +777,10 @@ exports[`<Plan/> should render a plan with default props 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          extension
         </i>
         <strong>
-          Magento integration
+          150 integrations included
         </strong>
       </li>
       <li
@@ -1058,19 +792,7 @@ exports[`<Plan/> should render a plan with default props 1`] = `
           widgets
         </i>
         <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
+          Shopify integration
         </strong>
       </li>
       <li
@@ -1082,7 +804,7 @@ exports[`<Plan/> should render a plan with default props 1`] = `
           chat
         </i>
         <strong>
-          Chat campaigns
+          Live chat
         </strong>
       </li>
       <li
@@ -1091,10 +813,61 @@ exports[`<Plan/> should render a plan with default props 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          lock
+          build
         </i>
         <strong>
-          User permissions
+          Macros and rules
+        </strong>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render an enterprise plan 1`] = `
+<div
+  class="plan plan-Enterprise comparaisonMode card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="plan-badge"
+    />
+    <div
+      class="header-text"
+    >
+      <strong>
+        Enterprise
+      </strong>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          arrow_downward
+        </i>
+        <strong>
+          Discounted prices for volumes of 10.000+ tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          beach_access
+        </i>
+        <strong>
+          Premium support
         </strong>
       </li>
     </ul>
@@ -1104,32 +877,34 @@ exports[`<Plan/> should render a plan with default props 1`] = `
   >
     <button
       class="btn btn-link"
-      data-testid="choose-plan-button"
       type="button"
     >
-      Switch to Pro Plan
+      Contact us
     </button>
   </div>
 </div>
 `;
 
-exports[`<Plan/> should render a plan with no current plan 1`] = `
+exports[`<Plan/> should render the current plan 1`] = `
 <div
-  class="plan plan-Pro card"
+  class="plan plan-Basic comparaisonMode current card"
 >
   <div
     class="plan-header card-header"
   >
     <div
+      class="plan-badge"
+    />
+    <div
       class="header-text"
     >
       <strong>
-        Pro
+        Basic
       </strong>
       <span
         class="float-right"
       >
-        30000
+        6000
          /
          
         mo
@@ -1149,7 +924,7 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
           playlist_add_check
         </i>
         <strong>
-          2000 tickets included
+          350 tickets included
         </strong>
       </li>
       <li
@@ -1161,7 +936,7 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
           playlist_add
         </i>
         <strong>
-          $23.00 per 100 extra tickets
+          $25.00 per 100 extra tickets
         </strong>
       </li>
       <li
@@ -1170,20 +945,10 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          all_inclusive
         </i>
         <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
+          Unlimited users
         </strong>
       </li>
       <li
@@ -1192,10 +957,10 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          extension
         </i>
         <strong>
-          Magento integration
+          150 integrations included
         </strong>
       </li>
       <li
@@ -1207,19 +972,7 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
           widgets
         </i>
         <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
+          Shopify integration
         </strong>
       </li>
       <li
@@ -1231,7 +984,7 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
           chat
         </i>
         <strong>
-          Chat campaigns
+          Live chat
         </strong>
       </li>
       <li
@@ -1240,10 +993,10 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          lock
+          build
         </i>
         <strong>
-          User permissions
+          Macros and rules
         </strong>
       </li>
     </ul>
@@ -1252,33 +1005,56 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
     class="card-footer"
   >
     <button
-      class="btn btn-link"
+      class="btn btn-link disabled"
       data-testid="choose-plan-button"
+      disabled=""
       type="button"
     >
-      Switch to Pro Plan
+      Current Plan
     </button>
   </div>
 </div>
 `;
 
-exports[`<Plan/> should render a plan with no footer 1`] = `
+exports[`<Plan/> should render the current plan with legacy features 1`] = `
 <div
-  class="plan plan-Pro card"
+  class="plan plan-Basic comparaisonMode current legacy card"
 >
   <div
     class="plan-header card-header"
   >
     <div
+      class="plan-badge"
+    >
+      <div
+        class="d-inline-flex"
+      >
+        <span
+          class="d-inline-flex flex-row badge badge-danger"
+        >
+          <i
+            class="material-icons"
+          >
+            warning
+          </i>
+          <div
+            class="ml-1"
+          >
+            LEGACY PLAN
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
       class="header-text"
     >
       <strong>
-        Pro
+        Basic legacy
       </strong>
       <span
         class="float-right"
       >
-        30000
+        6000
          /
          
         mo
@@ -1298,7 +1074,7 @@ exports[`<Plan/> should render a plan with no footer 1`] = `
           playlist_add_check
         </i>
         <strong>
-          2000 tickets included
+          350 tickets included
         </strong>
       </li>
       <li
@@ -1310,7 +1086,7 @@ exports[`<Plan/> should render a plan with no footer 1`] = `
           playlist_add
         </i>
         <strong>
-          $23.00 per 100 extra tickets
+          $25.00 per 100 extra tickets
         </strong>
       </li>
       <li
@@ -1365,18 +1141,6 @@ exports[`<Plan/> should render a plan with no footer 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          insert_emoticon
-        </i>
-        <strong>
-          Satisfaction surveys
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
           chat
         </i>
         <strong>
@@ -1395,48 +1159,16 @@ exports[`<Plan/> should render a plan with no footer 1`] = `
           User permissions
         </strong>
       </li>
-    </ul>
-  </div>
-</div>
-`;
-
-exports[`<Plan/> should render a plan without product features 1`] = `
-<div
-  class="plan plan-Pro card"
->
-  <div
-    class="plan-header card-header"
-  >
-    <div
-      class="header-text"
-    >
-      <strong>
-        Pro
-      </strong>
-      <span
-        class="float-right"
-      >
-        30000
-         /
-         
-        mo
-      </span>
-    </div>
-  </div>
-  <div
-    class="card-body"
-  >
-    <ul>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
         >
-          playlist_add_check
+          group
         </i>
         <strong>
-          2000 tickets included
+          Teams
         </strong>
       </li>
       <li
@@ -1445,10 +1177,82 @@ exports[`<Plan/> should render a plan without product features 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          playlist_add
+          assignment_turned_in
         </i>
         <strong>
-          $23.00 per 100 extra tickets
+          Auto-assignment
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          visibility
+        </i>
+        <strong>
+          View sharing
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          all_inclusive
+        </i>
+        <strong>
+          Unlimited users
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          extension
+        </i>
+        <strong>
+          150 integrations included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Shopify integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Live chat
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          build
+        </i>
+        <strong>
+          Macros and rules
         </strong>
       </li>
     </ul>
@@ -1457,11 +1261,12 @@ exports[`<Plan/> should render a plan without product features 1`] = `
     class="card-footer"
   >
     <button
-      class="btn btn-link"
+      class="btn btn-link disabled"
       data-testid="choose-plan-button"
+      disabled=""
       type="button"
     >
-      Switch to Pro Plan
+      Current Plan
     </button>
   </div>
 </div>

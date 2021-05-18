@@ -1,4 +1,5 @@
 @import '../../../../../css/new/mixins';
+@import '../../../../../css/new/colors';
 @import '../colors';
 
 .plan {
@@ -6,23 +7,27 @@
     min-height: 330px;
     box-shadow: 0 2px 3px 0 #15206533;
 
-    .card-header {
-        background-color: @basic;
+    &.current.comparaisonMode,
+    &.legacy {
+        .feature-icon,
+        .card-header {
+            background-color: @neutral1;
+            color: @neutral10;
+        }
     }
-
     .plan-header {
-        color: #fff;
         border-bottom: 0;
         height: 90px;
         strong {
             font-size: 20px;
         }
-        span {
-            font-size: 17px;
-        }
     }
-
+    .plan-badge {
+        position: absolute;
+        font-size: 11px;
+    }
     .header-text {
+        font-size: 17px;
         line-height: 68px;
     }
 
@@ -77,6 +82,7 @@
 
 .plan-Basic {
     .card-header {
+        color: #fff;
         background-color: @basic;
     }
     .feature-icon {
@@ -87,6 +93,7 @@
 
 .plan-Pro {
     .card-header {
+        color: #fff;
         background-color: @pro;
     }
     .feature-icon {
@@ -97,6 +104,7 @@
 
 .plan-Advanced {
     .card-header {
+        color: #fff;
         background-color: @advanced;
     }
     .feature-icon {
@@ -109,7 +117,7 @@
 .plan-Custom {
     .card-header {
         background-color: @enterprise;
-        color: @pro;
+        color: #fff;
         text-align: center;
     }
     .feature-icon {
@@ -123,3 +131,4 @@
         text-align: left;
     }
 }
+
