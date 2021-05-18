@@ -1,0 +1,678 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RechargeIntegrationDetail/> render() should not render anything about the import and render the re-activate button instead of the deactivate button because the integration is deactivated 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/recharge"
+            >
+              Recharge
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          />
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-8"
+        >
+          <div
+            class="mb-4 alert alert-info fade"
+            role="alert"
+          >
+            <p>
+              <b
+                class="alert-heading"
+              >
+                <i
+                  class="material-icons md-spin mr-2"
+                >
+                  autorenew
+                </i>
+                Importing your Recharge customers
+              </b>
+            </p>
+            <p>
+              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+               
+              <a
+                to="/app/customers"
+              >
+                Review imported customers.
+              </a>
+            </p>
+          </div>
+          <div
+            class="InputField required form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-name"
+            >
+              Shopify store name
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                disabled=""
+                id="id-name"
+                placeholder="ex: \\"acme\\" for acme.myshopify.com"
+                required=""
+                type="text"
+                value=""
+              />
+              <span
+                class="input-group-append"
+              >
+                <span
+                  class="input-group-text"
+                >
+                  .myshopify.com
+                </span>
+              </span>
+            </div>
+          </div>
+          <div>
+            <button
+              class="btn btn-success"
+              type="button"
+            >
+              Reconnect
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id="1"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RechargeIntegrationDetail/> render() should render a loader (because the integration is loading 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="inner"
+      style="min-height: 500px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RechargeIntegrationDetail/> render() should render a small paragraph because the import is over 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/recharge"
+            >
+              Recharge
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          />
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-8"
+        >
+          <p>
+            All your Recharge customers have been imported. You can now see their info in the sidebar.
+             
+            <a
+              to="/app/customers"
+            >
+              Review your customers.
+            </a>
+          </p>
+          <div
+            class="InputField required form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-name"
+            >
+              Shopify store name
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                disabled=""
+                id="id-name"
+                placeholder="ex: \\"acme\\" for acme.myshopify.com"
+                required=""
+                type="text"
+                value=""
+              />
+              <span
+                class="input-group-append"
+              >
+                <span
+                  class="input-group-text"
+                >
+                  .myshopify.com
+                </span>
+              </span>
+            </div>
+          </div>
+          <div>
+            <div
+              class="component d-inline-block float-right"
+              id="1"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RechargeIntegrationDetail/> render() should render an alert because the import is in progress 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/recharge"
+            >
+              Recharge
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          />
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-8"
+        >
+          <div
+            class="mb-4 alert alert-info fade"
+            role="alert"
+          >
+            <p>
+              <b
+                class="alert-heading"
+              >
+                <i
+                  class="material-icons md-spin mr-2"
+                >
+                  autorenew
+                </i>
+                Importing your Recharge customers
+              </b>
+            </p>
+            <p>
+              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+               
+              <a
+                to="/app/customers"
+              >
+                Review imported customers.
+              </a>
+            </p>
+          </div>
+          <div
+            class="InputField required form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-name"
+            >
+              Shopify store name
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                disabled=""
+                id="id-name"
+                placeholder="ex: \\"acme\\" for acme.myshopify.com"
+                required=""
+                type="text"
+                value=""
+              />
+              <span
+                class="input-group-append"
+              >
+                <span
+                  class="input-group-text"
+                >
+                  .myshopify.com
+                </span>
+              </span>
+            </div>
+          </div>
+          <div>
+            <div
+              class="component d-inline-block float-right"
+              id="1"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RechargeIntegrationDetail/> render() should render buttons loading and disabled because a submit is in progress 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/recharge"
+            >
+              Recharge
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          />
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-8"
+        >
+          <div
+            class="mb-4 alert alert-info fade"
+            role="alert"
+          >
+            <p>
+              <b
+                class="alert-heading"
+              >
+                <i
+                  class="material-icons md-spin mr-2"
+                >
+                  autorenew
+                </i>
+                Importing your Recharge customers
+              </b>
+            </p>
+            <p>
+              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+               
+              <a
+                to="/app/customers"
+              >
+                Review imported customers.
+              </a>
+            </p>
+          </div>
+          <div
+            class="InputField required form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-name"
+            >
+              Shopify store name
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                disabled=""
+                id="id-name"
+                placeholder="ex: \\"acme\\" for acme.myshopify.com"
+                required=""
+                type="text"
+                value=""
+              />
+              <span
+                class="input-group-append"
+              >
+                <span
+                  class="input-group-text"
+                >
+                  .myshopify.com
+                </span>
+              </span>
+            </div>
+          </div>
+          <div>
+            <div
+              class="component d-inline-block float-right"
+              id="1"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RechargeIntegrationDetail/> render() should render not render deactivate / reactivate buttons because authentication is required 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/recharge"
+            >
+              Recharge
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          />
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-md-8"
+        >
+          <div
+            class="mb-4 alert alert-info fade"
+            role="alert"
+          >
+            <p>
+              <b
+                class="alert-heading"
+              >
+                <i
+                  class="material-icons md-spin mr-2"
+                >
+                  autorenew
+                </i>
+                Importing your Recharge customers
+              </b>
+            </p>
+            <p>
+              We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
+               
+              <a
+                to="/app/customers"
+              >
+                Review imported customers.
+              </a>
+            </p>
+          </div>
+          <div
+            class="InputField required form-group"
+            color=""
+          >
+            <label
+              class="control-label"
+              for="id-name"
+            >
+              Shopify store name
+            </label>
+            <div
+              class="input-group"
+            >
+              <input
+                class="form-control"
+                disabled=""
+                id="id-name"
+                placeholder="ex: \\"acme\\" for acme.myshopify.com"
+                required=""
+                type="text"
+                value=""
+              />
+              <span
+                class="input-group-append"
+              >
+                <span
+                  class="input-group-text"
+                >
+                  .myshopify.com
+                </span>
+              </span>
+            </div>
+          </div>
+          <div>
+            <div
+              class="component d-inline-block float-right"
+              id="1"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

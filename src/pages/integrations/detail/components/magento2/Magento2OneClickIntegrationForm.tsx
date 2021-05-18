@@ -18,7 +18,6 @@ type Props = {
         updateOrCreateIntegration: (
             integration: Map<string, any>
         ) => Promise<void>
-        deactivateIntegration: (integration: Map<string, any>) => Promise<void>
         activateIntegration: (integration: Map<string, any>) => Promise<void>
         deleteIntegration: (integration: Map<string, any>) => Promise<void>
     }
@@ -35,7 +34,6 @@ const handleCreate = (
     const splitAdminUrl = values.storeURL.split('/')
     const url = splitAdminUrl[0]
     const adminUrlSuffix = splitAdminUrl[1]
-
     window.location.href = redirectUri.concat(
         `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`
     )
@@ -147,6 +145,7 @@ export const Magento2OneClickIntegrationForm = ({
                 submitIsDisabled={submitIsDisabled}
                 actions={actions}
                 integration={integration}
+                redirectUri={redirectUri}
             />
         </Form>
     )

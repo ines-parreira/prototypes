@@ -24,10 +24,8 @@ import PageHeader from '../../../../common/components/PageHeader.tsx'
 type Props = {
     integration: Object,
     shopifyIntegrations: List,
-
     actions: Object,
     loading: Object,
-
     redirectUri: string,
 
     // Router
@@ -39,7 +37,7 @@ type State = {
     store_name: string,
 }
 
-class RechargeIntegrationDetail extends React.Component<Props, State> {
+export class RechargeIntegrationDetail extends React.Component<Props, State> {
     isInitialized = false
 
     state = {
@@ -60,9 +58,18 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
             .concat(shopifyShopName)
     }
 
+    _reactivateForShopifyStore = () => {
+        const shopifyShopName = this.props.integration.getIn([
+            'meta',
+            'store_name',
+        ])
+        window.location.href = this.props.redirectUri
+            .concat('?store_name=')
+            .concat(shopifyShopName)
+    }
+
     render() {
         const {actions, integration, shopifyIntegrations, loading} = this.props
-
         const isUpdate = this.props.match.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
@@ -219,23 +226,6 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
                                         Update app permissions
                                     </Button>
                                 )}
-                                {isUpdate && isActive && (
-                                    <Button
-                                        type="button"
-                                        color="warning"
-                                        outline
-                                        className={classNames({
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        onClick={() =>
-                                            actions.deactivateIntegration(
-                                                integration.get('id')
-                                            )
-                                        }
-                                    >
-                                        Deactivate integration
-                                    </Button>
-                                )}
                                 {isUpdate && !isActive && (
                                     <Button
                                         type="button"
@@ -243,19 +233,18 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
                                         className={classNames({
                                             'btn-loading': isSubmitting,
                                         })}
-                                        onClick={() =>
-                                            actions.activateIntegration(
-                                                integration.get('id')
-                                            )
+                                        onClick={
+                                            this._reactivateForShopifyStore
                                         }
                                     >
-                                        Re-activate integration
+                                        Reconnect
                                     </Button>
                                 )}
                                 {isUpdate && (
                                     <ConfirmButton
                                         className="float-right"
                                         color="secondary"
+                                        id={integration.get('id')}
                                         confirm={() =>
                                             actions.deleteIntegration(
                                                 integration

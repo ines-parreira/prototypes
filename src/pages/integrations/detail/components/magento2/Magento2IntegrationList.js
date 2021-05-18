@@ -4,9 +4,11 @@ import {type Map, type List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
+import {Button} from 'reactstrap'
+
+import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import history from '../../../../history.ts'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
@@ -14,13 +16,28 @@ import ForwardIcon from '../ForwardIcon'
 type Props = {
     integrations: List<Map<*, *>>,
     loading: Map<*, *>,
-    activate: (number) => Promise<*>,
-    deactivate: (number) => Promise<*>,
+    actions: {
+        updateOrCreateIntegration: (
+            integration: Map<string, any>
+        ) => Promise<void>,
+    },
+    redirectUri: string,
 }
 
 export class Magento2IntegrationList extends React.Component<Props> {
+    _onReactivateOneClick = (
+        integration: List<Map<*, *>>,
+        redirectUri: string
+    ) => {
+        const adminUrlSuffix = integration.getIn(['meta', 'admin_url_suffix'])
+        const url = integration.getIn(['meta', 'store_url'])
+        window.location.href = redirectUri.concat(
+            `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`
+        )
+    }
+
     render() {
-        const {integrations, loading} = this.props
+        const {integrations, loading, redirectUri} = this.props
 
         const longTypeDescription = (
             <div>
@@ -52,18 +69,12 @@ export class Magento2IntegrationList extends React.Component<Props> {
         )
 
         const integrationToItemDisplay = (integration) => {
-            const toggleIntegration = (value) => {
-                const integrationId = integration.get('id')
-                return value
-                    ? this.props.activate(integrationId)
-                    : this.props.deactivate(integrationId)
-            }
-
-            const isDisabled = integration.get('deactivated_datetime')
             const editLink = `/app/settings/integrations/magento2/${integration.get(
                 'id'
             )}`
-
+            const isSubmitting = loading.get('updateIntegration')
+            const isDisabled = integration.get('deactivated_datetime')
+            const isManual = integration.getIn(['meta', 'is_manual'])
             return (
                 <tr key={integration.get('id')}>
                     <td className="link-full-td">
@@ -73,12 +84,31 @@ export class Magento2IntegrationList extends React.Component<Props> {
                             </div>
                         </Link>
                     </td>
-                    <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                        />
-                    </td>
+                    {isDisabled && !isManual ? (
+                        <td className="smallest align-middle">
+                            <ConfirmButton
+                                color="success"
+                                loading={isSubmitting}
+                                content="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
+                                confirm={() =>
+                                    this._onReactivateOneClick(
+                                        integration,
+                                        redirectUri
+                                    )
+                                }
+                            >
+                                Reconnect
+                            </ConfirmButton>
+                        </td>
+                    ) : null}
+                    {isDisabled && isManual ? (
+                        <td className="smallest align-middle">
+                            <Button color="success" href={editLink}>
+                                Reconnect
+                            </Button>
+                        </td>
+                    ) : null}
+
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />
                     </td>
@@ -109,5 +139,4 @@ export class Magento2IntegrationList extends React.Component<Props> {
 
 export default connect(null, {
     activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
 })(Magento2IntegrationList)

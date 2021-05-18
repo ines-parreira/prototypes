@@ -23,7 +23,7 @@ import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 type Props = {
     integration: Map<*, *>,
-
+    redirectUri: string,
     actions: Object,
     loading: Map<*, *>,
 
@@ -74,10 +74,6 @@ export class SmileIntegrationDetailComponent extends React.Component<
                         ),
                         3000
                     )
-                } else {
-                    nextProps.actions.triggerCreateSuccess(
-                        nextProps.integration.toJS()
-                    )
                 }
             }
         }
@@ -91,12 +87,15 @@ export class SmileIntegrationDetailComponent extends React.Component<
         )
     }
 
+    _onReactivate = () => {
+        window.location = this.props.redirectUri
+    }
+
     render() {
         const {actions, integration, loading} = this.props
 
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
-
         const authenticationRequired =
             integration.getIn(['meta', 'oauth', 'status']) ===
             PENDING_AUTHENTICATION_STATUS
@@ -192,25 +191,6 @@ export class SmileIntegrationDetailComponent extends React.Component<
                                 >
                                     Update integration
                                 </Button>
-
-                                {!authenticationRequired && isActive && (
-                                    <Button
-                                        type="button"
-                                        color="warning"
-                                        outline
-                                        className={classNames({
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        onClick={() =>
-                                            actions.deactivateIntegration(
-                                                integration.get('id')
-                                            )
-                                        }
-                                        disabled={isSubmitting}
-                                    >
-                                        Deactivate integration
-                                    </Button>
-                                )}
                                 {!authenticationRequired && !isActive && (
                                     <Button
                                         type="button"
@@ -218,14 +198,10 @@ export class SmileIntegrationDetailComponent extends React.Component<
                                         className={classNames({
                                             'btn-loading': isSubmitting,
                                         })}
-                                        onClick={() =>
-                                            actions.activateIntegration(
-                                                integration.get('id')
-                                            )
-                                        }
+                                        onClick={this._onReactivate}
                                         disabled={isSubmitting}
                                     >
-                                        Re-activate integration
+                                        Reconnect
                                     </Button>
                                 )}
                                 <ConfirmButton

@@ -2,11 +2,11 @@
 import React from 'react'
 import {List, type Map} from 'immutable'
 import {Link} from 'react-router-dom'
+import {Button} from 'reactstrap'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
 import Carousel from '../../../common/Carousel'
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
@@ -17,7 +17,6 @@ type Props = {
 
     loading: Object,
     activate: (number) => Promise<*>,
-    deactivate: (number) => Promise<*>,
 }
 
 type State = {
@@ -27,7 +26,6 @@ type State = {
 
 @connect(null, {
     activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
 })
 export default class SmileIntegrationList extends React.Component<
     Props,
@@ -54,11 +52,10 @@ export default class SmileIntegrationList extends React.Component<
     }
 
     render() {
-        const {integrations, loading} = this.props
+        const {integrations, loading, redirectUri} = this.props
         const smileIntegrations = integrations.filter(
             (v) => v.get('type') === 'smile'
         )
-
         const imagesUrl = [
             `${
                 window.GORGIAS_ASSETS_URL || ''
@@ -114,18 +111,11 @@ export default class SmileIntegrationList extends React.Component<
         )
 
         const integrationToItemDisplay = (integration: Map<*, *>) => {
-            const toggleIntegration = (value: boolean): Promise<*> => {
-                const integrationId = integration.get('id')
-                return value
-                    ? this.props.activate(integrationId)
-                    : this.props.deactivate(integrationId)
-            }
-
-            const isDisabled = integration.get('deactivated_datetime')
             const editLink = `/app/settings/integrations/smile/${integration.get(
                 'id'
             )}`
-
+            const isSubmitting = loading.get('updateIntegration')
+            const isDisabled = integration.get('deactivated_datetime')
             return (
                 <tr key={integration.get('id')}>
                     <td className="link-full-td">
@@ -135,12 +125,18 @@ export default class SmileIntegrationList extends React.Component<
                             </div>
                         </Link>
                     </td>
-                    <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                        />
-                    </td>
+                    {isDisabled ? (
+                        <td className="smallest align-middle">
+                            <Button
+                                tag="a"
+                                color="success"
+                                href={redirectUri}
+                                disabled={isSubmitting}
+                            >
+                                Reconnect
+                            </Button>
+                        </td>
+                    ) : null}
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />
                     </td>

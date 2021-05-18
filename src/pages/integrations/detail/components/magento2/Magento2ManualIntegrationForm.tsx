@@ -16,7 +16,6 @@ type Props = {
         updateOrCreateIntegration: (
             integration: Map<string, any>
         ) => Promise<void>
-        deactivateIntegration: (integration: Map<string, any>) => Promise<void>
         activateIntegration: (integration: Map<string, any>) => Promise<void>
         deleteIntegration: (integration: Map<string, any>) => Promise<void>
     }
@@ -40,7 +39,6 @@ export const Magento2ManualIntegrationForm = ({
     isSubmitting,
 }: Props) => {
     const meta: Map<any, any> = integration.getIn(['meta'], fromJS({}))
-
     const metaValues = {
         storeURL: meta.get('store_url', ''),
         adminURLSuffix: meta.get('admin_url_suffix', ''),
@@ -76,6 +74,7 @@ export const Magento2ManualIntegrationForm = ({
                 const data = {
                     type: MAGENTO2_INTEGRATION_TYPE,
                     ...(auth && {connections: [{data: auth}]}),
+                    deactivated_datetime: null,
                     meta: {
                         store_url: values.storeURL,
                         admin_url_suffix: values.adminURLSuffix,

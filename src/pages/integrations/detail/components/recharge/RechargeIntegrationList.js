@@ -1,12 +1,10 @@
 import React from 'react'
 import type {List} from 'immutable'
 import {Link} from 'react-router-dom'
+import {Button, Alert} from 'reactstrap'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
-import {Alert} from 'reactstrap'
-
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
@@ -18,11 +16,9 @@ import Carousel from './../../../common/Carousel'
 type Props = {
     integrations: List,
     shopifyIntegrations: List,
-
     loading: Object,
 
     activate: typeof integrationsActions.activateIntegration,
-    deactivate: typeof integrationsActions.deactivateIntegration,
 
     redirectUri: string,
 }
@@ -42,7 +38,6 @@ type State = {
     },
     {
         activate: integrationsActions.activateIntegration,
-        deactivate: integrationsActions.deactivateIntegration,
     }
 )
 export default class RechargeIntegrationList extends React.Component<
@@ -70,7 +65,7 @@ export default class RechargeIntegrationList extends React.Component<
     }
 
     render() {
-        const {integrations, loading} = this.props
+        const {integrations, loading, redirectUri} = this.props
         const rechargeIntegrations = integrations.filter(
             (v) => v.get('type') === 'recharge'
         )
@@ -144,18 +139,15 @@ export default class RechargeIntegrationList extends React.Component<
         )
 
         const integrationToItemDisplay = (int) => {
-            const toggleIntegration = (value) => {
-                const integrationId = int.get('id')
-                return value
-                    ? this.props.activate(integrationId)
-                    : this.props.deactivate(integrationId)
-            }
-
-            const isDisabled = int.get('deactivated_datetime')
             const editLink = `/app/settings/integrations/recharge/${int.get(
                 'id'
             )}`
-
+            const shopifyShopName = int.getIn(['meta', 'store_name'])
+            const reactivateUrl = redirectUri
+                .concat('?store_name=')
+                .concat(shopifyShopName)
+            const isDisabled = int.get('deactivated_datetime')
+            const isSubmitting = loading.get('updateIntegration')
             return (
                 <tr key={int.get('id')}>
                     <td className="link-full-td">
@@ -165,12 +157,17 @@ export default class RechargeIntegrationList extends React.Component<
                             </div>
                         </Link>
                     </td>
-                    <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                        />
-                    </td>
+                    {isDisabled ? (
+                        <td className="smallest align-middle">
+                            <Button
+                                color="success"
+                                href={reactivateUrl}
+                                disabled={isSubmitting}
+                            >
+                                Reconnect
+                            </Button>
+                        </td>
+                    ) : null}
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />
                     </td>

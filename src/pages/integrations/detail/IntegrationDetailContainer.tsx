@@ -714,6 +714,7 @@ export const IntegrationDetailContainer = ({
                     actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
+                    redirectUri={redirectUri}
                 />
             )
 

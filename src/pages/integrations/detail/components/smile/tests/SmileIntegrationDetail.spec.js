@@ -187,9 +187,6 @@ describe('<SmileIntegrationDetail/>', () => {
 
                 expect(component.state()).toMatchSnapshot()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
-                expect(actions.triggerCreateSuccess).toHaveBeenCalledWith(
-                    integration.toJS()
-                )
             }
         )
     })

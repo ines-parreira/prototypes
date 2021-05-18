@@ -125,7 +125,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             tag="button"
             type="button"
           >
-            Re-activate integration
+            Reconnect
           </Button>
           <ConfirmButton
             className="float-right"
@@ -245,16 +245,6 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className=""
-            color="warning"
-            onClick={[Function]}
-            outline={true}
-            tag="button"
-            type="button"
-          >
-            Deactivate integration
           </Button>
           <ConfirmButton
             className="float-right"
@@ -408,16 +398,6 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           >
             Update integration
           </Button>
-          <Button
-            className=""
-            color="warning"
-            onClick={[Function]}
-            outline={true}
-            tag="button"
-            type="button"
-          >
-            Deactivate integration
-          </Button>
           <ConfirmButton
             className="float-right"
             color="secondary"
@@ -570,17 +550,6 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className="btn-loading"
-            color="warning"
-            disabled={true}
-            onClick={[Function]}
-            outline={true}
-            tag="button"
-            type="button"
-          >
-            Deactivate integration
           </Button>
           <ConfirmButton
             className="float-right"
