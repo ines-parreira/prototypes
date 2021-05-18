@@ -321,7 +321,7 @@ export class BillingUsage extends Component {
                             </Col>
                             <Col sm="3" className={css['plan-button']}>
                                 <Button
-                                    color={isTrialing ? 'primary' : 'secondary'}
+                                    color="primary"
                                     onClick={() => {
                                         history.push(
                                             '/app/settings/billing/plans'
