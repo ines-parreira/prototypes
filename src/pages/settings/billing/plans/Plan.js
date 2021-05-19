@@ -375,7 +375,12 @@ export function Plan(props: Props) {
                                             data-testid="confirm-choose-plan-button"
                                             type="button"
                                             color="success"
-                                            onClick={props.onClick}
+                                            onClick={(event) => {
+                                                props.onClick(event)
+                                                setIsConfirmationDisplayed(
+                                                    false
+                                                )
+                                            }}
                                         >
                                             Confirm
                                         </Button>
