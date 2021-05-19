@@ -3,7 +3,6 @@ import {fromJS} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import plan from '../fixtures/plan.ts'
 import * as utils from '../utils.ts'
 import TICKET_LANGUAGES from '../config/ticketLanguages.ts'
 import schemasJSON from '../fixtures/openapi.json'
@@ -192,37 +191,6 @@ describe('global utils', () => {
             expect(utils.isCurrentlyOnTicket()).toBe(false)
             window.location.pathname = '/app/ticket/12'
             expect(utils.isCurrentlyOnTicket(13)).toBe(false)
-        })
-    })
-
-    describe('usage', () => {
-        const _plan = fromJS(plan)
-
-        it('should determine if user has reached min limit', () => {
-            expect(
-                utils.hasReachedLimit('min', plan.limits.min - 1, _plan)
-            ).toEqual(false)
-            expect(
-                utils.hasReachedLimit('min', plan.limits.min, _plan)
-            ).toEqual(true)
-        })
-
-        it('should determine if user has reached default limit', () => {
-            expect(
-                utils.hasReachedLimit('default', plan.free_tickets - 1, _plan)
-            ).toEqual(false)
-            expect(
-                utils.hasReachedLimit('default', plan.free_tickets, _plan)
-            ).toEqual(true)
-        })
-
-        it('should determine if user has reached max limit', () => {
-            expect(
-                utils.hasReachedLimit('max', plan.limits.max - 1, _plan)
-            ).toEqual(false)
-            expect(
-                utils.hasReachedLimit('max', plan.limits.max, _plan)
-            ).toEqual(true)
         })
     })
 

@@ -9,6 +9,12 @@ export function isFeatureEnabled(
         : featureMetadata.enabled
 }
 
-export const hasLegacyPlan = (account: Account, plan: Plan) => {
-    return !!account.meta?.has_legacy_features || (!plan.public && !plan.custom)
+export const hasLegacyPlan = (
+    account: Account,
+    plan: Plan | Record<string, unknown>
+): boolean => {
+    return (
+        !!account.meta?.has_legacy_features ||
+        (Object.keys(plan).length > 0 && !plan.public && !plan.custom)
+    )
 }

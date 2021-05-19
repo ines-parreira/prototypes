@@ -5,6 +5,7 @@ import {
 
 export enum PlanInterval {
     Month = 'month',
+    Year = 'year',
 }
 
 export type PlanLimits = {

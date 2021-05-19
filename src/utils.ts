@@ -601,18 +601,6 @@ export function getPluralObjectName(viewType: string): string {
     return viewType.replace('-list', 's')
 }
 
-/**
- * Check if user has reach maximum limit of a plan
- */
-export function hasReachedLimit(
-    limit: string,
-    tickets: number,
-    plan: Iterable<any, any>
-): boolean {
-    const freeTickets = plan.get('free_tickets', 0)
-    return tickets >= plan.getIn(['limits', limit], freeTickets)
-}
-
 export function toQueryParams(obj: Record<string, unknown>): string {
     return Object.keys(obj)
         .map((key) => `${key}=${encodeURIComponent(obj[key] as any)}`)

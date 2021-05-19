@@ -216,6 +216,7 @@ export function Plan(props: Props) {
     )
     const isDowngrade =
         !isCurrentPlan &&
+        !currentPlan.isEmpty() &&
         countFeatures(plan.get('features').toJS()) <
             countFeatures(
                 currentPlan
