@@ -52,6 +52,8 @@ export const EVENTS = {
     HELP_CENTER_CLICKED: 'help-center-clicked',
     INFOBAR_INTEGRATION_ADD_CLICKED: 'infobar-integration-add-clicked',
     INTEGRATION_CLICKED: 'integration-clicked',
+    INTENT_FEEDBACK_USER_SUBMISSION: 'intent-feedback-user-submission',
+    INTENT_FEEDBACK_DROPDOWN_OPEN: 'intent-feedback-dropdown-open',
     MODAL_TOGGLED: 'modal-toggled',
     NAVBAR_VIEW_MOVED: 'navbar-view-moved',
     NAVBAR_VIEW_TOGGLED: 'navbar-view-toggled',

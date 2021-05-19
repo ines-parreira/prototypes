@@ -1246,3 +1246,52 @@ Array [
   ],
 ]
 `;
+
+exports[`<IntentsFeedback /> Segment tracking should send event on curation 1`] = `
+Array [
+  Array [
+    "intent-feedback-user-submission",
+    Object {
+      "account_domain": "acme",
+      "is_first_curation": true,
+      "message_id": 1,
+      "next_state": Array [
+        "foo/intent",
+        "bar/intent",
+        "baz/intent",
+      ],
+      "previous_state": Array [
+        "foo/intent",
+        "bar/intent",
+        "baz/intent",
+      ],
+      "sub_events": Array [
+        Object {
+          "event_type": "confirm-intent",
+          "intent": "foo/intent",
+        },
+        Object {
+          "event_type": "remove-intent",
+          "intent": "foo/intent",
+        },
+      ],
+      "ticket_id": undefined,
+      "user_id": 2,
+    },
+  ],
+]
+`;
+
+exports[`<IntentsFeedback /> Segment tracking should send event on menu toggle 1`] = `
+Array [
+  Array [
+    "intent-feedback-dropdown-open",
+    Object {
+      "account_domain": "acme",
+      "message_id": 1,
+      "ticket_id": undefined,
+      "user_id": 2,
+    },
+  ],
+]
+`;

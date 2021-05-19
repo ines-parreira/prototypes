@@ -11,6 +11,8 @@ import {useAsyncFn} from 'react-use'
 import {sendIntentFeedbackSuccess} from '../../../../../../state/ticket/actions'
 import Loader from '../../../../../common/components/Loader/Loader'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
+import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
+import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
 import {humanizeString} from '../../../../../../utils'
 import client from '../../../../../../models/api/resources'
 
@@ -18,12 +20,19 @@ import type {
     TicketMessage,
     TicketMessageIntent,
 } from '../../../../../../models/ticket/types'
+import type {RootState} from '../../../../../../state/types'
 import {notify} from '../../../../../../state/notifications/actions'
 
 import {Messages} from './constants'
 import {IntentsFeedbackDropdown} from './IntentsFeedbackDropdown'
 import {ActiveIntentItem} from './ActiveIntentItem'
 import {AvailableIntentItem} from './AvailableIntentItem'
+import {
+    UserSubmissionSubEventProps,
+    UserSubmissionSubEventType,
+    logUserSubmissionEvent,
+    logDropdownOpenEvent,
+} from './intentsFeedbackSegmentEvents'
 
 type OwnProps = {
     message: TicketMessage
@@ -31,6 +40,8 @@ type OwnProps = {
 }
 
 export const IntentsFeedbackContainer = ({
+    account,
+    user,
     message,
     notify,
     sendIntentFeedbackSuccess,
@@ -66,6 +77,10 @@ export const IntentsFeedbackContainer = ({
         string[]
     >(isFirstCuration ? activeIntentsNames : [])
 
+    const [segmentSubEvents, setSegmentSubEvents] = useState<
+        UserSubmissionSubEventProps[]
+    >([])
+
     const intentURI = `/api/tickets/${ticketId}/messages/${messageId}/intents/`
 
     const hasUnsavedIntents = useMemo((): boolean => {
@@ -80,20 +95,36 @@ export const IntentsFeedbackContainer = ({
         return isFirstCuration ? hasConfirmed || hasChanged : hasChanged
     }, [intents, activeIntentsNames, confirmableIntentsNames])
 
+    const trackFeedbackSubmission = (nextState: string[]) => {
+        logUserSubmissionEvent({
+            account_domain: account.get('domain'),
+            user_id: user.get('id'),
+            ticket_id: message.ticket_id!,
+            message_id: message.id!,
+            is_first_curation: isFirstCuration,
+            previous_state: messageIntentNames,
+            next_state: nextState,
+            sub_events: segmentSubEvents,
+        })
+        setSegmentSubEvents([])
+    }
+
     const [{loading}, sendFeedback] = useAsyncFn(async () => {
         let payload = activeIntentsNames
+        const addedIntents = _difference(
+            activeIntentsNames,
+            intents.map((intent) => intent.name)
+        )
+
         if (isFirstCuration) {
             const confirmed = _difference(
                 intents.map((intent) => intent.name),
                 confirmableIntentsNames
             )
-            const added = _difference(
-                activeIntentsNames,
-                intents.map((intent) => intent.name)
-            )
+
             payload =
                 confirmed.length > 0
-                    ? [...confirmed, ...added]
+                    ? [...confirmed, ...addedIntents]
                     : activeIntentsNames
         }
 
@@ -103,6 +134,9 @@ export const IntentsFeedbackContainer = ({
                 {active_intents: payload}
             )
             const {intents} = resp.data
+            const newIntents = getIntentsFromMessage(intents)
+            trackFeedbackSubmission(newIntents)
+
             void sendIntentFeedbackSuccess({
                 messageId: message.id as number,
                 intents,
@@ -111,7 +145,7 @@ export const IntentsFeedbackContainer = ({
                 message: Messages.NOTIFICATION_SUCCESS,
                 status: NotificationStatus.Success,
             })
-            setActiveIntentsNames(getIntentsFromMessage(intents))
+            setActiveIntentsNames(newIntents)
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>
             if (response) {
@@ -139,15 +173,34 @@ export const IntentsFeedbackContainer = ({
         )
     }
 
-    const removeIntent = (name: string) =>
+    const removeIntent = (name: string) => {
         setActiveIntentsNames(
             activeIntentsNames.filter((intent) => intent !== name)
         )
+        setSegmentSubEvents([
+            ...segmentSubEvents,
+            {
+                event_type: UserSubmissionSubEventType.REMOVE_INTENT,
+                intent: name,
+            },
+        ])
+    }
 
     const toggle = (isOpen: boolean) => {
+        if (isOpen) {
+            logDropdownOpenEvent({
+                account_domain: account.get('domain'),
+                user_id: user.get('id'),
+                ticket_id: message.ticket_id!,
+                message_id: message.id!,
+            })
+        }
+
         if (!isOpen && hasUnsavedIntents) {
             void sendFeedback()
         }
+
+        setSegmentSubEvents([])
     }
 
     const numActiveIntents = activeIntentsNames.length
@@ -186,7 +239,17 @@ export const IntentsFeedbackContainer = ({
                             !confirmableIntentsNames.includes(intentName) ||
                             !isFirstCuration
                         }
-                        onConfirm={addIntent}
+                        onConfirm={(name) => {
+                            addIntent(name)
+                            setSegmentSubEvents([
+                                ...segmentSubEvents,
+                                {
+                                    event_type:
+                                        UserSubmissionSubEventType.CONFIRM_INTENT,
+                                    intent: name,
+                                },
+                            ])
+                        }}
                         onReject={removeIntent}
                         tooltipContainer={`intent-tooltip-${message.id!}`}
                     />
@@ -202,7 +265,17 @@ export const IntentsFeedbackContainer = ({
                             label: humanizeString(intentName),
                             description: allIntents[intentName],
                         }}
-                        onConfirm={addIntent}
+                        onConfirm={(name) => {
+                            addIntent(name)
+                            setSegmentSubEvents([
+                                ...segmentSubEvents,
+                                {
+                                    event_type:
+                                        UserSubmissionSubEventType.ADD_INTENT,
+                                    intent: name,
+                                },
+                            ])
+                        }}
                         isDisabled={numActiveIntents >= 3}
                         tooltipContainer={`intent-tooltip-${message.id!}`}
                     />
@@ -214,7 +287,14 @@ export const IntentsFeedbackContainer = ({
     )
 }
 
-const connector = connect(null, {
+const mapPropsToState = (state: RootState) => {
+    return {
+        user: getCurrentUser(state),
+        account: getCurrentAccountState(state),
+    }
+}
+
+const connector = connect(mapPropsToState, {
     sendIntentFeedbackSuccess,
     notify,
 })
