@@ -608,7 +608,6 @@ exports[`ViewTable::Header search view 1`] = `
           close
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="leave-search-mode"
         >

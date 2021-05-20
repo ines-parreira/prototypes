@@ -11,7 +11,7 @@ import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 
 import css from './Header.less'
 import Meta from './Meta'
-import Source from './Source'
+import Source from './Source.tsx'
 import SourceDetailsHeader from './SourceDetailsHeader'
 import Intents from './IntentsFeedback/IntentsFeedback.tsx'
 

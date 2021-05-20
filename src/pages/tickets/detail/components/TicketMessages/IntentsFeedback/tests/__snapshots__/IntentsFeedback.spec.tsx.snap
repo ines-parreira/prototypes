@@ -77,15 +77,12 @@ exports[`<IntentsFeedback /> First curation should display a confirmed icon on c
         class="header"
       >
         Message intents
-        <span
+        <i
+          class="material-icons ml-2 info"
           id="intent-info-1"
         >
-          <i
-            class="material-icons ml-2 info"
-          >
-            info_outline
-          </i>
-        </span>
+          info_outline
+        </i>
       </div>
       <div
         class="options"
@@ -105,15 +102,12 @@ exports[`<IntentsFeedback /> First curation should display a confirmed icon on c
             <span
               class="info"
             >
-              <span
+              <i
+                class="material-icons mr-2 confirmedInfo"
                 id="foo-intent-1-info"
               >
-                <i
-                  class="material-icons mr-2 confirmedInfo"
-                >
-                  check_circle_outline
-                </i>
-              </span>
+                check_circle_outline
+              </i>
             </span>
             <span
               class="action"
@@ -252,17 +246,14 @@ exports[`<IntentsFeedback /> First curation should display a confirmed icon on c
               class="action"
             >
               <span
+                class="dropdownButton"
                 id="add-other-intent-1"
               >
-                <span
-                  class="dropdownButton"
+                <i
+                  class="icon material-icons"
                 >
-                  <i
-                    class="icon material-icons"
-                  >
-                    add
-                  </i>
-                </span>
+                  add
+                </i>
               </span>
             </span>
             <span
@@ -321,15 +312,12 @@ exports[`<IntentsFeedback /> First curation should render active and available i
         class="header"
       >
         Message intents
-        <span
+        <i
+          class="material-icons ml-2 info"
           id="intent-info-1"
         >
-          <i
-            class="material-icons ml-2 info"
-          >
-            info_outline
-          </i>
-        </span>
+          info_outline
+        </i>
       </div>
       <div
         class="options"
@@ -495,17 +483,14 @@ exports[`<IntentsFeedback /> First curation should render active and available i
               class="action"
             >
               <span
+                class="dropdownButton"
                 id="add-other-intent-1"
               >
-                <span
-                  class="dropdownButton"
+                <i
+                  class="icon material-icons"
                 >
-                  <i
-                    class="icon material-icons"
-                  >
-                    add
-                  </i>
-                </span>
+                  add
+                </i>
               </span>
             </span>
             <span
@@ -565,15 +550,12 @@ exports[`<IntentsFeedback /> Further curation should add an intent on click add 
           class="header"
         >
           Message intents
-          <span
+          <i
+            class="material-icons ml-2 info"
             id="intent-info-1"
           >
-            <i
-              class="material-icons ml-2 info"
-            >
-              info_outline
-            </i>
-          </span>
+            info_outline
+          </i>
         </div>
         <div
           class="options"
@@ -593,15 +575,12 @@ exports[`<IntentsFeedback /> Further curation should add an intent on click add 
               <span
                 class="info"
               >
-                <span
+                <i
+                  class="material-icons mr-2 confirmedInfo"
                   id="bar-intent-1-info"
                 >
-                  <i
-                    class="material-icons mr-2 confirmedInfo"
-                  >
-                    check_circle_outline
-                  </i>
-                </span>
+                  check_circle_outline
+                </i>
               </span>
               <span
                 class="action"
@@ -638,15 +617,12 @@ exports[`<IntentsFeedback /> Further curation should add an intent on click add 
               <span
                 class="info"
               >
-                <span
+                <i
+                  class="material-icons mr-2 confirmedInfo"
                   id="foo-intent-1-info"
                 >
-                  <i
-                    class="material-icons mr-2 confirmedInfo"
-                  >
-                    check_circle_outline
-                  </i>
-                </span>
+                  check_circle_outline
+                </i>
               </span>
               <span
                 class="action"
@@ -697,17 +673,14 @@ exports[`<IntentsFeedback /> Further curation should add an intent on click add 
                 class="action"
               >
                 <span
+                  class="dropdownButton"
                   id="add-baz-intent-1"
                 >
-                  <span
-                    class="dropdownButton"
+                  <i
+                    class="icon material-icons"
                   >
-                    <i
-                      class="icon material-icons"
-                    >
-                      add
-                    </i>
-                  </span>
+                    add
+                  </i>
                 </span>
               </span>
               <span
@@ -736,17 +709,14 @@ exports[`<IntentsFeedback /> Further curation should add an intent on click add 
                 class="action"
               >
                 <span
+                  class="dropdownButton"
                   id="add-other-intent-1"
                 >
-                  <span
-                    class="dropdownButton"
+                  <i
+                    class="icon material-icons"
                   >
-                    <i
-                      class="icon material-icons"
-                    >
-                      add
-                    </i>
-                  </span>
+                    add
+                  </i>
                 </span>
               </span>
               <span
@@ -807,15 +777,12 @@ exports[`<IntentsFeedback /> Further curation should remove an intent on click r
           class="header"
         >
           Message intents
-          <span
+          <i
+            class="material-icons ml-2 info"
             id="intent-info-1"
           >
-            <i
-              class="material-icons ml-2 info"
-            >
-              info_outline
-            </i>
-          </span>
+            info_outline
+          </i>
         </div>
         <div
           class="options"
@@ -849,17 +816,14 @@ exports[`<IntentsFeedback /> Further curation should remove an intent on click r
                 class="action"
               >
                 <span
+                  class="dropdownButton"
                   id="add-foo-intent-1"
                 >
-                  <span
-                    class="dropdownButton"
+                  <i
+                    class="icon material-icons"
                   >
-                    <i
-                      class="icon material-icons"
-                    >
-                      add
-                    </i>
-                  </span>
+                    add
+                  </i>
                 </span>
               </span>
               <span
@@ -888,17 +852,14 @@ exports[`<IntentsFeedback /> Further curation should remove an intent on click r
                 class="action"
               >
                 <span
+                  class="dropdownButton"
                   id="add-bar-intent-1"
                 >
-                  <span
-                    class="dropdownButton"
+                  <i
+                    class="icon material-icons"
                   >
-                    <i
-                      class="icon material-icons"
-                    >
-                      add
-                    </i>
-                  </span>
+                    add
+                  </i>
                 </span>
               </span>
               <span
@@ -927,17 +888,14 @@ exports[`<IntentsFeedback /> Further curation should remove an intent on click r
                 class="action"
               >
                 <span
+                  class="dropdownButton"
                   id="add-baz-intent-1"
                 >
-                  <span
-                    class="dropdownButton"
+                  <i
+                    class="icon material-icons"
                   >
-                    <i
-                      class="icon material-icons"
-                    >
-                      add
-                    </i>
-                  </span>
+                    add
+                  </i>
                 </span>
               </span>
               <span
@@ -966,17 +924,14 @@ exports[`<IntentsFeedback /> Further curation should remove an intent on click r
                 class="action"
               >
                 <span
+                  class="dropdownButton"
                   id="add-other-intent-1"
                 >
-                  <span
-                    class="dropdownButton"
+                  <i
+                    class="icon material-icons"
                   >
-                    <i
-                      class="icon material-icons"
-                    >
-                      add
-                    </i>
-                  </span>
+                    add
+                  </i>
                 </span>
               </span>
               <span
@@ -1036,15 +991,12 @@ exports[`<IntentsFeedback /> Further curation should render active and available
         class="header"
       >
         Message intents
-        <span
+        <i
+          class="material-icons ml-2 info"
           id="intent-info-1"
         >
-          <i
-            class="material-icons ml-2 info"
-          >
-            info_outline
-          </i>
-        </span>
+          info_outline
+        </i>
       </div>
       <div
         class="options"
@@ -1064,15 +1016,12 @@ exports[`<IntentsFeedback /> Further curation should render active and available
             <span
               class="info"
             >
-              <span
+              <i
+                class="material-icons mr-2 confirmedInfo"
                 id="foo-intent-1-info"
               >
-                <i
-                  class="material-icons mr-2 confirmedInfo"
-                >
-                  check_circle_outline
-                </i>
-              </span>
+                check_circle_outline
+              </i>
             </span>
             <span
               class="action"
@@ -1123,17 +1072,14 @@ exports[`<IntentsFeedback /> Further curation should render active and available
               class="action"
             >
               <span
+                class="dropdownButton"
                 id="add-bar-intent-1"
               >
-                <span
-                  class="dropdownButton"
+                <i
+                  class="icon material-icons"
                 >
-                  <i
-                    class="icon material-icons"
-                  >
-                    add
-                  </i>
-                </span>
+                  add
+                </i>
               </span>
             </span>
             <span
@@ -1162,17 +1108,14 @@ exports[`<IntentsFeedback /> Further curation should render active and available
               class="action"
             >
               <span
+                class="dropdownButton"
                 id="add-baz-intent-1"
               >
-                <span
-                  class="dropdownButton"
+                <i
+                  class="icon material-icons"
                 >
-                  <i
-                    class="icon material-icons"
-                  >
-                    add
-                  </i>
-                </span>
+                  add
+                </i>
               </span>
             </span>
             <span
@@ -1201,17 +1144,14 @@ exports[`<IntentsFeedback /> Further curation should render active and available
               class="action"
             >
               <span
+                class="dropdownButton"
                 id="add-other-intent-1"
               >
-                <span
-                  class="dropdownButton"
+                <i
+                  class="icon material-icons"
                 >
-                  <i
-                    class="icon material-icons"
-                  >
-                    add
-                  </i>
-                </span>
+                  add
+                </i>
               </span>
             </span>
             <span

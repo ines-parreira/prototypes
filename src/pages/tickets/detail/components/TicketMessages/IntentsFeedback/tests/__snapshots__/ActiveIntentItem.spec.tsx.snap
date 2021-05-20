@@ -57,15 +57,12 @@ exports[`<ActiveIntentItem/> should display active intent item with the confirme
     <span
       class="info"
     >
-      <span
+      <i
+        class="material-icons mr-2 confirmedInfo"
         id="discount-request-1-info"
       >
-        <i
-          class="material-icons mr-2 confirmedInfo"
-        >
-          check_circle_outline
-        </i>
-      </span>
+        check_circle_outline
+      </i>
     </span>
     <span
       class="action"

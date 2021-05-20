@@ -2,9 +2,9 @@ import React, {ReactNode, useState} from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import classnames from 'classnames'
 
-import {TooltipWrapper} from './TooltipWrapper'
-import {Messages} from './constants'
+import Tooltip from '../../../../../common/components/Tooltip'
 
+import {Messages} from './constants'
 import css from './IntentsFeedbackDropdown.less'
 
 export const IntentsFeedbackDropdown = ({
@@ -51,21 +51,24 @@ export const IntentsFeedbackDropdown = ({
                 <DropdownMenu className={css.menu} right>
                     <div className={classnames(css.header)}>
                         Message intents
-                        <TooltipWrapper
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                'ml-2',
+                                css.info
+                            )}
                             id={`intent-info-${messageId}`}
-                            tooltipContainer={tooltipContainer}
-                            message={Messages.TOOLTIP_HEADER_INFO}
                         >
-                            <i
-                                className={classnames(
-                                    'material-icons',
-                                    'ml-2',
-                                    css.info
-                                )}
-                            >
-                                info_outline
-                            </i>
-                        </TooltipWrapper>
+                            info_outline
+                        </i>
+                        <Tooltip
+                            className={css.headerTooltip}
+                            target={`intent-info-${messageId}`}
+                            container={tooltipContainer}
+                            fade={false}
+                        >
+                            {Messages.TOOLTIP_HEADER_INFO}
+                        </Tooltip>
                     </div>
                     <div className={css.options}>
                         <DropdownItem

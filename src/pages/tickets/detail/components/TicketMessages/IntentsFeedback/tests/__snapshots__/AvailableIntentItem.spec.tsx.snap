@@ -14,17 +14,14 @@ exports[`<AvailableIntentItem/> should display the available intent with an disa
       class="action"
     >
       <span
+        class="dropdownButton"
         id="add-discount-request-1"
       >
-        <span
-          class="dropdownButton"
+        <i
+          class="icon material-icons"
         >
-          <i
-            class="icon material-icons"
-          >
-            add
-          </i>
-        </span>
+          add
+        </i>
       </span>
     </span>
     <span
@@ -56,17 +53,14 @@ exports[`<AvailableIntentItem/> should display the available intent with an enab
       class="action"
     >
       <span
+        class="dropdownButton"
         id="add-discount-request-1"
       >
-        <span
-          class="dropdownButton"
+        <i
+          class="icon material-icons"
         >
-          <i
-            class="icon material-icons"
-          >
-            add
-          </i>
-        </span>
+          add
+        </i>
       </span>
     </span>
     <span

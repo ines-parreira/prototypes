@@ -3,10 +3,10 @@ import React from 'react'
 
 import type {Option} from '../../../../../common/components/RichDropdown/types'
 
-import {TooltipWrapper} from './TooltipWrapper'
+import Tooltip from '../../../../../common/components/Tooltip'
+
 import {Messages} from './constants'
 import {DropdownOptionItem} from './DropdownOptionItem'
-
 import {DropdownOptionButton} from './DropdownOptionButton'
 
 type Props = {
@@ -34,14 +34,16 @@ export const AvailableIntentItem = ({
             hoverable={true}
             renderAction={() => {
                 return (
-                    <TooltipWrapper
-                        id={buttonId}
-                        tooltipContainer={tooltipContainer}
-                        message={Messages.TOOLTIP_DISABLED_ADD_INFO}
-                        show={isDisabled}
-                    >
-                        <DropdownOptionButton icon="add" />
-                    </TooltipWrapper>
+                    <>
+                        <DropdownOptionButton id={buttonId} icon="add" />
+                        <Tooltip
+                            target={buttonId}
+                            disabled={!isDisabled}
+                            container={tooltipContainer}
+                        >
+                            {Messages.TOOLTIP_DISABLED_ADD_INFO}
+                        </Tooltip>
+                    </>
                 )
             }}
         />

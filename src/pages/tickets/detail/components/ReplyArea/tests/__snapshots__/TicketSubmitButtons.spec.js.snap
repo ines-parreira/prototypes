@@ -56,7 +56,6 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
       close
     </i>
     <Tooltip
-      delay={0}
       placement="top"
       target="hide-helpers-button"
     >

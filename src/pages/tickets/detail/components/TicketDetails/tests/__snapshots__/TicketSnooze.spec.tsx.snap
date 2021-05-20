@@ -14,7 +14,7 @@ exports[`<TicketSnooze/> rendering should render an icon with a tooltip 1`] = `
   </div>
   <div>
     <div
-      class="fade"
+      class="tooltip fade"
     >
       <div
         class="tooltip show bs-tooltip-auto"

@@ -116,7 +116,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
               help
             </i>
             <Tooltip
-              delay={0}
               placement="top"
               target="merge-primary-email"
             >
@@ -201,7 +200,6 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
               help
             </i>
             <Tooltip
-              delay={0}
               placement="top"
               target="merge-contact-info"
             >

@@ -3,11 +3,10 @@ import React from 'react'
 import classnames from 'classnames'
 
 import type {Option} from '../../../../../common/components/RichDropdown/types'
+import Tooltip from '../../../../../common/components/Tooltip'
 
-import {TooltipWrapper} from './TooltipWrapper'
 import {Messages} from './constants'
 import {DropdownOptionItem} from './DropdownOptionItem'
-
 import css from './ActiveIntentItem.less'
 import {DropdownOptionButton} from './DropdownOptionButton'
 
@@ -37,21 +36,24 @@ export const ActiveIntentItem = ({
             renderInfo={() => {
                 return (
                     isConfirmed && (
-                        <TooltipWrapper
-                            id={infoId}
-                            tooltipContainer={tooltipContainer}
-                            message={Messages.TOOLTIP_CONFIRMED_INFO}
-                        >
+                        <>
                             <i
                                 className={classnames(
                                     'material-icons',
                                     'mr-2',
                                     css.confirmedInfo
                                 )}
+                                id={infoId}
                             >
                                 check_circle_outline
                             </i>
-                        </TooltipWrapper>
+                            <Tooltip
+                                target={infoId}
+                                container={tooltipContainer}
+                            >
+                                {Messages.TOOLTIP_CONFIRMED_INFO}
+                            </Tooltip>
+                        </>
                     )
                 )
             }}

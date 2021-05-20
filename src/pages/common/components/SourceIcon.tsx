@@ -11,6 +11,7 @@ import {
 type Props = {
     type?: SourceType
     className?: string
+    id?: string
 }
 
 const sourceTypeToIcon = (

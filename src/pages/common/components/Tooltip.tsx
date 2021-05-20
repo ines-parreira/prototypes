@@ -1,36 +1,36 @@
-import React, {ReactNode, Component} from 'react'
+import classnames from 'classnames'
+import React, {ReactNode} from 'react'
 import {UncontrolledTooltip, UncontrolledTooltipProps} from 'reactstrap'
 
 import {isTouchDevice} from '../utils/mobile.js'
 
+import css from './Tooltip.less'
+
 type Props = {
     children: ReactNode
-    delay: number | {show: number; hide: number}
+    delay?: number | {show: number; hide: number}
     disabled?: boolean
 } & Pick<UncontrolledTooltipProps, KnownKeys<UncontrolledTooltipProps>>
 
-type ExtraProps = {
-    isOpen?: boolean
-}
-
-export default class Tooltip extends Component<Props> {
-    static defaultProps: Pick<Props, 'delay'> = {
-        // fix tap-twice on buttons with tooltips bug, on iOS
-        delay: isTouchDevice() ? 200 : 0,
+export default function Tooltip({
+    children,
+    className,
+    // delay default fix tap-twice on buttons with tooltips bug, on iOS
+    delay = isTouchDevice() ? 200 : 0,
+    disabled = false,
+    ...rest
+}: Props) {
+    if (disabled) {
+        return null
     }
 
-    render() {
-        const {children, ...rest} = this.props
-
-        const extraProps: ExtraProps = {}
-        if (this.props.disabled) {
-            extraProps.isOpen = false
-        }
-
-        return (
-            <UncontrolledTooltip {...rest} {...extraProps}>
-                {children}
-            </UncontrolledTooltip>
-        )
-    }
+    return (
+        <UncontrolledTooltip
+            className={classnames(css.tooltip, className)}
+            {...rest}
+            delay={delay}
+        >
+            {children}
+        </UncontrolledTooltip>
+    )
 }

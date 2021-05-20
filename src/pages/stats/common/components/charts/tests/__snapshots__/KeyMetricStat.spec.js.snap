@@ -20,7 +20,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-tickets_created"
         >
@@ -56,7 +55,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
             %
           </span>
           <Tooltip
-            delay={0}
             placement="top"
             target="value-tickets_created"
           >
@@ -82,7 +80,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-tickets_converted"
         >
@@ -118,7 +115,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
             %
           </span>
           <Tooltip
-            delay={0}
             placement="top"
             target="value-tickets_converted"
           >
@@ -144,7 +140,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-conversion_ratio"
         >
@@ -180,7 +175,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
             %
           </span>
           <Tooltip
-            delay={0}
             placement="top"
             target="value-conversion_ratio"
           >
@@ -206,7 +200,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total_sales_from_support"
         >
@@ -242,7 +235,6 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
             %
           </span>
           <Tooltip
-            delay={0}
             placement="top"
             target="value-total_sales_from_support"
           >
@@ -275,7 +267,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total-tickets-created"
         >
@@ -305,7 +296,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total-tickets-replied"
         >
@@ -335,7 +325,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total-tickets-closed"
         >
@@ -365,7 +354,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total-messages-sent"
         >
@@ -401,7 +389,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
             %
           </span>
           <Tooltip
-            delay={0}
             placement="top"
             target="value-total-messages-sent"
           />
@@ -425,7 +412,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total-messages-received"
         >
@@ -455,7 +441,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-median-first-response-time"
         >
@@ -485,7 +470,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-median-resolution-time"
         >
@@ -521,7 +505,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
             %
           </span>
           <Tooltip
-            delay={0}
             placement="top"
             target="value-median-resolution-time"
           >
@@ -547,7 +530,6 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total-one-touch-tickets"
         >
@@ -584,7 +566,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-total_sent"
         >
@@ -614,7 +595,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-response_rate"
         >
@@ -644,7 +624,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-average_rating"
         >
@@ -676,7 +655,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
               %
             </span>
             <Tooltip
-              delay={0}
               placement="top"
               target="value-average_rating"
             >
@@ -714,7 +692,6 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           info_outline
         </i>
         <Tooltip
-          delay={0}
           placement="top"
           target="title-response_distribution"
         >

@@ -36,7 +36,7 @@ export default class DeleteBlockStatementItem extends React.Component<Props> {
                 <i id={uniqueId} className="material-icons">
                     close
                 </i>
-                <Tooltip placement="top" target={uniqueId}>
+                <Tooltip placement="left" target={uniqueId}>
                     {label}
                 </Tooltip>
             </span>

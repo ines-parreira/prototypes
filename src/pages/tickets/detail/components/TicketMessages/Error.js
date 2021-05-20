@@ -155,7 +155,7 @@ class Error extends React.Component<Props, State> {
                         <i className="material-icons md-1 mr-2">cached</i>
                         Retry
                     </Button>
-                    <Tooltip placement="top" target={id}>
+                    <Tooltip placement="top" target={id} offset="0, 4px">
                         {retryTooltipMessage}
                     </Tooltip>
                 </span>
@@ -182,7 +182,7 @@ class Error extends React.Component<Props, State> {
                         </i>
                         Force
                     </Button>
-                    <Tooltip placement="top" target={id}>
+                    <Tooltip placement="top" target={id} offset="0, 4px">
                         Ignore failure, execute other actions and send the
                         message
                     </Tooltip>
@@ -209,7 +209,12 @@ class Error extends React.Component<Props, State> {
                         </i>
                         Cancel
                     </Button>
-                    <Tooltip placement="top" target={id}>
+                    <Tooltip
+                        boundariesElement="viewport"
+                        placement="top"
+                        target={id}
+                        offset="0, 4px"
+                    >
                         Delete the message and never send it
                     </Tooltip>
                 </span>

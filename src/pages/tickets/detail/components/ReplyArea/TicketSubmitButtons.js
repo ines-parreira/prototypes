@@ -127,7 +127,11 @@ export class TicketSubmitButtonsContainer extends React.Component {
                         Send
                     </ConfirmButton>
                     {!disabled && (
-                        <Tooltip placement="top" target="submit-button">
+                        <Tooltip
+                            placement="top"
+                            target="submit-button"
+                            offset="0, 4px"
+                        >
                             {shortcutManager.getActionKeys(
                                 keymap.TicketDetailContainer.actions
                                     .SUBMIT_TICKET
@@ -151,6 +155,7 @@ export class TicketSubmitButtonsContainer extends React.Component {
                         <Tooltip
                             placement="top"
                             target="submit-and-close-button"
+                            offset="0, 4px"
                         >
                             {shortcutManager.getActionKeys(
                                 keymap.TicketDetailContainer.actions

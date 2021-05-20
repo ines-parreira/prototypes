@@ -172,7 +172,6 @@ exports[`TableStat should render a table chart 1`] = `
               </span>
             </span>
             <Tooltip
-              delay={0}
               placement="top"
               target="difference-0"
             >

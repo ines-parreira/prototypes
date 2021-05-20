@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Source /> should render a source 1`] = `
+<div>
+  <span
+    class="clickable source"
+  >
+    <i
+      class="icon d-inline-block material-icons uncolored"
+      id="foo"
+    >
+      email
+    </i>
+  </span>
+</div>
+`;
+
+exports[`<Source /> should render the tooltip on hover 1`] = `
+<ul>
+  <li>
+    <span
+      class="text-faded"
+    >
+      From
+      : 
+    </span>
+    <strong>
+      Acme Support (zp7d01g9zorymjke@foo.gorgi.us)
+    </strong>
+  </li>
+  <li>
+    <span
+      class="text-faded"
+    >
+      To
+      : 
+    </span>
+    <strong>
+      Marie Curie (marïe@gorgias.io)
+    </strong>
+  </li>
+  <li>
+    <span
+      class="text-faded"
+    >
+      Cc
+      : 
+    </span>
+    <strong>
+      Marie Curie (marïe@gorgias.io), Gorgias Bot (support@acme.gorgias.io)
+    </strong>
+  </li>
+  <li>
+    <span
+      class="text-faded"
+    >
+      Send via: 
+    </span>
+    <strong>
+      email
+    </strong>
+  </li>
+  <li>
+    <span
+      class="text-faded"
+    >
+      Date: 
+    </span>
+    <strong>
+      <div>
+        Fri Dec 22 2017 00:00:00 GMT-0700
+      </div>
+    </strong>
+  </li>
+</ul>
+`;

@@ -14,21 +14,18 @@
 /* sourceDetails is in a popover
  */
 :local .details {
+    text-align: left;
     ul {
-        padding: 0.4em 0.8em;
+        padding: 0;
         margin: 0;
         list-style-type: none;
-
-        color: inherit;
     }
 
     li {
         line-height: 1.5em;
     }
+}
 
-    li strong {
-        margin-left: 0.4em;
-
-        color: @black;
-    }
+:local .tooltip :global .tooltip {
+    pointer-events: none;
 }

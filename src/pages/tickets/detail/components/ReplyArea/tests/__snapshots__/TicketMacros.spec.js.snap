@@ -23,7 +23,6 @@ exports[`TicketMacros component should display macros list, and selected macro 1
       Close
     </Button>
     <Tooltip
-      delay={0}
       placement="top"
       target="clear-macro-button"
     >
