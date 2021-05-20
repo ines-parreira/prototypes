@@ -12,6 +12,7 @@ import {
     Container,
     Row,
     Col,
+    FormGroup,
 } from 'reactstrap'
 import Clipboard from 'clipboard'
 
@@ -19,19 +20,24 @@ import * as integrationsSelectors from '../../../../../state/integrations/select
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 @connect((state) => {
+    const aircallAuthData = integrationsSelectors.getAuthData('aircall')(state)
+
     return {
-        webhookUrl: integrationsSelectors
-            .getAuthData('aircall')(state)
-            .get('webhook_url'),
+        webhookUrl: aircallAuthData.get('webhook_url'),
+        webhookUrlNew: aircallAuthData.get('webhook_url_new'),
+        showOldUrl: aircallAuthData.get('show_old_url'),
     }
 })
 export default class AircallIntegrationCreate extends Component {
     static propTypes = {
         webhookUrl: PropTypes.string.isRequired,
+        webhookUrlNew: PropTypes.string.isRequired,
+        showOldUrl: PropTypes.bool.isRequired,
     }
 
     state = {
         isCopied: false,
+        isCopiedNew: false,
     }
 
     componentDidMount() {
@@ -41,6 +47,15 @@ export default class AircallIntegrationCreate extends Component {
             this.setState({isCopied: true})
             setTimeout(() => {
                 this.setState({isCopied: false})
+            }, 1500)
+        })
+
+        const clipboardNew = new Clipboard('#copyWebhookUrlNew')
+
+        clipboardNew.on('success', () => {
+            this.setState({isCopiedNew: true})
+            setTimeout(() => {
+                this.setState({isCopiedNew: false})
             }, 1500)
         })
     }
@@ -100,29 +115,87 @@ export default class AircallIntegrationCreate extends Component {
                                     integration for each of your Aircall numbers
                                     when you will receive or make a call.
                                 </p>
-                                <label htmlFor="webhookUrl">Webhook url</label>
-                                <InputGroup>
-                                    <Input
-                                        id="webhookUrl"
-                                        type="text"
-                                        value={this.props.webhookUrl}
-                                        readOnly
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button
-                                            id="copyWebhookUrl"
-                                            color="primary"
-                                            data-clipboard-target="#webhookUrl"
-                                        >
-                                            <i className="material-icons mr-2">
-                                                file_copy
-                                            </i>
-                                            {this.state.isCopied
-                                                ? 'Copied!'
-                                                : 'Copy'}
-                                        </Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
+                                {this.props.showOldUrl && (
+                                    <FormGroup>
+                                        <label htmlFor="webhookUrl">
+                                            Webhook url
+                                            <span
+                                                className="alert alert-warning ml-4"
+                                                style={{
+                                                    padding: '4px 8px 4px 4px',
+                                                    fontSize: '12px',
+                                                }}
+                                            >
+                                                <span
+                                                    role="img"
+                                                    aria-label="warning"
+                                                >
+                                                    ⚠️ Deprecated
+                                                </span>
+                                            </span>
+                                        </label>
+                                        <InputGroup>
+                                            <Input
+                                                id="webhookUrl"
+                                                type="text"
+                                                value={this.props.webhookUrl}
+                                                readOnly
+                                            />
+                                            <InputGroupAddon addonType="append">
+                                                <Button
+                                                    id="copyWebhookUrl"
+                                                    color="primary"
+                                                    data-clipboard-target="#webhookUrl"
+                                                >
+                                                    <i className="material-icons mr-2">
+                                                        file_copy
+                                                    </i>
+                                                    {this.state.isCopied
+                                                        ? 'Copied!'
+                                                        : 'Copy'}
+                                                </Button>
+                                            </InputGroupAddon>
+                                        </InputGroup>
+                                    </FormGroup>
+                                )}
+                                <FormGroup>
+                                    <label htmlFor="webhookUrlNew">
+                                        Webhook URL
+                                        {this.props.showOldUrl && (
+                                            <span
+                                                className="alert alert-success ml-3"
+                                                style={{
+                                                    padding: '4px 8px 4px 4px',
+                                                    fontSize: '12px',
+                                                }}
+                                            >
+                                                Updated
+                                            </span>
+                                        )}
+                                    </label>
+                                    <InputGroup>
+                                        <Input
+                                            id="webhookUrlNew"
+                                            type="text"
+                                            value={this.props.webhookUrlNew}
+                                            readOnly
+                                        />
+                                        <InputGroupAddon addonType="append">
+                                            <Button
+                                                id="copyWebhookUrlNew"
+                                                color="primary"
+                                                data-clipboard-target="#webhookUrlNew"
+                                            >
+                                                <i className="material-icons mr-2">
+                                                    file_copy
+                                                </i>
+                                                {this.state.isCopiedNew
+                                                    ? 'Copied!'
+                                                    : 'Copy'}
+                                            </Button>
+                                        </InputGroupAddon>
+                                    </InputGroup>
+                                </FormGroup>
                             </div>
                             <Button
                                 color="success"

@@ -2,14 +2,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Table,
+    Button,
+    Container,
+    Alert,
+} from 'reactstrap'
 import {parse} from 'query-string'
+import moment from 'moment'
 
 import {getIntegrationConfig} from '../../../../state/integrations/helpers.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
+import {
+    SMOOCH_INSIDE_INTEGRATION_TYPE,
+    AIRCALL_INTEGRATION_TYPE,
+} from '../../../../constants/integration.ts'
 
 import NoIntegration from './NoIntegration'
 
@@ -61,6 +72,28 @@ class IntegrationList extends React.Component {
             this.props.createIntegrationButtonOnClick()
         }
         this.props.createIntegration()
+    }
+
+    displayAircallWebhookWarning = (integrationType, integrations) => {
+        if (integrationType !== AIRCALL_INTEGRATION_TYPE) {
+            return
+        }
+
+        const maxDate = moment('2021-05-20')
+
+        const olderIntegrations = integrations.filter((integration) => {
+            return moment(integration.get('created_datetime')).isBefore(maxDate)
+        })
+
+        if (olderIntegrations.size > 0) {
+            return (
+                <Alert color="warning">
+                    Due to security reasons, we updated the webhook URL for
+                    Aircall. Please update your integration by clicking ”Connect
+                    Aircall”.
+                </Alert>
+            )
+        }
     }
 
     componentWillMount() {
@@ -116,6 +149,10 @@ class IntegrationList extends React.Component {
 
                 <Container className="page-container" fluid>
                     <div className="mb-3">{longTypeDescription}</div>
+                    {this.displayAircallWebhookWarning(
+                        integrationType,
+                        integrations
+                    )}
 
                     {integrations.isEmpty() && (
                         <div className="mt-3">
