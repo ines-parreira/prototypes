@@ -894,7 +894,13 @@ exports[`<Plan/> should render the current plan 1`] = `
   >
     <div
       class="plan-badge"
-    />
+    >
+      <span
+        class="badge badge-primary"
+      >
+        CURRENT PLAN
+      </span>
+    </div>
     <div
       class="header-text"
     >

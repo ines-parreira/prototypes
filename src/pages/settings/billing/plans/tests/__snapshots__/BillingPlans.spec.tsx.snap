@@ -67,7 +67,13 @@ exports[`<BillingPlans/> should display current plan (custom plan) 1`] = `
         >
           <div
             class="plan-badge"
-          />
+          >
+            <span
+              class="badge badge-secondary"
+            >
+              CURRENT PLAN
+            </span>
+          </div>
           <div
             class="header-text"
           >
@@ -1994,7 +2000,13 @@ exports[`<BillingPlans/> should display current plan with available plans (publi
         >
           <div
             class="plan-badge"
-          />
+          >
+            <span
+              class="badge badge-primary"
+            >
+              CURRENT PLAN
+            </span>
+          </div>
           <div
             class="header-text"
           >
@@ -2603,7 +2615,13 @@ exports[`<BillingPlans/> should display current plan with available plans (with 
         >
           <div
             class="plan-badge"
-          />
+          >
+            <span
+              class="badge badge-primary"
+            >
+              CURRENT PLAN
+            </span>
+          </div>
           <div
             class="header-text"
           >

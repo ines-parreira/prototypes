@@ -1,6 +1,7 @@
 import classnames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
 import {
+    Badge,
     Button,
     Card,
     CardBody,
@@ -11,8 +12,9 @@ import {
     PopoverHeader,
 } from 'reactstrap'
 import _pickBy from 'lodash/pickBy'
+import type {Record} from 'immutable'
 
-import LegacyTag from '../../../common/components/LegacyPlanBadge.tsx'
+import LegacyPlanBadge from '../../../common/components/LegacyPlanBadge.tsx'
 import './Plan.less'
 import {openChat, toJS} from '../../../../utils.ts'
 import {hasLegacyPlan, isFeatureEnabled} from '../../../../utils/account.ts'
@@ -30,6 +32,7 @@ type Props = {
     isPopoverDisplayed?: boolean,
     isCurrentPlan?: boolean,
     comparaisonMode: boolean,
+    planColors?: Record<string, string>,
 }
 
 type FeatureDetail = {
@@ -191,19 +194,20 @@ const getFeatures = (
     return features
 }
 
-export function Plan(props: Props) {
-    const {
-        className,
-        plan,
-        cheaperPlan,
-        isUpdating,
-        currentAccount,
-        currentPlan,
-        isFeatured,
-        isPopoverDisplayed,
-        isCurrentPlan,
-        comparaisonMode,
-    } = props
+export function Plan({
+    className,
+    plan,
+    cheaperPlan,
+    isUpdating,
+    currentAccount,
+    currentPlan,
+    isFeatured,
+    isPopoverDisplayed,
+    isCurrentPlan,
+    comparaisonMode,
+    onClick,
+    planColors = {Pro: 'info', Advanced: 'success', Basic: 'primary'},
+}: Props) {
     const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
         isPopoverDisplayed
     )
@@ -261,8 +265,22 @@ export function Plan(props: Props) {
                 })}
             >
                 <div className="plan-badge">
-                    {isCurrentPlanLegacy && <LegacyTag />}
+                    {isCurrentPlan &&
+                        (isCurrentPlanLegacy ? (
+                            <LegacyPlanBadge />
+                        ) : (
+                            <Badge
+                                color={
+                                    isEnterprisePlan
+                                        ? 'warning'
+                                        : planColors[plan.get('name')]
+                                }
+                            >
+                                CURRENT PLAN
+                            </Badge>
+                        ))}
                 </div>
+
                 {isFeatured && plan.get('public') && (
                     <div className="featured-header-title">Most Popular</div>
                 )}
@@ -377,7 +395,7 @@ export function Plan(props: Props) {
                                             type="button"
                                             color="success"
                                             onClick={(event) => {
-                                                props.onClick(event)
+                                                onClick(event)
                                                 setIsConfirmationDisplayed(
                                                     false
                                                 )
