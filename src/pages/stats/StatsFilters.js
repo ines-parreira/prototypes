@@ -8,7 +8,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
 import {withRouter} from 'react-router-dom'
-import {DropdownItem} from 'reactstrap'
+import {DropdownItem, Button} from 'reactstrap'
 import {CancelToken} from 'axios'
 
 import {views as statViewsConfig} from '../../config/stats.tsx'
@@ -31,7 +31,7 @@ import {getTeams} from '../../state/teams/selectors.ts'
 
 import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
-import Popover from '../common/components/Popover.tsx'
+import PopoverModal from '../common/components/PopoverModal.tsx'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
 
 import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../state/integrations/constants'
@@ -330,19 +330,22 @@ const StatsFiltersContainer = ({
             config.get('description') ? (
                 <h1 className="align-items-center">
                     <span>{config.get('name')}</span>
-                    <Popover>
-                        <p>{config.get('description')}</p>
-                        <a
-                            href={config.get('url')}
-                            rel="noopener noreferrer"
-                            target="_blank"
+                    <PopoverModal className="ml-3" placement="bottom-start">
+                        <p className={css.learnMoreContent}>
+                            {config.get('description')}
+                        </p>
+                        <Button
+                            className={css.titleTooltipButton}
+                            color="secondary"
+                            type="button"
+                            onClick={() => {
+                                window.open(config.get('url'), '_blank').focus()
+                            }}
                         >
-                            {`Go to ${config
-                                .get('name')
-                                .toLowerCase()} documentation`}
-                        </a>
-                        .
-                    </Popover>
+                            Learn More{' '}
+                            <i className="material-icons">arrow_forward</i>
+                        </Button>
+                    </PopoverModal>
                 </h1>
             ) : (
                 config.get('name')

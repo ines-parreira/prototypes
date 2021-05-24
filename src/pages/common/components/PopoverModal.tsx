@@ -1,21 +1,26 @@
+import classnames from 'classnames'
 import React, {useRef, useState, ReactNode, RefObject} from 'react'
 import {
     Button,
-    Popover as ReactstrapPopover,
+    Popover,
     PopoverHeader,
     PopoverBody,
     PopoverProps,
 } from 'reactstrap'
 
+import css from './PopoverModal.less'
+
 type Props = {
+    className?: string
     header?: string
     placement?: PopoverProps['placement']
     buttonText?: string
     children: ReactNode
 }
 
-const Popover = ({
-    buttonText = 'Learn more',
+const PopoverModal = ({
+    className,
+    buttonText = 'Learn',
     header,
     placement = 'auto',
     children,
@@ -29,16 +34,25 @@ const Popover = ({
     return (
         <>
             <Button
+                className={classnames(css.wrapper, className)}
                 innerRef={ref}
-                color="link"
+                color="secondary"
                 type="button"
                 onClick={togglePopover}
             >
-                <i className="material-icons">info_outline</i>
-                <span className="ml-1">{buttonText}</span>
+                <div className={css.content}>
+                    <i className={classnames(css.icon, 'material-icons')}>
+                        info_outline
+                    </i>
+                    <span className={classnames(css.label, 'ml-1')}>
+                        {buttonText}
+                    </span>
+                </div>
             </Button>
+            {isOpen && <div className={css.backdrop} />}
             {ref.current && (
-                <ReactstrapPopover
+                <Popover
+                    className={css.popover}
                     trigger="legacy"
                     placement={placement}
                     isOpen={isOpen}
@@ -47,10 +61,10 @@ const Popover = ({
                 >
                     {header && <PopoverHeader>{header}</PopoverHeader>}
                     <PopoverBody>{children}</PopoverBody>
-                </ReactstrapPopover>
+                </Popover>
             )}
         </>
     )
 }
 
-export default Popover
+export default PopoverModal

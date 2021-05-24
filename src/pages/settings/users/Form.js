@@ -38,7 +38,7 @@ import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
 import {AccountFeature} from '../../../state/currentAccount/types.ts'
 import * as helpers from '../../../state/agents/helpers.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
-import Popover from '../../common/components/Popover.tsx'
+import PopoverModal from '../../common/components/PopoverModal.tsx'
 import history from '../../history.ts'
 
 import DeleteUser from './DeleteUser'
@@ -278,22 +278,29 @@ export default class Form extends Component<Props, State> {
                                 >
                                     Role
                                 </Label>
-                                <Popover>
-                                    <p>
+                                <PopoverModal className={css.learnMore}>
+                                    <p className={css.learnMoreContent}>
                                         User Roles will allow the store owner to
                                         restrict access to some parts of your
                                         Dashboard and actions that they can take
                                         within the dashboard.
                                     </p>
-                                    <a
-                                        href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                    <Button
+                                        className={css.learnMoreButton}
+                                        color="secondary"
+                                        type="button"
+                                        onClick={() => {
+                                            window
+                                                .open(
+                                                    'https://docs.gorgias.com/user/adding-team-members#user_permissions',
+                                                    '_blank'
+                                                )
+                                                .focus()
+                                        }}
                                     >
                                         Go to roles documentation
-                                    </a>
-                                    .
-                                </Popover>
+                                    </Button>
+                                </PopoverModal>
                             </div>
                         </RichDropdown>
                         {!hasUserRolesFeature && (

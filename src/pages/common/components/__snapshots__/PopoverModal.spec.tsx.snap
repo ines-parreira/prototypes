@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PopoverModal /> should render  1`] = `
+<button
+  class="wrapper btn btn-secondary"
+  type="button"
+>
+  <div
+    class="content"
+  >
+    <i
+      class="icon material-icons"
+    >
+      info_outline
+    </i>
+    <span
+      class="label ml-1"
+    >
+      Learn
+    </span>
+  </div>
+</button>
+`;
+
+exports[`<PopoverModal /> should render the popover modal on click 1`] = `
+<div
+  class="popover show bs-popover-auto"
+  style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
+  x-placement="top"
+>
+  <div
+    class="popover-inner"
+    role="tooltip"
+  >
+    <div
+      class="popover-body"
+    >
+      Foo
+    </div>
+  </div>
+  <span
+    class="arrow"
+  />
+</div>
+`;
