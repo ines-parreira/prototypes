@@ -56,31 +56,64 @@ export default class TimelineTicket extends Component<Props> {
                 tag="a"
                 href={`/app/ticket/${ticket.get('id') as string}`}
             >
-                <CardBody className={classnames(css.body, 'd-flex')}>
+                <CardBody
+                    className={classnames(
+                        css.body,
+                        'd-flex',
+                        'align-items-start'
+                    )}
+                >
                     <div className={css.meta}>
                         <StatusLabel
                             status={ticket.get('status')}
-                            // @ts-ignore remove after StatusLabel is migrated to TS
-                            className="mb-2 mr-2"
+                            // $TsFixMe: remove after StatusLabel is migrated to TS
+                            // @ts-ignore
+                            className={classnames(css.statusLabel)}
                         />
-                        <DatetimeLabel
-                            dateTime={ticket.get('created_datetime')}
-                            // @ts-ignore remove after StatusLabel is migrated to TS
-                            className="d-block mb-1"
-                        />
-                        {assigneeName && <AgentLabel name={assigneeName} />}
+                        {assigneeName ? (
+                            <AgentLabel
+                                name={assigneeName}
+                                className={css.assigneeLabel}
+                            />
+                        ) : (
+                            <div
+                                className={classnames(
+                                    css.assigneeLabel,
+                                    css.unassignedLabel
+                                )}
+                            >
+                                <span className="material-icons md-2">
+                                    error
+                                </span>
+                                <span>Unassigned</span>
+                            </div>
+                        )}
                     </div>
                     <div className={classnames(css.details)}>
-                        <SourceIcon
-                            type={ticket.get('channel')}
-                            className={classnames(css.icon, 'uncolored')}
-                        />
-                        <h5 className={classnames(css.subject, 'mb-1')}>
-                            {subject}
-                        </h5>
-                        <div className={classnames(css.excerpt, 'mb-2')}>
+                        <h5 className={css.subject}>{subject}</h5>
+                        <div className={css.excerpt}>
                             {ticket.get('excerpt')}
                         </div>
+                    </div>
+                    <div
+                        className={classnames(
+                            css.secondMeta,
+                            'd-flex',
+                            'align-items-center',
+                            'justify-content-end'
+                        )}
+                    >
+                        <DatetimeLabel
+                            dateTime={ticket.get('created_datetime')}
+                            breakDate
+                            // $TsFixMe: remove after DatetimeLabel is migrated to TS
+                            // @ts-ignore
+                            className={classnames(css.dateLabel)}
+                        />
+                        <SourceIcon
+                            type={ticket.get('channel')}
+                            className={classnames('uncolored', 'ml-3')}
+                        />
                     </div>
                 </CardBody>
             </Card>

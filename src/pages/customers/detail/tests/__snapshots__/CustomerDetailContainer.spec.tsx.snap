@@ -2,7 +2,7 @@
 
 exports[`<CustomerDetailContainer /> should display the customer and its history of messages 1`] = `
 <div
-  class="CustomerDetailContainer"
+  class="customerDetailContainer"
 >
   <div
     class="flex-spaced-row"
@@ -36,21 +36,18 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
         href="/app/ticket/152"
       >
         <div
-          class="body d-flex card-body"
+          class="body d-flex align-items-start card-body"
         >
           <div
             class="meta"
           >
             <span
-              class="mb-2 mr-2 badge badge-primary badge-pill"
+              class="statusLabel badge badge-primary badge-pill"
             >
               open
             </span>
-            <div>
-              DatetimeLabel
-            </div>
             <div
-              class="AgentLabel"
+              class="AgentLabel assigneeLabel"
             >
               <span
                 class="material-icons md-2"
@@ -67,19 +64,26 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
           <div
             class="details"
           >
-            <i
-              class="icon d-inline-block material-icons icon uncolored"
-            >
-              email
-            </i>
             <h5
-              class="subject mb-1"
+              class="subject"
             >
               Great ticket
             </h5>
             <div
-              class="excerpt mb-2"
+              class="excerpt"
             />
+          </div>
+          <div
+            class="secondMeta d-flex align-items-center justify-content-end"
+          >
+            <div>
+              DatetimeLabel
+            </div>
+            <i
+              class="icon d-inline-block material-icons uncolored ml-3"
+            >
+              email
+            </i>
           </div>
         </div>
       </a>

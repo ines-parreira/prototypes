@@ -22,6 +22,8 @@ import {
 import * as customersHelpers from '../../../state/customers/helpers'
 import {RootState} from '../../../state/types'
 
+import css from './CustomerDetailContainer.less'
+
 export const CustomerDetailContainer = ({
     activeCustomer,
     customerHistory,
@@ -56,7 +58,7 @@ export const CustomerDetailContainer = ({
     return shouldDisplayLoader ? (
         <Loader message="Loading customer..." />
     ) : (
-        <div className="CustomerDetailContainer">
+        <div className={css.customerDetailContainer}>
             <div className="flex-spaced-row">
                 <h1>{customersHelpers.getDisplayName(activeCustomer)}</h1>
 

@@ -344,4 +344,22 @@ describe('components utils : labels', () => {
             })
         })
     })
+
+    describe('<DatetimeLabel/>', () => {
+        describe('render()', () => {
+            it('should render with zero width space', () => {
+                const component = mount(
+                    <Provider
+                        store={mockStore({
+                            currentUser: fromJS({timezone: 'utc'}),
+                        })}
+                    >
+                        <labels.DatetimeLabel dateTime="2016-01-15" breakDate />
+                    </Provider>
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+        })
+    })
 })

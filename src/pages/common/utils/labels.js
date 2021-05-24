@@ -356,6 +356,7 @@ type DatetimeLabelProps = {
     dateTime?: string,
     labelFormat?: string,
     timezone?: string,
+    breakDate?: boolean,
     hasTooltip?: boolean,
 }
 
@@ -377,10 +378,14 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     }
 
     render() {
-        const {dateTime, labelFormat, timezone, hasTooltip, ...rest} = _omit(
-            this.props,
-            'dispatch'
-        )
+        const {
+            dateTime,
+            labelFormat,
+            timezone,
+            hasTooltip,
+            breakDate,
+            ...rest
+        } = _omit(this.props, 'dispatch')
 
         if (!dateTime) {
             return null
@@ -391,7 +396,14 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
 
         return (
             <span {...rest}>
-                <span id={this.id}>{labelDatetime}</span>
+                <span id={this.id}>
+                    {breakDate
+                        ? // u200B is the unicode character for 'ZERO WIDTH SPACE'
+                          // it is intended for invisible word separation and line break control
+                          // in this case it allows us to break the date at forward slashes
+                          labelDatetime.split('/').join('/\u200B')
+                        : labelDatetime}
+                </span>
                 {hasTooltip && (
                     <Tooltip
                         placement="top"

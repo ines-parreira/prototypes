@@ -2,7 +2,6 @@ import React, {FormEvent, useEffect, useMemo, useRef} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
 import {RootState} from '../../../../state/types'
@@ -291,16 +290,21 @@ export const TicketViewContainer = ({
         >
             {isHistoryDisplayed && (
                 <div className={classnames(css.timeline)}>
-                    <Button
-                        color="secondary"
-                        className="btn-transparent mb-2 font-weight-medium"
-                        onClick={handleHistoryToggle}
-                    >
-                        <i className="material-icons md-2 mr-2">close</i>
-                        Close ticket history
-                    </Button>
+                    <div className={css.timelineHeader}>
+                        <div
+                            className={classnames(
+                                css.closeTrigger,
+                                'd-flex',
+                                'align-items-center'
+                            )}
+                            onClick={handleHistoryToggle}
+                        >
+                            <i className="material-icons md-3 mr-3">close</i>
+                            <span>Customer Timeline</span>
+                        </div>
+                    </div>
 
-                    <div className="pb-4">
+                    <div className={classnames(css.timelineContainer, 'pb-4')}>
                         <Timeline
                             displayHistoryOnNextPage={displayHistoryOnNextPage}
                             currentTicketId={ticket.get('id')}

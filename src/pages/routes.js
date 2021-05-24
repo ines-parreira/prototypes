@@ -163,9 +163,7 @@ export function CustomerRoutes({match: {path}}: RouteComponentProps) {
                     content: CustomerDetailContainer,
                     navbar: CustomerNavbarContainer,
                     infobar: CustomerInfobarContainer,
-                    noContainerWidthLimit: true,
                     infobarOnMobile: true,
-                    containerPadding: true,
                 })}
             />
             <Route

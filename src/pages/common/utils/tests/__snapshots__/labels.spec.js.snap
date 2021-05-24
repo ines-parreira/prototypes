@@ -75,6 +75,55 @@ exports[`components utils : labels <AgentLabel/> render() should render the avat
 </div>
 `;
 
+exports[`components utils : labels <DatetimeLabel/> render() should render with zero width space 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(DatetimeLabel)
+    breakDate={true}
+    dateTime="2016-01-15"
+  >
+    <DatetimeLabel
+      breakDate={true}
+      dateTime="2016-01-15"
+      dispatch={[Function]}
+      hasTooltip={true}
+      timezone="utc"
+    >
+      <span>
+        <span
+          id="datetime-tooltip-"
+        >
+          01/​15/​2016
+        </span>
+        <TooltipMock
+          className="datetimeTooltip"
+          delay={
+            Object {
+              "hide": 0,
+              "show": 200,
+            }
+          }
+          placement="top"
+          target="datetime-tooltip-"
+        >
+          01/15/2016 12:00 AM
+        </TooltipMock>
+      </span>
+    </DatetimeLabel>
+  </Connect(DatetimeLabel)>
+</Provider>
+`;
+
 exports[`components utils : labels <TeamLabel/> render() should render with default avatar 1`] = `
 <div
   className="TeamLabel"
