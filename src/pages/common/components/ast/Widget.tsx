@@ -1,10 +1,11 @@
 import React, {Component, ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {List, Map} from 'immutable'
+import {List, Map, fromJS} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
+import _difference from 'lodash/difference'
 import {EditorState} from 'draft-js'
 
 import DatetimePicker from '../../../common/forms/DatetimePicker.js'
@@ -428,8 +429,17 @@ export class Widget extends Component<Props, State> {
             }
 
             if (right) {
-                const options = right.getIn(['meta', 'enum']) as List<any>
-                widget.options = options ? (options.toJS() as string[]) : []
+                const options: string[] = (right.getIn(
+                    ['meta', 'enum'],
+                    fromJS([])
+                ) as List<string>).toJS()
+
+                const hiddenOptions: string[] = (right.getIn(
+                    ['meta', 'rules', 'hidden_options'],
+                    fromJS([])
+                ) as List<string>).toJS()
+
+                widget.options = _difference(options, hiddenOptions)
                 widget.description = right.get('description')
             }
         }
