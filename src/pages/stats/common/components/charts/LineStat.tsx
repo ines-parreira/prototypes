@@ -1,43 +1,44 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component} from 'react'
+import {ChartOptions} from 'chart.js'
 import {Line} from 'react-chartjs-2'
 import moment from 'moment'
+import {Map, List} from 'immutable'
 
-import Legend from '../Legend'
+import Legend from '../Legend/Legend.js'
 import {
     colors as colorsConfig,
     chartMaxHeight,
     chartPointRadius,
-} from '../../../../../config/stats.tsx'
+} from '../../../../../config/stats'
 
-export default class LineStat extends React.Component {
-    static propTypes = {
-        data: PropTypes.object.isRequired,
-        legend: PropTypes.object.isRequired,
-        config: PropTypes.object.isRequired,
-        meta: PropTypes.object.isRequired,
-    }
+type Props = {
+    data: Map<any, any>
+    legend: Map<any, any>
+    config: Map<any, any>
+    meta: Map<any, any>
+}
 
+export default class LineStat extends Component<Props> {
     render() {
         const {data, config, legend, meta} = this.props
         const start = moment(meta.get('start_datetime'))
         const end = moment(meta.get('end_datetime'))
         const isOneDayPeriod =
             start.format('YYYY MM DD') === end.format('YYYY MM DD')
-        const datasets = data
-            .get('lines')
-            .map((line, index) => {
+        const datasets = (data.get('lines') as List<any>)
+            .map((line: Map<any, any>, index) => {
                 const lineName = line.get('name')
-                const {backgroundColor, label, ...lineConfig} = config
-                    .getIn(['lines', lineName])
-                    .toJS()
+                const {backgroundColor, label, ...lineConfig} = (config.getIn([
+                    'lines',
+                    lineName,
+                ]) as Map<any, any>).toJS() as Record<string, unknown>
 
-                const data = {
+                const data: Record<string, unknown> = {
                     label: label || lineName,
-                    backgroundColor: backgroundColor || colorsConfig[index],
+                    backgroundColor: backgroundColor || colorsConfig[index!],
                     cubicInterpolationMode: 'default',
                     lineTension: 0,
-                    data: line.get('data').toJS(),
+                    data: (line.get('data') as Map<any, any>).toJS(),
                     ...lineConfig,
                 }
 
@@ -49,8 +50,8 @@ export default class LineStat extends React.Component {
             })
             .toArray()
         const legendLabels = datasets.map((dataset) => ({
-            name: dataset.label,
-            background: dataset.backgroundColor,
+            name: dataset.label as string,
+            background: dataset.backgroundColor as string,
         }))
 
         return (
@@ -66,10 +67,14 @@ export default class LineStat extends React.Component {
                     <Line
                         height={chartMaxHeight}
                         data={{
-                            labels: data.getIn(['axes', 'x']).toJS(),
+                            labels: (data.getIn(['axes', 'x']) as List<
+                                any
+                            >).toJS(),
                             datasets: datasets,
                         }}
-                        options={config.get('options')(legend)}
+                        options={(config.get('options') as (
+                            legend: Map<any, any>
+                        ) => ChartOptions)(legend)}
                     />
                 </div>
             </div>

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RevenueStats /> should render a stats component 1`] = `StatsComponent`;
+
+exports[`<RevenueStats /> should render restricted feature when missing integrations 1`] = `
+<div
+  class="col mt-2"
+>
+  <div
+    class="alert alert-danger fade"
+    role="alert"
+  >
+    Your e-commerce store needs to be connected to Gorgias to use this feature.
+    <a
+      to="/app/settings/integrations/shopify/new"
+    >
+       
+      Add one here
+    </a>
+  </div>
+  <p>
+    Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.
+  </p>
+  <div
+    class="carouselContainer"
+  >
+    <div
+      class="slick-initialized slick-slider  unslicked"
+    >
+      
+      <div
+        class="slick-list"
+      >
+        <div
+          class="slick-track"
+          style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+        >
+          <div
+            class="slick-slide slick-active slick-current carouselContent"
+            data-index="0"
+            style="outline: none; width: 0px;"
+            tabindex="-1"
+          >
+            <a
+              href="/static/private/img/presentationals/revenue-presentation.png"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="carousel content"
+                src="/static/private/img/presentationals/revenue-presentation.png"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+`;

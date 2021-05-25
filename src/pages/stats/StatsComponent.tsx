@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Stats from './Stats.js'
+import Stats from './Stats'
 import StatsFilters from './StatsFilters.js'
 
 export default function StatsComponentContainer() {

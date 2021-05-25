@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LineStat should render a line chart 1`] = `
+<div>
+  <div
+    class="mb-4"
+  >
+    <div
+      class="legends"
+    >
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="circle mr-2"
+          style="background: rgb(255, 181, 132);"
+        />
+        median
+      </span>
+      <span
+        class="label mr-4 mb-2"
+      >
+        <span
+          class="circle mr-2"
+          style="background: rgb(255, 107, 128);"
+        />
+        90%
+      </span>
+    </div>
+  </div>
+  <div>
+    <canvas
+      height="360"
+      width="300"
+    />
+  </div>
+</div>
+`;

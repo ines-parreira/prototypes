@@ -4,7 +4,7 @@ import {render} from '@testing-library/react'
 import StatsComponent from '../StatsComponent'
 
 jest.mock('../StatsFilters.js', () => () => 'StatsFilters')
-jest.mock('../Stats.js', () => () => 'Stats')
+jest.mock('../Stats', () => () => 'Stats')
 
 describe('<StatsComponent />', () => {
     it('should render', () => {

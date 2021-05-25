@@ -1,20 +1,18 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
-
+import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
-
 import axios from 'axios'
 
 import {StatsContainer} from '../Stats'
-import {views as statsViewsConfig} from '../../../config/stats.tsx'
-import {firstResponseTimeStat} from '../../../fixtures/stats'
+import {views as statsViewsConfig} from '../../../config/stats'
+import {firstResponseTimeStat} from '../../../fixtures/stats.js'
 
-jest.mock('lodash/debounce', () => (fn) => () => fn())
+jest.mock('lodash/debounce', () => (fn: () => void) => () => fn())
 
 describe('<Stats/>', () => {
     const channelsStatView = statsViewsConfig.getIn(['channels', 'link'])
-    const defaultProps = {
+    const defaultProps = ({
         notify: jest.fn(),
         filters: fromJS({
             period: {
@@ -22,9 +20,9 @@ describe('<Stats/>', () => {
                 end_datetime: '2019-03-10',
             },
         }),
-    }
+    } as unknown) as ComponentProps<typeof StatsContainer>
 
-    let apiMock = null
+    let apiMock: MockAdapter
 
     beforeEach(() => {
         apiMock = new MockAdapter(axios)
@@ -42,7 +40,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
             const component = componentWrapper.instance()
@@ -63,7 +61,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
             const component = componentWrapper.instance()
@@ -71,7 +69,11 @@ describe('<Stats/>', () => {
                 expect(component.state).toMatchSnapshot(
                     'stats should be marked as not loading'
                 )
-                expect(defaultProps.notify.mock.calls).toMatchSnapshot()
+                expect(
+                    (defaultProps.notify as jest.MockedFunction<
+                        typeof defaultProps.notify
+                    >).mock.calls
+                ).toMatchSnapshot()
                 done()
             })
         })
@@ -82,7 +84,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
             const component = componentWrapper.instance()
@@ -90,7 +92,11 @@ describe('<Stats/>', () => {
                 expect(component.state).toMatchSnapshot(
                     'stats should be marked as not loading'
                 )
-                expect(defaultProps.notify.mock.calls).toMatchSnapshot()
+                expect(
+                    (defaultProps.notify as jest.MockedFunction<
+                        typeof defaultProps.notify
+                    >).mock.calls
+                ).toMatchSnapshot()
                 done()
             })
         })
@@ -103,7 +109,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
 
@@ -134,7 +140,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
 
@@ -168,13 +174,15 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const component = componentWrapper.instance()
             const cancelPendingRequestsSpy = jest.fn()
-            component.gorgiasApi.cancelPendingRequests = cancelPendingRequestsSpy
-            component.componentWillUnmount()
+            const component = componentWrapper.instance()
+            ;((component as unknown) as {
+                gorgiasApi: Record<string, unknown>
+            }).gorgiasApi.cancelPendingRequests = cancelPendingRequestsSpy
+            componentWrapper.unmount()
             expect(cancelPendingRequestsSpy).toHaveBeenCalledWith()
         })
     })
@@ -184,7 +192,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
             const component = componentWrapper.instance()
@@ -201,15 +209,18 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const statNames = statsViewsConfig.getIn(['channels', 'stats'])
+            const statNames = statsViewsConfig.getIn([
+                'channels',
+                'stats',
+            ]) as List<any>
             const component = componentWrapper.instance()
             component.setState({
                 fetchingStates: statNames.reduce(
-                    (loaders, statName) => loaders.set(statName, true),
-                    fromJS({})
+                    (loaders, statName: string) => loaders!.set(statName, true),
+                    fromJS({}) as Map<any, any>
                 ),
                 stats: fromJS({}),
             })
@@ -220,7 +231,7 @@ describe('<Stats/>', () => {
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
-                    match={{params: {view: channelsStatView}}}
+                    match={{params: {view: channelsStatView}} as any}
                 />
             )
             const component = componentWrapper.instance()

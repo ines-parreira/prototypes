@@ -1,5 +1,5 @@
 // @flow
-import type {List, Map} from 'immutable'
+import type {Map} from 'immutable'
 import React from 'react'
 import {Bar} from 'react-chartjs-2'
 
@@ -12,7 +12,7 @@ import Legend from '../Legend'
 type Props = {
     data: Map<*, *>,
     config: Map<*, *>,
-    legend?: List<*>,
+    legend?: Map<any, any>,
 }
 
 export default class BarStat extends React.Component<Props> {

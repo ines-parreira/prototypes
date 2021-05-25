@@ -146,7 +146,7 @@ const defaultYAxeGridLines = {
 }
 
 // configuration for each stat
-export const stats = fromJS({
+export const stats: Map<any, any> = fromJS({
     [MESSAGES_SENT_PER_MACRO]: {
         helpText: 'Number of messages sent by an agent or a rule per macro',
         style: 'table',
@@ -730,7 +730,7 @@ const formatDurationTooltipCb = (
  * filters: filters available on the view applied on statistics
  * stats: statistics displayed on the view
  */
-export const views = fromJS({
+export const views: Map<any, any> = fromJS({
     overview: {
         name: 'Overview',
         description: `Get an overview of the most important statistics about your customer service.

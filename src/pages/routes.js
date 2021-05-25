@@ -25,7 +25,7 @@ import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer.
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer.tsx'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer.tsx'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
-import StatsPage from './stats/StatsPage'
+import StatsPage from './stats/StatsPage.tsx'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import ChangePassword from './settings/yourProfile/ChangePassword'
