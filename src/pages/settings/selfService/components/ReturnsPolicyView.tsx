@@ -80,9 +80,11 @@ export const ReturnsPolicyView = ({
         )
 
         setEligibilityWindowCondition(eligibilityFilter?.key || '')
-        setEligibilityWindowConditionValue(eligibilityFilter?.value || '1')
+        setEligibilityWindowConditionValue(
+            (eligibilityFilter?.value as string) || '1'
+        )
         setStoredEligibility({
-            value: eligibilityFilter?.value || '1',
+            value: (eligibilityFilter?.value as string) || '1',
             condition: eligibilityFilter?.key || '',
         })
     }, [configuration])

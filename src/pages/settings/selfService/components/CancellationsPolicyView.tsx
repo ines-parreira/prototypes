@@ -24,13 +24,18 @@ import PageHeader from '../../../common/components/PageHeader'
 import SelectField from '../../../common/forms/SelectField/SelectField.js'
 
 import {
-    CancellationsDropdownOptionsList,
     FilterKeyEnum,
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
+    SelfServiceOrderStatusEnum,
 } from '../../../../state/self_service/types'
 import Loader from '../../../common/components/Loader/Loader'
 import Tooltip from '../../../common/components/Tooltip'
+import {getCancellationOptionFromEligibilityStatuses} from '../utils/getCancellationOptionFromEligibilityStatuses'
+import {
+    CancellationsDropdownOptionsList,
+    CancellationsOptionToEligibilityStatuses,
+} from '../types'
 
 import css from './CancellationPolicyView.less'
 import {useConfigurationData} from './hooks'
@@ -74,12 +79,17 @@ export const CancellationsPolicyView = ({
             }
         )
 
+        const eligibilityFilterValue =
+            currentOrderStatusEligibilityFilter?.value || []
         setEligibilityWindowOptionValue(
-            currentOrderStatusEligibilityFilter?.value || ''
+            getCancellationOptionFromEligibilityStatuses(
+                eligibilityFilterValue as SelfServiceOrderStatusEnum[]
+            )
         )
-
         setConfigCancelOrderStatusEligibility(
-            currentOrderStatusEligibilityFilter?.value || ''
+            getCancellationOptionFromEligibilityStatuses(
+                eligibilityFilterValue as SelfServiceOrderStatusEnum[]
+            )
         )
     }, [configuration])
 
@@ -101,8 +111,11 @@ export const CancellationsPolicyView = ({
 
         const updatedOrderStatusEligibility = {
             key: FilterKeyEnum.GORGIAS_ORDER_STATUS,
-            value: eligibilityWindowOptionValue || '',
-            operator: FilterOperatorEnum.EQUALS,
+            value:
+                CancellationsOptionToEligibilityStatuses[
+                    eligibilityWindowOptionValue
+                ],
+            operator: FilterOperatorEnum.ONE_OF,
         } as SelfServiceConfigurationFilter
 
         const orderStatusEligibilityIndex = configuration.cancel_order_policy?.eligibilities?.findIndex(
@@ -184,8 +197,8 @@ export const CancellationsPolicyView = ({
                                             css.eligibilityWindowDescription
                                         }
                                     >
-                                        Order status after which customers will
-                                        not be able to cancel an order anymore.
+                                        Customers will be able to cancel an
+                                        order up to the following status:
                                     </p>
                                     <Form onSubmit={onSubmit}>
                                         <div

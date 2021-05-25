@@ -40,8 +40,8 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
             eligibilities: [
                 {
                     key: 'gorgias_order_status',
-                    value: 'unfulfilled',
-                    operator: 'eq',
+                    value: ['unfulfilled'],
+                    operator: 'oneOf',
                 },
             ],
         },
@@ -132,8 +132,11 @@ describe('<CancellationsPolicyView/>', () => {
                       "eligibilities": Array [
                         Object {
                           "key": "gorgias_order_status",
-                          "operator": "eq",
-                          "value": "processing_fulfillment",
+                          "operator": "oneOf",
+                          "value": Array [
+                            "unfulfilled",
+                            "processing_fulfillment",
+                          ],
                         },
                       ],
                       "enabled": false,

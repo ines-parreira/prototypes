@@ -73,7 +73,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
             <p
               class="eligibilityWindowDescription"
             >
-              Order status after which customers will not be able to cancel an order anymore.
+              Customers will be able to cancel an order up to the following status:
             </p>
             <form
               class=""
@@ -239,7 +239,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             <p
               class="eligibilityWindowDescription"
             >
-              Order status after which customers will not be able to cancel an order anymore.
+              Customers will be able to cancel an order up to the following status:
             </p>
             <form
               class=""

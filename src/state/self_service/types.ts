@@ -5,7 +5,7 @@ export type SelfServiceState = {
 
 export type SelfServiceConfigurationFilter = {
     key: string
-    value: string
+    value: string | string[]
     operator: string
 }
 
@@ -57,6 +57,7 @@ export enum FilterKeyEnum {
 export enum FilterOperatorEnum {
     EQUALS = 'eq',
     LESS_THAN = 'lt',
+    ONE_OF = 'oneOf',
 }
 
 export enum SelfServiceOrderStatusEnum {
@@ -64,21 +65,6 @@ export enum SelfServiceOrderStatusEnum {
     PENDING_DELIVERY = 'pending_delivery',
     PROCESSING_FULFILLMENT = 'processing_fulfillment',
 }
-
-export const CancellationsDropdownOptionsList = [
-    {
-        value: 'processing_fulfillment',
-        label: 'Processing Fulfillment',
-    },
-    {
-        value: 'unfulfilled',
-        label: 'Unfulfilled',
-    },
-    {
-        value: 'pending_delivery',
-        label: 'Pending Delivery',
-    },
-]
 
 export const ReturnsDropdownOptionsList = [
     {
