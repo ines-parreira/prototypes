@@ -13,6 +13,7 @@ import {
     SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     YOTPO_INTEGRATION_TYPE,
+    KLAVIYO_INTEGRATION_TYPE,
 } from '../../../../constants/integration.ts'
 import history from '../../../history.ts'
 
@@ -112,6 +113,19 @@ export const WIDGET_DATA_TYPES = [
                 The following data comes from your{' '}
                 <Link to="/app/settings/integrations/yotpo" target="_blank">
                     <b>Yotpo integrations</b>
+                </Link>
+                .
+            </div>
+        ),
+    },
+    {
+        type: KLAVIYO_INTEGRATION_TYPE,
+        title: 'Klaviyo data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link to="/app/settings/integrations/klaviyo" target="_blank">
+                    <b>Klaviyo integrations</b>
                 </Link>
                 .
             </div>
