@@ -14,9 +14,6 @@ const icons = {
     ':shipment_status:': 'local_shipping',
     ':shipping_address:': 'home',
     ':shipping_cost:': 'widgets',
-    ':information:': 'info',
-    ':contact:': 'contact_page',
-    ':campaign:': 'send',
 }
 
 /**

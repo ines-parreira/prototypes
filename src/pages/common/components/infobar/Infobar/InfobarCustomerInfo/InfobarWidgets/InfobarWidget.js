@@ -10,7 +10,6 @@ import {
     SMILE_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
-    KLAVIYO_WIDGET_TYPE,
 } from '../../../../../../../state/widgets/constants'
 import {
     guessFieldValueFromRawData,
@@ -29,7 +28,6 @@ import shopify from './widgets/shopify'
 import smile from './widgets/smile'
 import smoochInside from './widgets/smoochInside'
 import yotpo from './widgets/yotpo'
-import klaviyo from './widgets/klaviyo'
 import {infobarWidgetShouldRender} from './predicates.ts'
 
 export default class InfobarWidget extends React.Component {
@@ -75,7 +73,6 @@ export default class InfobarWidget extends React.Component {
             [SMOOCH_INSIDE_WIDGET_TYPE]: smoochInside,
             [HTTP_WIDGET_TYPE]: http,
             [YOTPO_WIDGET_TYPE]: yotpo,
-            [KLAVIYO_WIDGET_TYPE]: klaviyo,
         }
 
         let extension = {}
