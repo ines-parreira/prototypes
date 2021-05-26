@@ -154,21 +154,6 @@ describe('ticket selectors', () => {
             state.ticket.get('messages')
         )
         expect(selectors.getMessages({})).toEqualImmutable(fromJS([]))
-
-        // Should not return hidden message
-        state.ticket = state.ticket.set(
-            'messages',
-            fromJS([
-                {
-                    id: 1,
-                    opened_datetime: '2017-07-25T22:00:00',
-                    sent_datetime: '2017-07-25T21:01:00',
-                    created_datetime: '2017-07-24T21:00:00',
-                    meta: {hidden: true},
-                },
-            ])
-        )
-        expect(selectors.getMessages(state)).toEqualImmutable(fromJS([]))
     })
 
     it('getVia', () => {

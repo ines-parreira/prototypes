@@ -24,7 +24,6 @@ export enum TicketMessageSourceType {
     OttspottCall = 'ottspott-call',
     Phone = 'phone',
     SystemMessage = 'system-message',
-    Twilio = 'twilio',
     Twitter = 'twitter',
 }
 
