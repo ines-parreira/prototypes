@@ -27,6 +27,12 @@ describe('<BillingPlans/>', () => {
 
     it.each([
         [
+            'with available plans (without current plan)',
+            {
+                currentPlan: fromJS({}),
+            },
+        ],
+        [
             'with available plans (legacy plan)',
             {
                 currentPlan: fromJS(legacyPlan),

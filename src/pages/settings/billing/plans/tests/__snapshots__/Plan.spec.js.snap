@@ -705,6 +705,136 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
 </div>
 `;
 
+exports[`<Plan/> should render a plan without a current plan 1`] = `
+<div
+  class="plan plan-Basic comparaisonMode card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="plan-badge"
+    />
+    <div
+      class="header-text"
+    >
+      <strong>
+        Basic
+      </strong>
+      <span
+        class="float-right"
+      >
+        6000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          350 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $25.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          all_inclusive
+        </i>
+        <strong>
+          Unlimited users
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          extension
+        </i>
+        <strong>
+          150 integrations included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Shopify integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Live chat
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          build
+        </i>
+        <strong>
+          Macros and rules
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      type="button"
+    >
+      Upgrade to Basic Plan
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<Plan/> should render a plan without comparaison mode 1`] = `
 <div
   class="plan plan-Basic card"

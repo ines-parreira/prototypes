@@ -26,6 +26,7 @@ describe('<Plan/>', () => {
                 isCurrentPlan: true,
             },
         ],
+        ['a plan without a current plan', {currentPlan: fromJS({})}],
         [
             'the current plan with legacy features',
             {

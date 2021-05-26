@@ -3162,3 +3162,611 @@ exports[`<BillingPlans/> should display current plan with available plans (with 
   </div>
 </div>
 `;
+
+exports[`<BillingPlans/> should display current plan with available plans (without current plan) 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            class="section"
+            to="/app/settings/billing"
+          >
+            Billing & Usage
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          Plans
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container plans-container container-fluid"
+  >
+    <div
+      class="interval-toggle"
+    >
+      <div
+        class="btn-group"
+        role="group"
+      >
+        <button
+          class="btn btn-primary"
+          type="button"
+        >
+          Monthly
+        </button>
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          Yearly
+        </button>
+      </div>
+    </div>
+    <div
+      class="mb-5 plans-cards card-deck"
+    >
+      <div
+        class="plan plan-Basic mt-4 comparaisonMode card"
+      >
+        <div
+          class="plan-header card-header"
+        >
+          <div
+            class="plan-badge"
+          />
+          <div
+            class="header-text"
+          >
+            <strong>
+              Basic
+            </strong>
+            <span
+              class="float-right"
+            >
+              6000
+               /
+               
+              mo
+            </span>
+          </div>
+        </div>
+        <div
+          class="card-body"
+        >
+          <ul>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                playlist_add_check
+              </i>
+              <strong>
+                350 tickets included
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                playlist_add
+              </i>
+              <strong>
+                $25.00 per 100 extra tickets
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                all_inclusive
+              </i>
+              <strong>
+                Unlimited users
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                extension
+              </i>
+              <strong>
+                150 integrations included
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                widgets
+              </i>
+              <strong>
+                Shopify integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                chat
+              </i>
+              <strong>
+                Live chat
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                build
+              </i>
+              <strong>
+                Macros and rules
+              </strong>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="card-footer"
+        >
+          <button
+            class="btn btn-link"
+            data-testid="choose-plan-button"
+            type="button"
+          >
+            Upgrade to Basic Plan
+          </button>
+        </div>
+      </div>
+      <div
+        class="plan plan-Pro mt-4 featured comparaisonMode card"
+      >
+        <div
+          class="plan-header featured-header card-header"
+        >
+          <div
+            class="plan-badge"
+          />
+          <div
+            class="featured-header-title"
+          >
+            Most Popular
+          </div>
+          <div
+            class="header-text"
+          >
+            <strong>
+              Pro
+            </strong>
+            <span
+              class="float-right"
+            >
+              30000
+               /
+               
+              mo
+            </span>
+          </div>
+        </div>
+        <div
+          class="card-body"
+        >
+          <b>
+            Everything from 
+            Basic
+             plus...
+          </b>
+          <ul>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                playlist_add_check
+              </i>
+              <strong>
+                2000 tickets included
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                playlist_add
+              </i>
+              <strong>
+                $23.00 per 100 extra tickets
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                facebook
+              </i>
+              <strong>
+                Facebook integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="feature-icon icon-custom mr-3 icon-instagram"
+              />
+              <strong>
+                Instagram integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                widgets
+              </i>
+              <strong>
+                Magento integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                widgets
+              </i>
+              <strong>
+                Phone integration
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                insert_emoticon
+              </i>
+              <strong>
+                Satisfaction surveys
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                chat
+              </i>
+              <strong>
+                Chat campaigns
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                lock
+              </i>
+              <strong>
+                User permissions
+              </strong>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="card-footer"
+        >
+          <button
+            class="btn btn-link"
+            data-testid="choose-plan-button"
+            type="button"
+          >
+            Upgrade to Pro Plan
+          </button>
+        </div>
+      </div>
+      <div
+        class="plan plan-Advanced mt-4 comparaisonMode card"
+      >
+        <div
+          class="plan-header card-header"
+        >
+          <div
+            class="plan-badge"
+          />
+          <div
+            class="header-text"
+          >
+            <strong>
+              Advanced
+            </strong>
+            <span
+              class="float-right"
+            >
+              70000
+               /
+               
+              mo
+            </span>
+          </div>
+        </div>
+        <div
+          class="card-body"
+        >
+          <b>
+            Everything from 
+            Pro
+             plus...
+          </b>
+          <ul>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                playlist_add_check
+              </i>
+              <strong>
+                3000 tickets included
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                playlist_add
+              </i>
+              <strong>
+                $20.00 per 100 extra tickets
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                monetization_on
+              </i>
+              <strong>
+                Revenue stats
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                group
+              </i>
+              <strong>
+                Teams
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                assignment_turned_in
+              </i>
+              <strong>
+                Auto-assignment
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                visibility
+              </i>
+              <strong>
+                View sharing
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                call
+              </i>
+              <strong>
+                Customer success manager
+              </strong>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="card-footer"
+        >
+          <button
+            class="btn btn-link"
+            data-testid="choose-plan-button"
+            type="button"
+          >
+            Upgrade to Advanced Plan
+          </button>
+        </div>
+      </div>
+      <div
+        class="plan plan-Enterprise mt-4 comparaisonMode card"
+      >
+        <div
+          class="plan-header card-header"
+        >
+          <div
+            class="plan-badge"
+          />
+          <div
+            class="header-text"
+          >
+            <strong>
+              Enterprise
+            </strong>
+          </div>
+        </div>
+        <div
+          class="card-body"
+        >
+          <b>
+            Everything from 
+            Advanced
+             plus...
+          </b>
+          <ul>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                arrow_downward
+              </i>
+              <strong>
+                Discounted prices for volumes of 10.000+ tickets
+              </strong>
+            </li>
+            <li
+              class="d-flex align-items-center"
+            >
+              <i
+                class="material-icons feature-icon mr-3"
+              >
+                beach_access
+              </i>
+              <strong>
+                Premium support
+              </strong>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="card-footer"
+        >
+          <button
+            class="btn btn-link"
+            type="button"
+          >
+            Contact us
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div>
+      <h3
+        class="mb-4"
+      >
+        Frequently asked questions
+      </h3>
+      <div
+        class="faq row"
+      >
+        <div
+          class="col-sm-6"
+        >
+          <dl>
+            <dt>
+              What's a ticket?
+            </dt>
+            <dd>
+              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
+            </dd>
+            <dt>
+              Do I have to pay for all tickets received?
+            </dt>
+            <dd>
+              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
+            </dd>
+            <dt>
+              Do I need to pay for live chat?
+            </dt>
+            <dd>
+              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
+            </dd>
+          </dl>
+        </div>
+        <div
+          class="col-sm-6"
+        >
+          <dl>
+            <dt>
+              How many tickets a month will I have?
+            </dt>
+            <dd>
+              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
+            </dd>
+            <dt>
+              What level of support is included in my plan?
+            </dt>
+            <dd>
+              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
+            </dd>
+            <dt>
+              How many tickets a day can a rep handle?
+            </dt>
+            <dd>
+              Top reps using built-in automations and macros close out 100-200 tickets per day.
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
