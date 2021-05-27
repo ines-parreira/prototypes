@@ -103,9 +103,15 @@ export const isDirty = (state: RootState) =>
 
 export const getMessages = createImmutableSelector<
     RootState,
-    List<any>,
+    List<Map<any, any>>,
     TicketState
->(getTicketState, (state) => (state.get('messages') || fromJS([])) as List<any>)
+>(getTicketState, (state) => {
+    const messages: List<Map<any, any>> = state.get('messages') || fromJS([])
+
+    return messages.filter(
+        (message) => !message?.getIn(['meta', 'hidden'])
+    ) as List<Map<any, any>>
+})
 
 export const getVia = createImmutableSelector<
     RootState,

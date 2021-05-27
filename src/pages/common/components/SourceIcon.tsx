@@ -49,6 +49,7 @@ const sourceTypeToIcon = (
         case TicketMessageSourceType.Aircall:
         case TicketMessageSourceType.OttspottCall:
         case TicketMessageSourceType.Phone:
+        case TicketMessageSourceType.Twilio:
             icon.name = 'phone'
             break
         case TicketMessageSourceType.FacebookComment:
