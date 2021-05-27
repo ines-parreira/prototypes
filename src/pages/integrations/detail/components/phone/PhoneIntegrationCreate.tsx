@@ -21,11 +21,13 @@ import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField.js'
 import type {Option} from '../../../../common/forms/SelectField/types'
+import {PhoneType} from '../../../../../business/twilio'
 
 import rawCountryOptions from './options/countries.json'
 import rawTypeOptions from './options/types.json'
 import rawStateOptions from './options/states.json'
 import rawAreaCodeOptions from './options/area-codes.json'
+import rawTollFreeAreaCodeOptions from './options/area-codes-toll-free.json'
 
 interface StateOptions {
     [key: string]: Option[]
@@ -37,10 +39,15 @@ interface AreaCodeOptions {
     }
 }
 
+interface TollFreeAreaCodeOptions {
+    [key: string]: Option[]
+}
+
 const countryOptions: Option[] = rawCountryOptions
 const typeOptions: Option[] = rawTypeOptions
 const stateOptions: StateOptions = rawStateOptions
 const areaCodeOptions: AreaCodeOptions = rawAreaCodeOptions
+const tollFreeAreaCodeOptions: TollFreeAreaCodeOptions = rawTollFreeAreaCodeOptions
 
 type Props = {
     actions: {
@@ -67,6 +74,15 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
         [setCountry, setState, setAreaCode]
     )
 
+    const onTypeChange = useCallback(
+        (phoneType) => {
+            setPhoneType(phoneType)
+            setState('')
+            setAreaCode('')
+        },
+        [setPhoneType, setState, setAreaCode]
+    )
+
     const onStateChange = useCallback(
         (state) => {
             setState(state)
@@ -82,6 +98,12 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
             try {
                 setIsLoading(true)
                 setError(null)
+
+                const parsedAreaCode =
+                    phoneType === PhoneType.Local
+                        ? parseInt(areaCode.split('-').pop() as string)
+                        : parseInt(areaCode)
+
                 await ((actions.updateOrCreateIntegration(
                     fromJS({
                         type: IntegrationType.PhoneIntegrationType,
@@ -91,9 +113,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             country,
                             type: phoneType,
                             state,
-                            area_code: parseInt(
-                                areaCode.split('-').pop() as string
-                            ),
+                            area_code: parsedAreaCode,
                             preferences: {
                                 record_inbound_calls: true,
                                 voicemail_outside_business_hours: true,
@@ -126,6 +146,13 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
             setError,
         ]
     )
+
+    let areaCodes
+    if (phoneType === PhoneType.Local) {
+        areaCodes = !!country && !!state ? areaCodeOptions[country][state] : []
+    } else {
+        areaCodes = !!country ? tollFreeAreaCodeOptions[country] : []
+    }
 
     return (
         <div className="full-width">
@@ -214,30 +241,34 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 <SelectField
                                     id="type"
                                     value={phoneType}
-                                    onChange={setPhoneType}
+                                    onChange={onTypeChange}
                                     options={typeOptions}
                                     fullWidth
                                     required
                                 />
                             </FormGroup>
-                            <FormGroup>
-                                <Label
-                                    htmlFor="state"
-                                    className="control-label"
-                                >
-                                    State
-                                </Label>
-                                <SelectField
-                                    id="state"
-                                    value={state}
-                                    onChange={onStateChange}
-                                    options={
-                                        !!country ? stateOptions[country] : []
-                                    }
-                                    fullWidth
-                                    required
-                                />
-                            </FormGroup>
+                            {phoneType === PhoneType.Local && (
+                                <FormGroup>
+                                    <Label
+                                        htmlFor="state"
+                                        className="control-label"
+                                    >
+                                        State
+                                    </Label>
+                                    <SelectField
+                                        id="state"
+                                        value={state}
+                                        onChange={onStateChange}
+                                        options={
+                                            !!country
+                                                ? stateOptions[country]
+                                                : []
+                                        }
+                                        fullWidth
+                                        required
+                                    />
+                                </FormGroup>
+                            )}
                             <FormGroup>
                                 <Label
                                     htmlFor="area-code"
@@ -249,11 +280,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                     id="area-code"
                                     value={areaCode}
                                     onChange={setAreaCode}
-                                    options={
-                                        !!country && !!state
-                                            ? areaCodeOptions[country][state]
-                                            : []
-                                    }
+                                    options={areaCodes}
                                     fullWidth
                                     required
                                 />

@@ -242,61 +242,6 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
           >
             <label
               class="control-label"
-              for="state"
-            >
-              State
-            </label>
-            <div>
-              <div
-                class="dropdown"
-              >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
-                >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label placeholder"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Select an option
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="state"
-                      required=""
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  <h6
-                    class="dropdown-header"
-                    tabindex="-1"
-                  >
-                    No result
-                  </h6>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="form-group"
-          >
-            <label
-              class="control-label"
               for="area-code"
             >
               Area code
@@ -545,16 +490,15 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     class="select dropdown-toggle selectFullWidth"
                   >
                     <span
-                      class="label placeholder"
+                      class="label"
                       style="min-width: 10px; opacity: 1;"
                     >
-                      Select an option
+                      Local
                     </span>
                     <input
                       autocomplete="chrome-off"
                       class="input"
                       id="type"
-                      required=""
                       style="min-width: 10px;"
                       type="text"
                       value=""
@@ -570,14 +514,6 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                   
                   <button
                     class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    Local
-                  </button>
-                  <button
-                    class="option dropdown-item"
                     role="menuitem"
                     tabindex="0"
                     type="button"
@@ -851,6 +787,337 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     Red Deer (403)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            class="mt-3 btn btn-success"
+            type="submit"
+          >
+            Add phone number
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" is selected 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/phone"
+          >
+            Phone
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add Phone Number
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6"
+      >
+        <p>
+          Create a new phone number in Gorgias or forward calls from an existing number to a Gorgias internal number. To learn more about forwarding existing calls, check out
+           
+          <a
+            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            our phone docs
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6 col-xl-4"
+      >
+        <form
+          class=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="title"
+            >
+              Phone title
+            </label>
+            <div
+              class="container"
+            >
+              <div
+                class="picker emojiPicker"
+              >
+                <span
+                  class="material-icons empty icon"
+                >
+                  insert_emoticon
+                </span>
+              </div>
+              <input
+                class="input form-control"
+                id="title"
+                placeholder="Ex: Company Support Line"
+                required=""
+                tabindex="0"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="country"
+            >
+              Country
+            </label>
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Canada
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="country"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    United States
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="type"
+            >
+              Type
+            </label>
+            <div>
+              <div
+                class="dropdown show"
+              >
+                <div
+                  aria-expanded="true"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Toll-free
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="type"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="false"
+                  class="options optionsFullWidth dropdown-menu show"
+                  role="menu"
+                  style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Local
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="area-code"
+            >
+              Area code
+            </label>
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label placeholder"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Select an option
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="area-code"
+                      required=""
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    833
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    844
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    855
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    866
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    877
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    888
                   </button>
                 </div>
               </div>

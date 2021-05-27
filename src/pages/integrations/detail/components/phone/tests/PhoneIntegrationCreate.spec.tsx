@@ -27,8 +27,25 @@ describe('<PhoneIntegrationCreate/>', () => {
             // Select country "Canada"
             fireEvent.click(getByText('Canada'))
 
+            // Select type "Local"
+            fireEvent.click(getByText('Local'))
+
             // Select state "Alberta"
             fireEvent.click(getByText('Alberta'))
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render when type "Toll-free" is selected', () => {
+            const {container, getByText} = render(
+                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
+            )
+
+            // Select country "Canada"
+            fireEvent.click(getByText('Canada'))
+
+            // Select type "Toll-free"
+            fireEvent.click(getByText('Toll-free'))
 
             expect(container.firstChild).toMatchSnapshot()
         })
