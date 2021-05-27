@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature auto_assignment 1`] = `"Advanced"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature auto_assignment 1`] = `"Advanced"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature chat_campaigns 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature chat_campaigns 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature facebook_comment 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature facebook_comment 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature instagram_comment 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature instagram_comment 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature magento_integration 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature magento_integration 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature phone_integration 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature phone_integration 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature revenue_statistics 1`] = `"Advanced"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature revenue_statistics 1`] = `"Advanced"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature satisfaction_surveys 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature satisfaction_surveys 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature teams 1`] = `"Advanced"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature teams 1`] = `"Advanced"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature user_roles 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature user_roles 1`] = `"Pro"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature view_sharing 1`] = `"Advanced"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature view_sharing 1`] = `"Advanced"`;
 
-exports[`getCheapestPlanForFeature() should return the cheaper plan to access the feature yotpo_integration 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature yotpo_integration 1`] = `"Pro"`;

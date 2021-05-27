@@ -22,6 +22,13 @@ export const shallowWithStore = (
     store: MockStore
 ) => shallow(component, {context: {store}})
 
+export type RenderWithRouterParams = {
+    options?: Omit<RenderOptions, 'wrapper'>
+    path?: string
+    route?: string
+    history?: History
+}
+
 export const renderWithRouter = (
     ui: ReactElement,
     {
@@ -29,12 +36,7 @@ export const renderWithRouter = (
         path = '/',
         route = '/',
         history = createMemoryHistory({initialEntries: [route]}),
-    }: {
-        options?: Omit<RenderOptions, 'wrapper'>
-        path?: string
-        route?: string
-        history?: History
-    } = {}
+    }: RenderWithRouterParams = {}
 ) => {
     return render(ui, {
         wrapper: ({children}: any) => (

@@ -22,6 +22,20 @@ exports[`StatsPage should render "Satisfaction" statistics 1`] = `
 </div>
 `;
 
+exports[`StatsPage should render paywall when on revenue page and the revenue statistics feature is not available 1`] = `
+<div>
+  Paywall for feature: 
+  revenue_statistics
+</div>
+`;
+
+exports[`StatsPage should render paywall when on statistics page and the satisfaction surveys feature is not available 1`] = `
+<div>
+  Paywall for feature: 
+  satisfaction_surveys
+</div>
+`;
+
 exports[`StatsPage testing default filters should ensure the default period is using user's timezone 1`] = `
 [MockFunction] {
   "calls": Array [

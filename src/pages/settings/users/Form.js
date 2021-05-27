@@ -17,7 +17,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import {getCheapestPlanForFeature} from '../../../utils/paywalls.ts'
+import {getCheapestPlanNameForFeature} from '../../../utils/paywalls.ts'
 import {getBillingState} from '../../../state/billing/selectors.ts'
 import {toJS} from '../../../utils.ts'
 import Loader from '../../common/components/Loader/Loader.tsx'
@@ -197,7 +197,7 @@ export default class Form extends Component<Props, State> {
         const isAgentAccountOwner =
             this.props.agentId === this.props.accountOwnerId
         const paywallConfig = paywallConfigs[AccountFeature.UserRoles]
-        const requiredPlanName = getCheapestPlanForFeature(
+        const requiredPlanName = getCheapestPlanNameForFeature(
             AccountFeature.UserRoles,
             toJS(plans)
         )

@@ -19,7 +19,7 @@ import {Plan} from '../../../../../models/billing/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {viewUpdated} from '../../../../../state/entities/views/actions'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
-import {getCheapestPlanForFeature} from '../../../../../utils/paywalls'
+import {getCheapestPlanNameForFeature} from '../../../../../utils/paywalls'
 import {toJS} from '../../../../../utils'
 
 import UpgradeButton from '../../UpgradeButton/UpgradeButton'
@@ -78,7 +78,7 @@ export function ViewSharingModalContainer({
         toggle()
     }
 
-    const requiredPlanName = getCheapestPlanForFeature(
+    const requiredPlanName = getCheapestPlanNameForFeature(
         AccountFeature.ViewSharing,
         plans as Record<string, Plan>
     )
@@ -159,7 +159,7 @@ export function ViewSharingModalContainer({
                     </p>
                     <UpgradeButton
                         className="mb-3"
-                        label={`Upgrade to ${requiredPlanName}`}
+                        label={`Upgrade to ${requiredPlanName!}`}
                         state={{
                             openedPlanPopover: requiredPlanName,
                         }}

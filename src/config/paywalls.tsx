@@ -4,7 +4,7 @@ import {AccountFeature} from '../state/currentAccount/types'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
-type PaywallConfig = {
+export type PaywallConfig = {
     header: string
     description: string | ReactElement
     testimonial?: {

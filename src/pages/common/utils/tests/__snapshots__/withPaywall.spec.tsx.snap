@@ -95,7 +95,7 @@ Start using teams to automatically assign tickets to agents.
             class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
           >
             <img
-              alt="auto-assignment"
+              alt="Feature preview"
               class="img-fluid previewImage"
               src="/static/private/img/paywalls/screens/auto-assignment.png"
             />

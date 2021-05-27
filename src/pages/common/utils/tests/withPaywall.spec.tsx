@@ -3,6 +3,7 @@ import {render} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {AccountFeature} from '../../../../state/currentAccount/types'
@@ -21,20 +22,18 @@ const AnyComponent = () => (
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('withPaywall', () => {
-    const minProps = {
-        store: mockStore({
-            currentAccount: fromJS({
-                features: fromJS({
-                    [AccountFeature.InstagramComment]: true,
-                    [AccountFeature.AutoAssignment]: false,
-                }),
+    const defaultState: Partial<RootState> = {
+        currentAccount: fromJS({
+            features: fromJS({
+                [AccountFeature.InstagramComment]: true,
+                [AccountFeature.AutoAssignment]: false,
             }),
-            billing: fromJS({
-                plans: fromJS({
-                    [basicPlan.id]: basicPlan,
-                    [proPlan.id]: proPlan,
-                    [advancedPlan.id]: advancedPlan,
-                }),
+        }),
+        billing: fromJS({
+            plans: fromJS({
+                [basicPlan.id]: basicPlan,
+                [proPlan.id]: proPlan,
+                [advancedPlan.id]: advancedPlan,
             }),
         }),
     }
@@ -43,7 +42,11 @@ describe('withPaywall', () => {
         const PaywalledComponent = withPaywall(AccountFeature.InstagramComment)(
             AnyComponent
         )
-        const {container} = render(<PaywalledComponent {...minProps} />)
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <PaywalledComponent />
+            </Provider>
+        )
 
         expect(container).toMatchSnapshot()
     })
@@ -52,7 +55,11 @@ describe('withPaywall', () => {
         const PaywalledComponent = withPaywall(AccountFeature.AutoAssignment)(
             AnyComponent
         )
-        const {container} = render(<PaywalledComponent {...minProps} />)
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <PaywalledComponent />
+            </Provider>
+        )
 
         expect(container).toMatchSnapshot()
     })

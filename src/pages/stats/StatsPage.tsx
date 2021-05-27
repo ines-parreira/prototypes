@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import {connect, ConnectedProps, useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import moment from 'moment-timezone'
 import {fromJS} from 'immutable'
@@ -10,14 +10,11 @@ import {getFilters} from '../../state/stats/selectors'
 import {getTimezone} from '../../state/currentUser/selectors'
 import {AccountFeature} from '../../state/currentAccount/types'
 import {RootState} from '../../state/types'
-import withPaywall from '../common/utils/withPaywall'
+import {currentAccountHasFeature} from '../../state/currentAccount/selectors'
+import Paywall from '../common/components/Paywall/Paywall'
 
 import RevenueStats from './RevenueStats'
 import StatsComponent from './StatsComponent'
-
-const SatisfactionSurveysStats = withPaywall(
-    AccountFeature.SatisfactionSurveys
-)(StatsComponent)
 
 type Props = ConnectedProps<typeof connector>
 
@@ -31,6 +28,12 @@ export function StatsPageContainer({
     const isOnSatisfactionSurveyPage =
         view === views.getIn(['satisfaction', 'link'])
     const isOnRevenuePage = view === views.getIn(['revenue', 'link'])
+    const hasSatisfactionSurveysFeature = useSelector(
+        currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
+    )
+    const hasRevenueStatisticsFeature = useSelector(
+        currentAccountHasFeature(AccountFeature.RevenueStatistics)
+    )
 
     useEffect(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
@@ -58,12 +61,16 @@ export function StatsPageContainer({
         return null
     }
 
-    if (isOnSatisfactionSurveyPage) {
-        return <SatisfactionSurveysStats />
+    if (isOnSatisfactionSurveyPage && !hasSatisfactionSurveysFeature) {
+        return <Paywall feature={AccountFeature.SatisfactionSurveys} />
     }
 
     if (isOnRevenuePage) {
-        return <RevenueStats />
+        return hasRevenueStatisticsFeature ? (
+            <RevenueStats />
+        ) : (
+            <Paywall feature={AccountFeature.RevenueStatistics} />
+        )
     }
 
     return <StatsComponent />
