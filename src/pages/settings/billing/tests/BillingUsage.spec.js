@@ -5,6 +5,10 @@ import {fromJS} from 'immutable'
 import {BillingUsage} from '../BillingUsage'
 import {account} from '../../../../fixtures/account.ts'
 
+jest.mock('../../../common/components/LegacyPlanBanner', () => () => (
+    <div>Legacy Plan Banner Mock</div>
+))
+
 describe('<BillingUsage/>', () => {
     let container
     const currentAccount = fromJS(account)
@@ -19,6 +23,10 @@ describe('<BillingUsage/>', () => {
     })
     let activeIntegrations = fromJS([])
     window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
+
+    let accountHasLegacyPlan =
+        !!currentAccount.getIn(['meta', 'has_legacy_features'], false) ||
+        (!currentPlan.get('public') && !currentPlan.get('custom'))
 
     beforeEach(() => {
         // reactstrap popover needs to be in the dom
@@ -45,6 +53,7 @@ describe('<BillingUsage/>', () => {
                 currentPlan={currentPlan}
                 currentSubscription={currentSubscription}
                 activeIntegrations={activeIntegrations}
+                accountHasLegacyPlan={accountHasLegacyPlan}
                 currentUsage={fromJS({
                     meta: {
                         start_datetime: '2010-10-10',
@@ -65,6 +74,7 @@ describe('<BillingUsage/>', () => {
                 currentAccount={currentAccount}
                 currentPlan={currentPlan}
                 currentSubscription={currentSubscription}
+                accountHasLegacyPlan={accountHasLegacyPlan}
                 currentUsage={fromJS({
                     meta: {
                         start_datetime: '2010-10-10',

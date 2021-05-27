@@ -132,6 +132,30 @@ describe('billing selectors', () => {
         )
     })
 
+    it('accountHasLegacyPlan', () => {
+        state = {
+            ...state,
+            currentAccount: fromJS({
+                current_subscription: {plan: 'growth-usd-1'},
+            }),
+        }
+        expect(selectors.hasLegacyPlan(state)).toBe(false)
+        state = {
+            ...state,
+            currentAccount: fromJS({
+                current_subscription: {plan: 'growth-usd-1'},
+                meta: {has_legacy_features: true},
+            }),
+        }
+        expect(selectors.hasLegacyPlan(state)).toBe(true)
+    })
+
+    it('getEndSubscriptionPeriodLabel', () => {
+        expect(selectors.getEndSubscriptionPeriodLabel(state)).toBe(
+            'October 2017'
+        )
+    })
+
     describe('currentPlanId()', () => {
         it('should return plan of the current subscription', () => {
             const state = {}

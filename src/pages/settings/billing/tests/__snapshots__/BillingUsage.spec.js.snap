@@ -38,6 +38,7 @@ exports[`<BillingUsage/> should display loader 1`] = `
 
 exports[`<BillingUsage/> should display price 1`] = `
 <BillingUsage
+  accountHasLegacyPlan={true}
   currentAccount={
     Immutable.Map {
       "settings": Immutable.List [
@@ -123,6 +124,11 @@ exports[`<BillingUsage/> should display price 1`] = `
   <div
     className="mb-5"
   >
+    <Component>
+      <div>
+        Legacy Plan Banner Mock
+      </div>
+    </Component>
     <h4>
       <i
         className="material-icons"
@@ -571,6 +577,7 @@ exports[`<BillingUsage/> should display price 1`] = `
 
 exports[`<BillingUsage/> should load with empty props 1`] = `
 <BillingUsage
+  accountHasLegacyPlan={true}
   activeIntegrations={Immutable.List []}
   currentAccount={
     Immutable.Map {
@@ -653,6 +660,11 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
   <div
     className="mb-5"
   >
+    <Component>
+      <div>
+        Legacy Plan Banner Mock
+      </div>
+    </Component>
     <h4>
       <i
         className="material-icons"

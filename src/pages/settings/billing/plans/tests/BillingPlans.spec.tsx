@@ -13,6 +13,8 @@ import {
 } from '../../../../../fixtures/subscriptionPlan'
 import {account} from '../../../../../fixtures/account'
 
+jest.mock('../Plan', () => () => <div>Plan mock</div>)
+
 describe('<BillingPlans/>', () => {
     const publicPlans = {
         [basicPlan.id]: basicPlan,
@@ -40,6 +42,7 @@ describe('<BillingPlans/>', () => {
                     [legacyPlan.id]: legacyPlan,
                     ...publicPlans,
                 }),
+                accountHasLegacyPlan: true,
             },
         ],
         [
@@ -48,6 +51,7 @@ describe('<BillingPlans/>', () => {
                 currentAccount: accountWithLegacyFeatures,
                 currentPlan: fromJS(basicPlan),
                 plans: fromJS(publicPlans),
+                accountHasLegacyPlan: true,
             },
         ],
         ['with available plans (public plan)', {}],
@@ -59,6 +63,7 @@ describe('<BillingPlans/>', () => {
                     [customPlan.id]: customPlan,
                     ...publicPlans,
                 }),
+                accountHasLegacyPlan: false,
             },
         ],
         [
@@ -79,6 +84,7 @@ describe('<BillingPlans/>', () => {
                 updateSubscription={_noop}
                 isAllowedToChangePlan={_noop}
                 setFutureSubscriptionPlan={_noop}
+                accountHasLegacyPlan={false}
                 {...props}
             />
         )

@@ -35,9 +35,6 @@ exports[`CreditCard component should display credit card form 1`] = `
     fluid={true}
     tag="div"
   >
-    <p>
-      Enter the information of the card you'd like to use.
-    </p>
     <Row
       tag="div"
       widths={
@@ -63,6 +60,9 @@ exports[`CreditCard component should display credit card form 1`] = `
           ]
         }
       >
+        <p>
+          Enter the information of the card you'd like to use.
+        </p>
         <Form
           onSubmit={[Function]}
           tag="form"
@@ -213,9 +213,6 @@ exports[`CreditCard component should render nothing if loaded, but no current su
     fluid={true}
     tag="div"
   >
-    <p>
-      Enter the information of the card you'd like to use.
-    </p>
     <Row
       tag="div"
       widths={
@@ -241,6 +238,9 @@ exports[`CreditCard component should render nothing if loaded, but no current su
           ]
         }
       >
+        <p>
+          Enter the information of the card you'd like to use.
+        </p>
         <Form
           onSubmit={[Function]}
           tag="form"

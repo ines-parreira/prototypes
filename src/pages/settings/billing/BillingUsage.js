@@ -17,15 +17,14 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../common/components/Loader/Loader.tsx'
-import LegacyTag from '../../common/components/LegacyPlanBadge.tsx'
+import LegacyPlanBadge from '../../common/components/LegacyPlanBadge.tsx'
+import LegacyPlanBanner from '../../common/components/LegacyPlanBanner.tsx'
 import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
 import {openChat} from '../../../utils.ts'
 import * as integrationSelectors from '../../../state/integrations/selectors.ts'
 import * as billingSelectors from '../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import history from '../../history.ts'
-
-import {hasLegacyPlan} from '../../../utils/account.ts'
 
 import css from './BillingUsage.less'
 
@@ -37,6 +36,7 @@ export class BillingUsage extends Component {
         currentPlan: PropTypes.object.isRequired,
         currentAccount: PropTypes.object.isRequired,
         currentSubscription: PropTypes.object.isRequired,
+        accountHasLegacyPlan: PropTypes.bool.isRequired,
     }
 
     state = {
@@ -184,7 +184,7 @@ export class BillingUsage extends Component {
     }
 
     render() {
-        const {currentSubscription} = this.props
+        const {currentSubscription, accountHasLegacyPlan} = this.props
 
         if (this.state.isLoading) {
             return <Loader />
@@ -192,6 +192,7 @@ export class BillingUsage extends Component {
 
         return (
             <div className="mb-5">
+                {accountHasLegacyPlan && <LegacyPlanBanner />}
                 <h4>
                     <i className="material-icons">insert_chart</i> Usage & Plans
                 </h4>
@@ -257,10 +258,10 @@ export class BillingUsage extends Component {
 
     _render_active_subscription() {
         const {
-            currentAccount,
             currentUsage,
             currentSubscription,
             currentPlan,
+            accountHasLegacyPlan,
         } = this.props
 
         const dateFormat = 'MMM DD'
@@ -281,10 +282,6 @@ export class BillingUsage extends Component {
         const periodEnd = moment(
             currentUsage.getIn(['meta', 'end_datetime'])
         ).format(dateFormat)
-        const accountHasLegacyPlan = hasLegacyPlan(
-            currentAccount.toJS(),
-            currentPlan.toJS()
-        )
         return (
             <CardGroup className="mb-2">
                 <Card
@@ -297,7 +294,7 @@ export class BillingUsage extends Component {
                     )}
                 >
                     <CardBody>
-                        {accountHasLegacyPlan && <LegacyTag />}
+                        {accountHasLegacyPlan && <LegacyPlanBadge />}
                         <h4>{planTitle}</h4>
                         {isTrialing ? (
                             <div>
@@ -360,6 +357,7 @@ export default connect(
                 currentSubscription.get('plan')
             )(state),
             currentUsage: billingSelectors.currentUsage(state),
+            accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
         }
     },
     {fetchCurrentUsage}

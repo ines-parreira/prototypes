@@ -18,7 +18,10 @@ import {
 import {fromJS} from 'immutable'
 
 import {setCreditCard} from '../../../../state/billing/actions.ts'
-import {currentPlan as currentPlanSelector} from '../../../../state/billing/selectors.ts'
+import {
+    currentPlan as currentPlanSelector,
+    hasLegacyPlan as hasLegacyPlanSelector,
+} from '../../../../state/billing/selectors.ts'
 
 import Loader from '../../../common/components/Loader/Loader.tsx'
 import {loadScript} from '../../../../utils.ts'
@@ -29,7 +32,7 @@ import InputField from '../../../common/forms/InputField'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
-import {Plan} from '../plans/Plan'
+import Plan from '../plans/Plan'
 
 import GorgiasApi from '../../../../services/gorgiasApi.ts'
 
@@ -37,6 +40,8 @@ import {setCurrentSubscription} from '../../../../state/currentAccount/actions.t
 import {notify} from '../../../../state/notifications/actions.ts'
 import {createStripeCardToken} from '../../../../utils/stripe.ts'
 import history from '../../../history.ts'
+
+import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner.tsx'
 
 import {
     creditCardCVCNormalizer,
@@ -55,6 +60,7 @@ type Props = {
     currentUser: Object,
     currentSubscription: Object,
     currentAccount: Object,
+    accountHasLegacyPlan: boolean,
     hasCreditCard: boolean,
     number: string,
     name: string,
@@ -293,6 +299,7 @@ export class CreditCard extends Component<Props, State> {
             currentPlan,
             currentSubscription,
             location,
+            accountHasLegacyPlan,
         } = this.props
         const {isStripeLoaded, errors} = this.state
 
@@ -335,8 +342,9 @@ export class CreditCard extends Component<Props, State> {
                 />
 
                 <Container fluid className="page-container">
-                    <p>Enter the information of the card you'd like to use.</p>
-
+                    {accountHasLegacyPlan && (
+                        <LegacyPlanBanner subscriptionEnd />
+                    )}
                     <Row>
                         {currentSubscription.get('status') !== 'active' &&
                             !currentPlan.isEmpty() && (
@@ -351,6 +359,10 @@ export class CreditCard extends Component<Props, State> {
                                 </Col>
                             )}
                         <Col sm={4}>
+                            <p>
+                                Enter the information of the card you'd like to
+                                use.
+                            </p>
                             <Form onSubmit={this._submit}>
                                 <InputField
                                     type="text"
@@ -465,9 +477,14 @@ function mapStateToProps(state) {
         ),
         currentAccount: state.currentAccount,
         hasCreditCard: !!state.billing.get('creditCard'),
+        accountHasLegacyPlan: hasLegacyPlanSelector(state),
     }
 }
 
-const actions = {setCurrentSubscription, notify, setCreditCard}
+const actions = {
+    setCurrentSubscription,
+    notify,
+    setCreditCard,
+}
 
 export default withRouter(connect(mapStateToProps, actions)(CreditCard))

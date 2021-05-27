@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LegacyPlanBanner /> should render a banner 1`] = `
+<div
+  class="legacyExpirationBanner"
+>
+  <i
+    class="material-icons"
+  >
+    error
+  </i>
+  <div
+    class="legacyExpirationBannerLabel"
+  >
+    You are subscribed to a legacy plan that expires
+     
+    on
+     
+    <span
+      class="expirationDate"
+    >
+      test
+    </span>
+    .
+     
+    <a
+      to="/app/settings/billing/plans"
+    >
+      <span
+        class="plansLink"
+      >
+        See all new plans.
+      </span>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<LegacyPlanBanner /> should render a banner without subscription end date 1`] = `
+<div
+  class="legacyExpirationBanner"
+>
+  <i
+    class="material-icons"
+  >
+    error
+  </i>
+  <div
+    class="legacyExpirationBannerLabel"
+  >
+    You are subscribed to a legacy plan that expires
+     
+    on
+     
+    <span
+      class="expirationDate"
+    >
+      test
+    </span>
+    .
+     
+    <a
+      to="/app/settings/billing/plans"
+    >
+      <span
+        class="plansLink"
+      >
+        See all new plans.
+      </span>
+    </a>
+  </div>
+</div>
+`;

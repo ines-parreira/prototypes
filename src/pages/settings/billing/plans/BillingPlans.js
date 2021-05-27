@@ -25,9 +25,8 @@ import * as currentAccountSelectors from '../../../../state/currentAccount/selec
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
 import history from '../../../history.ts'
-import {hasLegacyPlan} from '../../../../utils/account.ts'
 
-import {Plan} from './Plan'
+import Plan from './Plan'
 
 import css from './BillingPlans.less'
 
@@ -38,6 +37,7 @@ type Props = {
     subscription: Object,
     shouldPayWithShopify: boolean,
     isTrialing: boolean,
+    accountHasLegacyPlan: boolean,
     notify: Function,
     isAllowedToChangePlan: Function,
     updateSubscription: Function,
@@ -170,6 +170,7 @@ export class BillingPlans extends React.Component<Props, State> {
             currentPlan,
             location: {state},
             plans,
+            accountHasLegacyPlan,
         } = this.props
         const {selectedInterval} = this.state
         const enterprisePlan = fromJS({
@@ -177,10 +178,6 @@ export class BillingPlans extends React.Component<Props, State> {
             name: 'Enterprise',
             features: [],
         })
-        const accountHasLegacyPlan = hasLegacyPlan(
-            currentAccount.toJS(),
-            currentPlan.toJS()
-        )
         const isCustomPlan = currentPlan.get('custom', false)
         let availablePlans = isCustomPlan
             ? plans.filter((plan) => plan.get('id') === currentPlan.get('id'))
@@ -325,6 +322,7 @@ export default withRouter(
                 subscription: currentAccountSelectors.getCurrentSubscription(
                     state
                 ),
+                accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
             }
         },
         {notify, updateSubscription, setFutureSubscriptionPlan}

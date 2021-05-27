@@ -294,11 +294,6 @@ exports[`<Plan/> should render a plan featured 1`] = `
       class="plan-badge"
     />
     <div
-      class="featured-header-title"
-    >
-      Most Popular
-    </div>
-    <div
       class="header-text"
     >
       <strong>

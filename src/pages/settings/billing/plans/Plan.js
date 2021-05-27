@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
+import {connect} from 'react-redux'
 import {
     Badge,
     Button,
@@ -17,14 +18,16 @@ import type {Record} from 'immutable'
 import LegacyPlanBadge from '../../../common/components/LegacyPlanBadge.tsx'
 import './Plan.less'
 import {openChat, toJS} from '../../../../utils.ts'
-import {hasLegacyPlan, isFeatureEnabled} from '../../../../utils/account.ts'
+import {isFeatureEnabled} from '../../../../utils/account.ts'
 import {AccountFeature} from '../../../../state/currentAccount/types.ts'
+import * as billingSelectors from '../../../../state/billing/selectors.ts'
 
 type Props = {
     plan: Map<any, any>,
     currentAccount: Map<any, any>,
     currentPlan: Map<any, any>,
     cheaperPlan: Map<any, any> | null,
+    isLegacyPlan: boolean,
     isFeatured?: boolean,
     isUpdating?: boolean,
     onClick?: Function,
@@ -207,6 +210,7 @@ export function Plan({
     comparaisonMode,
     onClick,
     planColors = {Pro: 'info', Advanced: 'success', Basic: 'primary'},
+    isLegacyPlan,
 }: Props) {
     const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
         isPopoverDisplayed
@@ -237,8 +241,6 @@ export function Plan({
         isCurrentPlan && accountHasLegacyFeatures
     )
     const canChoosePlan = !isCurrentPlan && !isUpdating
-    const isCurrentPlanLegacy =
-        isCurrentPlan && hasLegacyPlan(currentAccount.toJS(), plan.toJS())
 
     useEffect(() => {
         setDisplayPopover(true)
@@ -265,30 +267,23 @@ export function Plan({
                 })}
             >
                 <div className="plan-badge">
-                    {isCurrentPlan &&
-                        (isCurrentPlanLegacy ? (
-                            <LegacyPlanBadge />
-                        ) : (
-                            <Badge
-                                color={
-                                    isEnterprisePlan
-                                        ? 'warning'
-                                        : planColors[plan.get('name')]
-                                }
-                            >
-                                CURRENT PLAN
-                            </Badge>
-                        ))}
+                    {!isCurrentPlan ? null : isLegacyPlan ? (
+                        <LegacyPlanBadge />
+                    ) : (
+                        <Badge
+                            color={
+                                isEnterprisePlan
+                                    ? 'warning'
+                                    : planColors[plan.get('name')]
+                            }
+                        >
+                            CURRENT PLAN
+                        </Badge>
+                    )}
                 </div>
-
-                {isFeatured && plan.get('public') && (
-                    <div className="featured-header-title">Most Popular</div>
-                )}
                 <div className="header-text">
                     <strong>
-                        {`${plan.get('name')}${
-                            isCurrentPlanLegacy ? ' legacy' : ''
-                        }`}
+                        {`${plan.get('name')}${isLegacyPlan ? ' legacy' : ''}`}
                     </strong>
                     {plan.get('amount') > 0 && (
                         <span className="float-right">
@@ -421,3 +416,9 @@ Plan.defaultProps = {
     isCurrentPlan: false,
     comparaisonMode: true,
 }
+
+export default connect((state) => {
+    return {
+        isLegacyPlan: billingSelectors.hasLegacyPlan(state),
+    }
+})(Plan)

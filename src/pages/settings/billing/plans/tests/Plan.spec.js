@@ -32,6 +32,7 @@ describe('<Plan/>', () => {
             {
                 currentAccount: accountWithLegacyFeatures,
                 isCurrentPlan: true,
+                isLegacyPlan: true,
             },
         ],
         ['a plan featured', {isFeatured: true}],

@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
+import moment from 'moment'
 
 import {getActiveIntegrations} from '../integrations/selectors'
 
@@ -127,3 +128,33 @@ export const isAllowedToChangePlan = (planId: string) =>
 export const makeIsAllowedToChangePlan = (state: RootState) => (
     planId: string
 ) => isAllowedToChangePlan(planId)(state)
+
+export const hasLegacyPlan = createSelector<
+    RootState,
+    boolean,
+    Map<any, any>,
+    Map<any, any>
+>(
+    currentPlan,
+    getCurrentAccountState as (state: RootState) => CurrentAccountState,
+    (plan, account) => {
+        return (
+            !!account.getIn(['meta', 'has_legacy_features']) ||
+            (!plan.get('public') && !plan.get('custom'))
+        )
+    }
+)
+
+export const getEndSubscriptionPeriodLabel = createSelector<
+    RootState,
+    string,
+    Map<any, any>,
+    Map<any, any>
+>(currentUsage, currentPlan, (usage, plan) => {
+    const endSubscription = usage.getIn(['meta', 'end_datetime'])
+    const interval = plan.get('interval')
+    if (interval === 'month') {
+        return moment(endSubscription).add(1, 'month').format('MMMM YYYY')
+    }
+    return moment(endSubscription).format('Do MMMM YYYY')
+})

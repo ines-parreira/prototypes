@@ -19,6 +19,7 @@ describe('CreditCard component', () => {
         currentAccount: fromJS({}),
         currentUser: fromJS({}),
         hasCreditCard: false,
+        accountHasLegacyPlan: false,
         location: {},
         notify: jest.fn(),
         setCreditCard: jest.fn(),
