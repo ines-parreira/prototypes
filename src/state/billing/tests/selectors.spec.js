@@ -132,22 +132,34 @@ describe('billing selectors', () => {
         )
     })
 
-    it('accountHasLegacyPlan', () => {
-        state = {
-            ...state,
-            currentAccount: fromJS({
-                current_subscription: {plan: 'growth-usd-1'},
-            }),
-        }
-        expect(selectors.hasLegacyPlan(state)).toBe(false)
-        state = {
-            ...state,
-            currentAccount: fromJS({
-                current_subscription: {plan: 'growth-usd-1'},
-                meta: {has_legacy_features: true},
-            }),
-        }
-        expect(selectors.hasLegacyPlan(state)).toBe(true)
+    describe('accountHasLegacyPlan', () => {
+        it('should return the proper value for a legacy and non legacy plan', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'growth-usd-1'},
+                }),
+            }
+            expect(selectors.hasLegacyPlan(state)).toBe(false)
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'growth-usd-1'},
+                    meta: {has_legacy_features: true},
+                }),
+            }
+            expect(selectors.hasLegacyPlan(state)).toBe(true)
+        })
+
+        it('should return false when the current plan is empty', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: null,
+                }),
+            }
+            expect(selectors.hasLegacyPlan(state)).toBe(false)
+        })
     })
 
     it('getEndSubscriptionPeriodLabel', () => {
