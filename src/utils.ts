@@ -20,7 +20,12 @@ import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
 import moment from 'moment-timezone'
-import {createSelectorCreator, defaultMemoize, createSelector} from 'reselect'
+import {
+    createSelector,
+    createSelectorCreator,
+    defaultMemoize,
+    Selector,
+} from 'reselect'
 import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
@@ -34,6 +39,7 @@ import {ActionTemplate, Schemas, Attachment} from './types'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {getHighestRole} from './state/agents/helpers'
+import {RootState} from './state/types'
 
 type Message = {
     created_datetime: Date
@@ -902,3 +908,11 @@ export const transformSystemMessagesToNotifications = (
 export const displayRestrictedSymbols = (symbols: Array<string>): string => {
     return symbols.join('').replace(/\\/g, '')
 }
+
+export const makeGetPlainJS = <T = unknown>(
+    selector: Selector<RootState, Iterable<any, any>>
+) =>
+    createSelector<RootState, T, Iterable<any, any>>(
+        selector,
+        (data: Iterable<any, any>) => data.toJS() as T
+    )

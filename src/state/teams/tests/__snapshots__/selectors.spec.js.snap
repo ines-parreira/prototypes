@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`teams selectors getLabelledTeams() 1`] = `
+Immutable.List [
+  Object {
+    "id": 1,
+    "label": "Team 1",
+    "members": Immutable.List [],
+  },
+  Object {
+    "id": 2,
+    "label": "Team 2",
+    "members": Immutable.List [],
+  },
+]
+`;

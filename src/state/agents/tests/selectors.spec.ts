@@ -245,4 +245,11 @@ describe('agents selectors', () => {
         expect(selectors.isAgentTypingOnTicket()(state)).toBe(false)
         expect(selectors.isAgentTypingOnTicket()({} as RootState)).toBe(false)
     })
+
+    it('getLabelledAgents()', () => {
+        expect(selectors.getLabelledAgents(state)).toMatchSnapshot()
+        expect(selectors.getLabelledAgents({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
+    })
 })
