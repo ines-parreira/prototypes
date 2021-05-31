@@ -1,0 +1,1 @@
+export const STAT_FETCHED = 'STAT/STAT_FETCHED'

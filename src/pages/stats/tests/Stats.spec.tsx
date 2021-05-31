@@ -6,20 +6,23 @@ import axios from 'axios'
 
 import {StatsContainer} from '../Stats'
 import {views as statsViewsConfig} from '../../../config/stats'
-import {firstResponseTimeStat} from '../../../fixtures/stats.js'
+import {firstResponseTimeStat} from '../../../fixtures/stats'
 
 jest.mock('lodash/debounce', () => (fn: () => void) => () => fn())
 
 describe('<Stats/>', () => {
     const channelsStatView = statsViewsConfig.getIn(['channels', 'link'])
+    const notifyMock = jest.fn()
+    const statFetchedMock = jest.fn()
     const defaultProps = ({
-        notify: jest.fn(),
+        notify: notifyMock,
         filters: fromJS({
             period: {
                 start_datetime: '2019-03-09',
                 end_datetime: '2019-03-10',
             },
         }),
+        statFetched: statFetchedMock,
     } as unknown) as ComponentProps<typeof StatsContainer>
 
     let apiMock: MockAdapter
@@ -51,6 +54,7 @@ describe('<Stats/>', () => {
                 expect(component.state).toMatchSnapshot(
                     'should contain data of stats and be marked as not loading'
                 )
+                expect(statFetchedMock.mock.calls).toMatchSnapshot()
                 done()
             })
         })
@@ -69,11 +73,7 @@ describe('<Stats/>', () => {
                 expect(component.state).toMatchSnapshot(
                     'stats should be marked as not loading'
                 )
-                expect(
-                    (defaultProps.notify as jest.MockedFunction<
-                        typeof defaultProps.notify
-                    >).mock.calls
-                ).toMatchSnapshot()
+                expect(notifyMock.mock.calls).toMatchSnapshot()
                 done()
             })
         })
@@ -92,11 +92,7 @@ describe('<Stats/>', () => {
                 expect(component.state).toMatchSnapshot(
                     'stats should be marked as not loading'
                 )
-                expect(
-                    (defaultProps.notify as jest.MockedFunction<
-                        typeof defaultProps.notify
-                    >).mock.calls
-                ).toMatchSnapshot()
+                expect(notifyMock.mock.calls).toMatchSnapshot()
                 done()
             })
         })
@@ -129,6 +125,7 @@ describe('<Stats/>', () => {
                     expect(component.state).toMatchSnapshot(
                         'should contain data of stats and be marked as not loading'
                     )
+                    expect(statFetchedMock.mock.calls).toMatchSnapshot()
                     done()
                 })
             })
@@ -161,6 +158,7 @@ describe('<Stats/>', () => {
                     expect(component.state).toMatchSnapshot(
                         'should contain data of stats and be marked as not loading'
                     )
+                    expect(statFetchedMock.mock.calls).toMatchSnapshot()
                     done()
                 })
             })

@@ -329,7 +329,9 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           <Tooltip
             placement="top"
             target="value-total-messages-sent"
-          />
+          >
+            Compared to : Apr 07, 2019 - Jul 06, 2019
+          </Tooltip>
         </span>
       </div>
     </div>

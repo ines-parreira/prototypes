@@ -10,7 +10,26 @@ exports[`Stat should render a bar chart 1`] = `
       style="font-size: 17px;"
     >
       Stat label
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon"
+          id="tickets-created-per-channel-per-day"
+        >
+          info_outline
+        </i>
+      </span>
     </h5>
+    <button
+      class="btn btn-secondary btn-transparent btn btn-secondary"
+      type="button"
+    >
+      <i
+        class="material-icons mr-1"
+      >
+        file_download
+      </i>
+      CSV
+    </button>
   </div>
   <div>
     <div>
@@ -50,7 +69,26 @@ exports[`Stat should render a line chart 1`] = `
       style="font-size: 17px;"
     >
       Stat label
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon"
+          id="resolution-time"
+        >
+          info_outline
+        </i>
+      </span>
     </h5>
+    <button
+      class="btn btn-secondary btn-transparent btn btn-secondary"
+      type="button"
+    >
+      <i
+        class="material-icons mr-1"
+      >
+        file_download
+      </i>
+      CSV
+    </button>
   </div>
   <div>
     <div>
@@ -70,7 +108,26 @@ exports[`Stat should render a per hour per week table 1`] = `
       style="font-size: 17px;"
     >
       Stat label
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon"
+          id="tickets-created-per-hour-per-weekday"
+        >
+          info_outline
+        </i>
+      </span>
     </h5>
+    <button
+      class="btn btn-secondary btn-transparent btn btn-secondary"
+      type="button"
+    >
+      <i
+        class="material-icons mr-1"
+      >
+        file_download
+      </i>
+      CSV
+    </button>
   </div>
   <div>
     <div>
@@ -90,7 +147,26 @@ exports[`Stat should render a table chart 1`] = `
       style="font-size: 17px;"
     >
       Stat label
+      <span>
+        <i
+          class="material-icons ml-2 helpIcon"
+          id="latest-satisfaction-surveys"
+        >
+          info_outline
+        </i>
+      </span>
     </h5>
+    <button
+      class="btn btn-secondary btn-transparent btn btn-secondary"
+      type="button"
+    >
+      <i
+        class="material-icons mr-1"
+      >
+        file_download
+      </i>
+      CSV
+    </button>
   </div>
   <div>
     <div>

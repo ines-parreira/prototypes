@@ -8,18 +8,22 @@ import views from './views/reducer'
 import {ViewsState} from './views/types'
 import viewsCount from './viewsCount/reducer'
 import {ViewsCountState} from './viewsCount/types'
+import stats from './stats/reducer'
+import {StatsState} from './stats/types'
 import tags from './tags/reducer'
 import {TagsState} from './tags/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
     sections: SectionsState
+    stats: StatsState
     tags: TagsState
     views: ViewsState
     viewsCount: ViewsCountState
 }>({
     macros,
     sections,
+    stats,
     tags,
     views,
     viewsCount,

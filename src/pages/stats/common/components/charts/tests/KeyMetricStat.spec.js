@@ -11,43 +11,40 @@ import {
 import KeyMetricStat from '../KeyMetricStat'
 
 describe('KeyMetricStat', () => {
+    const minProps = {
+        loading: false,
+    }
+
     it('should render a key metrics chart (splitted key metrics)', () => {
         const config = statsConfig.find((config, key) => key === OVERVIEW)
         const splittedKeyMetricsStat = fromJS({
-            data: {
-                'median-resolution-time': {
-                    data: {
-                        more_is_better: false,
-                        delta: 100,
-                        value: 343529.0,
-                        type: 'duration',
-                        name: 'median_resolution_time',
-                    },
-                    meta: {
-                        start_datetime: '2019-07-06 00:00:00',
-                        end_datetime: '2019-10-03 23:59:59',
-                        previous_start_datetime: '2019-04-07 00:00:01',
-                        previous_end_datetime: '2019-07-06 00:00:00',
-                    },
+            data: [
+                {
+                    api_resource_name: 'median-resolution-time',
+                    more_is_better: false,
+                    delta: 100,
+                    value: 343529.0,
+                    type: 'duration',
+                    name: 'median_resolution_time',
                 },
-                'total-messages-sent': {
-                    data: {
-                        delta: 0,
-                        value: 20,
-                        type: 'number',
-                        name: 'total_messages_sent',
-                    },
+                {
+                    api_resource_name: 'total-messages-sent',
+                    delta: 0,
+                    value: 20,
+                    type: 'number',
+                    name: 'total_messages_sent',
                 },
-                meta: {
-                    start_datetime: '2019-07-06 00:00:00',
-                    end_datetime: '2019-10-03 23:59:59',
-                    previous_start_datetime: '2019-04-07 00:00:01',
-                    previous_end_datetime: '2019-07-06 00:00:00',
-                },
+            ],
+            meta: {
+                start_datetime: '2019-07-06 00:00:00',
+                end_datetime: '2019-10-03 23:59:59',
+                previous_start_datetime: '2019-04-07 00:00:01',
+                previous_end_datetime: '2019-07-06 00:00:00',
             },
         })
         const component = shallow(
             <KeyMetricStat
+                {...minProps}
                 config={config}
                 {...splittedKeyMetricsStat.toObject()}
             />
@@ -100,6 +97,7 @@ describe('KeyMetricStat', () => {
         })
         const component = shallow(
             <KeyMetricStat
+                {...minProps}
                 config={config}
                 {...groupedKeyMetricsStat.toObject()}
             />
@@ -139,6 +137,7 @@ describe('KeyMetricStat', () => {
 
         const component = shallow(
             <KeyMetricStat
+                {...minProps}
                 config={config}
                 {...satisfactionSurveyStat.toObject()}
             />

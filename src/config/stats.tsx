@@ -419,44 +419,52 @@ export const stats: Map<any, any> = fromJS({
             {
                 api_resource_name: 'total-tickets-created',
                 label: 'Tickets created',
+                name: 'total_new_tickets',
                 tooltip: 'Number of tickets created',
             },
             {
                 api_resource_name: 'total-tickets-replied',
                 label: 'Tickets replied',
+                name: 'total_replied_tickets',
                 tooltip: 'Number of tickets replied by agents',
             },
             {
                 api_resource_name: 'total-tickets-closed',
                 label: 'Tickets closed',
+                name: 'total_closed_tickets',
                 tooltip:
                     'Number of tickets closed (if a ticket was closed multiple times, we only count the last time)',
             },
             {
                 api_resource_name: 'total-messages-sent',
                 label: 'Messages sent',
+                name: 'total_messages_sent',
                 tooltip: 'Number of messages sent by agents and rules',
             },
             {
                 api_resource_name: 'total-messages-received',
                 label: 'Messages received',
+                name: 'total_messages_received',
                 tooltip: 'Number of messages received from customers',
             },
             {
                 api_resource_name: 'median-first-response-time',
                 label: 'First response time',
+                name: 'median_first_response_time',
                 tooltip:
                     "Median time between the first message from a customer and the first response from an agent (messages sent by rules don't count)",
             },
             {
                 api_resource_name: 'median-resolution-time',
                 label: 'Resolution time',
+                name: 'median_resolution_time',
                 tooltip:
                     'Median time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule',
             },
             {
                 api_resource_name: 'total-one-touch-tickets',
                 label: 'One-touch tickets',
+                name: 'total_one_touch_tickets',
                 tooltip:
                     'Percentage of tickets closed with only one response from an agent or a rule',
             },

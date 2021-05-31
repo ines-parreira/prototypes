@@ -2,19 +2,25 @@ import React, {Component} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
+import {withRouter, RouteComponentProps} from 'react-router-dom'
 import axios, {AxiosError} from 'axios'
-import _pick from 'lodash/pick'
 
 import * as tagsSelectors from '../../../../../state/tags/selectors'
-import {TICKETS_PER_TAG} from '../../../../../config/stats'
+import {
+    TICKETS_PER_TAG,
+    stats as statsConfig,
+} from '../../../../../config/stats'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
+import {getStatDataByName} from '../../../../../state/entities/stats/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 import GorgiasApi from '../../../../../services/gorgiasApi'
 import {RootState} from '../../../../../state/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {saveFileAsDownloaded} from '../../../../../utils/file'
 import StatsHelpIcon from '../StatsHelpIcon'
+import {getViewFilters} from '../../../../../state/stats/selectors'
+import {TwoDimensionalChart} from '../../../../../models/stat/types'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat.js'
@@ -23,16 +29,9 @@ import KeyMetricStat from './KeyMetricStat/KeyMetricStat.js'
 import BarStat from './BarStat.js'
 
 type OwnProps = {
-    data: Map<any, any>
-    config: Map<any, any>
-    filters: Map<any, any>
-    legend: Map<any, any>
-    meta: Map<any, any>
-    label?: string
-    downloadable?: boolean
+    defaultLoaderHeight: string
     loading: boolean | Record<string, unknown>
     name: string
-    defaultLoaderHeight: string
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -90,29 +89,29 @@ export class StatContainer extends Component<Props, State> {
     }
 
     render() {
+        const {name, tagColors, loading, defaultLoaderHeight, stat} = this.props
         const {isDownloading} = this.state
-        const {
-            name,
-            label,
-            tagColors,
-            loading,
-            config,
-            defaultLoaderHeight,
-        } = this.props
         const context = {tagColors}
-        const style = config.get('style')
+        const config = statsConfig.get(name) as Map<any, any>
+        const statStyle = config.get('style')
         const helpText = config.get('helpText')
         // approximate height of a chart
         const downloadable = config.get('downloadable') || false
         // Loading states of key metrics statistics are displayed inside their components.
-        const isLoading = style !== 'key-metrics' && loading === true
+        const isLoading = statStyle !== 'key-metrics' && loading === true
+        const data = fromJS(stat?.data.data)
+        const meta = fromJS(stat?.meta)
+        const legend =
+            !stat || !stat.data
+                ? null
+                : fromJS((stat.data as TwoDimensionalChart).legend)
 
         return (
             <div>
-                {this.props.label ? (
+                {stat?.data && 'label' in stat.data && stat.data.label ? (
                     <div className="mb-3 d-flex justify-content-between align-items-baseline">
                         <h5 className="mb-0 d-flex" style={{fontSize: '17px'}}>
-                            {label}
+                            {stat.data.label}
                             {helpText ? (
                                 <span>
                                     <StatsHelpIcon id={name} />
@@ -143,65 +142,53 @@ export class StatContainer extends Component<Props, State> {
                     </div>
                 ) : null}
                 <div>
-                    {isLoading ? (
+                    {isLoading || stat == null ? (
                         <Loader
                             minHeight={
-                                style === 'key-metrics'
+                                statStyle === 'key-metrics'
                                     ? '190px'
                                     : defaultLoaderHeight
                             }
                         />
-                    ) : style === 'table' ? (
+                    ) : statStyle === 'table' ? (
                         <TableStat
                             context={context}
-                            {..._pick(this.props, [
-                                'data',
-                                'config',
-                                'meta',
-                                'name',
-                            ])}
+                            data={data}
+                            meta={meta}
+                            name={name}
+                            config={config}
                         />
-                    ) : style === 'per-hour-per-week-table' ? (
+                    ) : statStyle === 'per-hour-per-week-table' ? (
                         <PerHourPerWeekTableStat
                             context={context}
-                            {..._pick(this.props, [
-                                'data',
-                                'config',
-                                'meta',
-                                'name',
-                            ])}
+                            data={data}
+                            meta={meta}
+                            name={name}
+                            config={config}
                         />
-                    ) : style === 'key-metrics' ? (
+                    ) : statStyle === 'key-metrics' ? (
                         <KeyMetricStat
-                            {..._pick(this.props, [
-                                'data',
-                                'config',
-                                'meta',
-                                'loading',
-                            ])}
+                            data={data}
+                            meta={meta}
+                            loading={loading}
+                            config={config}
                         />
-                    ) : style === 'bar' ? (
-                        <BarStat
-                            {..._pick(this.props, ['data', 'config', 'legend'])}
-                        />
-                    ) : style === 'line' ? (
+                    ) : statStyle === 'bar' ? (
+                        <BarStat data={data} legend={legend} config={config} />
+                    ) : statStyle === 'line' ? (
                         <LineStat
-                            {..._pick(this.props, [
-                                'data',
-                                'legend',
-                                'config',
-                                'meta',
-                            ])}
+                            data={data}
+                            legend={legend}
+                            config={config}
+                            meta={meta}
                         />
                     ) : (
                         <TableStat
                             context={context}
-                            {..._pick(this.props, [
-                                'data',
-                                'config',
-                                'meta',
-                                'name',
-                            ])}
+                            data={data}
+                            name={name}
+                            config={config}
+                            meta={meta}
                         />
                     )}
                 </div>
@@ -211,26 +198,28 @@ export class StatContainer extends Component<Props, State> {
 }
 
 const connector = connect(
-    (state: RootState, props: OwnProps) => {
-        // Only `ticket-per-tags` stats needs colors of tags
-        if (props.name !== TICKETS_PER_TAG) {
-            return {
-                tagColors: null,
-            }
-        }
-
+    (
+        state: RootState,
+        {match, name}: OwnProps & RouteComponentProps<{view: string}>
+    ) => {
         return {
-            tagColors: tagsSelectors
-                .getTags(state)
-                .reduce((tagColors, tag: Map<any, any>) => {
-                    return tagColors!.set(
-                        tag.get('name'),
-                        tag.get('decoration')
-                    )
-                }, fromJS({}) as Map<any, any>),
+            // Only `ticket-per-tags` stats needs colors of tags
+            tagColors:
+                name !== TICKETS_PER_TAG
+                    ? null
+                    : tagsSelectors
+                          .getTags(state)
+                          .reduce((tagColors, tag: Map<any, any>) => {
+                              return tagColors!.set(
+                                  tag.get('name'),
+                                  tag.get('decoration')
+                              )
+                          }, fromJS({}) as Map<any, any>),
+            stat: getStatDataByName(name)(state),
+            filters: getViewFilters(match.params.view)(state),
         }
     },
     {notify}
 )
 
-export default connector(StatContainer)
+export default withRouter(connector(StatContainer))

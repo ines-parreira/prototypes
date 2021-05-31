@@ -23,7 +23,6 @@ Object {
     "tickets-created-per-channel-per-day": false,
     "tickets-created-per-channel": false,
   },
-  "stats": Immutable.Map {},
 }
 `;
 
@@ -50,8 +49,138 @@ Object {
     "tickets-created-per-channel-per-day": false,
     "tickets-created-per-channel": false,
   },
-  "stats": Immutable.Map {},
 }
+`;
+
+exports[`<Stats/> componentDidMount() should fetch stats and populate the state 1`] = `
+Array [
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+]
 `;
 
 exports[`<Stats/> componentDidMount() should fetch stats and populate the state: should contain data of stats and be marked as not loading 1`] = `
@@ -59,118 +188,6 @@ Object {
   "fetchingStates": Immutable.Map {
     "tickets-created-per-channel-per-day": false,
     "tickets-created-per-channel": false,
-  },
-  "stats": Immutable.Map {
-    "tickets-created-per-channel-per-day": Immutable.Map {
-      "meta": Immutable.Map {
-        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
-        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
-        "end_datetime": "2019-05-31T23:59:59-05:00",
-        "start_datetime": "2019-05-25T00:00:00-05:00",
-      },
-      "label": "First response time (percentiles)",
-      "legend": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": "",
-          "y": "First response time",
-        },
-      },
-      "data": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": Immutable.List [
-            1558760400,
-            1558846800,
-            1558933200,
-            1559019600,
-            1559106000,
-            1559192400,
-            1559278800,
-          ],
-          "y": Immutable.List [],
-        },
-        "lines": Immutable.List [
-          Immutable.Map {
-            "name": "50%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              44772,
-              0,
-            ],
-          },
-          Immutable.Map {
-            "name": "90%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              80567,
-              0,
-            ],
-          },
-        ],
-      },
-    },
-    "tickets-created-per-channel": Immutable.Map {
-      "meta": Immutable.Map {
-        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
-        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
-        "end_datetime": "2019-05-31T23:59:59-05:00",
-        "start_datetime": "2019-05-25T00:00:00-05:00",
-      },
-      "label": "First response time (percentiles)",
-      "legend": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": "",
-          "y": "First response time",
-        },
-      },
-      "data": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": Immutable.List [
-            1558760400,
-            1558846800,
-            1558933200,
-            1559019600,
-            1559106000,
-            1559192400,
-            1559278800,
-          ],
-          "y": Immutable.List [],
-        },
-        "lines": Immutable.List [
-          Immutable.Map {
-            "name": "50%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              44772,
-              0,
-            ],
-          },
-          Immutable.Map {
-            "name": "90%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              80567,
-              0,
-            ],
-          },
-        ],
-      },
-    },
   },
 }
 `;
@@ -181,8 +198,264 @@ Object {
     "tickets-created-per-channel-per-day": true,
     "tickets-created-per-channel": true,
   },
-  "stats": Immutable.Map {},
 }
+`;
+
+exports[`<Stats/> componentDidUpdate should fetch stats when filters change 1`] = `
+Array [
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+]
 `;
 
 exports[`<Stats/> componentDidUpdate should fetch stats when filters change: should contain data of stats and be marked as not loading 1`] = `
@@ -190,118 +463,6 @@ Object {
   "fetchingStates": Immutable.Map {
     "tickets-created-per-channel-per-day": false,
     "tickets-created-per-channel": false,
-  },
-  "stats": Immutable.Map {
-    "tickets-created-per-channel-per-day": Immutable.Map {
-      "meta": Immutable.Map {
-        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
-        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
-        "end_datetime": "2019-05-31T23:59:59-05:00",
-        "start_datetime": "2019-05-25T00:00:00-05:00",
-      },
-      "label": "First response time (percentiles)",
-      "legend": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": "",
-          "y": "First response time",
-        },
-      },
-      "data": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": Immutable.List [
-            1558760400,
-            1558846800,
-            1558933200,
-            1559019600,
-            1559106000,
-            1559192400,
-            1559278800,
-          ],
-          "y": Immutable.List [],
-        },
-        "lines": Immutable.List [
-          Immutable.Map {
-            "name": "50%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              44772,
-              0,
-            ],
-          },
-          Immutable.Map {
-            "name": "90%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              80567,
-              0,
-            ],
-          },
-        ],
-      },
-    },
-    "tickets-created-per-channel": Immutable.Map {
-      "meta": Immutable.Map {
-        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
-        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
-        "end_datetime": "2019-05-31T23:59:59-05:00",
-        "start_datetime": "2019-05-25T00:00:00-05:00",
-      },
-      "label": "First response time (percentiles)",
-      "legend": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": "",
-          "y": "First response time",
-        },
-      },
-      "data": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": Immutable.List [
-            1558760400,
-            1558846800,
-            1558933200,
-            1559019600,
-            1559106000,
-            1559192400,
-            1559278800,
-          ],
-          "y": Immutable.List [],
-        },
-        "lines": Immutable.List [
-          Immutable.Map {
-            "name": "50%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              44772,
-              0,
-            ],
-          },
-          Immutable.Map {
-            "name": "90%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              80567,
-              0,
-            ],
-          },
-        ],
-      },
-    },
   },
 }
 `;
@@ -312,8 +473,264 @@ Object {
     "tickets-created-per-channel-per-day": true,
     "tickets-created-per-channel": true,
   },
-  "stats": Immutable.Map {},
 }
+`;
+
+exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change 1`] = `
+Array [
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-closed-per-agent-per-day",
+      "statName": "tickets-closed-per-agent-per-day",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-closed-per-agent",
+      "statName": "tickets-closed-per-agent",
+      "value": Object {
+        "data": Object {
+          "data": Object {
+            "axes": Object {
+              "x": Array [
+                1558760400,
+                1558846800,
+                1558933200,
+                1559019600,
+                1559106000,
+                1559192400,
+                1559278800,
+              ],
+              "y": Array [],
+            },
+            "lines": Array [
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  44772,
+                  0,
+                ],
+                "name": "50%",
+              },
+              Object {
+                "data": Array [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1563,
+                  80567,
+                  0,
+                ],
+                "name": "90%",
+              },
+            ],
+          },
+          "label": "First response time (percentiles)",
+          "legend": Object {
+            "axes": Object {
+              "x": "",
+              "y": "First response time",
+            },
+          },
+        },
+        "meta": Object {
+          "end_datetime": "2019-05-31T23:59:59-05:00",
+          "previous_end_datetime": "2019-05-25T00:00:00-05:00",
+          "previous_start_datetime": "2019-05-18T00:00:01-05:00",
+          "start_datetime": "2019-05-25T00:00:00-05:00",
+        },
+      },
+    },
+  ],
+]
 `;
 
 exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change: should contain data of stats and be marked as not loading 1`] = `
@@ -321,118 +738,6 @@ Object {
   "fetchingStates": Immutable.Map {
     "tickets-closed-per-agent-per-day": false,
     "tickets-closed-per-agent": false,
-  },
-  "stats": Immutable.Map {
-    "tickets-closed-per-agent-per-day": Immutable.Map {
-      "meta": Immutable.Map {
-        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
-        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
-        "end_datetime": "2019-05-31T23:59:59-05:00",
-        "start_datetime": "2019-05-25T00:00:00-05:00",
-      },
-      "label": "First response time (percentiles)",
-      "legend": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": "",
-          "y": "First response time",
-        },
-      },
-      "data": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": Immutable.List [
-            1558760400,
-            1558846800,
-            1558933200,
-            1559019600,
-            1559106000,
-            1559192400,
-            1559278800,
-          ],
-          "y": Immutable.List [],
-        },
-        "lines": Immutable.List [
-          Immutable.Map {
-            "name": "50%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              44772,
-              0,
-            ],
-          },
-          Immutable.Map {
-            "name": "90%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              80567,
-              0,
-            ],
-          },
-        ],
-      },
-    },
-    "tickets-closed-per-agent": Immutable.Map {
-      "meta": Immutable.Map {
-        "previous_end_datetime": "2019-05-25T00:00:00-05:00",
-        "previous_start_datetime": "2019-05-18T00:00:01-05:00",
-        "end_datetime": "2019-05-31T23:59:59-05:00",
-        "start_datetime": "2019-05-25T00:00:00-05:00",
-      },
-      "label": "First response time (percentiles)",
-      "legend": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": "",
-          "y": "First response time",
-        },
-      },
-      "data": Immutable.Map {
-        "axes": Immutable.Map {
-          "x": Immutable.List [
-            1558760400,
-            1558846800,
-            1558933200,
-            1559019600,
-            1559106000,
-            1559192400,
-            1559278800,
-          ],
-          "y": Immutable.List [],
-        },
-        "lines": Immutable.List [
-          Immutable.Map {
-            "name": "50%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              44772,
-              0,
-            ],
-          },
-          Immutable.Map {
-            "name": "90%",
-            "data": Immutable.List [
-              0,
-              0,
-              0,
-              0,
-              1563,
-              80567,
-              0,
-            ],
-          },
-        ],
-      },
-    },
   },
 }
 `;
@@ -443,7 +748,6 @@ Object {
     "tickets-closed-per-agent-per-day": true,
     "tickets-closed-per-agent": true,
   },
-  "stats": Immutable.Map {},
 }
 `;
 
@@ -486,81 +790,7 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
       }
     }
   >
-    <Connect(StatContainer)
-      config={
-        Immutable.Map {
-          "helpText": "Number of tickets created per channel per day",
-          "style": "bar",
-          "downloadable": true,
-          "lines": Immutable.Map {
-            "instagram-mention-comment": Immutable.Map {
-              "label": "Instagram mention comment",
-              "color": "#64A7D0",
-            },
-            "instagram-comment": Immutable.Map {
-              "label": "Instagram comment",
-              "color": "#5c9dbb",
-            },
-            "facebook": Immutable.Map {
-              "label": "Facebook",
-              "color": "#4872db",
-            },
-            "aircall": Immutable.Map {
-              "label": "Aircall",
-              "color": "#34ba28",
-            },
-            "facebook-messenger": Immutable.Map {
-              "label": "Facebook Messenger",
-              "color": "#1787fb",
-            },
-            "phone": Immutable.Map {
-              "label": "Phone",
-              "color": "#ffe03f",
-            },
-            "instagram-ad-comment": Immutable.Map {
-              "label": "Instagram ad comment",
-              "color": "#4ca4d9",
-            },
-            "twitter": Immutable.Map {
-              "label": "Twitter",
-              "color": "#00aced",
-            },
-            "facebook-recommendations": Immutable.Map {
-              "label": "Facebook recommendations",
-              "color": "#4887cd",
-            },
-            "chat": Immutable.Map {
-              "label": "Chat",
-              "color": "#ffb584",
-            },
-            "sms": Immutable.Map {
-              "label": "Sms",
-              "color": "#69c473",
-            },
-            "api": Immutable.Map {
-              "label": "Gorgias API",
-              "color": "#e88850",
-            },
-            "email": Immutable.Map {
-              "label": "Email",
-              "color": "#ff5eab",
-            },
-            "instagram-direct-message": Immutable.Map {
-              "label": "Instagram direct message",
-              "color": "#249ae0",
-            },
-          },
-          "options": [Function],
-        }
-      }
-      filters={
-        Immutable.Map {
-          "period": Immutable.Map {
-            "start_datetime": "2019-03-09",
-            "end_datetime": "2019-03-10",
-          },
-        }
-      }
+    <withRouter(Connect(StatContainer))
       loading={true}
       name="tickets-created-per-channel-per-day"
     />
@@ -573,22 +803,7 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
       }
     }
   >
-    <Connect(StatContainer)
-      config={
-        Immutable.Map {
-          "helpText": "Number of tickets created per channel",
-          "style": "table",
-          "downloadable": true,
-        }
-      }
-      filters={
-        Immutable.Map {
-          "period": Immutable.Map {
-            "start_datetime": "2019-03-09",
-            "end_datetime": "2019-03-10",
-          },
-        }
-      }
+    <withRouter(Connect(StatContainer))
       loading={true}
       name="tickets-created-per-channel"
     />

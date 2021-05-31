@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import _isObject from 'lodash/isObject'
 
 import Tooltip from '../../../../../common/components/Tooltip.tsx'
@@ -13,7 +13,6 @@ import {
     formatPercent,
 } from '../../../utils'
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
-import {isImmutable} from '../../../../../../utils.ts'
 import StatsHelpIcon from '../../StatsHelpIcon.tsx'
 import StatPercentageDiff from '../../StatPercentageDiff.tsx'
 
@@ -25,7 +24,7 @@ type Props = {
     data: Object,
     config: Object,
     meta: Object,
-    loading: boolean | Object,
+    loading: boolean | Map<any, any>,
 }
 
 export default class KeyMetricStat extends Component<Props> {
@@ -150,43 +149,22 @@ export default class KeyMetricStat extends Component<Props> {
                         metricConfig.get('name')
                     const metricTooltipId = `title-${metricName}`
                     const valueTooltipId = `value-${metricName}`
-                    let isFetchingMetric = false
                     let previousStartDatetime = null
                     let previousEndDatetime = null
                     let tooltipDelta = null
-                    let metric = null
-                    let metricMeta = null
 
-                    if (metricConfig.get('api_resource_name')) {
-                        // This metric has been fetched alone.
-                        isFetchingMetric = isImmutable(loading)
-                            ? // $FlowFixMe
-                              loading.get(metricConfig.get('api_resource_name'))
-                            : false
-                        metric = data
-                            ? data.getIn([
-                                  metricConfig.get('api_resource_name'),
-                                  'data',
-                              ])
-                            : null
-                        metricMeta = data
-                            ? data.getIn([
-                                  metricConfig.get('api_resource_name'),
-                                  'meta',
-                              ])
-                            : null
-                    } else {
-                        // This metric has been fetched with some other metrics.
-                        isFetchingMetric = loading
-                        metric = data
-                            ? data.find(
-                                  (metric) =>
-                                      metric.get('name') ===
-                                      metricConfig.get('name')
-                              )
-                            : null
-                        metricMeta = this.props.meta
-                    }
+                    const isFetchingMetric =
+                        typeof loading === 'boolean'
+                            ? loading
+                            : loading.get(metricConfig.get('api_resource_name'))
+                    const metric = data
+                        ? data.find(
+                              (metric) =>
+                                  metric.get('name') ===
+                                  metricConfig.get('name')
+                          )
+                        : null
+                    const metricMeta = this.props.meta
 
                     if (metricMeta) {
                         previousStartDatetime = moment(

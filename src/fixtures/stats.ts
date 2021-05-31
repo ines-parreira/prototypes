@@ -1,4 +1,6 @@
-export const firstResponseTimeStat = {
+import {Stat, StatType} from '../models/stat/types'
+
+export const firstResponseTimeStat: Stat = {
     data: {
         label: 'First response time (percentiles)',
         legend: {axes: {x: '', y: 'First response time'}},
@@ -26,5 +28,22 @@ export const firstResponseTimeStat = {
         previous_start_datetime: '2019-05-18T00:00:01-05:00',
         end_datetime: '2019-05-31T23:59:59-05:00',
         start_datetime: '2019-05-25T00:00:00-05:00',
+    },
+}
+
+export const totalMessagesSent: Stat = {
+    data: {
+        data: {
+            name: 'total_messages_sent',
+            type: StatType.Number,
+            value: 30,
+            delta: -42,
+        },
+    },
+    meta: {
+        start_datetime: '2021-04-28T00:00:00-05:00',
+        previous_start_datetime: '2021-03-29T00:00:01-05:00',
+        end_datetime: '2021-05-27T23:59:59-05:00',
+        previous_end_datetime: '2021-04-28T00:00:00-05:00',
     },
 }

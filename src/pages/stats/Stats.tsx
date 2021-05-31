@@ -16,6 +16,7 @@ import {getViewFilters} from '../../state/stats/selectors'
 import {errorToChildren} from '../../utils'
 import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState} from '../../state/types'
+import {statFetched} from '../../state/entities/stats/actions'
 
 import Stat from './common/components/charts/Stat'
 
@@ -24,12 +25,10 @@ type Props = RouteComponentProps<{view: string}> &
 
 type State = {
     fetchingStates: Map<any, any>
-    stats: Map<any, any>
 }
 
 const initialState = {
     fetchingStates: fromJS({}) as Map<any, any>,
-    stats: fromJS({}) as Map<any, any>,
 }
 
 export class StatsContainer extends React.Component<Props, State> {
@@ -69,7 +68,7 @@ export class StatsContainer extends React.Component<Props, State> {
     handleFetchStatsDebounced = _debounce(this.handleFetchStats, 1000)
 
     _fetchStat = (statName: string, filters: Map<any, any>) => {
-        const {notify} = this.props
+        const {notify, statFetched} = this.props
         const statConfig = statsConfig.get(statName) as Map<any, any>
         let resourceNames = fromJS([statName]) as List<any>
 
@@ -86,10 +85,6 @@ export class StatsContainer extends React.Component<Props, State> {
 
         resourceNames.map(async (resourceName: string) => {
             // We store the fetching state and data of a statistic differently if this one has several api resources to fetch.
-            const statStorageKey =
-                resourceNames.size > 1
-                    ? [statName, 'data', resourceName]
-                    : [statName]
             const fetchingStateKey =
                 resourceNames.size > 1 ? [statName, resourceName] : [statName]
             this.setState((state) => {
@@ -106,14 +101,10 @@ export class StatsContainer extends React.Component<Props, State> {
                     resourceName,
                     fromJS({filters})
                 )
-                this.setState({
-                    stats: this.state.stats.setIn(
-                        statStorageKey,
-                        fromJS({
-                            meta: stat.get('meta'),
-                            ...(stat.get('data') as Map<any, any>).toJS(),
-                        })
-                    ),
+                void statFetched({
+                    resourceName,
+                    statName,
+                    value: stat.toJS(),
                 })
                 return stat
             } catch (error) {
@@ -154,10 +145,9 @@ export class StatsContainer extends React.Component<Props, State> {
     render() {
         const {
             match: {params},
-            filters,
         } = this.props
         const viewConfig = statViewsConfig.get(params.view) as Map<any, any>
-        const {stats} = this.state
+
         return (
             <Container fluid style={{padding: 0}}>
                 {(viewConfig.get('stats') as List<any>).map(
@@ -169,12 +159,9 @@ export class StatsContainer extends React.Component<Props, State> {
                         const fetchingState = this.state.fetchingStates.get(
                             statName
                         )
-                        const stat = stats.get(statName)
-                            ? (stats.get(statName) as Map<any, any>).toObject()
-                            : null
 
                         // An error occured: invalid filters, request timed out, etc....
-                        if (!fetchingState && !stat) {
+                        if (fetchingState == null) {
                             return null
                         }
 
@@ -189,19 +176,7 @@ export class StatsContainer extends React.Component<Props, State> {
 
                         return (
                             <div style={{padding}} key={idx}>
-                                <Stat
-                                    loading={fetchingState}
-                                    name={statName}
-                                    config={statConfig}
-                                    filters={filters!}
-                                    {...(stat as {
-                                        data: Map<any, any>
-                                        meta: Map<any, any>
-                                        legend: Map<any, any>
-                                        label?: string
-                                        downloadable?: boolean
-                                    })}
-                                />
+                                <Stat loading={fetchingState} name={statName} />
                             </div>
                         )
                     }
@@ -217,7 +192,7 @@ const connector = connect(
             filters: getViewFilters(props.match.params.view)(state),
         }
     },
-    {notify}
+    {notify, statFetched}
 )
 
 export default withRouter(connector(StatsContainer))
