@@ -1,57 +1,5 @@
-import React from 'react'
 import moment from 'moment'
-import _isUndefined from 'lodash/isUndefined'
 import _isNumber from 'lodash/isNumber'
-
-/**
- * Render a difference (between two values, passed as percentage) showing if it increases or decreases
- * @param label {Integer|String|JSX} value displayed
- * @param percentage {Integer} value used to determine direction of the arrow (up or down)
- * @param moreIsBetter {boolean} (optional) - if passed, color the label in green or red accordingly
- * @returns {*}
- */
-export const renderDifference = (label, percentage, moreIsBetter) => {
-    if (!_isNumber(percentage)) {
-        return null
-    }
-
-    const isIncreasing = percentage > 0
-    const isDecreasing = percentage < 0
-    const isEqual = percentage === 0
-    let icon = 'arrow_forward'
-    let colorLabel = ''
-
-    if (!_isUndefined(moreIsBetter)) {
-        if (isEqual) {
-            colorLabel = 'neutral'
-        } else if (
-            (isIncreasing && moreIsBetter) ||
-            (isDecreasing && !moreIsBetter)
-        ) {
-            colorLabel = 'positive'
-        } else {
-            colorLabel = 'negative'
-        }
-    }
-
-    if (isIncreasing) {
-        icon = 'arrow_upward'
-    } else if (isDecreasing) {
-        icon = 'arrow_downward'
-    }
-
-    return (
-        <span>
-            <i
-                className={`stats-difference ${colorLabel} material-icons font-weight-bold mr-1`}
-                style={{fontSize: '15px'}}
-            >
-                {icon}
-            </i>
-            {label}%
-        </span>
-    )
-}
 
 export const comparedPeriodString = (
     previousStartDatetime,

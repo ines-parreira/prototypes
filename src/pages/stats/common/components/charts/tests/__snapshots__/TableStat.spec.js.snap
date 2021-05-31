@@ -156,20 +156,10 @@ exports[`TableStat should render a table chart 1`] = `
             <span
               id="difference-0"
             >
-              <span>
-                <i
-                  className="stats-difference  material-icons font-weight-bold mr-1"
-                  style={
-                    Object {
-                      "fontSize": "15px",
-                    }
-                  }
-                >
-                  arrow_downward
-                </i>
-                -1
-                %
-              </span>
+              <StatPercentageDiff
+                label={-1}
+                percentage={-1}
+              />
             </span>
             <Tooltip
               placement="top"

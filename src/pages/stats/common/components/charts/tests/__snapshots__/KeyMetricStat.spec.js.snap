@@ -13,12 +13,10 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
     >
       Tickets created
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-tickets_created"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-tickets_created"
@@ -40,20 +38,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           className="diff"
           id="value-tickets_created"
         >
-          <span>
-            <i
-              className="stats-difference positive material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            52
-            %
-          </span>
+          <StatPercentageDiff
+            label={52}
+            moreIsBetter={true}
+            percentage={52}
+          />
           <Tooltip
             placement="top"
             target="value-tickets_created"
@@ -73,12 +62,10 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
     >
       Tickets converted
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-tickets_converted"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-tickets_converted"
@@ -100,20 +87,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           className="diff"
           id="value-tickets_converted"
         >
-          <span>
-            <i
-              className="stats-difference positive material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            43
-            %
-          </span>
+          <StatPercentageDiff
+            label={43}
+            moreIsBetter={true}
+            percentage={43}
+          />
           <Tooltip
             placement="top"
             target="value-tickets_converted"
@@ -133,12 +111,10 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
     >
       Conversion ratio
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-conversion_ratio"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-conversion_ratio"
@@ -160,20 +136,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           className="diff"
           id="value-conversion_ratio"
         >
-          <span>
-            <i
-              className="stats-difference positive material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            10
-            %
-          </span>
+          <StatPercentageDiff
+            label={10}
+            moreIsBetter={true}
+            percentage={10}
+          />
           <Tooltip
             placement="top"
             target="value-conversion_ratio"
@@ -193,12 +160,10 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
     >
       Total sales from support
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total_sales_from_support"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total_sales_from_support"
@@ -220,20 +185,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           className="diff"
           id="value-total_sales_from_support"
         >
-          <span>
-            <i
-              className="stats-difference positive material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            21
-            %
-          </span>
+          <StatPercentageDiff
+            label={21}
+            moreIsBetter={true}
+            percentage={21}
+          />
           <Tooltip
             placement="top"
             target="value-total_sales_from_support"
@@ -260,12 +216,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       Tickets created
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total-tickets-created"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total-tickets-created"
@@ -289,12 +243,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       Tickets replied
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total-tickets-replied"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total-tickets-replied"
@@ -318,12 +270,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       Tickets closed
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total-tickets-closed"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total-tickets-closed"
@@ -347,12 +297,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       Messages sent
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total-messages-sent"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total-messages-sent"
@@ -374,20 +322,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           className="diff"
           id="value-total-messages-sent"
         >
-          <span>
-            <i
-              className="stats-difference  material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_forward
-            </i>
-            0
-            %
-          </span>
+          <StatPercentageDiff
+            label={0}
+            percentage={0}
+          />
           <Tooltip
             placement="top"
             target="value-total-messages-sent"
@@ -405,12 +343,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       Messages received
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total-messages-received"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total-messages-received"
@@ -434,12 +370,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       First response time
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-median-first-response-time"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-median-first-response-time"
@@ -463,12 +397,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       Resolution time
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-median-resolution-time"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-median-resolution-time"
@@ -490,20 +422,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           className="diff"
           id="value-median-resolution-time"
         >
-          <span>
-            <i
-              className="stats-difference negative material-icons font-weight-bold mr-1"
-              style={
-                Object {
-                  "fontSize": "15px",
-                }
-              }
-            >
-              arrow_upward
-            </i>
-            100
-            %
-          </span>
+          <StatPercentageDiff
+            label={100}
+            moreIsBetter={false}
+            percentage={100}
+          />
           <Tooltip
             placement="top"
             target="value-median-resolution-time"
@@ -523,12 +446,10 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
     >
       One-touch tickets
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total-one-touch-tickets"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total-one-touch-tickets"
@@ -559,12 +480,10 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
     >
       Survey sent
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-total_sent"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-total_sent"
@@ -588,12 +507,10 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
     >
       Response rate
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-response_rate"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-response_rate"
@@ -617,12 +534,10 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
     >
       Average rating
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-average_rating"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-average_rating"
@@ -640,20 +555,10 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
             className="diff"
             id="value-average_rating"
           >
-            <span>
-              <i
-                className="stats-difference  material-icons font-weight-bold mr-1"
-                style={
-                  Object {
-                    "fontSize": "15px",
-                  }
-                }
-              >
-                arrow_upward
-              </i>
-              10
-              %
-            </span>
+            <StatPercentageDiff
+              label={10}
+              percentage={10}
+            />
             <Tooltip
               placement="top"
               target="value-average_rating"
@@ -685,12 +590,10 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
     >
       Response Distribution
       <span>
-        <i
-          className="info-icon help-icon material-icons ml-2"
+        <StatsHelpIcon
+          className="info-icon"
           id="title-response_distribution"
-        >
-          info_outline
-        </i>
+        />
         <Tooltip
           placement="top"
           target="title-response_distribution"

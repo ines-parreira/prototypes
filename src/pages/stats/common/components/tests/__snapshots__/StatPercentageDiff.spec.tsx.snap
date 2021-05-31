@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StatPercentageDiff /> should render downward arrow and negative color when percentage is negative and more is better 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference negative"
+  >
+    arrow_downward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render downward arrow and no color when percentage is negative 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference"
+  >
+    arrow_downward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render downward arrow and positive color when percentage is negative and more is not better 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference positive"
+  >
+    arrow_downward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render forward arrow and neutral color when percentage is 0 and more is better 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference neutral"
+  >
+    arrow_forward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render forward arrow and neutral color when percentage is 0 and more is not better 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference neutral"
+  >
+    arrow_forward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render forward arrow and no color when percentage is 0 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference"
+  >
+    arrow_forward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render upward arrow and negative color when percentage is positive and more is not better 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference negative"
+  >
+    arrow_upward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render upward arrow and no color when percentage is positive 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference"
+  >
+    arrow_upward
+  </i>
+  Foo label
+  %
+</span>
+`;
+
+exports[`<StatPercentageDiff /> should render upward arrow and positive color when percentage is positive and more is better 1`] = `
+<span>
+  <i
+    class="material-icons mr-1 statsDifference positive"
+  >
+    arrow_upward
+  </i>
+  Foo label
+  %
+</span>
+`;

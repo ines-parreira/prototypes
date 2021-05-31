@@ -37,7 +37,7 @@ import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../state/integrations/constants'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'
-import css from './style.less'
+import css from './StatsFilters.less'
 
 const TagDropdownMenuWrapper = (props) => <TagDropdownMenu {...props} />
 

@@ -7,7 +7,6 @@ import _pick from 'lodash/pick'
 
 import * as tagsSelectors from '../../../../../state/tags/selectors'
 import {TICKETS_PER_TAG} from '../../../../../config/stats'
-import css from '../../../style.less'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
 import {notify} from '../../../../../state/notifications/actions'
@@ -15,6 +14,7 @@ import GorgiasApi from '../../../../../services/gorgiasApi'
 import {RootState} from '../../../../../state/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {saveFileAsDownloaded} from '../../../../../utils/file'
+import StatsHelpIcon from '../StatsHelpIcon'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat.js'
@@ -115,12 +115,7 @@ export class StatContainer extends Component<Props, State> {
                             {label}
                             {helpText ? (
                                 <span>
-                                    <i
-                                        id={name}
-                                        className={`${css['help-icon']} material-icons ml-2`}
-                                    >
-                                        info_outline
-                                    </i>
+                                    <StatsHelpIcon id={name} />
                                     <Tooltip placement="top" target={name}>
                                         {helpText}
                                     </Tooltip>

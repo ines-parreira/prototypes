@@ -15,12 +15,9 @@ import {
     SATISFACTION_SURVEY_MIN_SCORE,
     TICKET_MAX_SUBJECT_LENGTH,
 } from '../../../../../../config/stats.tsx'
-import {
-    comparedPeriodString,
-    formatCurrency,
-    renderDifference,
-} from '../../../utils'
+import {comparedPeriodString, formatCurrency} from '../../../utils'
 import DistributionVariantStat from '../DistributionVariantStat'
+import StatPercentageDiff from '../../StatPercentageDiff.tsx'
 
 import css from './TableStat.less'
 
@@ -68,10 +65,14 @@ export class TableStat extends React.Component<Props> {
                 return (
                     <span>
                         <span id={id}>
-                            {renderDifference(
-                                callback(line, metric.get('value'), context),
-                                metric.get('value')
-                            )}
+                            <StatPercentageDiff
+                                label={callback(
+                                    line,
+                                    metric.get('value'),
+                                    context
+                                )}
+                                percentage={metric.get('value')}
+                            />
                         </span>
                         <Tooltip placement="top" target={id}>
                             {tooltipDelta}

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StatsHelpIcon /> should render the help icon 1`] = `
+<i
+  class="material-icons ml-2 helpIcon fooClassName"
+  id="foo"
+>
+  info_outline
+</i>
+`;

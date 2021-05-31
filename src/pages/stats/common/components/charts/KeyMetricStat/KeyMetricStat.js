@@ -11,12 +11,11 @@ import {
     formatCurrency,
     formatDuration,
     formatPercent,
-    renderDifference,
 } from '../../../utils'
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
-
-import statsCss from '../../../../style.less'
 import {isImmutable} from '../../../../../../utils.ts'
+import StatsHelpIcon from '../../StatsHelpIcon.tsx'
+import StatPercentageDiff from '../../StatPercentageDiff.tsx'
 
 import css from './KeyMetricStat.less'
 import DonutKeyMetricStat from './DonutKeyMetricStat'
@@ -55,11 +54,11 @@ export default class KeyMetricStat extends Component<Props> {
     ) => {
         return (
             <span id={valueTooltipId} className={css.diff}>
-                {renderDifference(
-                    metric.get('delta'),
-                    metric.get('delta'),
-                    metric.get('more_is_better')
-                )}
+                <StatPercentageDiff
+                    label={metric.get('delta')}
+                    percentage={metric.get('delta')}
+                    moreIsBetter={metric.get('more_is_better')}
+                />
                 <Tooltip placement="top" target={valueTooltipId}>
                     {tooltipDelta}
                 </Tooltip>
@@ -207,12 +206,10 @@ export default class KeyMetricStat extends Component<Props> {
                             <div className={css.label}>
                                 {metricConfig.get('label')}
                                 <span>
-                                    <i
+                                    <StatsHelpIcon
                                         id={metricTooltipId}
-                                        className={`${css['info-icon']} ${statsCss['help-icon']} material-icons ml-2`}
-                                    >
-                                        info_outline
-                                    </i>
+                                        className={css['info-icon']}
+                                    />
                                     <Tooltip
                                         placement="top"
                                         target={metricTooltipId}

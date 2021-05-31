@@ -1,24 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`StatsPage should ensure that on component unmount we reset the stats filters 1`] = `
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2019-08-28T00:00:00-07:00",
+        "end_datetime": "2019-09-03T23:59:59-07:00",
+      },
+    },
+    "type": "SET_STATS_FILTERS",
+  },
+  Object {
+    "type": "RESET_STATS_FILTERS",
+  },
+]
+`;
+
 exports[`StatsPage should not render statistics because there is no filter 1`] = `null`;
 
 exports[`StatsPage should render "Overview" statistics 1`] = `
-<div>
-  Stats Component: 
-  overview
+<div
+  class="full-width"
+>
+  StatsFilters
+  <div>
+    Stats Component: 
+    overview
+  </div>
 </div>
 `;
 
 exports[`StatsPage should render "Revenue" statistics 1`] = `
-<div>
-  Revenue Stats Component
+<div
+  class="full-width"
+>
+  StatsFilters
+  <div>
+    Stats Component: 
+    revenue
+  </div>
 </div>
 `;
 
 exports[`StatsPage should render "Satisfaction" statistics 1`] = `
-<div>
-  Stats Component: 
-  satisfaction
+<div
+  class="full-width"
+>
+  StatsFilters
+  <div>
+    Stats Component: 
+    satisfaction
+  </div>
 </div>
 `;
 
@@ -36,44 +69,89 @@ exports[`StatsPage should render paywall when on statistics page and the satisfa
 </div>
 `;
 
+exports[`StatsPage should restrict feature when on revenue statistics page and integrations are missing 1`] = `
+<div
+  class="col mt-2"
+>
+  <div
+    class="alert alert-danger fade"
+    role="alert"
+  >
+    Your e-commerce store needs to be connected to Gorgias to use this feature.
+    <a
+      to="/app/settings/integrations/shopify/new"
+    >
+       
+      Add one here
+    </a>
+  </div>
+  <p>
+    Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example.
+  </p>
+  <div
+    class="carouselContainer"
+  >
+    <div
+      class="slick-initialized slick-slider  unslicked"
+    >
+      
+      <div
+        class="slick-list"
+      >
+        <div
+          class="slick-track"
+          style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+        >
+          <div
+            class="slick-slide slick-active slick-current carouselContent"
+            data-index="0"
+            style="outline: none; width: 0px;"
+            tabindex="-1"
+          >
+            <a
+              href="/static/private/img/presentationals/revenue-presentation.png"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <img
+                alt="carousel content"
+                src="/static/private/img/presentationals/revenue-presentation.png"
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+`;
+
 exports[`StatsPage testing default filters should ensure the default period is using user's timezone 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      Immutable.Map {
-        "period": Immutable.Map {
-          "start_datetime": "2019-08-28T00:00:00+02:00",
-          "end_datetime": "2019-09-03T23:59:59+02:00",
-        },
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2019-08-28T00:00:00+02:00",
+        "end_datetime": "2019-09-03T23:59:59+02:00",
       },
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
     },
-  ],
-}
+    "type": "SET_STATS_FILTERS",
+  },
+]
 `;
 
 exports[`StatsPage testing default filters should ensure the default value 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      Immutable.Map {
-        "period": Immutable.Map {
-          "start_datetime": "2019-08-28T00:00:00-07:00",
-          "end_datetime": "2019-09-03T23:59:59-07:00",
-        },
+Array [
+  Object {
+    "filters": Immutable.Map {
+      "period": Immutable.Map {
+        "start_datetime": "2019-08-28T00:00:00-07:00",
+        "end_datetime": "2019-09-03T23:59:59-07:00",
       },
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
     },
-  ],
-}
+    "type": "SET_STATS_FILTERS",
+  },
+]
 `;
