@@ -6,6 +6,7 @@ import {
     SMILE_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
+    KLAVIYO_WIDGET_TYPE,
 } from '../../../../../../../state/widgets/constants'
 
 export const WIDGET_COLOR_SUPPORTED_TYPES = [
@@ -16,4 +17,5 @@ export const WIDGET_COLOR_SUPPORTED_TYPES = [
     SMILE_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
+    KLAVIYO_WIDGET_TYPE,
 ]
