@@ -1,7 +1,6 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector, Selector} from 'reselect'
 
-import {getDisplayName} from '../customers/helpers'
 import {createImmutableSelector} from '../../utils'
 import {getCurrentUser} from '../currentUser/selectors'
 import {CurrentUser, RootState} from '../types'
@@ -36,15 +35,6 @@ export const getAgents = createImmutableSelector<
 >(
     getState,
     (state: AgentsState) => (state.get('all') as List<any>) || fromJS([])
-)
-
-export const getLabelledAgents = createSelector<RootState, List<any>, Agents>(
-    getAgents,
-    (agents) =>
-        agents.map((agent: Map<any, any>) => ({
-            label: getDisplayName(agent),
-            id: agent.get('id'),
-        })) as List<any>
 )
 
 export const getOtherAgents = createSelector<

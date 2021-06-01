@@ -2,6 +2,7 @@
 // $FlowFixMe
 import React, {useMemo, useState} from 'react'
 import {fromJS, type Map} from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import _debounce from 'lodash/debounce'
 import moment from 'moment'
 import {connect} from 'react-redux'
@@ -10,7 +11,6 @@ import {withRouter} from 'react-router-dom'
 import {DropdownItem, Button} from 'reactstrap'
 import {CancelToken} from 'axios'
 
-import {makeGetPlainJS} from '../../utils.ts'
 import {views as statViewsConfig} from '../../config/stats.tsx'
 import {CHANNELS, INSTAGRAM_DM_CHANNEL} from '../../config/ticket.ts'
 import useCancellableRequest from '../../hooks/useCancellableRequest.ts'
@@ -19,14 +19,15 @@ import {ORDER_DIRECTION} from '../../models/api'
 import {TAG_SORTABLE_PROPERTIES} from '../../models/tag/constants.ts'
 import {fetchTags} from '../../models/tag/resources.ts'
 import type {FetchTagsOptions, Tag} from '../../models/tag/types'
-import {getLabelledAgents} from '../../state/agents/selectors.ts'
+import {getAgents} from '../../state/agents/selectors.ts'
+import {getDisplayName} from '../../state/customers/helpers.ts'
 import {tagsFetched, type TagsState} from '../../state/entities/tags'
 import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {notify} from '../../state/notifications/actions.ts'
 import {NOTIFICATION_STATUS} from '../../state/notifications/constants.ts'
 import {mergeStatsFilters} from '../../state/stats/actions.ts'
 import {getViewFilters} from '../../state/stats/selectors.ts'
-import {getLabelledTeams} from '../../state/teams/selectors.ts'
+import {getTeams} from '../../state/teams/selectors.ts'
 
 import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
@@ -46,20 +47,19 @@ const orderingOptions = {
     orderDir: ORDER_DIRECTION.ASC,
 }
 
-type OwnProps = {
+type Props = {
     match: Object,
-}
-
-type Props = OwnProps & {
-    agents: any[],
-    channels: any[],
     config: Object,
-    filters: Object,
+    channels: any[],
+    agents: any[],
+    tags: TagsState,
     integrations: any[],
     stats: Object,
-    tags: TagsState,
-    teams: {label: string, id: string, members: string[]}[],
+    filters: Object,
+    fetchStat: (any, any, any) => Promise<*>,
     mergeStatsFilters: typeof mergeStatsFilters,
+    teams: {label: string, value: string, members: string[]}[],
+    fetchTags: typeof fetchTags,
     tagsFetched: typeof tagsFetched,
     notify: Function,
 }
@@ -259,10 +259,10 @@ const StatsFiltersContainer = ({
                         </DropdownItem>
                         {teams.map((team) => (
                             <SelectFilter.Group
-                                key={`team-${team.id}`}
+                                key={`team-${team.value}`}
                                 items={team.members}
                                 label={team.label}
-                                value={team.id}
+                                value={team.value}
                             />
                         ))}
                         <DropdownItem divider className={css.dropdownDivider} />
@@ -271,9 +271,9 @@ const StatsFiltersContainer = ({
                         </DropdownItem>
                         {agents.map((agent) => (
                             <SelectFilter.Item
-                                key={`agent-${agent.id}`}
+                                key={`agent-${agent.value}`}
                                 label={agent.label}
-                                value={agent.id}
+                                value={agent.value}
                             />
                         ))}
                     </SelectFilter>
@@ -380,25 +380,33 @@ function getChannels(currentAccountDomain) {
     }))
 }
 
-const makeMapStateToProps = () => {
-    const getIntegrationsToJS = makeGetPlainJS(getIntegrations)
-    const getAgentsToJS = makeGetPlainJS(getLabelledAgents)
-    const getTeamsToJS = makeGetPlainJS(getLabelledTeams)
+const mapStateToProps = (state: Object, props: Props) => {
+    const view = props.match.params.view
+    const config = statViewsConfig.get(view)
 
-    return (state: Object, props: OwnProps) => {
-        const view = props.match.params.view
-        const config = statViewsConfig.get(view)
-
-        return {
-            tags: state.entities.tags,
-            integrations: getIntegrationsToJS(state),
-            // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
-            channels: getChannels(state.currentAccount.get('domain')),
-            agents: getAgentsToJS(state),
-            filters: getViewFilters(props.match.params.view)(state),
-            config,
-            teams: getTeamsToJS(state),
-        }
+    return {
+        tags: state.entities.tags,
+        integrations: getIntegrations(state).toJS(),
+        // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
+        channels: getChannels(state.currentAccount.get('domain')),
+        agents: getAgents(state)
+            .map((agent) => ({
+                label: getDisplayName(agent),
+                value: agent.get('id'),
+            }))
+            .toJS(),
+        filters: getViewFilters(props.match.params.view)(state),
+        config,
+        teams: getTeams(state)
+            .map((team) => ({
+                label: _capitalize(team.get('name')),
+                value: team.get('id'),
+                members: team
+                    .get('members')
+                    .map((user) => user.get('id'))
+                    .toJS(),
+            }))
+            .toJS(),
     }
 }
 
@@ -409,5 +417,5 @@ const actions = {
 }
 
 export default withRouter(
-    connect(makeMapStateToProps, actions)(StatsFiltersContainer)
+    connect(mapStateToProps, actions)(StatsFiltersContainer)
 )

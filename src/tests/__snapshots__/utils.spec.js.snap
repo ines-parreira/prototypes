@@ -1,20 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`global utils makeGetPlainJS() should return plain js object from an Immutable collection 1`] = `
-Object {
-  "users": Array [
-    Object {
-      "id": 1,
-      "name": "Homer",
-    },
-    Object {
-      "id": 2,
-      "name": "Marge",
-    },
-  ],
-}
-`;
-
 exports[`global utils proxifyImages should not touch html with not img 1`] = `"<span>123</span>"`;
 
 exports[`global utils proxifyImages should work with direct image 1`] = `"<img src=\\"http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg\\"/>"`;

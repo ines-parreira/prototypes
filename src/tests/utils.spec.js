@@ -648,22 +648,4 @@ describe('global utils', () => {
             })
         })
     })
-
-    describe('makeGetPlainJS()', () => {
-        const state = {
-            data: fromJS({
-                users: [
-                    {id: 1, name: 'Homer'},
-                    {id: 2, name: 'Marge'},
-                ],
-            }),
-        }
-        const selector = (state) => state.data || fromJS({})
-
-        it('should return plain js object from an Immutable collection', () => {
-            const getDataToJS = utils.makeGetPlainJS(selector)
-            const data = getDataToJS(state)
-            expect(data).toMatchSnapshot()
-        })
-    })
 })
