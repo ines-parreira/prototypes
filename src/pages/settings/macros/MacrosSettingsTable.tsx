@@ -4,7 +4,11 @@ import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
-import {OrderDirection, MetaSortOptions} from '../../../models/api/types'
+import {
+    OrderDirection,
+    MetaSortOptions,
+    GorgiasError,
+} from '../../../models/api/types'
 import {createMacro, deleteMacro} from '../../../models/macro/resources'
 import {MacroSortableProperties} from '../../../models/macro/types'
 import {
@@ -23,6 +27,7 @@ import TableBodyRow from '../../common/components/table/TableBodyRow'
 import TableHead from '../../common/components/table/TableHead'
 import TableWrapper from '../../common/components/table/TableWrapper'
 import history from '../../history'
+import {errorToChildren} from '../../../utils'
 
 import css from './MacrosSettingsTable.less'
 
@@ -65,7 +70,9 @@ export function MacrosSettingsTableContainer({
             })
         } catch (error) {
             void notify({
-                message: 'Failed to delete macro',
+                title: (error as GorgiasError).response.data.error.msg,
+                message: errorToChildren(error)!,
+                allowHTML: true,
                 status: NotificationStatus.Error,
             })
         }

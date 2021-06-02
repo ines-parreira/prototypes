@@ -165,7 +165,19 @@ describe('<MacrosSettingsTable/>', () => {
     })
 
     it('should notify when failing to delete macro', (done) => {
-        mockDeleteMacro.mockRejectedValue('error')
+        mockDeleteMacro.mockRejectedValue({
+            response: {
+                data: {
+                    error: {
+                        msg:
+                            'Cannot delete macro because it is used in the following places:',
+                        data: {
+                            Rules: ['Rule1', 'Rule2'],
+                        },
+                    },
+                },
+            },
+        })
         const component = shallow(
             <MacrosSettingsTableContainer
                 {...minProps}
@@ -177,10 +189,7 @@ describe('<MacrosSettingsTable/>', () => {
         component.find(Button).at(1).simulate('click', mockClickEvent)
         component.find({type: 'submit'}).at(0).simulate('click')
         setImmediate(() => {
-            expect(mockNotify).toHaveBeenNthCalledWith(1, {
-                message: 'Failed to delete macro',
-                status: 'error',
-            })
+            expect(mockNotify.mock.calls[0]).toMatchSnapshot()
             done()
         })
     })

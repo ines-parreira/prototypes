@@ -291,6 +291,21 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
 </MacrosSettingsFormContainer>
 `;
 
+exports[`<MacrosSettingsForm/> should notify when failing to delete macro 1`] = `
+Array [
+  Object {
+    "allowHTML": true,
+    "message": "
+        <ul className=\\"m-0\\">
+            <li>Rules: Rule1</li><li>Rules: Rule2</li>
+        </ul>
+    ",
+    "status": "error",
+    "title": "Cannot delete macro because it is used in the following places:",
+  },
+]
+`;
+
 exports[`<MacrosSettingsForm/> should render a filled form when passed macro id 1`] = `
 <MacrosSettingsFormContainer
   agents={Immutable.Map {}}

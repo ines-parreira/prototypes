@@ -294,7 +294,19 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should notify when failing to delete macro', (done) => {
-        mockDeleteMacro.mockRejectedValue('error')
+        mockDeleteMacro.mockRejectedValue({
+            response: {
+                data: {
+                    error: {
+                        msg:
+                            'Cannot delete macro because it is used in the following places:',
+                        data: {
+                            Rules: ['Rule1', 'Rule2'],
+                        },
+                    },
+                },
+            },
+        })
         const component = mount(
             <MacrosSettingsFormContainer
                 {...minProps}
@@ -309,10 +321,7 @@ describe('<MacrosSettingsForm/>', () => {
             component.update()
             component.find(ConfirmButton).simulate('click')
             setImmediate(() => {
-                expect(mockNotify).toHaveBeenNthCalledWith(2, {
-                    message: 'Failed to delete macro',
-                    status: NotificationStatus.Error,
-                })
+                expect(mockNotify.mock.calls[1]).toMatchSnapshot()
                 done()
             })
         })

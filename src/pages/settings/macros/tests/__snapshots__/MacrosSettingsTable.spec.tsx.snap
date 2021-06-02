@@ -201,3 +201,18 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
   </TableBody>
 </TableWrapper>
 `;
+
+exports[`<MacrosSettingsTable/> should notify when failing to delete macro 1`] = `
+Array [
+  Object {
+    "allowHTML": true,
+    "message": "
+        <ul className=\\"m-0\\">
+            <li>Rules: Rule1</li><li>Rules: Rule2</li>
+        </ul>
+    ",
+    "status": "error",
+    "title": "Cannot delete macro because it is used in the following places:",
+  },
+]
+`;

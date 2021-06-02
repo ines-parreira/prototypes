@@ -39,6 +39,7 @@ import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
 import history from '../../history'
+import {errorToChildren} from '../../../utils'
 
 import css from './MacrosSettingsForm.less'
 
@@ -168,7 +169,9 @@ export function MacrosSettingsFormContainer({
             history.push('/app/settings/macros')
         } catch (error) {
             void notify({
-                message: 'Failed to delete macro',
+                title: (error as GorgiasError).response.data.error.msg,
+                message: errorToChildren(error)!,
+                allowHTML: true,
                 status: NotificationStatus.Error,
             })
         }
