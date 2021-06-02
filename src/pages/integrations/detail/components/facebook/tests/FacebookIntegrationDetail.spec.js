@@ -2,17 +2,13 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import thunk from 'redux-thunk'
-
-import configureMockStore from 'redux-mock-store'
-
 import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {
     DANISH_LANGUAGE,
     SPANISH_LANGUAGE,
 } from '../../../../../../constants/languages.ts'
-import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
+import FacebookIntegrationDetail from '../FacebookIntegrationDetail'
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -22,7 +18,6 @@ import {
     FACEBOOK_USER_TYPES,
     INSTAGRAM_BASIC,
     INSTAGRAM_MANAGE_COMMENTS,
-    INSTAGRAM_MANAGE_MESSAGES,
     MODERATE_ROLE,
     PAGES_MANAGE_ADS,
     PAGES_MANAGE_ENGAGEMENT,
@@ -60,20 +55,14 @@ const defaultFacebookIntegrationSettings = {
 }
 
 describe('<FacebookIntegrationDetail/>', () => {
-    let store
-
     beforeEach(() => {
         jest.resetAllMocks()
-        const middlewares = [thunk]
-        const mockStore = configureMockStore(middlewares)
-        store = mockStore({})
     })
 
     describe('componentWillMount()', () => {
         it('should not set anything in the state because no integration was passed', () => {
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={fromJS({})}
                 />
@@ -100,7 +89,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={fromJS({
                         meta: {
@@ -119,7 +107,6 @@ describe('<FacebookIntegrationDetail/>', () => {
         it('should only set language in the state because there is no settings in the integration', () => {
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={fromJS({
                         meta: {
@@ -149,7 +136,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={fromJS({
                         meta: {
@@ -192,7 +178,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -254,7 +239,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={oldIntegration}
                 />
@@ -315,7 +299,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -373,7 +356,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -408,7 +390,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                     loading={fromJS({integration: integration.get('id')})}
@@ -421,7 +402,6 @@ describe('<FacebookIntegrationDetail/>', () => {
         it('should render a loading state because the passed integration is empty', () => {
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={fromJS({})}
                 />
@@ -473,7 +453,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
                 const component = shallow(
                     <FacebookIntegrationDetail
-                        store={store}
                         {...defaultProps}
                         integration={integration}
                     />
@@ -520,7 +499,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -564,7 +542,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -662,7 +639,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
                 const component = shallow(
                     <FacebookIntegrationDetail
-                        store={store}
                         {...defaultProps}
                         integration={integration}
                     />
@@ -712,7 +688,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
                 const component = shallow(
                     <FacebookIntegrationDetail
-                        store={store}
                         {...defaultProps}
                         integration={integration}
                     />
@@ -764,7 +739,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
                 const component = shallow(
                     <FacebookIntegrationDetail
-                        store={store}
                         {...defaultProps}
                         integration={integration}
                     />
@@ -809,7 +783,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -858,7 +831,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationDetail
-                    store={store}
                     {...defaultProps}
                     integration={integration}
                 />
@@ -907,7 +879,6 @@ describe('<FacebookIntegrationDetail/>', () => {
 
                 const component = shallow(
                     <FacebookIntegrationDetail
-                        store={store}
                         {...defaultProps}
                         loading={fromJS({
                             updateIntegration: integration.get('id'),
@@ -919,165 +890,5 @@ describe('<FacebookIntegrationDetail/>', () => {
                 expect(component).toMatchSnapshot()
             }
         )
-
-        it.each([true, false])(
-            'should render an integration with a warning next to a disabled IG DM setting because the IG account is not eligible yet',
-            (hasLegacyPlan) => {
-                const integration = fromJS({
-                    id: 1,
-                    type: FACEBOOK_INTEGRATION_TYPE,
-                    name: 'My facebook page',
-                    meta: {
-                        roles: [
-                            ADVERTISE_ROLE,
-                            ANALYZE_ROLE,
-                            MODERATE_ROLE,
-                        ].join(','),
-                        oauth: {
-                            scope: [
-                                PAGES_MANAGE_ADS,
-                                PAGES_MANAGE_METADATA,
-                                PAGES_READ_ENGAGEMENT,
-                                PAGES_READ_USER_CONTENT,
-                                PAGES_MANAGE_POSTS,
-                                PAGES_MANAGE_ENGAGEMENT,
-                                BUSINESS_MANAGEMENT,
-                                PAGES_SHOW_LIST,
-                                READ_PAGE_MAILBOXES,
-                                PAGES_MESSAGING,
-                                PAGES_MESSAGING_SUBSCRIPTIONS,
-                                INSTAGRAM_BASIC,
-                                INSTAGRAM_MANAGE_COMMENTS,
-                                INSTAGRAM_MANAGE_MESSAGES,
-                                ADS_READ,
-                                ADS_MANAGEMENT,
-                            ].join(','),
-                        },
-                        instagram: {
-                            id: '178941234975',
-                            instagram_direct_message_allowed: false,
-                        },
-                        name: 'My facebook page',
-                    },
-                })
-
-                const component = shallow(
-                    <FacebookIntegrationDetail
-                        accountHasLegacyPlan={hasLegacyPlan}
-                        store={store}
-                        {...defaultProps}
-                        integration={integration}
-                    />
-                )
-
-                expect(component).toMatchSnapshot()
-            }
-        )
-
-        it('should render an integration with an enabled IG DM setting', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
-                    ),
-                    oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            READ_PAGE_MAILBOXES,
-                            PAGES_MESSAGING,
-                            PAGES_MESSAGING_SUBSCRIPTIONS,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                            INSTAGRAM_MANAGE_MESSAGES,
-                            ADS_READ,
-                            ADS_MANAGEMENT,
-                        ].join(','),
-                    },
-                    instagram: {
-                        id: '178941234975',
-                        instagram_direct_message_allowed: true,
-                    },
-                    name: 'My facebook page',
-                },
-            })
-
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render an integration with an enabled IG DM setting and an upgrade button because the account has a legacy plan', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
-                    ),
-                    oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            READ_PAGE_MAILBOXES,
-                            PAGES_MESSAGING,
-                            PAGES_MESSAGING_SUBSCRIPTIONS,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                            INSTAGRAM_MANAGE_MESSAGES,
-                            ADS_READ,
-                            ADS_MANAGEMENT,
-                        ].join(','),
-                    },
-                    instagram: {
-                        id: '178941234975',
-                        instagram_direct_message_allowed: true,
-                    },
-                    name: 'My facebook page',
-                },
-            })
-
-            const currentAccount = fromJS({
-                domain: 'acme',
-            })
-
-            const currentPlan = fromJS({
-                name: 'legacy',
-            })
-
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    currentAccount={currentAccount}
-                    currentPlan={currentPlan}
-                    accountHasLegacyPlan={true}
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
     })
 })

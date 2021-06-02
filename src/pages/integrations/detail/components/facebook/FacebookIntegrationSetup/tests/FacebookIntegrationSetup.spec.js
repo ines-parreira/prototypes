@@ -11,7 +11,6 @@ import {
     BUSINESS_MANAGEMENT,
     INSTAGRAM_BASIC,
     INSTAGRAM_MANAGE_COMMENTS,
-    INSTAGRAM_MANAGE_MESSAGES,
     MODERATE_ROLE,
     PAGES_MANAGE_ADS,
     PAGES_MANAGE_ENGAGEMENT,
@@ -25,25 +24,6 @@ import {
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
     READ_PAGE_MAILBOXES,
 } from '../../utils'
-
-const allPermissions = [
-    PAGES_MANAGE_ADS,
-    PAGES_MANAGE_METADATA,
-    PAGES_READ_ENGAGEMENT,
-    PAGES_READ_USER_CONTENT,
-    PAGES_MANAGE_POSTS,
-    PAGES_MANAGE_ENGAGEMENT,
-    BUSINESS_MANAGEMENT,
-    PAGES_SHOW_LIST,
-    READ_PAGE_MAILBOXES,
-    PAGES_MESSAGING,
-    PAGES_MESSAGING_SUBSCRIPTIONS,
-    INSTAGRAM_BASIC,
-    INSTAGRAM_MANAGE_COMMENTS,
-    INSTAGRAM_MANAGE_MESSAGES,
-    ADS_READ,
-    ADS_MANAGEMENT,
-].join(',')
 
 describe('FacebookIntegrationSetup', () => {
     const minProps = {
@@ -177,7 +157,6 @@ describe('FacebookIntegrationSetup', () => {
                     PAGES_MESSAGING_SUBSCRIPTIONS,
                     INSTAGRAM_BASIC,
                     INSTAGRAM_MANAGE_COMMENTS,
-                    INSTAGRAM_MANAGE_MESSAGES,
                     ADS_READ,
                     ADS_MANAGEMENT,
                 ].join(',')
@@ -229,7 +208,6 @@ describe('FacebookIntegrationSetup', () => {
                     PAGES_MESSAGING_SUBSCRIPTIONS,
                     INSTAGRAM_BASIC,
                     INSTAGRAM_MANAGE_COMMENTS,
-                    INSTAGRAM_MANAGE_MESSAGES,
                     ADS_READ,
                     ADS_MANAGEMENT,
                 ].join(',')
@@ -313,16 +291,6 @@ describe('FacebookIntegrationSetup', () => {
         PERMISSIONS_PER_INTEGRATION_META_SETTING['recommendations_enabled']
             .slice(0, -1)
             .join(','),
-        // Instagram DM disabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_direct_message_enabled'
-        ]
-            .slice(0, -1)
-            .join(','),
-        // Instagram DM enabled
-        PERMISSIONS_PER_INTEGRATION_META_SETTING[
-            'instagram_direct_message_enabled'
-        ].join(','),
     ])(
         'should render the integration with meta settings enabled/disabled based on permissions',
         (permissions) => {
@@ -365,94 +333,4 @@ describe('FacebookIntegrationSetup', () => {
             expect(component).toMatchSnapshot()
         }
     )
-
-    it.each([true, false])(
-        'should render the integration with a warning next to a disabled IG DM setting because the IG account is not eligible yet',
-        (hasLegacyPlan) => {
-            const integrations = onboardingIntegrations
-                .setIn([0, 'meta', 'instagram', 'id'], 'foo')
-                .setIn(
-                    [0, 'meta', 'roles'],
-                    [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-                )
-                .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
-                .setIn(
-                    [
-                        0,
-                        'meta',
-                        'instagram',
-                        'instagram_direct_message_allowed',
-                    ],
-                    false
-                )
-
-            const component = shallow(
-                <FacebookIntegrationSetupContainer
-                    accountHasLegacyPlan={hasLegacyPlan}
-                    {...minProps}
-                    integrations={integrations}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        }
-    )
-
-    it('should render an integration with an enabled IG DM setting', () => {
-        const integrations = onboardingIntegrations
-            .setIn([0, 'meta', 'instagram', 'id'], 'foo')
-            .setIn(
-                [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-            )
-            .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
-            .setIn(
-                [0, 'meta', 'instagram', 'instagram_direct_message_allowed'],
-                true
-            )
-
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                accountHasLegacyPlan={false}
-                {...minProps}
-                integrations={integrations}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render the integration with an enabled IG DM setting and an upgrade button because the account has a legacy plan', () => {
-        const integrations = onboardingIntegrations
-            .setIn([0, 'meta', 'instagram', 'id'], 'foo')
-            .setIn(
-                [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-            )
-            .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
-            .setIn(
-                [0, 'meta', 'instagram', 'instagram_direct_message_allowed'],
-                true
-            )
-
-        const currentAccount = fromJS({
-            domain: 'acme',
-        })
-
-        const currentPlan = fromJS({
-            name: 'legacy',
-        })
-
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                currentAccount={currentAccount}
-                currentPlan={currentPlan}
-                accountHasLegacyPlan={true}
-                {...minProps}
-                integrations={integrations}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
 })

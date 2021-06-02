@@ -10,7 +10,6 @@ exports[`UpgradeButton should display with custom props 1`] = `
   >
     <button
       class="upgradeButton sm invertedColors btn btn-outline-warning"
-      type="button"
     >
       <span
         class="mr-2 upgradeLabel sm"
@@ -37,7 +36,6 @@ exports[`UpgradeButton should display with default props 1`] = `
   >
     <button
       class="upgradeButton btn btn-outline-warning"
-      type="button"
     >
       <span
         class="mr-2 upgradeLabel"

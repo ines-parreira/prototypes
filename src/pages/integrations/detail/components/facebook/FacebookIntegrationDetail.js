@@ -13,8 +13,6 @@ import {
     Container,
 } from 'reactstrap'
 
-import {connect} from 'react-redux'
-
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
@@ -28,17 +26,12 @@ import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
 
-import * as billingSelectors from '../../../../../state/billing/selectors.ts'
-
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton'
 import {
     canEnableMetaSetting,
     getFacebookUserTypeByRoles,
-    getInstagramDMSettingsInlineComponent,
-    getInstagramDMSettingStatus,
     hasFacebookRole,
-    InstagramDMSettingStatus,
     MODERATE_ROLE,
 } from './utils'
 
@@ -46,9 +39,6 @@ type Props = {
     integration: Map<*, *>,
     actions: Object,
     loading: Map<*, *>,
-    currentAccount: Map<string, any>,
-    currentPlan: Object,
-    accountHasLegacyPlan: boolean,
 }
 
 type State = {
@@ -66,7 +56,10 @@ type State = {
     askDisableConfirmation: boolean,
 }
 
-export class FacebookIntegrationDetail extends React.Component<Props, State> {
+export default class FacebookIntegrationDetail extends React.Component<
+    Props,
+    State
+> {
     state = {
         settings: {
             posts_enabled: true,
@@ -153,14 +146,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            integration,
-            loading,
-            actions,
-            currentAccount,
-            currentPlan,
-            accountHasLegacyPlan,
-        } = this.props
+        const {integration, loading, actions} = this.props
 
         const integrationMeta = integration.get('meta') || fromJS({})
 
@@ -219,19 +205,33 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
             !canEnableInstagramDirectMessage
 
         //Todo(@Mehdi): change this when the feature is available for all accounts
-        const instagramDMSettingStatus = getInstagramDMSettingStatus(
-            canEnableInstagramDirectMessage,
-            integration
-        )
-        const isAllowedToInstagramDM =
-            instagramDMSettingStatus === InstagramDMSettingStatus.ALLOWED &&
-            !accountHasLegacyPlan
-        const instagramDMSettingsInlineComponent = getInstagramDMSettingsInlineComponent(
-            instagramDMSettingStatus,
-            accountHasLegacyPlan,
-            currentAccount,
-            currentPlan
-        )
+        const isNotAllowedToInstagramDM = !integration.getIn([
+            'meta',
+            'instagram',
+            'instagram_direct_message_allowed',
+        ])
+
+        let instagram_direct_message_setting
+
+        if (!isNotAllowedToInstagramDM) {
+            instagram_direct_message_setting = (
+                <BooleanField
+                    name="instagram_direct_message_enabled"
+                    type="checkbox"
+                    label="Enable Instagram direct message"
+                    value={this.state.settings.instagram_direct_message_enabled}
+                    onChange={(value) =>
+                        this._onSettingChange(
+                            value,
+                            'instagram_direct_message_enabled'
+                        )
+                    }
+                    disabled={
+                        !canEnableInstagramDirectMessage || instagramIsDisabled
+                    }
+                />
+            )
+        }
 
         const isSubmitting = !!loading.get('updateIntegration')
 
@@ -411,6 +411,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                     instagramIsDisabled
                                 }
                             />
+
                             <BooleanField
                                 name="instagram_mentions_enabled"
                                 type="checkbox"
@@ -430,38 +431,6 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                     instagramIsDisabled
                                 }
                             />
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td className="pl-0">
-                                            <BooleanField
-                                                name="instagram_direct_message_enabled"
-                                                type="checkbox"
-                                                label="Enable Instagram direct message"
-                                                value={
-                                                    this.state.settings
-                                                        .instagram_direct_message_enabled
-                                                }
-                                                onChange={(value) =>
-                                                    this._onSettingChange(
-                                                        value,
-                                                        'instagram_direct_message_enabled'
-                                                    )
-                                                }
-                                                disabled={
-                                                    !canEnableInstagramDirectMessage ||
-                                                    instagramIsDisabled ||
-                                                    !isAllowedToInstagramDM
-                                                }
-                                            />
-                                        </td>
-                                        <td className="pl-0">
-                                            {!instagramIsDisabled &&
-                                                instagramDMSettingsInlineComponent}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                             <BooleanField
                                 name="instagram_ads_enabled"
                                 type="checkbox"
@@ -480,6 +449,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                     instagramIsDisabled
                                 }
                             />
+                            {instagram_direct_message_setting}
                             <BooleanField
                                 name="import_history_enabled"
                                 type="checkbox"
@@ -548,11 +518,3 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
         )
     }
 }
-
-const mapStateToProps = (state) => ({
-    currentAccount: state.currentAccount,
-    currentPlan: billingSelectors.currentPlan(state),
-    accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
-})
-
-export default connect(mapStateToProps)(FacebookIntegrationDetail)

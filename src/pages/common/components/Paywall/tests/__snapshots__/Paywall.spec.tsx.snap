@@ -35,7 +35,6 @@ exports[`<Paywall /> should render lightbox for the feature with a preview 1`] =
             >
               <button
                 class="upgradeButton btn btn-outline-warning"
-                type="button"
               >
                 <span
                   class="mr-2 upgradeLabel"
@@ -156,7 +155,6 @@ exports[`<Paywall /> should render paywall screen for the feature 1`] = `
             >
               <button
                 class="upgradeButton btn btn-outline-warning"
-                type="button"
               >
                 <span
                   class="mr-2 upgradeLabel"

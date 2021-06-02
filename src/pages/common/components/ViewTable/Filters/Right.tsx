@@ -23,6 +23,8 @@ import DatetimePicker from '../../../forms/DatetimePicker.js'
 import TimedeltaPicker from '../../../forms/TimedeltaPicker.js'
 import MultiSelectField from '../../../forms/MultiSelectField.js'
 import FilterMultiSelectField from '../FilterMultiSelectField'
+import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants.js'
+import {TicketChannel} from '../../../../../business/types/ticket'
 
 type OwnProps = {
     operator: Identifier
@@ -107,6 +109,7 @@ class Right extends Component<Props, State> {
             updateFieldFilter,
             index,
             empty,
+            currentAccountDomain,
         } = this.props
 
         if (empty) {
@@ -253,12 +256,29 @@ class Right extends Component<Props, State> {
             }
         } else if (field.get('name') === 'channel') {
             if (node.type === 'ArrayExpression') {
+                //Todo(@Mehdi): remove this when instagram DM is available for all accounts
+                let filteredField = field
+                if (
+                    !INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)
+                ) {
+                    filteredField = field.updateIn(
+                        ['filter', 'enum'],
+                        (channels: List<string>) =>
+                            channels.filter(
+                                (channel) =>
+                                    channel !==
+                                    TicketChannel.InstagramDirectMessage
+                            )
+                    )
+                }
+
                 const selectedOptions = node.elements.map(
                     (opt) => (opt as Literal).value
                 )
-                const options = (((field.getIn(['filter', 'enum']) as List<
-                    any
-                >).map((val: string) => ({
+                const options = (((filteredField.getIn([
+                    'filter',
+                    'enum',
+                ]) as List<any>).map((val: string) => ({
                     label: val,
                     value: val,
                 })) as unknown) as List<Map<any, any>>).toJS()
@@ -275,6 +295,21 @@ class Right extends Component<Props, State> {
                     />
                 )
             }
+        }
+        //Todo(@Mehdi): remove this when instagram DM is available for all accounts
+        let filteredField = field
+        if (
+            field.get('name') === 'channel' &&
+            !INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)
+        ) {
+            filteredField = field.updateIn(
+                ['filter', 'enum'],
+                (channels: List<string>) =>
+                    channels.filter(
+                        (channel) =>
+                            channel !== TicketChannel.InstagramDirectMessage
+                    )
+            )
         }
 
         return (
@@ -293,13 +328,13 @@ class Right extends Component<Props, State> {
                 {this.state.dropdownOpen && (
                     <FilterDropdown
                         viewConfig={config}
-                        field={field}
+                        field={filteredField}
                         updateFieldFilter={(value) =>
                             updateFieldFilter(index, value)
                         }
                         toggleDropdown={this._toggleDropdown}
                         menu={
-                            field.get('name') === 'tags'
+                            filteredField.get('name') === 'tags'
                                 ? TagDropdownMenu
                                 : undefined
                         }
@@ -315,6 +350,7 @@ const connector = connect((state: RootState) => {
         integrations: getMessagingIntegrations(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state),
+        currentAccountDomain: state.currentAccount.get('domain'),
     }
 })
 

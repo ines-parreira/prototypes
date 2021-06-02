@@ -70,5 +70,4 @@ export enum SegmentEvent {
     ViewFilterAddClicked = 'view-filter-add-clicked',
     GrammarlyEnabled = 'grammarly-enabled',
     UndoSentMessage = 'undo-sent-message',
-    PaywallUpgradeButtonSelected = 'paywall-upgrade-button-selected',
 }
