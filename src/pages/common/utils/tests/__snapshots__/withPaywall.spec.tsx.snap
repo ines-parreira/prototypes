@@ -37,6 +37,7 @@ Start using teams to automatically assign tickets to agents.
               >
                 <button
                   class="upgradeButton btn btn-outline-warning"
+                  type="button"
                 >
                   <span
                     class="mr-2 upgradeLabel"

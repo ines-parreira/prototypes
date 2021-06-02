@@ -5,6 +5,8 @@ import classnames from 'classnames'
 
 import upgradeIcon from '../../../../../img/icons/upgrade-icon.svg'
 
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+
 import css from './UpgradeButton.less'
 
 type Size = 'sm'
@@ -15,6 +17,25 @@ type Props = {
     label?: string
     size?: Size
     state?: any
+    segmentEventToSend?: any
+}
+
+type SegmentEventToSend = {
+    name: string
+    props: any
+}
+
+function sendSegmentEvent(segmentEventToSend: SegmentEventToSend) {
+    if (
+        segmentEventToSend &&
+        Object.prototype.hasOwnProperty.call(segmentEventToSend, 'name') &&
+        Object.prototype.hasOwnProperty.call(segmentEventToSend, 'props')
+    ) {
+        segmentTracker.logEvent(
+            segmentEventToSend.name,
+            segmentEventToSend.props
+        )
+    }
 }
 
 const UpgradeButton = ({
@@ -23,6 +44,7 @@ const UpgradeButton = ({
     label = 'Upgrade',
     size,
     state = {},
+    segmentEventToSend = {},
 }: Props) => {
     return (
         <div className={className}>
@@ -44,6 +66,7 @@ const UpgradeButton = ({
                             [css.invertedColors]: hasInvertedColors,
                         }
                     )}
+                    onClick={() => sendSegmentEvent(segmentEventToSend)}
                 >
                     <span
                         className={classnames(
