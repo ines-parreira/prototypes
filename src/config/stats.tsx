@@ -66,6 +66,17 @@ export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 export const TICKET_MAX_SUBJECT_LENGTH = 100
 
 export const STORE_INTEGRATION_TYPES = [IntegrationType.ShopifyIntegrationType]
+export const MESSAGE_INTEGRATION_TYPES = [
+    IntegrationType.EmailIntegrationType,
+    IntegrationType.GmailIntegrationType,
+    IntegrationType.OutlookIntegrationType,
+    IntegrationType.AircallIntegrationType,
+    IntegrationType.GorgiasChatIntegrationType,
+    IntegrationType.SmoochIntegrationType,
+    IntegrationType.SmoochInsideIntegrationType,
+    IntegrationType.FacebookIntegrationType,
+    IntegrationType.ZendeskIntegrationType,
+]
 
 // Default configuration for Chart.js
 _merge(defaults, {
@@ -746,6 +757,10 @@ Metrics such as volume of tickets, first response time and resolution time are k
 providing excellent customer support.`,
         url: 'https://docs.gorgias.com/statistics/statistics#overview',
         filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
             {type: 'channels'},
             {type: 'agents'},
             {type: 'tags'},
@@ -766,7 +781,15 @@ providing excellent customer support.`,
         description: `Tags statistics will show you how many tickets were created during this time period and have a
 tag attached to them. `,
         url: 'https://docs.gorgias.com/statistics/statistics#tags',
-        filters: [{type: 'channels'}, {type: 'tags'}, {type: 'period'}],
+        filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
+            {type: 'channels'},
+            {type: 'tags'},
+            {type: 'period'},
+        ],
         link: 'tags',
         stats: [TICKETS_PER_TAG],
     },
@@ -775,7 +798,14 @@ tag attached to them. `,
         description: `Channel statistics to get a clear view of your ticket volume based on the different communication
 channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
         url: 'https://docs.gorgias.com/statistics/statistics#channels',
-        filters: [{type: 'channels'}, {type: 'period'}],
+        filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
+            {type: 'channels'},
+            {type: 'period'},
+        ],
         link: 'channels',
         stats: [
             TICKETS_CREATED_PER_CHANNEL_PER_DAY,
@@ -786,7 +816,14 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
         name: 'Agents',
         description: `Agents statistics will show you how many tickets were closed by each agent during this period.`,
         url: 'https://docs.gorgias.com/statistics/statistics#agents',
-        filters: [{type: 'channels'}, {type: 'period'}],
+        filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
+            {type: 'channels'},
+            {type: 'period'},
+        ],
         link: 'agents',
         stats: [TICKETS_CLOSED_PER_AGENT_PER_DAY, TICKETS_CLOSED_PER_AGENT],
     },
@@ -796,7 +833,14 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
 It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
 to help reduce your support inquiries.`,
         url: 'https://docs.gorgias.com/statistics/statistics#macros',
-        filters: [{type: 'channels'}, {type: 'period'}],
+        filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
+            {type: 'channels'},
+            {type: 'period'},
+        ],
         link: 'macros',
         stats: [MESSAGES_SENT_PER_MACRO],
     },
@@ -806,6 +850,10 @@ to help reduce your support inquiries.`,
 How many surveys have been sent, response rate, average scores and more. `,
         url: 'https://docs.gorgias.com/statistics/statistics#satisfaction',
         filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
             {
                 type: 'channels',
                 options: [TicketChannel.Email, TicketChannel.Chat],
