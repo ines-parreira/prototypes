@@ -80,7 +80,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
               DatetimeLabel
             </div>
             <i
-              class="icon d-inline-block material-icons uncolored ml-3"
+              class="icon d-inline-block material-icons sourceIcon uncolored ml-3"
             >
               email
             </i>

@@ -49,9 +49,14 @@
             overflow: hidden;
 
             .statusLabel {
-                font-weight: 600;
-                text-transform: capitalize;
-                line-height: normal;
+                // this section should be partially redundant
+                // once the labels are all migrated to the new design
+                height: 18px;
+                padding: 2px 8px;
+                line-height: 15px;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
                 vertical-align: top;
                 border-radius: 100px;
                 margin-bottom: 8px;
@@ -95,7 +100,11 @@
         .details {
             flex-grow: 1;
             overflow: hidden;
-            margin-left: 4%;
+            margin-left: 1%;
+
+            @media @large-desktops, @mobiles {
+                margin-left: 4%;
+            }
 
             .subject,
             .excerpt {
@@ -113,7 +122,6 @@
             .excerpt {
                 letter-spacing: -0.01em;
                 line-height: 20px;
-                -webkit-line-clamp: 1;
             }
 
             @media @mobiles {
@@ -131,19 +139,41 @@
         }
 
         .secondMeta {
-            min-width: 15%;
             flex-wrap: wrap-reverse;
-            row-gap: 8px;
+            flex-shrink: 0;
+            width: 20%;
+            margin-left: 1%;
+            margin-top: -8px;
+
+            @media @mobiles {
+                width: 25%;
+            }
+
+            @media (min-width: 1366px) {
+                width: 18%;
+            }
+
+            @media (min-width: 1600px) {
+                width: auto;
+            }
 
             .dateLabel {
                 font-size: 12px;
                 line-height: 16px;
                 text-align: right;
+                -webkit-hyphens: auto;
+                -ms-hyphens: auto;
+                hyphens: auto;
                 .clip-text-mixin;
 
                 span {
                     vertical-align: middle;
                 }
+            }
+
+            .dateLabel,
+            .sourceIcon {
+                margin-top: 8px;
             }
         }
     }

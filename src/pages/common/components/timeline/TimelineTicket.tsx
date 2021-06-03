@@ -112,7 +112,11 @@ export default class TimelineTicket extends Component<Props> {
                         />
                         <SourceIcon
                             type={ticket.get('channel')}
-                            className={classnames('uncolored', 'ml-3')}
+                            className={classnames(
+                                css.sourceIcon,
+                                'uncolored',
+                                'ml-3'
+                            )}
                         />
                     </div>
                 </CardBody>
