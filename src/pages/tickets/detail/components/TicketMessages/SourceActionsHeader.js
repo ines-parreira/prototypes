@@ -14,7 +14,7 @@ import {
 
 import PrivateReplyButton from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyButton.tsx'
 
-import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../../../../state/integrations/constants'
+import * as billingSelectors from '../../../../../state/billing/selectors.ts'
 
 import css from './SourceActions.less'
 
@@ -33,7 +33,7 @@ type Props = {
     bodyText?: string,
     sender: Actor,
     messageCreatedDatetime: string,
-    currentAccountDomain: string,
+    accountHasLegacyPlan: boolean,
 }
 
 export class SourceActionsHeader extends React.Component<Props> {
@@ -71,7 +71,7 @@ export class SourceActionsHeader extends React.Component<Props> {
             bodyText,
             sender,
             messageCreatedDatetime,
-            currentAccountDomain,
+            accountHasLegacyPlan,
         } = this.props
 
         const widgets = []
@@ -98,10 +98,7 @@ export class SourceActionsHeader extends React.Component<Props> {
             const shouldHide = !hiddenDatetime
 
             if (
-                (isInstagramComment &&
-                    INSTAGRAM_DM_ALLOWED_DOMAINS.includes(
-                        currentAccountDomain
-                    )) ||
+                (isInstagramComment && !accountHasLegacyPlan) ||
                 isFacebookComment
             ) {
                 widgets.push(
@@ -162,7 +159,7 @@ export class SourceActionsHeader extends React.Component<Props> {
 
 const mapStateToProps = (state) => {
     return {
-        currentAccountDomain: state.currentAccount.get('domain'),
+        accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
     }
 }
 

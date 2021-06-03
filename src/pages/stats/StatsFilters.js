@@ -12,7 +12,7 @@ import {DropdownItem, Button} from 'reactstrap'
 import {CancelToken} from 'axios'
 
 import {views as statViewsConfig} from '../../config/stats.tsx'
-import {CHANNELS, INSTAGRAM_DM_CHANNEL} from '../../config/ticket.ts'
+import {CHANNELS} from '../../config/ticket.ts'
 import useCancellableRequest from '../../hooks/useCancellableRequest.ts'
 import useDelayedAsyncFn from '../../hooks/useDelayedAsyncFn.ts'
 import {ORDER_DIRECTION} from '../../models/api'
@@ -33,8 +33,6 @@ import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
 import PopoverModal from '../common/components/PopoverModal.tsx'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
-
-import {INSTAGRAM_DM_ALLOWED_DOMAINS} from '../../state/integrations/constants'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'
@@ -364,16 +362,7 @@ const StatsFiltersContainer = ({
     )
 }
 
-function getChannels(currentAccountDomain) {
-    if (!INSTAGRAM_DM_ALLOWED_DOMAINS.includes(currentAccountDomain)) {
-        return (CHANNELS: any)
-            .filter((channel) => channel !== INSTAGRAM_DM_CHANNEL)
-            .map((channel) => ({
-                label: _upperFirst(channel.replaceAll('-', ' ')),
-                value: channel,
-            }))
-    }
-
+function getChannels() {
     return (CHANNELS: any).map((channel) => ({
         label: _upperFirst(channel.replaceAll('-', ' ')),
         value: channel,
@@ -387,8 +376,7 @@ const mapStateToProps = (state: Object, props: Props) => {
     return {
         tags: state.entities.tags,
         integrations: getIntegrations(state).toJS(),
-        // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
-        channels: getChannels(state.currentAccount.get('domain')),
+        channels: getChannels(),
         agents: getAgents(state)
             .map((agent) => ({
                 label: getDisplayName(agent),

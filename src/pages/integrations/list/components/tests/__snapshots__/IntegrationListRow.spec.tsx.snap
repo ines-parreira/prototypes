@@ -126,6 +126,7 @@ exports[`IntegrationListRow should display an integration with upgrade requireme
         >
           <button
             class="upgradeButton sm invertedColors btn btn-outline-warning"
+            type="button"
           >
             <span
               class="mr-2 upgradeLabel sm"
