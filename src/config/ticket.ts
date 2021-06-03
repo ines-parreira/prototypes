@@ -1,9 +1,9 @@
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
 import {
-    TicketMessageSourceType,
     TicketChannel,
+    TicketMessageSourceType,
     TicketStatus,
     TicketVia,
 } from '../business/types/ticket'
@@ -260,11 +260,13 @@ export function sourceTypeToChannel(
 
     if (isSystemType(sourceType)) {
         const lastMessage = lastNonSystemTypeMessage(messages)
-
         if (!lastMessage) {
             return DEFAULT_CHANNEL
         }
 
+        if (lastMessage.get('via') === TicketVia.Twilio) {
+            return DEFAULT_CHANNEL
+        }
         const lastSourceType = lastMessage.getIn(['source', 'type'])
         return sourceTypeToChannel(lastSourceType, messages)
     }
@@ -313,19 +315,14 @@ export function responseSourceType(
     messages: Array<TicketMessage>,
     via: TicketVia
 ): TicketMessageSourceType {
-    if (!messages.length) {
-        return via === TicketVia.Twilio
-            ? TicketMessageSourceType.InternalNote
-            : DEFAULT_SOURCE_TYPE
-    }
-
     const lastMessage = lastNonSystemTypeMessage(messages)
 
+    if (via === TicketVia.Twilio) {
+        return TicketMessageSourceType.InternalNote
+    }
     // some messages don't have sources - failed imports, api, etc..
     if (!lastMessage || !lastMessage.get('source')) {
-        return via === TicketVia.Twilio
-            ? TicketMessageSourceType.InternalNote
-            : DEFAULT_SOURCE_TYPE
+        return DEFAULT_SOURCE_TYPE
     }
 
     const lastSourceType = lastMessage.getIn([

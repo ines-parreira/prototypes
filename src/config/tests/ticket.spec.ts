@@ -298,26 +298,24 @@ describe('Config: ticket', () => {
     })
 
     describe('responseSourceType()', () => {
-        it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
-            const messages: TicketMessage[] = []
-            const via = TicketVia.Twilio
+        it.each([
+            TicketMessageSourceType.InternalNote,
+            TicketMessageSourceType.Twilio,
+        ])(
+            'should return message source type "internal-note" for Twilio ticket',
+            (sourceType: TicketMessageSourceType) => {
+                const message = {
+                    source: {type: sourceType},
+                } as TicketMessage
+                const messages: TicketMessage[] = [message]
 
-            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
-                TicketMessageSourceType.InternalNote
-            )
-        })
+                const via = TicketVia.Twilio
 
-        it('should return message source type "internal-note" for Twilio ticket that has one internal note', () => {
-            const message = {
-                source: {type: TicketMessageSourceType.InternalNote},
-            } as TicketMessage
-            const messages: TicketMessage[] = [message]
-            const via = TicketVia.Twilio
-
-            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
-                TicketMessageSourceType.InternalNote
-            )
-        })
+                expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                    TicketMessageSourceType.InternalNote
+                )
+            }
+        )
 
         it('should return default message source type for email ticket that has no message', () => {
             const messages: TicketMessage[] = []
@@ -338,6 +336,32 @@ describe('Config: ticket', () => {
             expect(ticketConfig.responseSourceType(messages, via)).toEqual(
                 ticketConfig.DEFAULT_SOURCE_TYPE
             )
+        })
+    })
+
+    describe('sourceTypeToChannel()', () => {
+        it('should return the default channel if there is no source type', () => {
+            const channel = ticketConfig.sourceTypeToChannel(
+                (null as unknown) as TicketMessageSourceType,
+                []
+            )
+            expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
+        })
+
+        it('should return the default channel if there is no message and source type is internal note', () => {
+            const channel = ticketConfig.sourceTypeToChannel(
+                TicketMessageSourceType.InternalNote,
+                []
+            )
+            expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
+        })
+
+        it('should return the default channel if the last not system message is from twilio', () => {
+            const channel = ticketConfig.sourceTypeToChannel(
+                TicketMessageSourceType.InternalNote,
+                [{via: TicketVia.Twilio} as TicketMessage]
+            )
+            expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
         })
     })
 })
