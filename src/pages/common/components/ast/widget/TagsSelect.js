@@ -45,7 +45,6 @@ export class TagsSelectContainer extends Component<Props> {
         const {multiple, tags, value, className} = this.props
         const style = {
             display: 'inline-block',
-            verticalAlign: 'top',
         }
         const options = tags
             .map((tag) => {

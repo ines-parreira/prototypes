@@ -47,7 +47,9 @@ exports[`<AddMember /> should render 1`] = `
               class="initials"
               style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
             >
-              <span>
+              <span
+                style="line-height: 28px;"
+              >
                 AP
               </span>
             </div>
@@ -117,7 +119,9 @@ exports[`<AddMember /> should render the dropdown on click 1`] = `
             class="initials"
             style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
           >
-            <span>
+            <span
+              style="line-height: 28px;"
+            >
               AP
             </span>
           </div>
@@ -186,7 +190,9 @@ exports[`<AddMember /> should render user with empty name 1`] = `
             class="initials"
             style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
           >
-            <span>
+            <span
+              style="line-height: 28px;"
+            >
               a
             </span>
           </div>

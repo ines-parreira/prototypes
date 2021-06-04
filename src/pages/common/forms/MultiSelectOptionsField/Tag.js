@@ -25,7 +25,6 @@ export default class Tag extends React.Component<Props> {
                 className={css.tag}
                 style={{
                     color,
-                    margin: '0.25em 0.25em 0 0.25em',
                 }}
             >
                 <span>

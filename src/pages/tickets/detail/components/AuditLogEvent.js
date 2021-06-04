@@ -351,10 +351,7 @@ export class AuditLogEventContainer extends React.Component<Props> {
 
                         {shouldRenderByUser && <Filler>by</Filler>}
                         {shouldRenderByUser && (
-                            <AgentLabel
-                                name={user.get('name')}
-                                className={css.assigneeLabel}
-                            />
+                            <AgentLabel name={user.get('name')} />
                         )}
                     </div>
 

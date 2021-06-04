@@ -46,7 +46,7 @@ exports[`<AuditLogEvent/> render() should render when the customer has changed -
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -105,7 +105,7 @@ exports[`<AuditLogEvent/> render() should render when the customer has changed 1
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -189,7 +189,7 @@ exports[`<AuditLogEvent/> render() should render when the event is the last comp
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -236,7 +236,7 @@ exports[`<AuditLogEvent/> render() should render when the ticket subject updated
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -373,7 +373,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -420,7 +420,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -465,7 +465,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -510,7 +510,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -557,7 +557,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-marked-s
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -602,7 +602,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -662,7 +662,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-message-
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -707,7 +707,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-reopened
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -752,7 +752,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -823,7 +823,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-subject-
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -877,7 +877,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -938,7 +938,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -992,7 +992,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1053,7 +1053,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1112,7 +1112,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1159,7 +1159,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1204,7 +1204,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-una
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1249,7 +1249,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1294,7 +1294,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unassign
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1339,7 +1339,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unmarked
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}
@@ -1384,7 +1384,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-untrashe
         by
       </Filler>
       <AgentLabel
-        className="assigneeLabel"
+        className=""
         name="User 1"
         profilePictureUrl=""
         shouldDisplayAvatar={false}

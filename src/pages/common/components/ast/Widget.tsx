@@ -462,7 +462,6 @@ export class Widget extends Component<Props, State> {
                         className={className}
                         style={{
                             display: 'inline-block',
-                            paddingBottom: '2px',
                         }}
                         options={widget.options.map((option) => ({
                             value: option.toString(),
@@ -480,7 +479,6 @@ export class Widget extends Component<Props, State> {
                         className={className}
                         style={{
                             display: 'inline-block',
-                            paddingBottom: '2px',
                         }}
                         options={widget.options.map((option) => ({
                             value: option.toString(),
@@ -498,7 +496,6 @@ export class Widget extends Component<Props, State> {
                         className={`${className || ''} Text`}
                         style={{
                             display: 'inline-block',
-                            paddingBottom: '2px',
                         }}
                         values={widget.value}
                         singular="word"

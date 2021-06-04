@@ -32,7 +32,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               T1
             </span>
           </div>
@@ -61,7 +63,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               T2
             </span>
           </div>
@@ -104,7 +108,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               U1
             </span>
           </div>
@@ -133,7 +139,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               U2
             </span>
           </div>
@@ -184,7 +192,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               T1
             </span>
           </div>
@@ -213,7 +223,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               T2
             </span>
           </div>
@@ -256,7 +268,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               U1
             </span>
           </div>
@@ -285,7 +299,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               U2
             </span>
           </div>
@@ -333,7 +349,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               U1
             </span>
           </div>
@@ -362,7 +380,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               U2
             </span>
           </div>
@@ -410,7 +430,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               T1
             </span>
           </div>
@@ -439,7 +461,9 @@ Array [
             class="initials"
             style="width:26px;height:26px;font-size:10.833333333333334px"
           >
-            <span>
+            <span
+              style="line-height:28px"
+            >
               T2
             </span>
           </div>

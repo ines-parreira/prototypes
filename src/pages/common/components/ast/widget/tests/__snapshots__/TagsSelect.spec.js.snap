@@ -30,7 +30,6 @@ exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`
   style={
     Object {
       "display": "inline-block",
-      "verticalAlign": "top",
     }
   }
   value={
@@ -68,7 +67,6 @@ exports[`ast widgets TagsSelect MultiSelectField should render string as value 1
   style={
     Object {
       "display": "inline-block",
-      "verticalAlign": "top",
     }
   }
   tagColor="#0275d8"
@@ -111,7 +109,6 @@ exports[`ast widgets TagsSelect should render a SelectField 1`] = `
   style={
     Object {
       "display": "inline-block",
-      "verticalAlign": "top",
     }
   }
   value="billing"

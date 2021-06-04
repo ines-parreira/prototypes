@@ -595,7 +595,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                       class="initials"
                       style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
                     >
-                      <span>
+                      <span
+                        style="line-height: 52px;"
+                      >
                         Ra
                       </span>
                     </div>
@@ -1343,7 +1345,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       class="initials"
                       style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
                     >
-                      <span>
+                      <span
+                        style="line-height: 52px;"
+                      >
                         J
                       </span>
                     </div>
@@ -2096,7 +2100,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       class="initials"
                       style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
                     >
-                      <span>
+                      <span
+                        style="line-height: 52px;"
+                      >
                         J
                       </span>
                     </div>

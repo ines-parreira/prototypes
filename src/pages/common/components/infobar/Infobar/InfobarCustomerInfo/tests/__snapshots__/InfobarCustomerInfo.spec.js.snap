@@ -664,7 +664,13 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
                 }
               }
             >
-              <span>
+              <span
+                style={
+                  Object {
+                    "lineHeight": "52px",
+                  }
+                }
+              >
                 f
               </span>
             </div>

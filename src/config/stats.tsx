@@ -96,7 +96,7 @@ _merge(defaults, {
             fontStyle: '600',
             fontColor: 'rgb(41, 43, 44)',
             fontFamily:
-                "'Inter UI', 'Helvetica Neue', Arial, Helvetica, sans-serif",
+                "'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif",
         },
         legend: {
             // legend is displayed separately

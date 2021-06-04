@@ -16,7 +16,9 @@ exports[`<Row /> should render 1`] = `
         class="initials"
         style="width: 36px; height: 36px; font-size: 15px;"
       >
-        <span>
+        <span
+          style="line-height: 38px;"
+        >
           AS
         </span>
       </div>
@@ -71,7 +73,9 @@ exports[`<Row /> should render a user without a name 1`] = `
         class="initials"
         style="width: 36px; height: 36px; font-size: 15px;"
       >
-        <span>
+        <span
+          style="line-height: 38px;"
+        >
           h
         </span>
       </div>

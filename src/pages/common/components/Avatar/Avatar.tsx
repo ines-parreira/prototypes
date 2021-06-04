@@ -123,8 +123,8 @@ export default class Avatar extends Component<Props, State> {
                     className
                 )}
                 style={{
-                    width: `${String(size)}px`,
-                    height: `${String(size)}px`,
+                    width: `${size}px`,
+                    height: `${size}px`,
                     ...style,
                 }}
                 ref={this._container}
@@ -132,12 +132,14 @@ export default class Avatar extends Component<Props, State> {
                 <div
                     className={css.initials}
                     style={{
-                        width: `${String(size)}px`,
-                        height: `${String(size)}px`,
-                        fontSize: `${String(size / 2.4)}px`,
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        fontSize: `${size / 2.4}px`,
                     }}
                 >
-                    <span>{this._getInitials(name)}</span>
+                    <span style={{lineHeight: `${+size + 2}px`}}>
+                        {this._getInitials(name)}
+                    </span>
                 </div>
 
                 {this.state.imageUrl && (

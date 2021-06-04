@@ -191,7 +191,12 @@ export default class Form extends Component<Props, State> {
                                                 }
                                             >
                                                 {emoji ? (
-                                                    <div className={'flex'}>
+                                                    <div
+                                                        className={classnames(
+                                                            'flex',
+                                                            css.iconContainer
+                                                        )}
+                                                    >
                                                         <div
                                                             className={
                                                                 'mr-1 flex align-self-center'
