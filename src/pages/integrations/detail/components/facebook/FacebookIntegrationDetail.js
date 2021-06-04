@@ -437,7 +437,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                             <BooleanField
                                                 name="instagram_direct_message_enabled"
                                                 type="checkbox"
-                                                label="Enable Instagram direct message"
+                                                label="Enable Instagram direct messages"
                                                 value={
                                                     this.state.settings
                                                         .instagram_direct_message_enabled

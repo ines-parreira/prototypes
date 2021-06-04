@@ -166,7 +166,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -204,7 +204,46 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
                     }
                   }
                 >
-                  Due to follower requirements from the Instagram Messaging API, you are not yet eligible for Instagram Direct messages. Please Reconnect your integration if you think your eligibility has changed.
+                  We cannot access the Instagram Messaging API on your behalf. There are two reasons this may be the case:
+                  <ul>
+                    <li>
+                      Due to
+                       
+                      <a
+                        href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_do_i_know_if_i_have_access_to_instagram_direct_messages"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        follower requirements
+                      </a>
+                       
+                      <u>
+                        you are not yet eligible
+                      </u>
+                       for Instagram Direct messages.
+                    </li>
+                    <li>
+                      You have not enabled the
+                       
+                      <i>
+                        <b>
+                          Allow Access to Messages
+                        </b>
+                      </i>
+                       
+                      setting in your Instagram App (see step 1 in
+                       
+                      <a
+                        href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_to_activate_the_instagram_direct_message_channel_in_gorgias"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        this help doc
+                      </a>
+                      ).
+                    </li>
+                  </ul>
+                  Please reconnect your integration once you went through the above step or if you think your eligibility has changed.
                 </Alert>
               </td>
             </tr>
@@ -512,7 +551,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -550,7 +589,46 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
                     }
                   }
                 >
-                  Due to follower requirements from the Instagram Messaging API, you are not yet eligible for Instagram Direct messages. Please Reconnect your integration if you think your eligibility has changed.
+                  We cannot access the Instagram Messaging API on your behalf. There are two reasons this may be the case:
+                  <ul>
+                    <li>
+                      Due to
+                       
+                      <a
+                        href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_do_i_know_if_i_have_access_to_instagram_direct_messages"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        follower requirements
+                      </a>
+                       
+                      <u>
+                        you are not yet eligible
+                      </u>
+                       for Instagram Direct messages.
+                    </li>
+                    <li>
+                      You have not enabled the
+                       
+                      <i>
+                        <b>
+                          Allow Access to Messages
+                        </b>
+                      </i>
+                       
+                      setting in your Instagram App (see step 1 in
+                       
+                      <a
+                        href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_to_activate_the_instagram_direct_message_channel_in_gorgias"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        this help doc
+                      </a>
+                      ).
+                    </li>
+                  </ul>
+                  Please reconnect your integration once you went through the above step or if you think your eligibility has changed.
                 </Alert>
               </td>
             </tr>
@@ -858,7 +936,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={false}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -1173,7 +1251,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -1544,7 +1622,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -1935,7 +2013,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -2326,7 +2404,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -2717,7 +2795,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -3108,7 +3186,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -3494,7 +3572,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -3880,7 +3958,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -4266,7 +4344,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -4655,7 +4733,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -5093,7 +5171,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -5453,7 +5531,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -5844,7 +5922,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -6235,7 +6313,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -6624,7 +6702,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -7012,7 +7090,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -7400,7 +7478,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -7788,7 +7866,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -8176,7 +8254,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -8564,7 +8642,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -8952,7 +9030,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -9340,7 +9418,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -9728,7 +9806,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -10116,7 +10194,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -10504,7 +10582,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -10892,7 +10970,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -11280,7 +11358,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"
@@ -11668,7 +11746,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               >
                 <BooleanField
                   disabled={true}
-                  label="Enable Instagram direct message"
+                  label="Enable Instagram direct messages"
                   name="instagram_direct_message_enabled"
                   onChange={[Function]}
                   type="checkbox"

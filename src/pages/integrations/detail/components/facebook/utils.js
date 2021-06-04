@@ -244,10 +244,39 @@ export function getInstagramDMSettingsInlineComponent(
     ) {
         return (
             <Alert color="warning" className="ml-1 py-1 mt-3">
-                Due to follower requirements from the Instagram Messaging API,
-                you are not yet eligible for Instagram Direct messages. Please
-                Reconnect your integration if you think your eligibility has
-                changed.
+                We cannot access the Instagram Messaging API on your behalf.
+                There are two reasons this may be the case:
+                <ul>
+                    <li>
+                        Due to{' '}
+                        <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_do_i_know_if_i_have_access_to_instagram_direct_messages"
+                        >
+                            follower requirements
+                        </a>{' '}
+                        <u>you are not yet eligible</u> for Instagram Direct
+                        messages.
+                    </li>
+                    <li>
+                        You have not enabled the{' '}
+                        <i>
+                            <b>Allow Access to Messages</b>
+                        </i>{' '}
+                        setting in your Instagram App (see step 1 in{' '}
+                        <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_to_activate_the_instagram_direct_message_channel_in_gorgias"
+                        >
+                            this help doc
+                        </a>
+                        ).
+                    </li>
+                </ul>
+                Please reconnect your integration once you went through the
+                above step or if you think your eligibility has changed.
             </Alert>
         )
     }
