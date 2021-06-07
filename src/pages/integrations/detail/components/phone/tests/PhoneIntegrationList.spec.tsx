@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import {IntegrationType} from '../../../../../../models/integration/types'
+import {AccountFeature} from '../../../../../../state/currentAccount/types'
 
 import PhoneIntegrationList from '../PhoneIntegrationList'
 
@@ -15,6 +16,18 @@ describe('<PhoneIntegrationList/>', () => {
     const mockStore = configureMockStore(middlewares)
 
     let integrations: List<Map<string, any>>
+
+    function getState(maxIntegrations: number) {
+        return {
+            currentAccount: fromJS({
+                features: {
+                    [AccountFeature.PhoneIntegration]: {
+                        limit: maxIntegrations,
+                    },
+                },
+            }),
+        }
+    }
 
     beforeEach(() => {
         const integration = {
@@ -26,9 +39,47 @@ describe('<PhoneIntegrationList/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const store = mockStore({
-                integrations,
-            })
+            const store = mockStore(getState(3))
+
+            const {container} = render(
+                <PhoneIntegrationList
+                    integrations={integrations}
+                    loading={fromJS({})}
+                />,
+                {
+                    wrapper: (props) => (
+                        <Provider store={store}>
+                            <BrowserRouter>{props?.children}</BrowserRouter>
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with a warning message', () => {
+            const store = mockStore(getState(2))
+
+            const {container} = render(
+                <PhoneIntegrationList
+                    integrations={integrations}
+                    loading={fromJS({})}
+                />,
+                {
+                    wrapper: (props) => (
+                        <Provider store={store}>
+                            <BrowserRouter>{props?.children}</BrowserRouter>
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with an error message and without creation button', () => {
+            const store = mockStore(getState(1))
 
             const {container} = render(
                 <PhoneIntegrationList

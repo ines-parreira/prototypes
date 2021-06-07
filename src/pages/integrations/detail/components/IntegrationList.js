@@ -41,6 +41,7 @@ class IntegrationList extends React.Component {
         createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
         longTypeDescription: PropTypes.node,
         loading: PropTypes.object.isRequired, // A map for different loading status(es)
+        alert: PropTypes.node,
         // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
         integrationToItemDisplay: PropTypes.func.isRequired,
         createIntegrationButtonHidden: PropTypes.bool.isRequired,
@@ -115,6 +116,7 @@ class IntegrationList extends React.Component {
             longTypeDescription,
             integrationToItemDisplay,
             loading,
+            alert,
         } = this.props
 
         const integrationTitle = getIntegrationConfig(integrationType).title
@@ -149,6 +151,7 @@ class IntegrationList extends React.Component {
 
                 <Container className="page-container" fluid>
                     <div className="mb-3">{longTypeDescription}</div>
+                    {alert}
                     {this.displayAircallWebhookWarning(
                         integrationType,
                         integrations

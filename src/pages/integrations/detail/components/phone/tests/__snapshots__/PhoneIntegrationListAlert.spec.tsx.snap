@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneIntegrationListAlert/> should not render 1`] = `null`;
+
+exports[`<PhoneIntegrationListAlert/> should render a warning message 1`] = `
+<div
+  class="d-inline-flex alert alert-warning fade"
+  role="alert"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      info
+    </i>
+    You have reached 
+    1
+    /
+    2
+     numbers. To add more, you must
+    <a
+      class="ml-1 mr-1"
+      to="/app/settings/billing/plans"
+    >
+      upgrade
+    </a>
+    to a higher plan.
+  </span>
+</div>
+`;
+
+exports[`<PhoneIntegrationListAlert/> should render an error message 1`] = `
+<div
+  class="d-inline-flex alert alert-danger fade"
+  role="alert"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      info
+    </i>
+    You have reached 
+    2
+    /
+    2
+     numbers. To add more, you must
+    <a
+      class="ml-1 mr-1"
+      to="/app/settings/billing/plans"
+    >
+      upgrade
+    </a>
+    to a higher plan.
+  </span>
+</div>
+`;
