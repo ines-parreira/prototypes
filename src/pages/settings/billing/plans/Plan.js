@@ -283,7 +283,9 @@ export function Plan({
                 </div>
                 <div className="header-text">
                     <strong>
-                        {`${plan.get('name')}${isLegacyPlan ? ' legacy' : ''}`}
+                        {`${plan.get('name')}${
+                            isCurrentPlan && isLegacyPlan ? ' legacy' : ''
+                        }`}
                     </strong>
                     {plan.get('amount') > 0 && (
                         <span className="float-right">
