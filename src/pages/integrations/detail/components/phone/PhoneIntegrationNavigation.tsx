@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.js'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
 
 type Props = {

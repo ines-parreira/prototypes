@@ -6,7 +6,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import * as widgetsActions from '../../../state/widgets/actions'
 import * as customersActions from '../../../state/customers/actions'
 
-import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper.js'
+import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
 import {RootState, StoreDispatch} from '../../../state/types'
 import {getActiveCustomerId} from '../../../state/customers/selectors'

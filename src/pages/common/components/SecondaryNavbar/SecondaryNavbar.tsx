@@ -1,14 +1,13 @@
-// @flow
-import React, {type ChildrenArray, type Element} from 'react'
+import React, {Component, ReactElement} from 'react'
 import {Navbar} from 'reactstrap'
 
 import css from './SecondaryNavbar.less'
 
 type NavbarProps = {
-    children: ChildrenArray<Element<any>>,
+    children: ReactElement[]
 }
 
-export default class SecondaryNavbar extends React.Component<NavbarProps> {
+export default class SecondaryNavbar extends Component<NavbarProps> {
     render() {
         const linkProps = {
             className: 'nav-link',

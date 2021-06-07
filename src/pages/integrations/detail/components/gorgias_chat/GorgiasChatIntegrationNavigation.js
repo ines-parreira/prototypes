@@ -4,7 +4,7 @@ import {type Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
 
 type Props = {
     integration: Map<*, *>,

@@ -1,14 +1,12 @@
-//@flow
 import React from 'react'
 import {DropdownItem} from 'reactstrap'
 
-import type {Option} from './types'
-
 import css from './RichDropdownOptions.less'
+import {Option} from './types'
 
 type Props = {
-    options: Option[],
-    onClick: (optionKey: string) => void,
+    options: Option[]
+    onClick: (optionKey: string) => void
 }
 
 export default function RichDropdownOptions({options, onClick}: Props) {

@@ -9,7 +9,7 @@ import * as widgetsActions from '../../../state/widgets/actions'
 import {fetchTicket} from '../../../state/ticket/actions'
 import {fetchCustomer} from '../../../state/customers/actions'
 
-import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper.js'
+import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
 
 export const TicketSourceContainer = ({

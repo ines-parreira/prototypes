@@ -3,7 +3,7 @@ import React from 'react'
 import {type Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
 
 type Props = {
     integration: Map<*, *>,

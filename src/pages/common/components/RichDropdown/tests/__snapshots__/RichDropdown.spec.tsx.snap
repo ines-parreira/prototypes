@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RichDropdown/> should render a rich dropdown 1`] = `
+<div
+  className=""
+>
+  <UncontrolledButtonDropdown>
+    <DropdownToggle
+      aria-haspopup={true}
+      caret={true}
+      color="secondary"
+    >
+      foo
+    </DropdownToggle>
+    <DropdownMenu
+      className="dropdown"
+      flip={true}
+      tag="div"
+    >
+      <RichDropdownOptions
+        onClick={[MockFunction]}
+        options={
+          Array [
+            Object {
+              "key": "foo",
+              "label": "Foo",
+            },
+            Object {
+              "description": "foobar",
+              "key": "bar",
+              "label": "Bar",
+            },
+          ]
+        }
+      />
+    </DropdownMenu>
+  </UncontrolledButtonDropdown>
+</div>
+`;
+
+exports[`<RichDropdown/> should render a rich dropdown 2`] = `
+<div
+  className=""
+>
+  <UncontrolledButtonDropdown>
+    <DropdownToggle
+      aria-haspopup={true}
+      caret={true}
+      color="secondary"
+    >
+      foo
+    </DropdownToggle>
+    <DropdownMenu
+      className="dropdown"
+      flip={true}
+      tag="div"
+    >
+      <RichDropdownOptionGroups
+        onClick={[MockFunction]}
+        options={
+          Array [
+            Object {
+              "key": "foo",
+              "label": "FOO",
+              "options": Array [
+                Object {
+                  "key": "foo",
+                  "label": "Foo",
+                },
+                Object {
+                  "description": "foobar",
+                  "key": "bar",
+                  "label": "Bar",
+                },
+              ],
+            },
+            Object {
+              "key": "bar",
+              "label": "BAR",
+              "options": Array [
+                Object {
+                  "key": "foo",
+                  "label": "Foo",
+                },
+                Object {
+                  "description": "foobar",
+                  "key": "bar",
+                  "label": "Bar",
+                },
+              ],
+            },
+          ]
+        }
+      />
+    </DropdownMenu>
+  </UncontrolledButtonDropdown>
+</div>
+`;

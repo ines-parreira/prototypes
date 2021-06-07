@@ -1,31 +1,20 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link, withRouter} from 'react-router-dom'
-import {fromJS, Set, Map} from 'immutable'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
+import {fromJS, Set, Map, List} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
-import {
-    HTTP_INTEGRATION_TYPE,
-    MAGENTO2_INTEGRATION_TYPE,
-    RECHARGE_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE,
-    SMILE_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
-    YOTPO_INTEGRATION_TYPE,
-    KLAVIYO_INTEGRATION_TYPE,
-} from '../../../../constants/integration.ts'
-import history from '../../../history.ts'
+import {IntegrationType} from '../../../../models/integration/types'
+import * as integrationsSelectors from '../../../../state/integrations/selectors'
+import {RootState} from '../../../../state/types'
+import history from '../../../history'
+import {areSourcesReady, jsonToWidgets} from '../infobar/utils.js'
 
-import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
-
-import * as integrationsSelectors from './../../../../state/integrations/selectors.ts'
-
-import SourceWidgets from './SourceWidgets'
+import SourceWidgets from './SourceWidgets.js'
 
 export const WIDGET_DATA_TYPES = [
     {
-        type: SHOPIFY_INTEGRATION_TYPE,
+        type: IntegrationType.ShopifyIntegrationType,
         title: 'Shopify data',
         description: (
             <div>
@@ -38,7 +27,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: RECHARGE_INTEGRATION_TYPE,
+        type: IntegrationType.RechargeIntegrationType,
         title: 'Recharge data',
         description: (
             <div>
@@ -51,7 +40,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: SMILE_INTEGRATION_TYPE,
+        type: IntegrationType.SmileIntegrationType,
         title: 'Smile data',
         description: (
             <div>
@@ -64,7 +53,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: MAGENTO2_INTEGRATION_TYPE,
+        type: IntegrationType.Magento2IntegrationType,
         title: 'Magento2 data',
         description: (
             <div>
@@ -77,7 +66,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+        type: IntegrationType.SmoochInsideIntegrationType,
         title: 'Chat data',
         description: (
             <div>
@@ -93,7 +82,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: HTTP_INTEGRATION_TYPE,
+        type: IntegrationType.HttpIntegrationType,
         title: 'HTTP data',
         description: (
             <div>
@@ -106,7 +95,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: YOTPO_INTEGRATION_TYPE,
+        type: IntegrationType.YotpoIntegrationType,
         title: 'Yotpo data',
         description: (
             <div>
@@ -119,7 +108,7 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: KLAVIYO_INTEGRATION_TYPE,
+        type: IntegrationType.KlaviyoIntegrationType,
         title: 'Klaviyo data',
         description: (
             <div>
@@ -147,30 +136,26 @@ export const WIDGET_DATA_TYPES = [
 ]
 
 type Props = {
-    context: string,
-    identifier: string,
-    sources: Set<*>,
-    widgets: Map<*, *>,
+    context: string
+    identifier: string
+    sources: Map<any, any>
+    widgets: Map<any, any>
     actions: {
         widgets: {
-            stopEditionMode: () => void,
-        },
-    },
-    getIntegrationById: (T: number) => Set<*>,
-    // react-router
-    location: {
-        search: string,
-    },
-}
+            stopEditionMode: () => void
+        }
+    }
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 
 type State = {
-    widgetsTemplate: Set<*>,
-    availableTypes: Set<*>,
+    widgetsTemplate: List<any>
+    availableTypes: Set<any>
 }
 
-class SourceWrapper extends React.Component<Props, State> {
-    constructor(props) {
-        super()
+class SourceWrapper extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         // defaults
         this.state = {
             widgetsTemplate: fromJS([]),
@@ -180,11 +165,11 @@ class SourceWrapper extends React.Component<Props, State> {
         Object.assign(this.state, this._getWidgetsState(props))
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState(this._getWidgetsState(nextProps))
+    componentWillReceiveProps(nextProps: Props) {
+        this.setState(this._getWidgetsState(nextProps) as State)
     }
 
-    _getWidgetsState(props) {
+    _getWidgetsState(props: Props): Partial<State> {
         const {sources, widgets, getIntegrationById} = props
 
         const context = widgets.get('currentContext', '')
@@ -192,29 +177,31 @@ class SourceWrapper extends React.Component<Props, State> {
         const hasWidgetsTemplates = !this.state.widgetsTemplate.isEmpty()
 
         const shouldGenerateWidgets =
-            areSourcesReady(sources, context) && !hasWidgetsTemplates
+            areSourcesReady(sources as any, context) && !hasWidgetsTemplates
 
         // Generate widgets template from incoming json and use it to display source widgets (i.e. the things you can
         // drag into the infobar).
         // If there's integrations widgets, we only want one widget per integration_type (except for HTTP integrations,
         // for which we want a widget per integration).
         if (shouldGenerateWidgets) {
-            let widgetsTemplate = fromJS(jsonToWidgets(sources.toJS(), context))
-            const typesAlreadyDisplayed = []
+            let widgetsTemplate = fromJS(
+                jsonToWidgets(sources.toJS(), context)
+            ) as List<any>
+            const typesAlreadyDisplayed: string[] = []
 
             // Make sure we only have one `sourceWidget` per type, except for HTTP
-            widgetsTemplate = widgetsTemplate
-                .map((widgetTemplate) => {
+            widgetsTemplate = (widgetsTemplate.map(
+                (widgetTemplate: Map<any, any>) => {
                     let ret = widgetTemplate
 
                     if (
-                        widgetTemplate
-                            .get('sourcePath')
-                            .includes('integrations')
+                        (widgetTemplate.get('sourcePath') as List<
+                            any
+                        >).includes('integrations')
                     ) {
-                        const integrationId = widgetTemplate
-                            .get('sourcePath')
-                            .last()
+                        const integrationId = (widgetTemplate.get(
+                            'sourcePath'
+                        ) as List<any>).last()
 
                         // If the integrationId is not a valid int, something is wrong so we discard the widget
                         if (isNaN(parseInt(integrationId))) {
@@ -245,13 +232,12 @@ class SourceWrapper extends React.Component<Props, State> {
                     }
 
                     return ret
-                })
-                .filter((w) => w) // filter out null values
+                }
+            ) as List<any>).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
 
             return {
-                widgetsTemplate: widgetsTemplate,
-                // $FlowFixMe
-                availableTypes: new Set(typesAlreadyDisplayed),
+                widgetsTemplate,
+                availableTypes: Set(typesAlreadyDisplayed) as Set<any>,
             }
         }
 
@@ -304,7 +290,12 @@ class SourceWrapper extends React.Component<Props, State> {
                                         <SourceWidgets
                                             source={sources}
                                             widgets={this.state.widgetsTemplate.filter(
-                                                (widgetTemplate) =>
+                                                (
+                                                    widgetTemplate: Map<
+                                                        any,
+                                                        any
+                                                    >
+                                                ) =>
                                                     widgetTemplate.get(
                                                         'type'
                                                     ) === widgetDataType.type
@@ -326,10 +317,10 @@ class SourceWrapper extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => {
+const connector = connect((state: RootState) => {
     return {
         getIntegrationById: integrationsSelectors.makeGetIntegrationById(state),
     }
-}
+})
 
-export default withRouter(connect(mapStateToProps)(SourceWrapper))
+export default withRouter(connector(SourceWrapper))

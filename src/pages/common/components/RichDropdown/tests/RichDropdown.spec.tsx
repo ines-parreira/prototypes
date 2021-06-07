@@ -1,4 +1,3 @@
-//@flow
 import React from 'react'
 import {shallow} from 'enzyme'
 
@@ -29,7 +28,7 @@ describe('<RichDropdown/>', () => {
         },
     ]
 
-    it.each([options, nestedOptions])(
+    it.each([[options], [nestedOptions]])(
         'should render a rich dropdown',
         (currentOptions) => {
             const component = shallow(

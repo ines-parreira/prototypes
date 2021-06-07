@@ -2,11 +2,11 @@ import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
 import {renderWithRouter} from '../../../../utils/testing'
-import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper.js'
+import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
 import {TicketSourceContainer} from '../TicketSourceContainer'
 
 jest.mock(
-    '../../../common/components/sourceWidgets/SourceWrapper.js',
+    '../../../common/components/sourceWidgets/SourceWrapper',
     () => ({context, identifier}: ComponentProps<typeof SourceWrapper>) => (
         <div>
             SourceWrapper

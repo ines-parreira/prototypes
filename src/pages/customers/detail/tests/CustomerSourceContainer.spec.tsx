@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import {shopifyWidget} from '../../../../fixtures/widgets.js'
 import {renderWithRouter} from '../../../../utils/testing'
 import {CustomerSourceContainer} from '../CustomerSourceContainer'
-import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper.js'
+import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
 
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',

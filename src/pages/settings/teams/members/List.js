@@ -14,7 +14,7 @@ import {fromJS, type List, type Map, Set} from 'immutable'
 import classnames from 'classnames'
 
 import PageHeader from '../../../common/components/PageHeader.tsx'
-import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
 import * as actions from '../../../../state/teams/actions.ts'
 import Pagination from '../../../common/components/Pagination.tsx'
 import Loader from '../../../common/components/Loader/Loader.tsx'

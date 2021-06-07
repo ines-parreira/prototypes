@@ -1,15 +1,14 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Button, ButtonGroup} from 'reactstrap'
 
 type Props = {
-    hasNextItems: boolean,
-    hasPrevItems: boolean,
-    fetchNextItems: () => void,
-    fetchPrevItems: () => void,
+    hasNextItems: boolean
+    hasPrevItems: boolean
+    fetchNextItems: () => void
+    fetchPrevItems: () => void
 }
 
-export default class Navigation extends React.Component<Props> {
+export default class Navigation extends Component<Props> {
     render() {
         const {
             hasNextItems,

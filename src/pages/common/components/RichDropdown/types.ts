@@ -9,3 +9,11 @@ export type OptionGroup = {
     label: string
     options: Option[]
 }
+
+export function isOptionGroupArray(arg: any): arg is OptionGroup[] {
+    return (
+        arg instanceof Array &&
+        (arg.length === 0 ||
+            (arg[0] as Record<string, unknown>).options != null)
+    )
+}

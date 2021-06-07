@@ -1,4 +1,3 @@
-//@flow
 import React from 'react'
 import {DropdownItem} from 'reactstrap'
 import {shallow} from 'enzyme'

@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import SecondaryNavbar from '../../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import SecondaryNavbar from '../../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
 
 type Props = {
     integration: Object,
