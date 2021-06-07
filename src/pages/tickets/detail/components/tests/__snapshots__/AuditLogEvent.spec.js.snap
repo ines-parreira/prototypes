@@ -208,6 +208,53 @@ exports[`<AuditLogEvent/> render() should render when the event is the last comp
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render when the rule has a triggering event type 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          settings
+        </i>
+      </div>
+      <ActionName>
+        Rule "
+        <a
+          href="/app/settings/rules?ruleId=1"
+        >
+          Rule 1
+        </a>
+        " executed
+      </ActionName>
+      <Filler>
+        on "
+        ticket created
+        "
+      </Filler>
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render when the ticket subject updated data is null 1`] = `
 <div
   className="component"

@@ -148,6 +148,25 @@ describe('<AuditLogEvent/>', () => {
                 }
             )
 
+            it('when the rule has a triggering event type', () => {
+                const event = getEvent(constants.RULE_EXECUTED)
+                event.data = {
+                    id: 1,
+                    name: 'Rule 1',
+                    triggering_event_type: 'ticket-created',
+                }
+
+                const component = shallow(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
             it('when the user ID is missing', () => {
                 const event = getEvent(constants.TICKET_REOPENED)
                 event.user_id = null

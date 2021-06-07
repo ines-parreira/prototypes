@@ -25,6 +25,7 @@ import {getAgents} from '../../../../state/agents/selectors.ts'
 import {getTeams} from '../../../../state/teams/selectors.ts'
 import {getTags} from '../../../../state/tags/selectors.ts'
 import {getEvents} from '../../../../state/ticket/selectors.ts'
+import {eventNameToLabel} from '../../../../config/rules.ts'
 
 import type {agentType} from '../../../../state/agents/types'
 import type {teamType} from '../../../../state/teams/types'
@@ -138,15 +139,23 @@ export class AuditLogEventContainer extends React.Component<Props> {
         }
 
         const data = event.get('data')
+        const triggeringEventType = data.get('triggering_event_type')
 
         return (
-            <ActionName>
-                Rule "
-                <a href={`/app/settings/rules?ruleId=${data.get('id')}`}>
-                    {data.get('name')}
-                </a>
-                " executed
-            </ActionName>
+            <>
+                <ActionName>
+                    Rule "
+                    <a href={`/app/settings/rules?ruleId=${data.get('id')}`}>
+                        {data.get('name')}
+                    </a>
+                    " executed
+                </ActionName>
+                {triggeringEventType && (
+                    <Filler>
+                        on "{eventNameToLabel[triggeringEventType]}"
+                    </Filler>
+                )}
+            </>
         )
     }
 
