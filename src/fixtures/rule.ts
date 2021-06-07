@@ -1,3 +1,5 @@
+import {Rule} from '../state/rules/types'
+
 export const rule = {
     priority: 6,
     deactivated_datetime: '2021-01-15T15:26:02.575404+00:00',
@@ -316,9 +318,9 @@ export const rule = {
     id: 7,
     description: 'Set tags',
     updated_datetime: '2021-02-11T13:15:46.420156+00:00',
-}
+} as Rule
 
-export const businessHourRule = {
+export const ruleWithBusinessHourIdentifier = ({
     priority: 22,
     deactivated_datetime: '2021-04-16T09:03:03+00:00',
     name: 'fixture',
@@ -391,4 +393,103 @@ export const businessHourRule = {
     id: 23,
     description: '',
     updated_datetime: '2021-04-16T09:03:03.759945+00:00',
-}
+} as unknown) as Rule
+
+export const ruleWithContainsAllIdentifier = ({
+    priority: 12,
+    deactivated_datetime: '2021-05-31T14:06:57.067000+00:00',
+    name: 'AUT-210',
+    uri: '/api/rules/48/',
+    code: 'if (containsAll(ticket.tags.name, [])) {\n}',
+    code_ast: {
+        loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+        type: 'Program',
+        body: [
+            {
+                loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+                type: 'IfStatement',
+                test: {
+                    loc: {
+                        start: {line: 1, column: 4},
+                        end: {line: 1, column: 37},
+                    },
+                    type: 'CallExpression',
+                    callee: {
+                        loc: {
+                            start: {line: 1, column: 4},
+                            end: {line: 1, column: 15},
+                        },
+                        type: 'Identifier',
+                        name: 'containsAll',
+                    },
+                    arguments: [
+                        {
+                            loc: {
+                                start: {line: 1, column: 16},
+                                end: {line: 1, column: 32},
+                            },
+                            type: 'MemberExpression',
+                            computed: false,
+                            object: {
+                                loc: {
+                                    start: {line: 1, column: 16},
+                                    end: {line: 1, column: 27},
+                                },
+                                type: 'MemberExpression',
+                                computed: false,
+                                object: {
+                                    loc: {
+                                        start: {line: 1, column: 16},
+                                        end: {line: 1, column: 22},
+                                    },
+                                    type: 'Identifier',
+                                    name: 'ticket',
+                                },
+                                property: {
+                                    loc: {
+                                        start: {line: 1, column: 23},
+                                        end: {line: 1, column: 27},
+                                    },
+                                    type: 'Identifier',
+                                    name: 'tags',
+                                },
+                            },
+                            property: {
+                                loc: {
+                                    start: {line: 1, column: 28},
+                                    end: {line: 1, column: 32},
+                                },
+                                type: 'Identifier',
+                                name: 'name',
+                            },
+                        },
+                        {
+                            loc: {
+                                start: {line: 1, column: 34},
+                                end: {line: 1, column: 36},
+                            },
+                            type: 'ArrayExpression',
+                            elements: [],
+                        },
+                    ],
+                },
+                consequent: {
+                    loc: {
+                        start: {line: 1, column: 39},
+                        end: {line: 2, column: 1},
+                    },
+                    type: 'BlockStatement',
+                    body: [],
+                },
+                alternate: null,
+            },
+        ],
+        sourceType: 'script',
+    },
+    created_datetime: '2021-05-31T13:08:10.344449+00:00',
+    event_types: 'ticket-created',
+    type: 'user',
+    id: 48,
+    description: '',
+    updated_datetime: '2021-05-31T14:06:57.119351+00:00',
+} as unknown) as Rule

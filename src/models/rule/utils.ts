@@ -4,13 +4,18 @@ import {fromJS, Map, List} from 'immutable'
 import _set from 'lodash/set'
 import _get from 'lodash/get'
 
-import {ObjectExpressionPropertyKey, Rule} from '../../state/rules/types'
+import {
+    CollectionOperator,
+    ObjectExpressionPropertyKey,
+    Rule,
+} from '../../state/rules/types'
 
 import {UNARY_OPERATORS} from '../../config'
 
 import {RuleObject, IdentifierCategoryKey} from './types'
 
 const unaryOperatorsNames = Object.keys(UNARY_OPERATORS)
+const collectionOperatorsNames = Object.values(CollectionOperator)
 
 export function getAstPath<T>(
     property: ObjectExpressionPropertyKey,
@@ -63,11 +68,10 @@ export function getFormattedRule(
     )
 
     if (!unaryOperatorsNames.includes(operatorName)) {
-        _set(code_ast, formattedPath.slice(0, -1).concat(['1']), {
-            raw: "'null'",
-            type: 'Literal',
-            value: null,
-        })
+        const value = collectionOperatorsNames.includes(operatorName as any)
+            ? {elements: [], type: 'ArrayExpression'}
+            : {raw: "'null'", type: 'Literal', value: null}
+        _set(code_ast, formattedPath.slice(0, -1).concat(['1']), value)
     }
     const code = escodegen.generate(code_ast, {format: {semicolons: false}})
 

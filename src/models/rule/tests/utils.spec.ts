@@ -1,6 +1,10 @@
-import {fromJS, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
-import {rule, businessHourRule} from '../../../fixtures/rule'
+import {
+    rule,
+    ruleWithBusinessHourIdentifier,
+    ruleWithContainsAllIdentifier,
+} from '../../../fixtures/rule'
 import {RuleObject, IdentifierCategoryKey} from '../types'
 import {getAstPath, getFormattedRule, getCategoryFromPath} from '../utils'
 
@@ -78,17 +82,22 @@ describe('rule utils', () => {
             ).toMatchSnapshot()
         })
         it('should not keep the second argument of a binary operator when switching to a unary operator', () => {
-            const path = fromJS(['body', '0', 'test', 'arguments', '0'])
-            const value = 'message.text'
+            const leftOperandPath = fromJS([
+                'body',
+                '0',
+                'test',
+                'arguments',
+                '0',
+            ])
             const binaryOperatorRule = getFormattedRule(
-                fromJS(businessHourRule),
-                value,
-                path
+                fromJS(ruleWithBusinessHourIdentifier),
+                'message.text',
+                leftOperandPath
             )
             const unaryOperatorRule = getFormattedRule(
                 fromJS(binaryOperatorRule),
                 'message.created_datetime',
-                path
+                leftOperandPath
             )
             expect(
                 unaryOperatorRule.getIn([
@@ -111,24 +120,65 @@ describe('rule utils', () => {
             ).toBe(1)
         })
         it('should set the second argument of a binary operator to null when changing the left operand', () => {
-            const path = fromJS(['body', '0', 'test', 'arguments', '0'])
-            const value = 'message.text'
+            const leftOperandPath = fromJS([
+                'body',
+                '0',
+                'test',
+                'arguments',
+                '0',
+            ])
             const binaryOperatorRule = getFormattedRule(
                 fromJS(rule),
-                value,
-                path
+                'message.text',
+                leftOperandPath
             )
-            expect(
-                binaryOperatorRule.getIn([
-                    'code_ast',
-                    'body',
-                    0,
-                    'test',
-                    'arguments',
-                    1,
-                    'value',
-                ])
-            ).toBe(null)
+            const rightOperandPath = [
+                'code_ast',
+                'body',
+                0,
+                'test',
+                'arguments',
+                1,
+            ]
+            const rightOperand: Map<any, any> = binaryOperatorRule.getIn(
+                rightOperandPath
+            )
+            expect(rightOperand.toJS()).toEqual({
+                type: 'Literal',
+                value: null,
+                loc: expect.any(Object),
+                raw: 'null',
+            })
+        })
+        it('should set the second argument of a binary operator to empty array when changing the left operand', () => {
+            const leftOperandPath = fromJS([
+                'body',
+                '0',
+                'test',
+                'arguments',
+                '0',
+            ])
+            const arrayExpressionRule = getFormattedRule(
+                fromJS(ruleWithContainsAllIdentifier),
+                'message.text',
+                leftOperandPath
+            )
+            const rightOperandPath = [
+                'code_ast',
+                'body',
+                0,
+                'test',
+                'arguments',
+                1,
+            ]
+            const rightOperand: Map<any, any> = arrayExpressionRule.getIn(
+                rightOperandPath
+            )
+            expect(rightOperand.toJS()).toEqual({
+                type: 'ArrayExpression',
+                elements: [],
+                loc: expect.any(Object),
+            })
         })
     })
 
