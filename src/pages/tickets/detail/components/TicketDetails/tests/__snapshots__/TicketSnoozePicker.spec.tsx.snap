@@ -4,21 +4,12 @@ exports[`<TicketSnoozePicker/> rendering should not render the datepicker when c
 <div
   class="DatePicker"
 >
-  applyClass: "btn-success mr-2"
-  buttonClasses: ["btn"]
-  cancelClass: "btn-secondary"
   isOpen: false
-  minDate: "2017-12-22T13:52:17.000Z"
   onApply: undefined
-  opens: "left"
-  ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 2 days":["2017-12-24T13:52:17.000Z","2017-12-24T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
-  showCustomRangeLabel: false
-  singleDatePicker: true
-  startDate: "2018-10-26T07:00:00.000Z"
-  endDate: "2018-10-26T07:00:00.000Z"
-  timePicker: true
+  initialSettings: {"minDate":"2017-12-22T13:52:17.000Z","startDate":"10/26/2018","endDate":"10/26/2018","singleDatePicker":true,"showCustomRangeLabel":false,"ranges":{"1 hour":["2017-12-22T14:52:17.000Z","2017-12-22T14:52:17.000Z"],"3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]},"opens":"left","timePicker":true,"applyButtonClasses":"btn-success mr-2","cancelButtonClasses":"btn-secondary"}
   toggle: undefined
-  children: undefined
+  rangesLabel: "Remind me in"
+  unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
 </div>
 `;
 
@@ -28,21 +19,12 @@ exports[`<TicketSnoozePicker/> rendering should render a DatePicker and log erro
     <div
       class="DatePicker"
     >
-      applyClass: "btn-success mr-2"
-      buttonClasses: ["btn"]
-      cancelClass: "btn-secondary"
       isOpen: true
-      minDate: "2017-12-22T13:52:17.000Z"
       onApply: undefined
-      opens: "left"
-      ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 2 days":["2017-12-24T13:52:17.000Z","2017-12-24T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
-      showCustomRangeLabel: false
-      singleDatePicker: true
-      startDate: "2017-12-22T13:52:17.000Z"
-      endDate: "2017-12-22T13:52:17.000Z"
-      timePicker: true
+      initialSettings: {"minDate":"2017-12-22T13:52:17.000Z","startDate":"12/22/2017","endDate":"12/22/2017","singleDatePicker":true,"showCustomRangeLabel":false,"ranges":{"1 hour":["2017-12-22T14:52:17.000Z","2017-12-22T14:52:17.000Z"],"3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]},"opens":"left","timePicker":true,"applyButtonClasses":"btn-success mr-2","cancelButtonClasses":"btn-secondary"}
       toggle: undefined
-      children: undefined
+      rangesLabel: "Remind me in"
+      unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
     </div>
   </div>
 </body>
@@ -54,21 +36,12 @@ exports[`<TicketSnoozePicker/> rendering should render the default datetime valu
     <div
       class="DatePicker"
     >
-      applyClass: "btn-success mr-2"
-      buttonClasses: ["btn"]
-      cancelClass: "btn-secondary"
       isOpen: true
-      minDate: "2017-12-22T13:52:17.000Z"
       onApply: undefined
-      opens: "left"
-      ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 2 days":["2017-12-24T13:52:17.000Z","2017-12-24T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
-      showCustomRangeLabel: false
-      singleDatePicker: true
-      startDate: "2017-12-22T13:52:17.000Z"
-      endDate: "2017-12-22T13:52:17.000Z"
-      timePicker: true
+      initialSettings: {"minDate":"2017-12-22T13:52:17.000Z","startDate":"12/22/2017","endDate":"12/22/2017","singleDatePicker":true,"showCustomRangeLabel":false,"ranges":{"1 hour":["2017-12-22T14:52:17.000Z","2017-12-22T14:52:17.000Z"],"3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]},"opens":"left","timePicker":true,"applyButtonClasses":"btn-success mr-2","cancelButtonClasses":"btn-secondary"}
       toggle: undefined
-      children: undefined
+      rangesLabel: "Remind me in"
+      unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
     </div>
   </div>
 </body>
@@ -80,21 +53,12 @@ exports[`<TicketSnoozePicker/> rendering should render the provided value 1`] = 
     <div
       class="DatePicker"
     >
-      applyClass: "btn-success mr-2"
-      buttonClasses: ["btn"]
-      cancelClass: "btn-secondary"
       isOpen: true
-      minDate: "2017-12-22T13:52:17.000Z"
       onApply: undefined
-      opens: "left"
-      ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 2 days":["2017-12-24T13:52:17.000Z","2017-12-24T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
-      showCustomRangeLabel: false
-      singleDatePicker: true
-      startDate: "2018-10-26T07:00:00.000Z"
-      endDate: "2018-10-26T07:00:00.000Z"
-      timePicker: true
+      initialSettings: {"minDate":"2017-12-22T13:52:17.000Z","startDate":"10/26/2018","endDate":"10/26/2018","singleDatePicker":true,"showCustomRangeLabel":false,"ranges":{"1 hour":["2017-12-22T14:52:17.000Z","2017-12-22T14:52:17.000Z"],"3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]},"opens":"left","timePicker":true,"applyButtonClasses":"btn-success mr-2","cancelButtonClasses":"btn-secondary"}
       toggle: undefined
-      children: undefined
+      rangesLabel: "Remind me in"
+      unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
     </div>
   </div>
 </body>

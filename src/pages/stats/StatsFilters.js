@@ -34,7 +34,7 @@ import PageHeader from '../common/components/PageHeader.tsx'
 import PopoverModal from '../common/components/PopoverModal.tsx'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
 
-import PeriodPicker from './common/PeriodPicker'
+import PeriodPicker from './common/PeriodPicker.tsx'
 import SelectFilter from './common/SelectFilter.tsx'
 import css from './StatsFilters.less'
 

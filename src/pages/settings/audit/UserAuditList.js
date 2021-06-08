@@ -7,7 +7,7 @@ import moment from 'moment'
 
 import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
-import DatePicker from '../../common/forms/DatePicker'
+import DatePicker from '../../common/forms/DatePicker.tsx'
 import SelectFilter from '../../stats/common/SelectFilter.tsx'
 import Pagination from '../../common/components/Pagination.tsx'
 import {fetchUsersAudit} from '../../../state/usersAudit/actions.ts'
@@ -37,7 +37,6 @@ type Props = {
 
 type State = {
     isFetching: boolean,
-    isDatePickerOpen: boolean,
     end_datetime: string,
     start_datetime: string,
     event_types: Array<string>,
@@ -62,7 +61,6 @@ const _someDaysAgoStartOfDay = (days) =>
 export class UserAuditList extends React.Component<Props, State> {
     state = {
         isFetching: false,
-        isDatePickerOpen: false,
         start_datetime: _startOfToday().format(),
         end_datetime: _endOfToday().format(),
         user_ids: [],
@@ -120,7 +118,6 @@ export class UserAuditList extends React.Component<Props, State> {
         } = this.props
         const {
             isFetching,
-            isDatePickerOpen,
             start_datetime,
             end_datetime,
             user_ids,
@@ -150,7 +147,6 @@ export class UserAuditList extends React.Component<Props, State> {
                                 />
                             ))}
                         </SelectFilter>
-
                         <SelectFilter
                             plural="objects"
                             singular="object"
@@ -165,7 +161,6 @@ export class UserAuditList extends React.Component<Props, State> {
                                 />
                             ))}
                         </SelectFilter>
-
                         <SelectFilter
                             plural="events"
                             singular="event"
@@ -180,52 +175,57 @@ export class UserAuditList extends React.Component<Props, State> {
                                 />
                             ))}
                         </SelectFilter>
-
                         <DatePicker
-                            isOpen={isDatePickerOpen}
                             onApply={this._onApplyDatePicker}
-                            applyClass="btn-success mr-2"
-                            buttonClasses={['btn']}
-                            cancelClass="btn-secondary"
-                            opens="left"
-                            timePicker
-                            singleDatePicker={false}
-                            startDate={moment(start_datetime)}
-                            endDate={moment(end_datetime)}
-                            minDate={_someDaysAgoStartOfDay(7)}
-                            ranges={{
-                                Today: [_startOfToday(), _endOfToday()],
-                                'Last 3 days': [
-                                    _someDaysAgoStartOfDay(3),
-                                    _endOfToday(),
-                                ],
-                                'Last 7 days': [
-                                    _someDaysAgoStartOfDay(7),
-                                    _endOfToday(),
-                                ],
+                            initialSettings={{
+                                alwaysShowCalendars: true,
+                                applyButtonClasses: 'btn-success mr-2',
+                                cancelButtonClasses: 'btn-secondary',
+                                endDate: moment(end_datetime),
+                                linkedCalendars: false,
+                                minDate: _someDaysAgoStartOfDay(7),
+                                opens: 'left',
+                                ranges: {
+                                    Today: [_startOfToday(), _endOfToday()],
+                                    'Last 3 days': [
+                                        _someDaysAgoStartOfDay(3),
+                                        _endOfToday(),
+                                    ],
+                                    'Last 7 days': [
+                                        _someDaysAgoStartOfDay(7),
+                                        _endOfToday(),
+                                    ],
+                                },
+                                showCustomRangeLabel: false,
+                                startDate: moment(start_datetime),
+                                timePicker: true,
                             }}
+                            rangesLabel="Shortcuts"
+                            unavailableDateMessage="There is no data available on this date because it’s past 7 days."
                         >
-                            <Button type="button" disabled={false}>
-                                <i className="material-icons mr-2">
-                                    calendar_today
-                                </i>
-                                <span>
-                                    {formatDatetime(
-                                        start_datetime,
-                                        timezone,
-                                        DATETIME_LABEL_FORMAT
-                                    )}
-                                    {' - '}
-                                    {formatDatetime(
-                                        end_datetime,
-                                        timezone,
-                                        DATETIME_LABEL_FORMAT
-                                    )}
-                                </span>
-                                <i className="material-icons">
-                                    arrow_drop_down
-                                </i>
-                            </Button>
+                            <div>
+                                <Button type="button" disabled={false}>
+                                    <i className="material-icons mr-2">
+                                        calendar_today
+                                    </i>
+                                    <span>
+                                        {formatDatetime(
+                                            start_datetime,
+                                            timezone,
+                                            DATETIME_LABEL_FORMAT
+                                        )}
+                                        {' - '}
+                                        {formatDatetime(
+                                            end_datetime,
+                                            timezone,
+                                            DATETIME_LABEL_FORMAT
+                                        )}
+                                    </span>
+                                    <i className="material-icons">
+                                        arrow_drop_down
+                                    </i>
+                                </Button>
+                            </div>
                         </DatePicker>
                     </div>
                 </PageHeader>

@@ -2,12 +2,12 @@ import {render} from '@testing-library/react'
 import React from 'react'
 
 import TicketSnoozePicker from '../TicketSnoozePicker'
-import DatePicker from '../../../../../common/forms/DatePicker.js'
+import DatePicker from '../../../../../common/forms/DatePicker'
 
 const errorSpy = jest.spyOn(global.console, 'error')
 
 jest.mock(
-    '../../../../../common/forms/DatePicker.js',
+    '../../../../../common/forms/DatePicker',
     () => (props: React.ComponentProps<typeof DatePicker>) => (
         <div className="DatePicker">
             {Object.entries(props).map(

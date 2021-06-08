@@ -1,88 +1,85 @@
 import React from 'react'
-import {mount, shallow} from 'enzyme'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import moment from 'moment'
 
-import DatePicker from '../DatePicker'
+import DatePicker from '../DatePicker.tsx'
 
 describe('DatePicker', () => {
+    beforeEach(() => {
+        const mockDate = new Date('2021-05-14T12:34:56.000Z')
+        global.Date.now = jest.fn(() => mockDate)
+    })
+
     it('should render a date range picker', () => {
-        const datetime = moment('2017-12-22')
+        const datetime = moment('2021-05-14')
         const ranges = {
             tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
         }
-        const component = shallow(
+        const {container} = render(
             <DatePicker
                 isOpen={true}
                 toggle={null}
-                applyClass="btn-success mr-2"
-                buttonClasses={['btn']}
-                cancelClass="btn-secondary"
-                minDate={datetime}
                 onApply={null}
-                opens="left"
-                ranges={ranges}
-                showCustomRangeLabel={false}
-                singleDatePicker
-                startDate={datetime}
-                timePicker
+                initialSettings={{
+                    applyButtonClasses: 'btn-success mr-2',
+                    cancelButtonClasses: 'btn-secondary',
+                    minDate: datetime,
+                    opens: 'left',
+                    ranges,
+                    timePicker: true,
+                    showCustomRangeLabel: false,
+                    singleDatePicker: true,
+                    startDate: datetime,
+                }}
             >
-                Select a date
+                <button>Select a date</button>
             </DatePicker>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display a date range picker on mount', () => {
-        const wrapper = shallow(
-            <DatePicker isOpen={true} toggle={null}>
-                Select a date
+    it('should display the opened date picker', () => {
+        const {getByText} = render(
+            <DatePicker isOpen={true}>
+                <button>Select a date</button>
             </DatePicker>
         )
-        const component = wrapper.instance()
-        component._show = jest.fn()
-        component.componentDidMount()
-        expect(component._show).toHaveBeenCalled()
+
+        const [dateRangePickerElement] = document.getElementsByClassName(
+            'daterangepicker'
+        )
+
+        expect(dateRangePickerElement.classList).toContain('displayed')
+        expect(getByText('May 2021')).toBeTruthy()
+        expect(getByText('Jun 2021')).toBeTruthy()
     })
 
-    it('should display a date range picker on update', () => {
-        const wrapper = shallow(
-            <DatePicker isOpen={false} toggle={null}>
-                Select a date
-            </DatePicker>
-        )
-        const component = wrapper.instance()
-        component._show = jest.fn()
-        wrapper.setProps({isOpen: true})
-        expect(component._show).toHaveBeenCalled()
-    })
-
-    it('should call toggle function and onHide callback on hide', () => {
-        const toggleSpy = jest.fn()
-        const onHideSpy = jest.fn()
-        const wrapper = shallow(
-            <DatePicker isOpen={true} toggle={toggleSpy} onHide={onHideSpy}>
-                Select a date
-            </DatePicker>
-        )
-        const component = wrapper.instance()
-        component._onEvent({type: 'hide'})
-        expect(toggleSpy).toHaveBeenCalled()
-        expect(onHideSpy).toHaveBeenCalled()
-    })
-
-    it('should simulate a click to show the date range picker', () => {
-        const wrapper = mount(
-            <DatePicker isOpen={false} toggle={null}>
-                Select a date
-            </DatePicker>
-        )
-        const component = wrapper.instance()
+    it('should open the date range picker on trigger element click', async () => {
         const showSpy = jest.fn()
-        component.datePickerRef.$picker.click = showSpy
-        component._show()
-        setImmediate(() => {
-            expect(showSpy).toHaveBeenCalled()
-        })
+        const {getByText} = render(
+            <DatePicker toggle={showSpy}>
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        fireEvent.click(getByText('Select a date'))
+        await waitFor(() => expect(showSpy).toHaveBeenCalled)
+    })
+
+    it('should call toggle callback on click outside', async () => {
+        const externalText = document.createElement('div')
+        externalText.textContent = 'I am outside'
+        document.body.appendChild(externalText)
+
+        const toggleSpy = jest.fn()
+        const {getByText} = render(
+            <DatePicker isOpen toggle={toggleSpy}>
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        fireEvent.click(getByText(externalText.textContent))
+        await waitFor(() => expect(toggleSpy).toHaveBeenCalled)
     })
 })

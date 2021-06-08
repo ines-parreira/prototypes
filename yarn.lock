@@ -1629,6 +1629,14 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
   integrity sha512-1UzDldn9GfYYEsWWnn/P4wkTlkZDH7lDb0wBMGbtIQc9zXEQq7FlKBdZUn6OBqD8sKZZ2RQO2mAjGpXiDGoRmQ==
 
+"@types/daterangepicker@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/daterangepicker/-/daterangepicker-3.1.0.tgz#72e8a0587927e2aaacf30a460f360fd564f86841"
+  integrity sha512-5XDA0E1hxlIpa3jiJbPNFP4CzxEBayDdamoE4aGjgUJ34Gwtx6XJ9Wfw09VV/4WTc480oCAax0EYv8SYKp3Y2A==
+  dependencies:
+    "@types/jquery" "*"
+    moment ">=2.14.0"
+
 "@types/domhandler@2.4.1":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/domhandler/-/domhandler-2.4.1.tgz#7b3b347f7762180fbcb1ece1ce3dd0ebbb8c64cf"
@@ -1758,6 +1766,20 @@
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
+
+"@types/jquery@*":
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.5.tgz#2c63f47c9c8d96693d272f5453602afd8338c903"
+  integrity sha512-6RXU9Xzpc6vxNrS6FPPapN1SxSHgQ336WC6Jj/N8q30OiaBZ00l1GBgeP7usjVZPivSkGUfL1z/WW6TX989M+w==
+  dependencies:
+    "@types/sizzle" "*"
+
+"@types/jquery@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.1.tgz#cebb057acf5071c40e439f30e840c57a30d406c3"
+  integrity sha512-Tyctjh56U7eX2b9udu3wG853ASYP0uagChJcQJXLUXEU6C/JiW5qt5dl8ao01VRj1i5pgXPAf8f1mq4+FDLRQg==
+  dependencies:
+    "@types/sizzle" "*"
 
 "@types/js-cookie@2.2.6":
   version "2.2.6"
@@ -1977,6 +1999,11 @@
   integrity sha512-j7Vnh3P7W4ZcoRsHNO2HpwA2m1d0c2+l39xqSQqH0+WlfcvKypgZp45eCC7NJ75ZyXPxNb2PSbIL6LtZ6E0Qbw==
   dependencies:
     htmlparser2 "^4.1.0"
+
+"@types/sizzle@*":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
+  integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -3013,10 +3040,10 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap-daterangepicker@^2.1.25:
-  version "2.1.30"
-  resolved "https://registry.yarnpkg.com/bootstrap-daterangepicker/-/bootstrap-daterangepicker-2.1.30.tgz#f893dbfff5a4d7dfaab75460e8ea6969bb89689a"
-  integrity sha1-+JPb//Wk19+qt1Rg6OppabuJaJo=
+bootstrap-daterangepicker@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-daterangepicker/-/bootstrap-daterangepicker-3.1.0.tgz#632e6fb2de4b6360c5c0a9d5f6adb9aace051fe8"
+  integrity sha512-oaQZx6ZBDo/dZNyXGVi2rx5GmFXThyQLAxdtIqjtLlYVaQUfQALl5JZMJJZzyDIX7blfy4ppZPAJ10g8Ma4d/g==
   dependencies:
     jquery ">=1.10"
     moment "^2.9.0"
@@ -7531,7 +7558,7 @@ jest@24.7.1:
     import-local "^2.0.0"
     jest-cli "^24.7.1"
 
-jquery@>=1.10, jquery@>=1.7.2, jquery@^3.3.1:
+jquery@3.5.1, jquery@>=1.10, jquery@>=1.7.2, jquery@^3.3.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
@@ -8511,7 +8538,7 @@ moment@2.24.0:
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
-"moment@>= 2.9.0", moment@^2.10.2, moment@^2.9.0:
+"moment@>= 2.9.0", moment@>=2.14.0, moment@^2.10.2, moment@^2.9.0:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
@@ -10157,13 +10184,10 @@ react-addons-test-utils@15.6.2:
   resolved "https://registry.yarnpkg.com/react-addons-test-utils/-/react-addons-test-utils-15.6.2.tgz#c12b6efdc2247c10da7b8770d185080a7b047156"
   integrity sha1-wStu/cIkfBDae4dw0YUICnsEcVY=
 
-react-bootstrap-daterangepicker@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-bootstrap-daterangepicker/-/react-bootstrap-daterangepicker-3.3.0.tgz#d25e15f92805e1fc7a7df483cfdbbb918caf5b8e"
-  integrity sha1-0l4V+SgF4fx6ffSDz9u7kYyvW44=
-  dependencies:
-    bootstrap-daterangepicker "^2.1.25"
-    object-assign "^4.1.1"
+react-bootstrap-daterangepicker@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-daterangepicker/-/react-bootstrap-daterangepicker-7.0.0.tgz#172228cccaa3b0f4a42e84eb6d646b4988a0df64"
+  integrity sha512-lZ5/Foj3Y6wbfOtIBmKbb+6PSFu2NGzpLw4WC7J/C/SRinNpYShzyNkFMULw0hCpUNVlllfFjqQCCI39KDnHCA==
 
 react-chartjs-2@2.6.1:
   version "2.6.1"

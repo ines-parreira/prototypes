@@ -1,10 +1,9 @@
 import React from 'react'
-import moment from 'moment-timezone'
+import moment, {Moment} from 'moment-timezone'
 
-import DatePicker from '../../../../common/forms/DatePicker.js'
+import DatePicker from '../../../../common/forms/DatePicker'
 
 type Props = {
-    children?: string
     datetime?: string
     isOpen: boolean
     onApply: () => void
@@ -13,7 +12,6 @@ type Props = {
 }
 
 const TicketSnoozePicker = ({
-    children,
     datetime,
     isOpen,
     onApply,
@@ -21,13 +19,16 @@ const TicketSnoozePicker = ({
     toggle,
 }: Props) => {
     const formattedDate = moment.tz(datetime, timezone)
-    const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
-    const ranges = {
-        'In 3 hours': [moment().add(3, 'hours'), moment().add(3, 'hours')],
-        'In 6 hours': [moment().add(6, 'hours'), moment().add(6, 'hours')],
-        'In 1 day': [moment().add(1, 'days'), moment().add(1, 'days')],
-        'In 2 days': [moment().add(2, 'days'), moment().add(2, 'days')],
-        'in 1 week': [moment().add(7, 'days'), moment().add(7, 'days')],
+    const snoozeDatetime = formattedDate.isValid()
+        ? formattedDate.format('M/D/YYYY')
+        : moment().format('M/D/YYYY')
+    const ranges: {[label: string]: [Moment, Moment]} = {
+        '1 hour': [moment().add(1, 'hours'), moment().add(1, 'hours')],
+        '3 hours': [moment().add(3, 'hours'), moment().add(3, 'hours')],
+        '6 hours': [moment().add(6, 'hours'), moment().add(6, 'hours')],
+        '1 day': [moment().add(1, 'days'), moment().add(1, 'days')],
+        '3 days': [moment().add(3, 'days'), moment().add(3, 'days')],
+        '1 week': [moment().add(7, 'days'), moment().add(7, 'days')],
     }
 
     if (datetime && !formattedDate.isValid()) {
@@ -36,23 +37,24 @@ const TicketSnoozePicker = ({
 
     return (
         <DatePicker
-            applyClass="btn-success mr-2"
-            buttonClasses={['btn']}
-            cancelClass="btn-secondary"
             isOpen={isOpen}
-            minDate={moment()}
             onApply={onApply}
-            opens="left"
-            ranges={ranges}
-            showCustomRangeLabel={false}
-            singleDatePicker
-            startDate={snoozeDatetime}
-            endDate={snoozeDatetime}
-            timePicker
+            initialSettings={{
+                minDate: moment(),
+                startDate: snoozeDatetime,
+                endDate: snoozeDatetime,
+                singleDatePicker: true,
+                showCustomRangeLabel: false,
+                ranges,
+                opens: 'left',
+                timePicker: true,
+                applyButtonClasses: 'btn-success mr-2',
+                cancelButtonClasses: 'btn-secondary',
+            }}
             toggle={toggle}
-        >
-            {children}
-        </DatePicker>
+            rangesLabel="Remind me in"
+            unavailableDateMessage="You can’t select a time before current time to snooze a ticket."
+        />
     )
 }
 

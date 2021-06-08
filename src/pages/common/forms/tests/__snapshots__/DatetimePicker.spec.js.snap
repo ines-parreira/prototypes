@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DatetimePicker component should display a placeholder when there's no data 1`] = `
-<Component
+<DateRangePicker
   alwaysShowCalendars={true}
   applyClass="btn-success mr-2"
   buttonClasses={
@@ -23,11 +23,11 @@ exports[`DatetimePicker component should display a placeholder when there's no d
     type="text"
     value=""
   />
-</Component>
+</DateRangePicker>
 `;
 
 exports[`DatetimePicker component should display the passed data 1`] = `
-<Component
+<DateRangePicker
   alwaysShowCalendars={true}
   applyClass="btn-success mr-2"
   buttonClasses={
@@ -49,11 +49,11 @@ exports[`DatetimePicker component should display the passed data 1`] = `
     type="text"
     value="03/21/2012 1:32 AM"
   />
-</Component>
+</DateRangePicker>
 `;
 
 exports[`DatetimePicker component should ignore invalid passed data 1`] = `
-<Component
+<DateRangePicker
   alwaysShowCalendars={true}
   applyClass="btn-success mr-2"
   buttonClasses={
@@ -75,5 +75,5 @@ exports[`DatetimePicker component should ignore invalid passed data 1`] = `
     type="text"
     value=""
   />
-</Component>
+</DateRangePicker>
 `;

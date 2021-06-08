@@ -61,62 +61,62 @@ exports[`UserAuditList component mounts correctly 1`] = `
         />
       </SelectFilter>
       <DatePicker
-        applyClass="btn-success mr-2"
-        buttonClasses={
-          Array [
-            "btn",
-          ]
-        }
-        cancelClass="btn-secondary"
-        endDate={"2018-01-05T08:00:00.000Z"}
-        isOpen={false}
-        minDate={"2018-09-24T07:00:00.000Z"}
-        onApply={[Function]}
-        onHide={null}
-        opens="left"
-        ranges={
+        initialSettings={
           Object {
-            "Last 3 days": Array [
-              "2018-09-28T07:00:00.000Z",
-              "2018-10-01T06:59:59.999Z",
-            ],
-            "Last 7 days": Array [
-              "2018-09-24T07:00:00.000Z",
-              "2018-10-01T06:59:59.999Z",
-            ],
-            "Today": Array [
-              "2018-09-30T07:00:00.000Z",
-              "2018-10-01T06:59:59.999Z",
-            ],
+            "alwaysShowCalendars": true,
+            "applyButtonClasses": "btn-success mr-2",
+            "cancelButtonClasses": "btn-secondary",
+            "endDate": "2018-01-05T08:00:00.000Z",
+            "linkedCalendars": false,
+            "minDate": "2018-09-24T07:00:00.000Z",
+            "opens": "left",
+            "ranges": Object {
+              "Last 3 days": Array [
+                "2018-09-28T07:00:00.000Z",
+                "2018-10-01T06:59:59.999Z",
+              ],
+              "Last 7 days": Array [
+                "2018-09-24T07:00:00.000Z",
+                "2018-10-01T06:59:59.999Z",
+              ],
+              "Today": Array [
+                "2018-09-30T07:00:00.000Z",
+                "2018-10-01T06:59:59.999Z",
+              ],
+            },
+            "showCustomRangeLabel": false,
+            "startDate": "2017-12-30T08:00:00.000Z",
+            "timePicker": true,
           }
         }
-        showCustomRangeLabel={false}
-        singleDatePicker={false}
-        startDate={"2017-12-30T08:00:00.000Z"}
-        timePicker={true}
+        onApply={[Function]}
+        rangesLabel="Shortcuts"
+        unavailableDateMessage="There is no data available on this date because it’s past 7 days."
       >
-        <Button
-          color="secondary"
-          disabled={false}
-          tag="button"
-          type="button"
-        >
-          <i
-            className="material-icons mr-2"
+        <div>
+          <Button
+            color="secondary"
+            disabled={false}
+            tag="button"
+            type="button"
           >
-            calendar_today
-          </i>
-          <span>
-            December 30, 2017 12:00 AM
-             - 
-            January 5, 2018 12:00 AM
-          </span>
-          <i
-            className="material-icons"
-          >
-            arrow_drop_down
-          </i>
-        </Button>
+            <i
+              className="material-icons mr-2"
+            >
+              calendar_today
+            </i>
+            <span>
+              December 30, 2017 12:00 AM
+               - 
+              January 5, 2018 12:00 AM
+            </span>
+            <i
+              className="material-icons"
+            >
+              arrow_drop_down
+            </i>
+          </Button>
+        </div>
       </DatePicker>
     </div>
   </PageHeader>

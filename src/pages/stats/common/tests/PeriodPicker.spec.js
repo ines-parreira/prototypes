@@ -4,7 +4,7 @@ import React, {type ElementProps} from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import moment from 'moment-timezone'
 
-import {PeriodPickerContainer} from '../PeriodPicker'
+import {PeriodPickerContainer} from '../PeriodPicker.tsx'
 
 jest.mock(
     'react-bootstrap-daterangepicker',

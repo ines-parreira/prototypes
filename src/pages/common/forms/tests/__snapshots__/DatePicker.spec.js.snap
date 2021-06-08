@@ -1,32 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DatePicker should render a date range picker 1`] = `
-<Component
-  applyClass="btn-success mr-2"
-  buttonClasses={
-    Array [
-      "btn",
-    ]
-  }
-  cancelClass="btn-secondary"
-  minDate={"2017-12-24T07:00:00.000Z"}
-  onApply={null}
-  onEvent={[Function]}
-  onHide={null}
-  opens="left"
-  ranges={
-    Object {
-      "tomorrow": Array [
-        "2017-12-24T07:00:00.000Z",
-        "2017-12-24T07:00:00.000Z",
-      ],
-    }
-  }
-  showCustomRangeLabel={false}
-  singleDatePicker={true}
-  startDate={"2017-12-24T07:00:00.000Z"}
-  timePicker={true}
->
+<button>
   Select a date
-</Component>
+</button>
 `;
