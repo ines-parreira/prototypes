@@ -2,88 +2,78 @@
 
 exports[`ManageTags Table component should display the same number of rows as there are tags 1`] = `
 <table
-  className="view-table table"
+  class="view-table table"
 >
   <thead>
     <tr>
       <td
-        className="cell-wrapper cell-short clickable"
-        onClick={[Function]}
+        class="cell-wrapper cell-short clickable"
       >
         <input
-          checked={false}
-          readOnly={true}
+          readonly=""
           type="checkbox"
         />
       </td>
-      <td
-        key="0"
-      >
+      <td>
         <div
-          className="headerCell cell-wrapper"
+          class="headerCell cell-wrapper"
         >
-          <TableActions
-            meta={
-              Immutable.Map {
-                "1": Immutable.Map {
-                  "selected": true,
-                },
-                "2": Immutable.Map {
-                  "selected": true,
-                },
-              }
-            }
-            selectedNum={2}
-            tags={
-              Immutable.List [
-                Immutable.Map {
-                  "id": 1,
-                  "name": "refund",
-                },
-                Immutable.Map {
-                  "id": 2,
-                  "name": "billing",
-                },
-                Immutable.Map {
-                  "id": 3,
-                  "name": "shipping",
-                },
-              ]
-            }
-          />
           <div
-            onClick={[Function]}
+            class="actions"
           >
+            <button
+              class="mr-2 btn btn-secondary btn-sm"
+              id="bulk-merge-button"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                call_merge
+              </i>
+              Merge
+            </button>
+            <button
+              class="mr-2 btn btn-secondary btn-sm"
+              id="bulk-remove-button"
+              type="button"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                delete
+              </i>
+              Delete
+            </button>
+          </div>
+          <div>
             <span>
               Tag
             </span>
+            <i
+              class="material-icons md-1 sort"
+            >
+              arrow_drop_up
+            </i>
           </div>
         </div>
       </td>
-      <td
-        key="1"
-      >
+      <td>
         <div
-          className="headerCell cell-wrapper"
+          class="headerCell cell-wrapper"
         >
-          <div
-            onClick={[Function]}
-          >
+          <div>
             <span>
               Description
             </span>
           </div>
         </div>
       </td>
-      <td
-        key="2"
-      >
+      <td>
         <div
-          className="headerCell cell-wrapper"
+          class="headerCell cell-wrapper"
         >
-          <div
-            onClick={[Function]}
-          >
+          <div>
             <span>
               Tickets
             </span>
@@ -94,39 +84,201 @@ exports[`ManageTags Table component should display the same number of rows as th
     </tr>
   </thead>
   <tbody>
-    <Connect(Row)
-      key="0"
-      meta={Immutable.Map {}}
-      refresh={[Function]}
-      row={
-        Immutable.Map {
-          "id": 1,
-          "name": "refund",
-        }
-      }
-    />
-    <Connect(Row)
-      key="1"
-      meta={Immutable.Map {}}
-      refresh={[Function]}
-      row={
-        Immutable.Map {
-          "id": 2,
-          "name": "billing",
-        }
-      }
-    />
-    <Connect(Row)
-      key="2"
-      meta={Immutable.Map {}}
-      refresh={[Function]}
-      row={
-        Immutable.Map {
-          "id": 3,
-          "name": "shipping",
-        }
-      }
-    />
+    <tr
+      class="row"
+    >
+      <td
+        class="cell-wrapper cell-short clickable"
+      >
+        <input
+          readonly=""
+          type="checkbox"
+        />
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
+        >
+          <span
+            class="badge-tag badge badge-secondary"
+            style="color: rgb(128, 136, 214);"
+          >
+            refund
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
+        />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper justify-content-center"
+        />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper actions"
+        >
+          <button
+            class="mr-1 btn-transparent btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              edit
+            </i>
+          </button>
+          <button
+            class="btn-transparent deleteButton btn btn-secondary"
+            id="remove-button-1"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              delete
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr
+      class="row"
+    >
+      <td
+        class="cell-wrapper cell-short clickable"
+      >
+        <input
+          readonly=""
+          type="checkbox"
+        />
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
+        >
+          <span
+            class="badge-tag badge badge-secondary"
+            style="color: rgb(128, 136, 214);"
+          >
+            billing
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
+        />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper justify-content-center"
+        />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper actions"
+        >
+          <button
+            class="mr-1 btn-transparent btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              edit
+            </i>
+          </button>
+          <button
+            class="btn-transparent deleteButton btn btn-secondary"
+            id="remove-button-2"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              delete
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr
+      class="row"
+    >
+      <td
+        class="cell-wrapper cell-short clickable"
+      >
+        <input
+          readonly=""
+          type="checkbox"
+        />
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
+        >
+          <span
+            class="badge-tag badge badge-secondary"
+            style="color: rgb(128, 136, 214);"
+          >
+            shipping
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
+        />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper justify-content-center"
+        />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper actions"
+        >
+          <button
+            class="mr-1 btn-transparent btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              edit
+            </i>
+          </button>
+          <button
+            class="btn-transparent deleteButton btn btn-secondary"
+            id="remove-button-3"
+            type="button"
+          >
+            <i
+              class="material-icons"
+            >
+              delete
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
   </tbody>
 </table>
 `;

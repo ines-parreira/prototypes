@@ -32,14 +32,17 @@ export class TableContainer extends Component<Props> {
             {
                 title: 'Tag',
                 field: 'name',
+                isSortable: true,
             },
             {
                 title: 'Description',
                 field: 'description',
+                isSortable: false,
             },
             {
                 title: 'Tickets',
                 field: 'usage',
+                isSortable: true,
             },
         ],
     }
@@ -66,6 +69,13 @@ export class TableContainer extends Component<Props> {
 
     _onSort = (sort: string) => {
         return () => {
+            const {columns} = this.props
+            if (
+                !(columns.find((column) => column.field === sort) || {})
+                    .isSortable
+            ) {
+                return
+            }
             let reverse = false
             // already sorted by this prop
             if (this.props.sort === sort) {
