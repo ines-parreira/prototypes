@@ -4,19 +4,19 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import _debounce from 'lodash/debounce'
-import axios, {AxiosError} from 'axios'
+import axios, {AxiosError, Canceler} from 'axios'
 
 import {
     stats as statsConfig,
     views as statViewsConfig,
 } from '../../config/stats'
-import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../../state/notifications/actions'
 import {getViewFilters} from '../../state/stats/selectors'
 import {errorToChildren} from '../../utils'
 import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState} from '../../state/types'
 import {statFetched} from '../../state/entities/stats/actions'
+import {fetchStat} from '../../models/stat/resources'
 
 import Stat from './common/components/charts/Stat'
 
@@ -32,7 +32,7 @@ const initialState = {
 }
 
 export class StatsContainer extends React.Component<Props, State> {
-    gorgiasApi = new GorgiasApi()
+    cancellableRequests: {[key: string]: Canceler} = {}
     state = initialState
 
     componentDidMount() {
@@ -50,7 +50,7 @@ export class StatsContainer extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
-        this.gorgiasApi.cancelPendingRequests()
+        Object.values(this.cancellableRequests).map((cancel) => cancel())
     }
 
     handleFetchStats = () => {
@@ -71,7 +71,6 @@ export class StatsContainer extends React.Component<Props, State> {
         const {notify, statFetched} = this.props
         const statConfig = statsConfig.get(statName) as Map<any, any>
         let resourceNames = fromJS([statName]) as List<any>
-
         if (statConfig.get('style') === 'key-metrics') {
             // key metrics can be fetched separately or all together.
             const resourceName = statConfig.get('api_resource_name')
@@ -97,14 +96,24 @@ export class StatsContainer extends React.Component<Props, State> {
             })
 
             try {
-                const stat = await this.gorgiasApi.getStatistic(
+                const cancelToken = axios.CancelToken.source()
+                if (this.cancellableRequests[`${resourceName}/${statName}`]) {
+                    this.cancellableRequests[`${resourceName}/${statName}`]()
+                }
+                this.cancellableRequests[`${resourceName}/${statName}`] =
+                    cancelToken.cancel
+                const stat = await fetchStat(
                     resourceName,
-                    fromJS({filters})
+                    {filters: filters.toJS()},
+                    {
+                        cancelToken: cancelToken.token,
+                    }
                 )
+
                 void statFetched({
                     resourceName,
                     statName,
-                    value: stat.toJS(),
+                    value: stat,
                 })
                 return stat
             } catch (error) {
@@ -130,6 +139,7 @@ export class StatsContainer extends React.Component<Props, State> {
                 }
                 void notify(notification)
             } finally {
+                delete this.cancellableRequests[`${resourceName}/${statName}`]
                 this.setState((state) => {
                     return {
                         fetchingStates: state.fetchingStates.setIn(

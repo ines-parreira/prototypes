@@ -12,8 +12,8 @@ import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
  */
 export const saveFileAsDownloaded = (
     name: string,
-    contentType: string,
-    data: string
+    data: string,
+    contentType?: string
 ) => {
     const blob = new Blob([data], {
         type: contentType || 'application/octet-stream',

@@ -80,55 +80,6 @@ Object {
 }
 `;
 
-exports[`services GorgiasApi downloadStatistic() should fetch a statistic with the given name and filters (ready to be downloaded) 1`] = `
-Immutable.Map {
-  "name": "support-volume-2019-05-23-2019-05-29.csv",
-  "contentType": "text/csv",
-  "data": Immutable.Map {
-    "data": Immutable.Map {},
-    "meta": Immutable.Map {},
-  },
-}
-`;
-
-exports[`services GorgiasApi downloadStatistic() should fetch a statistic with the given name and filters (ready to be downloaded) 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": "{\\"filters\\":{\\"tags\\":[1,2],\\"score\\":\\"4\\"}}",
-      "headers": Object {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 180000,
-      "transformRequest": Array [
-        [Function],
-      ],
-      "transformResponse": Array [
-        [Function],
-      ],
-      "url": "/api/stats/overview/download",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": Array [],
-}
-`;
-
 exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of given draft order 1`] = `
 Object {
   "delete": Array [],
@@ -161,44 +112,6 @@ Object {
         [Function],
       ],
       "url": "/integrations/shopify/order/draft/2/send-invoice/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "put": Array [],
-}
-`;
-
-exports[`services GorgiasApi getStatistic() should fetch a statistic with the given name and filters 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": "{\\"filters\\":{\\"tags\\":[1,2],\\"score\\":\\"4\\"}}",
-      "headers": Object {
-        "Accept": "application/json, text/plain, */*",
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "post",
-      "timeout": 180000,
-      "transformRequest": Array [
-        [Function],
-      ],
-      "transformResponse": Array [
-        [Function],
-      ],
-      "url": "/api/stats/overview/",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",

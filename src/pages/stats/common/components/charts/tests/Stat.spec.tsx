@@ -1,6 +1,8 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, fireEvent, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import MockAdapter from 'axios-mock-adapter'
+import axios, {CancelTokenSource} from 'axios'
 
 import {
     TICKETS_CREATED_PER_CHANNEL_PER_DAY,
@@ -9,8 +11,12 @@ import {
     REVENUE_OVERVIEW,
     TICKET_CREATED_PER_HOUR_PER_WEEKDAY,
 } from '../../../../../../config/stats'
+import client from '../../../../../../models/api/resources'
 import {Stat} from '../../../../../../models/stat/types'
+import * as fileUtils from '../../../../../../utils/file'
 import {StatContainer} from '../Stat'
+
+jest.spyOn(fileUtils, 'saveFileAsDownloaded')
 
 jest.mock('../BarStat.js', () => () => <div>BarStat</div>)
 
@@ -35,7 +41,18 @@ const minProps = {
     stat: {data: {label: 'Stat label'}} as Stat,
 }
 
+const mockedServer = new MockAdapter(client)
+mockedServer
+    .onAny(`/api/stats/${TICKETS_CREATED_PER_CHANNEL_PER_DAY}/download`)
+    .reply(200, 'foo', {'content-disposition': 'csv'})
+
+const mockedCancelRequest = jest.fn()
+
 describe('Stat', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
     it('should render a bar chart', () => {
         const {container} = render(
             <StatContainer
@@ -75,5 +92,46 @@ describe('Stat', () => {
             />
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should download a file when clicking on the download button', async () => {
+        const {getByText} = render(
+            <StatContainer
+                {...minProps}
+                name={TICKETS_CREATED_PER_CHANNEL_PER_DAY}
+                downloadable
+            />
+        )
+
+        fireEvent.click(getByText(/CSV/i))
+        await waitFor(() => {
+            expect(fileUtils.saveFileAsDownloaded).toHaveBeenNthCalledWith(
+                1,
+                `${TICKETS_CREATED_PER_CHANNEL_PER_DAY}.csv`,
+                'foo',
+                'csv'
+            )
+        })
+    })
+
+    it('should cancel downloading a file when unmounting', () => {
+        jest.spyOn(axios.CancelToken, 'source').mockImplementation(
+            () =>
+                (({
+                    token: undefined,
+                    cancel: mockedCancelRequest,
+                } as unknown) as CancelTokenSource)
+        )
+        const {getByText, unmount} = render(
+            <StatContainer
+                {...minProps}
+                name={TICKETS_CREATED_PER_CHANNEL_PER_DAY}
+                downloadable
+            />
+        )
+
+        fireEvent.click(getByText(/CSV/i))
+        unmount()
+        expect(mockedCancelRequest).toHaveBeenCalledTimes(1)
     })
 })

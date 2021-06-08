@@ -6,8 +6,8 @@ export enum StatType {
     Duration = 'duration',
 }
 
-export type Stat = {
-    data: StatData
+export type Stat<T = StatData> = {
+    data: T
     meta: StatMeta
 }
 

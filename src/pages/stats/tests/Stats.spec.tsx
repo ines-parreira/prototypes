@@ -2,11 +2,14 @@ import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map, List} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
+import axios, {CancelTokenSource} from 'axios'
 
 import {StatsContainer} from '../Stats'
 import {views as statsViewsConfig} from '../../../config/stats'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
+import client from '../../../models/api/resources'
+
+const mockedCancelRequest = jest.fn()
 
 jest.mock('lodash/debounce', () => (fn: () => void) => () => fn())
 
@@ -28,7 +31,7 @@ describe('<Stats/>', () => {
     let apiMock: MockAdapter
 
     beforeEach(() => {
-        apiMock = new MockAdapter(axios)
+        apiMock = new MockAdapter(client)
         jest.resetAllMocks()
     })
 
@@ -163,11 +166,16 @@ describe('<Stats/>', () => {
                 })
             })
         })
-    })
 
-    describe('componentWillUnmount()', () => {
-        it('should cancel all pending API requests', () => {
-            apiMock = new MockAdapter(axios, {delayResponse: 2000})
+        it('should cancel pending fetch when updating', (done) => {
+            apiMock.onAny().reply(200, firstResponseTimeStat)
+            jest.spyOn(axios.CancelToken, 'source').mockImplementation(
+                () =>
+                    (({
+                        token: undefined,
+                        cancel: mockedCancelRequest,
+                    } as unknown) as CancelTokenSource)
+            )
 
             const componentWrapper = shallow(
                 <StatsContainer
@@ -175,13 +183,40 @@ describe('<Stats/>', () => {
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const cancelPendingRequestsSpy = jest.fn()
-            const component = componentWrapper.instance()
-            ;((component as unknown) as {
-                gorgiasApi: Record<string, unknown>
-            }).gorgiasApi.cancelPendingRequests = cancelPendingRequestsSpy
+            componentWrapper.setProps({
+                filters: fromJS({
+                    period: {
+                        start_datetime: '2019-03-10',
+                        end_datetime: '2019-03-11',
+                    },
+                }),
+            })
+
+            setImmediate(() => {
+                expect(mockedCancelRequest).toHaveBeenCalledTimes(2)
+                done()
+            })
+        })
+    })
+
+    describe('componentWillUnmount()', () => {
+        it('should cancel all pending API requests', () => {
+            jest.spyOn(axios.CancelToken, 'source').mockImplementation(
+                () =>
+                    (({
+                        token: undefined,
+                        cancel: mockedCancelRequest,
+                    } as unknown) as CancelTokenSource)
+            )
+            const componentWrapper = shallow(
+                <StatsContainer
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}} as any}
+                />
+            )
+
             componentWrapper.unmount()
-            expect(cancelPendingRequestsSpy).toHaveBeenCalledWith()
+            expect(mockedCancelRequest).toHaveBeenCalledTimes(2)
         })
     })
 

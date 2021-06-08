@@ -3,7 +3,7 @@ import {fromJS, Map} from 'immutable'
 import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
-import axios, {AxiosError} from 'axios'
+import axios, {AxiosError, Canceler} from 'axios'
 
 import * as tagsSelectors from '../../../../../state/tags/selectors'
 import {
@@ -14,13 +14,13 @@ import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
 import {getStatDataByName} from '../../../../../state/entities/stats/selectors'
 import {notify} from '../../../../../state/notifications/actions'
-import GorgiasApi from '../../../../../services/gorgiasApi'
 import {RootState} from '../../../../../state/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {saveFileAsDownloaded} from '../../../../../utils/file'
 import StatsHelpIcon from '../StatsHelpIcon'
 import {getViewFilters} from '../../../../../state/stats/selectors'
 import {TwoDimensionalChart} from '../../../../../models/stat/types'
+import {downloadStat} from '../../../../../models/stat/resources'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat.js'
@@ -47,29 +47,29 @@ export class StatContainer extends Component<Props, State> {
         defaultLoaderHeight: '400px',
     }
 
-    gorgiasApi = new GorgiasApi()
+    cancelDownloadStat?: Canceler
     state = {
         isDownloading: false,
     }
 
     componentWillUnmount() {
-        this.gorgiasApi.cancelPendingRequests()
+        if (this.cancelDownloadStat) {
+            this.cancelDownloadStat()
+        }
     }
 
     _downloadStatistic = async () => {
         const {name, filters, notify} = this.props
-
         this.setState({isDownloading: true})
         try {
-            const file = await this.gorgiasApi.downloadStatistic(
+            const cancelToken = axios.CancelToken.source()
+            this.cancelDownloadStat = cancelToken.cancel
+            const file = await downloadStat(
                 name,
-                fromJS({filters})
+                {filters: filters!.toJS()},
+                {cancelToken: cancelToken.token}
             )
-            saveFileAsDownloaded(
-                file.get('name'),
-                file.get('contentType'),
-                file.get('data')
-            )
+            saveFileAsDownloaded(file.name, file.data, file.contentType)
         } catch (error) {
             if (axios.isCancel(error)) {
                 return
@@ -84,6 +84,7 @@ export class StatContainer extends Component<Props, State> {
                 title: serverError ? serverError.msg : defaultError,
             })
         } finally {
+            delete this.cancelDownloadStat
             this.setState({isDownloading: false})
         }
     }

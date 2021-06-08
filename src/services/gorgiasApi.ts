@@ -95,49 +95,6 @@ export default class GorgiasApi {
     }
 
     /**
-     * Fetch a statistic
-     */
-    async getStatistic(name: string, data: Map<any, any>) {
-        const config = {timeout: 60000 * 3}
-        const resp = await this._api.post(
-            `/api/stats/${name}/`,
-            data.toJS(),
-            config
-        )
-        return fromJS(resp.data) as Map<any, any>
-    }
-
-    /**
-     * Download a statistic
-     */
-    async downloadStatistic(name: string, data: Map<any, any>) {
-        const params = {
-            ...data.toJS(),
-        }
-        const config = {timeout: 60000 * 3}
-        const resp = await this._api.post(
-            `/api/stats/${name}/download`,
-            params,
-            config
-        )
-        const reFilename = /filename[^;=\n]*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/
-        const contentDisposition =
-            ((resp.headers as Record<string, unknown>)[
-                'content-disposition'
-            ] as string) || ''
-        //eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
-        const matches = contentDisposition.match(reFilename) as RegExpMatchArray
-        const filename = matches.length ? matches.pop() : `${name}.csv`
-        return fromJS({
-            name: filename,
-            contentType: (resp.headers as Record<string, unknown>)[
-                'content-type'
-            ],
-            data: resp.data,
-        }) as Map<any, any>
-    }
-
-    /**
      * Create a new subscription with no trial period or end the trial period of an existing subscription.
      */
     async startSubscription() {

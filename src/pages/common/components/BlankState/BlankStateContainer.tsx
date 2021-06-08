@@ -2,17 +2,21 @@ import React, {ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import throttle from 'lodash/throttle'
-
-import {fromJS} from 'immutable'
+import axios, {Canceler} from 'axios'
 
 import {RootState} from '../../../../state/types'
-import GorgiasApi from '../../../../services/gorgiasApi'
 import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
+import {fetchStat} from '../../../../models/stat/resources'
+import {
+    Stat,
+    TwoDimensionalChart,
+    StatCell,
+} from '../../../../models/stat/types'
 
 import BlankState from './components/BlankState'
 
 type OwnProps = {
-    message: ReactNode
+    message?: ReactNode
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -22,7 +26,7 @@ type State = {
 }
 
 export class BlankStateContainer extends React.Component<Props, State> {
-    gorgiasApi = new GorgiasApi()
+    cancelFetchStat?: Canceler
     state = {
         closedTicketsCount: null,
     }
@@ -32,7 +36,9 @@ export class BlankStateContainer extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
-        this.gorgiasApi.cancelPendingRequests()
+        if (this.cancelFetchStat) {
+            this.cancelFetchStat()
+        }
     }
 
     /**
@@ -50,21 +56,23 @@ export class BlankStateContainer extends React.Component<Props, State> {
             },
         }
         try {
-            const stat = await this.gorgiasApi.getStatistic(
+            const cancelToken = axios.CancelToken.source()
+            this.cancelFetchStat = cancelToken.cancel
+            const stat = (await fetchStat(
                 TICKETS_CLOSED_PER_AGENT,
-                fromJS({filters})
-            )
-            const closedTicketsCount = stat.getIn([
-                'data',
-                'data',
-                'lines',
-                0,
-                1,
-                'value',
-            ])
-            this.setState({closedTicketsCount})
+                {filters},
+                {
+                    cancelToken: cancelToken.token,
+                }
+            )) as Stat<TwoDimensionalChart>
+            this.setState({
+                closedTicketsCount: (stat.data.data.lines[0] as StatCell[])[1]
+                    .value as number,
+            })
         } catch (error) {
             // Not important, we will try to fetch this stat next time.
+        } finally {
+            delete this.cancelFetchStat
         }
     }, 15000)
 
