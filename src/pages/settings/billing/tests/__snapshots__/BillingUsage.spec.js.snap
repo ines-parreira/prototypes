@@ -159,7 +159,7 @@ exports[`<BillingUsage/> should display price 1`] = `
               >
                 <LegacyPlanBadge>
                   <div
-                    className="d-inline-flex"
+                    className="d-inline-flex cursor-pointer"
                   >
                     <Badge
                       className="d-inline-flex flex-row"
@@ -695,7 +695,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
               >
                 <LegacyPlanBadge>
                   <div
-                    className="d-inline-flex"
+                    className="d-inline-flex cursor-pointer"
                   >
                     <Badge
                       className="d-inline-flex flex-row"

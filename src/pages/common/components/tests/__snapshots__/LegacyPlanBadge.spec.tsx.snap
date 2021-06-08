@@ -2,7 +2,7 @@
 
 exports[`<LegacyPlanBadge /> should render a badge 1`] = `
 <div
-  class="d-inline-flex"
+  class="d-inline-flex cursor-pointer"
 >
   <span
     class="d-inline-flex flex-row badge badge-danger"

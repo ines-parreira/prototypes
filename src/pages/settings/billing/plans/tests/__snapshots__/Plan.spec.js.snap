@@ -1158,7 +1158,7 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
       class="plan-badge"
     >
       <div
-        class="d-inline-flex"
+        class="d-inline-flex cursor-pointer"
       >
         <span
           class="d-inline-flex flex-row badge badge-danger"
