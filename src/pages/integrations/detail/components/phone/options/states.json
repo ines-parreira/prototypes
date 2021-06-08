@@ -59,14 +59,6 @@
             "label": "Alabama"
         },
         {
-            "value": "AK",
-            "label": "Alaska"
-        },
-        {
-            "value": "AS",
-            "label": "American Samoa"
-        },
-        {
             "value": "AZ",
             "label": "Arizona"
         },
@@ -95,24 +87,12 @@
             "label": "District Of Columbia"
         },
         {
-            "value": "FM",
-            "label": "Federated States Of Micronesia"
-        },
-        {
             "value": "FL",
             "label": "Florida"
         },
         {
             "value": "GA",
             "label": "Georgia"
-        },
-        {
-            "value": "GU",
-            "label": "Guam"
-        },
-        {
-            "value": "HI",
-            "label": "Hawaii"
         },
         {
             "value": "ID",
@@ -145,10 +125,6 @@
         {
             "value": "ME",
             "label": "Maine"
-        },
-        {
-            "value": "MH",
-            "label": "Marshall Islands"
         },
         {
             "value": "MD",
@@ -187,10 +163,6 @@
             "label": "Nevada"
         },
         {
-            "value": "NH",
-            "label": "New Hampshire"
-        },
-        {
             "value": "NJ",
             "label": "New Jersey"
         },
@@ -211,10 +183,6 @@
             "label": "North Dakota"
         },
         {
-            "value": "MP",
-            "label": "Northern Mariana Islands"
-        },
-        {
             "value": "OH",
             "label": "Ohio"
         },
@@ -227,16 +195,8 @@
             "label": "Oregon"
         },
         {
-            "value": "PW",
-            "label": "Palau"
-        },
-        {
             "value": "PA",
             "label": "Pennsylvania"
-        },
-        {
-            "value": "PR",
-            "label": "Puerto Rico"
         },
         {
             "value": "RI",
@@ -267,10 +227,6 @@
             "label": "Vermont"
         },
         {
-            "value": "VI",
-            "label": "Virgin Islands"
-        },
-        {
             "value": "VA",
             "label": "Virginia"
         },
@@ -285,10 +241,6 @@
         {
             "value": "WI",
             "label": "Wisconsin"
-        },
-        {
-            "value": "WY",
-            "label": "Wyoming"
         }
     ]
 }
