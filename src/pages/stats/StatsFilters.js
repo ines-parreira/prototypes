@@ -300,6 +300,7 @@ const StatsFiltersContainer = ({
                                 key={integration.id}
                                 label={integration.name}
                                 value={integration.id}
+                                icon={integration.type}
                             />
                         ))}
                     </SelectFilter>

@@ -1,5 +1,111 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SelectFilter should render the component with items having icons 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      All items
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="form-control"
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <button
+      class="component quickSelectionOption dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      <span>
+        Select displayed
+      </span>
+      <div
+        class="badge"
+      >
+        3
+      </div>
+    </button>
+    <div
+      class="dropdownDivider dropdown-divider"
+      tabindex="-1"
+    />
+    <div
+      class="content"
+    >
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          api
+        </i>
+         Api
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          chat
+        </i>
+         Chat
+      </label>
+      <label
+        class="item dropdown-item form-check-label"
+        role="menuitem"
+        tabindex="0"
+      >
+        <input
+          class="mr-2 checkbox"
+          type="checkbox"
+        />
+        <i
+          class="icon material-icons icon"
+        >
+          email
+        </i>
+         Email
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`SelectFilter should render the component with selectable items 1`] = `
 <div
   class="dropdown"

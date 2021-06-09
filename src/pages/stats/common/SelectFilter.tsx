@@ -55,9 +55,10 @@ const SelectFilterItemContext = createContext<ItemContext>({
 type ItemProps = {
     label: string
     value: string
+    icon?: string
 }
 
-const Item = ({label, value}: ItemProps) => {
+const Item = ({label, value, icon}: ItemProps) => {
     const {handleChange, isChecked, isDisplayed} = useContext(
         SelectFilterItemContext
     )
@@ -79,6 +80,11 @@ const Item = ({label, value}: ItemProps) => {
                 onChange={() => handleChange(value)}
                 type="checkbox"
             />
+            {icon ? (
+                <i className={classnames('icon material-icons', css.icon)}>
+                    {icon}
+                </i>
+            ) : null}
             {` ${label}`}
         </DropdownItem>
     )

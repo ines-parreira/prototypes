@@ -11,9 +11,9 @@ describe('SelectFilter', () => {
     }
 
     const items = [
-        {label: 'Api', value: '1'},
-        {label: 'Chat', value: '2'},
-        {label: 'Email', value: '3'},
+        {label: 'Api', value: '1', type: 'api'},
+        {label: 'Chat', value: '2', type: 'chat'},
+        {label: 'Email', value: '3', type: 'email'},
     ]
 
     beforeEach(() => {
@@ -33,6 +33,22 @@ describe('SelectFilter', () => {
                         key={item.value}
                         label={item.label}
                         value={item.value}
+                    />
+                ))}
+            </SelectFilter>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the component with items having icons', () => {
+        const {container} = render(
+            <SelectFilter {...commonProps}>
+                {items.map((item) => (
+                    <SelectFilter.Item
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                        icon={item.type}
                     />
                 ))}
             </SelectFilter>
