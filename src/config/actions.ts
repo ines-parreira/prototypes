@@ -42,6 +42,16 @@ export const actions = [
         objectType: 'order',
     },
     {
+        name: ShopifyActionType.UpdateOrderTags,
+        label: 'Edit order tags',
+        objectType: 'order',
+    },
+    {
+        name: ShopifyActionType.UpdateCustomerTags,
+        label: 'Edit customer tags',
+        objectType: 'customer',
+    },
+    {
         name: 'rechargeCancelSubscription',
         label: 'Cancel subscription',
         objectType: 'subscription',

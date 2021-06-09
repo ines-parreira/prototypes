@@ -59,6 +59,8 @@ export enum SegmentEvent {
     ShopifyDuplicateOrderTaxesPopoverApply = 'shopify/duplicate-order/taxes-popover/apply',
     ShopifyDuplicateOrderTaxesPopoverClose = 'shopify/duplicate-order/taxes-popover/close',
     ShopifyDuplicateOrderTaxesPopoverOpen = 'shopify/duplicate-order/taxes-popover/open',
+    ShopifyEditOrderTagEditStarted = 'shopify/edit-order-tag/edit-started',
+    ShopifyEditCustomerTagSelect = 'shopify/edit-customer-tag/select',
     ShopifyRefundOrderCancel = 'shopify/refund-order/cancel',
     ShopifyRefundOrderOpen = 'shopify/refund-order/open',
     ShowMoreFieldsClicked = 'show-more-fields-clicked',

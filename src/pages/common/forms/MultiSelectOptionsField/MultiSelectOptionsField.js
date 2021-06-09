@@ -19,8 +19,11 @@ type Props = {
     selectedOptions: Option[],
     className?: string,
     caseInsensitive?: boolean,
+    isDisabled?: boolean,
     onChange: (options: Option[]) => void,
     onInputChange?: (string) => void,
+    onBlur?: () => void,
+    onFocus?: () => void,
     loading?: boolean,
     dropdownMenu?: ComponentType<*>,
 }
@@ -83,12 +86,14 @@ export default class MultiSelectOptionsField extends React.Component<
     }
 
     _focus = () => {
+        if (this.props.onFocus && !this.state.isFocused) this.props.onFocus()
         this.setState({
             isFocused: true,
         })
     }
 
     _blur = () => {
+        if (this.props.onBlur && this.state.isFocused) this.props.onBlur()
         this.setState({
             isFocused: false,
         })
@@ -219,6 +224,7 @@ export default class MultiSelectOptionsField extends React.Component<
             plural,
             allowCustomOptions,
             dropdownMenu,
+            isDisabled,
         } = this.props
         const {isFocused, filteredOptions, input} = this.state
 
@@ -231,6 +237,7 @@ export default class MultiSelectOptionsField extends React.Component<
             <div
                 className={classNames('MultiSelectField', className, {
                     [css.focused]: isFocused,
+                    [css.disabled]: isDisabled,
                 })}
                 style={style}
             >

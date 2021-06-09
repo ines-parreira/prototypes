@@ -41,6 +41,7 @@ import {
 } from '../../../../config.ts'
 
 import css from './utils.less'
+import EditableListWidget from './Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget.tsx'
 
 const Raven = window.Raven
 
@@ -702,6 +703,10 @@ export function guessFieldValueFromRawData(data, type) {
                     </>
                 )
             }
+            break
+        }
+        case 'editableList': {
+            fieldValue = <EditableListWidget selectedOptions={data} />
             break
         }
         case 'rating': {

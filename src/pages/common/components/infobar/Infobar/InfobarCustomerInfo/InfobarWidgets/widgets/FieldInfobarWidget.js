@@ -107,7 +107,7 @@ export default class FieldInfobarWidget extends React.Component {
      * @private
      */
     _renderPopover = () => {
-        const {editing, template} = this.props
+        const {editing, template, widget} = this.props
 
         if (!editing) {
             return null
@@ -125,6 +125,7 @@ export default class FieldInfobarWidget extends React.Component {
                     <PopoverWidgetEditField
                         template={template}
                         actions={editing.actions}
+                        widget={widget}
                     />
                 </PopoverBody>
             </Popover>

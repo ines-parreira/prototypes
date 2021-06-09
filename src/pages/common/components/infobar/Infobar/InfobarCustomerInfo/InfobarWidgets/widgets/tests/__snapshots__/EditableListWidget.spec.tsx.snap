@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
+<div>
+  <div
+    id="editable-list-2-tooltip-target"
+  >
+    <div
+      class="MultiSelectField"
+    >
+      <div
+        class="select"
+      >
+        <span
+          class="tag badge badge-secondary"
+          style="color: rgb(2, 117, 216);"
+        >
+          <span>
+            cool
+            <i
+              class="material-icons ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+        <span
+          class="tag badge badge-secondary"
+          style="color: rgb(2, 117, 216);"
+        >
+          <span>
+            super
+            <i
+              class="material-icons ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+        <div
+          class="input-container"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <input
+                class="input ml-2"
+                placeholder="Add tags..."
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="options dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-header"
+                tabindex="-1"
+              >
+                No result
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EditableListWidget/> should render an empty list because no options has been given 1`] = `
+<div>
+  <div
+    id="editable-list-1-tooltip-target"
+  >
+    <div
+      class="MultiSelectField"
+    >
+      <div
+        class="select"
+      >
+        <div
+          class="input-container"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <input
+                class="input ml-2"
+                placeholder="Add tags..."
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="options dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-header"
+                tabindex="-1"
+              >
+                No result
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

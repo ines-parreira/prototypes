@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import {Form, Button} from 'reactstrap'
 import _pick from 'lodash/pick'
 
+import {IntegrationType} from '../../../../../../../../../models/integration/types'
+
 import InputField from '../../../../../../../forms/InputField'
 
 class PopoverWidgetEditField extends React.Component {
@@ -37,6 +39,9 @@ class PopoverWidgetEditField extends React.Component {
     }
 
     render() {
+        let path = this.props.template.get('path')
+        if (Array.isArray(path) && path.length) path = path[0]
+        const widgetType = this.props.widget.get('type')
         return (
             <Form onSubmit={this._handleSubmit}>
                 <InputField
@@ -61,6 +66,11 @@ class PopoverWidgetEditField extends React.Component {
                     <option value="url">Url</option>
                     <option value="email">Email</option>
                     <option value="boolean">Boolean (true/false)</option>
+                    {path === 'tags' &&
+                        widgetType ===
+                            IntegrationType.ShopifyIntegrationType && (
+                            <option value="editableList">Editable List</option>
+                        )}
                     <option value="array">List</option>
                     <option value="sentiment">Sentiment</option>
                     <option value="rating">Rating</option>
@@ -88,6 +98,7 @@ class PopoverWidgetEditField extends React.Component {
 PopoverWidgetEditField.propTypes = {
     template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
+    widget: PropTypes.object.isRequired,
 }
 
 export default PopoverWidgetEditField

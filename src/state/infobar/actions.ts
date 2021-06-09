@@ -121,6 +121,7 @@ export const executeAction = (
         draft_order_name?: string
         draft_order_invoice?: unknown
         facebook_comment?: string
+        tags_list?: string
         instagram_comment?: string
         messenger_reply?: string
         instagram_direct_message_reply?: string

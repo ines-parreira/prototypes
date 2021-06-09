@@ -147,6 +147,8 @@ export const EVENTS = {
         'shopify/duplicate-order/taxes-popover/close',
     SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN:
         'shopify/duplicate-order/taxes-popover/open',
+    SHOPIFY_EDIT_ORDER_TAG_EDIT_STARTED: 'shopify/edit-order-tag/edit-started',
+    SHOPIFY_EDIT_CUSTOMER_TAG_SELECT: 'shopify/edit-customer-tag/select',
     SHOPIFY_REFUND_ORDER_CANCEL: 'shopify/refund-order/cancel',
     SHOPIFY_REFUND_ORDER_OPEN: 'shopify/refund-order/open',
     SHOW_MORE_FIELDS_CLICKED: 'show-more-fields-clicked',

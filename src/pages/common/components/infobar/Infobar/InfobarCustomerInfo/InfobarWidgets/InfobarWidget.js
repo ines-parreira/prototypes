@@ -47,6 +47,44 @@ export default class InfobarWidget extends React.Component {
         open: false,
     }
 
+    static childContextTypes = {
+        data_source: PropTypes.string,
+        widget_resource_ids: PropTypes.object,
+    }
+
+    getChildContext() {
+        const source = this.props.source || fromJS({})
+        let data_source = '' // type of object we are editing in widget, e.g. Customer | Order ...
+        let widget_resource_ids = {}
+
+        /*
+            Provide proper context to children
+            For Shopify widget :
+            - data_source is either Customer or Order
+            - widget_resource_ids always has shopify customer_id because we need it for tracking and
+            target_id is either a customer_id or an order_id depending of the Shopfiy card targeted
+            (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
+
+        */
+        const data_source_endpoint = source.get('admin_graphql_api_id')
+        if (data_source_endpoint) {
+            const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
+            const match = reg.exec(data_source_endpoint)
+
+            //extract the type Customer or Order from data_source_endpoint
+            if (match.length === 2) data_source = match[1]
+
+            widget_resource_ids = {
+                target_id: source.get('id'),
+                customer_id: source.getIn(['customer', 'id']),
+            }
+        }
+        return {
+            data_source: data_source,
+            widget_resource_ids: widget_resource_ids,
+        }
+    }
+
     render() {
         const {
             parent,

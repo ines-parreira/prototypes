@@ -6,5 +6,7 @@ export enum ShopifyActionType {
     CancelOrder = 'shopifyCancelOrder',
     CreateOrder = 'shopifyCreateOrder',
     DuplicateOrder = 'shopifyDuplicateOrder',
+    UpdateCustomerTags = 'shopifyUpdateCustomerTags',
+    UpdateOrderTags = 'shopifyUpdateOrderTags',
     SendDraftOrderInvoice = 'shopifySendDraftOrderInvoice',
 }

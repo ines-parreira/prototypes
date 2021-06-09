@@ -67,8 +67,8 @@ type Props = {
     widgets: Map<any, any>
 } & ConnectedProps<typeof connector>
 
-const MERGE_ERROR_MESSAGE = `You can only edit orders of the customer associated with this ticket.
-To edit this order, merge both customers or change the customer associated with this ticket.`
+const MERGE_ERROR_MESSAGE = `You can only edit customers and orders of the customer associated with this ticket.
+To edit this customer or order, merge both customers or change the customer associated with this ticket.`
 
 export const Infobar = ({
     actions: {
