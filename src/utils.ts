@@ -902,3 +902,32 @@ export const transformSystemMessagesToNotifications = (
 export const displayRestrictedSymbols = (symbols: Array<string>): string => {
     return symbols.join('').replace(/\\/g, '')
 }
+
+/*
+ * lighten or darken a color (https://css-tricks.com/snippets/javascript/lighten-darken-color/)
+ */
+export const lightenDarkenColor = (color: string, amount: number): string => {
+    let usePound = false
+    let colorString = color
+
+    if (color[0] === '#') {
+        colorString = color.slice(1)
+        usePound = true
+    }
+
+    const colorHex = parseInt(colorString, 16)
+
+    let r = (colorHex >> 16) + amount
+    r = r > 255 ? 255 : r < 0 ? 0 : r
+
+    let g = ((colorHex >> 8) & 0x00ff) + amount
+    g = g > 255 ? 255 : g < 0 ? 0 : g
+
+    let b = (colorHex & 0x0000ff) + amount
+    b = b > 255 ? 255 : b < 0 ? 0 : b
+
+    return (
+        (usePound ? '#' : '') +
+        (b | (g << 8) | (r << 16)).toString(16).padStart(6, '0')
+    )
+}

@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`global utils lightenDarkenColor() should darken non black color 1`] = `"cacaca"`;
+
+exports[`global utils lightenDarkenColor() should lighten non white color 1`] = `"f2f2f2"`;
+
+exports[`global utils lightenDarkenColor() should not darken black 1`] = `"000000"`;
+
+exports[`global utils lightenDarkenColor() should not lighten white 1`] = `"ffffff"`;
+
+exports[`global utils lightenDarkenColor() should work with # 1`] = `"#f2f2f2"`;
+
+exports[`global utils lightenDarkenColor() should work with leading zeros 1`] = `"00eb00"`;
+
+exports[`global utils lightenDarkenColor() should work with leading zeros 2`] = `"0000eb"`;
+
+exports[`global utils lightenDarkenColor() should work without # 1`] = `"f2f2f2"`;
+
 exports[`global utils proxifyImages should not touch html with not img 1`] = `"<span>123</span>"`;
 
 exports[`global utils proxifyImages should work with direct image 1`] = `"<img src=\\"http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg\\"/>"`;

@@ -2,6 +2,7 @@ export enum IntentName {
     DiscountRequest = 'discount/request',
     ExchangeRequest = 'exchange/request',
     ExchangeStatus = 'exchange/status',
+    Feedback = 'feedback',
     FeedbackPositive = 'feedback/positive',
     FeedbackNegative = 'feedback/negative',
     OrderCancel = 'order/cancel',

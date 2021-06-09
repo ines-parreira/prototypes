@@ -39,6 +39,15 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="item"
         exact={true}
+        key="Intents"
+        to="/app/stats/intents"
+      >
+        Intents
+      </NavLink>
+      <NavLink
+        activeClassName="active"
+        className="item"
+        exact={true}
         key="Agents"
         to="/app/stats/agents"
       >

@@ -3,6 +3,7 @@ export const INTENT_NAME = Object.freeze({
     DISCOUNT_REQUEST: 'discount/request',
     EXCHANGE_REQUEST: 'exchange/request',
     EXCHANGE_STATUS: 'exchange/status',
+    FEEDBACK: 'feedback',
     FEEDBACK_POSITIVE: 'feedback/positive',
     FEEDBACK_NEGATIVE: 'feedback/negative',
     ORDER_CANCEL: 'order/cancel',

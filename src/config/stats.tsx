@@ -9,6 +9,8 @@ import {TicketChannel} from '../business/types/ticket'
 import {formatDuration} from '../pages/stats/common/utils.js'
 import {TagLabel} from '../pages/common/utils/labels.js'
 import {IntegrationType} from '../models/integration/types'
+import {IntentName} from '../models/intent/types'
+import {humanizeString, lightenDarkenColor} from '../utils'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -31,6 +33,9 @@ export const REVENUE_OVERVIEW = 'revenue-overview'
 export const REVENUE_PER_AGENT = 'revenue-per-agent'
 export const REVENUE_PER_DAY = 'revenue-per-day'
 export const REVENUE_PER_TICKET = 'revenue-per-ticket'
+export const INTENTS_OVERVIEW = 'intents-overview'
+export const INTENTS_BREAKDOWN_PER_DAY = 'intents-breakdown-per-day'
+export const INTENTS_OCCURRENCE = 'intents-occurrence'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -77,6 +82,32 @@ export const MESSAGE_INTEGRATION_TYPES = [
     IntegrationType.FacebookIntegrationType,
     IntegrationType.ZendeskIntegrationType,
 ]
+
+type IntentOption = {color: string; label: string}
+
+const getIntentsOptions = (): Record<string, IntentOption> => {
+    let colorIdx = -1
+    let lightenAmount: number
+    let currentCategory = ''
+
+    return Object.values(IntentName).reduce((linesOptions, intent) => {
+        const category = intent.split('/')[0] ?? intent
+        if (category !== currentCategory) {
+            currentCategory = category
+            lightenAmount = 20
+            colorIdx += 1
+        } else {
+            lightenAmount -= 20
+        }
+        linesOptions[intent] = {
+            color: lightenDarkenColor(colors[colorIdx], lightenAmount),
+            label: humanizeString(intent),
+        }
+        return linesOptions
+    }, {} as Record<IntentName, {color: string; label: string}>)
+}
+
+const intentsOptions = getIntentsOptions()
 
 // Default configuration for Chart.js
 _merge(defaults, {
@@ -720,6 +751,70 @@ export const stats: Map<any, any> = fromJS({
         style: 'table',
         downloadable: true,
     },
+    [INTENTS_OVERVIEW]: {
+        style: 'key-metrics',
+        api_resource_name: INTENTS_OVERVIEW,
+        metrics: [
+            {
+                name: 'most_frequent_intent',
+                label: 'Most frequent intent',
+                tooltip: 'Most common intent detected over the selected period',
+            },
+            {
+                name: 'percentage_message_with_feedback',
+                label: 'Percentage of feedback',
+                tooltip:
+                    'Percentage of messages with a feedback on the detected intents',
+            },
+        ],
+    },
+    [INTENTS_OCCURRENCE]: {
+        helpText: 'Intents occurrence on tickets',
+        style: 'table',
+        downloadable: true,
+    },
+    [INTENTS_BREAKDOWN_PER_DAY]: {
+        helpText: 'Intents detected per day',
+        style: 'bar',
+        downloadable: true,
+        lines: intentsOptions,
+        options: (legend: Map<any, any>) => ({
+            scales: {
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: true,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        stacked: true,
+                    },
+                ],
+            },
+            tooltips: {
+                mode: 'point',
+                position: 'nearest',
+            },
+        }),
+    },
 })
 
 // Callbacks to format values of datasets or axes
@@ -810,6 +905,35 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
         stats: [
             TICKETS_CREATED_PER_CHANNEL_PER_DAY,
             TICKETS_CREATED_PER_CHANNEL,
+        ],
+    },
+    intents: {
+        name: 'Intents',
+        description: `Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face. 
+Intents can be used in rules and macros to automate your ticket-reply workflow.`,
+        url: 'https://docs.gorgias.com/intents-sentiments/customer-intents',
+        filters: [
+            {
+                type: 'channels',
+                options: [
+                    TicketChannel.Api,
+                    TicketChannel.Chat,
+                    TicketChannel.Email,
+                    TicketChannel.Facebook,
+                    TicketChannel.FacebookMessenger,
+                    TicketChannel.InstagramAdComment,
+                    TicketChannel.InstagramComment,
+                    TicketChannel.Phone,
+                    TicketChannel.Sms,
+                ],
+            },
+            {type: 'period'},
+        ],
+        link: 'intents',
+        stats: [
+            INTENTS_OVERVIEW,
+            INTENTS_BREAKDOWN_PER_DAY,
+            INTENTS_OCCURRENCE,
         ],
     },
     agents: {

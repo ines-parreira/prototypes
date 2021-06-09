@@ -648,4 +648,24 @@ describe('global utils', () => {
             })
         })
     })
+
+    describe('lightenDarkenColor()', () => {
+        it.each([
+            ['work without #', 'dedede', 20],
+            ['work with #', '#dedede', 20],
+            ['not lighten white', 'ffffff', 20],
+            ['not darken black', '000000', -20],
+            ['darken non black color', 'dedede', -20],
+            ['lighten non white color', 'dedede', 20],
+        ])('should %s', (_, color, amt) => {
+            expect(utils.lightenDarkenColor(color, amt)).toMatchSnapshot()
+        })
+
+        it.each([
+            ['00ff00', -20],
+            ['0000ff', -20],
+        ])('should work with leading zeros', (color, amt) => {
+            expect(utils.lightenDarkenColor(color, amt)).toMatchSnapshot()
+        })
+    })
 })
