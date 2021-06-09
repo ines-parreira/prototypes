@@ -28,7 +28,7 @@ exports[`<RuleItem /> rendering should not render an error message when there is
           class="d-flex justify-content-between align-items-center mb-1"
         >
           <input
-            class="font-weight-bold name component form-control-md form-control"
+            class="name component form-control-md form-control"
             placeholder="Name"
             tabindex="1"
             type="text"
@@ -318,7 +318,7 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
           class="d-flex justify-content-between align-items-center mb-1"
         >
           <input
-            class="font-weight-bold name component form-control-md form-control"
+            class="name component form-control-md form-control"
             placeholder="Name"
             tabindex="1"
             type="text"

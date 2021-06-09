@@ -99,7 +99,7 @@ export default function AddIntegrationSuggestion({customer}: Props) {
                                     style={{
                                         margin: '0 18px',
                                         fontSize: '20px',
-                                        fontWeight: 'bold',
+                                        fontWeight: 600,
                                     }}
                                 >
                                     Display customer data here by adding an

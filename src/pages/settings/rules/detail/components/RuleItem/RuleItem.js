@@ -295,10 +295,7 @@ export default class RuleItem extends React.Component<Props, State> {
                                     title={name}
                                     placeholder="Name"
                                     size="md"
-                                    className={classnames(
-                                        'font-weight-bold',
-                                        css.name
-                                    )}
+                                    className={classnames(css.name)}
                                     onChange={(value) =>
                                         this.setState({name: value})
                                     }

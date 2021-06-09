@@ -235,7 +235,7 @@ export const ReturnsPolicyView = ({
                                                 <>
                                                     <div
                                                         style={{
-                                                            fontWeight: 'bold',
+                                                            fontWeight: 600,
                                                         }}
                                                     >
                                                         less than
@@ -262,7 +262,7 @@ export const ReturnsPolicyView = ({
                                                     />
                                                     <div
                                                         style={{
-                                                            fontWeight: 'bold',
+                                                            fontWeight: 600,
                                                         }}
                                                     >
                                                         day(s) ago

@@ -128,7 +128,7 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
                   </div>
                 </div>
                 <div
-                  style="font-weight: bold;"
+                  style="font-weight: 600;"
                 >
                   less than
                 </div>
@@ -139,7 +139,7 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
                   value="15"
                 />
                 <div
-                  style="font-weight: bold;"
+                  style="font-weight: 600;"
                 >
                   day(s) ago
                 </div>
