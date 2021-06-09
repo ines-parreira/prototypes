@@ -6,4 +6,5 @@ export type Option = {
     value: Value
     text?: string // text used to filter with the search value
     label?: ReactNode | string // text displayed in the dropdown
+    isDeprecated?: boolean // if the option is deprecated
 }

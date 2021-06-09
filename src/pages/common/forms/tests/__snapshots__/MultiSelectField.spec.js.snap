@@ -204,7 +204,9 @@ exports[`MultiSelectField should render the select field with no selected option
                                 tabIndex="0"
                                 type="button"
                               >
-                                First
+                                <span>
+                                  First
+                                </span>
                               </button>
                             </DropdownItem>
                           </MenuItem>
@@ -231,7 +233,9 @@ exports[`MultiSelectField should render the select field with no selected option
                                 tabIndex="0"
                                 type="button"
                               >
-                                Second
+                                <span>
+                                  Second
+                                </span>
                               </button>
                             </DropdownItem>
                           </MenuItem>
@@ -258,7 +262,9 @@ exports[`MultiSelectField should render the select field with no selected option
                                 tabIndex="0"
                                 type="button"
                               >
-                                Third
+                                <span>
+                                  Third
+                                </span>
                               </button>
                             </DropdownItem>
                           </MenuItem>

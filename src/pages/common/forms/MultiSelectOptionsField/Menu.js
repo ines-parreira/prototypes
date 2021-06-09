@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
 import {DropdownItem} from 'reactstrap'
+import _noop from 'lodash/noop'
 
 import MenuItem from './MenuItem'
 import type {Option} from './types'
@@ -41,7 +42,10 @@ export default class Menu extends React.Component<Props> {
                 key={index}
                 isActive={activeIndex === index}
                 onActivate={() => onActivate(index)}
-                onSelect={() => onSelect(option)}
+                onSelect={() =>
+                    option.isDeprecated ? _noop() : onSelect(option)
+                }
+                isDeprecated={option.isDeprecated}
             >
                 {option.displayLabel || option.label}
             </MenuItem>

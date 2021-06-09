@@ -378,6 +378,8 @@ export default class SelectField extends Component<Props, State> {
                                             key={item.value}
                                             type="button"
                                             className={classnames(css.option, {
+                                                [css.optionDeprecated]:
+                                                    item?.isDeprecated,
                                                 [`${css['option--focused']}`]:
                                                     index ===
                                                     selectedOptionIndex,
@@ -394,7 +396,17 @@ export default class SelectField extends Component<Props, State> {
                                                 )
                                             }}
                                         >
-                                            {item.label}
+                                            {item?.isDeprecated && (
+                                                <span className="material-icons mr-1">
+                                                    warning
+                                                </span>
+                                            )}
+                                            <span>{item.label}</span>
+                                            {item?.isDeprecated && (
+                                                <span className="ml-1">
+                                                    (deprecated)
+                                                </span>
+                                            )}
                                         </DropdownItem>
                                     )
                                 }),

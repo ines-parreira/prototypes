@@ -498,9 +498,11 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  <i>
-                                                    Everyday
-                                                  </i>
+                                                  <span>
+                                                    <i>
+                                                      Everyday
+                                                    </i>
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -520,9 +522,11 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  <i>
-                                                    Weekdays
-                                                  </i>
+                                                  <span>
+                                                    <i>
+                                                      Weekdays
+                                                    </i>
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -542,9 +546,11 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  <i>
-                                                    Weekend
-                                                  </i>
+                                                  <span>
+                                                    <i>
+                                                      Weekend
+                                                    </i>
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -564,7 +570,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Monday
+                                                  <span>
+                                                    Monday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -584,7 +592,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Wednesday
+                                                  <span>
+                                                    Wednesday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -604,7 +614,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Thursday
+                                                  <span>
+                                                    Thursday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -624,7 +636,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Friday
+                                                  <span>
+                                                    Friday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -644,7 +658,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Saturday
+                                                  <span>
+                                                    Saturday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -664,7 +680,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Sunday
+                                                  <span>
+                                                    Sunday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                             </div>
@@ -913,9 +931,11 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  <i>
-                                                    Everyday
-                                                  </i>
+                                                  <span>
+                                                    <i>
+                                                      Everyday
+                                                    </i>
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -935,9 +955,11 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  <i>
-                                                    Weekdays
-                                                  </i>
+                                                  <span>
+                                                    <i>
+                                                      Weekdays
+                                                    </i>
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -957,9 +979,11 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  <i>
-                                                    Weekend
-                                                  </i>
+                                                  <span>
+                                                    <i>
+                                                      Weekend
+                                                    </i>
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -979,7 +1003,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Monday
+                                                  <span>
+                                                    Monday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -999,7 +1025,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Tuesday
+                                                  <span>
+                                                    Tuesday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -1019,7 +1047,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Wednesday
+                                                  <span>
+                                                    Wednesday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -1039,7 +1069,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Friday
+                                                  <span>
+                                                    Friday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -1059,7 +1091,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Saturday
+                                                  <span>
+                                                    Saturday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                               <DropdownItem
@@ -1079,7 +1113,9 @@ exports[`BusinessHours component should render values from state 1`] = `
                                                   tabIndex="0"
                                                   type="button"
                                                 >
-                                                  Sunday
+                                                  <span>
+                                                    Sunday
+                                                  </span>
                                                 </button>
                                               </DropdownItem>
                                             </div>

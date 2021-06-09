@@ -1,6 +1,19 @@
+@import '~css/new/colors.less';
+
 :local .option {
     &:hover,
     &.option--focused {
         background: #f2f9fe !important;
+    }
+}
+:local .optionDeprecated {
+    color: @yellow7 !important;
+    &.option--focused {
+        background: @yellow2 !important;
+
+        &:active {
+            outline: none;
+            background: @yellow4 !important;
+        }
     }
 }

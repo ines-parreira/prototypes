@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IntentsSentimentsSelect /> should render component with deprecated item 1`] = `
+<div
+  class="MultiSelectField"
+  style="display: inline-block; padding-bottom: 2px;"
+>
+  <div
+    class="select"
+  >
+    <div
+      class="input-container"
+    >
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <input
+            class="input ml-2"
+            placeholder="Add intents..."
+            value=""
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          class="options dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="option option--focused optionDeprecated dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="material-icons mr-1"
+            >
+              warning
+            </span>
+            <span>
+              foo
+            </span>
+            <span
+              class="ml-1"
+            >
+              (deprecated)
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              bar
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<IntentsSentimentsSelect /> should render component with deprecated item selected 1`] = `
+<div
+  class="MultiSelectField"
+  style="display: inline-block; padding-bottom: 2px;"
+>
+  <div
+    class="select"
+  >
+    <span
+      class="tag badge badge-secondary"
+      style="color: rgb(2, 117, 216);"
+    >
+      <span>
+        foo
+        <i
+          class="material-icons ml-1"
+        >
+          close
+        </i>
+      </span>
+    </span>
+    <div
+      class="input-container"
+    >
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <input
+            class="input ml-2"
+            placeholder="Add intents..."
+            value=""
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          class="options dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              bar
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<IntentsSentimentsSelect /> should render component with no selected items 1`] = `
+<div
+  class="MultiSelectField"
+  style="display: inline-block; padding-bottom: 2px;"
+>
+  <div
+    class="select"
+  >
+    <div
+      class="input-container"
+    >
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <input
+            class="input ml-2"
+            placeholder="Add intents..."
+            value=""
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          class="options dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              foo
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              bar
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<IntentsSentimentsSelect /> should render component with selected item 1`] = `
+<div
+  class="MultiSelectField"
+  style="display: inline-block; padding-bottom: 2px;"
+>
+  <div
+    class="select"
+  >
+    <span
+      class="tag badge badge-secondary"
+      style="color: rgb(2, 117, 216);"
+    >
+      <span>
+        bar
+        <i
+          class="material-icons ml-1"
+        >
+          close
+        </i>
+      </span>
+    </span>
+    <div
+      class="input-container"
+    >
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <input
+            class="input ml-2"
+            placeholder="Add intents..."
+            value=""
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          class="options dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              foo
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

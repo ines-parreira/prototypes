@@ -201,7 +201,9 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                               tabIndex="0"
                               type="button"
                             >
-                              First
+                              <span>
+                                First
+                              </span>
                             </button>
                           </DropdownItem>
                         </MenuItem>
@@ -228,7 +230,9 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                               tabIndex="0"
                               type="button"
                             >
-                              Second
+                              <span>
+                                Second
+                              </span>
                             </button>
                           </DropdownItem>
                         </MenuItem>
@@ -255,7 +259,9 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                               tabIndex="0"
                               type="button"
                             >
-                              Third
+                              <span>
+                                Third
+                              </span>
                             </button>
                           </DropdownItem>
                         </MenuItem>

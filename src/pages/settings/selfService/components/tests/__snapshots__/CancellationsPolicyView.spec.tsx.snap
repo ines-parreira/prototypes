@@ -128,7 +128,9 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                         tabindex="0"
                         type="button"
                       >
-                        Processing Fulfillment
+                        <span>
+                          Processing Fulfillment
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -136,7 +138,9 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                         tabindex="0"
                         type="button"
                       >
-                        Pending Delivery
+                        <span>
+                          Pending Delivery
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -294,7 +298,9 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         tabindex="0"
                         type="button"
                       >
-                        Processing Fulfillment
+                        <span>
+                          Processing Fulfillment
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -302,7 +308,9 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                         tabindex="0"
                         type="button"
                       >
-                        Pending Delivery
+                        <span>
+                          Pending Delivery
+                        </span>
                       </button>
                     </div>
                   </div>

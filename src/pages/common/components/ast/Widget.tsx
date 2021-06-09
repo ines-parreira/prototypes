@@ -1,11 +1,10 @@
 import React, {Component, ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {List, Map, fromJS} from 'immutable'
+import {List, Map} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
-import _difference from 'lodash/difference'
 import {EditorState} from 'draft-js'
 
 import DatetimePicker from '../../../common/forms/DatetimePicker.js'
@@ -29,6 +28,7 @@ import {RuleItemActions} from '../../../settings/rules/detail/components/RuleIte
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 
+import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
 import TagsSelect from './widget/TagsSelect.js'
 import IntegrationSelect from './widget/IntegrationSelect.js'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
@@ -57,6 +57,11 @@ type OwnProps = {
     properties: Array<Property>
     className?: string
     compact?: boolean
+}
+
+export type WidgetOption = {
+    label: string
+    value: string
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -316,8 +321,10 @@ export class Widget extends Component<Props, State> {
             type: string
             value: any
             description: string
-            options: (string | {value: string; label: string})[]
+            options: (string | WidgetOption)[]
             multiple?: boolean
+            deprecatedOptions?: string[]
+            hiddenOptions?: string[]
         } = {
             type: 'select',
             value,
@@ -429,17 +436,21 @@ export class Widget extends Component<Props, State> {
             }
 
             if (right) {
-                const options: string[] = (right.getIn(
+                widget.options = (right.getIn(
                     ['meta', 'enum'],
-                    fromJS([])
+                    List([])
                 ) as List<string>).toJS()
 
-                const hiddenOptions: string[] = (right.getIn(
+                widget.hiddenOptions = (right.getIn(
                     ['meta', 'rules', 'hidden_options'],
-                    fromJS([])
+                    List([])
                 ) as List<string>).toJS()
 
-                widget.options = _difference(options, hiddenOptions)
+                widget.deprecatedOptions = (right.getIn(
+                    ['meta', 'rules', 'deprecated_options'],
+                    List([])
+                ) as List<string>).toJS()
+
                 widget.description = right.get('description')
             }
         }
@@ -458,36 +469,28 @@ export class Widget extends Component<Props, State> {
         switch (widget.type) {
             case 'intents-select':
                 return (
-                    <MultiSelectField
-                        className={className}
-                        style={{
-                            display: 'inline-block',
-                        }}
-                        options={widget.options.map((option) => ({
-                            value: option.toString(),
-                            label: option.toString(),
-                        }))}
+                    <IntentsSentimentsSelect
+                        options={widget.options as string[]}
+                        hiddenOptions={widget.hiddenOptions}
+                        deprecatedOptions={widget.deprecatedOptions}
                         singular="intent"
                         plural="intents"
+                        className={className}
                         values={widget.value}
-                        onChange={this._handleChange as any}
+                        onChange={this._handleChange}
                     />
                 )
             case 'sentiments-select':
                 return (
-                    <MultiSelectField
+                    <IntentsSentimentsSelect
+                        options={widget.options as string[]}
+                        hiddenOptions={widget.hiddenOptions}
+                        deprecatedOptions={widget.deprecatedOptions}
                         className={className}
-                        style={{
-                            display: 'inline-block',
-                        }}
-                        options={widget.options.map((option) => ({
-                            value: option.toString(),
-                            label: option.toString(),
-                        }))}
+                        values={widget.value}
+                        onChange={this._handleChange}
                         singular="sentiment"
                         plural="sentiments"
-                        values={widget.value}
-                        onChange={this._handleChange as any}
                     />
                 )
             case 'multi-select':

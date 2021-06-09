@@ -196,7 +196,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        is not
+                        <span>
+                          is not
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -204,7 +206,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        contains
+                        <span>
+                          contains
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -212,7 +216,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        does not contain
+                        <span>
+                          does not contain
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -220,7 +226,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        starts with
+                        <span>
+                          starts with
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -228,7 +236,9 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        ends with
+                        <span>
+                          ends with
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -352,21 +362,23 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        <div
-                          class="AgentLabel"
-                        >
-                          <span
-                            class="material-icons md-2"
+                        <span>
+                          <div
+                            class="AgentLabel"
                           >
-                            account_circle
-                          </span>
-                          <span
-                            class="name"
-                            style="max-width: 100px;"
-                          >
-                            John
-                          </span>
-                        </div>
+                            <span
+                              class="material-icons md-2"
+                            >
+                              account_circle
+                            </span>
+                            <span
+                              class="name"
+                              style="max-width: 100px;"
+                            >
+                              John
+                            </span>
+                          </div>
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -374,21 +386,23 @@ exports[`CampaignDetail component should display default value when it's a new c
                         tabindex="0"
                         type="button"
                       >
-                        <div
-                          class="AgentLabel"
-                        >
-                          <span
-                            class="material-icons md-2"
+                        <span>
+                          <div
+                            class="AgentLabel"
                           >
-                            account_circle
-                          </span>
-                          <span
-                            class="name"
-                            style="max-width: 100px;"
-                          >
-                            Doe
-                          </span>
-                        </div>
+                            <span
+                              class="material-icons md-2"
+                            >
+                              account_circle
+                            </span>
+                            <span
+                              class="name"
+                              style="max-width: 100px;"
+                            >
+                              Doe
+                            </span>
+                          </div>
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -847,7 +861,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        is
+                        <span>
+                          is
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -855,7 +871,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        is not
+                        <span>
+                          is not
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -863,7 +881,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        does not contain
+                        <span>
+                          does not contain
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -871,7 +891,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        starts with
+                        <span>
+                          starts with
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -879,7 +901,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        ends with
+                        <span>
+                          ends with
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -1108,21 +1132,23 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        <div
-                          class="AgentLabel"
-                        >
-                          <span
-                            class="material-icons md-2"
+                        <span>
+                          <div
+                            class="AgentLabel"
                           >
-                            account_circle
-                          </span>
-                          <span
-                            class="name"
-                            style="max-width: 100px;"
-                          >
-                            Doe
-                          </span>
-                        </div>
+                            <span
+                              class="material-icons md-2"
+                            >
+                              account_circle
+                            </span>
+                            <span
+                              class="name"
+                              style="max-width: 100px;"
+                            >
+                              Doe
+                            </span>
+                          </div>
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -1130,7 +1156,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        Random agent
+                        <span>
+                          Random agent
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -1602,7 +1630,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        is
+                        <span>
+                          is
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -1610,7 +1640,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        is not
+                        <span>
+                          is not
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -1618,7 +1650,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        does not contain
+                        <span>
+                          does not contain
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -1626,7 +1660,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        starts with
+                        <span>
+                          starts with
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -1634,7 +1670,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        ends with
+                        <span>
+                          ends with
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -1863,21 +1901,23 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        <div
-                          class="AgentLabel"
-                        >
-                          <span
-                            class="material-icons md-2"
+                        <span>
+                          <div
+                            class="AgentLabel"
                           >
-                            account_circle
-                          </span>
-                          <span
-                            class="name"
-                            style="max-width: 100px;"
-                          >
-                            Doe
-                          </span>
-                        </div>
+                            <span
+                              class="material-icons md-2"
+                            >
+                              account_circle
+                            </span>
+                            <span
+                              class="name"
+                              style="max-width: 100px;"
+                            >
+                              Doe
+                            </span>
+                          </div>
+                        </span>
                       </button>
                       <button
                         class="option dropdown-item"
@@ -1885,7 +1925,9 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                         tabindex="0"
                         type="button"
                       >
-                        Random agent
+                        <span>
+                          Random agent
+                        </span>
                       </button>
                     </div>
                   </div>

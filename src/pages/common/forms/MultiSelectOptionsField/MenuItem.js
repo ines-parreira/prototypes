@@ -7,6 +7,7 @@ import css from './MenuItem.less'
 
 type Props = {
     isActive: boolean,
+    isDeprecated?: boolean,
     children?: Node,
     onActivate: () => void,
     onSelect: () => void,
@@ -20,17 +21,22 @@ export default class MenuItem extends React.Component<Props> {
     }
 
     render() {
-        const {isActive, children, onActivate} = this.props
+        const {isActive, children, onActivate, isDeprecated} = this.props
         return (
             <DropdownItem
                 type="button"
                 className={classNames(css.option, {
                     [`${css['option--focused']}`]: isActive,
+                    [css.optionDeprecated]: isDeprecated,
                 })}
                 onMouseEnter={onActivate}
                 onMouseDown={this._onSelect}
             >
-                {children}
+                {isDeprecated && (
+                    <span className="material-icons mr-1">warning</span>
+                )}
+                <span>{children}</span>
+                {isDeprecated && <span className="ml-1">{'(deprecated)'}</span>}
             </DropdownItem>
         )
     }

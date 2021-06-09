@@ -170,7 +170,9 @@ exports[`SelectField should render a select input with custom props 1`] = `
         toggle={true}
         type="button"
       >
-        Second
+        <span>
+          Second
+        </span>
       </DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>
@@ -324,7 +326,9 @@ exports[`SelectField should set the minWidth of the input according to the lengt
         toggle={true}
         type="button"
       >
-        Second
+        <span>
+          Second
+        </span>
       </DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>

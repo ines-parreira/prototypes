@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {List} from 'immutable'
 import sortBy from 'lodash/sortBy'
-import _isObject from 'lodash/isObject'
 import _noop from 'lodash/noop'
 
 import 'react-select/dist/react-select.css'
@@ -14,12 +13,14 @@ import {
 type Props = {
     className?: string
     onChange: (value: any) => void
-    options: SelectOption[]
+    options: SelectOption[] | SelectValue[] | Record<SelectValue, SelectOption>
     value: Maybe<string | number | boolean>
     onSearchChange: (value: any) => void
     placeholder?: string
     focusedPlaceholder?: string
 }
+
+type Option = SelectOption | SelectValue
 
 export default class Select extends Component<Props> {
     static defaultProps: Pick<Props, 'onSearchChange'> = {
@@ -32,23 +33,26 @@ export default class Select extends Component<Props> {
 
         if (options) {
             if (Array.isArray(options) || List.isList(options)) {
-                formattedOptions = options.map((option) => {
-                    if (_isObject(option)) {
+                formattedOptions = (options as Option[]).map(
+                    (option: SelectOption | SelectValue) => {
+                        if (
+                            typeof option === 'number' ||
+                            typeof option === 'string'
+                        ) {
+                            return {
+                                value: option.toString(),
+                                label: option.toString(),
+                            }
+                        }
                         return option
                     }
-
-                    return {
-                        value: (option as number).toString(),
-                        label: (option as number).toString(),
-                    }
-                })
+                )
             } else {
                 formattedOptions = Object.keys(options).map<SelectOption>(
                     (key) => ({
                         value: key.toString(),
-                        label: (options[
-                            (key as unknown) as number
-                        ] as SelectOption).label,
+                        label: options[key].label,
+                        isDeprecated: options[key]?.isDeprecated || false,
                     })
                 )
             }

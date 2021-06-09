@@ -1,3 +1,5 @@
+@import '~css/new/colors.less';
+
 @select-padding: 14px;
 @base-input-width: 2px;
 
@@ -72,6 +74,18 @@
             &:active {
                 outline: none;
                 background: #0275d8 !important;
+            }
+        }
+    }
+
+    .optionDeprecated {
+        color: @yellow7;
+        &.option--focused {
+            background: @yellow2 !important;
+
+            &:active {
+                outline: none;
+                background: @yellow4 !important;
             }
         }
     }

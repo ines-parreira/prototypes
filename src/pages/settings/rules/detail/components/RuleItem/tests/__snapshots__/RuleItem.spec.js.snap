@@ -148,7 +148,9 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                           tabindex="0"
                           type="button"
                         >
-                          ticket updated
+                          <span>
+                            ticket updated
+                          </span>
                         </button>
                         <button
                           class="option dropdown-item"
@@ -156,7 +158,9 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                           tabindex="0"
                           type="button"
                         >
-                          ticket assigned to user
+                          <span>
+                            ticket assigned to user
+                          </span>
                         </button>
                         <button
                           class="option dropdown-item"
@@ -164,7 +168,9 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                           tabindex="0"
                           type="button"
                         >
-                          new message in ticket
+                          <span>
+                            new message in ticket
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -419,7 +425,9 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                           tabindex="0"
                           type="button"
                         >
-                          ticket created
+                          <span>
+                            ticket created
+                          </span>
                         </button>
                         <button
                           class="option dropdown-item"
@@ -427,7 +435,9 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                           tabindex="0"
                           type="button"
                         >
-                          ticket updated
+                          <span>
+                            ticket updated
+                          </span>
                         </button>
                         <button
                           class="option dropdown-item"
@@ -435,7 +445,9 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                           tabindex="0"
                           type="button"
                         >
-                          ticket assigned to user
+                          <span>
+                            ticket assigned to user
+                          </span>
                         </button>
                         <button
                           class="option dropdown-item"
@@ -443,7 +455,9 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                           tabindex="0"
                           type="button"
                         >
-                          new message in ticket
+                          <span>
+                            new message in ticket
+                          </span>
                         </button>
                       </div>
                     </div>

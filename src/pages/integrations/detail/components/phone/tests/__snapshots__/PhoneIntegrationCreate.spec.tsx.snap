@@ -157,7 +157,9 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     tabindex="0"
                     type="button"
                   >
-                    Canada
+                    <span>
+                      Canada
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -165,7 +167,9 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     tabindex="0"
                     type="button"
                   >
-                    United States
+                    <span>
+                      United States
+                    </span>
                   </button>
                 </div>
               </div>
@@ -223,7 +227,9 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     tabindex="0"
                     type="button"
                   >
-                    Local
+                    <span>
+                      Local
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -231,7 +237,9 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                     tabindex="0"
                     type="button"
                   >
-                    Toll-free
+                    <span>
+                      Toll-free
+                    </span>
                   </button>
                 </div>
               </div>
@@ -461,7 +469,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    United States
+                    <span>
+                      United States
+                    </span>
                   </button>
                 </div>
               </div>
@@ -518,7 +528,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Toll-free
+                    <span>
+                      Toll-free
+                    </span>
                   </button>
                 </div>
               </div>
@@ -576,7 +588,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    British Columbia
+                    <span>
+                      British Columbia
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -584,7 +598,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Manitoba
+                    <span>
+                      Manitoba
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -592,7 +608,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    New Brunswick
+                    <span>
+                      New Brunswick
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -600,7 +618,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Newfoundland and Labrador
+                    <span>
+                      Newfoundland and Labrador
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -608,7 +628,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Northwest Territories
+                    <span>
+                      Northwest Territories
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -616,7 +638,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Nova Scotia
+                    <span>
+                      Nova Scotia
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -624,7 +648,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Nunavut
+                    <span>
+                      Nunavut
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -632,7 +658,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Ontario
+                    <span>
+                      Ontario
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -640,7 +668,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Prince Edward Island
+                    <span>
+                      Prince Edward Island
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -648,7 +678,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Quebec
+                    <span>
+                      Quebec
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -656,7 +688,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Saskatchewan
+                    <span>
+                      Saskatchewan
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -664,7 +698,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Yukon Territory
+                    <span>
+                      Yukon Territory
+                    </span>
                   </button>
                 </div>
               </div>
@@ -722,7 +758,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Banff (403)
+                    <span>
+                      Banff (403)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -730,7 +768,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Calgary (587)
+                    <span>
+                      Calgary (587)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -738,7 +778,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Dawson Creek (250)
+                    <span>
+                      Dawson Creek (250)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -746,7 +788,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Edmonton (780)
+                    <span>
+                      Edmonton (780)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -754,7 +798,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Grande Prairie (780)
+                    <span>
+                      Grande Prairie (780)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -762,7 +808,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Lethbridge (403)
+                    <span>
+                      Lethbridge (403)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -770,7 +818,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Lloydminster (780)
+                    <span>
+                      Lloydminster (780)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -778,7 +828,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Medicine Hat (403)
+                    <span>
+                      Medicine Hat (403)
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -786,7 +838,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     tabindex="0"
                     type="button"
                   >
-                    Red Deer (403)
+                    <span>
+                      Red Deer (403)
+                    </span>
                   </button>
                 </div>
               </div>
@@ -961,7 +1015,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    United States
+                    <span>
+                      United States
+                    </span>
                   </button>
                 </div>
               </div>
@@ -1019,7 +1075,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    Local
+                    <span>
+                      Local
+                    </span>
                   </button>
                 </div>
               </div>
@@ -1077,7 +1135,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    833
+                    <span>
+                      833
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -1085,7 +1145,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    844
+                    <span>
+                      844
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -1093,7 +1155,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    855
+                    <span>
+                      855
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -1101,7 +1165,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    866
+                    <span>
+                      866
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -1109,7 +1175,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    877
+                    <span>
+                      877
+                    </span>
                   </button>
                   <button
                     class="option dropdown-item"
@@ -1117,7 +1185,9 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
                     tabindex="0"
                     type="button"
                   >
-                    888
+                    <span>
+                      888
+                    </span>
                   </button>
                 </div>
               </div>
