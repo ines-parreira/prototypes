@@ -4,6 +4,12 @@ import {shallow} from 'enzyme'
 import DatetimePicker from '../DatetimePicker'
 
 describe('DatetimePicker component', () => {
+    beforeEach(() => {
+        jest.spyOn(global.Date, 'now').mockImplementation(
+            () => new Date('2021-03-08T21:46:40.000Z')
+        )
+    })
+
     it("should display a placeholder when there's no data", () => {
         const component = shallow(<DatetimePicker datetime="" />)
 

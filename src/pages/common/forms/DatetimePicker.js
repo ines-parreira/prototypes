@@ -36,26 +36,29 @@ export default class DatetimePicker extends React.Component<Props, State> {
     render() {
         return (
             <DateRangePicker
-                value={this.state.datetime}
                 onApply={this._handleEvent}
-                opens="left"
-                buttonClasses={['btn']}
-                applyClass="btn-success mr-2"
-                cancelClass="btn-secondary"
-                alwaysShowCalendars
-                showCustomRangeLabel={false}
-                singleDatePicker
-                timePicker
-                timePicker24Hour
+                initialSettings={{
+                    alwaysShowCalendars: true,
+                    applyButtonClasses: 'btn-success mr-2',
+                    cancelButtonClasses: 'btn-secondary',
+                    endDate: this.state.datetime || moment(),
+                    opens: 'left',
+                    showCustomRangeLabel: false,
+                    singleDatePicker: true,
+                    startDate: this.state.datetime || moment(),
+                    timePicker: true,
+                }}
             >
-                <Input
-                    value={
-                        this.state.datetime
-                            ? this.state.datetime.format('L LT')
-                            : ''
-                    }
-                    placeholder="Choose a date..."
-                />
+                <div>
+                    <Input
+                        value={
+                            this.state.datetime
+                                ? this.state.datetime.format('L LT')
+                                : ''
+                        }
+                        placeholder="Choose a date..."
+                    />
+                </div>
             </DateRangePicker>
         )
     }
