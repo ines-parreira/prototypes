@@ -111,7 +111,8 @@ export const INCIDENTS_NOTIFICATION_ID = 'status-page-components'
 export const MAINTENANCE_NOTIFICATION_ID = 'status-page-maintenance'
 
 // time before the maintenance event we'll display a notification to the user - used to give users some warning.
-export const MAINTENANCE_NOTIFICATION_BEFORE_MINUTES = 60
+// 7200 minutes = 5 days
+export const MAINTENANCE_NOTIFICATION_BEFORE_MINUTES = 7200
 
 // polling incidents more often
 export const INCIDENTS_POLLING_INTERVAL_SECONDS = 30
