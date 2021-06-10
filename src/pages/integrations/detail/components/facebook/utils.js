@@ -5,6 +5,7 @@ import type {Map} from 'immutable'
 
 import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton.tsx'
 import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker.ts'
+import {AccountFeature} from '../../../../../state/currentAccount/types.ts'
 
 // PERMISSIONS in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features#permissions
@@ -226,10 +227,15 @@ export function getInstagramDMSettingStatus(
 
 export function getInstagramDMSettingsInlineComponent(
     instagramDMSettingStatus: number,
-    isCurrentPlanLegacy: boolean,
     currentAccount: Map<string, any>,
     currentPlan: Object
 ) {
+    const currentPlanHasInstagramDMFeature = currentPlan.getIn([
+        'features',
+        AccountFeature.InstagramDirectMessage,
+        'enabled',
+    ])
+
     if (
         instagramDMSettingStatus === InstagramDMSettingStatus.SHOULD_RECONNECT
     ) {
@@ -280,7 +286,7 @@ export function getInstagramDMSettingsInlineComponent(
             </Alert>
         )
     }
-    if (isCurrentPlanLegacy) {
+    if (!currentPlanHasInstagramDMFeature) {
         const segmentEventToSend = {
             name: SegmentEvent.PaywallUpgradeButtonSelected,
             props: {

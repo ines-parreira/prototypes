@@ -8,6 +8,8 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature instagram_comment 1`] = `"Pro"`;
 
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature instagram_dm 1`] = `"Pro"`;
+
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature magento_integration 1`] = `"Pro"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature phone_integration 1`] = `"Pro"`;

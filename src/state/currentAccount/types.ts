@@ -21,6 +21,7 @@ export enum AccountFeature {
     ChatCampaigns = 'chat_campaigns',
     FacebookComment = 'facebook_comment',
     InstagramComment = 'instagram_comment',
+    InstagramDirectMessage = 'instagram_dm',
     MagentoIntegration = 'magento_integration',
     PhoneIntegration = 'phone_integration',
     YotpoIntegration = 'yotpo_integration',

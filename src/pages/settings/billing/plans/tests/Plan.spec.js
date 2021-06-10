@@ -110,10 +110,10 @@ describe('<Plan/>', () => {
 describe('countFeatures()', () => {
     it.each([
         [0, basicPlan],
-        [8, proPlan],
-        [12, advancedPlan],
-        [12, enterprisePlan],
-        [8, customPlan],
+        [9, proPlan],
+        [13, advancedPlan],
+        [13, enterprisePlan],
+        [9, customPlan],
     ])('should return %d features', (expected, plan) => {
         expect(countFeatures(plan.features)).toBe(expected)
     })

@@ -46,6 +46,11 @@ const defaultProps = {
         integration: null,
         updateIntegration: null,
     }),
+    currentPlan: fromJS({
+        features: {
+            instagram_dm: {enabled: true},
+        },
+    }),
 }
 
 const defaultFacebookIntegrationSettings = {
@@ -920,9 +925,26 @@ describe('<FacebookIntegrationDetail/>', () => {
             }
         )
 
-        it.each([true, false])(
-            'should render an integration with a warning next to a disabled IG DM setting because the IG account is not eligible yet',
-            (hasLegacyPlan) => {
+        it.each([
+            [
+                'account eligible to IG DM and has the feature (Render an enabled IG DM setting)',
+                [true, true],
+            ],
+            [
+                "account eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
+                [true, false],
+            ],
+            [
+                'account not eligible to IG DM and has the feature (Render a disabled IG DM setting with a warning)',
+                [false, true],
+            ],
+            [
+                "account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with a warning)",
+                [false, false],
+            ],
+        ])(
+            'should render an integration for: %s',
+            (_, [isIGAccountEligible, planHasInstagramDmFeature]) => {
                 const integration = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
@@ -955,129 +977,35 @@ describe('<FacebookIntegrationDetail/>', () => {
                         },
                         instagram: {
                             id: '178941234975',
-                            instagram_direct_message_allowed: false,
+                            instagram_direct_message_allowed: isIGAccountEligible,
                         },
                         name: 'My facebook page',
                     },
                 })
 
+                const currentAccount = fromJS({
+                    domain: 'acme',
+                })
+
+                const currentPlan = fromJS({
+                    name: planHasInstagramDmFeature ? 'non-legacy' : 'legacy',
+                    features: {
+                        instagram_dm: {enabled: planHasInstagramDmFeature},
+                    },
+                })
+
                 const component = shallow(
                     <FacebookIntegrationDetail
-                        accountHasLegacyPlan={hasLegacyPlan}
                         store={store}
                         {...defaultProps}
                         integration={integration}
+                        currentAccount={currentAccount}
+                        currentPlan={currentPlan}
                     />
                 )
 
                 expect(component).toMatchSnapshot()
             }
         )
-
-        it('should render an integration with an enabled IG DM setting', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
-                    ),
-                    oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            READ_PAGE_MAILBOXES,
-                            PAGES_MESSAGING,
-                            PAGES_MESSAGING_SUBSCRIPTIONS,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                            INSTAGRAM_MANAGE_MESSAGES,
-                            ADS_READ,
-                            ADS_MANAGEMENT,
-                        ].join(','),
-                    },
-                    instagram: {
-                        id: '178941234975',
-                        instagram_direct_message_allowed: true,
-                    },
-                    name: 'My facebook page',
-                },
-            })
-
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render an integration with an enabled IG DM setting and an upgrade button because the account has a legacy plan', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                meta: {
-                    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
-                    ),
-                    oauth: {
-                        scope: [
-                            PAGES_MANAGE_ADS,
-                            PAGES_MANAGE_METADATA,
-                            PAGES_READ_ENGAGEMENT,
-                            PAGES_READ_USER_CONTENT,
-                            PAGES_MANAGE_POSTS,
-                            PAGES_MANAGE_ENGAGEMENT,
-                            BUSINESS_MANAGEMENT,
-                            PAGES_SHOW_LIST,
-                            READ_PAGE_MAILBOXES,
-                            PAGES_MESSAGING,
-                            PAGES_MESSAGING_SUBSCRIPTIONS,
-                            INSTAGRAM_BASIC,
-                            INSTAGRAM_MANAGE_COMMENTS,
-                            INSTAGRAM_MANAGE_MESSAGES,
-                            ADS_READ,
-                            ADS_MANAGEMENT,
-                        ].join(','),
-                    },
-                    instagram: {
-                        id: '178941234975',
-                        instagram_direct_message_allowed: true,
-                    },
-                    name: 'My facebook page',
-                },
-            })
-
-            const currentAccount = fromJS({
-                domain: 'acme',
-            })
-
-            const currentPlan = fromJS({
-                name: 'legacy',
-            })
-
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    currentAccount={currentAccount}
-                    currentPlan={currentPlan}
-                    accountHasLegacyPlan={true}
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
     })
 })

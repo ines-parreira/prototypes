@@ -30,6 +30,8 @@ import pageIconDefault from '../../../../../../img/integrations/facebook-page.pn
 
 import * as billingSelectors from '../../../../../state/billing/selectors.ts'
 
+import {AccountFeature} from '../../../../../state/currentAccount/types.ts'
+
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton'
 import {
@@ -48,7 +50,6 @@ type Props = {
     loading: Map<*, *>,
     currentAccount: Map<string, any>,
     currentPlan: Object,
-    accountHasLegacyPlan: boolean,
 }
 
 type State = {
@@ -159,7 +160,6 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
             actions,
             currentAccount,
             currentPlan,
-            accountHasLegacyPlan,
         } = this.props
 
         const integrationMeta = integration.get('meta') || fromJS({})
@@ -223,12 +223,19 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
             canEnableInstagramDirectMessage,
             integration
         )
+
+        const currentPlanHasInstagramDMFeature = currentPlan.getIn([
+            'features',
+            AccountFeature.InstagramDirectMessage,
+            'enabled',
+        ])
+
         const isAllowedToInstagramDM =
             instagramDMSettingStatus === InstagramDMSettingStatus.ALLOWED &&
-            !accountHasLegacyPlan
+            currentPlanHasInstagramDMFeature
+
         const instagramDMSettingsInlineComponent = getInstagramDMSettingsInlineComponent(
             instagramDMSettingStatus,
-            accountHasLegacyPlan,
             currentAccount,
             currentPlan
         )
@@ -552,7 +559,6 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
 const mapStateToProps = (state) => ({
     currentAccount: state.currentAccount,
     currentPlan: billingSelectors.currentPlan(state),
-    accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
 })
 
 export default connect(mapStateToProps)(FacebookIntegrationDetail)

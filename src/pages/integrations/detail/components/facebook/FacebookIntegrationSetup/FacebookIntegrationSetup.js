@@ -40,6 +40,8 @@ import {
 
 import * as billingSelectors from '../../../../../../state/billing/selectors.ts'
 
+import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
+
 import css from './FacebookIntegrationSetup.less'
 
 type Props = {
@@ -49,7 +51,6 @@ type Props = {
     loading: Object,
     currentAccount: Map<string, any>,
     currentPlan: Object,
-    accountHasLegacyPlan: boolean,
 }
 
 type State = {
@@ -105,7 +106,13 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         let {selectedIntegrations} = this.state
         const id = integration.get('id')
 
-        const {accountHasLegacyPlan} = this.props
+        const {currentPlan} = this.props
+
+        const currentPlanHasInstagramDMFeature = currentPlan.getIn([
+            'features',
+            AccountFeature.InstagramDirectMessage,
+            'enabled',
+        ])
 
         let userPermissions = integration.getIn(['meta', 'oauth', 'scope'])
         userPermissions = userPermissions ? userPermissions.split(',') : []
@@ -147,7 +154,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
             )
             const isAllowedToInstagramDM =
                 instagramDMSettingStatus === InstagramDMSettingStatus.ALLOWED &&
-                !accountHasLegacyPlan
+                currentPlanHasInstagramDMFeature
 
             const settings = {
                 messenger_enabled: canEnableMessenger,
@@ -217,7 +224,6 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         const {
             integrations,
             pagination,
-            accountHasLegacyPlan,
             currentAccount,
             currentPlan,
         } = this.props
@@ -304,13 +310,20 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                 canEnableInstagramDirectMessage,
                                 integration
                             )
+                            const currentPlanHasInstagramDMFeature = currentPlan.getIn(
+                                [
+                                    'features',
+                                    AccountFeature.InstagramDirectMessage,
+                                    'enabled',
+                                ]
+                            )
                             const isAllowedToInstagramDM =
                                 instagramDMSettingStatus ===
                                     InstagramDMSettingStatus.ALLOWED &&
-                                !accountHasLegacyPlan
+                                currentPlanHasInstagramDMFeature
+
                             const instagramDMSettingsInlineComponent = getInstagramDMSettingsInlineComponent(
                                 instagramDMSettingStatus,
-                                accountHasLegacyPlan,
                                 currentAccount,
                                 currentPlan
                             )
@@ -574,49 +587,47 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             instagramIsDisabled
                                                         }
                                                     />
-                                                    {!instagramIsDisabled && (
-                                                        <table>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td
-                                                                        td
-                                                                        className="pl-0"
-                                                                    >
-                                                                        <BooleanField
-                                                                            name={`${id}.instagram_direct_message_enabled`}
-                                                                            type="checkbox"
-                                                                            label="Enable Instagram direct messages"
-                                                                            value={this._getSettingValue(
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td
+                                                                    td
+                                                                    className="pl-0"
+                                                                >
+                                                                    <BooleanField
+                                                                        name={`${id}.instagram_direct_message_enabled`}
+                                                                        type="checkbox"
+                                                                        label="Enable Instagram direct messages"
+                                                                        value={this._getSettingValue(
+                                                                            id,
+                                                                            'instagram_direct_message_enabled'
+                                                                        )}
+                                                                        onChange={(
+                                                                            value
+                                                                        ) =>
+                                                                            this._setSettingValue(
                                                                                 id,
-                                                                                'instagram_direct_message_enabled'
-                                                                            )}
-                                                                            onChange={(
+                                                                                'instagram_direct_message_enabled',
                                                                                 value
-                                                                            ) =>
-                                                                                this._setSettingValue(
-                                                                                    id,
-                                                                                    'instagram_direct_message_enabled',
-                                                                                    value
-                                                                                )
-                                                                            }
-                                                                            disabled={
-                                                                                !canEnableInstagramDirectMessage ||
-                                                                                instagramIsDisabled ||
-                                                                                !isAllowedToInstagramDM
-                                                                            }
-                                                                        />
-                                                                    </td>
-                                                                    <td
-                                                                        td
-                                                                        className="pl-0"
-                                                                    >
-                                                                        {!instagramIsDisabled &&
-                                                                            instagramDMSettingsInlineComponent}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    )}
+                                                                            )
+                                                                        }
+                                                                        disabled={
+                                                                            !canEnableInstagramDirectMessage ||
+                                                                            instagramIsDisabled ||
+                                                                            !isAllowedToInstagramDM
+                                                                        }
+                                                                    />
+                                                                </td>
+                                                                <td
+                                                                    td
+                                                                    className="pl-0"
+                                                                >
+                                                                    {!instagramIsDisabled &&
+                                                                        instagramDMSettingsInlineComponent}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                     <BooleanField
                                                         name={`${id}.instagram_ads_enabled`}
                                                         type="checkbox"
@@ -754,7 +765,6 @@ const connector = connect((state) => ({
     )(state),
     currentAccount: state.currentAccount,
     currentPlan: billingSelectors.currentPlan(state),
-    accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
 }))
 
 export default connector(FacebookIntegrationSetupContainer)

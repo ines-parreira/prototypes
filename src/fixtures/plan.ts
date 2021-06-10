@@ -30,6 +30,7 @@ const planFixture: Plan = {
         [AccountFeature.FacebookComment]: true,
         [AccountFeature.ChatCampaigns]: true,
         [AccountFeature.InstagramComment]: true,
+        [AccountFeature.InstagramDirectMessage]: true,
         [AccountFeature.PhoneIntegration]: true,
         [AccountFeature.MagentoIntegration]: true,
         [AccountFeature.YotpoIntegration]: true,

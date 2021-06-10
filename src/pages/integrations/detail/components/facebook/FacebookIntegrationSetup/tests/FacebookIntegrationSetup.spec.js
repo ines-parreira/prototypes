@@ -62,6 +62,11 @@ describe('FacebookIntegrationSetup', () => {
             per_page: 1,
             item_count: 1,
         }),
+        currentPlan: fromJS({
+            features: {
+                instagram_dm: {enabled: true},
+            },
+        }),
     }
 
     const onboardingIntegrations = fromJS([
@@ -366,9 +371,26 @@ describe('FacebookIntegrationSetup', () => {
         }
     )
 
-    it.each([true, false])(
-        'should render the integration with a warning next to a disabled IG DM setting because the IG account is not eligible yet',
-        (hasLegacyPlan) => {
+    it.each([
+        [
+            'account eligible to IG DM and has the feature (Render an enabled IG DM setting)',
+            [true, true],
+        ],
+        [
+            "account eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
+            [true, false],
+        ],
+        [
+            'account not eligible to IG DM and has the feature (Render a disabled IG DM setting with a warning)',
+            [false, true],
+        ],
+        [
+            "account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with a warning)",
+            [false, false],
+        ],
+    ])(
+        'should render an integration for: %s',
+        (_, [isIGAccountEligible, planHasInstagramDmFeature]) => {
             const integrations = onboardingIntegrations
                 .setIn([0, 'meta', 'instagram', 'id'], 'foo')
                 .setIn(
@@ -383,76 +405,30 @@ describe('FacebookIntegrationSetup', () => {
                         'instagram',
                         'instagram_direct_message_allowed',
                     ],
-                    false
+                    isIGAccountEligible
                 )
+
+            const currentAccount = fromJS({
+                domain: 'acme',
+            })
+
+            const currentPlan = fromJS({
+                name: planHasInstagramDmFeature ? 'non-legacy' : 'legacy',
+                features: {
+                    instagram_dm: {enabled: planHasInstagramDmFeature},
+                },
+            })
 
             const component = shallow(
                 <FacebookIntegrationSetupContainer
-                    accountHasLegacyPlan={hasLegacyPlan}
                     {...minProps}
                     integrations={integrations}
+                    currentPlan={currentPlan}
+                    currentAccount={currentAccount}
                 />
             )
 
             expect(component).toMatchSnapshot()
         }
     )
-
-    it('should render an integration with an enabled IG DM setting', () => {
-        const integrations = onboardingIntegrations
-            .setIn([0, 'meta', 'instagram', 'id'], 'foo')
-            .setIn(
-                [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-            )
-            .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
-            .setIn(
-                [0, 'meta', 'instagram', 'instagram_direct_message_allowed'],
-                true
-            )
-
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                accountHasLegacyPlan={false}
-                {...minProps}
-                integrations={integrations}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('should render the integration with an enabled IG DM setting and an upgrade button because the account has a legacy plan', () => {
-        const integrations = onboardingIntegrations
-            .setIn([0, 'meta', 'instagram', 'id'], 'foo')
-            .setIn(
-                [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
-            )
-            .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
-            .setIn(
-                [0, 'meta', 'instagram', 'instagram_direct_message_allowed'],
-                true
-            )
-
-        const currentAccount = fromJS({
-            domain: 'acme',
-        })
-
-        const currentPlan = fromJS({
-            name: 'legacy',
-        })
-
-        const component = shallow(
-            <FacebookIntegrationSetupContainer
-                currentAccount={currentAccount}
-                currentPlan={currentPlan}
-                accountHasLegacyPlan={true}
-                {...minProps}
-                integrations={integrations}
-            />
-        )
-
-        expect(component).toMatchSnapshot()
-    })
 })
