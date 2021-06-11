@@ -17,7 +17,7 @@ import type {Record} from 'immutable'
 
 import LegacyPlanBadge from '../../../common/components/LegacyPlanBadge.tsx'
 import './Plan.less'
-import {openChat, toJS} from '../../../../utils.ts'
+import {openChat} from '../../../../utils.ts'
 import {isFeatureEnabled} from '../../../../utils/account.ts'
 import {AccountFeature} from '../../../../state/currentAccount/types.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
@@ -26,7 +26,6 @@ type Props = {
     plan: Map<any, any>,
     currentAccount: Map<any, any>,
     currentPlan: Map<any, any>,
-    cheaperPlan: Map<any, any> | null,
     isLegacyPlan: boolean,
     isFeatured?: boolean,
     isUpdating?: boolean,
@@ -42,72 +41,33 @@ type FeatureDetail = {
     name?: string,
     isCustomIcon?: boolean,
     icon: string,
-    label: string,
+    label: string | Node,
+    disabled: boolean,
 }
 
-const extraFeaturesPerPlan = {
-    Basic: [
-        {
-            icon: 'all_inclusive',
-            label: 'Unlimited users',
-        },
-        {
-            icon: 'extension',
-            label: '150 integrations included',
-        },
-        {
-            icon: 'widgets',
-            label: 'Shopify integration',
-        },
-        {
-            icon: 'chat',
-            label: 'Live chat',
-        },
-        {
-            icon: 'build',
-            label: 'Macros and rules',
-        },
-    ],
-    Pro: [],
-    Advanced: [
-        {
-            icon: 'call',
-            label: 'Customer success manager',
-        },
-    ],
-    Enterprise: [
-        {
-            icon: 'arrow_downward',
-            label: 'Discounted prices for volumes of 10.000+ tickets',
-        },
-        {
-            icon: 'beach_access',
-            label: 'Premium support',
-        },
-    ],
-}
+const extraFeatures = (plan: string) => [
+    {
+        icon: 'person_pin',
+        label: 'Dedicated success manager',
+        disabled: !(plan.includes('advanced') || plan.includes('enterprise')),
+    },
+    {
+        icon: 'blur_on',
+        label: 'Custom services',
+        disabled: plan !== plan.includes('enterprise'),
+    },
+]
 
 const featuresConfig = [
     {
-        name: AccountFeature.FacebookComment,
-        icon: 'facebook',
-        label: 'Facebook integration',
-    },
-    {
-        name: AccountFeature.InstagramComment,
-        icon: 'icon-instagram',
-        label: 'Instagram integration',
-        isCustomIcon: true,
-    },
-    {
         name: AccountFeature.MagentoIntegration,
-        icon: 'widgets',
+        icon: 'vector',
         label: 'Magento integration',
     },
     {
-        name: AccountFeature.PhoneIntegration,
-        icon: 'widgets',
-        label: 'Phone integration',
+        name: AccountFeature.UserRoles,
+        icon: 'supervised_user_circle',
+        label: 'User permissions',
     },
     {
         name: AccountFeature.SatisfactionSurveys,
@@ -120,29 +80,24 @@ const featuresConfig = [
         label: 'Chat campaigns',
     },
     {
-        name: AccountFeature.UserRoles,
-        icon: 'lock',
-        label: 'User permissions',
-    },
-    {
-        name: AccountFeature.RevenueStatistics,
-        icon: 'monetization_on',
-        label: 'Revenue stats',
+        name: AccountFeature.PhoneIntegration,
+        icon: 'phone',
+        label: 'Phone integration',
     },
     {
         name: AccountFeature.Teams,
-        icon: 'group',
-        label: 'Teams',
-    },
-    {
-        name: AccountFeature.AutoAssignment,
-        icon: 'assignment_turned_in',
-        label: 'Auto-assignment',
+        icon: 'people_outline',
+        label: 'Team Management',
     },
     {
         name: AccountFeature.ViewSharing,
-        icon: 'visibility',
+        icon: 'view_carousel',
         label: 'View sharing',
+    },
+    {
+        name: AccountFeature.RevenueStatistics,
+        icon: 'attach_money',
+        label: 'Revenue statistics',
     },
 ]
 
@@ -151,7 +106,6 @@ export const countFeatures = (features: AccountFeature) =>
 
 const getFeatures = (
     plan: Map<any, any>,
-    cheaperPlan: Map<any, any> | null,
     showPlanLegacyFeatures: false
 ): Array<FeatureDetail> => {
     const costMultiplier = 100
@@ -162,45 +116,142 @@ const getFeatures = (
     const planFeatures = plan.get(
         showPlanLegacyFeatures ? 'legacy_features' : 'features'
     )
-    const cheaperPlanFeatures = cheaperPlan ? cheaperPlan.get('features') : null
-    const exclusiveFeatures = _pickBy(
-        planFeatures.toJS(),
-        (featureMetadata, featureName) =>
-            isFeatureEnabled(featureMetadata) &&
-            (!cheaperPlanFeatures ||
-                !isFeatureEnabled(toJS(cheaperPlanFeatures.get(featureName))))
+    const enabledFeatures = _pickBy(planFeatures.toJS(), (featureMetadata) =>
+        isFeatureEnabled(featureMetadata)
     )
-    const exclusiveFeatureNames = Object.keys(exclusiveFeatures)
+    const enabledFeaturesNames = Object.keys(enabledFeatures)
 
     let features = isEnterprisePlan
-        ? []
+        ? [
+              {
+                  icon: 'playlist_add_check',
+                  label: (
+                      <>
+                          Discounted prices for{' '}
+                          <b>volumes of 10.000+ billable tickets</b>
+                      </>
+                  ),
+              },
+              {
+                  icon: 'beach_access',
+                  label: 'Premium support',
+              },
+              {
+                  icon: 'code',
+                  label: 'Custom limit of integrations',
+              },
+              {
+                  icon: 'thumb_up_alt',
+                  label: 'Social media integrations',
+              },
+              {
+                  icon: 'forum',
+                  label: 'Live chat',
+              },
+              {
+                  icon: 'auto_awesome',
+                  label: 'Macros and rules',
+              },
+              {
+                  icon: 'directions_car',
+                  label: 'Full onboarding',
+              },
+          ]
         : [
               {
                   icon: 'playlist_add_check',
-                  label: `${plan.get('free_tickets')} tickets included`,
+                  label: (
+                      <>
+                          <b>{plan.get('free_tickets')}</b> tickets included
+                      </>
+                  ),
+                  disabled: false,
               },
               {
                   icon: 'playlist_add',
-                  label: `$${costPerTicket} per ${costMultiplier} extra tickets`,
+                  label: (
+                      <>
+                          <b>${costPerTicket}</b> per ${costMultiplier} extra
+                          tickets
+                      </>
+                  ),
+                  disabled: false,
+              },
+              {
+                  icon: 'code',
+                  label: (
+                      <>
+                          <b>{plan.get('integrations')}</b> integrations
+                      </>
+                  ),
+                  disabled: false,
+              },
+              {
+                  icon: 'thumb_up_alt',
+                  label: 'Social media integrations',
+              },
+              {
+                  icon: 'forum',
+                  label: 'Live chat',
+              },
+              {
+                  icon: 'auto_awesome',
+                  label: 'Macros and rules',
+              },
+              {
+                  icon: `${
+                      plan.get('name') === 'Advanced'
+                          ? 'directions_car'
+                          : plan.get('name') === 'Basic'
+                          ? 'directions_walk'
+                          : 'directions_bike'
+                  }`,
+                  label: `${
+                      plan.get('name') === 'Advanced'
+                          ? 'Full'
+                          : plan.get('name') === 'Basic'
+                          ? 'Self'
+                          : 'Lite'
+                  } onboarding`,
               },
           ]
 
     features = features.concat(
-        featuresConfig.filter((feature) => {
-            return exclusiveFeatureNames.includes(feature.name)
+        featuresConfig.map((feature) => {
+            if (
+                feature.name === AccountFeature.PhoneIntegration &&
+                planFeatures
+            ) {
+                const phoneNumbers = planFeatures.getIn([
+                    AccountFeature.PhoneIntegration,
+                    'limit',
+                ])
+                return {
+                    ...feature,
+                    disabled: !enabledFeaturesNames.includes(feature.name),
+                    label: phoneNumbers ? (
+                        <>
+                            <b>{phoneNumbers}</b> Phone numbers
+                        </>
+                    ) : (
+                        'Phone'
+                    ),
+                }
+            }
+            return {
+                ...feature,
+                disabled: !enabledFeaturesNames.includes(feature.name),
+            }
         })
     )
+    features = features.concat(extraFeatures(plan.get('id')))
 
-    if (extraFeaturesPerPlan.hasOwnProperty(plan.get('name'))) {
-        features = features.concat(extraFeaturesPerPlan[plan.get('name')])
-    }
     return features
 }
 
 export function Plan({
     className,
     plan,
-    cheaperPlan,
     isUpdating,
     currentAccount,
     currentPlan,
@@ -237,7 +288,6 @@ export function Plan({
             )
     const features = getFeatures(
         plan,
-        cheaperPlan,
         isCurrentPlan && accountHasLegacyFeatures
     )
     const canChoosePlan = !isCurrentPlan && !isUpdating
@@ -288,23 +338,56 @@ export function Plan({
                         }`}
                     </strong>
                     {plan.get('amount') > 0 && (
-                        <span className="float-right">
+                        <span className="plan-header-details">
                             {plan.get('currencySign')}
                             {plan.get('amount')} /{' '}
                             {plan.get('interval') === 'month' ? 'mo' : 'yr'}
                         </span>
                     )}
+                    {plan.get('id') === 'enterprise' && (
+                        <span className="plan-header-details">
+                            Custom price
+                        </span>
+                    )}
                 </div>
             </CardHeader>
             <CardBody>
-                {cheaperPlan && (
-                    <b>Everything from {cheaperPlan.get('name')} plus...</b>
-                )}
                 <ul>
                     {features.map((feature) => {
+                        const isFeatureDisabled =
+                            !isEnterprisePlan && feature.disabled
+                        if (feature.label === 'Magento integration')
+                            return (
+                                <li
+                                    key={`${plan.get('id')}_${feature.icon}}`}
+                                    className="d-flex align-items-center"
+                                >
+                                    <div
+                                        className={classnames(
+                                            'feature-icon mr-3',
+                                            {
+                                                'feature-icon-disabled': isFeatureDisabled,
+                                            }
+                                        )}
+                                    >
+                                        <i
+                                            className={classnames({
+                                                disabled: isFeatureDisabled,
+                                            })}
+                                        />
+                                    </div>
+                                    <div
+                                        className={classnames({
+                                            'feature-label-disabled': isFeatureDisabled,
+                                        })}
+                                    >
+                                        {feature.label}
+                                    </div>
+                                </li>
+                            )
                         return (
                             <li
-                                key={feature.label}
+                                key={`${plan.get('id')}_${feature.icon}}`}
                                 className="d-flex align-items-center"
                             >
                                 {feature.isCustomIcon ? (
@@ -315,11 +398,24 @@ export function Plan({
                                         )}
                                     />
                                 ) : (
-                                    <i className="material-icons feature-icon mr-3">
+                                    <i
+                                        className={classnames(
+                                            'material-icons feature-icon mr-3',
+                                            {
+                                                'feature-icon-disabled': isFeatureDisabled,
+                                            }
+                                        )}
+                                    >
                                         {feature.icon}
                                     </i>
                                 )}
-                                <strong>{feature.label}</strong>
+                                <div
+                                    className={classnames({
+                                        'feature-label-disabled': isFeatureDisabled,
+                                    })}
+                                >
+                                    {feature.label}
+                                </div>
                             </li>
                         )
                     })}

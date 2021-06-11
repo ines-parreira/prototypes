@@ -229,12 +229,7 @@ export class BillingPlans extends React.Component<Props, State> {
                             />
                         )}
                         {availablePlans
-                            .mapEntries(([planId, plan], idx) => {
-                                // Get the closest cheaper plan
-                                const cheaperPlan =
-                                    idx > 0
-                                        ? availablePlans.toList().get(idx - 1)
-                                        : null
+                            .mapEntries(([planId, plan]) => {
                                 const isCurrentPlan =
                                     !accountHasLegacyPlan &&
                                     plan.get('id') === currentPlan.get('id')
@@ -245,7 +240,6 @@ export class BillingPlans extends React.Component<Props, State> {
                                         className="mt-4"
                                         currentAccount={currentAccount}
                                         currentPlan={currentPlan}
-                                        cheaperPlan={cheaperPlan}
                                         plan={plan}
                                         isCurrentPlan={isCurrentPlan}
                                         isUpdating={this.state.isUpdating}
@@ -272,7 +266,6 @@ export class BillingPlans extends React.Component<Props, State> {
                             currentPlan={currentPlan}
                             currentAccount={currentAccount}
                             plan={enterprisePlan}
-                            cheaperPlan={availablePlans.toList().last()}
                         />
                     )}
                 </CardDeck>

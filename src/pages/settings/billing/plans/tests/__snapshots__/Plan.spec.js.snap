@@ -17,7 +17,7 @@ exports[`<Plan/> should render a custom plan 1`] = `
         Custom
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         54000
          /
@@ -38,9 +38,14 @@ exports[`<Plan/> should render a custom plan 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          2000 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            2000
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -50,9 +55,17 @@ exports[`<Plan/> should render a custom plan 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $23.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            23.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -60,21 +73,16 @@ exports[`<Plan/> should render a custom plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          code
         </i>
-        <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -82,11 +90,71 @@ exports[`<Plan/> should render a custom plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          thumb_up_alt
         </i>
-        <strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          forum
+        </i>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_bike
+        </i>
+        <div
+          class=""
+        >
+          Lite onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3"
+        >
+          <i
+            class=""
+          />
+        </div>
+        <div
+          class=""
+        >
           Magento integration
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -94,11 +162,13 @@ exports[`<Plan/> should render a custom plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          supervised_user_circle
         </i>
-        <strong>
-          Phone integration
-        </strong>
+        <div
+          class=""
+        >
+          User permissions
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -108,9 +178,11 @@ exports[`<Plan/> should render a custom plan 1`] = `
         >
           insert_emoticon
         </i>
-        <strong>
+        <div
+          class=""
+        >
           Satisfaction surveys
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -120,9 +192,11 @@ exports[`<Plan/> should render a custom plan 1`] = `
         >
           chat
         </i>
-        <strong>
+        <div
+          class=""
+        >
           Chat campaigns
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -130,11 +204,83 @@ exports[`<Plan/> should render a custom plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          lock
+          phone
         </i>
-        <strong>
-          User permissions
-        </strong>
+        <div
+          class=""
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -169,7 +315,7 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         Basic
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -190,9 +336,14 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -202,9 +353,17 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -212,11 +371,16 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          code
         </i>
-        <strong>
-          Unlimited users
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -224,11 +388,13 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          extension
+          thumb_up_alt
         </i>
-        <strong>
-          150 integrations included
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -236,35 +402,183 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Shopify integration
-        </strong>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3 feature-icon-disabled"
+        >
+          <i
+            class="disabled"
+          />
+        </div>
+        <div
+          class="feature-label-disabled"
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
           chat
         </i>
-        <strong>
-          Live chat
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Chat campaigns
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
-          class="material-icons feature-icon mr-3"
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
-          build
+          phone
         </i>
-        <strong>
-          Macros and rules
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -300,7 +614,7 @@ exports[`<Plan/> should render a plan featured 1`] = `
         Basic
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -321,9 +635,14 @@ exports[`<Plan/> should render a plan featured 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -333,9 +652,17 @@ exports[`<Plan/> should render a plan featured 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -343,11 +670,16 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          code
         </i>
-        <strong>
-          Unlimited users
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -355,11 +687,13 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          extension
+          thumb_up_alt
         </i>
-        <strong>
-          150 integrations included
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -367,35 +701,183 @@ exports[`<Plan/> should render a plan featured 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Shopify integration
-        </strong>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3 feature-icon-disabled"
+        >
+          <i
+            class="disabled"
+          />
+        </div>
+        <div
+          class="feature-label-disabled"
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
           chat
         </i>
-        <strong>
-          Live chat
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Chat campaigns
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
-          class="material-icons feature-icon mr-3"
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
-          build
+          phone
         </i>
-        <strong>
-          Macros and rules
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -430,7 +912,7 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         Pro
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         30000
          /
@@ -442,11 +924,6 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
   <div
     class="card-body"
   >
-    <b>
-      Everything from 
-      Basic
-       plus...
-    </b>
     <ul>
       <li
         class="d-flex align-items-center"
@@ -456,9 +933,14 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          2000 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            2000
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -468,9 +950,17 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $23.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            23.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -478,21 +968,16 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          code
         </i>
-        <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -500,11 +985,71 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          thumb_up_alt
         </i>
-        <strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          forum
+        </i>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_bike
+        </i>
+        <div
+          class=""
+        >
+          Lite onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3"
+        >
+          <i
+            class=""
+          />
+        </div>
+        <div
+          class=""
+        >
           Magento integration
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -512,11 +1057,13 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          supervised_user_circle
         </i>
-        <strong>
-          Phone integration
-        </strong>
+        <div
+          class=""
+        >
+          User permissions
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -526,9 +1073,11 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         >
           insert_emoticon
         </i>
-        <strong>
+        <div
+          class=""
+        >
           Satisfaction surveys
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -538,9 +1087,11 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         >
           chat
         </i>
-        <strong>
+        <div
+          class=""
+        >
           Chat campaigns
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -548,11 +1099,83 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          lock
+          phone
         </i>
-        <strong>
-          User permissions
-        </strong>
+        <div
+          class=""
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -587,7 +1210,7 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         Basic
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -608,9 +1231,14 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -620,9 +1248,17 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -630,11 +1266,16 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          code
         </i>
-        <strong>
-          Unlimited users
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -642,11 +1283,13 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          extension
+          thumb_up_alt
         </i>
-        <strong>
-          150 integrations included
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -654,35 +1297,183 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Shopify integration
-        </strong>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3 feature-icon-disabled"
+        >
+          <i
+            class="disabled"
+          />
+        </div>
+        <div
+          class="feature-label-disabled"
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
           chat
         </i>
-        <strong>
-          Live chat
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Chat campaigns
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
-          class="material-icons feature-icon mr-3"
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
-          build
+          phone
         </i>
-        <strong>
-          Macros and rules
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -717,7 +1508,7 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
         Basic
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -738,9 +1529,14 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -750,9 +1546,17 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -760,11 +1564,16 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          code
         </i>
-        <strong>
-          Unlimited users
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -772,11 +1581,13 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          extension
+          thumb_up_alt
         </i>
-        <strong>
-          150 integrations included
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -784,35 +1595,183 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Shopify integration
-        </strong>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3 feature-icon-disabled"
+        >
+          <i
+            class="disabled"
+          />
+        </div>
+        <div
+          class="feature-label-disabled"
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
           chat
         </i>
-        <strong>
-          Live chat
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Chat campaigns
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
-          class="material-icons feature-icon mr-3"
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
-          build
+          phone
         </i>
-        <strong>
-          Macros and rules
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -847,7 +1806,7 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
         Basic
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -868,9 +1827,14 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -880,9 +1844,17 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -890,11 +1862,16 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          code
         </i>
-        <strong>
-          Unlimited users
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -902,11 +1879,13 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          extension
+          thumb_up_alt
         </i>
-        <strong>
-          150 integrations included
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -914,35 +1893,183 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Shopify integration
-        </strong>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3 feature-icon-disabled"
+        >
+          <i
+            class="disabled"
+          />
+        </div>
+        <div
+          class="feature-label-disabled"
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
           chat
         </i>
-        <strong>
-          Live chat
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Chat campaigns
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
-          class="material-icons feature-icon mr-3"
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
-          build
+          phone
         </i>
-        <strong>
-          Macros and rules
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -965,6 +2092,11 @@ exports[`<Plan/> should render an enterprise plan 1`] = `
       <strong>
         Enterprise
       </strong>
+      <span
+        class="plan-header-details"
+      >
+        Custom price
+      </span>
     </div>
   </div>
   <div
@@ -977,11 +2109,17 @@ exports[`<Plan/> should render an enterprise plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          arrow_downward
+          playlist_add_check
         </i>
-        <strong>
-          Discounted prices for volumes of 10.000+ tickets
-        </strong>
+        <div
+          class=""
+        >
+          Discounted prices for
+           
+          <b>
+            volumes of 10.000+ billable tickets
+          </b>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -991,9 +2129,223 @@ exports[`<Plan/> should render an enterprise plan 1`] = `
         >
           beach_access
         </i>
-        <strong>
+        <div
+          class=""
+        >
           Premium support
-        </strong>
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          code
+        </i>
+        <div
+          class=""
+        >
+          Custom limit of integrations
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          thumb_up_alt
+        </i>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          forum
+        </i>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_car
+        </i>
+        <div
+          class=""
+        >
+          Full onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3"
+        >
+          <i
+            class=""
+          />
+        </div>
+        <div
+          class=""
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class=""
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class=""
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <div
+          class=""
+        >
+          Chat campaigns
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          phone
+        </i>
+        <div
+          class=""
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          people_outline
+        </i>
+        <div
+          class=""
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          view_carousel
+        </i>
+        <div
+          class=""
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          attach_money
+        </i>
+        <div
+          class=""
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          person_pin
+        </i>
+        <div
+          class=""
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          blur_on
+        </i>
+        <div
+          class=""
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -1033,7 +2385,7 @@ exports[`<Plan/> should render the current plan 1`] = `
         Basic
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -1054,9 +2406,14 @@ exports[`<Plan/> should render the current plan 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1066,9 +2423,17 @@ exports[`<Plan/> should render the current plan 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1076,11 +2441,16 @@ exports[`<Plan/> should render the current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          code
         </i>
-        <strong>
-          Unlimited users
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1088,11 +2458,13 @@ exports[`<Plan/> should render the current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          extension
+          thumb_up_alt
         </i>
-        <strong>
-          150 integrations included
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1100,35 +2472,183 @@ exports[`<Plan/> should render the current plan 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Shopify integration
-        </strong>
+        <div
+          class=""
+        >
+          Live chat
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
           class="material-icons feature-icon mr-3"
+        >
+          auto_awesome
+        </i>
+        <div
+          class=""
+        >
+          Macros and rules
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3 feature-icon-disabled"
+        >
+          <i
+            class="disabled"
+          />
+        </div>
+        <div
+          class="feature-label-disabled"
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
           chat
         </i>
-        <strong>
-          Live chat
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Chat campaigns
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
       >
         <i
-          class="material-icons feature-icon mr-3"
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
         >
-          build
+          phone
         </i>
-        <strong>
-          Macros and rules
-        </strong>
+        <div
+          class="feature-label-disabled"
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          people_outline
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          view_carousel
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
@@ -1183,7 +2703,7 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         Basic legacy
       </strong>
       <span
-        class="float-right"
+        class="plan-header-details"
       >
         6000
          /
@@ -1204,9 +2724,14 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         >
           playlist_add_check
         </i>
-        <strong>
-          350 tickets included
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            350
+          </b>
+           tickets included
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1216,9 +2741,17 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         >
           playlist_add
         </i>
-        <strong>
-          $25.00 per 100 extra tickets
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            $
+            25.00
+          </b>
+           per $
+          100
+           extra tickets
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1226,21 +2759,16 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          facebook
+          code
         </i>
-        <strong>
-          Facebook integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="feature-icon icon-custom mr-3 icon-instagram"
-        />
-        <strong>
-          Instagram integration
-        </strong>
+        <div
+          class=""
+        >
+          <b>
+            200
+          </b>
+           integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1248,11 +2776,13 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          thumb_up_alt
         </i>
-        <strong>
-          Magento integration
-        </strong>
+        <div
+          class=""
+        >
+          Social media integrations
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1260,119 +2790,13 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          widgets
+          forum
         </i>
-        <strong>
-          Phone integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
+        <div
+          class=""
         >
-          chat
-        </i>
-        <strong>
-          Chat campaigns
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          lock
-        </i>
-        <strong>
-          User permissions
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          group
-        </i>
-        <strong>
-          Teams
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          assignment_turned_in
-        </i>
-        <strong>
-          Auto-assignment
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          visibility
-        </i>
-        <strong>
-          View sharing
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          all_inclusive
-        </i>
-        <strong>
-          Unlimited users
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          extension
-        </i>
-        <strong>
-          150 integrations included
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          widgets
-        </i>
-        <strong>
-          Shopify integration
-        </strong>
-      </li>
-      <li
-        class="d-flex align-items-center"
-      >
-        <i
-          class="material-icons feature-icon mr-3"
-        >
-          chat
-        </i>
-        <strong>
           Live chat
-        </strong>
+        </div>
       </li>
       <li
         class="d-flex align-items-center"
@@ -1380,11 +2804,169 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
         <i
           class="material-icons feature-icon mr-3"
         >
-          build
+          auto_awesome
         </i>
-        <strong>
+        <div
+          class=""
+        >
           Macros and rules
-        </strong>
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          directions_walk
+        </i>
+        <div
+          class=""
+        >
+          Self onboarding
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <div
+          class="feature-icon mr-3"
+        >
+          <i
+            class=""
+          />
+        </div>
+        <div
+          class=""
+        >
+          Magento integration
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          supervised_user_circle
+        </i>
+        <div
+          class=""
+        >
+          User permissions
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          insert_emoticon
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Satisfaction surveys
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <div
+          class=""
+        >
+          Chat campaigns
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          phone
+        </i>
+        <div
+          class=""
+        >
+          Phone
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          people_outline
+        </i>
+        <div
+          class=""
+        >
+          Team Management
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          view_carousel
+        </i>
+        <div
+          class=""
+        >
+          View sharing
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          attach_money
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Revenue statistics
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          person_pin
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Dedicated success manager
+        </div>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3 feature-icon-disabled"
+        >
+          blur_on
+        </i>
+        <div
+          class="feature-label-disabled"
+        >
+          Custom services
+        </div>
       </li>
     </ul>
   </div>
