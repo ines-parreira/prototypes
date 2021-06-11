@@ -177,7 +177,9 @@ export const PeriodPickerContainer = ({
                             linkedCalendars: false,
                             opens: 'left',
                             maxDate: today,
-                            minDate: someDaysAgoStartOfDay(90),
+                            maxSpan: {
+                                days: 89,
+                            },
                             ranges,
                             startDate,
                             showCustomRangeLabel: false,
@@ -247,7 +249,7 @@ export const PeriodPickerContainer = ({
                         >
                             {tooltipTarget?.classList.contains('future-date')
                                 ? 'There is no data available on this date yet.'
-                                : 'There is no data available on this date because it’s past 90 days'}
+                                : "You can't select a period longer than 90 days."}
                         </Tooltip>
                     )}
                 </>
