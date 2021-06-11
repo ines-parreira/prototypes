@@ -10,7 +10,7 @@ type Props = {
     className: string
     onLoad: () => Promise<void>
     shouldLoadMore: boolean
-    threshold: number
+    threshold?: number
 }
 
 const InfiniteScroll = ({

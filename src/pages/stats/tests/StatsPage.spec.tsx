@@ -30,7 +30,7 @@ jest.mock('../Stats', () => () => {
     return <div>Stats Component: {view}</div>
 })
 
-jest.mock('../StatsFilters.js', () => () => 'StatsFilters')
+jest.mock('../StatsFilters', () => () => 'StatsFilters')
 
 jest.mock('../../common/components/Paywall/Paywall', () => {
     return ({feature}: ComponentProps<typeof Paywall>) => (

@@ -1,68 +1,59 @@
-// @flow
-// $FlowFixMe
-import React, {useMemo, useState} from 'react'
-import {fromJS, type Map} from 'immutable'
-import _capitalize from 'lodash/capitalize'
+import React, {ComponentProps, useMemo, useState} from 'react'
+import {fromJS, List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
-import moment from 'moment'
-import {connect} from 'react-redux'
+import moment from 'moment-timezone'
+import {connect, ConnectedProps} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
-import {withRouter} from 'react-router-dom'
+import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {DropdownItem, Button} from 'reactstrap'
 import {CancelToken} from 'axios'
 
-import {views as statViewsConfig} from '../../config/stats.tsx'
-import {CHANNELS} from '../../config/ticket.ts'
-import useCancellableRequest from '../../hooks/useCancellableRequest.ts'
-import useDelayedAsyncFn from '../../hooks/useDelayedAsyncFn.ts'
-import {ORDER_DIRECTION} from '../../models/api'
-import {TAG_SORTABLE_PROPERTIES} from '../../models/tag/constants.ts'
-import {fetchTags} from '../../models/tag/resources.ts'
-import type {FetchTagsOptions, Tag} from '../../models/tag/types'
-import {getAgents} from '../../state/agents/selectors.ts'
-import {getDisplayName} from '../../state/customers/helpers.ts'
-import {tagsFetched, type TagsState} from '../../state/entities/tags'
-import {getIntegrations} from '../../state/integrations/selectors.ts'
-import {notify} from '../../state/notifications/actions.ts'
-import {NOTIFICATION_STATUS} from '../../state/notifications/constants.ts'
-import {mergeStatsFilters} from '../../state/stats/actions.ts'
-import {getViewFilters} from '../../state/stats/selectors.ts'
-import {getTeams} from '../../state/teams/selectors.ts'
+import {makeGetPlainJS} from '../../utils'
+import {views as statViewsConfig} from '../../config/stats'
+import {CHANNELS} from '../../config/ticket'
+import useCancellableRequest from '../../hooks/useCancellableRequest'
+import useDelayedAsyncFn from '../../hooks/useDelayedAsyncFn'
+import {OrderDirection} from '../../models/api/types'
+import {Integration} from '../../models/integration/types'
+import {fetchTags} from '../../models/tag/resources'
+import {
+    FetchTagsOptions,
+    Tag,
+    TagSortableProperties,
+} from '../../models/tag/types'
+import {getLabelledAgents} from '../../state/agents/selectors'
+import {tagsFetched} from '../../state/entities/tags/actions'
+import {getIntegrations} from '../../state/integrations/selectors'
+import {notify} from '../../state/notifications/actions'
+import {NotificationStatus} from '../../state/notifications/types'
+import {mergeStatsFilters} from '../../state/stats/actions'
+import {getViewFilters} from '../../state/stats/selectors'
+import {getLabelledTeams} from '../../state/teams/selectors'
+import {RootState} from '../../state/types'
 
-import InfiniteScroll from '../common/components/InfiniteScroll'
-import PageHeader from '../common/components/PageHeader.tsx'
-import PopoverModal from '../common/components/PopoverModal.tsx'
-import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
+import InfiniteScroll from '../common/components/InfiniteScroll/InfiniteScroll'
+import PageHeader from '../common/components/PageHeader'
+import PopoverModal from '../common/components/PopoverModal'
+import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 
-import PeriodPicker from './common/PeriodPicker.tsx'
-import SelectFilter from './common/SelectFilter.tsx'
+import PeriodPicker from './common/PeriodPicker'
+import SelectFilter from './common/SelectFilter'
 import css from './StatsFilters.less'
 
-const TagDropdownMenuWrapper = (props) => <TagDropdownMenu {...props} />
+const TagDropdownMenuWrapper = (
+    props: ComponentProps<typeof TagDropdownMenu>
+) => <TagDropdownMenu {...props} />
 
 const orderingOptions = {
-    orderBy: TAG_SORTABLE_PROPERTIES.NAME,
-    orderDir: ORDER_DIRECTION.ASC,
+    orderBy: TagSortableProperties.Name,
+    orderDir: OrderDirection.Asc,
 }
 
-type Props = {
-    match: Object,
-    config: Object,
-    channels: any[],
-    agents: any[],
-    tags: TagsState,
-    integrations: any[],
-    stats: Object,
-    filters: Object,
-    fetchStat: (any, any, any) => Promise<*>,
-    mergeStatsFilters: typeof mergeStatsFilters,
-    teams: {label: string, value: string, members: string[]}[],
-    fetchTags: typeof fetchTags,
-    tagsFetched: typeof tagsFetched,
-    notify: Function,
-}
+type OwnProps = RouteComponentProps<{view: string}>
 
-const StatsFiltersContainer = ({
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export const StatsFiltersContainer = ({
     agents,
     channels,
     config,
@@ -74,7 +65,7 @@ const StatsFiltersContainer = ({
     tags,
     tagsFetched,
 }: Props) => {
-    const [tagIds, setTagIds] = useState([])
+    const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
     const [pagination, setPagination] = useState({
         page: 0,
@@ -88,7 +79,7 @@ const StatsFiltersContainer = ({
             await fetchTags(options, cancelToken)
     )
 
-    const [, handleFetchTags] = useDelayedAsyncFn(
+    const [, handleFetchTags] = useDelayedAsyncFn<[string?], void>(
         async (search = '') => {
             try {
                 let previousIds = tagIds
@@ -110,13 +101,13 @@ const StatsFiltersContainer = ({
                 tagsFetched(res.data)
                 setTagIds([
                     ...previousIds,
-                    ...res.data.map((tag: Tag) => tag.id),
+                    ...res.data.map((tag: Tag) => tag.id.toString()),
                 ])
                 setPagination({page: res.meta.page, nbPages: res.meta.nb_pages})
             } catch (error) {
                 void notify({
                     message: 'Failed to fetch tags',
-                    status: NOTIFICATION_STATUS.ERROR,
+                    status: NotificationStatus.Error,
                 })
             }
         },
@@ -133,15 +124,15 @@ const StatsFiltersContainer = ({
     const onSearchTags = _debounce(handleFetchTags, 300)
 
     const renderFilterInput = (filter: Map<string, any>) => {
-        const filterType = filter.get('type')
-        const filterValue = filters.get(filterType)
+        const filterType: string = filter.get('type')
+        const filterValue = filters!.get(filterType)
 
         switch (filterType) {
             case 'score': {
-                const minValue = filter.get('minValue')
-                const maxValue = filter.get('maxValue')
-                const reverse = filter.get('reverse')
-                const variant = filter.get('variant')
+                const minValue: number = filter.get('minValue')
+                const maxValue: number = filter.get('maxValue')
+                const reverse: boolean = filter.get('reverse')
+                const variant: string = filter.get('variant')
 
                 const scores = Array.from(
                     {length: maxValue - minValue + 1},
@@ -162,7 +153,7 @@ const StatsFiltersContainer = ({
                                             .join(''),
                                 }
                             default:
-                                return {}
+                                return {value: '', label: ''}
                         }
                     }
                 )
@@ -172,7 +163,9 @@ const StatsFiltersContainer = ({
                         plural="scores"
                         singular="score"
                         onChange={handleFilterChange('score')}
-                        value={filters.get('score', fromJS([])).toJS()}
+                        value={(filters!.get('score', fromJS([])) as List<
+                            any
+                        >).toJS()}
                     >
                         {scores.map((score) => (
                             <SelectFilter.Item
@@ -185,7 +178,7 @@ const StatsFiltersContainer = ({
                 )
             }
             case 'channels': {
-                const options = filter.get('options')
+                const options: List<any> = filter.get('options')
                 const data = options
                     ? channels.filter((channel) =>
                           options.includes(channel.value)
@@ -197,7 +190,9 @@ const StatsFiltersContainer = ({
                         plural="channels"
                         singular="channel"
                         onChange={handleFilterChange('channels')}
-                        value={filters.get('channels', fromJS([])).toJS()}
+                        value={(filters!.get('channels', fromJS([])) as List<
+                            any
+                        >).toJS()}
                     >
                         {data.map((channel) => (
                             <SelectFilter.Item
@@ -216,7 +211,9 @@ const StatsFiltersContainer = ({
                         plural="tags"
                         singular="tag"
                         onChange={handleFilterChange('tags')}
-                        value={filters.get('tags', fromJS([])).toJS()}
+                        value={(filters!.get('tags', fromJS([])) as List<
+                            any
+                        >).toJS()}
                         onSearch={onSearchTags}
                         dropdownMenu={TagDropdownMenuWrapper}
                     >
@@ -250,17 +247,19 @@ const StatsFiltersContainer = ({
                         plural="agents"
                         singular="agent"
                         onChange={handleFilterChange('agents')}
-                        value={filters.get('agents', fromJS([])).toJS()}
+                        value={(filters!.get('agents', fromJS([])) as List<
+                            any
+                        >).toJS()}
                     >
                         <DropdownItem header className={css.dropdownHeader}>
                             Teams
                         </DropdownItem>
                         {teams.map((team) => (
                             <SelectFilter.Group
-                                key={`team-${team.value}`}
+                                key={`team-${team.id}`}
                                 items={team.members}
                                 label={team.label}
-                                value={team.value}
+                                value={team.id}
                             />
                         ))}
                         <DropdownItem divider className={css.dropdownDivider} />
@@ -269,16 +268,16 @@ const StatsFiltersContainer = ({
                         </DropdownItem>
                         {agents.map((agent) => (
                             <SelectFilter.Item
-                                key={`agent-${agent.value}`}
+                                key={`agent-${agent.id}`}
                                 label={agent.label}
-                                value={agent.value}
+                                value={agent.id}
                             />
                         ))}
                     </SelectFilter>
                 )
             case 'integrations': {
-                const options = filter.get('options', fromJS({}))
-                const allowedTypes = options.get('allowedTypes')
+                const options: Map<any, any> = filter.get('options', fromJS({}))
+                const allowedTypes: List<any> = options.get('allowedTypes')
                 const data = allowedTypes
                     ? integrations.filter((integration) =>
                           allowedTypes.includes(integration.type)
@@ -293,7 +292,10 @@ const StatsFiltersContainer = ({
                         isMultiple={options.get('isMultiple', true)}
                         isRequired={options.get('isRequired', false)}
                         onChange={handleFilterChange('integrations')}
-                        value={filters.get('integrations', fromJS([])).toJS()}
+                        value={(filters!.get(
+                            'integrations',
+                            fromJS([])
+                        ) as List<any>).toJS()}
                     >
                         {data.map((integration) => (
                             <SelectFilter.Item
@@ -311,9 +313,11 @@ const StatsFiltersContainer = ({
                     <PeriodPicker
                         key={filterType}
                         startDatetime={moment(
-                            filterValue.get('start_datetime')
+                            (filterValue as Map<any, any>).get('start_datetime')
                         )}
-                        endDatetime={moment(filterValue.get('end_datetime'))}
+                        endDatetime={moment(
+                            (filterValue as Map<any, any>).get('end_datetime')
+                        )}
                         onChange={handleFilterChange('period')}
                     />
                 )
@@ -338,7 +342,9 @@ const StatsFiltersContainer = ({
                             color="secondary"
                             type="button"
                             onClick={() => {
-                                window.open(config.get('url'), '_blank').focus()
+                                window
+                                    .open(config.get('url'), '_blank')!
+                                    .focus()
                             }}
                         >
                             Learn More{' '}
@@ -347,7 +353,7 @@ const StatsFiltersContainer = ({
                     </PopoverModal>
                 </h1>
             ) : (
-                config.get('name')
+                (config.get('name') as string)
             ),
         [config]
     )
@@ -355,47 +361,43 @@ const StatsFiltersContainer = ({
     return (
         <PageHeader title={pageTitle} className="mb-0">
             <div className="d-flex flex-wrap float-right">
-                {config
-                    .get('filters')
-                    .map((filter) => renderFilterInput(filter))}
+                {(config.get('filters') as List<
+                    any
+                >).map((filter: Map<any, any>) => renderFilterInput(filter))}
             </div>
         </PageHeader>
     )
 }
 
 function getChannels() {
-    return (CHANNELS: any).map((channel) => ({
-        label: _upperFirst(channel.replaceAll('-', ' ')),
+    return CHANNELS.map((channel) => ({
+        label: _upperFirst(channel.replace(/-/g, ' ')),
         value: channel,
     }))
 }
 
-const mapStateToProps = (state: Object, props: Props) => {
-    const view = props.match.params.view
-    const config = statViewsConfig.get(view)
+const makeMapStateToProps = () => {
+    const getIntegrationsToJS = makeGetPlainJS<Integration[]>(getIntegrations)
+    const getAgentsToJS = makeGetPlainJS<{id: number; label: string}[]>(
+        getLabelledAgents
+    )
+    const getTeamsToJS = makeGetPlainJS<
+        {id: number; label: string; members: string[]}[]
+    >(getLabelledTeams)
 
-    return {
-        tags: state.entities.tags,
-        integrations: getIntegrations(state).toJS(),
-        channels: getChannels(),
-        agents: getAgents(state)
-            .map((agent) => ({
-                label: getDisplayName(agent),
-                value: agent.get('id'),
-            }))
-            .toJS(),
-        filters: getViewFilters(props.match.params.view)(state),
-        config,
-        teams: getTeams(state)
-            .map((team) => ({
-                label: _capitalize(team.get('name')),
-                value: team.get('id'),
-                members: team
-                    .get('members')
-                    .map((user) => user.get('id'))
-                    .toJS(),
-            }))
-            .toJS(),
+    return (state: RootState, props: OwnProps) => {
+        const view = props.match.params.view
+        const config: Map<any, any> = statViewsConfig.get(view)
+
+        return {
+            agents: getAgentsToJS(state),
+            channels: getChannels(),
+            config,
+            filters: getViewFilters(props.match.params.view)(state),
+            integrations: getIntegrationsToJS(state),
+            tags: state.entities.tags,
+            teams: getTeamsToJS(state),
+        }
     }
 }
 
@@ -405,6 +407,6 @@ const actions = {
     notify,
 }
 
-export default withRouter(
-    connect(mapStateToProps, actions)(StatsFiltersContainer)
-)
+const connector = connect(makeMapStateToProps, actions)
+
+export default withRouter(connector(StatsFiltersContainer))

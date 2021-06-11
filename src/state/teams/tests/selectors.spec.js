@@ -13,7 +13,7 @@ describe('teams selectors', () => {
         state = {
             teams: initialState.mergeDeep({
                 all: {
-                    1: {id: 1, name: 'Team 1'},
+                    1: {id: 1, name: 'Team 1', members: []},
                     2: {id: 2, name: 'Team 2'},
                 },
             }),
@@ -30,5 +30,10 @@ describe('teams selectors', () => {
             state.teams.get('all').valueSeq()
         )
         expect(selectors.getTeams({})).toEqualImmutable(fromJS([]))
+    })
+
+    it('getLabelledTeams()', () => {
+        expect(selectors.getLabelledTeams(state)).toMatchSnapshot()
+        expect(selectors.getLabelledTeams({})).toEqualImmutable(fromJS([]))
     })
 })

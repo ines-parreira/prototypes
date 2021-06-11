@@ -13,7 +13,7 @@ import {currentAccountHasFeature} from '../../state/currentAccount/selectors'
 import Paywall from '../common/components/Paywall/Paywall'
 import {getIntegrations} from '../../state/integrations/selectors'
 
-import StatsFilters from './StatsFilters.js'
+import StatsFilters from './StatsFilters'
 import Stats from './Stats'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
 

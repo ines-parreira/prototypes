@@ -28,6 +28,8 @@ import {
 import QuickSelectionOption from './QuickSelectionOption'
 import css from './SelectFilter.less'
 
+type Value = string | number
+
 enum CheckedStatus {
     Checked = 'checked',
     Unchecked = 'unchecked',
@@ -35,8 +37,8 @@ enum CheckedStatus {
 }
 
 interface ItemContext {
-    handleChange: (itemId: string) => void
-    isChecked: (label: string) => boolean
+    handleChange: (itemId: Value) => void
+    isChecked: (value: Value) => boolean
     isDisplayed: (label: string) => boolean
 }
 
@@ -54,7 +56,7 @@ const SelectFilterItemContext = createContext<ItemContext>({
 
 type ItemProps = {
     label: string
-    value: string
+    value: Value
     icon?: string
 }
 
@@ -93,16 +95,16 @@ const Item = ({label, value, icon}: ItemProps) => {
 Item.displayName = 'SelectFilter.Item'
 
 export type GroupProps = {
-    items: string[]
+    items: Value[]
     label: string
-    value: string
+    value: Value
 }
 
 interface GroupContext {
     getCheckedStatus: (group: Partial<GroupProps>) => CheckedStatus
-    handleChange: (groupId: string, items: string[]) => void
-    isChecked: (label: string) => boolean
-    isDisplayed: (label: string, items: string[]) => boolean
+    handleChange: (groupId: Value, items: Value[]) => void
+    isChecked: (value: Value) => boolean
+    isDisplayed: (label: string, items: Value[]) => boolean
 }
 
 const SelectFilterGroupContext = createContext<GroupContext>({
@@ -125,16 +127,13 @@ const Group = ({items, label, value}: GroupProps) => {
         SelectFilterGroupContext
     )
 
-    const handleIndeterminate = useCallback(
-        (el: HTMLInputElement) => {
-            if (!el) {
-                return
-            }
-            el.indeterminate =
-                getCheckedStatus({items, value}) === CheckedStatus.Partial
-        },
-        [items, value]
-    )
+    const handleIndeterminate = (el: HTMLInputElement) => {
+        if (!el) {
+            return
+        }
+        el.indeterminate =
+            getCheckedStatus({items, value}) === CheckedStatus.Partial
+    }
 
     if (!isDisplayed(label, items)) {
         return null
@@ -171,11 +170,11 @@ type Props = {
     isDisabled?: boolean
     isMultiple?: boolean
     isRequired?: boolean
-    onChange: (value: string[]) => void
+    onChange: (value: Value[]) => void
     onSearch?: (query: string) => void
     plural?: string
     singular?: string
-    value: string[]
+    value: Value[]
 }
 
 const DefaultDropdownMenu = (props: ComponentProps<typeof DropdownMenu>) => (
@@ -196,7 +195,7 @@ const SelectFilter = ({
     value,
 }: Props) => {
     const [search, setSearch] = useState('')
-    const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
+    const [selectedGroupIds, setSelectedGroupIds] = useState<Value[]>([])
 
     useEffect(() => {
         onSearch?.(search)
@@ -254,8 +253,8 @@ const SelectFilter = ({
         [children]
     )
 
-    const updateGroupValue = (nextValue: string[]) => {
-        const removedGroupIds: string[] = []
+    const updateGroupValue = (nextValue: Value[]) => {
+        const removedGroupIds: Value[] = []
         selectedGroupIds.map((groupId) => {
             const group = groups?.find((group) => group.value === groupId)
 
@@ -270,7 +269,7 @@ const SelectFilter = ({
     }
 
     const handleItemChange = useCallback(
-        (itemId: string) => {
+        (itemId: Value) => {
             if (
                 isDisabled ||
                 (value.length === 1 && value[0] === itemId && isRequired)
@@ -278,7 +277,7 @@ const SelectFilter = ({
                 return
             }
 
-            let nextValue: string[]
+            let nextValue: Value[]
             if (!isMultiple) {
                 if (value[0] === itemId) {
                     nextValue = []
@@ -296,7 +295,7 @@ const SelectFilter = ({
     )
 
     const handleGroupChange = useCallback(
-        (groupId: string, items: string[]) => {
+        (groupId: Value, items: Value[]) => {
             if (isDisabled || !selectedGroupIds) {
                 return
             }
@@ -327,7 +326,7 @@ const SelectFilter = ({
     const isItemDisplayed = (label: string) =>
         search === '' || label.toLowerCase().includes(search.toLowerCase())
 
-    const isGroupDisplayed = (label: string, groupItems: string[]) => {
+    const isGroupDisplayed = (label: string, groupItems: Value[]) => {
         if (
             search === '' ||
             label?.toLowerCase().includes(search.toLowerCase())

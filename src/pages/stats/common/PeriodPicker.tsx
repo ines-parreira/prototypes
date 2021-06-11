@@ -10,7 +10,7 @@ import {getTimezone} from '../../../state/currentUser/selectors'
 import css from './PeriodPicker.less'
 
 type Props = {
-    isDisabled: boolean
+    isDisabled?: boolean
     endDatetime: Moment
     onChange: ({
         start_datetime,

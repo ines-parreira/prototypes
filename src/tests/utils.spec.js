@@ -668,4 +668,33 @@ describe('global utils', () => {
             expect(utils.lightenDarkenColor(color, amt)).toMatchSnapshot()
         })
     })
+
+    describe('makeGetPlainJS()', () => {
+        const state = {
+            object: fromJS({
+                users: [
+                    {id: 1, name: 'Homer'},
+                    {id: 2, name: 'Marge'},
+                ],
+            }),
+            list: fromJS([
+                {id: 3, name: 'Lisa'},
+                {id: 4, name: 'Bart'},
+            ]),
+        }
+        const selectorFromMap = (state) => state.object || fromJS({})
+        const selectorFromList = (state) => state.list || fromJS({})
+
+        it('should return plain js object from an Immutable Map collection', () => {
+            const getDataToJS = utils.makeGetPlainJS(selectorFromMap)
+            const data = getDataToJS(state)
+            expect(data).toMatchSnapshot()
+        })
+
+        it('should return plain js object from an Immutable List collection', () => {
+            const getDataToJS = utils.makeGetPlainJS(selectorFromList)
+            const data = getDataToJS(state)
+            expect(data).toMatchSnapshot()
+        })
+    })
 })
