@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import axios, {CancelTokenSource} from 'axios'
 
@@ -17,6 +17,8 @@ describe('<Stats/>', () => {
     const channelsStatView = statsViewsConfig.getIn(['channels', 'link'])
     const notifyMock = jest.fn()
     const statFetchedMock = jest.fn()
+    const fetchStatEndedMock = jest.fn()
+    const fetchStatStartedMock = jest.fn()
     const defaultProps = ({
         notify: notifyMock,
         filters: fromJS({
@@ -26,6 +28,8 @@ describe('<Stats/>', () => {
             },
         }),
         statFetched: statFetchedMock,
+        fetchStatEnded: fetchStatEndedMock,
+        fetchStatStarted: fetchStatStartedMock,
     } as unknown) as ComponentProps<typeof StatsContainer>
 
     let apiMock: MockAdapter
@@ -40,23 +44,18 @@ describe('<Stats/>', () => {
     })
 
     describe('componentDidMount()', () => {
-        it('should fetch stats and populate the state', (done) => {
+        it('should fetch stats', (done) => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
-
-            const componentWrapper = shallow(
+            shallow(
                 <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const component = componentWrapper.instance()
-            expect(component.state).toMatchSnapshot(
-                'should contain loading stats'
-            )
+
+            expect(fetchStatStartedMock.mock.calls).toMatchSnapshot()
             setTimeout(() => {
-                expect(component.state).toMatchSnapshot(
-                    'should contain data of stats and be marked as not loading'
-                )
+                expect(fetchStatEndedMock.mock.calls).toMatchSnapshot()
                 expect(statFetchedMock.mock.calls).toMatchSnapshot()
                 done()
             })
@@ -64,18 +63,15 @@ describe('<Stats/>', () => {
 
         it('should create a notification (server error) when fetching stats fails', (done) => {
             apiMock.onAny().reply(400, {error: {msg: 'Invalid filters'}})
-
-            const componentWrapper = shallow(
+            shallow(
                 <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const component = componentWrapper.instance()
+
             setTimeout(() => {
-                expect(component.state).toMatchSnapshot(
-                    'stats should be marked as not loading'
-                )
+                expect(fetchStatEndedMock.mock.calls).toMatchSnapshot()
                 expect(notifyMock.mock.calls).toMatchSnapshot()
                 done()
             })
@@ -83,18 +79,15 @@ describe('<Stats/>', () => {
 
         it('should create a notification (unknown error) when fetching stats fails', (done) => {
             apiMock.onAny().reply(500)
-
-            const componentWrapper = shallow(
+            shallow(
                 <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const component = componentWrapper.instance()
+
             setTimeout(() => {
-                expect(component.state).toMatchSnapshot(
-                    'stats should be marked as not loading'
-                )
+                expect(fetchStatEndedMock.mock.calls).toMatchSnapshot()
                 expect(notifyMock.mock.calls).toMatchSnapshot()
                 done()
             })
@@ -104,14 +97,12 @@ describe('<Stats/>', () => {
     describe('componentDidUpdate', () => {
         it('should fetch stats when view parameter change', (done) => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
-
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-
             setTimeout(() => {
                 componentWrapper.setProps({
                     match: {
@@ -120,14 +111,7 @@ describe('<Stats/>', () => {
                         },
                     },
                 })
-                const component = componentWrapper.instance()
-                expect(component.state).toMatchSnapshot(
-                    'should contain loading stats'
-                )
                 setTimeout(() => {
-                    expect(component.state).toMatchSnapshot(
-                        'should contain data of stats and be marked as not loading'
-                    )
                     expect(statFetchedMock.mock.calls).toMatchSnapshot()
                     done()
                 })
@@ -136,14 +120,12 @@ describe('<Stats/>', () => {
 
         it('should fetch stats when filters change', (done) => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
-
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-
             setTimeout(() => {
                 componentWrapper.setProps({
                     filters: fromJS({
@@ -153,14 +135,7 @@ describe('<Stats/>', () => {
                         },
                     }),
                 })
-                const component = componentWrapper.instance()
-                expect(component.state).toMatchSnapshot(
-                    'should contain loading stats'
-                )
                 setTimeout(() => {
-                    expect(component.state).toMatchSnapshot(
-                        'should contain data of stats and be marked as not loading'
-                    )
                     expect(statFetchedMock.mock.calls).toMatchSnapshot()
                     done()
                 })
@@ -176,7 +151,6 @@ describe('<Stats/>', () => {
                         cancel: mockedCancelRequest,
                     } as unknown) as CancelTokenSource)
             )
-
             const componentWrapper = shallow(
                 <StatsContainer
                     {...defaultProps}
@@ -191,7 +165,6 @@ describe('<Stats/>', () => {
                     },
                 }),
             })
-
             setImmediate(() => {
                 expect(mockedCancelRequest).toHaveBeenCalledTimes(2)
                 done()
@@ -214,7 +187,6 @@ describe('<Stats/>', () => {
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-
             componentWrapper.unmount()
             expect(mockedCancelRequest).toHaveBeenCalledTimes(2)
         })
@@ -228,50 +200,6 @@ describe('<Stats/>', () => {
                     match={{params: {view: channelsStatView}} as any}
                 />
             )
-            const component = componentWrapper.instance()
-            component.setState({
-                fetchingStates: fromJS({}),
-                stats: fromJS({
-                    'first-response-time': firstResponseTimeStat,
-                }),
-            })
-            expect(componentWrapper.dive()).toMatchSnapshot()
-        })
-
-        it('should render stats as loading', () => {
-            const componentWrapper = shallow(
-                <StatsContainer
-                    {...defaultProps}
-                    match={{params: {view: channelsStatView}} as any}
-                />
-            )
-            const statNames = statsViewsConfig.getIn([
-                'channels',
-                'stats',
-            ]) as List<any>
-            const component = componentWrapper.instance()
-            component.setState({
-                fetchingStates: statNames.reduce(
-                    (loaders, statName: string) => loaders!.set(statName, true),
-                    fromJS({}) as Map<any, any>
-                ),
-                stats: fromJS({}),
-            })
-            expect(componentWrapper.dive()).toMatchSnapshot()
-        })
-
-        it("should not render stats because there is no stat to render and it's not fetching stats", () => {
-            const componentWrapper = shallow(
-                <StatsContainer
-                    {...defaultProps}
-                    match={{params: {view: channelsStatView}} as any}
-                />
-            )
-            const component = componentWrapper.instance()
-            component.setState({
-                fetchingStates: fromJS({}),
-                stats: fromJS({}),
-            })
             expect(componentWrapper.dive()).toMatchSnapshot()
         })
     })

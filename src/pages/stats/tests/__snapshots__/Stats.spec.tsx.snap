@@ -4,6 +4,23 @@ exports[`<Stats/> componentDidMount() should create a notification (server error
 Array [
   Array [
     Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+    },
+  ],
+]
+`;
+
+exports[`<Stats/> componentDidMount() should create a notification (server error) when fetching stats fails 2`] = `
+Array [
+  Array [
+    Object {
       "status": "error",
       "title": "Invalid filters",
     },
@@ -17,16 +34,24 @@ Array [
 ]
 `;
 
-exports[`<Stats/> componentDidMount() should create a notification (server error) when fetching stats fails: stats should be marked as not loading 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
-  },
-}
+exports[`<Stats/> componentDidMount() should create a notification (unknown error) when fetching stats fails 1`] = `
+Array [
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+    },
+  ],
+]
 `;
 
-exports[`<Stats/> componentDidMount() should create a notification (unknown error) when fetching stats fails 1`] = `
+exports[`<Stats/> componentDidMount() should create a notification (unknown error) when fetching stats fails 2`] = `
 Array [
   Array [
     Object {
@@ -43,16 +68,41 @@ Array [
 ]
 `;
 
-exports[`<Stats/> componentDidMount() should create a notification (unknown error) when fetching stats fails: stats should be marked as not loading 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
-  },
-}
+exports[`<Stats/> componentDidMount() should fetch stats 1`] = `
+Array [
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+    },
+  ],
+]
 `;
 
-exports[`<Stats/> componentDidMount() should fetch stats and populate the state 1`] = `
+exports[`<Stats/> componentDidMount() should fetch stats 2`] = `
+Array [
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel-per-day",
+      "statName": "tickets-created-per-channel-per-day",
+    },
+  ],
+  Array [
+    Object {
+      "resourceName": "tickets-created-per-channel",
+      "statName": "tickets-created-per-channel",
+    },
+  ],
+]
+`;
+
+exports[`<Stats/> componentDidMount() should fetch stats 3`] = `
 Array [
   Array [
     Object {
@@ -181,24 +231,6 @@ Array [
     },
   ],
 ]
-`;
-
-exports[`<Stats/> componentDidMount() should fetch stats and populate the state: should contain data of stats and be marked as not loading 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
-  },
-}
-`;
-
-exports[`<Stats/> componentDidMount() should fetch stats and populate the state: should contain loading stats 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": true,
-    "tickets-created-per-channel": true,
-  },
-}
 `;
 
 exports[`<Stats/> componentDidUpdate should fetch stats when filters change 1`] = `
@@ -458,24 +490,6 @@ Array [
 ]
 `;
 
-exports[`<Stats/> componentDidUpdate should fetch stats when filters change: should contain data of stats and be marked as not loading 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": false,
-    "tickets-created-per-channel": false,
-  },
-}
-`;
-
-exports[`<Stats/> componentDidUpdate should fetch stats when filters change: should contain loading stats 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-created-per-channel-per-day": true,
-    "tickets-created-per-channel": true,
-  },
-}
-`;
-
 exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change 1`] = `
 Array [
   Array [
@@ -733,47 +747,7 @@ Array [
 ]
 `;
 
-exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change: should contain data of stats and be marked as not loading 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-closed-per-agent-per-day": false,
-    "tickets-closed-per-agent": false,
-  },
-}
-`;
-
-exports[`<Stats/> componentDidUpdate should fetch stats when view parameter change: should contain loading stats 1`] = `
-Object {
-  "fetchingStates": Immutable.Map {
-    "tickets-closed-per-agent-per-day": true,
-    "tickets-closed-per-agent": true,
-  },
-}
-`;
-
-exports[`<Stats/> render() should not render stats because there is no stat to render and it's not fetching stats 1`] = `
-<div
-  className="container-fluid"
-  style={
-    Object {
-      "padding": 0,
-    }
-  }
-/>
-`;
-
 exports[`<Stats/> render() should render stats 1`] = `
-<div
-  className="container-fluid"
-  style={
-    Object {
-      "padding": 0,
-    }
-  }
-/>
-`;
-
-exports[`<Stats/> render() should render stats as loading 1`] = `
 <div
   className="container-fluid"
   style={
@@ -791,7 +765,6 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
     }
   >
     <withRouter(Connect(StatContainer))
-      loading={true}
       name="tickets-created-per-channel-per-day"
     />
   </div>
@@ -804,7 +777,6 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
     }
   >
     <withRouter(Connect(StatContainer))
-      loading={true}
       name="tickets-created-per-channel"
     />
   </div>

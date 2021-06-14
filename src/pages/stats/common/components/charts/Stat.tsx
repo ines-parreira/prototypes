@@ -21,6 +21,7 @@ import StatsHelpIcon from '../StatsHelpIcon'
 import {getViewFilters} from '../../../../../state/stats/selectors'
 import {TwoDimensionalChart} from '../../../../../models/stat/types'
 import {downloadStat} from '../../../../../models/stat/resources'
+import {getFetchingStatusByName} from '../../../../../state/ui/stats/selectors'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat.js'
@@ -30,7 +31,6 @@ import BarStat from './BarStat.js'
 
 type OwnProps = {
     defaultLoaderHeight: string
-    loading: boolean | Record<string, unknown>
     name: string
 }
 
@@ -90,8 +90,18 @@ export class StatContainer extends Component<Props, State> {
     }
 
     render() {
-        const {name, tagColors, loading, defaultLoaderHeight, stat} = this.props
+        const {
+            name,
+            tagColors,
+            defaultLoaderHeight,
+            stat,
+            isFetching,
+        } = this.props
         const {isDownloading} = this.state
+
+        if (isFetching == null) {
+            return null
+        }
         const context = {tagColors}
         const config = statsConfig.get(name) as Map<any, any>
         const statStyle = config.get('style')
@@ -99,7 +109,7 @@ export class StatContainer extends Component<Props, State> {
         // approximate height of a chart
         const downloadable = config.get('downloadable') || false
         // Loading states of key metrics statistics are displayed inside their components.
-        const isLoading = statStyle !== 'key-metrics' && loading === true
+        const isLoading = statStyle !== 'key-metrics' && isFetching === true
         const data = fromJS(stat?.data.data)
         const meta = fromJS(stat?.meta)
         const legend =
@@ -171,7 +181,7 @@ export class StatContainer extends Component<Props, State> {
                         <KeyMetricStat
                             data={data}
                             meta={meta}
-                            loading={loading}
+                            loading={fromJS(isFetching)}
                             config={config}
                         />
                     ) : statStyle === 'bar' ? (
@@ -218,6 +228,7 @@ const connector = connect(
                           }, fromJS({}) as Map<any, any>),
             stat: getStatDataByName(name)(state),
             filters: getViewFilters(match.params.view)(state),
+            isFetching: getFetchingStatusByName(name)(state),
         }
     },
     {notify}

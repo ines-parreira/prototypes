@@ -17,23 +17,15 @@ import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState} from '../../state/types'
 import {statFetched} from '../../state/entities/stats/actions'
 import {fetchStat} from '../../models/stat/resources'
+import {fetchStatEnded, fetchStatStarted} from '../../state/ui/stats/actions'
 
 import Stat from './common/components/charts/Stat'
 
 type Props = RouteComponentProps<{view: string}> &
     ConnectedProps<typeof connector>
 
-type State = {
-    fetchingStates: Map<any, any>
-}
-
-const initialState = {
-    fetchingStates: fromJS({}) as Map<any, any>,
-}
-
-export class StatsContainer extends React.Component<Props, State> {
+export class StatsContainer extends React.Component<Props> {
     cancellableRequests: {[key: string]: Canceler} = {}
-    state = initialState
 
     componentDidMount() {
         this.handleFetchStats()
@@ -58,7 +50,6 @@ export class StatsContainer extends React.Component<Props, State> {
             match: {params},
             filters,
         } = this.props
-        this.setState(initialState)
         const viewConfig = statViewsConfig.get(params.view) as Map<any, any>
         ;(viewConfig.get('stats') as List<any>).forEach((statName: string) =>
             this._fetchStat(statName, filters!)
@@ -68,7 +59,12 @@ export class StatsContainer extends React.Component<Props, State> {
     handleFetchStatsDebounced = _debounce(this.handleFetchStats, 1000)
 
     _fetchStat = (statName: string, filters: Map<any, any>) => {
-        const {notify, statFetched} = this.props
+        const {
+            notify,
+            statFetched,
+            fetchStatEnded,
+            fetchStatStarted,
+        } = this.props
         const statConfig = statsConfig.get(statName) as Map<any, any>
         let resourceNames = fromJS([statName]) as List<any>
         if (statConfig.get('style') === 'key-metrics') {
@@ -83,17 +79,7 @@ export class StatsContainer extends React.Component<Props, State> {
         }
 
         resourceNames.map(async (resourceName: string) => {
-            // We store the fetching state and data of a statistic differently if this one has several api resources to fetch.
-            const fetchingStateKey =
-                resourceNames.size > 1 ? [statName, resourceName] : [statName]
-            this.setState((state) => {
-                return {
-                    fetchingStates: state.fetchingStates.setIn(
-                        fetchingStateKey,
-                        true
-                    ),
-                }
-            })
+            void fetchStatStarted({statName, resourceName})
 
             try {
                 const cancelToken = axios.CancelToken.source()
@@ -115,6 +101,8 @@ export class StatsContainer extends React.Component<Props, State> {
                     statName,
                     value: stat,
                 })
+                delete this.cancellableRequests[`${resourceName}/${statName}`]
+                void fetchStatEnded({statName, resourceName})
                 return stat
             } catch (error) {
                 if (axios.isCancel(error)) {
@@ -138,16 +126,8 @@ export class StatsContainer extends React.Component<Props, State> {
                     notification.message = errorDetails
                 }
                 void notify(notification)
-            } finally {
                 delete this.cancellableRequests[`${resourceName}/${statName}`]
-                this.setState((state) => {
-                    return {
-                        fetchingStates: state.fetchingStates.setIn(
-                            fetchingStateKey,
-                            false
-                        ),
-                    }
-                })
+                void fetchStatEnded({statName, resourceName})
             }
         })
     }
@@ -166,15 +146,6 @@ export class StatsContainer extends React.Component<Props, State> {
                             any,
                             any
                         >
-                        const fetchingState = this.state.fetchingStates.get(
-                            statName
-                        )
-
-                        // An error occured: invalid filters, request timed out, etc....
-                        if (fetchingState == null) {
-                            return null
-                        }
-
                         let padding = '30px'
                         // First key metrics statistics are stuck to the top
                         if (
@@ -186,7 +157,7 @@ export class StatsContainer extends React.Component<Props, State> {
 
                         return (
                             <div style={{padding}} key={idx}>
-                                <Stat loading={fetchingState} name={statName} />
+                                <Stat name={statName} />
                             </div>
                         )
                     }
@@ -202,7 +173,7 @@ const connector = connect(
             filters: getViewFilters(props.match.params.view)(state),
         }
     },
-    {notify, statFetched}
+    {notify, statFetched, fetchStatEnded, fetchStatStarted}
 )
 
 export default withRouter(connector(StatsContainer))

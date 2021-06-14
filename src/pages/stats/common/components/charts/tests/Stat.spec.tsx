@@ -37,7 +37,7 @@ const minProps = {
     tagColors: null,
     notify: jest.fn(),
     filters: fromJS({}),
-    loading: false,
+    isFetching: false,
     stat: {data: {label: 'Stat label'}} as Stat,
 }
 

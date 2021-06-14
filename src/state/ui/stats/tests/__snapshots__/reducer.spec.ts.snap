@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stats reducer fetchStatEnded action should set the stat fetching status to false 1`] = `
+Object {
+  "fetchingMap": Object {
+    "overview/total-tickets-replied": false,
+  },
+}
+`;
+
+exports[`stats reducer fetchStatStarted action should set the stat fetching status to true 1`] = `
+Object {
+  "fetchingMap": Object {
+    "overview/total-tickets-replied": true,
+  },
+}
+`;
