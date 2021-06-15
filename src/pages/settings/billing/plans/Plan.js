@@ -171,8 +171,11 @@ const getFeatures = (
                   icon: 'playlist_add',
                   label: (
                       <>
-                          <b>${costPerTicket}</b> per ${costMultiplier} extra
-                          tickets
+                          <b>
+                              {plan.get('currencySign')}
+                              {costPerTicket}
+                          </b>{' '}
+                          per {costMultiplier} extra tickets
                       </>
                   ),
                   disabled: false,
