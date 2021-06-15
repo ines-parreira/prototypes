@@ -198,8 +198,9 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
     <div
       className="postman-run-button"
       data-postman-action="collection/import"
+      data-postman-collection-url="entityId=15687974-2ca60778-1282-4a00-9d6a-8e90213b8248&entityType=collection&workspaceId=b6894a63-39b4-496f-acdc-db697172e169"
       data-postman-param="env%5BGorgias%20Helpdesk%5D=W3siZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZG9tYWluIiwidmFsdWUiOiJqdXN0YXRlc3QiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZW1haWwiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiYXBpX2tleSIsInR5cGUiOiJ0ZXh0In1d"
-      data-postman-var-1="9cd4c1e0f841a18f3510"
+      data-postman-var-1="15687974-2ca60778-1282-4a00-9d6a-8e90213b8248"
     />
     <br />
     <br />
@@ -446,8 +447,9 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
     <div
       className="postman-run-button"
       data-postman-action="collection/import"
+      data-postman-collection-url="entityId=15687974-2ca60778-1282-4a00-9d6a-8e90213b8248&entityType=collection&workspaceId=b6894a63-39b4-496f-acdc-db697172e169"
       data-postman-param="env%5BGorgias%20Helpdesk%5D=W3siZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZG9tYWluIiwidmFsdWUiOiJqdXN0YXRlc3QiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZW1haWwiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiYXBpX2tleSIsInZhbHVlIjoiNGE3NWE2OWJiNDA5YzJjZDQwNDFkZjI5ZjU3OTExMDNhY2FmMDk5MWJmMGQwYjNmYTAyMjk1MTgzMDQ4MjUxMCIsInR5cGUiOiJ0ZXh0In1d"
-      data-postman-var-1="9cd4c1e0f841a18f3510"
+      data-postman-var-1="15687974-2ca60778-1282-4a00-9d6a-8e90213b8248"
     />
     <br />
     <br />

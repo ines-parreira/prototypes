@@ -293,7 +293,8 @@ export class APIViewComponent extends React.Component<Props, State> {
                     <div
                         className="postman-run-button"
                         data-postman-action="collection/import"
-                        data-postman-var-1="9cd4c1e0f841a18f3510"
+                        data-postman-var-1="15687974-2ca60778-1282-4a00-9d6a-8e90213b8248"
+                        data-postman-collection-url="entityId=15687974-2ca60778-1282-4a00-9d6a-8e90213b8248&entityType=collection&workspaceId=b6894a63-39b4-496f-acdc-db697172e169"
                         data-postman-param={postmanParams}
                     />
                     <br />
