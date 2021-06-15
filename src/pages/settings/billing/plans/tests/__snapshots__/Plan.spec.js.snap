@@ -21,7 +21,7 @@ exports[`<Plan/> should render a custom plan 1`] = `
       >
         54000
          /
-
+         
         mo
       </span>
     </div>
@@ -59,10 +59,12 @@ exports[`<Plan/> should render a custom plan 1`] = `
           class=""
         >
           <b>
-            $
             23.00
           </b>
-           per 100 extra tickets
+           
+          per 
+          100
+           extra tickets
         </div>
       </li>
       <li
@@ -317,7 +319,7 @@ exports[`<Plan/> should render a plan being selected 1`] = `
       >
         6000
          /
-
+         
         mo
       </span>
     </div>
@@ -355,10 +357,10 @@ exports[`<Plan/> should render a plan being selected 1`] = `
           class=""
         >
           <b>
-            $
             25.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
@@ -616,7 +618,7 @@ exports[`<Plan/> should render a plan featured 1`] = `
       >
         6000
          /
-
+         
         mo
       </span>
     </div>
@@ -654,10 +656,10 @@ exports[`<Plan/> should render a plan featured 1`] = `
           class=""
         >
           <b>
-            $
             25.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
@@ -914,7 +916,7 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
       >
         30000
          /
-
+         
         mo
       </span>
     </div>
@@ -952,10 +954,10 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
           class=""
         >
           <b>
-            $
             23.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
@@ -1212,7 +1214,7 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
       >
         6000
          /
-
+         
         mo
       </span>
     </div>
@@ -1250,10 +1252,10 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
           class=""
         >
           <b>
-            $
             25.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
@@ -1510,7 +1512,7 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
       >
         6000
          /
-
+         
         mo
       </span>
     </div>
@@ -1548,10 +1550,10 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
           class=""
         >
           <b>
-            $
             25.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
@@ -1808,7 +1810,7 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
       >
         6000
          /
-
+         
         mo
       </span>
     </div>
@@ -1846,10 +1848,10 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
           class=""
         >
           <b>
-            $
             25.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
@@ -2113,7 +2115,7 @@ exports[`<Plan/> should render an enterprise plan 1`] = `
           class=""
         >
           Discounted prices for
-
+           
           <b>
             volumes of 10.000+ billable tickets
           </b>
@@ -2705,7 +2707,7 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
       >
         6000
          /
-
+         
         mo
       </span>
     </div>
@@ -2743,10 +2745,10 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
           class=""
         >
           <b>
-            $
             25.00
           </b>
-           per $
+           
+          per 
           100
            extra tickets
         </div>
