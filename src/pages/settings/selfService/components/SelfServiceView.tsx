@@ -60,7 +60,7 @@ export const SelfServiceView = ({
 
             <Container fluid className="page-container">
                 <Row>
-                    <Col>
+                    <Col className={css.contentColumn}>
                         <div className="mb-3">
                             <p>
                                 Most ecommerce support requests are about the
@@ -72,7 +72,7 @@ export const SelfServiceView = ({
                                 are having. It will then create a chat ticket
                                 for your team to handle.
                             </p>
-                            <h5>
+                            <h5 className={css.enableSelfServiceTitle}>
                                 Enable Self-service{' '}
                                 <i
                                     id="enable-self-service-icon"
@@ -103,7 +103,9 @@ export const SelfServiceView = ({
                                         Self-service is only available to stores
                                         that have a Shopify store integration.
                                     </p>
-                                    <Table className="table-hover table-integrations">
+                                    <Table
+                                        className={`table-hover table-integrations ${css.selfServiceIntegrationsTable}`}
+                                    >
                                         <tbody>
                                             {shopifyIntegrations
                                                 .valueSeq()

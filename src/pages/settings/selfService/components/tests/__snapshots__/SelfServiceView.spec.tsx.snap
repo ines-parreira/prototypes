@@ -21,7 +21,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
         class="row"
       >
         <div
-          class="col"
+          class="contentColumn col"
         >
           <div
             class="mb-3"
@@ -32,7 +32,9 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
             <p>
               Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
-            <h5>
+            <h5
+              class="enableSelfServiceTitle"
+            >
               Enable Self-service
                
               <i
@@ -46,7 +48,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
               Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
-              class="table-hover table-integrations table"
+              class="table-hover table-integrations selfServiceIntegrationsTable table"
             >
               <tbody>
                 <tr>
@@ -56,7 +58,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore1
                         </b>
@@ -93,7 +103,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore2
                         </b>
@@ -130,7 +148,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore3
                         </b>
@@ -167,7 +193,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore4/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore4
                         </b>
@@ -238,7 +272,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
         class="row"
       >
         <div
-          class="col"
+          class="contentColumn col"
         >
           <div
             class="mb-3"
@@ -249,7 +283,9 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
             <p>
               Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
-            <h5>
+            <h5
+              class="enableSelfServiceTitle"
+            >
               Enable Self-service
                
               <i
@@ -263,7 +299,7 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
               Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
-              class="table-hover table-integrations table"
+              class="table-hover table-integrations selfServiceIntegrationsTable table"
             >
               <tbody>
                 <tr>
@@ -273,7 +309,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore1
                         </b>
@@ -310,7 +354,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore2
                         </b>
@@ -347,7 +399,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore3
                         </b>
@@ -384,7 +444,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                     <a
                       to="/app/settings/self-service/shopify/mystore4/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore4
                         </b>
@@ -455,7 +523,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
         class="row"
       >
         <div
-          class="col"
+          class="contentColumn col"
         >
           <div
             class="mb-3"
@@ -466,7 +534,9 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
             <p>
               Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
-            <h5>
+            <h5
+              class="enableSelfServiceTitle"
+            >
               Enable Self-service
                
               <i
@@ -480,7 +550,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
               Self-service is only available to stores that have a Shopify store integration.
             </p>
             <table
-              class="table-hover table-integrations table"
+              class="table-hover table-integrations selfServiceIntegrationsTable table"
             >
               <tbody>
                 <tr>
@@ -490,7 +560,15 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     <a
                       to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore1
                         </b>
@@ -527,7 +605,15 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     <a
                       to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore2
                         </b>
@@ -564,7 +650,15 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                     <a
                       to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
-                      <div>
+                      <div
+                        class="nameAndLogoWrapper"
+                      >
+                        <img
+                          alt="Shopify logo"
+                          class="logo"
+                          role="presentation"
+                          src="test-file-stub"
+                        />
                         <b>
                           mystore3
                         </b>
@@ -635,7 +729,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
         class="row"
       >
         <div
-          class="col"
+          class="contentColumn col"
         >
           <div
             class="mb-3"
@@ -646,7 +740,9 @@ exports[`<SelfServiceView/> render() should render the default message when ther
             <p>
               Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat ticket for your team to handle.
             </p>
-            <h5>
+            <h5
+              class="enableSelfServiceTitle"
+            >
               Enable Self-service
                
               <i

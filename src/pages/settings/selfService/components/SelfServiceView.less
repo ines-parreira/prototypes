@@ -1,10 +1,36 @@
 @import '~css/new/colors';
 
 :local {
+    .contentColumn {
+        max-width: 710px;
+    }
+
+    .enableSelfServiceTitle {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: -0.02em;
+    }
+
     .enableSelfServiceIcon {
         color: @neutral6;
     }
     .enableSelfServiceTooltip {
         margin-bottom: 5px;
+    }
+}
+
+:global(.page-container) {
+    :local .selfServiceIntegrationsTable {
+        td {
+            &:first-child {
+                padding-left: 0;
+            }
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
     }
 }

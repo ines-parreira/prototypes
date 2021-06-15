@@ -8,9 +8,12 @@ import {
     ShopType,
 } from '../../../../state/self_service/types'
 import * as SelfServiceActions from '../../../../state/self_service/actions'
+import {getIconFromType} from '../../../../state/integrations/helpers'
 
 import {generateConfiguration} from '../utils/generateConfiguration'
 import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
+
+import css from './IntegrationRow.less'
 
 interface Props {
     integration: Map<any, any>
@@ -70,7 +73,14 @@ export const IntegrationRow = ({
                 <Link
                     to={`/app/settings/self-service/${integrationType}/${shopName}/preferences`}
                 >
-                    <div>
+                    <div className={css.nameAndLogoWrapper}>
+                        <img
+                            alt={`Shopify logo`}
+                            role="presentation"
+                            className={css.logo}
+                            src={getIconFromType('shopify')}
+                        />
+
                         <b>{shopName}</b>
                     </div>
                 </Link>
