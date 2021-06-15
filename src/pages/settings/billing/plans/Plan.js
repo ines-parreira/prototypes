@@ -323,23 +323,21 @@ export function Plan({
                     {!isCurrentPlan ? null : isLegacyPlan ? (
                         <LegacyPlanBadge />
                     ) : (
-                        <Badge
-                            color={
-                                isEnterprisePlan
-                                    ? 'warning'
-                                    : planColors[plan.get('name')]
-                            }
-                        >
-                            CURRENT PLAN
-                        </Badge>
+                        comparaisonMode && (
+                            <Badge
+                                color={
+                                    isEnterprisePlan
+                                        ? 'warning'
+                                        : planColors[plan.get('name')]
+                                }
+                            >
+                                CURRENT PLAN
+                            </Badge>
+                        )
                     )}
                 </div>
                 <div className="header-text">
-                    <strong>
-                        {`${plan.get('name')}${
-                            isCurrentPlan && isLegacyPlan ? ' legacy' : ''
-                        }`}
-                    </strong>
+                    <strong>{plan.get('name')}</strong>
                     {plan.get('amount') > 0 && (
                         <span className="plan-header-details">
                             {plan.get('currencySign')}
@@ -451,7 +449,12 @@ export function Plan({
                                 {isCurrentPlan
                                     ? 'Current Plan'
                                     : `${
-                                          isDowngrade ? 'Downgrade' : 'Upgrade'
+                                          plan.get('name') ===
+                                          currentPlan.get('name')
+                                              ? 'Switch'
+                                              : isDowngrade
+                                              ? 'Downgrade'
+                                              : 'Upgrade'
                                       } to ${plan.get('name')} Plan`}
                             </Button>
                             {displayPopover && (

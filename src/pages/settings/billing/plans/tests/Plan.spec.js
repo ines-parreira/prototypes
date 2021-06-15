@@ -26,7 +26,28 @@ describe('<Plan/>', () => {
                 isCurrentPlan: true,
             },
         ],
+        ['basic plan', {currentPlan: fromJS(proPlan), plan: fromJS(basicPlan)}],
+        [
+            'advanced plan',
+            {currentPlan: fromJS(proPlan), plan: fromJS(advancedPlan)},
+        ],
         ['a plan without a current plan', {currentPlan: fromJS({})}],
+        [
+            'A Legacy plan different than current plan',
+            {
+                currentPlan: fromJS(basicPlan),
+                plan: fromJS(proPlan),
+                isLegacyPlan: true,
+            },
+        ],
+        [
+            'New plan equivalent to current Legacy plan',
+            {
+                isLegacyPlan: true,
+                currentPlan: fromJS(proPlan),
+                plan: fromJS(proPlan),
+            },
+        ],
         [
             'the current plan with legacy features',
             {

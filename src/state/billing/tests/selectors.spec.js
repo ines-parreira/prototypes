@@ -162,12 +162,6 @@ describe('billing selectors', () => {
         })
     })
 
-    it('getEndSubscriptionPeriodLabel', () => {
-        expect(selectors.getEndSubscriptionPeriodLabel(state)).toBe(
-            'October 2017'
-        )
-    })
-
     describe('currentPlanId()', () => {
         it('should return plan of the current subscription', () => {
             const state = {}

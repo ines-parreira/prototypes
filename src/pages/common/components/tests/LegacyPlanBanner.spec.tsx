@@ -5,12 +5,12 @@ import {LegacyPlanBanner} from '../LegacyPlanBanner'
 
 describe('<LegacyPlanBanner />', () => {
     it('should render a banner', () => {
-        const {container} = render(<LegacyPlanBanner subscriptionEnd="test" />)
+        const {container} = render(<LegacyPlanBanner />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a banner without subscription end date', () => {
-        const {container} = render(<LegacyPlanBanner subscriptionEnd="test" />)
+        const {container} = render(<LegacyPlanBanner />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })
