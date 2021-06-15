@@ -57,7 +57,7 @@ const SelectFilterItemContext = createContext<ItemContext>({
 type ItemProps = {
     label: string
     value: Value
-    icon?: string
+    icon?: string | ReactNode
 }
 
 const Item = ({label, value, icon}: ItemProps) => {
@@ -83,9 +83,13 @@ const Item = ({label, value, icon}: ItemProps) => {
                 type="checkbox"
             />
             {icon ? (
-                <i className={classnames('icon material-icons', css.icon)}>
-                    {icon}
-                </i>
+                typeof icon === 'string' ? (
+                    <i className={classnames('icon material-icons', css.icon)}>
+                        {icon}
+                    </i>
+                ) : (
+                    icon
+                )
             ) : null}
             {` ${label}`}
         </DropdownItem>

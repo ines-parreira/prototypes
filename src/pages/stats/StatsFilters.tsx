@@ -14,7 +14,7 @@ import {CHANNELS} from '../../config/ticket'
 import useCancellableRequest from '../../hooks/useCancellableRequest'
 import useDelayedAsyncFn from '../../hooks/useDelayedAsyncFn'
 import {OrderDirection} from '../../models/api/types'
-import {Integration} from '../../models/integration/types'
+import {Integration, IntegrationType} from '../../models/integration/types'
 import {fetchTags} from '../../models/tag/resources'
 import {
     FetchTagsOptions,
@@ -35,6 +35,13 @@ import InfiniteScroll from '../common/components/InfiniteScroll/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader'
 import PopoverModal from '../common/components/PopoverModal'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
+
+import gmail from '../../../img/integrations/gmail.png'
+import outlook from '../../../img/integrations/outlook.svg'
+import aircall from '../../../img/integrations/aircall.png'
+import shopify from '../../../img/integrations/shopify.png'
+import smooch from '../../../img/integrations/smooch.png'
+import zendesk from '../../../img/integrations/zendesk.png'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter'
@@ -283,6 +290,15 @@ export const StatsFiltersContainer = ({
                           allowedTypes.includes(integration.type)
                       )
                     : integrations
+                const logos: Partial<{[key in IntegrationType]: string}> = {
+                    aircall,
+                    gmail,
+                    outlook,
+                    shopify,
+                    smooch,
+                    smooch_inside: smooch,
+                    zendesk,
+                }
 
                 return (
                     <SelectFilter
@@ -297,14 +313,36 @@ export const StatsFiltersContainer = ({
                             fromJS([])
                         ) as List<any>).toJS()}
                     >
-                        {data.map((integration) => (
-                            <SelectFilter.Item
-                                key={integration.id}
-                                label={integration.name}
-                                value={integration.id}
-                                icon={integration.type}
-                            />
-                        ))}
+                        {data.map((integration) => {
+                            const icon = [
+                                IntegrationType.EmailIntegrationType,
+                                IntegrationType.FacebookIntegrationType,
+                                IntegrationType.HttpIntegrationType,
+                                IntegrationType.PhoneIntegrationType,
+                                IntegrationType.GorgiasChatIntegrationType,
+                            ].includes(integration.type) ? (
+                                integration.type ===
+                                IntegrationType.GorgiasChatIntegrationType ? (
+                                    'chat'
+                                ) : (
+                                    integration.type
+                                )
+                            ) : (
+                                <img
+                                    src={logos[integration.type]}
+                                    alt={`logo-${integration.type}`}
+                                    className={css.integrationIcon}
+                                />
+                            )
+                            return (
+                                <SelectFilter.Item
+                                    key={integration.id}
+                                    label={integration.name}
+                                    value={integration.id}
+                                    icon={icon}
+                                />
+                            )
+                        })}
                     </SelectFilter>
                 )
             }

@@ -95,11 +95,11 @@ exports[`<StatsFilters /> should display the page 1`] = `
                 class="mr-2 checkbox"
                 type="checkbox"
               />
-              <i
-                class="icon material-icons icon"
-              >
-                gmail
-              </i>
+              <img
+                alt="logo-gmail"
+                class="integrationIcon"
+                src="test-file-stub"
+              />
                Acme Billing
             </label>
             <label
