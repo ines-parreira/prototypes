@@ -1,15 +1,24 @@
-import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
+import React, {
+    ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import {useUpdateEffect} from 'react-use'
 import DateRangePicker, {
     EventHandler,
     Props as DateRangeProps,
 } from 'react-bootstrap-daterangepicker'
 import {Tooltip} from 'reactstrap'
+import moment, {Moment} from 'moment-timezone'
 
 import css from './DatePicker.less'
 
 type Props = {
     children?: ReactNode
+    onSubmit: (start: Moment, end: Moment) => void
     isOpen?: boolean
     rangesLabel?: string
     toggle?: () => void
@@ -18,9 +27,9 @@ type Props = {
 
 export const DatePicker = ({
     children,
+    onSubmit,
     initialSettings,
     isOpen,
-    onApply,
     rangesLabel,
     toggle,
     unavailableDateMessage,
@@ -31,6 +40,13 @@ export const DatePicker = ({
     const dateRangerPickerElement = useRef<HTMLElement>()
     const [shouldToggle, setShouldToggle] = useState(true)
     const isOpenRef = useRef(isOpen)
+    const timezone = useMemo(
+        () =>
+            moment.isMoment(initialSettings?.startDate)
+                ? initialSettings?.startDate.tz() || moment().tz()
+                : moment().tz(),
+        [initialSettings]
+    )
 
     useEffect(() => {
         isOpenRef.current = isOpen
@@ -127,7 +143,27 @@ export const DatePicker = ({
             <DateRangePicker
                 ref={datePickerRef}
                 onEvent={handleEvent}
-                onApply={onApply}
+                onApply={(event, picker) => {
+                    if (timezone) {
+                        const strippedTimeStartDate = picker.startDate.format(
+                            'YYYY-MM-DDTHH:mm'
+                        )
+                        const strippedTimeEndDate = picker.endDate.format(
+                            'YYYY-MM-DDTHH:mm'
+                        )
+                        const startDate = moment(strippedTimeStartDate).tz(
+                            timezone,
+                            true
+                        )
+                        const endDate = moment(strippedTimeEndDate).tz(
+                            timezone,
+                            true
+                        )
+                        onSubmit(startDate, endDate)
+                    } else {
+                        onSubmit(picker.startDate, picker.endDate)
+                    }
+                }}
                 initialSettings={initialSettings}
                 onShow={(event, target) => {
                     dateRangerPickerElement.current = target.container?.get(0)

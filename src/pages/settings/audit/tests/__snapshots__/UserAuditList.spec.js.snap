@@ -89,7 +89,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
             "timePicker": true,
           }
         }
-        onApply={[Function]}
+        onSubmit={[Function]}
         rangesLabel="Shortcuts"
         unavailableDateMessage="There is no data available on this date because it’s past 7 days."
       >

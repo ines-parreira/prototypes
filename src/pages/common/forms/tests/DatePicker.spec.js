@@ -1,17 +1,30 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import DatePicker from '../DatePicker.tsx'
 
 describe('DatePicker', () => {
+    const datetime = moment('2021-05-12')
+
+    const minProps = {
+        initialSettings: {
+            applyButtonClasses: 'btn-success mr-2',
+            cancelButtonClasses: 'btn-secondary',
+            minDate: datetime,
+            opens: 'left',
+            timePicker: false,
+            showCustomRangeLabel: false,
+            singleDatePicker: true,
+        },
+    }
+
     beforeEach(() => {
         const mockDate = new Date('2021-05-14T12:34:56.000Z')
         global.Date.now = jest.fn(() => mockDate)
     })
 
     it('should render a date range picker', () => {
-        const datetime = moment('2021-05-14')
         const ranges = {
             tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
         }
@@ -19,17 +32,10 @@ describe('DatePicker', () => {
             <DatePicker
                 isOpen={true}
                 toggle={null}
-                onApply={null}
+                onSubmit={null}
                 initialSettings={{
-                    applyButtonClasses: 'btn-success mr-2',
-                    cancelButtonClasses: 'btn-secondary',
-                    minDate: datetime,
-                    opens: 'left',
+                    ...minProps.initialSettings,
                     ranges,
-                    timePicker: true,
-                    showCustomRangeLabel: false,
-                    singleDatePicker: true,
-                    startDate: datetime,
                 }}
             >
                 <button>Select a date</button>
@@ -41,7 +47,7 @@ describe('DatePicker', () => {
 
     it('should display the opened date picker', () => {
         const {getByText} = render(
-            <DatePicker isOpen={true}>
+            <DatePicker {...minProps} isOpen={true}>
                 <button>Select a date</button>
             </DatePicker>
         )
@@ -58,7 +64,7 @@ describe('DatePicker', () => {
     it('should open the date range picker on trigger element click', async () => {
         const showSpy = jest.fn()
         const {getByText} = render(
-            <DatePicker toggle={showSpy}>
+            <DatePicker {...minProps} toggle={showSpy}>
                 <button>Select a date</button>
             </DatePicker>
         )
@@ -74,12 +80,48 @@ describe('DatePicker', () => {
 
         const toggleSpy = jest.fn()
         const {getByText} = render(
-            <DatePicker isOpen toggle={toggleSpy}>
+            <DatePicker {...minProps} isOpen toggle={toggleSpy}>
                 <button>Select a date</button>
             </DatePicker>
         )
 
         fireEvent.click(getByText(externalText.textContent))
         await waitFor(() => expect(toggleSpy).toHaveBeenCalled)
+    })
+
+    it('should call onSubmit with expected date when selecting a date', () => {
+        const onSubmit = jest.fn()
+        const {getByText} = render(
+            <DatePicker {...minProps} isOpen={true} onSubmit={onSubmit}>
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        fireEvent.click(getByText('Apply'))
+
+        expect(onSubmit.mock.calls).toMatchSnapshot()
+    })
+
+    it('should call onSubmit with expected range when selecting a range of date', () => {
+        const onSubmit = jest.fn()
+        const {getByText} = render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                onSubmit={onSubmit}
+                initialSettings={{
+                    ...minProps.initialSettings,
+                    singleDatePicker: false,
+                    startDate: moment('2021-05-20'),
+                    endDate: moment('2021-05-22'),
+                }}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        fireEvent.click(getByText('Apply'))
+
+        expect(onSubmit.mock.calls).toMatchSnapshot()
     })
 })

@@ -45,7 +45,7 @@ exports[`<TicketHeader /> should render an unread ticket without the "Mark as un
       </DropdownToggle>
       <TicketSnoozePicker
         isOpen={false}
-        onApply={[Function]}
+        onSubmit={[Function]}
         timezone="America/Los_Angeles"
         toggle={[Function]}
       />
@@ -268,7 +268,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       </DropdownToggle>
       <TicketSnoozePicker
         isOpen={false}
-        onApply={[Function]}
+        onSubmit={[Function]}
         timezone="America/Los_Angeles"
         toggle={[Function]}
       />
@@ -569,7 +569,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       </DropdownToggle>
       <TicketSnoozePicker
         isOpen={false}
-        onApply={[Function]}
+        onSubmit={[Function]}
         timezone="America/Los_Angeles"
         toggle={[Function]}
       />
@@ -805,7 +805,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
       </DropdownToggle>
       <TicketSnoozePicker
         isOpen={false}
-        onApply={[Function]}
+        onSubmit={[Function]}
         timezone="America/Los_Angeles"
         toggle={[Function]}
       />

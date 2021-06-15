@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import moment from 'moment'
+import moment, {type Moment} from 'moment-timezone'
 import classnames from 'classnames'
 import {
     UncontrolledDropdown,
@@ -141,8 +141,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         return this.props.setTrashed(null)
     }
 
-    _snoozeTicket = (event: Object, picker: Object) => {
-        return this.props.snoozeTicket(picker.endDate.format(), () => {
+    _snoozeTicket = (datetime: Moment) => {
+        return this.props.snoozeTicket(datetime.format(), () => {
             this._goToNextTicket()
         })
     }
@@ -282,7 +282,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                 timezone={timezone}
                                 isOpen={showSnoozePicker}
                                 toggle={this._toggleSnoozePicker}
-                                onApply={this._snoozeTicket}
+                                onSubmit={this._snoozeTicket}
                             />
                             <DropdownMenu right className={css.actionsDropdown}>
                                 <DropdownItem

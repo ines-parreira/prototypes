@@ -21,7 +21,7 @@ describe('<TicketSnoozePicker/>', () => {
     const minProps = {
         timezone: 'US/Pacific',
         isOpen: false,
-        onApply: jest.fn(),
+        onSubmit: jest.fn(),
         toggle: jest.fn(),
     }
 
@@ -50,7 +50,7 @@ describe('<TicketSnoozePicker/>', () => {
             const {baseElement} = render(
                 <TicketSnoozePicker
                     {...minProps}
-                    datetime="2018-10-26"
+                    datetime="2018-10-26T12:33"
                     isOpen={true}
                 />
             )

@@ -3,7 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Alert, Button, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
-import moment from 'moment'
+import moment, {type Moment} from 'moment-timezone'
 
 import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
@@ -91,11 +91,11 @@ export class UserAuditList extends React.Component<Props, State> {
             })
     }
 
-    _onApplyDatePicker = (event: Object, picker: Object) => {
+    _onApplyDatePicker = (startDate: Moment, endDate: Moment) => {
         this.setState(
             {
-                start_datetime: picker.startDate.format(),
-                end_datetime: picker.endDate.format(),
+                start_datetime: startDate.format(),
+                end_datetime: endDate.format(),
             },
             this._fetchUsersAudit
         )
@@ -176,7 +176,7 @@ export class UserAuditList extends React.Component<Props, State> {
                             ))}
                         </SelectFilter>
                         <DatePicker
-                            onApply={this._onApplyDatePicker}
+                            onSubmit={this._onApplyDatePicker}
                             initialSettings={{
                                 alwaysShowCalendars: true,
                                 applyButtonClasses: 'btn-success mr-2',
