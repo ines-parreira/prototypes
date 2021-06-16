@@ -1,20 +1,31 @@
-// @flow
-import React, {Component} from 'react'
+import React, {Component, ComponentType} from 'react'
 import classnames from 'classnames'
 
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 
-import type {themeType} from '../types'
+import {Theme} from '../types'
 
 type Props = {
-    entryComponent: any,
-    searchValue: string,
-    onMentionSelect: (T: Map<*, *>) => void,
-    mention: Map<*, *>,
-    index: number,
-    onMentionFocus: (T: number) => void,
-    theme: themeType,
-    isFocused?: boolean,
+    entryComponent: ComponentType<
+        Partial<{
+            className: string
+            onMouseDown: (event: Event) => void
+            onMouseUp: () => void
+            onMouseEnter: () => void
+            role: string
+            theme: Theme
+            mention: Map<any, any>
+            searchValue: string
+        }>
+    >
+    searchValue: string
+    onMentionSelect: (T: Map<any, any>) => void
+    mention: Map<any, unknown>
+    index: number
+    onMentionFocus: (T: number) => void
+    theme: Theme
+    isFocused?: boolean
+    id?: string
 }
 
 export default class Entry extends Component<Props> {
@@ -53,7 +64,7 @@ export default class Entry extends Component<Props> {
         return (
             <EntryComponent
                 className={classnames(theme.mentionSuggestionsEntry, {
-                    [theme.mentionSuggestionsEntryFocused]: this.props
+                    [theme.mentionSuggestionsEntryFocused as string]: this.props
                         .isFocused,
                 })}
                 onMouseDown={this.onMouseDown}

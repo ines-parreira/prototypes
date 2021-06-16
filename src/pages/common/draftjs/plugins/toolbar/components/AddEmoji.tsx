@@ -7,7 +7,7 @@ import {ActionInjectedProps} from '../types'
 import {insertText} from '../../../../../../utils'
 import EmojiPicker from '../../../../components/EmojiPicker/EmojiPicker'
 
-import Popover from './ButtonPopover.js'
+import Popover from './ButtonPopover'
 
 type Props = ActionInjectedProps
 

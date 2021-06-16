@@ -6,7 +6,7 @@ import decorateComponentWithProps from 'decorate-component-with-props'
 import {Map} from 'immutable'
 
 import Mention from './Mention'
-import MentionSuggestions from './MentionSuggestions'
+import MentionSuggestions from './MentionSuggestions/index.tsx'
 import MentionSuggestionsPortal from './MentionSuggestionsPortal'
 import mentionStrategy from './mentionStrategy'
 import mentionSuggestionsStrategy from './mentionSuggestionsStrategy'

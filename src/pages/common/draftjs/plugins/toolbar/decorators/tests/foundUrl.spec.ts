@@ -1,7 +1,6 @@
-//@flow
 import {ContentState, RichUtils, SelectionState, EditorState} from 'draft-js'
 
-import createFoundUrl from '../foundUrl'
+import createFoundUrl from '../foundUrl.js'
 
 const foundUrl = createFoundUrl()
 
@@ -10,7 +9,7 @@ describe('foundUrl decorator', () => {
         const text = 'find a url http://google.com and http://gorgias.io'
         const block = ContentState.createFromText(text).getBlockMap().first()
         const spy = jest.fn()
-        foundUrl.strategy(block, spy)
+        foundUrl.strategy(block, spy, undefined as any)
         expect(spy.mock.calls.length).toBe(2)
         expect(spy.mock.calls[0]).toEqual([11, 28])
         expect(spy.mock.calls[1]).toEqual([33, 50])
@@ -20,7 +19,7 @@ describe('foundUrl decorator', () => {
         const text = 'find a url http://google.com/{{ticket.id}}'
         const block = ContentState.createFromText(text).getBlockMap().first()
         const spy = jest.fn()
-        foundUrl.strategy(block, spy)
+        foundUrl.strategy(block, spy, undefined as any)
         expect(spy.mock.calls.length).toBe(1)
         expect(spy.mock.calls[0]).toEqual([11, 42])
     })
@@ -34,7 +33,7 @@ describe('foundUrl decorator', () => {
             editorState.getCurrentContent().getFirstBlock().getKey()
         )
             .set('anchorOffset', 18)
-            .set('focusOffset', 28)
+            .set('focusOffset', 28) as SelectionState
         editorState.getCurrentContent().createEntity('link', 'MUTABLE')
         const entityKey = editorState
             .getCurrentContent()

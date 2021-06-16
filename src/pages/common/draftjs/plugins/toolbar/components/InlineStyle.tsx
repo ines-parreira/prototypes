@@ -1,18 +1,17 @@
-//@flow
-import * as React from 'react'
+import React, {Component} from 'react'
 import {RichUtils} from 'draft-js'
 
-import type {ActionInjectedProps} from '../types'
+import {ActionInjectedProps} from '../types'
 
 import Button from './Button'
 
 type Props = {
-    name: string,
-    icon: string,
-    style: string,
+    name: string
+    icon: string
+    style: string
 } & ActionInjectedProps
 
-export default class InlineStyle extends React.Component<Props> {
+export default class InlineStyle extends Component<Props> {
     _isActive = () => {
         const editorState = this.props.getEditorState()
         const contentState = editorState.getCurrentContent()

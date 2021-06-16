@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
 
 import RichField from '../RichField'
-import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
+import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
 import {convertToHTML} from '../../../../../utils/editor.tsx'
 
 // mock random key generation so they match from a snapshot to the other

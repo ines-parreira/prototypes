@@ -1,3 +1,4 @@
+// @flow
 import {EditorState} from 'draft-js'
 
 import {
@@ -5,7 +6,7 @@ import {
     getPredictionText,
     insertPrediction,
     removeFirstNCharsOfPrediction,
-} from '../utils'
+} from '../utils.ts'
 
 describe('utils', () => {
     const createStateWithPrediction = (text: string) => {

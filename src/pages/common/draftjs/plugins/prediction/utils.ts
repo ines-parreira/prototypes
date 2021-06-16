@@ -1,4 +1,3 @@
-// @flow
 import {
     ContentState,
     convertToRaw,
@@ -8,7 +7,7 @@ import {
 } from 'draft-js'
 import _pickBy from 'lodash/pickBy'
 
-import {getEntitySelectionState} from '../../../../../utils/editor.tsx'
+import {getEntitySelectionState} from '../../../../../utils/editor'
 
 import {setCachedSelection, setPredictionKey} from './index'
 
@@ -37,7 +36,7 @@ export const insertPrediction = (
         currentContent,
         selection,
         ' ',
-        null,
+        undefined,
         entityKey
     )
 
@@ -50,7 +49,7 @@ export const removePrediction = (
 ) => {
     const selection = editorState.getSelection()
     const contentState = editorState.getCurrentContent()
-    let entitySelection = getEntitySelectionState(contentState, entityKey)
+    const entitySelection = getEntitySelectionState(contentState, entityKey)
     // when sending the message with ctrl + enter, entitySelection is undefined
     if (!entitySelection) {
         return editorState
@@ -73,13 +72,15 @@ export const getPredictionText = (
     entityKey: string,
     editorState: EditorState
 ) => {
-    return editorState.getCurrentContent().getEntity(entityKey).getData().text
+    return (editorState.getCurrentContent().getEntity(entityKey).getData() as {
+        text: string
+    }).text
 }
 
 export const usePrediction = (entityKey: string, editorState: EditorState) => {
-    let newEditorState = removePrediction(entityKey, editorState)
-    let selection = newEditorState.getSelection()
-    let currentContent = newEditorState.getCurrentContent()
+    const newEditorState = removePrediction(entityKey, editorState)
+    const selection = newEditorState.getSelection()
+    const currentContent = newEditorState.getCurrentContent()
 
     // insert each line in a new block
     const entityText = getPredictionText(entityKey, editorState)
@@ -125,8 +126,10 @@ export const getPlainTextFromStateWithPrediction = (
 export const convertToRawWithoutPredictions = (
     contentState: ContentState
 ): {
-    blocks: RawDraftContentBlock[],
-    entityMap: {[key: string]: any},
+    blocks: RawDraftContentBlock[]
+    entityMap: {
+        [K in string]: any
+    }
 } => {
     const rawContent = convertToRaw(contentState)
     return {

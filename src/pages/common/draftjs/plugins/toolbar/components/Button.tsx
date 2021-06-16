@@ -1,16 +1,14 @@
-//@flow
-
-import * as React from 'react'
+import React, {MouseEvent} from 'react'
 import classnames from 'classnames'
 
 import css from '../Toolbar.less'
 
 type Props = {
-    name: string,
-    isActive: boolean,
-    isDisabled: boolean,
-    icon: string,
-    onToggle: () => void,
+    name: string
+    isActive: boolean
+    isDisabled: boolean
+    icon: string
+    onToggle: () => void
 }
 
 const Button = (props: Props) => (
@@ -20,13 +18,13 @@ const Button = (props: Props) => (
             [css.active]: props.isActive,
             [css.disabled]: props.isDisabled,
         })}
-        onClick={(e: SyntheticMouseEvent<*>) => {
+        onClick={(e: MouseEvent) => {
             e.preventDefault()
             if (!props.isDisabled) {
                 props.onToggle()
             }
         }}
-        onMouseDown={(e: SyntheticMouseEvent<*>) => e.preventDefault()}
+        onMouseDown={(e: MouseEvent) => e.preventDefault()}
         title={props.name}
     >
         <i className="material-icons">{props.icon}</i>

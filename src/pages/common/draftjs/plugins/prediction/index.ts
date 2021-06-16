@@ -1,9 +1,8 @@
-// @flow
-import {EditorState, type SelectionState} from 'draft-js'
-import axios, {Cancel, CancelToken} from 'axios'
-import type {Map} from 'immutable'
+import {EditorState, SelectionState} from 'draft-js'
+import axios, {CancelTokenSource} from 'axios'
+import {Map} from 'immutable'
 
-import type {Plugin, PluginMethods} from '../types'
+import {Plugin, PluginMethods} from '../types'
 
 import {
     createPrediction,
@@ -14,10 +13,10 @@ import {
     removePrediction,
     usePrediction,
 } from './utils'
-import decorators from './decorators'
+import decorators from './decorators.js'
 
-let predictionKey = null
-let cachedSelection = null
+let predictionKey: string | null = null
+let cachedSelection: SelectionState | null = null
 
 export const setPredictionKey = (value: string) => {
     predictionKey = value
@@ -27,40 +26,37 @@ export const setCachedSelection = (value: SelectionState) => {
     cachedSelection = value
 }
 
-let predictionCache = []
+let predictionCache: string[] = []
 export const clearCache = () => (predictionCache = [])
 const inCache = (text: string) => predictionCache.includes((text || '').trim())
 const addCache = (text: string) => predictionCache.push((text || '').trim())
 
-let cancelTokenSource = null
+let cancelTokenSource: CancelTokenSource | null = null
 const cancelApiRequest = () => {
     if (cancelTokenSource) {
         cancelTokenSource.cancel()
     }
 
-    cancelTokenSource = CancelToken.source()
+    cancelTokenSource = axios.CancelToken.source()
     return cancelTokenSource.token
 }
 
 const currentPrediction: {
-    inputText: string,
-    predictionText: string,
-    numberAcceptedCharacters: number,
+    inputText: string
+    predictionText: string
+    numberAcceptedCharacters: number
 } = {
     inputText: '',
     predictionText: '',
     numberAcceptedCharacters: 0,
 }
-const resetCurrentPrediction = (
-    inputText?: string = '',
-    predictionText?: string = ''
-) => {
+const resetCurrentPrediction = (inputText = '', predictionText = '') => {
     currentPrediction.inputText = inputText
     currentPrediction.predictionText = predictionText
     currentPrediction.numberAcceptedCharacters = 0
 }
 
-const removeExistingPrediction = (editorState) => {
+const removeExistingPrediction = (editorState: EditorState) => {
     if (predictionKey) {
         const newEditorState = removePrediction(predictionKey, editorState)
         predictionKey = null
@@ -71,12 +67,12 @@ const removeExistingPrediction = (editorState) => {
 }
 
 const requestPrediction = (
-    text: string = '',
-    context: Map<*, *>,
+    text = '',
+    context: Map<any, any>,
     plugin: PluginMethods
 ) => {
     return axios
-        .post(
+        .post<{prediction: string}>(
             window.PHRASE_PREDICTION_URL,
             {
                 query: text,
@@ -111,7 +107,7 @@ const requestPrediction = (
         })
         .catch((err) => {
             // ignore request cancel
-            if (err instanceof Cancel) {
+            if (axios.isCancel(err)) {
                 return
             }
 
@@ -120,7 +116,7 @@ const requestPrediction = (
 }
 
 const sendFeedback = async (
-    context: Map<*, *>,
+    context: Map<any, any>,
     addedText: string,
     editorState: EditorState
 ) => {
@@ -159,7 +155,7 @@ const sendFeedback = async (
 const completePrediction = (
     event: KeyboardEvent,
     plugin: PluginMethods,
-    config: Object
+    config: {context: Map<any, any>}
 ) => {
     if (!predictionKey) {
         return
@@ -167,7 +163,7 @@ const completePrediction = (
     event.preventDefault()
 
     const editorState = plugin.getEditorState()
-    sendFeedback(
+    void sendFeedback(
         config.context,
         getPredictionText(predictionKey, editorState),
         editorState
@@ -179,9 +175,10 @@ const completePrediction = (
     plugin.setEditorState(newEditorState)
 }
 
-const predictionPlugin = (config: {context: Map<*, *>}): Plugin => {
+const predictionPlugin = (config: {context: Map<any, any>}): Plugin => {
     return {
-        decorators,
+        // $TsFixMe remove casting once decorators is migrated
+        decorators: decorators as any,
         onChange: (editorState: EditorState, plugin: PluginMethods) => {
             const selection = editorState.getSelection()
             const contentState = editorState.getCurrentContent()
@@ -228,12 +225,12 @@ const predictionPlugin = (config: {context: Map<*, *>}): Plugin => {
                     )
                 }
 
-                sendFeedback(config.context, addedText, editorState)
+                void sendFeedback(config.context, addedText, editorState)
             }
 
             cancelApiRequest()
             // remove prediction on cursor move or text change
-            let newEditorState = removeExistingPrediction(editorState)
+            const newEditorState = removeExistingPrediction(editorState)
 
             const currentBlockKey = selection.getStartKey()
 
@@ -258,7 +255,7 @@ const predictionPlugin = (config: {context: Map<*, *>}): Plugin => {
                 // and not in cache
                 !inCache(blockText)
             ) {
-                requestPrediction(blockText, config.context, plugin)
+                void requestPrediction(blockText, config.context, plugin)
                 return newEditorState
             }
 

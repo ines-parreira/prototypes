@@ -1,3 +1,4 @@
+// @flow
 import * as React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
 
@@ -7,7 +8,7 @@ import type {
     Decorator,
 } from '../../types'
 import {linkify} from '../../../../../../utils/editor.tsx'
-import LinkPopover from '../components/LinkPopover'
+import LinkPopover from '../components/LinkPopover.tsx'
 
 const foundUrl = (): Decorator => ({
     strategy: (

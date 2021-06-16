@@ -3,7 +3,7 @@ import React, {Component, KeyboardEvent} from 'react'
 import {Button} from 'reactstrap'
 
 import InputField from '../../../../forms/InputField.js'
-import {removeLink} from '../../utils.js'
+import {removeLink} from '../../utils'
 import {
     getEntitySelectionState,
     getSelectedEntityKey,
@@ -13,7 +13,7 @@ import {
 import {ActionInjectedProps} from '../types'
 
 import css from './AddLink.less'
-import Popover from './ButtonPopover.js'
+import Popover from './ButtonPopover'
 
 type Props = {
     entityKey?: string

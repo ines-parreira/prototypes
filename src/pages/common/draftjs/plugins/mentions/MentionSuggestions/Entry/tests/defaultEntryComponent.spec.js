@@ -1,12 +1,12 @@
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import defaultEntryComponent from '../defaultEntryComponent'
+import DefaultEntryComponent from '../DefaultEntryComponent.tsx'
 
-describe('defaultEntryComponent', () => {
+describe('DefaultEntryComponent', () => {
     it('should render', () => {
         const component = shallow(
-            defaultEntryComponent({
+            DefaultEntryComponent({
                 mention: fromJS({
                     name: 'Marie Curie',
                     email: 'marïe@gorgias.io',

@@ -1,76 +1,72 @@
-// @flow
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
+import React, {Component, KeyboardEvent} from 'react'
+import {List, Map, fromJS} from 'immutable'
+import {genKey, EditorState, SelectionState} from 'draft-js'
 
-import React, {Component} from 'react'
-import {genKey} from 'draft-js'
-import {List, fromJS} from 'immutable'
-
-import type {Map} from 'immutable'
-import type {EditorState, SelectionState} from 'draft-js'
-
-import addMention from '../modifiers/addMention'
-import {decodeOffsetKey, getSearchText} from '../utils'
+import addMention from '../modifiers/addMention.js'
+import {decodeOffsetKey, getSearchText} from '../utils.js'
 
 import Entry from './Entry'
-import defaultEntryComponent from './Entry/defaultEntryComponent'
+import DefaultEntryComponent from './Entry/DefaultEntryComponent'
+import {Theme} from './types'
 
-import type {themeType} from './types'
-
-type eventCallbackType = (T: Event) => ?'handled'
-
-type callbacksType = {
-    onDownArrow: ?eventCallbackType,
-    onUpArrow: ?eventCallbackType,
-    onEscape: ?eventCallbackType,
-    handleReturn: ?eventCallbackType,
-    onTab: ?eventCallbackType,
-    onChange: ?eventCallbackType,
+type Callbacks = {
+    onDownArrow?: (event: KeyboardEvent) => void | null
+    onUpArrow?: (event: KeyboardEvent) => void | null
+    onEscape?: (event: KeyboardEvent) => void | null
+    handleReturn?: () => string | null
+    onTab?: (event: KeyboardEvent) => void | null
+    onChange?: (editorState: EditorState) => EditorState
 }
 
-type storeType = {
-    getAllSearches: () => Map<*, *>,
-    getPortalClientRect: (T: string) => void,
-    resetEscapedSearch: () => void,
-    isEscaped: (T: string) => boolean,
-    escapeSearch: (T: string) => void,
-    getEditorState: () => EditorState,
-    setEditorState: (T: EditorState) => void,
+type Store = {
+    getAllSearches: () => Map<any, any>
+    getPortalClientRect: (T: string) => string | null
+    resetEscapedSearch: () => void
+    isEscaped: (T: string) => boolean
+    escapeSearch: (T: string) => void
+    getEditorState: () => EditorState
+    setEditorState: (T: EditorState) => void
 }
 
 type Props = {
-    callbacks: callbacksType,
-    store: storeType,
+    callbacks: Callbacks
+    store: Store
     ariaProps: {
-        ariaHasPopup: 'true' | 'false',
-        ariaExpanded: 'true' | 'false',
-    },
-    theme: themeType,
-    suggestions: List<*>,
+        ariaHasPopup: 'true' | 'false'
+        ariaExpanded: 'true' | 'false'
+    }
+    theme: Theme
+    suggestions: List<any>
     positionSuggestions: (T: {
-        decoratorRect: ?string,
-        prevProps: Props,
-    }) => {},
-    onSearchChange: (T: {value: string}) => void,
-    mentionTrigger: string,
-    canAddMention?: boolean,
-    entityMutability?: string,
-    entryComponent?: () => void,
-    mentionPrefix?: string,
+        decoratorRect: string | null
+        prevProps: Props
+        prevState: State
+        props: Props
+        state: State
+        popover: HTMLElement | null
+    }) => Record<string, unknown>
+    onSearchChange: (T: {value: string}) => void
+    mentionTrigger: string
+    canAddMention?: boolean
+    entityMutability?: string
+    entryComponent?: () => void
+    mentionPrefix?: string
 }
 
 type State = {
-    isActive: boolean,
-    focusedOptionIndex: number,
+    isActive: boolean
+    focusedOptionIndex: number
 }
 
 export default class MentionSuggestions extends Component<Props, State> {
-    key: string
-    activeOffsetKey: string
-    lastSearchValue: string
-    popover: ?HTMLElement
-    lastSelectionIsInsideWord: SelectionState
+    key!: string
+    activeOffsetKey!: string
+    lastSearchValue!: string
+    popover!: HTMLElement | null
+    lastSelectionIsInsideWord!: SelectionState
 
     static defaultProps = {
         suggestions: fromJS([]),
@@ -123,9 +119,10 @@ export default class MentionSuggestions extends Component<Props, State> {
                 state: this.state,
                 popover: this.popover,
             })
-            Object.keys(newStyles).forEach((key) => {
-                // $FlowFixMe
-                this.popover.style[key] = newStyles[key]
+            Object.keys(newStyles).forEach((key: string) => {
+                this.popover!.style[(key as unknown) as number] = newStyles[
+                    key
+                ] as string
             })
         }
     }
@@ -165,11 +162,16 @@ export default class MentionSuggestions extends Component<Props, State> {
 
         // a leaf can be empty when it is removed due e.g. using backspace
         const leaves = offsetDetails
-            .filter(({blockKey}) => blockKey === anchorKey)
-            .map(({blockKey, decoratorKey, leafKey}) =>
-                editorState
-                    .getBlockTree(blockKey)
-                    .getIn([decoratorKey, 'leaves', leafKey])
+            .filter((detail) => detail!.blockKey === anchorKey)
+            .map(
+                (detail) =>
+                    editorState
+                        .getBlockTree(detail!.blockKey)
+                        .getIn([
+                            detail!.decoratorKey,
+                            'leaves',
+                            detail!.leafKey,
+                        ]) as Record<string, unknown>
             )
 
         // if all leaves are undefined the popover should be removed
@@ -184,18 +186,20 @@ export default class MentionSuggestions extends Component<Props, State> {
         const plainText = editorState.getCurrentContent().getPlainText()
         const selectionIsInsideWord = leaves
             .filter((leave) => leave !== undefined)
-            .map(({start, end}) => {
+            .map((leave) => {
                 const isFirstCharacter =
-                    start === 0 &&
+                    leave!.start === 0 &&
                     anchorOffset === 1 && // cursor is directly to the right of the @ character
                     plainText.charAt(anchorOffset) !==
                         this.props.mentionTrigger && // 2 @ characters should close the popup
                     new RegExp(this.props.mentionTrigger, 'g').test(
                         plainText
                     ) &&
-                    anchorOffset <= end
+                    anchorOffset <= (leave!.end as number)
 
-                const isInWord = anchorOffset > start + 1 && anchorOffset <= end
+                const isInWord =
+                    anchorOffset > (leave!.start as number) + 1 &&
+                    anchorOffset <= (leave!.end as number)
 
                 return isFirstCharacter || isInWord
             })
@@ -238,7 +242,7 @@ export default class MentionSuggestions extends Component<Props, State> {
             })
         }
 
-        this.lastSelectionIsInsideWord = selectionIsInsideWord
+        this.lastSelectionIsInsideWord = selectionIsInsideWord as SelectionState
 
         return editorState
     }
@@ -252,7 +256,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         }
     }
 
-    onDownArrow = (keyboardEvent: Event) => {
+    onDownArrow = (keyboardEvent: KeyboardEvent) => {
         keyboardEvent.preventDefault()
         const newIndex = this.state.focusedOptionIndex + 1
         this.onMentionFocus(
@@ -260,12 +264,12 @@ export default class MentionSuggestions extends Component<Props, State> {
         )
     }
 
-    onTab = (keyboardEvent: Event) => {
+    onTab = (keyboardEvent: KeyboardEvent) => {
         keyboardEvent.preventDefault()
         this.commitSelection()
     }
 
-    onUpArrow = (keyboardEvent: Event) => {
+    onUpArrow = (keyboardEvent: KeyboardEvent) => {
         keyboardEvent.preventDefault()
         if (this.props.suggestions.size > 0) {
             const newIndex = this.state.focusedOptionIndex - 1
@@ -275,7 +279,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         }
     }
 
-    onEscape = (keyboardEvent: Event) => {
+    onEscape = (keyboardEvent: KeyboardEvent) => {
         keyboardEvent.preventDefault()
 
         const activeOffsetKey = this.lastSelectionIsInsideWord
@@ -289,7 +293,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         this.props.store.setEditorState(this.props.store.getEditorState())
     }
 
-    onMentionSelect = (mention: Map<*, *>) => {
+    onMentionSelect = (mention: Map<unknown, unknown>) => {
         // Note: This can happen in case a user typed @xxx (invalid mention) and
         // then hit Enter. Then the mention will be undefined.
         if (!mention) {
@@ -380,7 +384,7 @@ export default class MentionSuggestions extends Component<Props, State> {
                 }}
             >
                 {suggestions
-                    .map((mention, index) => {
+                    .map((mention: Map<any, any>, index) => {
                         if (!mention.get('name')) {
                             return null
                         }
@@ -397,12 +401,13 @@ export default class MentionSuggestions extends Component<Props, State> {
                                     this.state.focusedOptionIndex === index
                                 }
                                 mention={mention}
-                                index={index}
-                                id={`mention-option-${this.key}-${index}`}
+                                index={index!}
+                                id={`mention-option-${this.key}-${index!}`}
                                 theme={theme}
                                 searchValue={this.lastSearchValue}
                                 entryComponent={
-                                    entryComponent || defaultEntryComponent
+                                    (entryComponent ||
+                                        DefaultEntryComponent) as any
                                 }
                             />
                         )

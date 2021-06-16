@@ -3,7 +3,7 @@ import _noop from 'lodash/noop'
 
 import type {SelectionState} from 'draft-js'
 
-import {insertInlineImages, isImage} from '../utils'
+import {insertInlineImages, isImage} from '../utils.ts'
 
 import type {PluginMethods, imagePluginConfigType} from '../types'
 

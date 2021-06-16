@@ -11,7 +11,7 @@ import {renderTemplate} from '../../pages/common/utils/template.js'
 import {convertFromHTML, convertToHTML} from '../../utils/editor'
 import {sanitizeHtmlForFacebookMessenger} from '../../utils/html'
 import {CurrentUser, StoreState} from '../types'
-import {convertToRawWithoutPredictions} from '../../pages/common/draftjs/plugins/prediction/utils.js'
+import {convertToRawWithoutPredictions} from '../../pages/common/draftjs/plugins/prediction/utils'
 import {toJS} from '../../utils'
 
 import * as selectors from './selectors'

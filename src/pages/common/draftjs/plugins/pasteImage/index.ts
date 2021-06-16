@@ -1,11 +1,10 @@
-// @flow
 import _noop from 'lodash/noop'
 
 import {insertInlineImages, isImage} from '../utils'
 
-import type {PluginMethods, imagePluginConfigType} from '../types'
+import {PluginMethods, ImagePluginConfig} from '../types'
 
-const _handlePastedFiles = (config) => (
+const _handlePastedFiles = (config: ImagePluginConfig) => (
     files: Array<File>,
     pluginArgs: PluginMethods
 ) => {
@@ -15,7 +14,7 @@ const _handlePastedFiles = (config) => (
     }
 
     if (config.getCanInsertInlineImages()) {
-        insertInlineImages(images, pluginArgs, config.notify)
+        void insertInlineImages(images, pluginArgs, config.notify)
     } else if (config.getCanDropFiles()) {
         config.getAttachFiles()(images)
     }
@@ -23,7 +22,7 @@ const _handlePastedFiles = (config) => (
 }
 
 const pasteImagePlugin = (
-    config: imagePluginConfigType = {
+    config: ImagePluginConfig = {
         notify: _noop,
         getAttachFiles: () => _noop,
         getCanDropFiles: () => false,

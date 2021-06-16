@@ -1,16 +1,15 @@
-// @flow
-import {fromJS} from 'immutable'
-import {ContentState, EditorState} from 'draft-js'
+import {fromJS, Map} from 'immutable'
+import {ContentState, EditorState, SelectionState} from 'draft-js'
 import AxiosMock from 'axios-mock-adapter'
 import axios from 'axios'
 
 import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
-import * as DraftTestUtils from '../../../tests/draftTestUtils'
-import type {Plugin, PluginMethods} from '../../types'
+import * as DraftTestUtils from '../../../tests/draftTestUtils.js'
+import {Plugin, PluginMethods} from '../../types'
 
 const axiosMock = new AxiosMock(axios)
 
-const defaultContext = fromJS({})
+const defaultContext: Map<any, any> = fromJS({})
 
 const flushPromises = () => new Promise(setImmediate)
 
@@ -62,7 +61,7 @@ describe('prediction plugin', () => {
         predictionText: string,
         plugin: Plugin,
         pluginMethods: PluginMethods
-    ): EditorState => {
+    ): Promise<EditorState> => {
         axiosMock
             .onPost(PREDICTION_URL)
             .reply(200, {prediction: predictionText})
@@ -97,7 +96,11 @@ describe('prediction plugin', () => {
             text.length + 1,
         ])
         expect(
-            (DraftTestUtils.getLastCreatedEntity(contentState): any).toJS()
+            // $TsFixMe remove casting on DraftTestUtils migration
+            (DraftTestUtils.getLastCreatedEntity(contentState) as Map<
+                any,
+                any
+            >).toJS()
         ).toMatchObject(createPredictionEntity(prediction))
     }
 
@@ -111,7 +114,9 @@ describe('prediction plugin', () => {
         ).toBeNull()
     }
 
-    const expectToSendFeedbackOnce = (feedbackMatch: {}) => {
+    const expectToSendFeedbackOnce = (
+        feedbackMatch: Record<string, unknown>
+    ) => {
         const feedbackCalls = getFeedbackCalls()
         expect(feedbackCalls).toHaveLength(1)
         expect(feedbackCalls[0].data).toMatchObject(feedbackMatch)
@@ -256,7 +261,7 @@ describe('prediction plugin', () => {
             const newSelection = state
                 .getSelection()
                 .set('anchorOffset', 0)
-                .set('focusOffset', 0)
+                .set('focusOffset', 0) as SelectionState
             state = EditorState.forceSelection(state, newSelection)
             state = predictionPlugin.onChange
                 ? predictionPlugin.onChange(state, pluginMethods)
@@ -446,7 +451,7 @@ describe('prediction plugin', () => {
 
             const preventDefault = jest.fn()
             predictionPlugin.onTab &&
-                predictionPlugin.onTab(({preventDefault}: any), pluginMethods)
+                predictionPlugin.onTab({preventDefault} as any, pluginMethods)
             await flushPromises()
 
             expect(preventDefault).toBeCalled()
@@ -482,7 +487,7 @@ describe('prediction plugin', () => {
             const preventDefault = jest.fn()
             predictionPlugin.onRightArrow &&
                 predictionPlugin.onRightArrow(
-                    ({preventDefault}: any),
+                    {preventDefault} as any,
                     pluginMethods
                 )
             await flushPromises()

@@ -1,5 +1,4 @@
-// @flow
-import {EditorState} from 'draft-js'
+import {EditorState, EditorChangeType} from 'draft-js'
 
 const hasProtocol = (url: string): boolean => {
     return url.indexOf('//') === 0 || url.includes('://')
@@ -7,7 +6,7 @@ const hasProtocol = (url: string): boolean => {
 
 const matchProtocols = ['http:', 'https:']
 
-export const parseUrl = (url: string = '', target: string = ''): string => {
+export const parseUrl = (url = '', target = ''): string => {
     let formattedUrl = url.trim()
     // only parse in the browser
     if (typeof window.document === 'undefined') {
@@ -55,21 +54,21 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
     let newContentState = contentState
 
     blocks.forEach((block) => {
-        const plainText = block.getText()
-        block.findEntityRanges(
+        const plainText = block!.getText()
+        block!.findEntityRanges(
             (character) => {
                 const entityKey = character.getEntity()
                 return (
                     entityKey !== null &&
-                    newContentState.getEntity(entityKey).get('type') === 'link'
+                    newContentState.getEntity(entityKey).getType() === 'link'
                 )
             },
             (start, end) => {
                 const value = plainText.substring(start, end)
-                const entityKey = block.getEntityAt(start)
+                const entityKey = block!.getEntityAt(start)
                 const entity = newContentState.getEntity(entityKey)
-                const {url, connected} = entity.get('data')
-                let newEntityData = {}
+                const {url, connected} = entity.getData()
+                const newEntityData: {url?: string; connected?: boolean} = {}
 
                 if (connected) {
                     // link is already connected, update its url.
@@ -92,7 +91,7 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
         return EditorState.push(
             editorState,
             newContentState,
-            'set-connected-links'
+            'set-connected-links' as EditorChangeType
         )
     }
 

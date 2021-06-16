@@ -17,7 +17,7 @@ import {
     convertToRawWithoutPredictions,
     createPrediction,
     insertPrediction,
-} from '../../../pages/common/draftjs/plugins/prediction/utils.js'
+} from '../../../pages/common/draftjs/plugins/prediction/utils'
 import {addEmailExtraContent} from '../emailExtraUtils'
 import {ticket} from '../../../fixtures/ticket'
 

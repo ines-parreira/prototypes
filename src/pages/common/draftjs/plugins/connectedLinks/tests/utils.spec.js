@@ -1,7 +1,7 @@
 import {EditorState} from 'draft-js'
 import {convertFromHTML} from 'draft-convert'
 
-import {setConnectedLinks, parseUrl} from '../utils'
+import {setConnectedLinks, parseUrl} from '../utils.ts'
 
 describe('Connected Links utils', () => {
     describe('parseUrl', () => {

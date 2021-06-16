@@ -1,32 +1,31 @@
-// @flow
 import classnames from 'classnames'
-import React, {type Node} from 'react'
+import React, {Component, ReactNode, DragEvent} from 'react'
 
 import css from './Toolbar.less'
-import type {ActionName, ActionInjectedProps} from './types'
-import {AddEmoji, Bold, Italic, Underline} from './components'
+import {ActionName, ActionInjectedProps} from './types'
+import {AddEmoji, Bold, Italic, Underline} from './components/index.js'
 
 type State = {
-    isHovered: boolean,
+    isHovered: boolean
 }
 
 type Props = {
-    buttons: Node[],
-    attachFiles: (T: Array<Blob>) => void,
-    canDropFiles: boolean,
-    displayedActions?: ActionName[],
-    linkAction: Node,
-    imageAction: Node,
+    buttons: ReactNode[]
+    attachFiles: (T: Array<Blob>) => void
+    canDropFiles: boolean
+    displayedActions?: ActionName[]
+    linkAction: ReactNode
+    imageAction: ReactNode
 } & ActionInjectedProps
 
-export default class Toolbar extends React.Component<Props, State> {
+export default class Toolbar extends Component<Props, State> {
     static defaultProps = {
         buttons: [],
     }
 
     static isDisplayedAction = (
         name: ActionName,
-        displayedActions: ?(ActionName[])
+        displayedActions?: ActionName[] | null
     ) => {
         if (!displayedActions) {
             return true
@@ -39,7 +38,7 @@ export default class Toolbar extends React.Component<Props, State> {
         isHovered: false,
     }
 
-    _renderButton = (button: ?Node, index: number) => {
+    _renderButton = (button: ReactNode | null, index: number) => {
         return (
             <div
                 key={index}
@@ -66,7 +65,7 @@ export default class Toolbar extends React.Component<Props, State> {
         this._hideDragHover()
     }
 
-    _onDragOver = (e: Event) => {
+    _onDragOver = (e: DragEvent) => {
         const {canDropFiles} = this.props
         if (!canDropFiles) {
             return
@@ -97,18 +96,20 @@ export default class Toolbar extends React.Component<Props, State> {
                 onDragLeave={this._hideDragHover}
             >
                 <div className={css.actions}>
-                    {this._isDisplayedAction('BOLD') && (
+                    {this._isDisplayedAction(ActionName.Bold) && (
                         <Bold {...actionsProps} />
                     )}
-                    {this._isDisplayedAction('ITALIC') && (
+                    {this._isDisplayedAction(ActionName.Italic) && (
                         <Italic {...actionsProps} />
                     )}
-                    {this._isDisplayedAction('UNDERLINE') && (
+                    {this._isDisplayedAction(ActionName.Underline) && (
                         <Underline {...actionsProps} />
                     )}
-                    {this._isDisplayedAction('LINK') && this.props.linkAction}
-                    {this._isDisplayedAction('IMAGE') && this.props.imageAction}
-                    {this._isDisplayedAction('EMOJI') && (
+                    {this._isDisplayedAction(ActionName.Link) &&
+                        this.props.linkAction}
+                    {this._isDisplayedAction(ActionName.Image) &&
+                        this.props.imageAction}
+                    {this._isDisplayedAction(ActionName.Emoji) && (
                         <AddEmoji {...actionsProps} />
                     )}
                 </div>

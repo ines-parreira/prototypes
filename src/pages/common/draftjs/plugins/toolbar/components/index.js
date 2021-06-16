@@ -1,8 +1,8 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
 
-import InlineStyle from './InlineStyle'
+import InlineStyle from './InlineStyle.tsx'
 
-export {default as InlineStyle} from './InlineStyle'
+export {default as InlineStyle} from './InlineStyle.tsx'
 export {default as AddLink} from './AddLink.tsx'
 export {default as AddImage} from './AddImage.tsx'
 export {default as AddEmoji} from './AddEmoji.tsx'

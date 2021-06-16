@@ -1,32 +1,38 @@
-// @flow
-import {AtomicBlockUtils, EditorState, Modifier, RichUtils} from 'draft-js'
-import {fromJS} from 'immutable'
+import {
+    AtomicBlockUtils,
+    EditorState,
+    Modifier,
+    RichUtils,
+    SelectionState,
+    EditorChangeType,
+} from 'draft-js'
+import {fromJS, Map, List} from 'immutable'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
+import {AxiosError} from 'axios'
 
-import {uploadFiles} from '../../../../utils.ts'
+import {uploadFiles} from '../../../../utils'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,
-} from '../../../../utils/file.ts'
-import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor.ts'
-import {getEntitySelectionState} from '../../../../utils/editor.tsx'
+} from '../../../../utils/file'
+import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
+import {getEntitySelectionState} from '../../../../utils/editor'
 
-import type {PluginMethods} from './types'
+import {PluginMethods} from './types'
 
-const uploadPicture = (file) => {
+const uploadPicture = (file: File) => {
     return uploadFiles([file])
         .then((files) => files[0])
         .catch((error) => {
-            let errorMessage = fromJS(error.response).getIn([
-                'data',
-                'error',
-                'msg',
-            ])
+            let errorMessage = (fromJS((error as AxiosError).response) as Map<
+                any,
+                any
+            >).getIn(['data', 'error', 'msg'])
 
             if (!errorMessage) {
                 errorMessage =
-                    error.response.status === 413
+                    (error as AxiosError).response?.status === 413
                         ? 'Failed to upload files. One or more files are larger than the size limit of 10MB.'
                         : 'Failed to upload files. Please try again later.'
             }
@@ -52,7 +58,7 @@ export const removeLink = (
         const endOfLinkSelection = selection.set(
             'anchorOffset',
             selection.getFocusOffset()
-        )
+        ) as SelectionState
         return EditorState.forceSelection(newState, endOfLinkSelection)
     }
     return editorState
@@ -61,7 +67,7 @@ export const removeLink = (
 export const addImage = (
     editorState: EditorState,
     url: string,
-    size: number = 0
+    size = 0
 ): EditorState => {
     const entityContentState = editorState
         .getCurrentContent()
@@ -71,7 +77,7 @@ export const addImage = (
             size,
         })
     const entityKey = entityContentState.getLastCreatedEntityKey()
-    let newEditorState = AtomicBlockUtils.insertAtomicBlock(
+    const newEditorState = AtomicBlockUtils.insertAtomicBlock(
         editorState,
         entityKey,
         ' '
@@ -87,11 +93,13 @@ export const addImage = (
 export const insertInlineImages = (
     files: Array<File>,
     {getEditorState, setEditorState, getProps}: PluginMethods,
-    notify: ({status: string, message: string}) => void = _noop
-): EditorState => {
+    notify: (arg0: {status: string; message: string}) => void = _noop
+): Promise<any> => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
-    const attachments = _get(getProps(), 'attachments', fromJS([])).toJS()
+    const attachments = (_get(getProps(), 'attachments', fromJS([])) as List<
+        any
+    >).toJS()
     const maxSize = getMaxAttachmentSize(editorState, attachments)
     const currentSize = files.reduce((sum, file) => sum + (file.size || 0), 0)
 
@@ -103,7 +111,7 @@ export const insertInlineImages = (
         return Promise.resolve()
     }
 
-    const uploaded = []
+    const uploaded: Promise<any>[] = []
     let newEditorState = getEditorState()
 
     files.forEach((file) => {
@@ -127,7 +135,7 @@ export const insertInlineImages = (
                         const newEditorState = EditorState.push(
                             editorState,
                             newContentState,
-                            'update-pasted-image-url'
+                            'update-pasted-image-url' as EditorChangeType
                         )
 
                         setEditorState(newEditorState)
@@ -145,13 +153,13 @@ export const insertInlineImages = (
                         )
                         const newContentState = Modifier.applyEntity(
                             contentState,
-                            entitySelection,
+                            entitySelection!,
                             null
                         )
                         const newEditorState = EditorState.push(
                             editorState,
                             newContentState,
-                            'remove-pasted-image'
+                            'remove-pasted-image' as EditorChangeType
                         )
 
                         setEditorState(newEditorState)
@@ -159,7 +167,7 @@ export const insertInlineImages = (
                         // notify
                         notify({
                             status: 'error',
-                            message: err.error,
+                            message: (err as {error: string}).error,
                         })
 
                         window.URL.revokeObjectURL(blobURL)

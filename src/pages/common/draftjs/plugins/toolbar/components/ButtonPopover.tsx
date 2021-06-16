@@ -1,30 +1,29 @@
-//@flow
-import React, {type Node as ReactNode, type ElementRef} from 'react'
+import React, {Component, ReactNode} from 'react'
 import * as ReactDOM from 'react-dom'
 
 import Button from './Button'
-import Popover from './Popover.tsx'
+import Popover from './Popover'
 
 type Props = {
-    name: string,
-    icon: string,
-    children: ReactNode,
-    className?: string,
-    isActive: boolean,
-    isDisabled: boolean,
-    isOpen: boolean,
-    onClose: () => void,
-    onOpen: () => void,
+    name: string
+    icon: string
+    children: ReactNode
+    className?: string
+    isActive: boolean
+    isDisabled: boolean
+    isOpen: boolean
+    onClose: () => void
+    onOpen: () => void
 }
 
-export default class ButtonPopover extends React.Component<Props> {
+export default class ButtonPopover extends Component<Props> {
     static defaultProps = {
         isActive: false,
         isDisabled: false,
         isOpen: false,
     }
 
-    popover: ?ElementRef<*>
+    popover?: Popover | null
 
     componentDidMount() {
         if (this.props.isOpen) {
@@ -51,7 +50,7 @@ export default class ButtonPopover extends React.Component<Props> {
             return
         }
 
-        const target = ((e.target: any): Node)
+        const target = (e.target as any) as Node
         const popoverEl = ReactDOM.findDOMNode(this.popover)
 
         if (popoverEl instanceof Element && !popoverEl.contains(target)) {
@@ -91,7 +90,7 @@ export default class ButtonPopover extends React.Component<Props> {
                 }
                 className={className}
                 isOpen={isOpen}
-                ref={(el: ?ElementRef<*>) => (this.popover = el)}
+                ref={(el) => (this.popover = el)}
             >
                 {children}
             </Popover>

@@ -1,18 +1,17 @@
-//@flow
 import React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
 
 import LinkPopover from '../components/LinkPopover'
 import {removeLink} from '../../utils'
-import type {
+import {
     DecoratorStrategyCallback,
     DecoratorComponentProps,
     Decorator,
 } from '../../types'
 
 type Config = {
-    isActive: () => boolean,
-    onLinkEdit: (entityKey: string, text: string, url: string) => void,
+    isActive: () => boolean
+    onLinkEdit: (entityKey: string, text: string, url: string) => void
 }
 
 const link = (config: Config): Decorator => ({
@@ -29,6 +28,7 @@ const link = (config: Config): Decorator => ({
             )
         }, callback)
     },
+
     component: (props: DecoratorComponentProps) => {
         const {
             contentState,

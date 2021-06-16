@@ -1,8 +1,7 @@
-//@flow
 import {EditorState} from 'draft-js'
 
 import {removeLink} from '../utils'
-import {convertFromHTML} from '../../../../../utils/editor.tsx'
+import {convertFromHTML} from '../../../../../utils/editor'
 
 describe('plugin utils', () => {
     describe('removeLink()', () => {

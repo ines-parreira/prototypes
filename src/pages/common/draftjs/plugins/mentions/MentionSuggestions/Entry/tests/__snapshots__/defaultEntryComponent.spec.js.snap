@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`defaultEntryComponent should render 1`] = `
+exports[`DefaultEntryComponent should render 1`] = `
 <div>
   <AgentLabel
     className="my-class-name"

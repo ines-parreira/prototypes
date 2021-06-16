@@ -1,23 +1,26 @@
-//@flow
-import * as React from 'react'
+import React, {Component, ReactNode, MouseEvent} from 'react'
 import classnames from 'classnames'
 import {Popover} from 'reactstrap'
 
 import css from './LinkPopover.less'
 
 type Props = {
-    id: string,
-    url: string,
-    onEdit?: (string) => void,
-    onDelete?: (string) => void,
-    children?: React.Node,
+    id: string
+    url: string
+    onEdit?: (arg0: string) => void
+    onDelete?: (arg0: string) => void
+    children?: React.ReactNode
 }
 
 type State = {
-    isOpen: boolean,
+    isOpen: boolean
 }
 
-const Button = (props: any) => (
+const Button = (props: {
+    className: string
+    children: ReactNode
+    onClick: (e: MouseEvent) => void
+}) => (
     <button
         {...props}
         type="button"
@@ -33,41 +36,41 @@ const Button = (props: any) => (
     </button>
 )
 
-export default class LinkPopover extends React.Component<Props, State> {
+export default class LinkPopover extends Component<Props, State> {
     state: State = {
         isOpen: false,
     }
 
-    timeout: ?TimeoutID
+    timeout?: number | null
 
     componenWillUnmount() {
         if (this.timeout) {
-            clearTimeout(this.timeout)
+            window.clearTimeout(this.timeout)
         }
     }
 
-    _onMouseEnter = (e: SyntheticMouseEvent<*>) => {
+    _onMouseEnter = (e: MouseEvent) => {
         e.preventDefault()
         if (this.timeout) {
-            clearTimeout(this.timeout)
+            window.clearTimeout(this.timeout)
         }
         this.setState({isOpen: true})
     }
 
-    _onMouseLeave = (e: SyntheticMouseEvent<*>) => {
+    _onMouseLeave = (e: MouseEvent) => {
         e.preventDefault()
-        this.timeout = setTimeout(() => {
+        this.timeout = window.setTimeout(() => {
             this.setState({isOpen: false})
         }, 250)
     }
 
-    _onEditClick = (e: SyntheticMouseEvent<*>) => {
+    _onEditClick = (e: MouseEvent) => {
         e.preventDefault()
         this.props.onEdit && this.props.onEdit(this.props.id)
         this.setState({isOpen: false})
     }
 
-    _onDeleteClick = (e: SyntheticEvent<*>) => {
+    _onDeleteClick = (e: MouseEvent) => {
         e.preventDefault()
         this.props.onDelete && this.props.onDelete(this.props.id)
     }

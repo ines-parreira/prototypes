@@ -1,9 +1,9 @@
 import {shallow} from 'enzyme'
 import * as React from 'react'
 
-import createLink from '../link'
+import createLink from '../link.tsx'
 import {convertFromHTML} from '../../../../../../../utils/editor.tsx'
-import LinkPopover from '../../components/LinkPopover'
+import LinkPopover from '../../components/LinkPopover.tsx'
 
 describe('link decorator', () => {
     describe('strategy', () => {

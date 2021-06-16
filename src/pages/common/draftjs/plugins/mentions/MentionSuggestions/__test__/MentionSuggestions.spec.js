@@ -2,7 +2,7 @@ import React from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import MentionSuggestions from '../index'
+import MentionSuggestions from '../index.tsx'
 
 const mentions = fromJS([
     {

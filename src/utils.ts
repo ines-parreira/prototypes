@@ -653,7 +653,7 @@ export function loadScript(url: string, callback: () => void) {
  * Upload file action meant to be used by another action
  */
 export const uploadFiles = (
-    files: FileList | Array<Attachment>,
+    files: FileList | Array<Attachment> | File[],
     params: Maybe<Record<string, unknown>> = null
 ): Promise<Attachment[]> => {
     const formData = new window.FormData()

@@ -6,7 +6,7 @@ import {convertToHTML} from 'draft-convert'
 import Editor from 'draft-js-plugins-editor'
 
 import {RichFieldEditor} from '../RichFieldEditor'
-import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
+import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
 import {convertFromHTML} from '../../../../../utils/editor.tsx'
 
 // mock random key generation so they match from a snapshot to the other

@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import type {PluginMethods} from '../../draftjs/plugins/types'
-import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
+import Toolbar from '../../draftjs/plugins/toolbar/Toolbar.tsx'
 import {AddImage, AddLink} from '../../draftjs/plugins/toolbar/components'
 
 type Props = {

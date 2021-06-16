@@ -1,4 +1,4 @@
-import {setConnectedLinks} from './utils'
+import {setConnectedLinks} from './utils.ts'
 
 const connectedLinksPlugin = () => {
     return {

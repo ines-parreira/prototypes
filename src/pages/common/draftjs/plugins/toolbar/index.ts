@@ -1,18 +1,19 @@
-//@flow
+import {ReactNode, ComponentType, KeyboardEvent} from 'react'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
 
-import type {PluginMethods} from '../types'
+import {PluginMethods} from '../types'
 import {removeLink} from '../utils'
 import {
     getSelectedEntityKey,
     getSelectedText,
-} from '../../../../../utils/editor.tsx'
+} from '../../../../../utils/editor'
 
-import {foundUrl, link} from './decorators'
+import foundUrl from './decorators/foundUrl.js'
+import link from './decorators/link'
 import Toolbar from './Toolbar'
-import Image from './components/Image'
-import type {Config} from './types'
+import Image from './components/Image.js'
+import {Config, ActionName} from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
@@ -21,7 +22,7 @@ export * from './types.js'
 
 export default function toolbarPlugin(config: Config) {
     const isLinkDisplayed = () =>
-        Toolbar.isDisplayedAction('LINK', config.getDisplayedActions())
+        Toolbar.isDisplayedAction(ActionName.Link, config.getDisplayedActions())
 
     return {
         decorators: [
@@ -43,12 +44,15 @@ export default function toolbarPlugin(config: Config) {
                 const entity = contetState.getEntity(entityKey)
                 const type = entity.getType()
                 if (type === 'img') {
-                    let component = Image
+                    let component: ReactNode = Image
                     const theme = config.theme ? config.theme : {}
                     if (config.imageDecorator) {
                         component = config.imageDecorator(component)
                     }
-                    component = decorateComponentWithProps(component, {theme})
+                    component = decorateComponentWithProps(
+                        component as ComponentType<any>,
+                        {theme}
+                    )
                     return {
                         component,
                         editable: false,
@@ -59,7 +63,7 @@ export default function toolbarPlugin(config: Config) {
             return null
         },
 
-        keyBindingFn: (e: SyntheticKeyboardEvent<*>) => {
+        keyBindingFn: (e: KeyboardEvent) => {
             // Mod+K
             if (
                 isLinkDisplayed() &&

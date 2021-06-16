@@ -1,7 +1,7 @@
 //@flow
 import * as React from 'react'
 
-import createToolbarPlugin from '../../draftjs/plugins/toolbar'
+import createToolbarPlugin from '../../draftjs/plugins/toolbar/index.ts'
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import type {Plugin} from '../../draftjs/plugins/types'
 
