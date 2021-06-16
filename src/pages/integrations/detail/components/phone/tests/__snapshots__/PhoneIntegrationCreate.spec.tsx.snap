@@ -444,7 +444,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                       class="label"
                       style="min-width: 10px; opacity: 1;"
                     >
-                      Canada
+                      United States
                     </span>
                     <input
                       autocomplete="chrome-off"
@@ -470,7 +470,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      United States
+                      Canada
                     </span>
                   </button>
                 </div>
@@ -562,7 +562,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                       class="label"
                       style="min-width: 10px; opacity: 1;"
                     >
-                      Alberta
+                      Alabama
                     </span>
                     <input
                       autocomplete="chrome-off"
@@ -589,7 +589,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      British Columbia
+                      Arizona
                     </span>
                   </button>
                   <button
@@ -599,7 +599,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Manitoba
+                      Arkansas
                     </span>
                   </button>
                   <button
@@ -609,7 +609,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      New Brunswick
+                      California
                     </span>
                   </button>
                   <button
@@ -619,7 +619,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Newfoundland and Labrador
+                      Colorado
                     </span>
                   </button>
                   <button
@@ -629,7 +629,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Northwest Territories
+                      Connecticut
                     </span>
                   </button>
                   <button
@@ -639,7 +639,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Nova Scotia
+                      Delaware
                     </span>
                   </button>
                   <button
@@ -649,7 +649,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Nunavut
+                      District Of Columbia
                     </span>
                   </button>
                   <button
@@ -659,7 +659,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Ontario
+                      Florida
                     </span>
                   </button>
                   <button
@@ -669,7 +669,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Prince Edward Island
+                      Georgia
                     </span>
                   </button>
                   <button
@@ -679,7 +679,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Quebec
+                      Idaho
                     </span>
                   </button>
                   <button
@@ -689,7 +689,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Saskatchewan
+                      Illinois
                     </span>
                   </button>
                   <button
@@ -699,7 +699,347 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Yukon Territory
+                      Indiana
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Iowa
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Kansas
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Kentucky
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Louisiana
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Maine
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Maryland
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Massachusetts
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Michigan
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Minnesota
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Mississippi
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Missouri
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Montana
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Nebraska
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Nevada
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      New Jersey
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      New Mexico
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      New York
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      North Carolina
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      North Dakota
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Ohio
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Oklahoma
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Oregon
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Pennsylvania
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Rhode Island
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      South Carolina
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      South Dakota
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Tennessee
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Texas
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Utah
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Vermont
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Virginia
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Washington
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      West Virginia
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Wisconsin
                     </span>
                   </button>
                 </div>
@@ -759,7 +1099,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Banff (403)
+                      Birmingham (205)
                     </span>
                   </button>
                   <button
@@ -769,7 +1109,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Calgary (587)
+                      Mobile (251)
                     </span>
                   </button>
                   <button
@@ -779,7 +1119,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Dawson Creek (250)
+                      Huntsville (256)
                     </span>
                   </button>
                   <button
@@ -789,7 +1129,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Edmonton (780)
+                      Montegomery (334)
                     </span>
                   </button>
                   <button
@@ -799,47 +1139,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
                     type="button"
                   >
                     <span>
-                      Grande Prairie (780)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Lethbridge (403)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Lloydminster (780)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Medicine Hat (403)
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Red Deer (403)
+                      Huntsville (938)
                     </span>
                   </button>
                 </div>

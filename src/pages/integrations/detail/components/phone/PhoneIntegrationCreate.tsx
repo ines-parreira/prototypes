@@ -21,33 +21,31 @@ import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField.js'
 import type {Option} from '../../../../common/forms/SelectField/types'
-import {PhoneType} from '../../../../../business/twilio'
+import {PhoneCountry, PhoneType} from '../../../../../business/twilio'
 
 import rawCountryOptions from './options/countries.json'
 import rawTypeOptions from './options/types.json'
 import rawStateOptions from './options/states.json'
-import rawAreaCodeOptions from './options/area-codes.json'
-import rawTollFreeAreaCodeOptions from './options/area-codes-toll-free.json'
+import rawCaAreaCodeOptions from './options/area-codes/ca.json'
+import rawUsAreaCodeOptions from './options/area-codes/us.json'
+import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
 interface StateOptions {
     [key: string]: Option[]
 }
 
-interface AreaCodeOptions {
-    [key: string]: {
-        [key: string]: Option[]
-    }
-}
+type AreaCodeOptions = Option[]
 
-interface TollFreeAreaCodeOptions {
-    [key: string]: Option[]
+interface AreaCodeOptionsByState {
+    [key: string]: AreaCodeOptions
 }
 
 const countryOptions: Option[] = rawCountryOptions
 const typeOptions: Option[] = rawTypeOptions
 const stateOptions: StateOptions = rawStateOptions
-const areaCodeOptions: AreaCodeOptions = rawAreaCodeOptions
-const tollFreeAreaCodeOptions: TollFreeAreaCodeOptions = rawTollFreeAreaCodeOptions
+const caAreaCodeOptions: AreaCodeOptions = rawCaAreaCodeOptions
+const usAreaCodeOptions: AreaCodeOptionsByState = rawUsAreaCodeOptions
+const tollFreeAreaCodeOptions: AreaCodeOptions = rawTollFreeAreaCodeOptions
 
 type Props = {
     actions: {
@@ -64,14 +62,17 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
     const [phoneType, setPhoneType] = useState('')
     const [state, setState] = useState('')
     const [areaCode, setAreaCode] = useState('')
+    const shouldRenderState =
+        phoneType === PhoneType.Local && country === PhoneCountry.US
 
     const onCountryChange = useCallback(
         (country) => {
             setCountry(country)
+            setPhoneType(PhoneType.Local)
             setState('')
             setAreaCode('')
         },
-        [setCountry, setState, setAreaCode]
+        [setCountry, setPhoneType, setState, setAreaCode]
     )
 
     const onTypeChange = useCallback(
@@ -147,11 +148,21 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
         ]
     )
 
-    let areaCodes
+    let areaCodes: AreaCodeOptions = []
     if (phoneType === PhoneType.Local) {
-        areaCodes = !!country && !!state ? areaCodeOptions[country][state] : []
-    } else {
-        areaCodes = !!country ? tollFreeAreaCodeOptions[country] : []
+        switch (country) {
+            case PhoneCountry.US:
+                areaCodes = !!state ? usAreaCodeOptions[state] : []
+                break
+            case PhoneCountry.CA:
+                areaCodes = caAreaCodeOptions
+                break
+            default:
+                areaCodes = []
+                break
+        }
+    } else if (phoneType === PhoneType.TollFree) {
+        areaCodes = tollFreeAreaCodeOptions
     }
 
     return (
@@ -247,7 +258,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                     required
                                 />
                             </FormGroup>
-                            {phoneType === PhoneType.Local && (
+                            {shouldRenderState && (
                                 <FormGroup>
                                     <Label
                                         htmlFor="state"

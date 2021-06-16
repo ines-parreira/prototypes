@@ -24,14 +24,14 @@ describe('<PhoneIntegrationCreate/>', () => {
                 <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
             )
 
-            // Select country "Canada"
-            fireEvent.click(getByText('Canada'))
+            // Select country "United States"
+            fireEvent.click(getByText('United States'))
 
             // Select type "Local"
             fireEvent.click(getByText('Local'))
 
-            // Select state "Alberta"
-            fireEvent.click(getByText('Alberta'))
+            // Select state "Alabama"
+            fireEvent.click(getByText('Alabama'))
 
             expect(container.firstChild).toMatchSnapshot()
         })

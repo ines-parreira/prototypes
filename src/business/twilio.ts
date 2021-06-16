@@ -8,3 +8,8 @@ export enum PhoneType {
     Local = 'Local',
     TollFree = 'TollFree',
 }
+
+export enum PhoneCountry {
+    CA = 'CA',
+    US = 'US',
+}
