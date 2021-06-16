@@ -218,7 +218,7 @@ exports[`<Plan/> should render A Legacy plan different than current plan 1`] = `
           class=""
         >
           <b>
-            50
+            3
           </b>
            Phone numbers
         </div>
@@ -526,7 +526,10 @@ exports[`<Plan/> should render New plan equivalent to current Legacy plan 1`] = 
         <div
           class=""
         >
-          Phone
+          <b>
+            3
+          </b>
+           Phone numbers
         </div>
       </li>
       <li
@@ -832,7 +835,10 @@ exports[`<Plan/> should render a custom plan 1`] = `
         <div
           class=""
         >
-          Phone
+          <b>
+            50
+          </b>
+           Phone numbers
         </div>
       </li>
       <li
@@ -1138,10 +1144,7 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         <div
           class="feature-label-disabled"
         >
-          <b>
-            3
-          </b>
-           Phone numbers
+          Phone
         </div>
       </li>
       <li
@@ -1754,7 +1757,10 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
         <div
           class=""
         >
-          Phone
+          <b>
+            3
+          </b>
+           Phone numbers
         </div>
       </li>
       <li
@@ -2193,7 +2199,15 @@ exports[`<Plan/> should render a plan without a current plan 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -2491,7 +2505,15 @@ exports[`<Plan/> should render a plan without comparaison mode 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -2778,7 +2800,15 @@ exports[`<Plan/> should render advanced plan 1`] = `
           <b>
             3000
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -2943,7 +2973,10 @@ exports[`<Plan/> should render advanced plan 1`] = `
         <div
           class=""
         >
-          Phone
+          <b>
+            10
+          </b>
+           Phone numbers
         </div>
       </li>
       <li
@@ -3362,7 +3395,15 @@ exports[`<Plan/> should render basic plan 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
