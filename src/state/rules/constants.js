@@ -48,6 +48,11 @@ const REPLY_TO_TICKET_ACTION_DEFAULT = {
     body_html: '',
 }
 
+const ADD_INTERNAL_NOTE_ACTION_DEFAULT = {
+    body_text: '',
+    body_html: '',
+}
+
 const ADD_TAGS_ACTION_DEFAULT = {
     tags: '',
 }
@@ -91,6 +96,7 @@ export const ACTION_DEFAULT_STATE = {
     setAssignee: ASSIGN_USER_ACTION_DEFAULT,
     setTeamAssignee: ASSIGN_TEAM_ACTION_DEFAULT,
     replyToTicket: REPLY_TO_TICKET_ACTION_DEFAULT,
+    addInternalNote: ADD_INTERNAL_NOTE_ACTION_DEFAULT,
     snoozeTicket: SNOOZE_ACTION_DEFAULT,
 }
 

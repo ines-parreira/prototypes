@@ -200,6 +200,21 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         },
         validate: validateBody,
     },
+    addInternalNote: {
+        compact: false,
+        name: 'Add internal note',
+        args: {
+            body_text: {
+                hide: true,
+            },
+            body_html: {
+                name: 'Body',
+                widget: 'rich-field',
+                textField: 'body_text',
+            },
+        },
+        validate: validateBody,
+    },
     applyMacro: {
         compact: true,
         name: 'Apply macro',
