@@ -44,7 +44,15 @@ exports[`<Plan/> should render A Legacy plan different than current plan 1`] = `
           <b>
             2000
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -342,7 +350,15 @@ exports[`<Plan/> should render New plan equivalent to current Legacy plan 1`] = 
           <b>
             2000
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -640,7 +656,15 @@ exports[`<Plan/> should render a custom plan 1`] = `
           <b>
             2000
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -938,7 +962,15 @@ exports[`<Plan/> should render a plan being selected 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -1237,7 +1269,15 @@ exports[`<Plan/> should render a plan featured 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -1535,7 +1575,15 @@ exports[`<Plan/> should render a plan with a cheaper plan 1`] = `
           <b>
             2000
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -1833,7 +1881,15 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -3604,7 +3660,15 @@ exports[`<Plan/> should render the current plan 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li
@@ -3922,7 +3986,15 @@ exports[`<Plan/> should render the current plan with legacy features 1`] = `
           <b>
             350
           </b>
-           tickets included
+           
+          <span
+            class="billable-ticket"
+            id="billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
         </div>
       </li>
       <li

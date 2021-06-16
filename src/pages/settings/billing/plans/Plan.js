@@ -21,6 +21,7 @@ import {openChat} from '../../../../utils.ts'
 import {isFeatureEnabled} from '../../../../utils/account.ts'
 import {AccountFeature} from '../../../../state/currentAccount/types.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
+import Tooltip from '../../../common/components/Tooltip.tsx'
 
 type Props = {
     plan: Map<any, any>,
@@ -162,7 +163,24 @@ const getFeatures = (
                   icon: 'playlist_add_check',
                   label: (
                       <>
-                          <b>{plan.get('free_tickets')}</b> tickets included
+                          <b>{plan.get('free_tickets')}</b>{' '}
+                          <span
+                              id="billable-ticket-label"
+                              className="billable-ticket"
+                          >
+                              billable tickets
+                          </span>{' '}
+                          included
+                          <Tooltip
+                              target="billable-ticket-label"
+                              placement="top-start"
+                              innerClassName="billable-ticket-tooltip"
+                          >
+                              A billable ticket is a ticket that received a
+                              response either from an agent or a rule. Only the
+                              ticket itself is billable, additional messages in
+                              this ticket are not billable.
+                          </Tooltip>
                       </>
                   ),
                   disabled: false,
