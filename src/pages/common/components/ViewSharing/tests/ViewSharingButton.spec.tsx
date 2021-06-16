@@ -26,7 +26,7 @@ const minProps = {
         },
     }),
     currentAccount: fromJS({
-        features: fromJS({[AccountFeature.ViewSharing]: true}),
+        features: fromJS({[AccountFeature.ViewSharing]: {enabled: true}}),
     }),
     hasViewSharingFeature: true,
     dispatch: jest.fn(),

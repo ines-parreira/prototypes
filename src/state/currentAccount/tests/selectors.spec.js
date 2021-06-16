@@ -239,7 +239,7 @@ describe('current account selectors', () => {
 
             expect(
                 selectors.currentAccountHasFeature(feature)(
-                    setStateWith(state, ['features', feature], false)
+                    setStateWith(state, ['features', feature], {enabled: false})
                 )
             ).toBe(false)
         })

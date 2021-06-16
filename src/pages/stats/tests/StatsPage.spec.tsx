@@ -45,8 +45,8 @@ describe('StatsPage', () => {
         integrations: fromJS(integrationsStateWithShopify),
         currentAccount: fromJS({
             features: fromJS({
-                [AccountFeature.SatisfactionSurveys]: true,
-                [AccountFeature.RevenueStatistics]: true,
+                [AccountFeature.SatisfactionSurveys]: {enabled: true},
+                [AccountFeature.RevenueStatistics]: {enabled: true},
             }),
         }),
         currentUser: fromJS({
@@ -209,8 +209,8 @@ describe('StatsPage', () => {
                 ...defaultState,
                 currentAccount: fromJS({
                     features: fromJS({
-                        [AccountFeature.SatisfactionSurveys]: false,
-                        [AccountFeature.RevenueStatistics]: true,
+                        [AccountFeature.SatisfactionSurveys]: {enabled: false},
+                        [AccountFeature.RevenueStatistics]: {enabled: true},
                     }),
                 }),
             },
@@ -225,8 +225,8 @@ describe('StatsPage', () => {
                 ...defaultState,
                 currentAccount: fromJS({
                     features: fromJS({
-                        [AccountFeature.SatisfactionSurveys]: true,
-                        [AccountFeature.RevenueStatistics]: false,
+                        [AccountFeature.SatisfactionSurveys]: {enabled: true},
+                        [AccountFeature.RevenueStatistics]: {enabled: false},
                     }),
                 }),
             },

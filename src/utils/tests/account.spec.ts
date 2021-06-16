@@ -2,18 +2,12 @@ import {isFeatureEnabled} from '../account'
 
 describe('account utils', () => {
     describe('isFeatureEnabled()', () => {
-        it.each([true, {enabled: true}])(
-            'should return true',
-            (featureMetadata) => {
-                expect(isFeatureEnabled(featureMetadata)).toBe(true)
-            }
-        )
+        it('should return true', () => {
+            expect(isFeatureEnabled({enabled: true})).toBe(true)
+        })
 
-        it.each([false, {enabled: false}])(
-            'should return false',
-            (featureMetadata) => {
-                expect(isFeatureEnabled(featureMetadata)).toBe(false)
-            }
-        )
+        it('should return false', () => {
+            expect(isFeatureEnabled({enabled: false})).toBe(false)
+        })
     })
 })

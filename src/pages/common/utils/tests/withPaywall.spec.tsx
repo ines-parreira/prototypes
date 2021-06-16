@@ -25,8 +25,8 @@ describe('withPaywall', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             features: fromJS({
-                [AccountFeature.InstagramComment]: true,
-                [AccountFeature.AutoAssignment]: false,
+                [AccountFeature.InstagramComment]: {enabled: true},
+                [AccountFeature.AutoAssignment]: {enabled: false},
             }),
         }),
         billing: fromJS({

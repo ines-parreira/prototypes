@@ -217,7 +217,10 @@ exports[`<Plan/> should render A Legacy plan different than current plan 1`] = `
         <div
           class=""
         >
-          Phone
+          <b>
+            50
+          </b>
+           Phone numbers
         </div>
       </li>
       <li
@@ -1135,7 +1138,10 @@ exports[`<Plan/> should render a plan being selected 1`] = `
         <div
           class="feature-label-disabled"
         >
-          Phone
+          <b>
+            3
+          </b>
+           Phone numbers
         </div>
       </li>
       <li

@@ -76,12 +76,10 @@ export type AccountViewsOrderingSettingData = {
     view_sections: Record<string, {display_order: number}>
 }
 
-export type AccountFeatureMetadata =
-    | boolean
-    | {
-          enabled: boolean
-          limit?: number
-      }
+export type AccountFeatureMetadata = {
+    enabled: boolean
+    limit?: number
+}
 
 export type AccountFeatures = Record<AccountFeature, AccountFeatureMetadata>
 

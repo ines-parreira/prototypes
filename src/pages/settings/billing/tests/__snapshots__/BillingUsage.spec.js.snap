@@ -79,19 +79,46 @@ exports[`<BillingUsage/> should display price 1`] = `
         "status": "active",
       },
       "features": Immutable.Map {
-        "view_sharing": true,
-        "phone_integration": true,
-        "revenue_statistics": true,
-        "facebook_comment": true,
-        "satisfaction_surveys": true,
-        "user_roles": true,
-        "magento_integration": true,
-        "instagram_comment": true,
-        "yotpo_integration": true,
-        "instagram_dm": true,
-        "teams": true,
-        "chat_campaigns": true,
-        "auto_assignment": true,
+        "view_sharing": Immutable.Map {
+          "enabled": true,
+        },
+        "phone_integration": Immutable.Map {
+          "enabled": true,
+          "limit": 3,
+        },
+        "revenue_statistics": Immutable.Map {
+          "enabled": true,
+        },
+        "facebook_comment": Immutable.Map {
+          "enabled": true,
+        },
+        "satisfaction_surveys": Immutable.Map {
+          "enabled": true,
+        },
+        "user_roles": Immutable.Map {
+          "enabled": true,
+        },
+        "magento_integration": Immutable.Map {
+          "enabled": true,
+        },
+        "instagram_comment": Immutable.Map {
+          "enabled": true,
+        },
+        "yotpo_integration": Immutable.Map {
+          "enabled": true,
+        },
+        "instagram_dm": Immutable.Map {
+          "enabled": true,
+        },
+        "teams": Immutable.Map {
+          "enabled": true,
+        },
+        "chat_campaigns": Immutable.Map {
+          "enabled": true,
+        },
+        "auto_assignment": Immutable.Map {
+          "enabled": true,
+        },
       },
     }
   }
@@ -620,19 +647,46 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         "status": "active",
       },
       "features": Immutable.Map {
-        "view_sharing": true,
-        "phone_integration": true,
-        "revenue_statistics": true,
-        "facebook_comment": true,
-        "satisfaction_surveys": true,
-        "user_roles": true,
-        "magento_integration": true,
-        "instagram_comment": true,
-        "yotpo_integration": true,
-        "instagram_dm": true,
-        "teams": true,
-        "chat_campaigns": true,
-        "auto_assignment": true,
+        "view_sharing": Immutable.Map {
+          "enabled": true,
+        },
+        "phone_integration": Immutable.Map {
+          "enabled": true,
+          "limit": 3,
+        },
+        "revenue_statistics": Immutable.Map {
+          "enabled": true,
+        },
+        "facebook_comment": Immutable.Map {
+          "enabled": true,
+        },
+        "satisfaction_surveys": Immutable.Map {
+          "enabled": true,
+        },
+        "user_roles": Immutable.Map {
+          "enabled": true,
+        },
+        "magento_integration": Immutable.Map {
+          "enabled": true,
+        },
+        "instagram_comment": Immutable.Map {
+          "enabled": true,
+        },
+        "yotpo_integration": Immutable.Map {
+          "enabled": true,
+        },
+        "instagram_dm": Immutable.Map {
+          "enabled": true,
+        },
+        "teams": Immutable.Map {
+          "enabled": true,
+        },
+        "chat_campaigns": Immutable.Map {
+          "enabled": true,
+        },
+        "auto_assignment": Immutable.Map {
+          "enabled": true,
+        },
       },
     }
   }
