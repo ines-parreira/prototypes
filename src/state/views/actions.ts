@@ -525,7 +525,7 @@ export function createJob(
         if (view.get('dirty', false)) {
             requestPayload = {
                 type: jobType,
-                scheduled_datetime: (getMoment() as Moment).add(15, 'second'),
+                scheduled_datetime: getMoment().add(15, 'second'),
                 params: Object.assign(
                     {},
                     {
@@ -544,7 +544,7 @@ export function createJob(
         } else {
             requestPayload = {
                 type: jobType,
-                scheduled_datetime: (getMoment() as Moment).add(15, 'second'),
+                scheduled_datetime: getMoment().add(15, 'second'),
                 params: Object.assign(
                     {},
                     {view_id: view.get('id')},

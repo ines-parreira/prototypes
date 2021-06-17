@@ -1090,6 +1090,10 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                     "value": "America/Noronha",
                   },
                   Object {
+                    "label": "(UTC-02:00) America/Nuuk",
+                    "value": "America/Nuuk",
+                  },
+                  Object {
                     "label": "(UTC-02:00) Atlantic/South_Georgia",
                     "value": "Atlantic/South_Georgia",
                   },
@@ -2298,6 +2302,10 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                     "value": "Antarctica/DumontDUrville",
                   },
                   Object {
+                    "label": "(UTC+10:00) Antarctica/Macquarie",
+                    "value": "Antarctica/Macquarie",
+                  },
+                  Object {
                     "label": "(UTC+10:00) Asia/Ust-Nera",
                     "value": "Asia/Ust-Nera",
                   },
@@ -2388,10 +2396,6 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   Object {
                     "label": "(UTC+10:30) Australia/Lord_Howe",
                     "value": "Australia/Lord_Howe",
-                  },
-                  Object {
-                    "label": "(UTC+11:00) Antarctica/Macquarie",
-                    "value": "Antarctica/Macquarie",
                   },
                   Object {
                     "label": "(UTC+11:00) Asia/Magadan",

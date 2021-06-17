@@ -1,8 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {mount, shallow} from 'enzyme'
-import moment from 'moment'
-import momentTimezone from 'moment-timezone'
 
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -12,13 +10,8 @@ import {CustomerChannels as CustomerChannelsComponent} from '../CustomerChannels
 
 describe('CustomerChannels component', () => {
     beforeEach(() => {
-        const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
-        jest.spyOn(moment, 'utc').mockImplementation(() => fixedUtcDate)
-    })
-
-    afterEach(() => {
-        jest.spyOn(moment, 'utc').mockRestore()
-        jest.spyOn(momentTimezone, 'utc').mockRestore()
+        const mockDate = new Date('2019-01-26T12:34:56.000Z')
+        global.Date.now = jest.fn(() => mockDate)
     })
 
     it(
@@ -196,17 +189,15 @@ describe('CustomerChannels component', () => {
     )
 
     it('should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more"', () => {
-        const fixedUtcDate = momentTimezone.utc('2021-02-26T13:00:00.000Z')
-        jest.spyOn(momentTimezone, 'utc').mockImplementationOnce(
-            () => fixedUtcDate
-        )
+        const mockDate = new Date('2021-02-26T13:00:00.000Z')
+        global.Date.now = jest.fn(() => mockDate)
 
         const component = mount(
             <CustomerChannelsComponent
                 currentUser={fromJS({
                     timezone: 'Europe/Paris',
                 })}
-                customerLastSeenOnChat={'2021-02-26T12:24:00.000Z'}
+                customerLastSeenOnChat={1614342240000} // 2021-02-26T12:24:00.000Z
                 customerLocationInfo={fromJS({
                     city: 'Paris',
                     country_name: 'France',

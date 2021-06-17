@@ -1,3 +1,4 @@
+// @flow
 import React, {type Node} from 'react'
 import {fromJS, type List, type Map} from 'immutable'
 import classnames from 'classnames'

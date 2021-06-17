@@ -785,7 +785,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       >
         access_time
       </i>
-      Local time: 13:34
+      Local time: 14:00
     </p>
     <p
       className="customerChannel"

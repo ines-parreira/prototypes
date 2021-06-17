@@ -1841,13 +1841,6 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.1.tgz#283f669ff76d7b8260df8ab7a4262cc83d988256"
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
 
-"@types/moment-timezone@0.5.30":
-  version "0.5.30"
-  resolved "https://registry.yarnpkg.com/@types/moment-timezone/-/moment-timezone-0.5.30.tgz#340ed45fe3e715f4a011f5cfceb7cb52aad46fc7"
-  integrity sha512-aDVfCsjYnAQaV/E9Qc24C5Njx1CoDjXsEgkxtp9NyXDpYu4CCbmclb6QhWloS9UTU/8YROUEEdEkWI0D7DxnKg==
-  dependencies:
-    moment-timezone "*"
-
 "@types/mousetrap@1.6.3":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@types/mousetrap/-/mousetrap-1.6.3.tgz#3159a01a2b21c9155a3d8f85588885d725dc987d"
@@ -8519,26 +8512,14 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "^1.2.5"
 
-moment-timezone@*:
-  version "0.5.32"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.32.tgz#db7677cc3cc680fd30303ebd90b0da1ca0dfecc2"
-  integrity sha512-Z8QNyuQHQAmWucp8Knmgei8YNo28aLjJq6Ma+jy1ZSpSk5nyfRT8xgUbSQvD2+2UajISfenndwvFuH3NGS+nvA==
+moment-timezone@0.5.33:
+  version "0.5.33"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.33.tgz#b252fd6bb57f341c9b59a5ab61a8e51a73bbd22c"
+  integrity sha512-PTc2vcT8K9J5/9rDEPe5czSIKgLoGsH8UNpA4qZTVw0Vd/Uz19geE9abbIOQKaAQFcnQ3v5YEXrbSc5BpshH+w==
   dependencies:
     moment ">= 2.9.0"
 
-moment-timezone@0.5.28:
-  version "0.5.28"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.28.tgz#f093d789d091ed7b055d82aa81a82467f72e4338"
-  integrity sha512-TDJkZvAyKIVWg5EtVqRzU97w0Rb0YVbfpqyjgu6GwXCAohVRqwZjf4fOzDE6p1Ch98Sro/8hQQi65WDXW5STPw==
-  dependencies:
-    moment ">= 2.9.0"
-
-moment@2.24.0:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
-
-"moment@>= 2.9.0", moment@>=2.14.0, moment@^2.10.2, moment@^2.9.0:
+moment@2.29.1, "moment@>= 2.9.0", moment@>=2.14.0, moment@^2.10.2, moment@^2.9.0:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
