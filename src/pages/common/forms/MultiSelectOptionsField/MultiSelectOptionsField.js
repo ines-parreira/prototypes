@@ -186,6 +186,11 @@ export default class MultiSelectOptionsField extends React.Component<
             caseInsensitive,
             selectedOptions,
         } = this.props
+
+        if (option.isDeprecated) {
+            return
+        }
+
         let processedValue = option.value
 
         if (caseInsensitive && typeof processedValue === 'string') {
