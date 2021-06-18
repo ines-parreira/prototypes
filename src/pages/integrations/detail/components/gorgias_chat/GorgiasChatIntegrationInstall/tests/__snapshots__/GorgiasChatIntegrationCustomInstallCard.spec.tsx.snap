@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationCustomInstallationCard/> render() should display the custom installation card correcty 1`] = `
+<Card
+  className="card"
+  tag="div"
+>
+  <CardHeader
+    className="card-header"
+    tag="div"
+  >
+    <h3>
+      Custom installation
+    </h3>
+    <button
+      aria-label="expand card"
+      onClick={[Function]}
+    >
+      <i
+        className="material-icons"
+      >
+        keyboard_arrow_down
+      </i>
+    </button>
+  </CardHeader>
+  <Collapse
+    appear={false}
+    enter={true}
+    exit={true}
+    in={false}
+    isOpen={false}
+    mountOnEnter={false}
+    onEnter={[Function]}
+    onEntered={[Function]}
+    onEntering={[Function]}
+    onExit={[Function]}
+    onExited={[Function]}
+    onExiting={[Function]}
+    tag="div"
+    timeout={350}
+    unmountOnExit={false}
+  >
+    <CardBody
+      className="card-body"
+      tag="div"
+    >
+      <p>
+        If you're not using Shopify or wish to add the chat widget manually only to specific Shopify webpages, follow the instructions below. For more details,
+         
+        <a
+          href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          see this article
+        </a>
+        .
+      </p>
+      <h4>
+        Install chat widget
+      </h4>
+      <Nav
+        className="tab-bar"
+        tabs={true}
+        tag="ul"
+        vertical={false}
+      >
+        <NavItem
+          className="tab-item"
+          key="tab-link-SHOPIFY"
+          tag="li"
+        >
+          <NavLink
+            className="activeTab tabLink"
+            href="#"
+            onClick={[Function]}
+            tag="a"
+          >
+            Shopify Website
+          </NavLink>
+        </NavItem>
+        <NavItem
+          className="tab-item"
+          key="tab-link-OTHER_WEBSITE"
+          tag="li"
+        >
+          <NavLink
+            className="tabLink"
+            href="#"
+            onClick={[Function]}
+            tag="a"
+          >
+            Any Other Website
+          </NavLink>
+        </NavItem>
+        <NavItem
+          className="tab-item"
+          key="tab-link-GOOGLE_TAG_MANAGER"
+          tag="li"
+        >
+          <NavLink
+            className="tabLink"
+            disabled={true}
+            onClick={[Function]}
+            tag="a"
+          >
+            Google Tag Manager
+          </NavLink>
+        </NavItem>
+      </Nav>
+      <TabContent
+        activeTab="SHOPIFY"
+        tag="div"
+      >
+        <TabPane
+          key="tab-pane-SHOPIFY"
+          tabId="SHOPIFY"
+          tag="div"
+        >
+          <CustomInstallationShopifyTab
+            code="<script>installChat();</script>"
+            integrationId="1"
+            sspAvailable={true}
+          />
+        </TabPane>
+        <TabPane
+          key="tab-pane-OTHER_WEBSITE"
+          tabId="OTHER_WEBSITE"
+          tag="div"
+        >
+          <CustomInstallationOtherWebsiteTab
+            code="<script>installChat();</script>"
+          />
+        </TabPane>
+        <TabPane
+          key="tab-pane-GOOGLE_TAG_MANAGER"
+          tabId="GOOGLE_TAG_MANAGER"
+          tag="div"
+        />
+      </TabContent>
+    </CardBody>
+  </Collapse>
+</Card>
+`;

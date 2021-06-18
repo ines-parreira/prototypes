@@ -81,7 +81,7 @@ jest.mock(
 )
 
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.js',
+    '../components/gorgias_chat/GorgiasChatIntegrationAppearance',
     () => () => <div>GorgiasChatIntegrationAppearance</div>
 )
 jest.mock(
@@ -93,13 +93,12 @@ jest.mock(
     () => () => <div>GorgiasChatIntegrationCampaigns</div>
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationInstall.js',
+    '../components/gorgias_chat/GorgiasChatIntegrationInstall',
     () => () => <div>GorgiasChatIntegrationInstall</div>
 )
-jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationList.js',
-    () => () => <div>GorgiasChatIntegrationList</div>
-)
+jest.mock('../components/gorgias_chat/GorgiasChatIntegrationList', () => () => (
+    <div>GorgiasChatIntegrationList</div>
+))
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationPreferences.js',
     () => () => <div>GorgiasChatIntegrationPreferences</div>

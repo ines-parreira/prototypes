@@ -1,0 +1,3 @@
+import GorgiasChatIntegrationInstall from './GorgiasChatIntegrationInstall'
+
+export default GorgiasChatIntegrationInstall

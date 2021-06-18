@@ -26,11 +26,11 @@ import FacebookIntegrationInstagramAds from './components/facebook/FacebookInteg
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.js'
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat.js'
 
-import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.js'
+import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
 import GorgiasChatCampaignDetail from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatCampaignDetail.js'
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.js'
-import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall.js'
-import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList.js'
+import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
+import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences.js'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies.js'
 import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService'
@@ -389,7 +389,6 @@ export const IntegrationDetailContainer = ({
                     return (
                         <GorgiasChatIntegrationInstall
                             actions={actions}
-                            loading={loading}
                             integration={integration}
                         />
                     )

@@ -1,5 +1,6 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
+import gorgiasChatWidgetTexts from '../../../../../integrations/common/texts/widget_texts.json'
 import {
     DANISH_LANGUAGE,
     DUTCH_LANGUAGE,
@@ -12,12 +13,15 @@ import {
     GERMAN_LANGUAGE,
     CZECH_LANGUAGE,
     NORWEGIAN_LANGUAGE,
-} from '../../constants/languages.ts'
+} from '../../constants/languages'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
-export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS = fromJS([
+export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<
+    string,
+    string
+>> = fromJS([
     {value: ENGLISH_US_LANGUAGE, label: 'English (US)'},
     {value: FRENCH_FR_LANGUAGE, label: 'French (France)'},
     {value: FRENCH_CA_LANGUAGE, label: 'French (Canada)'},
@@ -31,7 +35,9 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: CZECH_LANGUAGE, label: 'Czech'},
 ])
 
-export const GORGIAS_CHAT_WIDGET_TEXTS = require('../../../../../integrations/common/texts/widget_texts.json')
+export const GORGIAS_CHAT_WIDGET_TEXTS: {
+    [locale: string]: {[key: string]: string}
+} = gorgiasChatWidgetTexts
 export const GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS =
     GORGIAS_CHAT_WIDGET_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
 export const GORGIAS_CHAT_DEFAULT_COLOR = '#0d87dd'

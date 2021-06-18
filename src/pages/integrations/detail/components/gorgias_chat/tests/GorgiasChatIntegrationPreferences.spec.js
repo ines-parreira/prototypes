@@ -11,7 +11,7 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../config/integrations/gorgias_chat'
+} from '../../../../../../config/integrations/gorgias_chat.ts'
 
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {SPANISH_LANGUAGE} from '../../../../../../constants/languages.ts'

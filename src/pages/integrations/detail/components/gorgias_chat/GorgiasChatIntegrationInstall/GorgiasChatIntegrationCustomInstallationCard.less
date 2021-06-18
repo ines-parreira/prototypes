@@ -1,0 +1,62 @@
+@import '~css/new/colors';
+
+:local {
+    .card {
+        margin-bottom: 10px;
+    }
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        border-bottom: none;
+        height: 68px;
+        h3 {
+            margin: 0;
+        }
+        button {
+            border-radius: 50%;
+            border: none;
+            background-color: transparent;
+            outline: none;
+        }
+        button:hover,
+        button:focus:not(:focus-visible),
+        button:active {
+            border-radius: 50%;
+            border: none;
+            background-color: transparent;
+            outline: none;
+        }
+        button:focus-visible {
+            outline: 2px solid @indigo;
+        }
+        i {
+            color: @neutral6;
+            font-size: 25px;
+        }
+    }
+
+    .card-body {
+        padding: 0 20px 20px 20px;
+        h4,
+        p {
+            margin-bottom: 24px;
+        }
+    }
+
+    .tab-bar {
+        margin-bottom: 24px;
+    }
+
+    .tab-item {
+        .tabLink:hover {
+            cursor: pointer;
+            border-color: transparent;
+        }
+        .tabLink.activeTab {
+            border-bottom-width: 2px;
+            border-color: transparent transparent @blue transparent;
+        }
+    }
+}

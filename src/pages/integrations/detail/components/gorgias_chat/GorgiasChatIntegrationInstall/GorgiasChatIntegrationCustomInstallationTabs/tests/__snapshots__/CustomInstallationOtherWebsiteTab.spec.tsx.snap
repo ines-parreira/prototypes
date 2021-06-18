@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomInstallationOtherWebsiteTab/> should display the custom installation "other website" tab correcty 1`] = `
+<div
+  className="wrapper"
+>
+  <div
+    className="instruction"
+  >
+    <div>
+      <span
+        className="instruction-number"
+      >
+        1
+      </span>
+    </div>
+    <div
+      className="instruction-text"
+    >
+      Localize in the source files of your website in which file is the tag 
+      <b>
+        &lt;/body&gt;
+      </b>
+       and open it
+    </div>
+  </div>
+  <div
+    className="instruction"
+  >
+    <div>
+      <span
+        className="instruction-number"
+      >
+        2
+      </span>
+    </div>
+    <div
+      className="instruction-text"
+    >
+      Just above this tag, copy and paste the code snippet below
+    </div>
+  </div>
+  <div
+    className="instruction"
+  >
+    <div>
+      <span
+        className="instruction-number"
+      >
+        3
+      </span>
+    </div>
+    <div
+      className="instruction-text"
+    >
+      Save the file and commit the changes
+    </div>
+  </div>
+  <Alert
+    closeAriaLabel="Close"
+    color="warning"
+    fade={true}
+    isOpen={true}
+    tag="div"
+    transition={
+      Object {
+        "appear": true,
+        "baseClass": "fade",
+        "baseClassActive": "show",
+        "enter": true,
+        "exit": true,
+        "in": true,
+        "mountOnEnter": false,
+        "onEnter": [Function],
+        "onEntered": [Function],
+        "onEntering": [Function],
+        "onExit": [Function],
+        "onExited": [Function],
+        "onExiting": [Function],
+        "tag": "div",
+        "timeout": 150,
+        "unmountOnExit": true,
+      }
+    }
+  >
+    Please note that by copying the code here, the chat could be shown on all webpages. Make sure to copy the code to just specific pages if needed.
+  </Alert>
+  <CodeSnippet
+    code="<script>installChat();</script>"
+  />
+</div>
+`;

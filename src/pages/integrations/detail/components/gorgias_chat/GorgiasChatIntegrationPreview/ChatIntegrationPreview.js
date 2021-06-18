@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat'
+} from '../../../../../../config/integrations/gorgias_chat.ts'
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'

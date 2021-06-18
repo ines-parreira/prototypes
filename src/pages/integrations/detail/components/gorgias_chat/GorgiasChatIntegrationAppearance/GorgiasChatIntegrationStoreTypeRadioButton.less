@@ -1,0 +1,47 @@
+@import '~css/new/colors.less';
+
+:local {
+    .container:hover {
+        .selected;
+    }
+    .container:active,
+    .container:focus:not(:focus-visible) {
+        outline: none;
+    }
+    .container:not(:last-child) {
+        margin-right: 18px;
+    }
+    .container {
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        max-width: 280px;
+        height: 72px;
+        border: 1px solid @neutral4;
+        border-radius: 4px;
+        background-color: white;
+        flex-basis: 0;
+        flex-grow: 1;
+
+        .iconContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: @blue0;
+            height: 48px;
+            width: 48px;
+            border-radius: 50%;
+        }
+
+        .label {
+            margin-left: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            color: @neutral10;
+        }
+    }
+    .selected {
+        border: 1px solid @blue;
+    }
+}

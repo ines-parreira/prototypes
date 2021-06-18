@@ -6,7 +6,7 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/int
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/gorgias_chat'
+} from '../../../../../../../config/integrations/gorgias_chat.ts'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'

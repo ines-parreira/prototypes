@@ -1,0 +1,3 @@
+import GorgiasChatIntegrationAppearance from './GorgiasChatIntegrationAppearance'
+
+export default GorgiasChatIntegrationAppearance

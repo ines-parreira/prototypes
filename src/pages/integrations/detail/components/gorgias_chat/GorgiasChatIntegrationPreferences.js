@@ -29,7 +29,7 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
-} from '../../../../../config/integrations/gorgias_chat'
+} from '../../../../../config/integrations/gorgias_chat.ts'
 
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions.ts'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors.ts'

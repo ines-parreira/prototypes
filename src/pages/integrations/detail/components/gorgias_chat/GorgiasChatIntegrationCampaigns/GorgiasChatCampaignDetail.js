@@ -41,7 +41,7 @@ import {
     CAMPAIGNS_TRIGGER_KEYS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat'
+} from '../../../../../../config/integrations/gorgias_chat.ts'
 import history from '../../../../../history.ts'
 
 import CampaignPreview from './CampaignPreview'

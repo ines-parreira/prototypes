@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display one shopify integration and call updateOrCreateIntegration with install arguments 1`] = `
+<div>
+  <div
+    class="card card"
+  >
+    <div
+      class="card-header card-header"
+    >
+      <h3>
+        One-click installation
+      </h3>
+    </div>
+    <div
+      class="card-body card-body"
+    >
+      <p>
+        Activate the customer chat widget on your Shopify store in one click. Note that this will 
+        <br />
+         automatically enable
+         
+        <a
+          to="/app/settings/self-service"
+        >
+          Self-Service
+        </a>
+        .
+      </p>
+      <div
+        class="one-click-installation"
+      >
+        <div
+          class="one-click-installation-inner"
+        >
+          <img
+            alt="shopify-logo"
+            class="shopify-logo"
+            src="test-file-stub"
+          />
+          <b>
+            mylittleintegration3
+          </b>
+        </div>
+        <button
+          class="chat-toggle-install btn btn-primary"
+          type="button"
+        >
+          Install
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display one shopify integration and call updateOrCreateIntegration with uninstall arguments 1`] = `
+<div>
+  <div
+    class="card card"
+  >
+    <div
+      class="card-header card-header"
+    >
+      <h3>
+        One-click installation
+      </h3>
+    </div>
+    <div
+      class="card-body card-body"
+    >
+      <p>
+        Activate the customer chat widget on your Shopify store in one click. Note that this will 
+        <br />
+         automatically enable
+         
+        <a
+          to="/app/settings/self-service"
+        >
+          Self-Service
+        </a>
+        .
+      </p>
+      <div
+        class="one-click-installation"
+      >
+        <div
+          class="one-click-installation-inner"
+        >
+          <img
+            alt="shopify-logo"
+            class="shopify-logo"
+            src="test-file-stub"
+          />
+          <b>
+            mylittleintegration3
+          </b>
+        </div>
+        <button
+          class="chat-toggle-install btn btn-danger"
+          type="button"
+        >
+          Uninstall
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

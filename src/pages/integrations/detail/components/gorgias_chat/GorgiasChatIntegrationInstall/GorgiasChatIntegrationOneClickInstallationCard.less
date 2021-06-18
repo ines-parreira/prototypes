@@ -1,0 +1,58 @@
+@import '~css/new/colors';
+
+:local {
+    .card {
+        margin-bottom: 10px;
+    }
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        border-bottom: none;
+        height: 68px;
+        h3 {
+            margin: 0;
+        }
+    }
+
+    .card-body {
+        padding: 0 20px 20px 20px;
+        h4,
+        p {
+            margin-bottom: 24px;
+        }
+        .one-click-installation {
+            background-color: @neutral1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+
+            &:not(:last-of-type) {
+                margin-bottom: 24px;
+            }
+
+            .one-click-installation-inner {
+                display: flex;
+                align-items: center;
+            }
+            .shopify-logo {
+                width: 17px;
+                height: 20px;
+                margin: 0 20px 0 10px;
+            }
+            .warning-icon {
+                height: 14px;
+                width: 13px;
+                margin-left: 18px;
+            }
+            .disconnected-store {
+                color: @orange;
+                margin-left: 16px;
+                font-size: 12px;
+            }
+        }
+    }
+}

@@ -2,7 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/gorgias_chat'
+import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/gorgias_chat.ts'
 
 import css from './ChatIntegrationPreview.less'
 

@@ -1,0 +1,59 @@
+@import '~css/new/colors.less';
+
+:local {
+    .dropdown {
+        background: transparent;
+        font-weight: normal;
+        text-align: start;
+        margin-bottom: 14px;
+    }
+    .wrapper > .dropdown > button {
+        width: 100%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 400;
+        &:hover {
+            box-shadow: none;
+            background-color: white;
+        }
+        &:focus,
+        &:active {
+            background-color: white !important;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1) !important;
+            border: 1px solid #80bdff !important;
+            border-radius: 3px !important;
+        }
+        &::after {
+            color: @neutral6;
+        }
+    }
+    .innerItem > span {
+        margin-left: 16px;
+    }
+    .dropdownMenu {
+        width: 100%;
+    }
+    .storeRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+    }
+    .dropdownValue {
+        color: @neutral10;
+    }
+    .dropdownPlaceholder {
+        color: @neutral5;
+    }
+    .dropdownInfo {
+        color: @neutral8;
+        font-size: 12px;
+        font-weight: 400;
+    }
+    .dropdownDisconnectedInfo {
+        color: @orange;
+        margin-left: 9.65px;
+    }
+}

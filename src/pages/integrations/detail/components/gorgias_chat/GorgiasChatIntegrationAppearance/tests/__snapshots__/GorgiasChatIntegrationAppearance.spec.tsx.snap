@@ -1,0 +1,4156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when creating a new chat integration 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            New chat integration
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="selectStoreTypeContainer"
+          >
+            <label
+              class=""
+              style="font-weight: bold;"
+            >
+              Where will you use this chat?
+               
+              <span
+                class="redStar"
+              >
+                *
+              </span>
+            </label>
+            <div
+              class="radioButtonGroup"
+            >
+              <button
+                class="container selected"
+                id="store-type-radio-button-0"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="storefront"
+                    src="test-file-stub"
+                  />
+                </div>
+                <span
+                  class="label"
+                >
+                  Shopify store
+                </span>
+              </button>
+              <button
+                class="container"
+                id="store-type-radio-button-1"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="wrench"
+                    src="test-file-stub"
+                  />
+                </div>
+                <span
+                  class="label"
+                >
+                  Any other website
+                </span>
+              </button>
+            </div>
+          </div>
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <label
+                  class=""
+                  style="font-weight: bold;"
+                >
+                  Select a store
+                   
+                  <span
+                    style="color: rgb(242, 79, 102);"
+                  >
+                    *
+                  </span>
+                   
+                  <span
+                    id="select-store"
+                  >
+                    <i
+                      class="material-icons"
+                      style="color: rgb(153, 165, 182);"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </label>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="dropdown dropdown"
+                    required=""
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <span
+                        class="dropdownPlaceholder"
+                      >
+                        Select a store
+                      </span>
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdownMenu dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="1"
+                      >
+                        <div
+                          class="innerItem"
+                        >
+                          <img
+                            alt="shopifyStore"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            myStore1
+                          </span>
+                        </div>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-1"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-1"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-2"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-2"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-3"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-3"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-4"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-5"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-6"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-7"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-8"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-8"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success disabled"
+              disabled=""
+              type="submit"
+            >
+              Add new chat
+            </button>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="agents"
+                >
+                  <div
+                    class="agent first"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent middle"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent last"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                     
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when integration is loading 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            hellochatintegration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Appearance
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/self_service"
+      >
+        Self-service
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-17"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-17"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="hellochatintegration"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-18"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-18"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-19"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-19"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <fieldset
+                  class="form-group"
+                >
+                  <label
+                    class="control-label"
+                  >
+                    Avatar
+                  </label>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      checked=""
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use team members' avatars
+                    </label>
+                  </div>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use a single image for the whole team
+                      <small
+                        class="description form-text text-muted"
+                      >
+                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      </small>
+                    </label>
+                  </div>
+                </fieldset>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-20"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-21"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-22"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-23"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-24"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-24"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn-loading btn btn-success disabled"
+              disabled=""
+              type="submit"
+            >
+              Save changes
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id=""
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1561334400000"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete chat
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="agents"
+                >
+                  <div
+                    class="agent first"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent middle"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent last"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                    hellochatintegration
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when updating an existing integration 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            hellochatintegration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Appearance
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/self_service"
+      >
+        Self-service
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-9"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-9"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="hellochatintegration"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-10"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-10"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-11"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-11"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <fieldset
+                  class="form-group"
+                >
+                  <label
+                    class="control-label"
+                  >
+                    Avatar
+                  </label>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      checked=""
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use team members' avatars
+                    </label>
+                  </div>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use a single image for the whole team
+                      <small
+                        class="description form-text text-muted"
+                      >
+                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      </small>
+                    </label>
+                  </div>
+                </fieldset>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-12"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-13"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-14"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-15"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-16"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-16"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+              type="submit"
+            >
+              Save changes
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id=""
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1561334400000"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete chat
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="agents"
+                >
+                  <div
+                    class="agent first"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent middle"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent last"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                    hellochatintegration
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field for team picture as required because the avatar type is \`team-picture\` and there is no team picture set 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            hellochatintegration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Appearance
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/self_service"
+      >
+        Self-service
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-25"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-25"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="hellochatintegration"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-26"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-26"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-27"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-27"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <fieldset
+                  class="form-group"
+                >
+                  <label
+                    class="control-label"
+                  >
+                    Avatar
+                  </label>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      checked=""
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use team members' avatars
+                    </label>
+                  </div>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use a single image for the whole team
+                      <small
+                        class="description form-text text-muted"
+                      >
+                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      </small>
+                    </label>
+                  </div>
+                </fieldset>
+                <div
+                  class="d-flex flex-direction-row mb-2"
+                >
+                  <div>
+                    FileField component is required ? 
+                    true
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-28"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-29"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-30"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-31"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-32"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-32"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+              type="submit"
+            >
+              Save changes
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id=""
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1561334400000"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete chat
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="agents"
+                >
+                  <div
+                    class="agent first"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent middle"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent last"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                    hellochatintegration
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file field for team picture as required because the avatar type is \`team-members\` 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            hellochatintegration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Appearance
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/self_service"
+      >
+        Self-service
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-41"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-41"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="hellochatintegration"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-43"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-43"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <fieldset
+                  class="form-group"
+                >
+                  <label
+                    class="control-label"
+                  >
+                    Avatar
+                  </label>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      checked=""
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use team members' avatars
+                    </label>
+                  </div>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use a single image for the whole team
+                      <small
+                        class="description form-text text-muted"
+                      >
+                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      </small>
+                    </label>
+                  </div>
+                </fieldset>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-44"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-45"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-46"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-47"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-48"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-48"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+              type="submit"
+            >
+              Save changes
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id=""
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1561334400000"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete chat
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="agents"
+                >
+                  <div
+                    class="agent first"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent middle"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent last"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                    hellochatintegration
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file field for team picture as required because the avatar type is \`team-picture\` but there is a team picture set 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            hellochatintegration
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Appearance
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/2/self_service"
+      >
+        Self-service
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-33"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-33"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="hellochatintegration"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-34"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-34"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-35"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-35"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <fieldset
+                  class="form-group"
+                >
+                  <label
+                    class="control-label"
+                  >
+                    Avatar
+                  </label>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      checked=""
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use team members' avatars
+                    </label>
+                  </div>
+                  <div
+                    class="mb-2 form-check"
+                  >
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                    />
+                    <label
+                      class="control-label ml-2 form-check-label"
+                    >
+                      Use a single image for the whole team
+                      <small
+                        class="description form-text text-muted"
+                      >
+                        For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                      </small>
+                    </label>
+                  </div>
+                </fieldset>
+                <div
+                  class="d-flex flex-direction-row mb-2"
+                >
+                  <img
+                    alt="Team avatar"
+                    class="mr-3"
+                    src="https://gorgias.io/teampicture.png"
+                    style="max-width: 100px;"
+                  />
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-36"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-37"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-38"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-39"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-40"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-40"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+              type="submit"
+            >
+              Save changes
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id=""
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-1561334400000"
+                type="button"
+              >
+                <i
+                  class="material-icons mr-1 text-danger"
+                >
+                  delete
+                </i>
+                Delete chat
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="team-picture-wrapper"
+                >
+                  <div
+                    class="team-picture"
+                    style="border-color: #0d87dd;"
+                  >
+                    <img
+                      alt="Team"
+                      src="https://gorgias.io/teampicture.png"
+                    />
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                    hellochatintegration
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the updateOrCreateIntegration with 2nd store name option selected - myStore2  1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            New chat integration
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="selectStoreTypeContainer"
+          >
+            <label
+              class=""
+              style="font-weight: bold;"
+            >
+              Where will you use this chat?
+               
+              <span
+                class="redStar"
+              >
+                *
+              </span>
+            </label>
+            <div
+              class="radioButtonGroup"
+            >
+              <button
+                class="container selected"
+                id="store-type-radio-button-0"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="storefront"
+                    src="test-file-stub"
+                  />
+                </div>
+                <span
+                  class="label"
+                >
+                  Shopify store
+                </span>
+              </button>
+              <button
+                class="container"
+                id="store-type-radio-button-1"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="wrench"
+                    src="test-file-stub"
+                  />
+                </div>
+                <span
+                  class="label"
+                >
+                  Any other website
+                </span>
+              </button>
+            </div>
+          </div>
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset"
+              >
+                <label
+                  class=""
+                  style="font-weight: bold;"
+                >
+                  Select a store
+                   
+                  <span
+                    style="color: rgb(242, 79, 102);"
+                  >
+                    *
+                  </span>
+                   
+                  <span
+                    id="select-store"
+                  >
+                    <i
+                      class="material-icons"
+                      style="color: rgb(153, 165, 182);"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </label>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="dropdown dropdown"
+                    required=""
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <span
+                        class="dropdownPlaceholder"
+                      >
+                        Select a store
+                      </span>
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdownMenu dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="1"
+                      >
+                        <div
+                          class="innerItem"
+                        >
+                          <img
+                            alt="shopifyStore"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            myStore1
+                          </span>
+                        </div>
+                        <span
+                          class="dropdownInfo"
+                        >
+                          1 connected chat
+                        </span>
+                      </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="2"
+                      >
+                        <div
+                          class="innerItem"
+                        >
+                          <img
+                            alt="shopifyStore"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            myStore2
+                          </span>
+                        </div>
+                        <span
+                          class="dropdownInfo"
+                        >
+                          2 connected chats
+                        </span>
+                      </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="3"
+                      >
+                        <div
+                          class="innerItem"
+                        >
+                          <img
+                            alt="shopifyStore"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            myStore3
+                          </span>
+                        </div>
+                        <span
+                          class="dropdownInfo"
+                        >
+                          <img
+                            alt="warning icon"
+                            class="material-icons warning-icon"
+                            src="test-file-stub"
+                          />
+                          <span
+                            class="dropdownDisconnectedInfo"
+                          >
+                            Disconnected store
+                          </span>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-49"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-49"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-50"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-50"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-51"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-51"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-52"
+                  >
+                    Main color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-53"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-54"
+                  >
+                    Conversation color
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="d-inline-block"
+                    >
+                      <button
+                        class="button btn btn-secondary"
+                        id="color-picker-55"
+                        type="button"
+                      >
+                        <div
+                          class="color"
+                          style="background-color: rgb(13, 135, 221);"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-56"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="form-control"
+                      id="id-input-56"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success disabled"
+              disabled=""
+              type="submit"
+            >
+              Add new chat
+            </button>
+          </form>
+        </div>
+        <div
+          class="offsetChatPreview p-0 col"
+        >
+          <div
+            class="d-flex justify-content-center align-items-center"
+            style="width: 30em;"
+          >
+            <div
+              class="mb-3 btn-group"
+              role="group"
+            >
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                During business hours
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Outside business hours
+              </button>
+            </div>
+          </div>
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="dialog"
+            >
+              <div
+                class="header"
+                style="background-color: rgb(13, 135, 221);"
+              >
+                <div
+                  class="agents"
+                >
+                  <div
+                    class="agent first"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent middle"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                  <div
+                    class="agent last"
+                    style="border-color: #0d87dd;"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      person
+                    </i>
+                    <div
+                      class="onlineMarker"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="appName"
+                  >
+                     
+                  </div>
+                  <div
+                    class="introductionText"
+                  >
+                    How can we help?
+                  </div>
+                </div>
+              </div>
+              <div
+                class="content"
+              >
+                <div>
+                  <div
+                    class="conversationTimestamp"
+                  >
+                    June 23
+                  </div>
+                  <div
+                    class="bubble primary firstMessageOfAppUser"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    Hey there
+                  </div>
+                  <div
+                    class="bubble primary lastMessage"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                  </div>
+                  <div
+                    class="messageTimestamp"
+                  >
+                    <span>
+                      6 minutes ago
+                      . 
+                    </span>
+                    <span
+                      class="messageStatus"
+                    >
+                      Delivered
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="appMakerMessageWrapper"
+                >
+                  <div
+                    class="component avatar"
+                    style="width: 35px; height: 35px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                    >
+                      <span
+                        style="line-height: 37px;"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="user"
+                    />
+                    <div
+                      class="bubble firstMessageOfAppMaker"
+                    >
+                      Sure, what's your email / order number?
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                <div
+                  class="placeholder"
+                >
+                  Type a message...
+                </div>
+                <i
+                  class="icon camera"
+                />
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <i
+                  class="icon"
+                />
+                <div
+                  class="shadow"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

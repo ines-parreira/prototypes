@@ -22,7 +22,7 @@ import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
-} from '../../../../../config/integrations/gorgias_chat'
+} from '../../../../../config/integrations/gorgias_chat.ts'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from './GorgiasChatIntegrationPreview'

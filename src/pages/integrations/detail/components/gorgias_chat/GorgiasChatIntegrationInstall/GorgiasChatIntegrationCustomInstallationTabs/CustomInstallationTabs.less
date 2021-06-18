@@ -1,0 +1,33 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        div,
+        p,
+        h4 {
+            margin-bottom: 24px;
+        }
+        div:last-child {
+            margin-bottom: 0px;
+        }
+    }
+
+    .instruction {
+        display: flex;
+        align-items: flex-start;
+
+        .instruction-number {
+            display: block;
+            width: 24px;
+            height: 24px;
+            font-weight: bold;
+            color: white;
+            border-radius: 50%;
+            background-color: @neutral10;
+            margin-right: 15px;
+            text-align: center;
+            font-size: 14px;
+            padding: 2px;
+        }
+    }
+}

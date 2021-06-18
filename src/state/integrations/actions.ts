@@ -185,7 +185,10 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
 
     if (resp.type === IntegrationType.EmailIntegrationType) {
         nextStep = '/forwarding'
-    } else if (resp.type === IntegrationType.SmoochInsideIntegrationType) {
+    } else if (
+        resp.type === IntegrationType.SmoochInsideIntegrationType ||
+        resp.type === IntegrationType.GorgiasChatIntegrationType
+    ) {
         nextStep = '/installation'
     } else if (resp.type === IntegrationType.SmoochIntegrationType) {
         nextStep = '/overview'

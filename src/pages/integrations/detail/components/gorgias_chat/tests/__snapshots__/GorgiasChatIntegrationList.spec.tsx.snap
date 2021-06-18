@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat integrations 1`] = `
+<withRouter(Connect(IntegrationList))
+  createIntegration={[Function]}
+  createIntegrationButtonContent={
+    <div
+      className="create-integration-btn"
+    >
+      <i
+        className="material-icons mr-2"
+      >
+        add
+      </i>
+      Add New
+    </div>
+  }
+  integrationToItemDisplay={[Function]}
+  integrationType="gorgias_chat"
+  integrations={
+    Immutable.List [
+      Immutable.Map {
+        "id": 1,
+        "name": "my chat enabled",
+        "type": "gorgias_chat",
+        "meta": Immutable.Map {
+          "self_service": Immutable.Map {
+            "enabled": false,
+          },
+          "shop_name": "my associated Shopify store",
+          "shop_type": "shopify",
+        },
+        "decoration": Immutable.Map {
+          "introduction_text": "this is an intro",
+          "input_placeholder": "type something please",
+          "main_color": "#123456",
+        },
+      },
+    ]
+  }
+  loading={Immutable.Map {}}
+  longTypeDescription={
+    <div>
+      Live chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
+    </div>
+  }
+/>
+`;
