@@ -7,10 +7,14 @@ import {
     TicketMessage,
 } from '../../../../../models/ticket'
 
-import type {HighlightedElements} from '../AuditLogEvent'
-
 import Container from './Container'
 import Message from './Message'
+
+// $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
+type HighlightedElements = {
+    first: number,
+    last: number,
+}
 
 type Props = {
     id: string,

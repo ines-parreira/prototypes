@@ -1,118 +1,122 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {Component, ReactNode} from 'react'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
-
-import type {List, Record} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, List, Map} from 'immutable'
 
 import {
     AgentLabel,
     DatetimeLabel,
     TagLabel,
     TeamLabel,
-} from '../../../common/utils/labels'
-import * as constants from '../../../../constants/event.ts'
+} from '../../../common/utils/labels.js'
 import {
-    type AuditLogEvent as AuditLogEventType,
+    TAGS_ADDED_KEY,
+    TAGS_REMOVED_KEY,
+} from '../../../../models/event/constants'
+import {AuditLogEventType} from '../../../../models/event/types'
+import {
     isRuleExecutedType,
     isSystemRuleEvent,
     isViaRuleEvent,
-    TAGS_ADDED_KEY,
-    TAGS_REMOVED_KEY,
-} from '../../../../models/event'
-import {getAgents} from '../../../../state/agents/selectors.ts'
-import {getTeams} from '../../../../state/teams/selectors.ts'
-import {getTags} from '../../../../state/tags/selectors.ts'
-import {getEvents} from '../../../../state/ticket/selectors.ts'
-import {eventNameToLabel} from '../../../../config/rules.ts'
-
-import type {agentType} from '../../../../state/agents/types'
-import type {teamType} from '../../../../state/teams/types'
+} from '../../../../models/event/predicates'
+import {getAgents} from '../../../../state/agents/selectors'
+import {getTeams} from '../../../../state/teams/selectors'
+import {getEvents} from '../../../../state/ticket/selectors'
+import {RootState} from '../../../../state/types'
+import {eventNameToLabel} from '../../../../config/rules'
 
 import css from './Event.less'
 
 type Props = {
-    event: Record<AuditLogEventType>,
-    isLast: boolean,
-    users: List<agentType>,
-    teams: List<teamType>,
-    tags: List<*>,
-    events: List<AuditLogEventType>,
-    setHighlightedElements: (HighlightedElements) => void,
-}
+    event: Map<any, any>
+    isLast: boolean
+    setHighlightedElements: (highlightedElements: HighlightedElements) => void
+} & ConnectedProps<typeof connector>
 
 export type HighlightedElements = {
-    first: number,
-    last: number,
+    first: number
+    last: number
 }
 
-export class AuditLogEventContainer extends React.Component<Props> {
+export class AuditLogEventContainer extends Component<Props> {
     static defaultProps = {
         isLast: false,
     }
 
     static _ICONS = {
-        [constants.RULE_EXECUTED]: ['settings'],
-        [constants.TICKET_ASSIGNED]: ['person_add'],
-        [constants.TICKET_CLOSED]: ['done', css.success],
-        [constants.TICKET_CREATED]: ['add'],
-        [constants.TICKET_CUSTOMER_UPDATED]: ['people'],
-        [constants.TICKET_MARKED_SPAM]: ['flag', css.warning],
-        [constants.TICKET_MERGED]: ['call_merge'],
-        [constants.TICKET_REOPENED]: ['loop'],
-        [constants.TICKET_SNOOZED]: ['timer'],
-        [constants.TICKET_TAGS_ADDED]: ['local_offer'],
-        [constants.TICKET_TAGS_REMOVED]: ['local_offer'],
-        [constants.TICKET_TEAM_ASSIGNED]: ['group_add'],
-        [constants.TICKET_TEAM_UNASSIGNED]: ['person_add_disabled'],
-        [constants.TICKET_TRASHED]: ['delete', css.danger],
-        [constants.TICKET_UNASSIGNED]: ['person_add_disabled'],
-        [constants.TICKET_UNMARKED_SPAM]: ['undo'],
-        [constants.TICKET_UNTRASHED]: ['undo'],
-        [constants.TICKET_MESSAGE_SUMMARY_CREATED]: ['email'],
-        [constants.TICKET_SUBJECT_UPDATED]: ['mode'],
+        [AuditLogEventType.RuleExecuted]: ['settings'],
+        [AuditLogEventType.TicketAssigned]: ['person_add'],
+        [AuditLogEventType.TicketClosed]: ['done', css.success],
+        [AuditLogEventType.TicketCreated]: ['add'],
+        [AuditLogEventType.TicketCustomerUpdated]: ['people'],
+        [AuditLogEventType.TicketMarkedSpam]: ['flag', css.warning],
+        [AuditLogEventType.TicketMerged]: ['call_merge'],
+        [AuditLogEventType.TicketReopened]: ['loop'],
+        [AuditLogEventType.TicketSnoozed]: ['timer'],
+        [AuditLogEventType.TicketTagsAdded]: ['local_offer'],
+        [AuditLogEventType.TicketTagsRemoved]: ['local_offer'],
+        [AuditLogEventType.TicketTeamAssigned]: ['group_add'],
+        [AuditLogEventType.TicketTeamUnassigned]: ['person_add_disabled'],
+        [AuditLogEventType.TicketTrashed]: ['delete', css.danger],
+        [AuditLogEventType.TicketUnassigned]: ['person_add_disabled'],
+        [AuditLogEventType.TicketUnmarkedSpam]: ['undo'],
+        [AuditLogEventType.TicketUntrashed]: ['undo'],
+        [AuditLogEventType.TicketMessageSummaryCreated]: ['email'],
+        [AuditLogEventType.TicketSubjectUpdated]: ['mode'],
     }
 
-    _CONTENT_RENDERERS = {
-        [constants.RULE_EXECUTED]: () => this._renderRuleExecutedEvent(),
-        [constants.TICKET_ASSIGNED]: () => this._renderTicketAssignedEvent(),
-        [constants.TICKET_CLOSED]: () => <ActionName>Closed</ActionName>,
-        [constants.TICKET_CREATED]: () => <ActionName>Created</ActionName>,
-        [constants.TICKET_CUSTOMER_UPDATED]: () =>
+    _CONTENT_RENDERERS: Partial<Record<AuditLogEventType, () => ReactNode>> = {
+        [AuditLogEventType.RuleExecuted]: () => this._renderRuleExecutedEvent(),
+        [AuditLogEventType.TicketAssigned]: () =>
+            this._renderTicketAssignedEvent(),
+        [AuditLogEventType.TicketClosed]: () => <ActionName>Closed</ActionName>,
+        [AuditLogEventType.TicketCreated]: () => (
+            <ActionName>Created</ActionName>
+        ),
+        [AuditLogEventType.TicketCustomerUpdated]: () =>
             this._renderCustomerUpdated(),
-        [constants.TICKET_MARKED_SPAM]: () => (
+        [AuditLogEventType.TicketMarkedSpam]: () => (
             <ActionName>Marked as spam</ActionName>
         ),
-        [constants.TICKET_MERGED]: () => <ActionName>Merged</ActionName>,
-        [constants.TICKET_REOPENED]: () => <ActionName>Reopened</ActionName>,
-        [constants.TICKET_SNOOZED]: () => <ActionName>Snoozed</ActionName>,
-        [constants.TICKET_TAGS_ADDED]: () =>
+        [AuditLogEventType.TicketMerged]: () => <ActionName>Merged</ActionName>,
+        [AuditLogEventType.TicketReopened]: () => (
+            <ActionName>Reopened</ActionName>
+        ),
+        [AuditLogEventType.TicketSnoozed]: () => (
+            <ActionName>Snoozed</ActionName>
+        ),
+        [AuditLogEventType.TicketTagsAdded]: () =>
             this._renderTagsEvent(TAGS_ADDED_KEY),
-        [constants.TICKET_TAGS_REMOVED]: () =>
+        [AuditLogEventType.TicketTagsRemoved]: () =>
             this._renderTagsEvent(TAGS_REMOVED_KEY),
-        [constants.TICKET_TEAM_ASSIGNED]: () =>
+        [AuditLogEventType.TicketTeamAssigned]: () =>
             this._renderTicketTeamAssignedEvent(),
-        [constants.TICKET_TEAM_UNASSIGNED]: () => (
+        [AuditLogEventType.TicketTeamUnassigned]: () => (
             <ActionName>Unassigned from team</ActionName>
         ),
-        [constants.TICKET_TRASHED]: () => <ActionName>Deleted</ActionName>,
-        [constants.TICKET_UNASSIGNED]: () => (
+        [AuditLogEventType.TicketTrashed]: () => (
+            <ActionName>Deleted</ActionName>
+        ),
+        [AuditLogEventType.TicketUnassigned]: () => (
             <ActionName>Unassigned from user</ActionName>
         ),
-        [constants.TICKET_UNMARKED_SPAM]: () => (
+        [AuditLogEventType.TicketUnmarkedSpam]: () => (
             <ActionName>Unmarked as spam</ActionName>
         ),
-        [constants.TICKET_UNTRASHED]: () => <ActionName>Undeleted</ActionName>,
-        [constants.TICKET_MESSAGE_SUMMARY_CREATED]: () =>
+        [AuditLogEventType.TicketUntrashed]: () => (
+            <ActionName>Undeleted</ActionName>
+        ),
+        [AuditLogEventType.TicketMessageSummaryCreated]: () =>
             this._renderTicketMessageSummaryCreatedEvent(),
-        [constants.TICKET_SUBJECT_UPDATED]: () =>
+        [AuditLogEventType.TicketSubjectUpdated]: () =>
             this._renderTicketSubjectUpdated(),
     }
 
     _getIcon() {
         const {event} = this.props
-        const type = event.get('type')
+        const type = event.get(
+            'type'
+        ) as keyof typeof AuditLogEventContainer._ICONS
         const iconConfig = AuditLogEventContainer._ICONS[type] || ['info']
         const [icon, className] = iconConfig
 
@@ -125,7 +129,7 @@ export class AuditLogEventContainer extends React.Component<Props> {
 
     _getContent() {
         const {event} = this.props
-        const type = event.get('type')
+        const type = event.get('type') as AuditLogEventType
         const contentRenderer = this._CONTENT_RENDERERS[type]
 
         return contentRenderer ? contentRenderer() : null
@@ -138,14 +142,18 @@ export class AuditLogEventContainer extends React.Component<Props> {
             return null
         }
 
-        const data = event.get('data')
-        const triggeringEventType = data.get('triggering_event_type')
+        const data = event.get('data') as Map<any, any>
+        const triggeringEventType = data.get('triggering_event_type') as string
 
         return (
             <>
                 <ActionName>
                     Rule "
-                    <a href={`/app/settings/rules?ruleId=${data.get('id')}`}>
+                    <a
+                        href={`/app/settings/rules?ruleId=${
+                            data.get('id') as number
+                        }`}
+                    >
                         {data.get('name')}
                     </a>
                     " executed
@@ -163,8 +171,8 @@ export class AuditLogEventContainer extends React.Component<Props> {
         const {event, users} = this.props
         const assigneeUserId = event.getIn(['data', 'assignee_user_id'])
         const assigneeUser = users.find(
-            (user) => user.get('id') === assigneeUserId
-        )
+            (user: Map<any, any>) => user.get('id') === assigneeUserId
+        ) as Map<any, any>
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeUser) {
@@ -185,8 +193,8 @@ export class AuditLogEventContainer extends React.Component<Props> {
         const {event, teams} = this.props
         const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
         const assigneeTeam = teams.find(
-            (team) => team.get('id') === assigneeTeamId
-        )
+            (team: Map<any, any>) => team.get('id') === assigneeTeamId
+        ) as Map<any, any>
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeTeam) {
@@ -203,10 +211,14 @@ export class AuditLogEventContainer extends React.Component<Props> {
         return elements
     }
 
-    _renderTagsEvent(tagsIdsKey: TAGS_ADDED_KEY | TAGS_REMOVED_KEY) {
+    _renderTagsEvent(
+        tagsIdsKey: typeof TAGS_ADDED_KEY | typeof TAGS_REMOVED_KEY
+    ) {
         const {event, tags} = this.props
-        const tagsIds = event.getIn(['data', tagsIdsKey])
-        const eventTags = tags.filter((tag) => tagsIds.includes(tag.get('id')))
+        const tagsIds = event.getIn(['data', tagsIdsKey]) as List<any>
+        const eventTags = tagsIds
+            .map((tagId: number) => fromJS(tags[tagId]) as Map<any, any>)
+            .filter((event) => !!event) as List<any>
 
         if (!eventTags.size) {
             return null
@@ -219,7 +231,7 @@ export class AuditLogEventContainer extends React.Component<Props> {
         ]
 
         {
-            eventTags.forEach((tag) => {
+            eventTags.forEach((tag: Map<any, any>) => {
                 elements.push(
                     <TagLabel
                         key={tag.get('id')}
@@ -267,26 +279,34 @@ export class AuditLogEventContainer extends React.Component<Props> {
     _renderCustomerUpdated() {
         const {event} = this.props
 
-        const oldCustomer = event.getIn(['data', 'old_customer'])
-        const newCustomer = event.getIn(['data', 'new_customer'])
+        const oldCustomer = event.getIn(['data', 'old_customer']) as Map<
+            any,
+            any
+        >
+        const newCustomer = event.getIn(['data', 'new_customer']) as Map<
+            any,
+            any
+        >
 
         if (!(oldCustomer && newCustomer)) {
             return null
         }
 
         const oldCustomerName =
-            oldCustomer.get('name') || `Customer #${oldCustomer.get('id')}`
+            oldCustomer.get('name') ||
+            `Customer #${oldCustomer.get('id') as number}`
         const newCustomerName =
-            newCustomer.get('name') || `Customer #${newCustomer.get('id')}`
+            newCustomer.get('name') ||
+            `Customer #${newCustomer.get('id') as number}`
 
         return (
             <ActionName>
                 Customer changed from{' '}
-                <a href={`/app/customer/${oldCustomer.get('id')}`}>
+                <a href={`/app/customer/${oldCustomer.get('id') as number}`}>
                     {oldCustomerName}
                 </a>{' '}
                 to{' '}
-                <a href={`/app/customer/${newCustomer.get('id')}`}>
+                <a href={`/app/customer/${newCustomer.get('id') as number}`}>
                     {newCustomerName}
                 </a>
             </ActionName>
@@ -339,8 +359,8 @@ export class AuditLogEventContainer extends React.Component<Props> {
         const {event, isLast, users, events} = this.props
         const viaRule = isViaRuleEvent(event, events)
         const user = users.find(
-            (user) => user.get('id') === event.get('user_id')
-        )
+            (user: Map<any, any>) => user.get('id') === event.get('user_id')
+        ) as Map<any, any>
         const shouldRenderViaRule = viaRule && !isRuleExecutedType(event)
         const shouldRenderByUser =
             !shouldRenderViaRule && user && !isRuleExecutedType(event)
@@ -377,17 +397,20 @@ export class AuditLogEventContainer extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state) => ({
+const connector = connect((state: RootState) => ({
     users: getAgents(state),
     teams: getTeams(state),
-    tags: getTags(state),
+    tags: state.entities.tags,
     events: getEvents(state),
-})
+}))
 
-export default connect(mapStateToProps)(AuditLogEventContainer)
+export default connector(AuditLogEventContainer)
 
 // Internal helper components
-type HelperProps = {children: Node}
+type HelperProps = {
+    children: ReactNode
+}
+
 const ActionName = ({children}: HelperProps) => (
     <span className={css.actionName}>{children}</span>
 )

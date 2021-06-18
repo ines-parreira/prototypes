@@ -1,3 +1,5 @@
+import {RuleEvent} from '../../state/rules/types'
+
 export type TicketTagsAddedEventData = {
     tags_added: number[]
 }
@@ -12,6 +14,37 @@ export type TicketAssignedEventData = {
 
 export type TicketTeamAssignedEventData = {
     assignee_team_id: number
+}
+
+export type TicketRuleExecutedEventData =
+    | {
+          id: number
+          name: string
+          triggering_event_type?: RuleEvent
+      }
+    | {
+          type: string
+      }
+
+export type TicketMessageSummaryCreatedEventData = {
+    first_unseen_id: number
+    last_unseen_id: number
+}
+
+export type TicketSubjectUpdatedEventData = {
+    new_subject: string
+    old_subject: string
+}
+
+export type TicketCustomerUpdatedEventData = {
+    old_customer: {
+        id: number
+        name: string | null
+    }
+    new_customer: {
+        id: number
+        name: string | null
+    }
 }
 
 export type RuleExecutedEventData = {
@@ -35,6 +68,10 @@ export type AuditLogEventData =
     | TicketAssignedEventData
     | TicketTeamAssignedEventData
     | RuleExecutedEventData
+    | TicketRuleExecutedEventData
+    | TicketMessageSummaryCreatedEventData
+    | TicketSubjectUpdatedEventData
+    | TicketCustomerUpdatedEventData
 
 export enum AuditLogEventObjectType {
     Customer = 'Customer',
@@ -65,6 +102,7 @@ export enum AuditLogEventType {
     TicketUnmarkedSpam = 'ticket-unmarked-spam',
     TicketUntrashed = 'ticket-untrashed',
     TicketUpdated = 'ticket-updated',
+    TicketSubjectUpdated = 'ticket-subject-updated',
 }
 
 export type AuditLogEvent = {

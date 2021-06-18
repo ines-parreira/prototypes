@@ -33,12 +33,17 @@ import {
 
 import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
-import AuditLogEvent from './AuditLogEvent'
-import type {HighlightedElements} from './AuditLogEvent'
+import AuditLogEvent from './AuditLogEvent.tsx'
 import Event from './Event'
 import PhoneEvent from './PhoneEvent/PhoneEvent.tsx'
 import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent.tsx'
 import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants.ts'
+
+// $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
+type HighlightedElements = {
+    first: number,
+    last: number,
+}
 
 type Props = {
     currentUser: Map<*, *>,
