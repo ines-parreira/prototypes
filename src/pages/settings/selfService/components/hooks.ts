@@ -26,12 +26,9 @@ export const useConfigurationData = (params: {
                 integration.getIn(['meta', 'shop_name'])
         )
         if (foundConfigurationIndex === -1) {
-            const promise = actions.fetchSelfServiceConfiguration(
+            ;((actions.fetchSelfServiceConfiguration(
                 integration.get('id')
-            ) as any
-            // eslint-disable-next-line
-            promise.finally(() => {
-                // prevent infinite loading state of the toggle if the ssp-api is down
+            ) as any) as Promise<any>).finally(() => {
                 setIsLoadingConfig(false)
             })
         } else {

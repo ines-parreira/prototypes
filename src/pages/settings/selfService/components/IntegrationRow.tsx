@@ -49,14 +49,10 @@ export const IntegrationRow = ({
         const baseConfiguration =
             configuration || generateConfiguration(0, integrationType, shopName)
 
-        const promise = actions.updateSelfServiceConfigurations({
+        ;((actions.updateSelfServiceConfigurations({
             ...baseConfiguration,
             deactivated_datetime,
-        }) as any // FIXME: better typing
-
-        // eslint-disable-next-line
-        promise.finally(() => {
-            // prevent infinite loading state of the toggle if the ssp-api is down
+        }) as any) as Promise<any>).finally(() => {
             setLoading(false)
         })
 
