@@ -25,6 +25,7 @@ import {
 
 import {countWords, truncateWords} from './string'
 import {ComposedElements} from './react'
+import {parseHtml} from './html'
 
 const QUOTE_CLASS_NAME = 'gorgias_quote'
 const QUOTE_DEPTH_DATASET_KEY = 'gorgiasQuoteDepth'
@@ -304,8 +305,7 @@ const removeGorgiasQuoteNodes = (node: Node) => {
 export function convertFromHTML(html: string): ContentState {
     // We need to remove quote blockquote elements from the dom,
     // otherwise draft-convert will try to convert them to the editor blocks
-    const wrapper = document.createElement('body')
-    wrapper.innerHTML = html
+    const wrapper = parseHtml(html).body
     removeGorgiasQuoteNodes(wrapper)
 
     let converted: ContentState = _convertFromHTML({
