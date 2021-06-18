@@ -62,11 +62,12 @@ export default class InfobarWidget extends React.Component {
             For Shopify widget :
             - data_source is either Customer or Order
             - widget_resource_ids always has shopify customer_id because we need it for tracking and
-            target_id is either a customer_id or an order_id depending of the Shopfiy card targeted
+            target_id is either a customer_id or an order_id depending of the Shopify card targeted
             (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
-
         */
-        const data_source_endpoint = source.get('admin_graphql_api_id')
+
+        const data_source_endpoint =
+            source && source.get && source.get('admin_graphql_api_id')
         if (data_source_endpoint) {
             const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
             const match = reg.exec(data_source_endpoint)

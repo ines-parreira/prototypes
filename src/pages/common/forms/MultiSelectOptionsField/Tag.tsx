@@ -19,9 +19,11 @@ export default function Tag({option, color, onRemove}: Props) {
             }}
         >
             <span>
-                {option.displayLabel || option.label}
+                <span className="badgeText">
+                    {option.displayLabel || option.label}
+                </span>
                 <i
-                    className="material-icons ml-1"
+                    className="material-icons ml-1 badgeClose"
                     onClick={(event: MouseEvent) => {
                         event.stopPropagation()
                         event.preventDefault()

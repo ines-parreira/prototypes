@@ -6,7 +6,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
   style="display: inline-block; padding-bottom: 2px;"
 >
   <div
-    class="select"
+    class="select MultiSelectFieldOpts"
   >
     <div
       class="input-container"
@@ -75,16 +75,20 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
   style="display: inline-block; padding-bottom: 2px;"
 >
   <div
-    class="select"
+    class="select MultiSelectFieldOpts"
   >
     <span
       class="tag badge badge-secondary"
       style="color: rgb(2, 117, 216);"
     >
       <span>
-        foo
+        <span
+          class="badgeText"
+        >
+          foo
+        </span>
         <i
-          class="material-icons ml-1"
+          class="material-icons ml-1 badgeClose"
         >
           close
         </i>
@@ -137,7 +141,7 @@ exports[`<IntentsSentimentsSelect /> should render component with no selected it
   style="display: inline-block; padding-bottom: 2px;"
 >
   <div
-    class="select"
+    class="select MultiSelectFieldOpts"
   >
     <div
       class="input-container"
@@ -196,16 +200,20 @@ exports[`<IntentsSentimentsSelect /> should render component with selected item 
   style="display: inline-block; padding-bottom: 2px;"
 >
   <div
-    class="select"
+    class="select MultiSelectFieldOpts"
   >
     <span
       class="tag badge badge-secondary"
       style="color: rgb(2, 117, 216);"
     >
       <span>
-        bar
+        <span
+          class="badgeText"
+        >
+          bar
+        </span>
         <i
-          class="material-icons ml-1"
+          class="material-icons ml-1 badgeClose"
         >
           close
         </i>

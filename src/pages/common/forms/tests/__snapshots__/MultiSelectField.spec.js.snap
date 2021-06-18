@@ -54,7 +54,7 @@ exports[`MultiSelectField should render the select field with no selected option
       className="MultiSelectField"
     >
       <div
-        className="select"
+        className="select MultiSelectFieldOpts"
         onClick={[Function]}
       >
         <Dropdown

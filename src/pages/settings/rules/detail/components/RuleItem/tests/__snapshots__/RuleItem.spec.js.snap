@@ -103,16 +103,20 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                 class="MultiSelectField when-events"
               >
                 <div
-                  class="select"
+                  class="select MultiSelectFieldOpts"
                 >
                   <span
                     class="tag badge badge-secondary"
                     style="color: rgb(2, 117, 216);"
                   >
                     <span>
-                      ticket created
+                      <span
+                        class="badgeText"
+                      >
+                        ticket created
+                      </span>
                       <i
-                        class="material-icons ml-1"
+                        class="material-icons ml-1 badgeClose"
                       >
                         close
                       </i>
@@ -393,7 +397,7 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                 class="MultiSelectField when-events"
               >
                 <div
-                  class="select"
+                  class="select MultiSelectFieldOpts"
                 >
                   <div
                     class="input-container"

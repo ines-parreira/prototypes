@@ -3,22 +3,27 @@
 exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
 <div>
   <div
+    class="editableListWidget"
     id="editable-list-2-tooltip-target"
   >
     <div
       class="MultiSelectField"
     >
       <div
-        class="select"
+        class="select MultiSelectFieldOpts"
       >
         <span
           class="tag badge badge-secondary"
           style="color: rgb(2, 117, 216);"
         >
           <span>
-            cool
+            <span
+              class="badgeText"
+            >
+              cool
+            </span>
             <i
-              class="material-icons ml-1"
+              class="material-icons ml-1 badgeClose"
             >
               close
             </i>
@@ -29,9 +34,13 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
           style="color: rgb(2, 117, 216);"
         >
           <span>
-            super
+            <span
+              class="badgeText"
+            >
+              super
+            </span>
             <i
-              class="material-icons ml-1"
+              class="material-icons ml-1 badgeClose"
             >
               close
             </i>
@@ -79,13 +88,14 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
 exports[`<EditableListWidget/> should render an empty list because no options has been given 1`] = `
 <div>
   <div
+    class="editableListWidget"
     id="editable-list-1-tooltip-target"
   >
     <div
       class="MultiSelectField"
     >
       <div
-        class="select"
+        class="select MultiSelectFieldOpts"
       >
         <div
           class="input-container"

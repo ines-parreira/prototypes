@@ -246,7 +246,10 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                 })}
                 style={style}
             >
-                <div className={css.select} onClick={this._focus}>
+                <div
+                    className={classNames(css.select, 'MultiSelectFieldOpts')}
+                    onClick={this._focus}
+                >
                     {selectedOptions.map((selectedOption: Option) => (
                         <OptionTag
                             key={selectedOption.value}

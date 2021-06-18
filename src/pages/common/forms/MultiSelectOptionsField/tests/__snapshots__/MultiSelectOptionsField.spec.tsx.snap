@@ -51,7 +51,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
     className="MultiSelectField"
   >
     <div
-      className="select"
+      className="select MultiSelectFieldOpts"
       onClick={[Function]}
     >
       <Dropdown
@@ -294,7 +294,7 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
     className="MultiSelectField"
   >
     <div
-      className="select"
+      className="select MultiSelectFieldOpts"
       onClick={[Function]}
     >
       <Dropdown
