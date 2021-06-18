@@ -40,6 +40,7 @@ import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {getHighestRole} from './state/agents/helpers'
 import {RootState} from './state/types'
+import {sanitizeHtmlDefault} from './utils/html'
 
 type Message = {
     created_datetime: Date
@@ -765,7 +766,9 @@ export const errorToChildren = (incomingError: {
             ${_map(data, (fieldErrors: Record<string, string>, fieldName) => {
                 return (_valuesDeep(fieldErrors) as string[])
                     .map((fieldError) => {
-                        return `<li>${fieldName}: ${fieldError}</li>`
+                        return sanitizeHtmlDefault(
+                            `<li>${fieldName}: ${fieldError}</li>`
+                        )
                     })
                     .join('')
             }).join('')}

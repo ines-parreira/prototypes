@@ -585,6 +585,26 @@ describe('global utils', () => {
                 '<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>'
             )
         })
+
+        it('should return sanitized markup', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            data: {
+                                item: [
+                                    'malicious <img onerror=alert(496) src>',
+                                ],
+                            },
+                        },
+                    },
+                },
+            }
+
+            expect(utils.errorToChildren(error)).toMatch(
+                '<li>item: malicious <img src /></li>'
+            )
+        })
     })
 
     describe('compactInteger', () => {
