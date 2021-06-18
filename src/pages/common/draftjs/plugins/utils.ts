@@ -93,8 +93,8 @@ export const addImage = (
 export const insertInlineImages = (
     files: Array<File>,
     {getEditorState, setEditorState, getProps}: PluginMethods,
-    notify: (arg0: {status: string; message: string}) => void = _noop
-): Promise<any> => {
+    notify: (notification: {status: string; message: string}) => void = _noop
+) => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
     const attachments = (_get(getProps(), 'attachments', fromJS([])) as List<

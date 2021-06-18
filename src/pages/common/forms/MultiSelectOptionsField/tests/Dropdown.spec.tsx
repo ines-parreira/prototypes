@@ -1,9 +1,8 @@
-// @flow
 import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
 
-import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu.tsx'
+import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
 
 import Dropdown from '../Dropdown'
 import Input from '../Input'

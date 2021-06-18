@@ -11,7 +11,7 @@ import * as utils from './utils'
 import {
     createCompositeDecorator,
     createEditorStateFromHtml,
-} from './draftTestUtils'
+} from './draftTestUtils.ts'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

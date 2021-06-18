@@ -1,4 +1,3 @@
-// @flow
 import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'

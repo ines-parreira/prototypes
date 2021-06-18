@@ -46,15 +46,15 @@ describe('FilterMultiSelectField', () => {
                 fieldEnumSearchCancellable={fieldEnumSearchSpy}
             />
         )
-        ;(wrapper
+        wrapper
             .find(MultiSelectOptionsField)
-            .prop('onInputChange') as OnInputChange)('foo')
-        ;(wrapper
+            .prop<OnInputChange>('onInputChange')('foo')
+        wrapper
             .find(MultiSelectOptionsField)
-            .prop('onInputChange') as OnInputChange)('bar')
-        ;(wrapper
+            .prop<OnInputChange>('onInputChange')('bar')
+        wrapper
             .find(MultiSelectOptionsField)
-            .prop('onInputChange') as OnInputChange)('baz')
+            .prop<OnInputChange>('onInputChange')('baz')
         jest.runAllTimers()
         expect(fieldEnumSearchSpy).toHaveBeenCalledTimes(2) // two times, because first time on mount
         expect(fieldEnumSearchSpy).toHaveBeenLastCalledWith(Map(), 'baz')
@@ -70,9 +70,9 @@ describe('FilterMultiSelectField', () => {
                 fieldEnumSearchCancellable={fieldEnumSearchSpy}
             />
         )
-        ;((wrapper
+        wrapper
             .find(MultiSelectOptionsField)
-            .prop('onChange') as unknown) as (options: Option[]) => void)([])
+            .prop<(options: Option[]) => void>('onChange')([])
         expect(fieldEnumSearchSpy).toHaveBeenCalledTimes(2) // first time on mount
     })
 })

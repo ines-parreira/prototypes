@@ -1,10 +1,9 @@
-// @flow
 import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
-import React from 'react'
+import React, {ReactElement} from 'react'
 
 import Tag from '../Tag'
-import type {Option} from '../types'
+import {Option} from '../types'
 
 describe('multi select options field tag', () => {
     const option: Option = {
@@ -21,8 +20,8 @@ describe('multi select options field tag', () => {
 
     it('should display displayLabel first and label as a fallback', () => {
         const wrapper = mount(<Tag {...defaultOptions} />)
-        expect(render((wrapper.find('span').last(): any)).html()).toEqual(
-            render((option.displayLabel: any)).html()
+        expect(render(wrapper.find('span').last() as any).html()).toEqual(
+            render(option.displayLabel as ReactElement).html()
         )
         wrapper.setProps({
             option: {

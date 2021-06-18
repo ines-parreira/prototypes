@@ -4,7 +4,7 @@ import AxiosMock from 'axios-mock-adapter'
 import axios from 'axios'
 
 import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
-import * as DraftTestUtils from '../../../tests/draftTestUtils.js'
+import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
 
 const axiosMock = new AxiosMock(axios)
@@ -96,11 +96,9 @@ describe('prediction plugin', () => {
             text.length + 1,
         ])
         expect(
-            // $TsFixMe remove casting on DraftTestUtils migration
-            (DraftTestUtils.getLastCreatedEntity(contentState) as Map<
-                any,
-                any
-            >).toJS()
+            ((DraftTestUtils.getLastCreatedEntity(
+                contentState
+            ) as unknown) as Map<any, any>).toJS()
         ).toMatchObject(createPredictionEntity(prediction))
     }
 

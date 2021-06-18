@@ -1,5 +1,5 @@
-// @flow
-import {EditorState, SelectionState} from 'draft-js'
+import {EditorState, SelectionState, DraftEntityMutability} from 'draft-js'
+import {Map} from 'immutable'
 
 import {
     createEntityAndApplyToFirstBlockRange,
@@ -72,7 +72,7 @@ describe('draftTestUtils', () => {
                 state
                     .getSelection()
                     .set('anchorOffset', 0)
-                    .set('focusOffset', 0)
+                    .set('focusOffset', 0) as SelectionState
             )
 
             state = pressBackspace(state)
@@ -103,7 +103,7 @@ describe('draftTestUtils', () => {
                     .set('anchorOffset', 0)
                     .set('anchorKey', firstBlockKey)
                     .set('focusOffset', 0)
-                    .set('focusKey', firstBlockKey)
+                    .set('focusKey', firstBlockKey) as SelectionState
             )
             expect(pressBackspace(state)).toBe(state)
         })
@@ -117,7 +117,7 @@ describe('draftTestUtils', () => {
                 state
                     .getSelection()
                     .set('anchorOffset', 1)
-                    .set('focusOffset', 5)
+                    .set('focusOffset', 5) as SelectionState
             )
 
             state = pressBackspace(state)
@@ -144,7 +144,7 @@ describe('draftTestUtils', () => {
                     .set(
                         'focusKey',
                         state.getCurrentContent().getLastBlock().getKey()
-                    )
+                    ) as SelectionState
             )
 
             state = pressBackspace(state)
@@ -165,7 +165,7 @@ describe('draftTestUtils', () => {
 
             const fooEntity = {
                 type: 'foo',
-                mutability: 'IMMUTABLE',
+                mutability: 'IMMUTABLE' as DraftEntityMutability,
                 data: {
                     foo: 'bar',
                 },
@@ -178,7 +178,9 @@ describe('draftTestUtils', () => {
                     fooEntity.data
                 )
             let lastEntity = getLastCreatedEntity(state.getCurrentContent())
-            expect((lastEntity: any).toJS()).toEqual(fooEntity)
+            expect(((lastEntity as unknown) as Map<any, any>).toJS()).toEqual(
+                fooEntity
+            )
 
             const barEntity = {
                 type: 'bar',
@@ -191,11 +193,13 @@ describe('draftTestUtils', () => {
                 .getCurrentContent()
                 .createEntity(
                     barEntity.type,
-                    barEntity.mutability,
+                    barEntity.mutability as DraftEntityMutability,
                     barEntity.data
                 )
             lastEntity = getLastCreatedEntity(state.getCurrentContent())
-            expect((lastEntity: any).toJS()).toEqual(barEntity)
+            expect(((lastEntity as unknown) as Map<any, any>).toJS()).toEqual(
+                barEntity
+            )
         })
     })
 
@@ -221,7 +225,7 @@ describe('draftTestUtils', () => {
             let state = EditorState.createEmpty()
             state = typeText(state, 'foo')
 
-            const range = [1, 2]
+            const range: [number, number] = [1, 2]
             state = createEntityAndApplyToFirstBlockRange(
                 state,
                 {
@@ -243,21 +247,21 @@ describe('draftTestUtils', () => {
             const selection = SelectionState.createEmpty('foo')
                 .set('anchorOffset', 4)
                 .set('focusOffset', 10)
-                .set('focusKey', 'bar')
+                .set('focusKey', 'bar') as SelectionState
             expect(debugSelection(selection)).toBe('[foo] 4 - 10 [bar]')
         })
 
         it('should return only one value and key if selection is collapsed', () => {
             const selection = SelectionState.createEmpty('foo')
                 .set('anchorOffset', 4)
-                .set('focusOffset', 4)
+                .set('focusOffset', 4) as SelectionState
             expect(debugSelection(selection)).toBe('[foo] 4')
         })
 
         it('should return only one key if selection is in the same block', () => {
             const selection = SelectionState.createEmpty('foo')
                 .set('anchorOffset', 4)
-                .set('focusOffset', 10)
+                .set('focusOffset', 10) as SelectionState
             expect(debugSelection(selection)).toBe('[foo] 4 - 10')
         })
 
@@ -265,7 +269,7 @@ describe('draftTestUtils', () => {
             const selection = SelectionState.createEmpty('foo')
                 .set('anchorOffset', 4)
                 .set('focusOffset', 4)
-                .set('focusKey', 'bar')
+                .set('focusKey', 'bar') as SelectionState
             expect(debugSelection(selection)).toBe('[foo] 4 - 4 [bar]')
         })
     })
@@ -294,7 +298,7 @@ describe('draftTestUtils', () => {
             const state = EditorState.createEmpty()
             const fooEntity = {
                 type: 'foo',
-                mutability: 'IMMUTABLE',
+                mutability: 'IMMUTABLE' as DraftEntityMutability,
                 data: {
                     foo: 'bar',
                 },
@@ -315,12 +319,12 @@ describe('draftTestUtils', () => {
 
             const entity = {
                 type: 'foo',
-                mutability: 'IMMUTABLE',
+                mutability: 'IMMUTABLE' as DraftEntityMutability,
                 data: {
                     foo: 'bar',
                 },
             }
-            const range = [1, 2]
+            const range: [number, number] = [1, 2]
             state = createEntityAndApplyToFirstBlockRange(state, entity, range)
 
             expect(debugLastAppliedEntity(state.getCurrentContent())).toEqual({

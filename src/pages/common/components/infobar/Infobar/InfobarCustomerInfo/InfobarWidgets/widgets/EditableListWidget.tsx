@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS} from 'immutable'
 import _uniqueId from 'lodash/uniqueId'
 
-import MultiSelectOptionsField from '../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField.js'
+import MultiSelectOptionsField from '../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {getActiveCustomerId} from '../../../../../../../../state/customers/selectors'
 import {getCurrentAccountState} from '../../../../../../../../state/currentAccount/selectors'
 import {isEditing} from '../../../../../../../../state/widgets/selectors'

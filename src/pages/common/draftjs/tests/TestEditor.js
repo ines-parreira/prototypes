@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Editor from 'draft-js-plugins-editor'
 
-import {createEditorStateFromHtml} from './draftTestUtils'
+import {createEditorStateFromHtml} from './draftTestUtils.ts'
 
 export default class TestEditor extends React.Component {
     static propTypes = {

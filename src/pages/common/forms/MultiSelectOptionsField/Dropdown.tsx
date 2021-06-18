@@ -1,34 +1,33 @@
-// @flow
 import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
-import React, {type ComponentType} from 'react'
+import React, {Component, ComponentType} from 'react'
 import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 
 import css from './Dropdown.less'
 import OptionInput from './Input'
 import Menu from './Menu'
-import type {Option} from './types'
+import {Option} from './types'
 
 type Props = {
-    placeholder: string,
-    value: string,
-    options: Option[],
-    isFocused: boolean,
-    isLoading?: boolean,
-    onChange: (string) => void,
-    onFocus: () => void,
-    onBlur: () => void,
-    onSelect: (Option) => void,
-    onDelete: () => void,
-    menu: ComponentType<*>,
+    placeholder: string
+    value: string
+    options: Option[]
+    isFocused: boolean
+    isLoading?: boolean
+    onChange: (option: string) => void
+    onFocus: () => void
+    onBlur: () => void
+    onSelect: (option: Option) => void
+    onDelete: () => void
+    menu: ComponentType<{className?: string}>
 }
 
 type State = {
-    activeIndex: number,
+    activeIndex: number
 }
 
-export default class Dropdown extends React.Component<Props, State> {
+export default class Dropdown extends Component<Props, State> {
     static defaultProps = {
         menu: DropdownMenu,
     }
@@ -58,7 +57,7 @@ export default class Dropdown extends React.Component<Props, State> {
     _onInputUp = () => {
         const {activeIndex} = this.state
         this.setState({
-            activeIndex: _max([activeIndex - 1, 0]),
+            activeIndex: _max([activeIndex - 1, 0])!,
         })
     }
 
@@ -66,7 +65,7 @@ export default class Dropdown extends React.Component<Props, State> {
         const {options} = this.props
         const {activeIndex} = this.state
         this.setState({
-            activeIndex: _min([activeIndex + 1, options.length - 1]),
+            activeIndex: _min([activeIndex + 1, options.length - 1])!,
         })
     }
 

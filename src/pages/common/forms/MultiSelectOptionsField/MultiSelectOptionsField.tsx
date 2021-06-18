@@ -1,44 +1,40 @@
-// @flow
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import React, {type ComponentType} from 'react'
+import React, {Component, ComponentType, CSSProperties} from 'react'
 
 import Dropdown from './Dropdown'
 import css from './MultiSelectOptionsField.less'
 import OptionTag from './Tag'
-import type {Option} from './types'
+import {Option} from './types'
 
 type Props = {
-    allowCustomOptions: boolean,
-    matchInput: boolean,
-    options: Option[],
-    plural: string,
-    singular: string,
-    style?: {},
-    tagColor: string,
-    selectedOptions: Option[],
-    className?: string,
-    caseInsensitive?: boolean,
-    isDisabled?: boolean,
-    onChange: (options: Option[]) => void,
-    onInputChange?: (string) => void,
-    onBlur?: () => void,
-    onFocus?: () => void,
-    loading?: boolean,
-    dropdownMenu?: ComponentType<*>,
+    allowCustomOptions: boolean
+    matchInput: boolean
+    options: Option[]
+    plural: string
+    singular: string
+    style?: CSSProperties
+    tagColor: string
+    selectedOptions: Option[]
+    className?: string
+    caseInsensitive?: boolean
+    isDisabled?: boolean
+    onChange: (options: Option[]) => void
+    onInputChange?: (value: string) => void
+    onBlur?: () => void
+    onFocus?: () => void
+    loading?: boolean
+    dropdownMenu?: ComponentType<unknown>
 }
 
 type State = {
-    input: string,
-    filteredOptions: Option[],
-    isFocused: boolean,
+    input: string
+    filteredOptions: Option[]
+    isFocused: boolean
 }
 
-export default class MultiSelectOptionsField extends React.Component<
-    Props,
-    State
-> {
-    static defaultProps: $Shape<Props> = {
+export default class MultiSelectOptionsField extends Component<Props, State> {
+    static defaultProps: Partial<Props> = {
         allowCustomOptions: false,
         matchInput: false,
         options: [],
@@ -118,7 +114,10 @@ export default class MultiSelectOptionsField extends React.Component<
     _hasOptionValue = (options: Option[], value: any): boolean =>
         !!this._findOptionByValue(options, value)
 
-    _findOptionByValue = (options: Option[], value: any): ?Option => {
+    _findOptionByValue = (
+        options: Option[],
+        value: any
+    ): Option | undefined => {
         return options.find((option: Option) => option.value === value)
     }
 
@@ -200,6 +199,7 @@ export default class MultiSelectOptionsField extends React.Component<
         // Whitelist with the options
         if (
             !allowCustomOptions &&
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             !options.map((option) => option.value).includes(processedValue)
         ) {
             return

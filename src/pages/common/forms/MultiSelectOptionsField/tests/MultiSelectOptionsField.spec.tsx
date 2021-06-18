@@ -1,14 +1,13 @@
-// @flow
 import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
-import React from 'react'
+import React, {ReactElement} from 'react'
 
-import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu.tsx'
+import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
 
 import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'
 import OptionTag from '../Tag'
-import type {Option} from '../types'
+import {Option} from '../types'
 
 describe('MultiSelectField', () => {
     const minProps = {
@@ -72,7 +71,7 @@ describe('MultiSelectField', () => {
             },
         ]
 
-        const wrapper = mount(
+        const wrapper = mount<MultiSelectField>(
             <MultiSelectField
                 {...minProps}
                 options={options}
@@ -100,7 +99,7 @@ describe('MultiSelectField', () => {
             },
         ]
 
-        const wrapper = mount(
+        const wrapper = mount<MultiSelectField>(
             <MultiSelectField {...minProps} options={options} />
         )
         const component = wrapper.instance()
@@ -112,7 +111,9 @@ describe('MultiSelectField', () => {
     })
 
     it('should reset state on blur', () => {
-        const wrapper = mount(<MultiSelectField {...minProps} {...props} />)
+        const wrapper = mount<MultiSelectField>(
+            <MultiSelectField {...minProps} {...props} />
+        )
         const component = wrapper.instance()
 
         component._focus()
@@ -158,9 +159,9 @@ describe('MultiSelectField', () => {
             expect(options).toHaveLength(1)
             expect(options[0].label).toBe('foo')
             expect(options[0].value).toBe('foo')
-            expect(render(options[0].displayLabel).text()).toEqual(
-                'Add tag "foo"'
-            )
+            expect(
+                render(options[0].displayLabel as ReactElement).text()
+            ).toEqual('Add tag "foo"')
         })
     })
 
@@ -331,7 +332,7 @@ describe('MultiSelectField', () => {
                 />
             )
             wrapper.find(Dropdown).prop('onSelect')({
-                value: options[0].value.toUpperCase(),
+                value: (options[0].value as string).toUpperCase(),
                 label: options[0].label,
             })
             expect(onChangeSpy.mock.calls[0]).toEqual([[options[0]]])

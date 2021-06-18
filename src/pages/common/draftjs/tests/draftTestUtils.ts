@@ -1,20 +1,24 @@
-// @flow
 import {
     CompositeDecorator,
     ContentState,
-    type DraftEntityInstance,
     EditorState,
     Modifier,
     SelectionState,
+    ContentBlock,
+    RawDraftEntity,
+    Entity,
+    EditorChangeType,
 } from 'draft-js'
 import {Map} from 'immutable'
 import _isArray from 'lodash/isArray'
 import _noop from 'lodash/noop'
 
-import type {PluginMethods} from '../plugins/types'
-import {convertFromHTML} from '../../../../utils/editor.tsx'
+import {PluginMethods} from '../plugins/types'
+import {convertFromHTML} from '../../../../utils/editor'
 
-export const mockPluginMethods = (initialState: EditorState): PluginMethods => {
+export const mockPluginMethods = (
+    initialState?: EditorState
+): PluginMethods => {
     let state = initialState || EditorState.createEmpty()
     return {
         getEditorState: () => {
@@ -49,7 +53,10 @@ export const typeText = (
         newContentState.getLastBlock().getKey()
     )
         .set('anchorOffset', selection.getAnchorOffset() + text.length)
-        .set('focusOffset', selection.getFocusOffset() + text.length)
+        .set(
+            'focusOffset',
+            selection.getFocusOffset() + text.length
+        ) as SelectionState
 
     return EditorState.forceSelection(newState, newSelection)
 }
@@ -58,7 +65,10 @@ export const pressBackspace = (editorState: EditorState) => {
     const selection = editorState.getSelection()
 
     let removeSelection = selection.isCollapsed()
-        ? selection.set('anchorOffset', selection.getAnchorOffset() - 1)
+        ? (selection.set(
+              'anchorOffset',
+              selection.getAnchorOffset() - 1
+          ) as SelectionState)
         : selection
 
     // If selection at the beginning of the block
@@ -82,7 +92,7 @@ export const pressBackspace = (editorState: EditorState) => {
             .set('anchorOffset', previousBlock.getLength() - 1)
             .set('anchorKey', previousBlock.getKey())
             .set('focusOffset', previousBlock.getLength())
-            .set('focusKey', previousBlock.getKey())
+            .set('focusKey', previousBlock.getKey()) as SelectionState
     }
 
     const newContentState = Modifier.removeRange(
@@ -94,13 +104,13 @@ export const pressBackspace = (editorState: EditorState) => {
     const newState = EditorState.push(
         editorState,
         newContentState,
-        'remove-characters'
+        'remove-characters' as EditorChangeType
     )
 
     const newSelection = removeSelection.set(
         'focusOffset',
         removeSelection.getAnchorOffset()
-    )
+    ) as SelectionState
 
     return EditorState.forceSelection(newState, newSelection)
 }
@@ -108,18 +118,19 @@ export const pressBackspace = (editorState: EditorState) => {
 export const createEditorStateFromHtml = (html: string) => {
     const editorState = EditorState.createEmpty()
     const contentState = convertFromHTML(html)
-    return EditorState.push(editorState, contentState)
+    return (EditorState.push as (
+        editorState: EditorState,
+        contentState: ContentState
+    ) => EditorState)(editorState, contentState)
 }
 
-export const createCompositeDecorator = (decorators?: any[] = []) => {
+export const createCompositeDecorator = (decorators: any[] = []) => {
     return new CompositeDecorator(
         !_isArray(decorators) ? [decorators] : decorators
     )
 }
 
-export const getLastCreatedEntity = (
-    contentState: ContentState
-): ?DraftEntityInstance => {
+export const getLastCreatedEntity = (contentState: ContentState) => {
     const key = contentState.getLastCreatedEntityKey()
     if (key === '0') {
         return null
@@ -131,29 +142,31 @@ export type EntityRange = [number, number]
 
 export const getLastCreatedEntityRange = (
     contentState: ContentState
-): ?EntityRange => {
+): EntityRange | null => {
     const key = contentState.getLastCreatedEntityKey()
     if (key === '0') {
         return null
     }
     let range
-    contentState.blockMap.forEach((contentBlock) => {
-        contentBlock.findEntityRanges(
-            (character) => {
-                const entityKey = character.getEntity()
-                return entityKey !== null && entityKey === key
-            },
-            (...entityRange) => {
-                range = entityRange
-            }
-        )
-    })
+    ;((contentState as unknown) as {blockMap: ContentBlock[]}).blockMap.forEach(
+        (contentBlock) => {
+            contentBlock.findEntityRanges(
+                (character) => {
+                    const entityKey = character.getEntity()
+                    return entityKey !== null && entityKey === key
+                },
+                (...entityRange) => {
+                    range = entityRange
+                }
+            )
+        }
+    )
     return range || null
 }
 
 export const createEntityAndApplyToFirstBlockRange = (
     editorState: EditorState,
-    entity: DraftEntityInstance,
+    entity: RawDraftEntity,
     range: EntityRange
 ) => {
     const contentStateWithEntity = editorState
@@ -164,7 +177,7 @@ export const createEntityAndApplyToFirstBlockRange = (
         contentStateWithEntity.getFirstBlock().getKey()
     )
         .set('anchorOffset', range[0])
-        .set('focusOffset', range[1])
+        .set('focusOffset', range[1]) as SelectionState
     return EditorState.push(
         editorState,
         Modifier.applyEntity(contentStateWithEntity, rangeSelection, key),
@@ -177,18 +190,23 @@ export const splitFirstBlock = (editorState: EditorState, offset: number) => {
         editorState.getCurrentContent().getFirstBlock().getKey()
     )
         .set('anchorOffset', offset)
-        .set('focusOffset', offset)
+        .set('focusOffset', offset) as SelectionState
     const newContentState = Modifier.splitBlock(
         editorState.getCurrentContent(),
         splitSelection
     )
-    return EditorState.push(editorState, newContentState, 'split-blocks')
+    return EditorState.push(editorState, newContentState, 'split-blocks' as any)
 }
 
 // Returns human-readable selection textual representation, eg. "[startKey] startPosition - endPosition [endKey]".
 // Useful if you want to have a quick check if the code under test plays nicely with the selections.
 export const debugSelection = (selection: SelectionState): string => {
-    const {anchorKey, anchorOffset, focusKey, focusOffset} = selection.toJS()
+    const {
+        anchorKey,
+        anchorOffset,
+        focusKey,
+        focusOffset,
+    } = selection.toJS() as Record<string, string>
     let result = `[${anchorKey}] ${anchorOffset}`
     const theSameBlock = focusKey === anchorKey
     const theSameOffset = focusOffset === anchorOffset
@@ -201,30 +219,28 @@ export const debugSelection = (selection: SelectionState): string => {
 }
 
 export type BlockMapDebug = {
-    [string]: string,
+    [K in string]: string
 }
 
 // Returns a simplified block map plain-object representation that is easier to read.
-export const debugBlockMap = (blockMap: Map<*, *>): BlockMapDebug => {
-    return blockMap
-        .toList()
-        .toJS()
-        .reduce((acc, {key, text}) => {
+export const debugBlockMap = (blockMap: Map<any, any>): BlockMapDebug => {
+    return (blockMap.toList().toJS() as {key: string; text: string}[]).reduce(
+        (acc, {key, text}) => {
             return {
                 ...acc,
                 [key]: text,
             }
-        }, {})
+        },
+        {}
+    )
 }
 
 export type LastEntityDebug = {
-    range: ?EntityRange,
-} & DraftEntityInstance
+    range: EntityRange | null
+} & Entity
 
 // It returns the last created entity that is still applied somewhere in the content.
-export const debugLastAppliedEntity = (
-    contentState: ContentState
-): ?LastEntityDebug => {
+export const debugLastAppliedEntity = (contentState: ContentState) => {
     const lastEntity = getLastCreatedEntity(contentState)
     const range = getLastCreatedEntityRange(contentState)
 
@@ -233,27 +249,29 @@ export const debugLastAppliedEntity = (
     }
 
     return {
-        ...lastEntity.toJS(),
+        ...((lastEntity as unknown) as Map<any, any>).toJS(),
         range,
-    }
+    } as LastEntityDebug
 }
 
 type EditorStateDebug = {
-    text: string,
-    blocks: BlockMapDebug,
-    selection: string,
-    lastAppliedEntity: ?LastEntityDebug,
+    text: string
+    blocks: BlockMapDebug
+    selection: string
+    lastAppliedEntity: LastEntityDebug | null
 }
 
 // Utility function that returns most important data (eg. current text, selection, etc.)
 // about editor state, in human-readable form.
 export const debugEditorState = (
-    editorState: ContentState
+    editorState: EditorState
 ): EditorStateDebug => {
     const content = editorState.getCurrentContent()
     return {
         text: content.getPlainText(),
-        blocks: debugBlockMap(content.blockMap),
+        blocks: debugBlockMap(
+            ((content as unknown) as {blockMap: Map<any, any>}).blockMap
+        ),
         selection: debugSelection(editorState.getSelection()),
         lastAppliedEntity: debugLastAppliedEntity(content),
     }
