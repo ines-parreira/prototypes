@@ -28,7 +28,6 @@ type Props = {
     currentAccount: Map<any, any>,
     currentPlan: Map<any, any>,
     isLegacyPlan: boolean,
-    isFeatured?: boolean,
     isUpdating?: boolean,
     onClick?: Function,
     className?: string,
@@ -276,7 +275,6 @@ export function Plan({
     isUpdating,
     currentAccount,
     currentPlan,
-    isFeatured,
     isPopoverDisplayed,
     isCurrentPlan,
     comparaisonMode,
@@ -324,7 +322,6 @@ export function Plan({
                 `plan-${plan.get('name')}`,
                 className,
                 {
-                    featured: isFeatured,
                     comparaisonMode: comparaisonMode,
                     current: isCurrentPlan,
                     legacy: isCurrentPlan && accountHasLegacyFeatures,
@@ -332,11 +329,7 @@ export function Plan({
             )}
             outline
         >
-            <CardHeader
-                className={classnames('plan-header', {
-                    'featured-header': isFeatured,
-                })}
-            >
+            <CardHeader className="plan-header">
                 <div className="plan-badge">
                     {!isCurrentPlan ? null : isLegacyPlan ? (
                         <LegacyPlanBadge />
@@ -532,7 +525,6 @@ export function Plan({
 }
 
 Plan.defaultProps = {
-    isFeatured: false,
     isUpdating: false,
     className: null,
     isCurrentPlan: false,

@@ -243,10 +243,6 @@ export class BillingPlans extends React.Component<Props, State> {
                                         plan={plan}
                                         isCurrentPlan={isCurrentPlan}
                                         isUpdating={this.state.isUpdating}
-                                        isFeatured={
-                                            !isCurrentPlan &&
-                                            planId.includes('pro')
-                                        }
                                         onClick={() =>
                                             this._updateSubscription(planId)
                                         }

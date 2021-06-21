@@ -56,7 +56,6 @@ describe('<Plan/>', () => {
                 isLegacyPlan: true,
             },
         ],
-        ['a plan featured', {isFeatured: true}],
         ['a plan being selected', {isUpdating: true}],
         ['a plan without comparaison mode', {comparaisonMode: false}],
         ['a plan with custom class names', {className: 'custom-classname'}],
