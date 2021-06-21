@@ -1,0 +1,235 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTP action component should render the HTTP action component 1`] = `
+<div
+  class="http"
+>
+  <div
+    class="InputField required form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-title"
+    >
+      Title
+    </label>
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        form="macro_form"
+        id="id-title"
+        required=""
+        type="text"
+        value="HTTP hook"
+      />
+    </div>
+  </div>
+  <div
+    class="form-row row"
+  >
+    <div
+      class="col-3"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-method"
+        >
+          Method
+        </label>
+        <div
+          class=""
+        >
+          <select
+            class="form-control"
+            form="macro_form"
+            id="id-method"
+            required=""
+          >
+            <option
+              value="GET"
+            >
+              GET
+            </option>
+            <option
+              value="POST"
+            >
+              POST
+            </option>
+            <option
+              value="PUT"
+            >
+              PUT
+            </option>
+            <option
+              value="DELETE"
+            >
+              DELETE
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-9"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-url"
+        >
+          URL
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            form="macro_form"
+            id="id-url"
+            pattern="*"
+            required=""
+            title="Example: https://company.com/api"
+            type="url"
+            value=""
+          />
+        </div>
+        <small
+          class="form-text text-muted"
+        >
+          Example: https://company.com/api
+        </small>
+      </div>
+    </div>
+  </div>
+  <div
+    class="form-group"
+  >
+    <label
+      class=""
+    >
+      URL Parameters
+    </label>
+    <div>
+      <button
+        class="btn btn-secondary btn-sm"
+        type="button"
+      >
+        <i
+          class="material-icons md-2"
+        >
+          add
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="form-group"
+  >
+    <label
+      class=""
+    >
+      Headers
+    </label>
+    <div>
+      <button
+        class="btn btn-secondary btn-sm"
+        type="button"
+      >
+        <i
+          class="material-icons md-2"
+        >
+          add
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="form-group"
+  >
+    <label
+      class=""
+    >
+      Body
+    </label>
+    <div
+      class="d-inline fields"
+    >
+      <div
+        class="form-check"
+        color=""
+      >
+        <label
+          class="control-label form-check-label"
+          for="id-input-1"
+        >
+          <input
+            class="form-check-input form-check-input"
+            id="id-input-1"
+            type="radio"
+          />
+          <span
+            style="vertical-align: middle;"
+          >
+            application/x-www-form-urlencoded
+          </span>
+        </label>
+      </div>
+      <div
+        class="form-check"
+        color=""
+      >
+        <label
+          class="control-label form-check-label"
+          for="id-input-2"
+        >
+          <input
+            checked=""
+            class="form-check-input form-check-input"
+            id="id-input-2"
+            type="radio"
+          />
+          <span
+            style="vertical-align: middle;"
+          >
+            application/json
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="InputField form-group"
+      color=""
+    >
+      <div
+        class=""
+      >
+        <div
+          class="form-group"
+        >
+          <div
+            class="controls"
+          >
+            <textarea
+              class="form-control"
+              id="id-json"
+              rows="6"
+            >
+              {}
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

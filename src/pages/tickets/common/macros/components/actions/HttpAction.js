@@ -147,7 +147,7 @@ export default class HttpAction extends React.Component {
                     <Label>URL Parameters</Label>
                     <ParametersEditor
                         name="params"
-                        list={action.getIn(['arguments', 'params'])}
+                        list={action.getIn(['arguments', 'params'], fromJS([]))}
                         updateDict={(d) => this._setArgument('params', d)}
                     />
                 </FormGroup>
@@ -155,7 +155,10 @@ export default class HttpAction extends React.Component {
                     <Label>Headers</Label>
                     <ParametersEditor
                         name="headers"
-                        list={action.getIn(['arguments', 'headers'])}
+                        list={action.getIn(
+                            ['arguments', 'headers'],
+                            fromJS([])
+                        )}
                         updateDict={(d) => this._setArgument('headers', d)}
                     />
                 </FormGroup>
