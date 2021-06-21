@@ -187,7 +187,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     },
     replyToTicket: {
         compact: false,
-        name: 'Reply to ticket',
+        name: 'Reply to customer',
         args: {
             body_text: {
                 hide: true,
