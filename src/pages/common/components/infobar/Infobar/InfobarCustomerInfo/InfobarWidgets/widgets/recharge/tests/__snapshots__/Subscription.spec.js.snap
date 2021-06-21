@@ -164,7 +164,7 @@ exports[`Subscription TitleWrapper customer context should render custom link be
 
 exports[`Subscription TitleWrapper customer context should render default link because no custom link is set 1`] = `
 <a
-  href="https://mystore.myshopify.com/tools/recurring/customers/asd1as2d3/"
+  href="https://mystore.myshopify.com/admin/apps/0009de8c024a6126315f5dcd4250fd61/addresses/101112/"
   rel="noopener noreferrer"
   target="_blank"
 />
@@ -194,7 +194,7 @@ exports[`Subscription TitleWrapper ticket context should render custom link beca
 
 exports[`Subscription TitleWrapper ticket context should render default link because no custom link is set 1`] = `
 <a
-  href="https://mystore.myshopify.com/tools/recurring/customers/asd1as2d3/"
+  href="https://mystore.myshopify.com/admin/apps/0009de8c024a6126315f5dcd4250fd61/addresses/101112/"
   rel="noopener noreferrer"
   target="_blank"
 />

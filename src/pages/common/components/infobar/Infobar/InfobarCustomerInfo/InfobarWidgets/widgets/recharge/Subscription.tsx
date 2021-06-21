@@ -166,11 +166,10 @@ export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
             integration.get('id'),
             source.get('customer_id')
         ).getIn(['customer', 'hash']) as string
-
+        const addressId = source.get('address_id') as string
         let link = undefined
-
         if (customerHash) {
-            link = `https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/`
+            link = `https://${storeName}.myshopify.com/admin/apps/0009de8c024a6126315f5dcd4250fd61/addresses/${addressId}/`
 
             const customLink = template.getIn(['meta', 'link'])
 

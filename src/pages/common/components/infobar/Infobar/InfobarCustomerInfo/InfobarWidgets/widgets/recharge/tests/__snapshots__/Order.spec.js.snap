@@ -283,7 +283,7 @@ exports[`Order <TitleWrapper/> should not render any link because no customer ha
 
 exports[`Order <TitleWrapper/> should render the base link because a customer hash was passed and no custom link is set 1`] = `
 <a
-  href="https://storegorgias3.myshopify.com/tools/recurring/customers/s8d4f6sdf4/orders/undefined"
+  href="https://storegorgias3.myshopify.com/admin/apps/0009de8c024a6126315f5dcd4250fd61/admin/customers/4564/orders"
   rel="noopener noreferrer"
   target="_blank"
 />

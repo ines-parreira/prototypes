@@ -31,7 +31,7 @@ exports[`Customer TitleWrapper should render default link because no custom link
   </CardHeaderTitle>
   <CardHeaderSubtitle>
     <a
-      href="https://mystore.myshopify.com/tools/recurring/customers/a8s4d86as54d/"
+      href="https://mystore.myshopify.com/admin/apps/0009de8c024a6126315f5dcd4250fd61/admin/customers/a8s4d86as54d/subscriptions"
       rel="noopener noreferrer"
       target="_blank"
     />

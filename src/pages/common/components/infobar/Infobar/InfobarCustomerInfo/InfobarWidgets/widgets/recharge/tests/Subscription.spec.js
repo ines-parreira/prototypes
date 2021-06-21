@@ -49,6 +49,7 @@ describe('Subscription', () => {
         const subscriptionData = fromJS({
             id: 789,
             customer_id: customerId,
+            address_id: 101112,
         })
         const context = {
             integration: fromJS({

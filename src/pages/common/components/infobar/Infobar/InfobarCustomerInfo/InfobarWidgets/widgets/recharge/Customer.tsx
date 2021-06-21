@@ -50,8 +50,7 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
         const {integration} = this.context as {integration: Map<any, any>}
         const storeName = integration.getIn(['meta', 'store_name']) as string
         const customerHash = source.get('hash') as string
-
-        const defaultLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/`
+        const defaultLink = `https://${storeName}.myshopify.com/admin/apps/0009de8c024a6126315f5dcd4250fd61/admin/customers/${customerHash}/subscriptions`
         let customLink = template.getIn(['meta', 'link']) as string | null
 
         if (customLink) {
