@@ -85,6 +85,9 @@ import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
 import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
 
+import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
+import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
+
 export enum Tab {
     EmailForwarding = 'forwarding',
     EmailVerification = 'verification',
@@ -610,6 +613,27 @@ export const IntegrationDetailContainer = ({
                     redirectUri={redirectUri}
                 />
             )
+
+        case IntegrationType.TwitterIntegrationType:
+            if (!!integrationId) {
+                return (
+                    <TwitterIntegrationDetail
+                        actions={actions}
+                        integration={integration}
+                        redirectUri={redirectUri}
+                    />
+                )
+            }
+
+            return (
+                <TwitterIntegrationList
+                    actions={actions}
+                    integrations={integrationsProp}
+                    loading={loading}
+                    redirectUri={redirectUri}
+                />
+            )
+
         case IntegrationType.KlaviyoIntegrationType:
             if (!!integrationId) {
                 return (

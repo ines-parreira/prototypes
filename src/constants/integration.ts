@@ -16,6 +16,7 @@ export const ZENDESK_INTEGRATION_TYPE = 'zendesk'
 export const YOTPO_INTEGRATION_TYPE = 'yotpo'
 export const KLAVIYO_INTEGRATION_TYPE = 'klaviyo'
 export const PHONE_INTEGRATION_TYPE = 'phone'
+export const TWITTER_INTEGRATION_TYPE = 'twitter'
 
 export const EMAIL_INTEGRATION_TYPES = Object.freeze([
     EMAIL_INTEGRATION_TYPE,
@@ -38,6 +39,7 @@ export const INTEGRATION_TYPES_MAP = Object.freeze({
     ZENDESK_INTEGRATION_TYPE,
     YOTPO_INTEGRATION_TYPE,
     PHONE_INTEGRATION_TYPE,
+    TWITTER_INTEGRATION_TYPE,
 })
 
 export const INTEGRATION_TYPES = Object.freeze(

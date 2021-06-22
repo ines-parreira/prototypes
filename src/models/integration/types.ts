@@ -23,6 +23,7 @@ export enum IntegrationType {
     YotpoIntegrationType = 'yotpo',
     KlaviyoIntegrationType = 'klaviyo',
     PhoneIntegrationType = 'phone',
+    TwitterIntegrationType = 'twitter',
 }
 
 export enum IntegrationDataItemType {

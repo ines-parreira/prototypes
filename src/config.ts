@@ -144,6 +144,21 @@ export const DEFAULT_SOURCE_PATHS = {
  * Integration-related
  */
 
+/**
+ * TODO(@ionut): remove this when public releasing the feature.
+ */
+export function shouldHideTwitterIntegration() {
+    const isProd =
+        location.hostname.endsWith('.gorgias.io') ||
+        location.hostname.endsWith('.gorgias.com')
+    const allowedHostnames = [
+        'zachbanov.gorgias.com',
+        'test-martin.gorgias.com',
+    ]
+
+    return isProd && !allowedHostnames.includes(location.hostname)
+}
+
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
@@ -201,6 +216,14 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
         image: 'integrations/shopify.png',
+    },
+    {
+        type: IntegrationType.TwitterIntegrationType,
+        title: 'Twitter',
+        description:
+            'Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter',
+        image: 'integrations/twitter.png',
+        hide: shouldHideTwitterIntegration(),
     },
     {
         type: IntegrationType.Magento2IntegrationType,

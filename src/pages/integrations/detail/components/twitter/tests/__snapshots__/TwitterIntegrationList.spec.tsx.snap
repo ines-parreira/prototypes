@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = `
+<div
+  class="w-100"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Twitter
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <button
+        class="createIntegrationButton btn btn-success"
+        type="submit"
+      >
+        <div>
+          <img
+            alt="twitter-logo"
+            class="twitterLogo"
+            src="test-file-stub"
+          />
+          Login with Twitter
+        </div>
+      </button>
+    </div>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="mb-3"
+    >
+      Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.
+    </div>
+    <div
+      class="mt-3"
+    >
+      <div>
+        You have no integration of this type at the moment.
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TwitterIntegrationList/> render() should render with single integration 1`] = `
+<div
+  class="w-100"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Twitter
+        </li>
+      </ol>
+    </nav>
+    <div>
+      <button
+        class="createIntegrationButton btn btn-success"
+        type="submit"
+      >
+        <div>
+          <img
+            alt="twitter-logo"
+            class="twitterLogo"
+            src="test-file-stub"
+          />
+          Login with Twitter
+        </div>
+      </button>
+    </div>
+  </div>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="mb-3"
+    >
+      Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.
+    </div>
+  </div>
+  <table
+    class="table-integrations mt-3 table table-hover"
+  >
+    <tbody>
+      <tr>
+        <td
+          class="link-full-td"
+        >
+          <a
+            to="/app/settings/integrations/twitter/1"
+          >
+            <div>
+              <img
+                alt="twitter logo"
+                class="image rounded mr-3"
+                src="https://some-random-url.com/picture.jpeg"
+                width="32"
+              />
+              <b>
+                Fake twitter integration
+              </b>
+              <span
+                class="ml-3 text-faded"
+              >
+                @faketwitterintegration
+              </span>
+            </div>
+          </a>
+        </td>
+        <td
+          class="smallest align-middle"
+        >
+          <label
+            class="switch"
+          >
+            <input
+              checked=""
+              readonly=""
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
+        </td>
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/twitter/1"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
