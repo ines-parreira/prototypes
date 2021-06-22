@@ -1272,9 +1272,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                               <CodeSnippet
                                                 code="<script>
 var gorgiasChatInterval = window.setInterval(function() {
-    var container = document.querySelector('#gorgias-chat-container')
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty(\\"on\\")){
-      GorgiasChat.setShopifyContext('XXXXX');
+    if (window.GorgiasChat && GorgiasChat.hasOwnProperty(\\"on\\")) {
+        GorgiasChat.setShopifyContext('your-store.myshopify.com');
+        window.clearInterval(gorgiasChatInterval); // do not delete this line
     }
 }, 50);
 </script>"
@@ -1358,9 +1358,9 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                         >
                                                           &lt;script&gt;
 var gorgiasChatInterval = window.setInterval(function() {
-    var container = document.querySelector('#gorgias-chat-container')
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")){
-      GorgiasChat.setShopifyContext('XXXXX');
+    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")) {
+        GorgiasChat.setShopifyContext('your-store.myshopify.com');
+        window.clearInterval(gorgiasChatInterval); // do not delete this line
     }
 }, 50);
 &lt;/script&gt;
@@ -3366,9 +3366,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                               <CodeSnippet
                                                 code="<script>
 var gorgiasChatInterval = window.setInterval(function() {
-    var container = document.querySelector('#gorgias-chat-container')
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty(\\"on\\")){
-      GorgiasChat.setShopifyContext('XXXXX');
+    if (window.GorgiasChat && GorgiasChat.hasOwnProperty(\\"on\\")) {
+        GorgiasChat.setShopifyContext('your-store.myshopify.com');
+        window.clearInterval(gorgiasChatInterval); // do not delete this line
     }
 }, 50);
 </script>"
@@ -3452,9 +3452,9 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                         >
                                                           &lt;script&gt;
 var gorgiasChatInterval = window.setInterval(function() {
-    var container = document.querySelector('#gorgias-chat-container')
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")){
-      GorgiasChat.setShopifyContext('XXXXX');
+    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")) {
+        GorgiasChat.setShopifyContext('your-store.myshopify.com');
+        window.clearInterval(gorgiasChatInterval); // do not delete this line
     }
 }, 50);
 &lt;/script&gt;

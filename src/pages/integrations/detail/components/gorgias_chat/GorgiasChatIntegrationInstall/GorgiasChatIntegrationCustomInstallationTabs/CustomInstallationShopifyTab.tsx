@@ -14,9 +14,9 @@ type Props = {
 
 const SSPSnippet = `<script>
 var gorgiasChatInterval = window.setInterval(function() {
-    var container = document.querySelector('#gorgias-chat-container')
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")){
-      GorgiasChat.setShopifyContext('XXXXX');
+    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")) {
+        GorgiasChat.setShopifyContext('your-store.myshopify.com');
+        window.clearInterval(gorgiasChatInterval); // do not delete this line
     }
 }, 50);
 </script>`
