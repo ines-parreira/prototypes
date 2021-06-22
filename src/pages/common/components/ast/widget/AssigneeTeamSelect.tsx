@@ -27,10 +27,10 @@ export class AssigneeTeamSelectContainer extends Component<Props> {
             allowUnassign ? [{value: null, label: 'Unassigned'}] : []
         )
 
-        teams.forEach((team: Map<any, any>) => {
+        teams.forEach((team) => {
             options = options.push({
-                value: team.get('id'),
-                label: team.get('name'),
+                value: team!.get('id'),
+                label: team!.get('name'),
             })
         })
 

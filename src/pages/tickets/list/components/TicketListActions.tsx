@@ -107,7 +107,7 @@ export const TicketListActionsContainer = ({
             (team!.get('name') as string)
                 .toLowerCase()
                 .includes(teamsSearchQuery.toLowerCase())
-        ) as List<Map<any, any>>
+        )
     }, [teams, teamsSearchQuery])
 
     const filteredAgents = useMemo(() => {
@@ -756,7 +756,7 @@ const connector = connect(
     (state: RootState) => {
         return {
             currentUser: state.currentUser,
-            teams: getTeams(state) as List<Map<any, any>>,
+            teams: getTeams(state),
             agents: getAgents(state) as List<Map<any, any>>,
             isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
             allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(

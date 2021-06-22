@@ -1,17 +1,17 @@
 import React from 'react'
 import {render} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import PeopleSearchResults from '../PeopleSearchResults'
 
-const teams = fromJS({
+const teams: Map<any, any> = fromJS({
     all: {
         1: {id: 1, name: 'Team 1', decoration: {}},
         2: {id: 2, name: 'Team 2', decoration: {}},
     },
 })
 
-const users = fromJS({
+const users: Map<any, any> = fromJS({
     all: [
         {id: 1, name: 'User 1', email: 'email1@foo.com', meta: {}},
         {id: 2, name: 'User 2', email: 'email2@foo.com', meta: {}},
@@ -19,8 +19,8 @@ const users = fromJS({
 })
 
 describe('<PeopleSearchResults/>', () => {
-    let onTeamClick
-    let onUserClick
+    let onTeamClick: jest.MockedFunction<any>
+    let onUserClick: jest.MockedFunction<any>
 
     beforeEach(() => {
         onTeamClick = jest.fn()
@@ -33,7 +33,7 @@ describe('<PeopleSearchResults/>', () => {
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
-                    teams={teams.get('all').valueSeq()}
+                    teams={(teams.get('all') as Map<any, any>).valueSeq()}
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -48,7 +48,7 @@ describe('<PeopleSearchResults/>', () => {
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
-                    teams={teams.get('all').valueSeq()}
+                    teams={(teams.get('all') as Map<any, any>).valueSeq()}
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -65,7 +65,7 @@ describe('<PeopleSearchResults/>', () => {
                 <PeopleSearchResults
                     handleTeams={false}
                     handleUsers
-                    teams={teams.get('all').valueSeq()}
+                    teams={(teams.get('all') as Map<any, any>).valueSeq()}
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
@@ -80,7 +80,7 @@ describe('<PeopleSearchResults/>', () => {
                 <PeopleSearchResults
                     handleTeams
                     handleUsers={false}
-                    teams={teams.get('all').valueSeq()}
+                    teams={(teams.get('all') as Map<any, any>).valueSeq()}
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}

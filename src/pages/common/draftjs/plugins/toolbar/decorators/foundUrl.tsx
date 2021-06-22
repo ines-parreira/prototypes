@@ -1,14 +1,14 @@
-// @flow
 import * as React from 'react'
 import {ContentBlock, ContentState} from 'draft-js'
+import {Map} from 'immutable'
 
-import type {
+import {
     DecoratorStrategyCallback,
     DecoratorComponentProps,
     Decorator,
 } from '../../types'
-import {linkify} from '../../../../../../utils/editor.tsx'
-import LinkPopover from '../components/LinkPopover.tsx'
+import {linkify} from '../../../../../../utils/editor'
+import LinkPopover from '../components/LinkPopover'
 
 const foundUrl = (): Decorator => ({
     strategy: (
@@ -21,9 +21,10 @@ const foundUrl = (): Decorator => ({
         // https://github.com/markdown-it/linkify-it/issues/52
         // we just need the text start/end indexes,
         // so we can replace them with anything of the same length.
-        const encodedText = contentBlock
-            .get('text')
-            .replace(/{{(.*?)}}/g, (m, group) => `**${group}**`)
+        const encodedText = ((contentBlock as Map<any, any>).get(
+            'text'
+        ) as string).replace(/{{(.*?)}}/g, (m, group: string) => `**${group}**`)
+
         const links = linkify.match(encodedText)
 
         if (!links) {

@@ -1,3 +1,4 @@
+import {KeyboardEvent} from 'react'
 import {EditorState, SelectionState} from 'draft-js'
 import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
@@ -13,7 +14,7 @@ import {
     removePrediction,
     usePrediction,
 } from './utils'
-import decorators from './decorators.js'
+import decorators from './decorators'
 
 let predictionKey: string | null = null
 let cachedSelection: SelectionState | null = null

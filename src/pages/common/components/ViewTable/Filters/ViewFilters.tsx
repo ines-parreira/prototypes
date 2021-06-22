@@ -22,7 +22,7 @@ type OwnProps = {
     view: Map<any, any>
     removeFieldFilter: typeof removeFieldFilter
     agents: List<Map<any, any>>
-    teams: Seq.Indexed<Map<any, any>> | List<any>
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
     updateFieldFilter: typeof updateFieldFilter
     updateFieldFilterOperator: typeof updateFieldFilterOperator
 }

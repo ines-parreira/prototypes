@@ -46,7 +46,7 @@ type OwnProps = {
     removeCondition: (index: number) => void
     updateOperator: (index: number, value: string) => void
     agents: List<any>
-    teams: Seq.Indexed<Map<any, any>> | List<any>
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
     updateFieldFilter: typeof updateFieldFilter
     parentNode: LogicalExpression
 }

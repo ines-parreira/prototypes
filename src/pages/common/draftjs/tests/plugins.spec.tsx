@@ -1,17 +1,20 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
+import {ContentState, EditorState} from 'draft-js'
 
-import {convertFromHTML} from '../../../../utils/editor.tsx'
-import createToolbarPlugin from '../plugins/toolbar/index.ts'
-import {variable as variableDecorator} from '../plugins/variables/decorators'
-import {attachEntitiesToVariables} from '../plugins/variables/utils'
+import {convertFromHTML} from '../../../../utils/editor'
+import createToolbarPlugin from '../plugins/toolbar/index'
+import {Config} from '../plugins/toolbar/types'
+import {variable as variableDecorator} from '../plugins/variables/decorators.js'
+import {attachEntitiesToVariables} from '../plugins/variables/utils.js'
+import {Plugin} from '../plugins/types'
 
 import TestEditor from './TestEditor'
-import * as utils from './utils'
+import * as utils from './utils.js'
 import {
     createCompositeDecorator,
     createEditorStateFromHtml,
-} from './draftTestUtils.ts'
+} from './draftTestUtils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -21,7 +24,9 @@ describe('DraftJS convertToHtml', () => {
         const composite = createCompositeDecorator()
         const html = 'this is text only'
         const content = convertFromHTML(html).getBlockMap().first()
-        const decorations = composite.getDecorations(content).toArray()
+        const decorations = composite
+            .getDecorations(content, new ContentState())
+            .toArray()
 
         expect(decorations.length).toBe(html.length)
         expect(decorations).toEqual(Array(html.length).fill(null))
@@ -30,7 +35,10 @@ describe('DraftJS convertToHtml', () => {
 
 describe('DraftJS display entities', () => {
     it('variable entity in text', () => {
-        const composite = createCompositeDecorator(variableDecorator)
+        const composite = createCompositeDecorator(
+            //$TsFixMe remove casting once plugins/variables/decorators is migrated
+            (variableDecorator as unknown) as any[]
+        )
         const text =
             'variable {{current_user.name}} and {{ticket.customer.email}}'
         let editorState = createEditorStateFromHtml(text)
@@ -73,30 +81,46 @@ describe('DraftJS display entities', () => {
 describe('DraftJS Plugins', () => {
     it('render simple text', () => {
         const html = 'this is only text, no style'
-        const component = renderer.create(<TestEditor html={html} />)
+        const component = renderer.create(
+            <TestEditor
+                html={html}
+                editorState={(undefined as unknown) as EditorState}
+                plugins={[] as Plugin[]}
+            />
+        )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
     })
 
     it('render bold text', () => {
         const html = 'this is <strong>bold</strong> text'
-        const component = renderer.create(<TestEditor html={html} />)
+        const component = renderer.create(
+            <TestEditor
+                html={html}
+                editorState={(undefined as unknown) as EditorState}
+                plugins={[] as Plugin[]}
+            />
+        )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()
     })
 
     it('render link found in text', () => {
         const html = 'this is a url <a href="http://google.com">link</a>'
-        let editorState = createEditorStateFromHtml(html)
+        const editorState = createEditorStateFromHtml(html)
 
         const toolbarPlugin = createToolbarPlugin({
-            getDisplayedActions: () => undefined,
-        })
+            getDisplayedActions: () => null,
+        } as Config)
 
-        const plugins = [toolbarPlugin]
+        const plugins = [toolbarPlugin] as Plugin[]
 
         const component = renderer.create(
-            <TestEditor editorState={editorState} plugins={plugins} />
+            <TestEditor
+                html={html}
+                editorState={editorState}
+                plugins={plugins}
+            />
         )
         const tree = component.toJSON()
         expect(tree).toMatchSnapshot()

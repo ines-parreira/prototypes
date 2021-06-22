@@ -1,4 +1,4 @@
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, List, Map, Seq} from 'immutable'
 import {createSelector} from 'reselect'
 import _capitalize from 'lodash/capitalize'
 
@@ -12,7 +12,7 @@ export const getState = (state: RootState) =>
 
 export const getTeams = createImmutableSelector<
     RootState,
-    List<any>,
+    List<Map<any, any>> | Seq.Indexed<Map<any, any>>,
     TeamsState
 >(
     getState,
@@ -22,16 +22,18 @@ export const getTeams = createImmutableSelector<
             : fromJS([])) as List<any>
 )
 
-export const getLabelledTeams = createSelector<RootState, List<any>, List<any>>(
-    getTeams,
-    (teams) =>
-        teams
-            .map((team: Map<any, any>) => ({
-                label: _capitalize(team.get('name')),
-                id: team.get('id'),
-                members: (team.get('members', fromJS([])) as List<any>)
-                    .map((user: Map<any, any>) => user.get('id') as number)
-                    .toJS(),
-            }))
-            .toList()
+export const getLabelledTeams = createSelector<
+    RootState,
+    List<any>,
+    List<any> | Seq.Indexed<any>
+>(getTeams, (teams) =>
+    teams
+        .map((team: Map<any, any>) => ({
+            label: _capitalize(team.get('name')),
+            id: team.get('id'),
+            members: (team.get('members', fromJS([])) as List<any>)
+                .map((user: Map<any, any>) => user.get('id') as number)
+                .toJS(),
+        }))
+        .toList()
 )

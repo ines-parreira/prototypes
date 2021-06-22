@@ -1,10 +1,10 @@
 import React from 'react'
 import {mount, render} from 'enzyme'
 
-import PeopleSearchInput from '../PeopleSearchInput.tsx'
+import PeopleSearchInput from '../PeopleSearchInput'
 
 describe('<PeopleSearchInput/>', () => {
-    let onChange
+    let onChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         onChange = jest.fn()

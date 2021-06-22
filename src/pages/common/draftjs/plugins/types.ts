@@ -1,5 +1,5 @@
 import {EditorState, ContentState, ContentBlock} from 'draft-js'
-import {ReactNode, ComponentType, SyntheticEvent} from 'react'
+import {ReactNode, ComponentType, KeyboardEvent} from 'react'
 
 export type PluginMethods = {
     getEditorState: () => EditorState
@@ -43,7 +43,7 @@ export type Plugin = {
         pluginMethods: PluginMethods
     ) => Maybe<Record<string, unknown>>
     keyBindingFn?: (
-        event: SyntheticEvent<any>,
+        event: KeyboardEvent,
         pluginMethods: PluginMethods
     ) => Maybe<string>
     handleKeyCommand?: (

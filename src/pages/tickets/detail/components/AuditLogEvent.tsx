@@ -193,8 +193,8 @@ export class AuditLogEventContainer extends Component<Props> {
         const {event, teams} = this.props
         const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
         const assigneeTeam = teams.find(
-            (team: Map<any, any>) => team.get('id') === assigneeTeamId
-        ) as Map<any, any>
+            (team) => team!.get('id') === assigneeTeamId
+        )
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeTeam) {

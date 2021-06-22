@@ -3,7 +3,7 @@ import {List, Map} from 'immutable'
 import {Button, ListGroup, ListGroupItem} from 'reactstrap'
 import classnames from 'classnames'
 
-import {UncontrolledPeopleSearchInput} from '../../../forms/PeopleSearchInput/index.js'
+import UncontrolledPeopleSearchInput from '../../../forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
 import {AgentLabel, TeamLabel} from '../../../utils/labels.js'
 
 import css from './SharedBody.less'

@@ -1,9 +1,20 @@
 import React from 'react'
+import {ContentBlock, ContentState} from 'draft-js'
+
+import {
+    DecoratorComponentProps,
+    DecoratorStrategyCallback,
+    Decorator,
+} from '../types'
 
 import css from './prediction.less'
 
-export const prediction = {
-    strategy: (contentBlock, callback, contentState) => {
+export const prediction: Decorator = {
+    strategy: (
+        contentBlock: ContentBlock,
+        callback: DecoratorStrategyCallback,
+        contentState: ContentState
+    ) => {
         contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity()
             return (
@@ -12,14 +23,8 @@ export const prediction = {
             )
         }, callback)
     },
-    component: ({
-        offsetKey, // eslint-disable-line no-unused-vars, react/prop-types
-        children, // eslint-disable-line no-unused-vars, react/prop-types
-        entityKey, // eslint-disable-line react/prop-types
-        getEditorState, // eslint-disable-line no-unused-vars, react/prop-types
-        contentState, // eslint-disable-line react/prop-types
-        setEditorState, // eslint-disable-line no-unused-vars, react/prop-types
-    }) => {
+    component: (props: DecoratorComponentProps) => {
+        const {contentState, entityKey} = props
         const entity = contentState.getEntity(entityKey).getData()
         const {text} = entity
 

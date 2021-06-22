@@ -31,7 +31,7 @@ type OwnProps = {
     node: Expression
     index: number
     agents: List<Map<any, any>>
-    teams: Seq.Indexed<Map<any, any>> | List<any>
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
     updateFieldFilter: typeof updateFieldFilter
     objectPath: string
     empty: boolean
@@ -174,9 +174,7 @@ class Right extends Component<Props, State> {
             }
         } else if (field.get('name') === 'assignee_team') {
             // display assignee team
-            const assignee = (this.props.teams as Seq.Indexed<
-                Map<any, any>
-            >).find(
+            const assignee = this.props.teams.find(
                 (team) =>
                     (team!.get('id') as number).toString() ===
                     displayedValue!.toString()

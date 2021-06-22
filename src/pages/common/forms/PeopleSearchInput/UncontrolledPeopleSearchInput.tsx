@@ -1,22 +1,19 @@
-// @flow
-
-// $FlowFixMe
 import React, {useState} from 'react'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {type Map, List} from 'immutable'
+import {Map, List} from 'immutable'
 
 import css from './UncontrolledPeopleSearchInput.less'
 
-import PeopleSearchInput from './PeopleSearchInput.tsx'
+import PeopleSearchInput from './PeopleSearchInput'
 import PeopleSearchResults from './PeopleSearchResults'
 
 type Props = {
-    className?: string,
-    autoFocus?: boolean,
-    teams: List<Map<*, *>>,
-    users: List<Map<*, *>>,
-    onTeamClick: (team: Map<*, *>) => void,
-    onUserClick: (user: Map<*, *>) => void,
+    className?: string
+    autoFocus?: boolean
+    teams: List<Map<any, any>>
+    users: List<Map<any, any>>
+    onTeamClick: (team: Map<any, any>) => void
+    onUserClick: (user: Map<any, any>) => void
 }
 
 export default function UncontrolledPeopleSearchInput({
@@ -32,13 +29,15 @@ export default function UncontrolledPeopleSearchInput({
     const toggle = () => setOpen(!isOpen)
 
     const filteredTeams = teams.filter((team) =>
-        team.get('name').toLowerCase().includes(filter.toLowerCase())
-    )
+        (team!.get('name') as string)
+            .toLowerCase()
+            .includes(filter.toLowerCase())
+    ) as List<Map<any, any>>
 
     const filteredUsers = users.filter((user) => {
-        const agentLabel = user.get('name') || user.get('email')
+        const agentLabel: string = user!.get('name') || user!.get('email')
         return agentLabel.toLowerCase().includes(filter.toLowerCase())
-    })
+    }) as List<Map<any, any>>
 
     return (
         <Dropdown isOpen={isOpen} className={className} toggle={toggle}>

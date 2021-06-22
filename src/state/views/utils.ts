@@ -1,4 +1,4 @@
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, List, Map, Seq} from 'immutable'
 import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
@@ -432,12 +432,12 @@ export function isViewSharedWithUser(
         shared_with_teams: Array<{id: number}>
     },
     user: Map<any, any>,
-    teams: List<any>
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
 ): boolean {
     const isAgent = hasRole(user, UserRole.Agent)
     const userId = user.get('id')
-    const userTeams = teams.filter((team: Map<any, any>) =>
-        (team.get('members', []) as List<any>).some(
+    const userTeams = teams.filter((team) =>
+        (team!.get('members', []) as List<any>).some(
             (member: Map<any, any>) => member.get('id') === userId
         )
     )
@@ -451,10 +451,7 @@ export function isViewSharedWithUser(
     )
 
     const isSharedWithTeam = view.shared_with_teams.some((sharedWithTeam) =>
-        userTeams.some(
-            (userTeam: Map<any, any>) =>
-                userTeam.get('id') === sharedWithTeam.id
-        )
+        userTeams.some((userTeam) => userTeam!.get('id') === sharedWithTeam.id)
     )
 
     return (

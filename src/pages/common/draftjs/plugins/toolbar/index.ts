@@ -9,10 +9,10 @@ import {
     getSelectedText,
 } from '../../../../../utils/editor'
 
-import foundUrl from './decorators/foundUrl.js'
+import foundUrl from './decorators/foundUrl'
 import link from './decorators/link'
 import Toolbar from './Toolbar'
-import Image from './components/Image.js'
+import Image from './components/Image'
 import {Config, ActionName} from './types'
 
 // documentation:

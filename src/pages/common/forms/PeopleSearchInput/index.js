@@ -1,4 +1,4 @@
 // @flow
 
 export {default} from './PeopleSearchInput.tsx'
-export {default as UncontrolledPeopleSearchInput} from './UncontrolledPeopleSearchInput'
+export {default as UncontrolledPeopleSearchInput} from './UncontrolledPeopleSearchInput.tsx'

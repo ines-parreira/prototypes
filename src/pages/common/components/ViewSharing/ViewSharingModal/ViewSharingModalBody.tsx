@@ -60,10 +60,10 @@ export function ViewSharingModalBodyContainer({
 
     const availableTeams = useMemo(
         () =>
-            teams.filter((team: Map<any, any>) =>
+            teams.filter((team) =>
                 selectedTeams.every(
                     (selectedTeam: Map<any, any>) =>
-                        selectedTeam.get('id') !== team.get('id')
+                        selectedTeam.get('id') !== team!.get('id')
                 )
             ) as List<any>,
         [teams, selectedTeams]

@@ -1,21 +1,19 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 import {DropdownItem} from 'reactstrap'
-import type {Map, List} from 'immutable'
+import {Map, List, Seq} from 'immutable'
 
-import {AgentLabel, TeamLabel} from '../../utils/labels'
+import {AgentLabel, TeamLabel} from '../../utils/labels.js'
 
 import css from './PeopleSearchResults.less'
 
 type Props = {
-    handleTeams: boolean,
-    handleUsers: boolean,
-    teams: List<*>,
-    users: List<*>,
-    children?: Node,
-    onTeamClick: (team: Map<*, *>) => void,
-    onUserClick: (user: Map<*, *>) => void,
+    handleTeams: boolean
+    handleUsers: boolean
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
+    users: List<Map<any, any>>
+    children?: ReactNode
+    onTeamClick: (team: Map<any, any>) => void
+    onUserClick: (user: Map<any, any>) => void
 }
 
 export default function PeopleSearchResults({
@@ -39,8 +37,8 @@ export default function PeopleSearchResults({
 }
 
 type TeamResultsProps = {
-    teams: List<*>,
-    onClick: (team: Map<*, *>) => void,
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
+    onClick: (team: Map<any, any>) => void
 }
 
 function TeamResults({teams, onClick}: TeamResultsProps) {
@@ -55,14 +53,14 @@ function TeamResults({teams, onClick}: TeamResultsProps) {
                 <div className={css.items}>
                     {teams.map((team) => (
                         <DropdownItem
-                            key={team.get('id')}
+                            key={team!.get('id')}
                             type="button"
                             className={css.item}
-                            onClick={() => onClick(team)}
+                            onClick={() => onClick(team!)}
                         >
                             <TeamLabel
-                                name={team.get('name')}
-                                emoji={team.getIn(['decoration', 'emoji'])}
+                                name={team!.get('name')}
+                                emoji={team!.getIn(['decoration', 'emoji'])}
                                 shouldDisplayAvatar
                             />
                         </DropdownItem>
@@ -74,8 +72,8 @@ function TeamResults({teams, onClick}: TeamResultsProps) {
 }
 
 type UserResultsProps = {
-    users: List<*>,
-    onClick: (user: Map<*, *>) => void,
+    users: List<Map<any, any>>
+    onClick: (user: Map<any, any>) => void
 }
 
 function UserResults({users, onClick}: UserResultsProps) {
@@ -90,14 +88,14 @@ function UserResults({users, onClick}: UserResultsProps) {
                 <div className={css.items}>
                     {users.map((user) => (
                         <DropdownItem
-                            key={user.get('id')}
+                            key={user!.get('id')}
                             type="button"
                             className={css.item}
-                            onClick={() => onClick(user)}
+                            onClick={() => onClick(user!)}
                         >
                             <AgentLabel
-                                name={user.get('name') || user.get('email')}
-                                profilePictureUrl={user.getIn([
+                                name={user!.get('name') || user!.get('email')}
+                                profilePictureUrl={user!.getIn([
                                     'meta',
                                     'profile_picture_url',
                                 ])}

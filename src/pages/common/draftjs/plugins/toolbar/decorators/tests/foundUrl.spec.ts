@@ -1,6 +1,6 @@
 import {ContentState, RichUtils, SelectionState, EditorState} from 'draft-js'
 
-import createFoundUrl from '../foundUrl.js'
+import createFoundUrl from '../foundUrl'
 
 const foundUrl = createFoundUrl()
 

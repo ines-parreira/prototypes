@@ -14,7 +14,7 @@ import shortcutManager from '../../../../../../services/shortcutManager/index.ts
 import {AgentLabel, TeamLabel} from '../../../../../common/utils/labels'
 import {setAgent, setTeam} from '../../../../../../state/ticket/actions.ts'
 import PeopleSearchInput from '../../../../../common/forms/PeopleSearchInput'
-import PeopleSearchResults from '../../../../../common/forms/PeopleSearchInput/PeopleSearchResults'
+import PeopleSearchResults from '../../../../../common/forms/PeopleSearchInput/PeopleSearchResults.tsx'
 
 import css from './TicketAssignee.less'
 
