@@ -173,6 +173,16 @@ exports[`<RuleItem /> rendering should not render an error message when there is
                           type="button"
                         >
                           <span>
+                            ticket snooze delay ends
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
                             new message in ticket
                           </span>
                         </button>
@@ -451,6 +461,16 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
                         >
                           <span>
                             ticket assigned to user
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            ticket snooze delay ends
                           </span>
                         </button>
                         <button

@@ -8,6 +8,7 @@ export const TICKET_MERGED = 'ticket-merged'
 export const TICKET_MESSAGE_CREATED = 'ticket-message-created'
 export const TICKET_REOPENED = 'ticket-reopened'
 export const TICKET_SNOOZED = 'ticket-snoozed'
+export const TICKET_SELF_UNSNOOZED = 'ticket-self-unsnoozed'
 export const TICKET_TAGS_ADDED = 'ticket-tags-added'
 export const TICKET_TAGS_REMOVED = 'ticket-tags-removed'
 export const TICKET_TEAM_ASSIGNED = 'ticket-team-assigned'
@@ -38,6 +39,7 @@ export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     TICKET_MERGED,
     TICKET_REOPENED,
     TICKET_SNOOZED,
+    TICKET_SELF_UNSNOOZED,
     TICKET_TAGS_ADDED,
     TICKET_TAGS_REMOVED,
     TICKET_TEAM_ASSIGNED,

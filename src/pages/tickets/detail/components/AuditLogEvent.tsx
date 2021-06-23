@@ -53,6 +53,7 @@ export class AuditLogEventContainer extends Component<Props> {
         [AuditLogEventType.TicketMerged]: ['call_merge'],
         [AuditLogEventType.TicketReopened]: ['loop'],
         [AuditLogEventType.TicketSnoozed]: ['timer'],
+        [AuditLogEventType.TicketSelfUnsnoozed]: ['timer_off'],
         [AuditLogEventType.TicketTagsAdded]: ['local_offer'],
         [AuditLogEventType.TicketTagsRemoved]: ['local_offer'],
         [AuditLogEventType.TicketTeamAssigned]: ['group_add'],
@@ -84,6 +85,9 @@ export class AuditLogEventContainer extends Component<Props> {
         ),
         [AuditLogEventType.TicketSnoozed]: () => (
             <ActionName>Snoozed</ActionName>
+        ),
+        [AuditLogEventType.TicketSelfUnsnoozed]: () => (
+            <ActionName>Snooze delay ended</ActionName>
         ),
         [AuditLogEventType.TicketTagsAdded]: () =>
             this._renderTagsEvent(TAGS_ADDED_KEY),

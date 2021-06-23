@@ -773,6 +773,51 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-reopened
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type ticket-self-unsnoozed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          timer_off
+        </i>
+      </div>
+      <ActionName>
+        Snooze delay ended
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className=""
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 1`] = `
 <div
   className="component"

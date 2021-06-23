@@ -65,6 +65,7 @@ export enum RuleEvent {
     TicketCreated = 'ticket-created',
     TicketUpdated = 'ticket-updated',
     TicketAssigned = 'ticket-assigned',
+    TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
     TicketMessageCreated = 'ticket-message-created',
 }
 

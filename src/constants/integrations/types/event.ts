@@ -9,6 +9,7 @@ export enum TicketAuditLogEvent {
     TicketMessageCreated = 'ticket-message-created',
     TicketReopened = 'ticket-reopened',
     TicketSnoozed = 'ticket-snoozed',
+    TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
     TicketTagsAdded = 'ticket-tags-added',
     TicketTagsRemoved = 'ticket-tags-removed',
     TicketTeamAssigned = 'ticket-team-assigned',

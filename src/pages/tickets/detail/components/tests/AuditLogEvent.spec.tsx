@@ -63,6 +63,7 @@ describe('<AuditLogEvent/>', () => {
                 [AuditLogEventType.TicketMarkedSpam, null],
                 [AuditLogEventType.TicketMerged, null],
                 [AuditLogEventType.TicketSnoozed, null],
+                [AuditLogEventType.TicketSelfUnsnoozed, null],
                 [AuditLogEventType.TicketTagsAdded, {tags_added: [1]}],
                 [AuditLogEventType.TicketTagsRemoved, {tags_removed: [1]}],
                 [AuditLogEventType.TicketTeamAssigned, {assignee_team_id: 1}],
