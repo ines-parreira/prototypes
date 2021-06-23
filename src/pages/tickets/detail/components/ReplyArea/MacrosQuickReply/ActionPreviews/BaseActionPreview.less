@@ -1,0 +1,44 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .actionName {
+            text-transform: uppercase;
+            color: @neutral6;
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+        .propsRowWrapper,
+        .propsColumnWrapper {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -5px 0px 0px -5px;
+        }
+
+        .propsColumnWrapper {
+            flex-direction: column;
+        }
+
+        .propsRowWrapper {
+            flex-direction: row;
+        }
+
+        .propsRowWrapper > *,
+        .propsColumnWrapper > * {
+            margin: 5px 0px 0px 5px;
+            font-size: 12px;
+            overflow-x: hidden;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 8px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid @neutral4;
+        }
+    }
+}

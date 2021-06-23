@@ -1,0 +1,32 @@
+@import '~css/new/colors';
+
+:local .buttonWrapper {
+    &:not(:first-child) {
+        margin-left: 8px;
+    }
+
+    .button {
+        font-size: 12px;
+        padding: 0.2em 0.7em;
+        opacity: 0.7;
+        max-width: 150px;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        text-overflow: ellipsis;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+
+        &.disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+    }
+}

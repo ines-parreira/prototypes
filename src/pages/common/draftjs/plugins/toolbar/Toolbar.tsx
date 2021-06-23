@@ -16,6 +16,7 @@ type Props = {
     displayedActions?: ActionName[]
     linkAction: ReactNode
     imageAction: ReactNode
+    quickReply: ReactNode
 } & ActionInjectedProps
 
 export default class Toolbar extends Component<Props, State> {
@@ -83,7 +84,7 @@ export default class Toolbar extends Component<Props, State> {
         Toolbar.isDisplayedAction(name, this.props.displayedActions)
 
     render() {
-        const {buttons, getEditorState, setEditorState} = this.props
+        const {buttons, getEditorState, setEditorState, quickReply} = this.props
         const actionsProps = {getEditorState, setEditorState}
 
         return (
@@ -95,28 +96,34 @@ export default class Toolbar extends Component<Props, State> {
                 onDragOver={this._onDragOver}
                 onDragLeave={this._hideDragHover}
             >
-                <div className={css.actions}>
-                    {this._isDisplayedAction(ActionName.Bold) && (
-                        <Bold {...actionsProps} />
-                    )}
-                    {this._isDisplayedAction(ActionName.Italic) && (
-                        <Italic {...actionsProps} />
-                    )}
-                    {this._isDisplayedAction(ActionName.Underline) && (
-                        <Underline {...actionsProps} />
-                    )}
-                    {this._isDisplayedAction(ActionName.Link) &&
-                        this.props.linkAction}
-                    {this._isDisplayedAction(ActionName.Image) &&
-                        this.props.imageAction}
-                    {this._isDisplayedAction(ActionName.Emoji) && (
-                        <AddEmoji {...actionsProps} />
-                    )}
+                {quickReply && (
+                    <div className={css.quickReply}> {quickReply} </div>
+                )}
+                <div className={css.actionsWrapper}>
+                    <div className={css.actions}>
+                        {this._isDisplayedAction(ActionName.Bold) && (
+                            <Bold {...actionsProps} />
+                        )}
+                        {this._isDisplayedAction(ActionName.Italic) && (
+                            <Italic {...actionsProps} />
+                        )}
+                        {this._isDisplayedAction(ActionName.Underline) && (
+                            <Underline {...actionsProps} />
+                        )}
+                        {this._isDisplayedAction(ActionName.Link) &&
+                            this.props.linkAction}
+                        {this._isDisplayedAction(ActionName.Image) &&
+                            this.props.imageAction}
+                        {this._isDisplayedAction(ActionName.Emoji) && (
+                            <AddEmoji {...actionsProps} />
+                        )}
+                    </div>
+                    {buttons.map(this._renderButton)}
+
+                    <div className={css.hoverOverlay}>
+                        Add files as attachments
+                    </div>
                 </div>
-
-                {buttons.map(this._renderButton)}
-
-                <div className={css.hoverOverlay}>Add files as attachments</div>
             </div>
         )
     }

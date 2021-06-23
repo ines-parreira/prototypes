@@ -18,6 +18,7 @@ export type fetchMacrosParamsTypes = {
     currentPage?: number
     ticketId?: number
     messageId?: number
+    perPage?: number
     _fallbackOrderBy?: string
 }
 
@@ -40,6 +41,7 @@ export const fetchMacros = (
         order_dir?: string
         ticket_id?: number
         message_id?: number
+        per_page?: number
         _fallback_order_by?: string
     } = {}
     if (filters['page']) {
@@ -50,6 +52,9 @@ export const fetchMacros = (
     } else if (orderBy) {
         params.order_by = orderBy
         params.order_dir = orderDir
+    }
+    if (filters['perPage']) {
+        params.per_page = filters['perPage']
     }
 
     if (orderBy === 'relevance') {

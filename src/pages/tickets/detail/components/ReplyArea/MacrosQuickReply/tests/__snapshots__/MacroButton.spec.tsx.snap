@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacroButton /> should open the popover on hover 1`] = `
+<div>
+  <div
+    class="fade"
+  >
+    <div
+      class="popover show previewPopover bs-popover-auto"
+      style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+    >
+      <div
+        class="popover-inner"
+        role="tooltip"
+      >
+        <div
+          class="popoverBody popover-body"
+          style="max-height: fit-content; max-width: 0;"
+        >
+          <div
+            class="popoverText"
+            style="min-width: 0;"
+          >
+            <div
+              class="component"
+            >
+              <div
+                class="macroData"
+              >
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="InputField form-group"
+                      color=""
+                    >
+                      <div
+                        class=""
+                      >
+                        <div
+                          class="rich-textarea-wrapper display-only"
+                        >
+                          <div
+                            class="editor-wrapper"
+                            style="padding-bottom: 26px;"
+                          >
+                            <div
+                              class="DraftEditor-root"
+                            >
+                              <div
+                                class="DraftEditor-editorContainer"
+                              >
+                                <div
+                                  aria-describedby="placeholder-42"
+                                  class="public-DraftEditor-content"
+                                  contenteditable="false"
+                                  spellcheck="false"
+                                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                                >
+                                  <div
+                                    data-contents="true"
+                                  >
+                                    <div
+                                      class=""
+                                      data-block="true"
+                                      data-editor="42"
+                                      data-offset-key="42-0-0"
+                                    >
+                                      <div
+                                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                        data-offset-key="42-0-0"
+                                      >
+                                        <span
+                                          data-offset-key="42-0-0"
+                                        >
+                                          <span
+                                            data-text="true"
+                                          >
+                                            Thanks for placing an order with our company
+                                          </span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="editor-toolbar page"
+                          >
+                            <div
+                              class="actionsWrapper"
+                            >
+                              <div
+                                class="actions"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Bold"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    format_bold
+                                  </i>
+                                </button>
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Italic"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    format_italic
+                                  </i>
+                                </button>
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Underline"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    format_underline
+                                  </i>
+                                </button>
+                                <span
+                                  class="popoverWrapper"
+                                >
+                                  <button
+                                    class="button btn btn-secondary btn-transparent"
+                                    title="Insert link"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons"
+                                    >
+                                      link
+                                    </i>
+                                  </button>
+                                  <div
+                                    class="popover hidden"
+                                  />
+                                </span>
+                                <span
+                                  class="popoverWrapper"
+                                >
+                                  <button
+                                    class="button btn btn-secondary btn-transparent"
+                                    title="Insert image"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons"
+                                    >
+                                      insert_photo
+                                    </i>
+                                  </button>
+                                  <div
+                                    class="popover hidden"
+                                  />
+                                </span>
+                                <span
+                                  class="popoverWrapper"
+                                >
+                                  <button
+                                    class="button btn btn-secondary btn-transparent"
+                                    title="Insert emoji"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="material-icons"
+                                    >
+                                      insert_emoticon
+                                    </i>
+                                  </button>
+                                  <div
+                                    class="p-0 d-flex popover hidden"
+                                  />
+                                </span>
+                              </div>
+                              <div
+                                class="hoverOverlay"
+                              >
+                                Add files as attachments
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span
+        class="arrow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<MacroButton /> should render the button 1`] = `
+<span
+  class="buttonWrapper"
+>
+  <button
+    class="button btn btn-secondary btn-sm btn btn-secondary"
+    id="macro-quick-reply-1"
+    type="button"
+  >
+    mock macro
+  </button>
+</span>
+`;

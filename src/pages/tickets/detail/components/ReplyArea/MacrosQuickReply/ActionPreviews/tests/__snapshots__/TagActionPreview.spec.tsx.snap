@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TagPreviewContainer/> should render tags 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    Add tags
+  </div>
+  <div
+    class="propsRowWrapper"
+  >
+    <span
+      class="tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      refund
+    </span>
+    <span
+      class="tag badge badge-secondary"
+      style="color: rgb(128, 136, 214);"
+    >
+      billing
+    </span>
+    <span
+      class="tag badge badge-secondary"
+      style="color: rgb(222, 222, 222);"
+    >
+      refund accepted
+    </span>
+  </div>
+</div>
+`;

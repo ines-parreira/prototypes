@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="info"
+  >
+    <i
+      class="material-icons mr-2"
+      id="macro-suggestion-info"
+    >
+      info_outline
+    </i>
+    Suggested macros
+  </div>
+  <div
+    class="macros"
+  >
+    <span
+      class="buttonWrapper"
+    >
+      <button
+        class="button btn btn-secondary btn-sm btn btn-secondary"
+        id="macro-quick-reply-0"
+        type="button"
+      >
+        macro-0
+      </button>
+    </span>
+    <span
+      class="buttonWrapper"
+    >
+      <button
+        class="button btn btn-secondary btn-sm btn btn-secondary"
+        id="macro-quick-reply-1"
+        type="button"
+      >
+        macro-1
+      </button>
+    </span>
+    <span
+      class="buttonWrapper"
+    >
+      <button
+        class="button btn btn-secondary btn-sm btn btn-secondary"
+        id="macro-quick-reply-2"
+        type="button"
+      >
+        macro-2
+      </button>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<MacrosQuickReply /> should send an event to segment when applying a macro 1`] = `
+Array [
+  Array [
+    "macros-quick-reply-sent",
+    Object {
+      "account_domain": "acme",
+      "macro_id": 0,
+      "macro_rank": 1,
+      "ticket_id": 152,
+      "user_id": 2,
+    },
+  ],
+  Array [
+    "macros-quick-reply-sent",
+    Object {
+      "account_domain": "acme",
+      "macro_id": 1,
+      "macro_rank": 2,
+      "ticket_id": 152,
+      "user_id": 2,
+    },
+  ],
+  Array [
+    "macros-quick-reply-sent",
+    Object {
+      "account_domain": "acme",
+      "macro_id": 2,
+      "macro_rank": 3,
+      "ticket_id": 152,
+      "user_id": 2,
+    },
+  ],
+]
+`;
+
+exports[`<MacrosQuickReply /> should send an event to segment when hovering over a macro 1`] = `
+Array [
+  Array [
+    "macros-quick-reply-get-details",
+    Object {
+      "account_domain": "acme",
+      "macroId": 0,
+      "macroRank": 1,
+      "ticket_id": 152,
+      "user_id": 2,
+    },
+  ],
+]
+`;
+
+exports[`<MacrosQuickReply /> should send an event to segment when hovering the info icon 1`] = `
+Array [
+  Array [
+    "macros-quick-reply-tooltip",
+    Object {
+      "account_domain": "acme",
+      "ticket_id": 152,
+      "user_id": 2,
+    },
+  ],
+]
+`;
+
+exports[`<MacrosQuickReply /> should show the tooltip when hovering on the icon 1`] = `
+<div
+  class="tooltip"
+>
+  Macros are suggested based on the conversation content. Use macros to save time answering tickets.
+</div>
+`;

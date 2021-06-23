@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SimpleActionPreview/> should render add attachmeents action 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    Add attachments
+  </div>
+  <div
+    class="propsColumnWrapper"
+  >
+    <span
+      class="attachments badge badge-secondary"
+    >
+      <span
+        class="material-icons mr-2"
+      >
+        photo_library
+      </span>
+      <span>
+        Image file name
+      </span>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<SimpleActionPreview/> should render set status action 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    Set status
+  </div>
+  <div
+    class="propsColumnWrapper"
+  >
+    <span
+      class="text-center badge badge-primary badge-pill"
+    >
+      open
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<SimpleActionPreview/> should render set subject action 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    Set subject
+  </div>
+  <div
+    class="propsColumnWrapper"
+  >
+    <div
+      class="setSubject"
+    >
+      Test Subject
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SimpleActionPreview/> should render snooze action 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    Snooze for
+  </div>
+  <div
+    class="propsColumnWrapper"
+  >
+    <span
+      class="text-center badge badge-secondary badge-pill"
+    >
+      1 day(s)
+    </span>
+  </div>
+</div>
+`;

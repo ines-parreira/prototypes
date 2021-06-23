@@ -492,82 +492,86 @@ exports[`CampaignDetail component should display default value when it's a new c
                           class="editor-toolbar page"
                         >
                           <div
-                            class="actions"
+                            class="actionsWrapper"
                           >
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Bold"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_bold
-                              </i>
-                            </button>
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Italic"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_italic
-                              </i>
-                            </button>
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Underline"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_underline
-                              </i>
-                            </button>
-                            <span
-                              class="popoverWrapper"
+                            <div
+                              class="actions"
                             >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert image"
+                                title="Bold"
                                 type="button"
                               >
                                 <i
                                   class="material-icons"
                                 >
-                                  insert_photo
+                                  format_bold
                                 </i>
                               </button>
-                              <div
-                                class="popover hidden"
-                              />
-                            </span>
-                            <span
-                              class="popoverWrapper"
-                            >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert emoji"
+                                title="Italic"
                                 type="button"
                               >
                                 <i
                                   class="material-icons"
                                 >
-                                  insert_emoticon
+                                  format_italic
                                 </i>
                               </button>
-                              <div
-                                class="p-0 d-flex popover hidden"
-                              />
-                            </span>
-                          </div>
-                          <div
-                            class="hoverOverlay"
-                          >
-                            Add files as attachments
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Underline"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  format_underline
+                                </i>
+                              </button>
+                              <span
+                                class="popoverWrapper"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Insert image"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    insert_photo
+                                  </i>
+                                </button>
+                                <div
+                                  class="popover hidden"
+                                />
+                              </span>
+                              <span
+                                class="popoverWrapper"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Insert emoji"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    insert_emoticon
+                                  </i>
+                                </button>
+                                <div
+                                  class="p-0 d-flex popover hidden"
+                                />
+                              </span>
+                            </div>
+                            <div
+                              class="hoverOverlay"
+                            >
+                              Add files as attachments
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1239,82 +1243,86 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           class="editor-toolbar page"
                         >
                           <div
-                            class="actions"
+                            class="actionsWrapper"
                           >
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Bold"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_bold
-                              </i>
-                            </button>
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Italic"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_italic
-                              </i>
-                            </button>
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Underline"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_underline
-                              </i>
-                            </button>
-                            <span
-                              class="popoverWrapper"
+                            <div
+                              class="actions"
                             >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert image"
+                                title="Bold"
                                 type="button"
                               >
                                 <i
                                   class="material-icons"
                                 >
-                                  insert_photo
+                                  format_bold
                                 </i>
                               </button>
-                              <div
-                                class="popover hidden"
-                              />
-                            </span>
-                            <span
-                              class="popoverWrapper"
-                            >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert emoji"
+                                title="Italic"
                                 type="button"
                               >
                                 <i
                                   class="material-icons"
                                 >
-                                  insert_emoticon
+                                  format_italic
                                 </i>
                               </button>
-                              <div
-                                class="p-0 d-flex popover hidden"
-                              />
-                            </span>
-                          </div>
-                          <div
-                            class="hoverOverlay"
-                          >
-                            Add files as attachments
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Underline"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  format_underline
+                                </i>
+                              </button>
+                              <span
+                                class="popoverWrapper"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Insert image"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    insert_photo
+                                  </i>
+                                </button>
+                                <div
+                                  class="popover hidden"
+                                />
+                              </span>
+                              <span
+                                class="popoverWrapper"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Insert emoji"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    insert_emoticon
+                                  </i>
+                                </button>
+                                <div
+                                  class="p-0 d-flex popover hidden"
+                                />
+                              </span>
+                            </div>
+                            <div
+                              class="hoverOverlay"
+                            >
+                              Add files as attachments
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -2008,82 +2016,86 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           class="editor-toolbar page"
                         >
                           <div
-                            class="actions"
+                            class="actionsWrapper"
                           >
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Bold"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_bold
-                              </i>
-                            </button>
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Italic"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_italic
-                              </i>
-                            </button>
-                            <button
-                              class="button btn btn-secondary btn-transparent"
-                              title="Underline"
-                              type="button"
-                            >
-                              <i
-                                class="material-icons"
-                              >
-                                format_underline
-                              </i>
-                            </button>
-                            <span
-                              class="popoverWrapper"
+                            <div
+                              class="actions"
                             >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert image"
+                                title="Bold"
                                 type="button"
                               >
                                 <i
                                   class="material-icons"
                                 >
-                                  insert_photo
+                                  format_bold
                                 </i>
                               </button>
-                              <div
-                                class="popover hidden"
-                              />
-                            </span>
-                            <span
-                              class="popoverWrapper"
-                            >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert emoji"
+                                title="Italic"
                                 type="button"
                               >
                                 <i
                                   class="material-icons"
                                 >
-                                  insert_emoticon
+                                  format_italic
                                 </i>
                               </button>
-                              <div
-                                class="p-0 d-flex popover hidden"
-                              />
-                            </span>
-                          </div>
-                          <div
-                            class="hoverOverlay"
-                          >
-                            Add files as attachments
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Underline"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  format_underline
+                                </i>
+                              </button>
+                              <span
+                                class="popoverWrapper"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Insert image"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    insert_photo
+                                  </i>
+                                </button>
+                                <div
+                                  class="popover hidden"
+                                />
+                              </span>
+                              <span
+                                class="popoverWrapper"
+                              >
+                                <button
+                                  class="button btn btn-secondary btn-transparent"
+                                  title="Insert emoji"
+                                  type="button"
+                                >
+                                  <i
+                                    class="material-icons"
+                                  >
+                                    insert_emoticon
+                                  </i>
+                                </button>
+                                <div
+                                  class="p-0 d-flex popover hidden"
+                                />
+                              </span>
+                            </div>
+                            <div
+                              class="hoverOverlay"
+                            >
+                              Add files as attachments
+                            </div>
                           </div>
                         </div>
                       </div>

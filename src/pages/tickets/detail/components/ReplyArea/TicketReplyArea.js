@@ -64,6 +64,7 @@ type State = {
     selectedMacroId: ?number,
     isInitialMacrosLoading: boolean,
     shouldFocusEditor: boolean,
+    hasShownMacros: boolean,
 }
 
 export class TicketReplyArea extends React.Component<Props, State> {
@@ -83,6 +84,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
             selectedMacroId: null,
             isInitialMacrosLoading: false,
             shouldFocusEditor: false,
+            hasShownMacros: false,
         }
     }
 
@@ -121,6 +123,24 @@ export class TicketReplyArea extends React.Component<Props, State> {
 
     componentWillUnmount() {
         shortcutManager.unbind('TicketDetailContainer')
+    }
+
+    _shouldDisplayQuickReply() {
+        const showQuickReply = this.props.preferences
+            ? this.props.preferences.getIn(
+                  ['data', 'show_macros_suggestions'],
+                  true
+              )
+            : true
+
+        return (
+            this.state.macros.size > 0 &&
+            this.props.newMessage.getIn(['newMessage', 'body_text']).length <
+                3 &&
+            !this.props.ticket.getIn(['state', 'appliedMacro']) &&
+            !this.state.hasShownMacros &&
+            showQuickReply
+        )
     }
 
     _showMacrosDefault = () => {
@@ -246,6 +266,18 @@ export class TicketReplyArea extends React.Component<Props, State> {
                     this._hideMacrosAndFocusEditor()
                 },
             },
+            APPLY_QUICK_MACROS: {
+                action: (e) => {
+                    e.preventDefault()
+                    if (this._shouldDisplayQuickReply()) {
+                        const macros = this.state.macros
+                        const macroIdx = parseInt(e.code.slice(-1)) - 1
+                        if (macros.size > macroIdx) {
+                            this._applyMacro(macros.get(macroIdx))
+                        }
+                    }
+                },
+            },
         })
     }
 
@@ -295,7 +327,8 @@ export class TicketReplyArea extends React.Component<Props, State> {
         }
     }
 
-    _showMacros = () => this.setState({macrosVisible: true})
+    _showMacros = () =>
+        this.setState({macrosVisible: true, hasShownMacros: true})
 
     _hideMacros = () => {
         this.setState({macrosVisible: false})
@@ -413,6 +446,9 @@ export class TicketReplyArea extends React.Component<Props, State> {
                             ])}
                             customers={this.props.customers}
                             richAreaRef={(ref) => (this.richArea = ref)}
+                            macros={this.state.macros}
+                            applyMacro={this._applyMacro}
+                            shouldDisplayQuickReply={this._shouldDisplayQuickReply()}
                         />
                     )}
                 </div>

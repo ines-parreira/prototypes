@@ -208,6 +208,10 @@ const shortcuts: Record<string, KeyMap> = {
                 key: 'mod+shift+enter',
                 description: 'Send message and close the ticket.',
             },
+            APPLY_QUICK_MACROS: {
+                key: ['mod+alt+1', 'mod+alt+2', 'mod+alt+3'],
+                description: 'Apply quick macro',
+            },
         },
     },
     MacroModal: {

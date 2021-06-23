@@ -234,7 +234,10 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         const isTrashed = !!ticket.get('trashed_datetime')
 
         return (
-            <div className={classnames(css.component, className)}>
+            <div
+                className={classnames(css.component, className)}
+                id="TicketHeader"
+            >
                 <div className="d-flex justify-content-between mb-2">
                     <EditableTitle
                         className={classnames('mr-2', css.editableTitle)}

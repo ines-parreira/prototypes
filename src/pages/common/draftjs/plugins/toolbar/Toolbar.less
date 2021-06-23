@@ -20,7 +20,7 @@
 :local .page {
     display: flex;
     width: 100%;
-    flex-direction: row;
+    flex-direction: column;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -44,6 +44,11 @@
             opacity: 0.2;
             cursor: not-allowed;
         }
+    }
+
+    .actionsWrapper {
+        display: flex;
+        flex-direction: row;
     }
 
     .actions {
@@ -78,5 +83,11 @@
         font-weight: 600;
         text-align: center;
         line-height: 1.9;
+    }
+
+    .quickReply {
+        line-height: 24px;
+        margin-bottom: 4px;
+        overflow: hidden;
     }
 }

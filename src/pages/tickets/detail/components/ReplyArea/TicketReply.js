@@ -30,6 +30,9 @@ type Props = {
     richAreaRef: () => void,
     deleteActionOnApplied: typeof deleteActionOnApplied,
     updateActionArgsOnApplied: typeof updateActionArgsOnApplied,
+    macros: Map<any, any>,
+    applyMacro: (macro: Map<any, any>) => void,
+    shouldDisplayQuickReply: boolean,
 }
 export class TicketReplyContainer extends React.Component<Props> {
     _renderAttachments = () => {
@@ -88,6 +91,9 @@ export class TicketReplyContainer extends React.Component<Props> {
             className: passedClassName,
             newMessageType,
             newMessageAttachments,
+            macros,
+            applyMacro,
+            shouldDisplayQuickReply,
         } = this.props
 
         const canReplyResult = canReply(
@@ -109,6 +115,9 @@ export class TicketReplyContainer extends React.Component<Props> {
                     <TicketReplyEditor
                         ticket={ticket}
                         richAreaRef={richAreaRef}
+                        macros={macros}
+                        applyMacro={applyMacro}
+                        shouldDisplayQuickReply={shouldDisplayQuickReply}
                     />
                 )}
                 {this._renderAttachments()}

@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BackActionPreview /> should render both shopify actions and http actions 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="actionName"
+    >
+      shopify actions
+    </div>
+    <div
+      class="propsColumnWrapper"
+    >
+      <span
+        class="integration shopify badge badge-secondary"
+      >
+        <span>
+          <img
+            alt="shopify logo"
+            class="logo mr-2"
+            role="presentation"
+            src="test-file-stub"
+          />
+        </span>
+        <span>
+          Refund last order
+        </span>
+      </span>
+    </div>
+  </div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="actionName"
+    >
+      http actions
+    </div>
+    <div
+      class="propsColumnWrapper"
+    >
+      <span
+        class="integration http badge badge-secondary"
+      >
+        <span>
+          <img
+            alt="http logo"
+            class="logo mr-2"
+            role="presentation"
+            src="test-file-stub"
+          />
+        </span>
+        <span>
+          Refund Last Month
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BackActionPreview /> should render http actions 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    http actions
+  </div>
+  <div
+    class="propsColumnWrapper"
+  >
+    <span
+      class="integration http badge badge-secondary"
+    >
+      <span>
+        <img
+          alt="http logo"
+          class="logo mr-2"
+          role="presentation"
+          src="test-file-stub"
+        />
+      </span>
+      <span>
+        Refund Last Month
+      </span>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<BackActionPreview /> should render shopify actions 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="actionName"
+  >
+    shopify actions
+  </div>
+  <div
+    class="propsColumnWrapper"
+  >
+    <span
+      class="integration shopify badge badge-secondary"
+    >
+      <span>
+        <img
+          alt="shopify logo"
+          class="logo mr-2"
+          role="presentation"
+          src="test-file-stub"
+        />
+      </span>
+      <span>
+        Refund last order
+      </span>
+    </span>
+  </div>
+</div>
+`;

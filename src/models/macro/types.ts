@@ -2,11 +2,11 @@ import {MacroAction} from '../macroAction/types'
 import {MetaSortOptions, OrderDirection} from '../api/types'
 
 export type Macro = MacroDraft & {
-    category: string
+    category: string | null
     created_datetime: string
     deactivated_datetime?: string
     deleted_datetime?: string
-    external_id: string
+    external_id: string | null
     id: number
     updated_datetime: string
     uri: string

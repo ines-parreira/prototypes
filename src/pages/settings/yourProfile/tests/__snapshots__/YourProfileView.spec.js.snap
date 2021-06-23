@@ -2688,6 +2688,13 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           onChange={[Function]}
           type="checkbox"
         />
+        <BooleanField
+          label="Display macros suggestions in message editor"
+          name="show_macros_suggestions"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
       </FormGroup>
       <div>
         <Button

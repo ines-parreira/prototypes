@@ -13,7 +13,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
   newMessageType="email"
   notify={[Function]}
   page={1}
-  preferences={Object {}}
+  preferences={Immutable.Map {}}
   selectMacro={[MockFunction]}
   ticket={Immutable.Map {}}
   totalPages={1}
@@ -55,8 +55,11 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
       className="content"
     >
       <TicketReplyMock
+        applyMacro={[Function]}
         customers={Object {}}
+        macros={Immutable.List []}
         richAreaRef={[Function]}
+        shouldDisplayQuickReply={false}
         ticket={Immutable.Map {}}
       >
         <div>
@@ -86,7 +89,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   newMessageType="internal-note"
   notify={[Function]}
   page={1}
-  preferences={Object {}}
+  preferences={Immutable.Map {}}
   selectMacro={[MockFunction]}
   ticket={Immutable.Map {}}
   totalPages={1}
@@ -176,8 +179,11 @@ exports[`<TicketReplyArea/> should render 1`] = `
     className="content"
   >
     <TicketReplyMock
+      applyMacro={[Function]}
       customers={Object {}}
+      macros={Immutable.List []}
       richAreaRef={[Function]}
+      shouldDisplayQuickReply={false}
       ticket={Immutable.Map {}}
     />
   </div>

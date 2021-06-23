@@ -31,6 +31,8 @@ import {
     canAddAttachments,
 } from '../../../../../business/ticket.ts'
 
+import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply.tsx'
+
 import css from './TicketReplyEditor.less'
 
 // debounce the updating of the redux because it's slow otherwise when we type
@@ -66,6 +68,9 @@ type Props = {
     ticket: Map<*, *>,
     predictionContext: Map<*, *>,
     attachments: List<*>,
+    macros: Map<any, any>,
+    applyMacro: (macro: Map<any, any>) => void,
+    shouldDisplayQuickReply: boolean,
 
     addAttachments: typeof addAttachments,
     notify: ({}) => void,
@@ -302,6 +307,9 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
             richAreaRef,
             notify,
             attachments,
+            macros,
+            applyMacro,
+            shouldDisplayQuickReply,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -367,6 +375,14 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
                     attachments={attachments}
                     buttons={this._getButtons()}
                     displayedActions={displayedActions}
+                    quickReply={
+                        shouldDisplayQuickReply ? (
+                            <MacrosQuickReply
+                                applyMacro={applyMacro}
+                                macros={macros.slice(0, 3)}
+                            />
+                        ) : undefined
+                    }
                     canDropFiles
                     emailExtraEnabled
                     spellCheck

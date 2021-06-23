@@ -49,7 +49,7 @@ const minProps = {
     ticket: fromJS({}),
     currentUser: fromJS({}),
     customers: {},
-    preferences: {},
+    preferences: fromJS({}),
     newMessage: {},
     newMessageType: 'email',
     notify: () => Promise.resolve,

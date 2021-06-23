@@ -358,6 +358,7 @@ export const TicketViewContainer = ({
                     className={classnames('d-print-none', css.newMessageForm)}
                     onSubmit={handleSubmit}
                     ref={newMessageFormRef}
+                    id="ticket-reply-editor"
                 >
                     <ReplyMessageChannel />
 

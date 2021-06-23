@@ -134,7 +134,7 @@ class Preview extends React.Component {
         }
 
         return (
-            <div className={css.macroData}>
+            <div className={classnames(css.macroData, css.addTagWrapper)}>
                 <strong className="text-muted mr-2">Add tags:</strong>
                 {addTagsActions
                     .map((action) =>
@@ -251,42 +251,40 @@ class Preview extends React.Component {
     }
 
     render() {
-        const {macro, className} = this.props
+        const {actions, className} = this.props
 
-        if (!macro || macro.isEmpty()) {
+        if (!actions || !actions.size) {
             return null
         }
 
-        const addTagsActions = macro
-            .get('actions')
-            .filter((action) => action.get('name') === 'addTags')
-        const responseTextAction = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'setResponseText')
-        const setStatusAction = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'setStatus')
-        const snoozeTicketAction = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'snoozeTicket')
-        const setAssigneeAction = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'setAssignee')
-        const setTeamAssigneeAction = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'setTeamAssignee')
-        const setSubjectAction = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'setSubject')
-        const addAttachmentsActions = macro
-            .get('actions')
-            .find((action) => action.get('name') === 'addAttachments')
-        const backActions = macro
-            .get('actions')
-            .filter(
-                (action) =>
-                    getActionTemplate(action.get('name')).execution === 'back'
-            )
+        const addTagsActions = actions.filter(
+            (action) => action.get('name') === 'addTags'
+        )
+        const responseTextAction = actions.find(
+            (action) => action.get('name') === 'setResponseText'
+        )
+        const setStatusAction = actions.find(
+            (action) => action.get('name') === 'setStatus'
+        )
+        const snoozeTicketAction = actions.find(
+            (action) => action.get('name') === 'snoozeTicket'
+        )
+        const setAssigneeAction = actions.find(
+            (action) => action.get('name') === 'setAssignee'
+        )
+        const setTeamAssigneeAction = actions.find(
+            (action) => action.get('name') === 'setTeamAssignee'
+        )
+        const setSubjectAction = actions.find(
+            (action) => action.get('name') === 'setSubject'
+        )
+        const addAttachmentsActions = actions.find(
+            (action) => action.get('name') === 'addAttachments'
+        )
+        const backActions = actions.filter(
+            (action) =>
+                getActionTemplate(action.get('name')).execution === 'back'
+        )
 
         const sortedBackActions = getSortedIntegrationActions(backActions)
 
@@ -311,7 +309,7 @@ class Preview extends React.Component {
 
 Preview.propTypes = {
     displayHTML: PropTypes.bool,
-    macro: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired,
     ticketMessageSourceType: PropTypes.string,
     className: PropTypes.string,
 }

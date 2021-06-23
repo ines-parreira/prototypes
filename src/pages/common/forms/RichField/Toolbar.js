@@ -19,6 +19,7 @@ type Props = {
     onLinkTextChange: (string) => void,
     onLinkOpen: () => void,
     onLinkClose: () => void,
+    quickReply: React.ReactNode,
     pluginMethods?: PluginMethods,
 }
 
@@ -51,6 +52,7 @@ export default function RichFieldToolbar(props: Props) {
             imageAction={
                 <AddImage attachments={props.attachments} {...pluginMethods} />
             }
+            quickReply={props.quickReply}
             {...pluginMethods}
         />
     )

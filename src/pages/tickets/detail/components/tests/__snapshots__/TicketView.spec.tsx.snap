@@ -24,6 +24,7 @@ exports[`<TicketView /> should have the hidden classes 1`] = `
   >
     <form
       class="d-print-none newMessageForm"
+      id="ticket-reply-editor"
     >
       <div>
         ReplyMessageChannel
@@ -66,6 +67,7 @@ exports[`<TicketView /> should not have the hidden classes 1`] = `
   >
     <form
       class="d-print-none newMessageForm"
+      id="ticket-reply-editor"
     >
       <div>
         ReplyMessageChannel

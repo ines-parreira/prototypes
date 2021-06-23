@@ -49,6 +49,7 @@ describe('TicketReplyEditor component', () => {
                 newMessageType={TicketChannel.Email}
                 agents={fromJS([])}
                 notify={jest.fn()}
+                macros={fromJS([])}
             />
         )
         expect(component).toMatchSnapshot()
@@ -75,6 +76,7 @@ describe('TicketReplyEditor component', () => {
                 newMessageType={TicketChannel.InstagramComment}
                 agents={fromJS([])}
                 notify={jest.fn()}
+                macros={fromJS([])}
             />
         )
         expect(component).toMatchSnapshot()
@@ -101,6 +103,7 @@ describe('TicketReplyEditor component', () => {
                 newMessageType={TicketChannel.InstagramMention}
                 agents={fromJS([])}
                 notify={jest.fn()}
+                macros={fromJS([])}
             />
         )
         expect(component).toMatchSnapshot()
@@ -153,6 +156,9 @@ describe('TicketReplyEditor component', () => {
                 setResponseText={(props) => {
                     newMessageText = props.get('contentState').getPlainText()
                 }}
+                macros={fromJS([])}
+                shouldDisplayQuickReply={false}
+                applyMacro={_noop}
             />
         )
 
@@ -216,6 +222,7 @@ describe('TicketReplyEditor component', () => {
                 notify={_noop}
                 setMacrosVisible={_noop}
                 prepareNewMessage={_noop}
+                macros={fromJS([])}
             />
         )
 
@@ -273,6 +280,7 @@ describe('TicketReplyEditor component', () => {
                 setResponseText={(props) => {
                     newEditorState = props.get('contentState')
                 }}
+                macros={fromJS([])}
             />
         )
 

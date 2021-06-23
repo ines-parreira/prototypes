@@ -20,6 +20,8 @@ import {
 import {convertFromHTML} from '../../../../utils/editor'
 import {TicketChannel} from '../../../../business/types/ticket'
 
+import css from './EmailExtraButton.less'
+
 type OwnProps = {
     editorState: EditorState
 }
@@ -69,6 +71,7 @@ export const EmailExtraButtonContainer = ({
     return (
         <Ellipsis
             title="Show trimmed content"
+            className={css.ellipsis}
             onClick={() => {
                 addEmailExtra({
                     contentState: editorState.getCurrentContent(),

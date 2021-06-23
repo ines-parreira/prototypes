@@ -1,6 +1,10 @@
 import {HttpMethod} from '../models/api/types'
 import {Macro} from '../models/macro/types'
-import {MacroActionType, MacroActionName} from '../models/macroAction/types'
+import {
+    MacroAction,
+    MacroActionType,
+    MacroActionName,
+} from '../models/macroAction/types'
 
 export const macros = ([
     {
@@ -117,3 +121,117 @@ export const macros = ([
         usage: 0,
     },
 ] as unknown) as Macro[]
+
+export const setTextAction: MacroAction = {
+    arguments: {
+        body_html:
+            '<div>Hello {{ticket.customer.name}},</div><div><br></div><div>Thanks for placing an order with our company',
+        body_text:
+            'Hello {{ticket.customer.name}},\n\nThanks for placing an order with our company',
+    },
+    description: 'set text',
+    name: MacroActionName.SetResponseText,
+    title: 'Set Response Text',
+    type: MacroActionType.User,
+}
+
+export const addTagsAction: MacroAction = {
+    arguments: {
+        tags: 'refund,billing,refund accepted',
+    },
+    name: MacroActionName.AddTags,
+    title: 'Add Refund Tag',
+    type: MacroActionType.User,
+}
+
+export const httpAction: MacroAction = {
+    arguments: {
+        url: 'https://httpbin.org/post',
+        method: HttpMethod.Get,
+        params: [
+            {
+                key: 'user_id',
+                value: '{{ticket.customer.id}}',
+                editable: false,
+            },
+        ],
+        headers: [
+            {
+                key: 'X_API_KEY',
+                value: '9298jjdhdjkh393jhajkhdjashuurh',
+                editable: false,
+            },
+            {
+                key: 'content-type',
+                value: 'application/json',
+                editable: false,
+            },
+        ],
+    },
+    description: "Refund the user's last month ",
+    name: MacroActionName.Http,
+    title: 'Refund Last Month',
+    type: MacroActionType.User,
+}
+
+export const shopifyAction: MacroAction = {
+    arguments: {},
+    name: MacroActionName.ShopifyFullRefundLastOrder,
+    title: 'Refund last order',
+    type: MacroActionType.User,
+}
+
+export const snoozeTicketAction: MacroAction = {
+    name: MacroActionName.SnoozeTicket,
+    type: MacroActionType.User,
+    title: 'Snooze for',
+    arguments: {
+        snooze_timedelta: '1d',
+    },
+}
+
+export const setSubjectAction: MacroAction = {
+    name: MacroActionName.SetSubject,
+    type: MacroActionType.User,
+    title: 'Set subject',
+    arguments: {
+        subject: 'Test Subject',
+    },
+}
+
+export const setStatusAction: MacroAction = {
+    name: MacroActionName.SetStatus,
+    type: MacroActionType.User,
+    title: 'Set status',
+    arguments: {
+        status: 'open',
+    },
+}
+
+export const addAttachmentsAction: MacroAction = {
+    name: MacroActionName.AddAttachments,
+    type: MacroActionType.User,
+    title: 'Add attachments',
+    arguments: {
+        attachments: [
+            {
+                url: 'http://httpbin.org',
+                name: 'Image file name',
+                size: 4019,
+                content_type: 'image/png',
+            },
+        ],
+    },
+}
+
+export const macroFixture = {
+    category: null,
+    usage: 0,
+    name: 'mock macro',
+    uri: '/api/macros/1/',
+    external_id: null,
+    created_datetime: '2021-05-04T13:33:25.314850+00:00',
+    id: 1,
+    actions: [],
+    updated_datetime: '2021-05-07T12:23:40.369422+00:00',
+}

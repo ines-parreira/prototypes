@@ -253,7 +253,7 @@ export class TicketMacrosContainer extends React.Component<Props, State> {
 
                         <Preview
                             ticketMessageSourceType={newMessageType}
-                            macro={currentMacro}
+                            actions={currentMacro.get('actions')}
                             className={css.preview}
                         />
                     </div>

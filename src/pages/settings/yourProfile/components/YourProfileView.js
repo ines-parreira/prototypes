@@ -347,6 +347,23 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     })
                                 }
                             />
+                            <BooleanField
+                                name="show_macros_suggestions"
+                                type="checkbox"
+                                label="Display macros suggestions in message editor"
+                                value={this.state.preferences.get(
+                                    'show_macros_suggestions',
+                                    true
+                                )}
+                                onChange={(value) =>
+                                    this.setState({
+                                        preferences: this.state.preferences.set(
+                                            'show_macros_suggestions',
+                                            value
+                                        ),
+                                    })
+                                }
+                            />
                         </FormGroup>
 
                         <div>

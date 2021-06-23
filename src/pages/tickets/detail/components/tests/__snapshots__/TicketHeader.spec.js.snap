@@ -3,6 +3,7 @@
 exports[`<TicketHeader /> should render an unread ticket without the "Mark as unread" action 1`] = `
 <div
   className="component"
+  id="TicketHeader"
 >
   <div
     className="d-flex justify-content-between mb-2"
@@ -226,6 +227,7 @@ exports[`<TicketHeader /> should render an unread ticket without the "Mark as un
 exports[`<TicketHeader /> should render existing ticket 1`] = `
 <div
   className="component"
+  id="TicketHeader"
 >
   <div
     className="d-flex justify-content-between mb-2"
@@ -461,6 +463,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
 exports[`<TicketHeader /> should render new ticket 1`] = `
 <div
   className="component"
+  id="TicketHeader"
 >
   <div
     className="d-flex justify-content-between mb-2"
@@ -527,6 +530,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
 exports[`<TicketHeader /> should render spam ticket 1`] = `
 <div
   className="component"
+  id="TicketHeader"
 >
   <div
     className="d-flex justify-content-between mb-2"
@@ -763,6 +767,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
 exports[`<TicketHeader /> should render trashed ticket 1`] = `
 <div
   className="component"
+  id="TicketHeader"
 >
   <div
     className="d-flex justify-content-between mb-2"

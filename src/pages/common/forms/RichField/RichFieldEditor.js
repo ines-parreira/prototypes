@@ -68,6 +68,7 @@ export type Props = {
     tabIndex?: string,
     readOnly?: boolean,
     spellCheck?: boolean,
+    quickReply?: Node,
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -313,7 +314,11 @@ export class RichFieldEditor extends InputField<Props, State> {
                     className={classnames('editor-wrapper', {
                         drop: this.state.isDragging,
                     })}
-                    style={{paddingBottom: '26px'}}
+                    style={
+                        this.props.quickReply
+                            ? {marginBottom: '86px', paddingBottom: '26px'}
+                            : {paddingBottom: '26px'}
+                    }
                     onClick={onFocus}
                     onDragOver={this._onDragOver}
                     onDragLeave={this._onDragLeave}

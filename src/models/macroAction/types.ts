@@ -1,4 +1,6 @@
 import {HttpMethod} from '../api/types'
+import type {User} from '../../config/types/user'
+import type {Team} from '../../state/teams/types'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
@@ -39,6 +41,11 @@ export type MacroAction = {
         headers?: Record<string, unknown>[]
         url?: string
         params?: Record<string, unknown>[]
+        status?: string
+        assignee_user?: User
+        assignee_team?: Team
+        subject?: string
+        snooze_timedelta?: string
     }
     description?: string
     name: MacroActionName
@@ -48,4 +55,7 @@ export type MacroAction = {
 
 export type MacroActionAttachment = {
     url: string
+    content_type?: string
+    name?: string
+    size?: number
 }

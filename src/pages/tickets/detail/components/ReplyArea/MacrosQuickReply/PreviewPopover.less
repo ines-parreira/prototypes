@@ -1,0 +1,23 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local .previewPopover {
+    padding: 16px;
+    box-shadow: 0px 4px 16px fade(@TEMP_neutral5, 24);
+    pointer-events: none;
+    border-style: none;
+    margin-left: 16px;
+
+    @media @large-desktops {
+        & {
+            max-width: 800px;
+        }
+    }
+
+    .popoverBody {
+        padding: 0px;
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+    }
+}
