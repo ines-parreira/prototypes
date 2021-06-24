@@ -101,7 +101,7 @@ export const PreferencesView = ({
                                 <a
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    href=""
+                                    href="https://docs.gorgias.com/self-service/self-service-portal-statuses"
                                 >
                                     Read more
                                 </a>{' '}
