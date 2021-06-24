@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom'
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {Map} from 'immutable'
 
 import ToggleButton from '../../../common/components/ToggleButton'
@@ -18,42 +18,26 @@ import css from './IntegrationRow.less'
 interface Props {
     integration: Map<any, any>
     configuration?: SelfServiceConfiguration
-    isLoadingConfigurations: boolean
     actions: typeof SelfServiceActions
 }
 
 export const IntegrationRow = ({
     integration,
     configuration,
-    isLoadingConfigurations,
     actions,
 }: Props) => {
-    const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        setLoading(isLoadingConfigurations)
-    }, [isLoadingConfigurations])
-
-    useEffect(() => {
-        setLoading(false)
-    }, [configuration])
-
     const shopName: string = integration.getIn(['meta', 'shop_name'])
     const integrationType: ShopType = integration.get('type')
 
     const _onChange = (value: boolean) => {
-        setLoading(true)
-
         const deactivated_datetime = value ? null : new Date().toISOString()
 
         const baseConfiguration =
             configuration || generateConfiguration(0, integrationType, shopName)
 
-        ;((actions.updateSelfServiceConfigurations({
+        actions.updateSelfServiceConfigurations({
             ...baseConfiguration,
             deactivated_datetime,
-        }) as any) as Promise<any>).finally(() => {
-            setLoading(false)
         })
 
         return null
@@ -82,11 +66,7 @@ export const IntegrationRow = ({
                 </Link>
             </td>
             <td className="smallest align-middle">
-                <ToggleButton
-                    value={enabled}
-                    loading={loading}
-                    onChange={_onChange}
-                />
+                <ToggleButton value={enabled} onChange={_onChange} />
             </td>
             <td className="smallest align-middle">
                 <ForwardIcon

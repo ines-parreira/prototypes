@@ -47,8 +47,8 @@ const _findConfiguration = (
 export const SelfServiceView = ({
     shopifyIntegrations,
     selfServiceConfigurations,
-    isLoadingConfigurations,
     actions,
+    isLoadingConfigurations,
 }: Props) => {
     useEffect(() => {
         actions.fetchSelfServiceConfigurations()
@@ -107,33 +107,33 @@ export const SelfServiceView = ({
                                         className={`table-hover table-integrations ${css.selfServiceIntegrationsTable}`}
                                     >
                                         <tbody>
-                                            {shopifyIntegrations
-                                                .valueSeq()
-                                                .map(
-                                                    (
-                                                        integration: Map<
-                                                            any,
-                                                            any
-                                                        >
-                                                    ) => (
-                                                        <IntegrationRow
-                                                            key={integration.get(
-                                                                'id'
-                                                            )}
-                                                            integration={
-                                                                integration
-                                                            }
-                                                            configuration={_findConfiguration(
-                                                                selfServiceConfigurations,
-                                                                integration
-                                                            )}
-                                                            isLoadingConfigurations={
-                                                                isLoadingConfigurations
-                                                            }
-                                                            actions={actions}
-                                                        />
-                                                    )
-                                                )}
+                                            {!isLoadingConfigurations &&
+                                                shopifyIntegrations
+                                                    .valueSeq()
+                                                    .map(
+                                                        (
+                                                            integration: Map<
+                                                                any,
+                                                                any
+                                                            >
+                                                        ) => (
+                                                            <IntegrationRow
+                                                                key={integration.get(
+                                                                    'id'
+                                                                )}
+                                                                integration={
+                                                                    integration
+                                                                }
+                                                                configuration={_findConfiguration(
+                                                                    selfServiceConfigurations,
+                                                                    integration
+                                                                )}
+                                                                actions={
+                                                                    actions
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
                                         </tbody>
                                     </Table>
                                 </>
