@@ -310,9 +310,10 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
                         'ticket.customer.integrations.shopify.last_order.shipping_address.country',
                 },
                 {
-                    label: 'State',
-                    text: 'destination state of last order',
-                    value: 'message.source.from.address',
+                    label: 'Province',
+                    text: 'destination province of last order',
+                    value:
+                        'ticket.customer.integrations.shopify.last_order.shipping_address.province',
                 },
             ],
         },
@@ -450,7 +451,7 @@ export const IDENTIFIER_SUBCATEGORY_VALUES = Object.freeze({
     RECEIVER: 'Receiver',
     SENDER: 'Sender',
     SOURCE: 'Source',
-    LAST_FULFILLMENT: 'Last Fulfillement',
+    LAST_FULFILLMENT: 'Last Fulfillment',
     SHIPPING_ADDRESS: 'Shipping Address',
 })
 
@@ -485,7 +486,7 @@ export const IDENTIFIER_VARIABLE_NAMES = Object.freeze({
     TAGS: 'tags',
     TOTAL_SPENT: 'total spent',
     FINANCIAL_STATUS: 'financial status',
-    FULFILLEMENT_STATUS: 'fulfillment status',
+    FULFILLMENT_STATUS: 'fulfillment status',
     SHIPMENT_STATUS: 'shipment status',
     TRACKING_NUMBER: 'tracking number',
     COUNTRY: 'country',
@@ -496,5 +497,5 @@ export const IDENTIFIER_VARIABLE_NAMES = Object.freeze({
     LAST_MESSAGE_DATA: 'last message date',
     LAST_RECEIVED_MESSAGE_DATA: 'last received message date',
     SPAM: 'spam',
-    SUBJET: 'subject',
+    SUBJECT: 'subject',
 })

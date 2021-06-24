@@ -325,7 +325,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
         <div
           class="subcategoryLabel"
         >
-          Last Fulfillement
+          Last Fulfillment
         </div>
         <button
           class="option subOption dropdown-item"
@@ -378,7 +378,7 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
           tabindex="0"
           type="button"
         >
-          State
+          Province
         </button>
       </div>
     </div>

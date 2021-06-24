@@ -30,7 +30,7 @@ export enum IdentifierSubCategoryValue {
     Receiver = 'Receiver',
     Sender = 'Sender',
     Source = 'Source',
-    LastFulfillment = 'Last Fulfillement',
+    LastFulfillment = 'Last Fulfillment',
     ShippingAddress = 'Shipping Address',
 }
 
@@ -64,7 +64,7 @@ export enum IdentifierVariableName {
     Tags = 'tags',
     TotalSpent = 'total spent',
     FinancialStatus = 'financial status',
-    FulfillementStatus = 'fulfillment status',
+    FulfillmentStatus = 'fulfillment status',
     ShipmentStatus = 'shipment status',
     TrackingNumber = 'tracking number',
     Country = 'country',
@@ -75,7 +75,7 @@ export enum IdentifierVariableName {
     LastMessageData = 'last message date',
     LastReceivedMessageData = 'last received message date',
     Spam = 'spam',
-    Subjet = 'subject',
+    Subject = 'subject',
 }
 
 export type RuleObject = {
