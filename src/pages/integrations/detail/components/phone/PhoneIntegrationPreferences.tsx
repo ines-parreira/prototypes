@@ -140,7 +140,9 @@ export default function PhoneIntegrationPreferences({
         setRecordOutboundCalls(recordOutboundCalls)
 
         setIsInitialized(true)
+    }, [integration, isInitialized])
 
+    useEffect(() => {
         const clipboard = new Clipboard('.copy-phone-number-button')
 
         clipboard.on('success', () => {
@@ -154,14 +156,7 @@ export default function PhoneIntegrationPreferences({
         return () => {
             clipboard.destroy()
         }
-    }, [
-        integration,
-        isInitialized,
-        setTitle,
-        setEmoji,
-        setIsPhoneNumberCopied,
-        setIsInitialized,
-    ])
+    }, [])
 
     return (
         <div className="full-width">
