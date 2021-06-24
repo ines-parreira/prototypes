@@ -41,7 +41,7 @@ exports[`<SimpleActionPreview/> should render set status action 1`] = `
     class="propsColumnWrapper"
   >
     <span
-      class="text-center badge badge-primary badge-pill"
+      class="smallTag badge badge-primary badge-pill"
     >
       open
     </span>
@@ -83,7 +83,7 @@ exports[`<SimpleActionPreview/> should render snooze action 1`] = `
     class="propsColumnWrapper"
   >
     <span
-      class="text-center badge badge-secondary badge-pill"
+      class="text-center smallTag badge badge-secondary badge-pill"
     >
       1 day(s)
     </span>

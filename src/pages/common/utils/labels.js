@@ -221,8 +221,12 @@ TagLabel.displayName = 'TagLabel'
  */
 type TimedeltaLabelParamType = {
     duration: string,
+    className?: string,
 }
-export const TimedeltaLabel = ({duration}: TimedeltaLabelParamType) => {
+export const TimedeltaLabel = ({
+    duration,
+    className,
+}: TimedeltaLabelParamType) => {
     const durationMoment = parseTimedelta(duration)
     const durationArray = []
     durationMoment.days()
@@ -236,7 +240,11 @@ export const TimedeltaLabel = ({duration}: TimedeltaLabelParamType) => {
         : null
 
     return (
-        <Badge className="text-center" color={'secondary'} pill>
+        <Badge
+            className={classnames('text-center', className)}
+            color={'secondary'}
+            pill
+        >
             {durationArray.join(',')}
         </Badge>
     )
@@ -246,6 +254,7 @@ export const TimedeltaLabel = ({duration}: TimedeltaLabelParamType) => {
  */
 type StatusLabelParam = {
     status: string,
+    className?: string,
 }
 export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
     let color = 'info'

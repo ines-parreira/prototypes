@@ -22,10 +22,18 @@ export const SimpleActionPreview = ({action}: Props) => {
         const args = action.arguments
         switch (action.name) {
             case MacroActionName.SetStatus:
-                return <Label.StatusLabel status={args.status!} />
+                return (
+                    <Label.StatusLabel
+                        status={args.status!}
+                        className={css.smallTag}
+                    />
+                )
             case MacroActionName.SnoozeTicket:
                 return (
-                    <Label.TimedeltaLabel duration={args.snooze_timedelta!} />
+                    <Label.TimedeltaLabel
+                        duration={args.snooze_timedelta!}
+                        className={css.smallTag}
+                    />
                 )
             case MacroActionName.SetSubject:
                 return <div className={css.setSubject}>{args.subject}</div>
