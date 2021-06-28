@@ -6,11 +6,13 @@ import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
 import {EditorState} from 'draft-js'
+import {Input} from 'reactstrap'
 
-import DatetimePicker from '../../../common/forms/DatetimePicker.js'
+import DatePicker from '../../../common/forms/DatePicker'
 import InputField from '../../forms/InputField.js'
 
 import {humanizeString} from '../../../../utils'
+import {stringToDatetime} from '../../../../utils/date'
 import {convertToHTML, getPlainText} from '../../../../utils/editor'
 import MultiSelectField from '../../forms/MultiSelectField.js'
 import {
@@ -227,13 +229,28 @@ export class Widget extends Component<Props, State> {
         )
     }
 
-    _datetimeSelect = (datetime: any) => {
+    _datetimeSelect = (datetime: string) => {
+        const date = datetime ? stringToDatetime(datetime) : null
         return (
             <div className="widget d-inline-block">
-                <DatetimePicker
-                    datetime={datetime}
-                    onChange={this._handleChange}
-                />
+                {date ? (
+                    <DatePicker
+                        initialSettings={{
+                            endDate: date,
+                            startDate: date,
+                        }}
+                        onSubmit={(date) => {
+                            this._handleChange(date.toISOString())
+                        }}
+                    >
+                        <div>
+                            <Input
+                                value={date ? date.format('L LT') : ''}
+                                placeholder="Choose a date..."
+                            />
+                        </div>
+                    </DatePicker>
+                ) : null}
             </div>
         )
     }

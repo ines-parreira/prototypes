@@ -22,17 +22,27 @@ type Props = {
     isOpen?: boolean
     rangesLabel?: string
     toggle?: () => void
-    unavailableDateMessage: string
+    unavailableDateMessage?: string
 }
 
 export const DatePicker = ({
     children,
     onSubmit,
-    initialSettings,
+    initialSettings: {
+        alwaysShowCalendars = true,
+        applyButtonClasses = 'btn-success mr-2',
+        cancelButtonClasses = 'btn-secondary',
+        opens = 'left',
+        showCustomRangeLabel = false,
+        singleDatePicker = true,
+        timePicker = true,
+        startDate,
+        ...otherInitialSettings
+    } = {},
     isOpen,
     rangesLabel,
     toggle,
-    unavailableDateMessage,
+    unavailableDateMessage = '',
 }: Props & Partial<DateRangeProps>) => {
     const datePickerRef = useRef<DateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -42,10 +52,10 @@ export const DatePicker = ({
     const isOpenRef = useRef(isOpen)
     const timezone = useMemo(
         () =>
-            moment.isMoment(initialSettings?.startDate)
-                ? initialSettings?.startDate.tz() || moment().tz()
+            moment.isMoment(startDate)
+                ? startDate.tz() || moment().tz()
                 : moment().tz(),
-        [initialSettings]
+        [startDate]
     )
 
     useEffect(() => {
@@ -164,7 +174,17 @@ export const DatePicker = ({
                         onSubmit(picker.startDate, picker.endDate)
                     }
                 }}
-                initialSettings={initialSettings}
+                initialSettings={{
+                    alwaysShowCalendars,
+                    applyButtonClasses,
+                    cancelButtonClasses,
+                    opens,
+                    showCustomRangeLabel,
+                    singleDatePicker,
+                    timePicker,
+                    startDate,
+                    ...otherInitialSettings,
+                }}
                 onShow={(event, target) => {
                     dateRangerPickerElement.current = target.container?.get(0)
                     dateRangerPickerElement.current.classList.add('displayed')

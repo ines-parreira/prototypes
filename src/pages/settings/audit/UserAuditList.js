@@ -1,13 +1,13 @@
 //@flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {Alert, Button, Container, Table} from 'reactstrap'
+import {Alert, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
-import moment, {type Moment} from 'moment-timezone'
+import moment from 'moment-timezone'
 
 import Loader from '../../common/components/Loader/Loader.tsx'
 import PageHeader from '../../common/components/PageHeader.tsx'
-import DatePicker from '../../common/forms/DatePicker.tsx'
+import PeriodPicker from '../../stats/common/PeriodPicker.tsx'
 import SelectFilter from '../../stats/common/SelectFilter.tsx'
 import Pagination from '../../common/components/Pagination.tsx'
 import {fetchUsersAudit} from '../../../state/usersAudit/actions.ts'
@@ -18,15 +18,12 @@ import {
     getUserAuditPagination,
     getUserAuditUserIdOptions,
 } from '../../../state/usersAudit/selectors.ts'
-import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import {formatDatetime} from '../../../utils.ts'
 import {getMoment} from '../../../utils/date.ts'
 
 import UserAuditRow from './UserAuditRow'
 import {DATETIME_LABEL_FORMAT} from './constants'
 
 type Props = {
-    timezone: string,
     events: Object,
     eventsListMeta: Object,
     fetchUsersAudit: typeof fetchUsersAudit,
@@ -91,11 +88,17 @@ export class UserAuditList extends React.Component<Props, State> {
             })
     }
 
-    _onApplyDatePicker = (startDate: Moment, endDate: Moment) => {
+    _onApplyDatePicker = ({
+        startDatetime,
+        endDatetime,
+    }: {
+        startDatetime: string,
+        endDatetime: string,
+    }) => {
         this.setState(
             {
-                start_datetime: startDate.format(),
-                end_datetime: endDate.format(),
+                start_datetime: startDatetime,
+                end_datetime: endDatetime,
             },
             this._fetchUsersAudit
         )
@@ -114,7 +117,6 @@ export class UserAuditList extends React.Component<Props, State> {
             userIdOptions,
             eventTypeOptions,
             objectTypeOptions,
-            timezone,
         } = this.props
         const {
             isFetching,
@@ -175,16 +177,13 @@ export class UserAuditList extends React.Component<Props, State> {
                                 />
                             ))}
                         </SelectFilter>
-                        <DatePicker
-                            onSubmit={this._onApplyDatePicker}
+                        <PeriodPicker
+                            startDatetime={moment(start_datetime)}
+                            endDatetime={moment(end_datetime)}
                             initialSettings={{
-                                alwaysShowCalendars: true,
-                                applyButtonClasses: 'btn-success mr-2',
-                                cancelButtonClasses: 'btn-secondary',
-                                endDate: moment(end_datetime),
                                 linkedCalendars: false,
-                                minDate: _someDaysAgoStartOfDay(7),
-                                opens: 'left',
+                                maxDate: _endOfToday(),
+                                maxSpan: 7,
                                 ranges: {
                                     Today: [_startOfToday(), _endOfToday()],
                                     'Last 3 days': [
@@ -196,37 +195,18 @@ export class UserAuditList extends React.Component<Props, State> {
                                         _endOfToday(),
                                     ],
                                 },
-                                showCustomRangeLabel: false,
-                                startDate: moment(start_datetime),
                                 timePicker: true,
                             }}
-                            rangesLabel="Shortcuts"
-                            unavailableDateMessage="There is no data available on this date because it’s past 7 days."
-                        >
-                            <div>
-                                <Button type="button" disabled={false}>
-                                    <i className="material-icons mr-2">
-                                        calendar_today
-                                    </i>
-                                    <span>
-                                        {formatDatetime(
-                                            start_datetime,
-                                            timezone,
-                                            DATETIME_LABEL_FORMAT
-                                        )}
-                                        {' - '}
-                                        {formatDatetime(
-                                            end_datetime,
-                                            timezone,
-                                            DATETIME_LABEL_FORMAT
-                                        )}
-                                    </span>
-                                    <i className="material-icons">
-                                        arrow_drop_down
-                                    </i>
-                                </Button>
-                            </div>
-                        </DatePicker>
+                            labelDateFormat={DATETIME_LABEL_FORMAT}
+                            maxDaysSpan={7}
+                            onChange={this._onApplyDatePicker}
+                            formatMaxSpan={(maxSpan) =>
+                                moment.duration({
+                                    days: maxSpan,
+                                    seconds: -1, // counting days start at 0 because for our needs 1 day selected is 23H59m59s
+                                })
+                            }
+                        />
                     </div>
                 </PageHeader>
 
@@ -289,7 +269,6 @@ const connector = connect(
         userIdOptions: getUserAuditUserIdOptions(state),
         objectTypeOptions: getUserAuditObjectTypeOptions(state),
         eventTypeOptions: getUserAuditEventTypeOptions(state),
-        timezone: currentUserSelectors.getTimezone(state),
     }),
     {
         fetchUsersAudit,

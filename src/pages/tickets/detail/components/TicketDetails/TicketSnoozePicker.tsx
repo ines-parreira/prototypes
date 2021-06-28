@@ -41,13 +41,7 @@ const TicketSnoozePicker = ({
                 minDate: moment(),
                 startDate: snoozeDatetime,
                 endDate: snoozeDatetime,
-                singleDatePicker: true,
-                showCustomRangeLabel: false,
                 ranges,
-                opens: 'left',
-                timePicker: true,
-                applyButtonClasses: 'btn-success mr-2',
-                cancelButtonClasses: 'btn-secondary',
             }}
             toggle={toggle}
             rangesLabel="Remind me in"

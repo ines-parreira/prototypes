@@ -60,16 +60,14 @@ exports[`UserAuditList component mounts correctly 1`] = `
           value="macro-created"
         />
       </SelectFilter>
-      <DatePicker
+      <Connect(PeriodPickerContainer)
+        endDatetime={"2018-01-05T08:00:00.000Z"}
+        formatMaxSpan={[Function]}
         initialSettings={
           Object {
-            "alwaysShowCalendars": true,
-            "applyButtonClasses": "btn-success mr-2",
-            "cancelButtonClasses": "btn-secondary",
-            "endDate": "2018-01-05T08:00:00.000Z",
             "linkedCalendars": false,
-            "minDate": "2018-09-24T07:00:00.000Z",
-            "opens": "left",
+            "maxDate": "2018-10-01T06:59:59.999Z",
+            "maxSpan": 7,
             "ranges": Object {
               "Last 3 days": Array [
                 "2018-09-28T07:00:00.000Z",
@@ -84,40 +82,14 @@ exports[`UserAuditList component mounts correctly 1`] = `
                 "2018-10-01T06:59:59.999Z",
               ],
             },
-            "showCustomRangeLabel": false,
-            "startDate": "2017-12-30T08:00:00.000Z",
             "timePicker": true,
           }
         }
-        onSubmit={[Function]}
-        rangesLabel="Shortcuts"
-        unavailableDateMessage="There is no data available on this date because it’s past 7 days."
-      >
-        <div>
-          <Button
-            color="secondary"
-            disabled={false}
-            tag="button"
-            type="button"
-          >
-            <i
-              className="material-icons mr-2"
-            >
-              calendar_today
-            </i>
-            <span>
-              December 30, 2017 12:00 AM
-               - 
-              January 5, 2018 12:00 AM
-            </span>
-            <i
-              className="material-icons"
-            >
-              arrow_drop_down
-            </i>
-          </Button>
-        </div>
-      </DatePicker>
+        labelDateFormat="LLL"
+        maxDaysSpan={7}
+        onChange={[Function]}
+        startDatetime={"2017-12-30T08:00:00.000Z"}
+      />
     </div>
   </PageHeader>
   <Container

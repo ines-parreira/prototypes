@@ -2,9 +2,12 @@ import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Expression, Identifier, Literal} from 'estree'
 import {List, Map, Seq} from 'immutable'
+import moment from 'moment-timezone'
+import {Input} from 'reactstrap'
 
 import {IntegrationsDetailLabel} from '../../../utils/labels.js'
 import {getLanguageDisplayName} from '../../../../../utils'
+import {stringToDatetime} from '../../../../../utils/date'
 
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
 import * as viewsSelectors from '../../../../../state/views/selectors'
@@ -19,7 +22,7 @@ import {timedeltaOperators} from '../../../../../config/rules'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
 import FilterDropdown from '../FilterDropdown'
-import DatetimePicker from '../../../forms/DatetimePicker.js'
+import DatePicker from '../../../forms/DatePicker'
 import TimedeltaPicker from '../../../forms/TimedeltaPicker.js'
 import MultiSelectField from '../../../forms/MultiSelectField.js'
 import FilterMultiSelectField from '../FilterMultiSelectField'
@@ -215,13 +218,27 @@ class Right extends Component<Props, State> {
                 )
             }
 
+            const datetime = displayedValue
+                ? stringToDatetime(displayedValue as string)
+                : moment()
+
             return (
-                <DatetimePicker
-                    datetime={displayedValue as string}
-                    onChange={(value: string) =>
-                        updateFieldFilter(index, value)
-                    }
-                />
+                <DatePicker
+                    initialSettings={{
+                        endDate: datetime!,
+                        startDate: datetime!,
+                    }}
+                    onSubmit={(date) => {
+                        updateFieldFilter(index, date.toISOString())
+                    }}
+                >
+                    <div>
+                        <Input
+                            value={datetime!.format('L LT')}
+                            placeholder="Choose a date..."
+                        />
+                    </div>
+                </DatePicker>
             )
         } else if (field.get('name') === 'tags') {
             if (node.type === 'ArrayExpression') {

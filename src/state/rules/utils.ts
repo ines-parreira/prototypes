@@ -4,6 +4,7 @@ import _isUndefined from 'lodash/isUndefined'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
+import moment from 'moment-timezone'
 
 import {getAST, getFirstExpressionOfAST} from '../../utils'
 import {Schemas} from '../../types'
@@ -13,10 +14,11 @@ import {isTimedelta} from '../../utils/ast'
 import {OBJECT_DEFINITIONS} from './constants.js'
 import {
     CollectionOperator,
+    DatetimeOperator,
     DeprecatedOperator,
-    TimedeltaOperator,
     ObjectExpression,
     ObjectExpressionProperty,
+    TimedeltaOperator,
 } from './types'
 
 /**
@@ -316,6 +318,9 @@ function resolveSecondArg(
     const isTimedeltaCallee = Object.values(TimedeltaOperator).includes(
         callee as any
     )
+    const isDatetimeCallee = Object.values(DatetimeOperator).includes(
+        callee as any
+    )
     const args = (callExpression.getIn(['arguments', 1]) || fromJS({})) as Map<
         any,
         any
@@ -360,6 +365,11 @@ function resolveSecondArg(
         return `[${args.get('raw') as string}]`
     } else if (isTimedeltaCallee && !isTimedelta(curValue)) {
         return `'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}'`
+    } else if (
+        isDatetimeCallee &&
+        !moment(curValue, 'YYYY-MM-DDTHH:mm:ss', true).isValid()
+    ) {
+        return `'${moment().format()}'`
     }
 
     if (firstArgSchema) {

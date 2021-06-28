@@ -50,10 +50,23 @@ exports[`ast Widget should render DatetimeSelect field 1`] = `
 <div
   className="widget d-inline-block"
 >
-  <DatetimePicker
-    datetime="2018-03-28T21:59:32.580209"
-    onChange={[Function]}
-  />
+  <DatePicker
+    initialSettings={
+      Object {
+        "endDate": "2018-03-29T04:59:32.580Z",
+        "startDate": "2018-03-29T04:59:32.580Z",
+      }
+    }
+    onSubmit={[Function]}
+  >
+    <div>
+      <Input
+        placeholder="Choose a date..."
+        type="text"
+        value="03/28/2018 9:59 PM"
+      />
+    </div>
+  </DatePicker>
 </div>
 `;
 

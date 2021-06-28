@@ -1,7 +1,10 @@
 import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react'
 import {connect} from 'react-redux'
 import moment, {Moment} from 'moment-timezone'
-import DateRangePicker, {EventHandler} from 'react-bootstrap-daterangepicker'
+import DateRangePicker, {
+    EventHandler,
+    Props as DateRangeProps,
+} from 'react-bootstrap-daterangepicker'
 import {Button, Tooltip} from 'reactstrap'
 
 import {RootState} from '../../../state/types'
@@ -10,14 +13,18 @@ import {getTimezone} from '../../../state/currentUser/selectors'
 import css from './PeriodPicker.less'
 
 type Props = {
-    isDisabled?: boolean
     endDatetime: Moment
+    formatMaxSpan?: (
+        maxSpan?: moment.MomentInput | moment.Duration
+    ) => moment.Duration
+    isDisabled?: boolean
+    labelDateFormat?: string
     onChange: ({
-        start_datetime,
-        end_datetime,
+        startDatetime,
+        endDatetime,
     }: {
-        start_datetime: string
-        end_datetime: string
+        startDatetime: string
+        endDatetime: string
     }) => void
     startDatetime: Moment
     userTimezone: Maybe<string>
@@ -25,11 +32,14 @@ type Props = {
 
 export const PeriodPickerContainer = ({
     endDatetime,
+    formatMaxSpan,
+    initialSettings,
     isDisabled = false,
+    labelDateFormat = 'MMM DD, YYYY',
     onChange,
     startDatetime,
     userTimezone,
-}: Props) => {
+}: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
     const datePickerRef = useRef<DateRangePicker>(null)
@@ -45,7 +55,6 @@ export const PeriodPickerContainer = ({
         startOfToday().subtract(days - 1, 'days')
     const startOfToday = () => moment().startOf('day')
     const endOfToday = () => moment().endOf('day')
-    const today = moment()
 
     const showDatePicker = () => {
         if (!datePickerRef.current) {
@@ -69,15 +78,15 @@ export const PeriodPickerContainer = ({
     }, [])
 
     const label = useMemo(() => {
-        const start = startDate.format('MMM DD, YYYY')
-        const end = endDate.format('MMM DD, YYYY')
+        const start = startDate.format(labelDateFormat)
+        const end = endDate.format(labelDateFormat)
 
         if (start === end) {
             return start
         }
 
         return `${start} - ${end}`
-    }, [endDate, startDate])
+    }, [endDate, labelDateFormat, startDate])
 
     useEffect(() => {
         setStartDate(startDatetime)
@@ -85,19 +94,15 @@ export const PeriodPickerContainer = ({
     }, [endDatetime, startDatetime])
 
     const handleApply: EventHandler = (event, picker) => {
-        const startDatetime = moment(
-            picker.startDate.startOf('day').format('YYYY-MM-DD HH:mm:ss')
-        )
-        const endDatetime = moment(
-            picker.endDate.endOf('day').format('YYYY-MM-DD HH:mm:ss')
-        )
+        const startDatetime = moment(picker.startDate.format())
+        const endDatetime = moment(picker.endDate.format())
 
         onChange({
-            start_datetime: (userTimezone
+            startDatetime: (userTimezone
                 ? startDatetime.tz(userTimezone)
                 : startDatetime
             ).format(),
-            end_datetime: (userTimezone
+            endDatetime: (userTimezone
                 ? endDatetime.tz(userTimezone)
                 : endDatetime
             ).format(),
@@ -176,13 +181,18 @@ export const PeriodPickerContainer = ({
                             },
                             linkedCalendars: false,
                             opens: 'left',
-                            maxDate: today,
-                            maxSpan: {
-                                days: 89,
-                            },
                             ranges,
                             startDate,
                             showCustomRangeLabel: false,
+                            ...initialSettings,
+                            ...(formatMaxSpan !== undefined && {
+                                maxSpan: formatMaxSpan(
+                                    ...(initialSettings &&
+                                    initialSettings.maxSpan
+                                        ? [initialSettings.maxSpan]
+                                        : [])
+                                ),
+                            }),
                         }}
                         onShow={(event, target) => {
                             dateRangerPickerElement.current = target.container?.get(
@@ -249,7 +259,9 @@ export const PeriodPickerContainer = ({
                         >
                             {tooltipTarget?.classList.contains('future-date')
                                 ? 'There is no data available on this date yet.'
-                                : "You can't select a period longer than 90 days."}
+                                : `You can't select a period longer than ${
+                                      initialSettings?.maxSpan as string
+                                  } days.`}
                         </Tooltip>
                     )}
                 </>
