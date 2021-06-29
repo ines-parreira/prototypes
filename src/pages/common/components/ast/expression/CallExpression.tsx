@@ -7,7 +7,7 @@ import {ObjectExpressionPropertyKey} from '../../../../../state/rules/types'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import Action, {actionsConfig} from '../actions/Action'
 import Hoverable from '../../Hoverable'
-import DeleteBinaryExpression from '../operations/DeleteBinaryExpression.js'
+import DeleteBinaryExpression from '../operations/DeleteBinaryExpression'
 
 import {getSyntaxTreeLeaves} from '../utils.js'
 import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants.js'

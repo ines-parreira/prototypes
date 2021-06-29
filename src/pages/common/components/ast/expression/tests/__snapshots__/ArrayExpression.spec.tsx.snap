@@ -8,7 +8,7 @@ exports[`ast expressions ArrayExpression should display an error because the fie
     actions={Object {}}
     className="LiteralWidget"
     compact={true}
-    leftsiblings={Object {}}
+    leftsiblings={Immutable.List []}
     parent={
       Immutable.List [
         "body",
@@ -19,8 +19,8 @@ exports[`ast expressions ArrayExpression should display an error because the fie
         "elements",
       ]
     }
-    rule={Object {}}
-    schemas={Object {}}
+    rule={Immutable.Map {}}
+    schemas={Immutable.Map {}}
     value={Array []}
   />
   <Errors
@@ -41,7 +41,7 @@ exports[`ast expressions ArrayExpression should render component and not display
     actions={Object {}}
     className="LiteralWidget"
     compact={true}
-    leftsiblings={Object {}}
+    leftsiblings={Immutable.List []}
     parent={
       Immutable.List [
         "body",
@@ -52,8 +52,8 @@ exports[`ast expressions ArrayExpression should render component and not display
         "elements",
       ]
     }
-    rule={Object {}}
-    schemas={Object {}}
+    rule={Immutable.Map {}}
+    schemas={Immutable.Map {}}
     value={
       Array [
         "hello",

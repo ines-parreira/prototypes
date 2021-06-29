@@ -18,10 +18,9 @@ import ActionSelect from './ActionSelect'
 
 type Email = {
     body_text?: Maybe<string>
-    to?: Maybe<string[]>
-    cc?: Maybe<string[]>
-    bcc?: Maybe<string[]>
-    tags?: Maybe<string[]>
+    to?: Maybe<string>
+    cc?: Maybe<string>
+    bcc?: Maybe<string>
 }
 
 export function validateEmailList(
@@ -71,7 +70,7 @@ export function validateSendEmail(values: Email): Array<string> {
     return errors
 }
 
-export function validateTags(values: Email): string | void {
+export function validateTags(values: {tags: Maybe<string>}): string | void {
     if (!values.tags) {
         return 'Tags cannot be empty'
     }

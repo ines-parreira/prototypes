@@ -1,2 +1,2 @@
-import Foldable from './Foldable.js'
+import Foldable from './Foldable.tsx'
 export default Foldable

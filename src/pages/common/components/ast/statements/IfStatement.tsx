@@ -9,7 +9,7 @@ import AddLogicalCondition from '../operations/AddLogicalCondition'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
 import Expression from '../expression/Expression'
 import {computeLeftPadding} from '../utils.js'
-import Foldable from '../Foldable/index.js'
+import Foldable from '../Foldable/Foldable'
 
 import Statement from './Statement'
 

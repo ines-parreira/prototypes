@@ -2,11 +2,12 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import ActionSelect from '../ActionSelect.tsx'
+import ActionSelect from '../ActionSelect'
 
 const commonProps = {
     actions: {
         modifyCodeAST: jest.fn(),
+        getCondition: jest.fn(),
     },
     parent: fromJS(['body', 0, 'expression']),
     value: 'addTags',
@@ -33,7 +34,7 @@ describe('ActionSelect component', () => {
     })
 
     it('should call actions.modifyCodeAST on click', () => {
-        const wrapper = shallow(
+        const wrapper = shallow<ActionSelect>(
             <ActionSelect {...commonProps} rule={nonSystemRule} />
         )
 

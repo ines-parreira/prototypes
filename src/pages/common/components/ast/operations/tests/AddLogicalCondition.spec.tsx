@@ -1,15 +1,16 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
+import _noop from 'lodash/noop'
 
-import {AddLogicalCondition} from '../AddLogicalCondition.tsx'
-import {toJS} from '../../../../../../utils.ts'
+import {AddLogicalCondition} from '../AddLogicalCondition'
+import {toJS} from '../../../../../../utils'
 
 describe('AddLogicalCondition component', () => {
     const commonProps = {
         parent: fromJS(['body', 0, 'test']),
         title: 'bar',
-    }
+    } as ComponentProps<typeof AddLogicalCondition>
 
     it('should render empty condition', () => {
         const rule = fromJS({
@@ -22,15 +23,18 @@ describe('AddLogicalCondition component', () => {
                     },
                 ],
             },
-        })
+        }) as Map<any, any>
 
         const component = shallow(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
+                    modifyCodeAST: _noop,
                     getCondition: (path) =>
-                        rule.getIn(['code_ast'].concat(toJS(path))) ||
-                        fromJS({}),
+                        (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
+                            any,
+                            any
+                        >) || fromJS({}),
                 }}
                 rule={rule}
             />
@@ -50,15 +54,18 @@ describe('AddLogicalCondition component', () => {
                     },
                 ],
             },
-        })
+        }) as Map<any, any>
 
         const component = shallow(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
+                    modifyCodeAST: _noop,
                     getCondition: (path) =>
-                        rule.getIn(['code_ast'].concat(toJS(path))) ||
-                        fromJS({}),
+                        (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
+                            any,
+                            any
+                        >) || fromJS({}),
                 }}
                 rule={rule}
             />
@@ -78,15 +85,18 @@ describe('AddLogicalCondition component', () => {
                     },
                 ],
             },
-        })
+        }) as Map<any, any>
 
         const component = shallow(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
+                    modifyCodeAST: _noop,
                     getCondition: (path) =>
-                        rule.getIn(['code_ast'].concat(toJS(path))) ||
-                        fromJS({}),
+                        (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
+                            any,
+                            any
+                        >) || fromJS({}),
                 }}
                 rule={rule}
             />
@@ -109,15 +119,18 @@ describe('AddLogicalCondition component', () => {
                     },
                 ],
             },
-        })
+        }) as Map<any, any>
 
         const component = shallow(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
+                    modifyCodeAST: _noop,
                     getCondition: (path) =>
-                        rule.getIn(['code_ast'].concat(toJS(path))) ||
-                        fromJS({}),
+                        (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
+                            any,
+                            any
+                        >) || fromJS({}),
                 }}
                 rule={rule}
             />

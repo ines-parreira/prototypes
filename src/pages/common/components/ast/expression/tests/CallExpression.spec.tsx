@@ -2,19 +2,21 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {WrappedCallExpression} from '../CallExpression.tsx'
+import {WrappedCallExpression} from '../CallExpression'
+import {ObjectExpressionPropertyKey} from '../../../../../../state/rules/types'
+import {RuleItemActions} from '../../../../../settings/rules/detail/components/RuleItem/RuleItem'
 
 const commonProps = {
-    rule: {foo: 'rule'},
-    actions: {foo: 'actions'},
+    rule: fromJS({foo: 'rule'}),
+    actions: {} as RuleItemActions,
     arguments: ['a', 1],
-    schemas: {foo: 'schemas'},
+    schemas: fromJS({foo: 'schemas'}),
     depth: 0,
 }
 
 describe('CallExpression component', () => {
     describe('test condition', () => {
-        const callee = {
+        const callee: ObjectExpressionPropertyKey = {
             type: 'Identifier',
             name: 'eq',
         }
@@ -77,7 +79,7 @@ describe('CallExpression component', () => {
     })
 
     describe('Action call', () => {
-        const callee = {
+        const callee: ObjectExpressionPropertyKey = {
             type: 'Identifier',
             name: 'Action',
         }

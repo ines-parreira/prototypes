@@ -2,11 +2,7 @@
 
 exports[`CallExpression component Action call should render 1`] = `
 <Action
-  actions={
-    Object {
-      "foo": "actions",
-    }
-  }
+  actions={Object {}}
   depth={0}
   leftsiblings={
     Immutable.List [
@@ -23,22 +19,18 @@ exports[`CallExpression component Action call should render 1`] = `
     ]
   }
   rule={
-    Object {
+    Immutable.Map {
       "foo": "rule",
     }
   }
   schemas={
-    Object {
+    Immutable.Map {
       "foo": "schemas",
     }
   }
 >
   <ObjectExpression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="ActionWidget"
     leftsiblings={
       Immutable.List [
@@ -56,12 +48,12 @@ exports[`CallExpression component Action call should render 1`] = `
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -73,11 +65,7 @@ exports[`CallExpression component test condition should not render delete widget
 <Fragment>
   <Expression
     0="a"
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -95,22 +83,18 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -132,23 +116,19 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
     type="Identifier"
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     callee={
       Object {
         "name": "eq",
@@ -173,12 +153,12 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -190,11 +170,7 @@ exports[`CallExpression component test condition should not render delete widget
 <Fragment>
   <Expression
     0="a"
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -211,22 +187,18 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -247,23 +219,19 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
     type="Identifier"
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     callee={
       Object {
         "name": "eq",
@@ -287,12 +255,12 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -304,11 +272,7 @@ exports[`CallExpression component test condition should not render delete widget
 <Fragment>
   <Expression
     0="a"
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -325,22 +289,18 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -361,23 +321,19 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
     type="Identifier"
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     callee={
       Object {
         "name": "eq",
@@ -401,12 +357,12 @@ exports[`CallExpression component test condition should not render delete widget
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -418,11 +374,7 @@ exports[`CallExpression component test condition should render delete widget bec
 <Fragment>
   <Expression
     0="a"
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -440,22 +392,18 @@ exports[`CallExpression component test condition should render delete widget bec
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -477,23 +425,19 @@ exports[`CallExpression component test condition should render delete widget bec
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
     type="Identifier"
   />
   <Expression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     callee={
       Object {
         "name": "eq",
@@ -518,22 +462,18 @@ exports[`CallExpression component test condition should render delete widget bec
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
   />
   <DeleteBinaryExpression
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     parent={
       Immutable.List [
         "body",
@@ -543,7 +483,7 @@ exports[`CallExpression component test condition should render delete widget bec
       ]
     }
     rule={
-      Object {
+      Immutable.Map {
         "foo": "rule",
       }
     }

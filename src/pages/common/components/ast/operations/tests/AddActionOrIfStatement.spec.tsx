@@ -1,13 +1,15 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+import {fromJS} from 'immutable'
 
-import {AddActionOrIfStatement} from '../AddActionOrIfStatement.tsx'
+import {AddActionOrIfStatement} from '../AddActionOrIfStatement'
+import {RuleItemActions} from '../../../../../settings/rules/detail/components/RuleItem/RuleItem'
 
 describe('AddActionOrIfStatement component', () => {
     const commonProps = {
-        rule: {},
-        actions: {},
-        parent: [],
+        rule: fromJS({}),
+        actions: {} as RuleItemActions,
+        parent: fromJS([]),
         depth: 1,
         title: 'IF',
     }

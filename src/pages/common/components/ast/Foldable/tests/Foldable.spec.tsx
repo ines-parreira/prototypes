@@ -1,28 +1,27 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
 
 import Foldable from '../Foldable'
 
 describe('Foldable component', () => {
     it('should render open', () => {
-        const component = shallow(
+        const {container} = render(
             <Foldable label={<div>my label</div>}>
                 <div>my children</div>
             </Foldable>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render closed', () => {
-        const component = shallow(
+    it('should render closed on toggle', () => {
+        const {container, getByText} = render(
             <Foldable label={<div>my label</div>}>
                 <div>my children</div>
             </Foldable>
         )
 
-        component.setState({isOpen: false})
-
-        expect(component).toMatchSnapshot()
+        fireEvent.click(getByText('keyboard_arrow_down'))
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

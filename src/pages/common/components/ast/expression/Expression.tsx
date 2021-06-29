@@ -7,7 +7,7 @@ import Identifier from '../Identifier.js'
 import UnknownSyntax from '../UnknownSyntax'
 
 import LogicalExpression from './LogicalExpression'
-import BinaryExpression from './BinaryExpression.js'
+import BinaryExpression from './BinaryExpression'
 import MemberExpression from './MemberExpression'
 import CallExpression from './CallExpression'
 import ArrayExpression from './ArrayExpression'

@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import {shallow} from 'enzyme'
 
-import React from 'react'
+import React, {ComponentProps} from 'react'
 
 import schemasJSON from '../../../../../../fixtures/openapi.json'
 import Action, {
@@ -10,7 +10,7 @@ import Action, {
     validateBody,
     validateSendEmail,
     validateTags,
-} from '../Action.tsx'
+} from '../Action'
 
 const schemas = fromJS(schemasJSON)
 
@@ -46,11 +46,11 @@ describe('Action', () => {
 
     describe('validateBody', () => {
         it('should validate body', () => {
-            expect(validateBody({body_text: 'hey'}, schemas)).toBeFalsy()
+            expect(validateBody({body_text: 'hey'})).toBeFalsy()
         })
 
         it('should return errors and not validate body', () => {
-            expect(validateBody({}, schemas)).toBeTruthy()
+            expect(validateBody({})).toBeTruthy()
         })
     })
 
@@ -76,7 +76,7 @@ describe('Action', () => {
             ]
 
             emails.forEach((email) => {
-                expect(validateSendEmail(email, schemas)).toEqual([])
+                expect(validateSendEmail(email)).toEqual([])
             })
         })
 
@@ -98,7 +98,7 @@ describe('Action', () => {
             ]
 
             emails.forEach((email) => {
-                const result = validateSendEmail(email, schemas)
+                const result = validateSendEmail(email)
                 expect(result).toBeInstanceOf(Array)
                 expect(result.length > 0).toBe(true)
             })
@@ -107,11 +107,11 @@ describe('Action', () => {
 
     describe('validateTags', () => {
         it('should validate tags', () => {
-            expect(validateTags({tags: 'hey'}, schemas)).toBeFalsy()
+            expect(validateTags({tags: 'hey'})).toBeFalsy()
         })
 
         it('should return errors and not validate tags', () => {
-            expect(validateTags({tags: ''}, schemas)).toBeTruthy()
+            expect(validateTags({tags: ''})).toBeTruthy()
         })
     })
 
@@ -123,7 +123,10 @@ describe('Action', () => {
         it.each(['facebookHideComment', 'facebookLikeComment'])(
             'should render a warning about potential page deactivation in Facebook',
             (actionValue) => {
-                const props = {...minProps, value: actionValue}
+                const props = ({
+                    ...minProps,
+                    value: actionValue,
+                } as unknown) as ComponentProps<typeof Action>
                 const component = shallow(<Action {...props} />)
 
                 expect(component).toMatchSnapshot()
@@ -131,7 +134,9 @@ describe('Action', () => {
         )
 
         it('should render an error saying an action cannot be empty', () => {
-            const props = Object.assign({}, minProps, {value: ''})
+            const props = (Object.assign({}, minProps, {
+                value: '',
+            }) as unknown) as ComponentProps<typeof Action>
 
             const component = shallow(<Action {...props} />)
 

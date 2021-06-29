@@ -1,20 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {ComponentProps} from 'react'
+import {List, Map} from 'immutable'
 
-import Widget from '../Widget.tsx'
+import Widget from '../Widget'
+import {getSyntaxTreeLeaves} from '../utils.js'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 
-import {getSyntaxTreeLeaves} from '../utils'
+import Expression from './Expression'
 
-import Expression from './Expression.tsx'
-
-/*
- interface BinaryExpression <: Expression {
- type: "BinaryExpression";
- operator: BinaryOperator;
- left: Expression;
- right: Expression;
+type Props = {
+    operator: string
+    left: Partial<ComponentProps<typeof Expression>> & {type: string}
+    right: Partial<ComponentProps<typeof Expression>> & {type: string}
+    rule: Map<any, any>
+    actions: RuleItemActions
+    schemas: Map<any, any>
+    parent: List<any>
+    leftsiblings: Maybe<List<any>>
 }
- */
+
 const BinaryExpression = ({
     operator,
     left,
@@ -24,16 +27,18 @@ const BinaryExpression = ({
     schemas,
     parent,
     leftsiblings,
-}) => {
+}: Props) => {
     const parentLeft = parent.push('left')
     const parentRight = parent.push('right')
     const parentOperator = parent.push('operator')
 
-    let leftsiblings2
-    let leftsiblings3
+    let leftsiblings2: List<any> | undefined
+    let leftsiblings3: List<any> | undefined
 
     if (leftsiblings) {
-        leftsiblings2 = leftsiblings.concat(getSyntaxTreeLeaves(left))
+        leftsiblings2 = leftsiblings.concat(getSyntaxTreeLeaves(left)) as List<
+            any
+        >
         leftsiblings3 = leftsiblings2.push('operators')
     }
 
@@ -41,7 +46,7 @@ const BinaryExpression = ({
         <span className="BinaryExpression">
             <span className="left">
                 <Expression
-                    {...left}
+                    {...(left as ComponentProps<typeof Expression>)}
                     parent={parentLeft}
                     rule={rule}
                     actions={actions}
@@ -62,7 +67,7 @@ const BinaryExpression = ({
             </span>
             <span className="right">
                 <Expression
-                    {...right}
+                    {...(right as ComponentProps<typeof Expression>)}
                     parent={parentRight}
                     rule={rule}
                     actions={actions}
@@ -73,17 +78,6 @@ const BinaryExpression = ({
             </span>
         </span>
     )
-}
-
-BinaryExpression.propTypes = {
-    rule: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    left: PropTypes.object.isRequired,
-    leftsiblings: PropTypes.object.isRequired,
-    operator: PropTypes.object.isRequired,
-    parent: PropTypes.object.isRequired,
-    right: PropTypes.object.isRequired,
-    schemas: PropTypes.object.isRequired,
 }
 
 export default BinaryExpression

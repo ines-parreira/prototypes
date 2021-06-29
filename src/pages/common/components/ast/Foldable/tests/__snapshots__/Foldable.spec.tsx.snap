@@ -1,15 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Foldable component should render closed 1`] = `
+exports[`Foldable component should render closed on toggle 1`] = `
 <div
-  className="container closed"
+  class="container closed"
 >
   <div
-    className="icon-wrapper closed"
-    onClick={[Function]}
+    class="icon-wrapper closed"
   >
     <i
-      className="material-icons"
+      class="material-icons"
     >
       keyboard_arrow_right
     </i>
@@ -18,8 +17,7 @@ exports[`Foldable component should render closed 1`] = `
     my label
   </div>
   <div
-    className="dots-wrapper"
-    onClick={[Function]}
+    class="dots-wrapper"
   >
     •••
   </div>
@@ -28,14 +26,13 @@ exports[`Foldable component should render closed 1`] = `
 
 exports[`Foldable component should render open 1`] = `
 <div
-  className="container"
+  class="container"
 >
   <div
-    className="icon-wrapper"
-    onClick={[Function]}
+    class="icon-wrapper"
   >
     <i
-      className="material-icons"
+      class="material-icons"
     >
       keyboard_arrow_down
     </i>
