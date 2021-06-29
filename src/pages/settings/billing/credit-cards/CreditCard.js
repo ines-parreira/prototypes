@@ -32,7 +32,6 @@ import InputField from '../../../common/forms/InputField'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
-import Plan from '../plans/Plan'
 
 import GorgiasApi from '../../../../services/gorgiasApi.ts'
 
@@ -42,6 +41,7 @@ import {createStripeCardToken} from '../../../../utils/stripe.ts'
 import history from '../../../history.ts'
 
 import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner.tsx'
+import BillingPlanCard from '../plans/BillingPlanCard.tsx'
 
 import {
     creditCardCVCNormalizer,
@@ -295,7 +295,6 @@ export class CreditCard extends Component<Props, State> {
 
     render() {
         const {
-            currentAccount,
             currentPlan,
             currentSubscription,
             location,
@@ -349,12 +348,9 @@ export class CreditCard extends Component<Props, State> {
                         {currentSubscription.get('status') !== 'active' &&
                             !currentPlan.isEmpty() && (
                                 <Col sm={3}>
-                                    <Plan
-                                        plan={currentPlan}
-                                        currentPlan={currentPlan}
-                                        currentAccount={currentAccount}
+                                    <BillingPlanCard
+                                        plan={currentPlan.toJS()}
                                         isCurrentPlan
-                                        comparaisonMode={false}
                                     />
                                 </Col>
                             )}

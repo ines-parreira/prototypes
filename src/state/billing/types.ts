@@ -1,5 +1,7 @@
 import {Map} from 'immutable'
 
+import {Plan} from '../../models/billing/types'
+
 export type BillingContact = Map<any, any>
 
 export type CreditCard = {
@@ -75,4 +77,8 @@ enum SubscriptionPlan {
 
 export type Subscription = {
     plan: SubscriptionPlan
+}
+
+export type PlanWithCurrencySign = Plan & {
+    currencySign: '$'
 }

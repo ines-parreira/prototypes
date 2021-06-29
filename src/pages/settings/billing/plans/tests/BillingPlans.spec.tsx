@@ -13,7 +13,17 @@ import {
 } from '../../../../../fixtures/subscriptionPlan'
 import {account} from '../../../../../fixtures/account'
 
-jest.mock('../Plan', () => () => <div>Plan mock</div>)
+jest.mock('../PlanCard', () => {
+    return {
+        __esModule: true,
+        default: () => <div>PlanCard mock</div>,
+        PlanCardTheme: {},
+    }
+})
+jest.mock('../BillingPlanCard', () => () => <div>BillingPlanCard mock</div>)
+jest.mock('../BillingComparisonPlanCard', () => () => (
+    <div>BillingComparisonPlanCard mock</div>
+))
 
 describe('<BillingPlans/>', () => {
     const publicPlans = {

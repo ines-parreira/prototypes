@@ -1,0 +1,1462 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`billingPlanFeatures getEnterprisePlanCardFeatures should return plan card features for the enterprise plan 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <React.Fragment>
+      Discounted prices for
+       
+      <b>
+        volumes of 10.000+ billable tickets
+      </b>
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="beach_access"
+    />,
+    "label": "Premium support",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": "Custom limit of integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_car"
+    />,
+    "label": "Full onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": false,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": false,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": false,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": false,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Advanced plan should return legacy plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={3000}
+      id="advanced-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        20.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_car"
+    />,
+    "label": "Full onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": true,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": true,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": true,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": true,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": true,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": true,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": true,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": false,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Advanced plan should return plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={3000}
+      id="advanced-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        20.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_car"
+    />,
+    "label": "Full onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        10
+      </b>
+       Phone numbers
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": false,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": false,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": false,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Basic plan should return legacy plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={350}
+      id="basic-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        25.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_walk"
+    />,
+    "label": "Self onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": true,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": false,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": false,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Basic plan should return plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={350}
+      id="basic-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        25.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_walk"
+    />,
+    "label": "Self onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": true,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": true,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": true,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": true,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": true,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": true,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": true,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Custom plan should return legacy plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={2000}
+      id="custom-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        23.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": "Lite onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": true,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": true,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": true,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": true,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": true,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": true,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": true,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Custom plan should return plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={2000}
+      id="custom-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        23.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": "Lite onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        50
+      </b>
+       Phone numbers
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": true,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": true,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Enterprise plan should return legacy plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <React.Fragment>
+      Discounted prices for
+       
+      <b>
+        volumes of 10.000+ billable tickets
+      </b>
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="beach_access"
+    />,
+    "label": "Premium support",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": "Custom limit of integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_car"
+    />,
+    "label": "Full onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": false,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": false,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": false,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": false,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Enterprise plan should return plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <React.Fragment>
+      Discounted prices for
+       
+      <b>
+        volumes of 10.000+ billable tickets
+      </b>
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="beach_access"
+    />,
+    "label": "Premium support",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": "Custom limit of integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_car"
+    />,
+    "label": "Full onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": false,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": false,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": false,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": false,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Pro plan should return legacy plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={2000}
+      id="pro-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        23.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": "Lite onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        3
+      </b>
+       Phone numbers
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": false,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": false,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan Pro plan should return plan card features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      freeTickets={2000}
+      id="pro-monthly-usd-2"
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add"
+    />,
+    "label": <React.Fragment>
+      <b>
+        $
+        23.00
+      </b>
+       
+      per 
+      100
+       extra tickets
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="code"
+    />,
+    "label": <React.Fragment>
+      <b>
+        200
+      </b>
+       integrations
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up_alt"
+    />,
+    "label": "Social media integrations",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": "Lite onboarding",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="supervised_user_circle"
+    />,
+    "isDisabled": false,
+    "label": "User permissions",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="chat"
+    />,
+    "isDisabled": false,
+    "label": "Chat campaigns",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        3
+      </b>
+       Phone numbers
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="people_outline"
+    />,
+    "isDisabled": true,
+    "label": "Team Management",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="view_carousel"
+    />,
+    "isDisabled": true,
+    "label": "View sharing",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;

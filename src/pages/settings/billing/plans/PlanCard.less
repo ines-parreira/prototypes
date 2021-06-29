@@ -1,0 +1,115 @@
+@import '../../../../../css/new/colors';
+@import '../colors';
+
+:local {
+    .plan {
+        min-width: 200px;
+        min-height: 330px;
+        box-shadow: 0 2px 3px 0 #15206533;
+    }
+
+    .planHeader {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 15px 16px 20px 16px;
+        border-bottom: 0;
+        height: 90px;
+        strong {
+            font-size: 24px;
+        }
+    }
+
+    .planBadge {
+        :global(.badge) {
+            border-radius: 100px;
+            font-size: 11px;
+            padding: 3px 6px;
+        }
+    }
+
+    .headerText {
+        display: flex;
+        justify-content: space-between;
+        font-size: 17px;
+    }
+
+    .headerPrice {
+        align-self: center;
+        font-size: 16px;
+    }
+
+    .cardBody {
+        padding-left: 20px;
+    }
+
+    .featureList {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .featureListItem {
+        margin-bottom: 11px;
+        min-height: 40px;
+    }
+
+    .featureIcon {
+        --feature-icon-color: @basic;
+        --feature-icon-size: 20px;
+        flex-shrink: 0;
+        background-color: #edf4ff;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .disabledFeatureListItem {
+        .featureIcon {
+            --feature-icon-color: @neutral4;
+            background: @neutral1;
+        }
+    }
+
+    .cardFooter {
+        background-color: #fff;
+        text-align: center;
+    }
+
+    .greyTheme {
+        .card-header {
+            background-color: @neutral1;
+            color: @neutral10;
+        }
+    }
+
+    .blueTheme {
+        .planHeader {
+            color: #fff;
+            background-color: @basic;
+        }
+    }
+
+    .navyTheme {
+        .planHeader {
+            color: #fff;
+            background-color: @pro;
+        }
+    }
+
+    .greenTheme {
+        .planHeader {
+            color: #fff;
+            background-color: @advanced;
+        }
+    }
+
+    .goldTheme {
+        .planHeader {
+            background-color: @enterprise;
+            color: #fff;
+        }
+    }
+}

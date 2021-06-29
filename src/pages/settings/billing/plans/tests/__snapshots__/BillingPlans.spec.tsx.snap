@@ -60,7 +60,7 @@ exports[`<BillingPlans/> should display current plan (custom plan) 1`] = `
       class="mb-5 plans-cards card-deck"
     >
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
     </div>
   </div>
@@ -190,19 +190,19 @@ exports[`<BillingPlans/> should display current plan with available plans (legac
       class="mb-5 plans-cards card-deck"
     >
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        PlanCard mock
       </div>
     </div>
   </div>
@@ -332,19 +332,19 @@ exports[`<BillingPlans/> should display current plan with available plans (plan 
       class="mb-5 plans-cards card-deck"
     >
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        PlanCard mock
       </div>
     </div>
   </div>
@@ -474,16 +474,16 @@ exports[`<BillingPlans/> should display current plan with available plans (publi
       class="mb-5 plans-cards card-deck"
     >
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        PlanCard mock
       </div>
     </div>
   </div>
@@ -613,16 +613,16 @@ exports[`<BillingPlans/> should display current plan with available plans (with 
       class="mb-5 plans-cards card-deck"
     >
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        PlanCard mock
       </div>
     </div>
   </div>
@@ -752,16 +752,16 @@ exports[`<BillingPlans/> should display current plan with available plans (witho
       class="mb-5 plans-cards card-deck"
     >
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        BillingComparisonPlanCard mock
       </div>
       <div>
-        Plan mock
+        PlanCard mock
       </div>
     </div>
   </div>

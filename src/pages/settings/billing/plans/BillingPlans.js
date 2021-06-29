@@ -3,7 +3,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router-dom'
-import {fromJS, Map} from 'immutable'
 
 import {
     Breadcrumb,
@@ -15,7 +14,6 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-
 import classnames from 'classnames'
 
 import {notify} from '../../../../state/notifications/actions.ts'
@@ -25,13 +23,14 @@ import * as currentAccountSelectors from '../../../../state/currentAccount/selec
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
 import history from '../../../history.ts'
-
-import Plan from './Plan'
+import {openChat} from '../../../../utils.ts'
 
 import css from './BillingPlans.less'
+import {getEnterprisePlanCardFeatures} from './billingPlanFeatures.tsx'
+import PlanCard, {PlanCardTheme} from './PlanCard.tsx'
+import BillingComparisonPlanCard from './BillingComparisonPlanCard.tsx'
 
 type Props = {
-    currentAccount: Map<string, any>,
     currentPlan: Object,
     plans: Object,
     subscription: Object,
@@ -166,18 +165,13 @@ export class BillingPlans extends React.Component<Props, State> {
 
     _renderPlans = () => {
         const {
-            currentAccount,
             currentPlan,
             location: {state},
             plans,
             accountHasLegacyPlan,
         } = this.props
+
         const {selectedInterval} = this.state
-        const enterprisePlan = fromJS({
-            id: 'enterprise',
-            name: 'Enterprise',
-            features: [],
-        })
         const isCustomPlan = currentPlan.get('custom', false)
         let availablePlans = isCustomPlan
             ? plans.filter((plan) => plan.get('id') === currentPlan.get('id'))
@@ -219,11 +213,9 @@ export class BillingPlans extends React.Component<Props, State> {
                 <CardDeck className={classnames('mb-5', css['plans-cards'])}>
                     <>
                         {accountHasLegacyPlan && (
-                            <Plan
+                            <BillingComparisonPlanCard
                                 className="mt-4"
-                                plan={currentPlan}
-                                currentAccount={currentAccount}
-                                currentPlan={currentPlan}
+                                plan={currentPlan.toJS()}
                                 isCurrentPlan
                                 isUpdating={this.state.isUpdating}
                             />
@@ -235,18 +227,16 @@ export class BillingPlans extends React.Component<Props, State> {
                                     plan.get('id') === currentPlan.get('id')
                                 return [
                                     planId,
-                                    <Plan
+                                    <BillingComparisonPlanCard
                                         key={planId.split('-')[0]}
                                         className="mt-4"
-                                        currentAccount={currentAccount}
-                                        currentPlan={currentPlan}
-                                        plan={plan}
+                                        plan={plan.toJS()}
                                         isCurrentPlan={isCurrentPlan}
                                         isUpdating={this.state.isUpdating}
-                                        onClick={() =>
+                                        onPlanChange={() => {
                                             this._updateSubscription(planId)
-                                        }
-                                        isPopoverDisplayed={
+                                        }}
+                                        defaultIsPlanChangeConfirmationOpen={
                                             state &&
                                             state.openedPlanPopover ===
                                                 plan.get('name')
@@ -257,11 +247,17 @@ export class BillingPlans extends React.Component<Props, State> {
                             .toList()}
                     </>
                     {!isCustomPlan && (
-                        <Plan
+                        <PlanCard
                             className="mt-4"
-                            currentPlan={currentPlan}
-                            currentAccount={currentAccount}
-                            plan={enterprisePlan}
+                            planName="Enterprise"
+                            theme={PlanCardTheme.Gold}
+                            price="Custom price"
+                            features={getEnterprisePlanCardFeatures()}
+                            footer={
+                                <Button color="link" onClick={openChat}>
+                                    Contact us
+                                </Button>
+                            }
                         />
                     )}
                 </CardDeck>
@@ -298,7 +294,6 @@ export default withRouter(
     connect(
         (state) => {
             return {
-                currentAccount: state.currentAccount,
                 currentPlan: billingSelectors.currentPlan(state),
                 isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(
                     state

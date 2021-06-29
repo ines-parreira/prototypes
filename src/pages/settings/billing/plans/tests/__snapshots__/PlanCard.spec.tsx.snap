@@ -1,0 +1,418 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PlanCard /> should render the footer 1`] = `
+<div
+  class="plan greyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="cardFooter card-footer"
+  >
+    <div>
+      Foo footer
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the header badge 1`] = `
+<div
+  class="plan greyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div>
+      <span>
+        Foo badge
+      </span>
+    </div>
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the plan card for Blue theme 1`] = `
+<div
+  class="plan blueTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the plan card for Gold theme 1`] = `
+<div
+  class="plan goldTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the plan card for Green theme 1`] = `
+<div
+  class="plan greenTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the plan card for Grey theme 1`] = `
+<div
+  class="plan greyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the plan card for Navy theme 1`] = `
+<div
+  class="plan navyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<PlanCard /> should render the price 1`] = `
+<div
+  class="plan greyTheme customClassName card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Foo plan
+      </strong>
+      <span
+        class="headerPrice"
+      >
+        $1000
+      </span>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Foo icon
+        </span>
+        <span>
+          Foo feature
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          Bar icon
+        </span>
+        <span>
+          Bar feature
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
