@@ -4,9 +4,7 @@ import {StoreDispatch} from '../types'
 
 import * as constants from './constants.js'
 
-export const setStatsFilters = (
-    filters: Map<any, any>
-): ReturnType<StoreDispatch> => {
+export const setStatsFilters = (filters: Map<any, any>) => {
     return {
         type: constants.SET_STATS_FILTERS,
         filters,
@@ -22,7 +20,7 @@ export const mergeStatsFilters = (
     }
 }
 
-export const resetStatsFilters = (): ReturnType<StoreDispatch> => {
+export const resetStatsFilters = () => {
     return {type: constants.RESET_STATS_FILTERS}
 }
 

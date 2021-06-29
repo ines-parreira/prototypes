@@ -1,5 +1,5 @@
 import {Map, List} from 'immutable'
-import {Action} from 'redux'
+import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
 import {TicketMessageSourceType, TicketVia} from '../business/types/ticket'
@@ -172,7 +172,7 @@ export type GorgiasAction = {
 export type CurrentUser = Map<any, any>
 export type CurrentAccount = Map<any, any>
 
-export type StoreDispatch = ThunkDispatch<StoreState, undefined, Action>
+export type StoreDispatch = ThunkDispatch<StoreState, void, AnyAction>
 export type ConnectedAction<
     T extends (
         ...args: any
