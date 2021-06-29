@@ -225,7 +225,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     },
     setTags: {
         compact: true,
-        name: 'Set tags',
+        name: 'Reset tags',
         validate: validateTags,
     },
     setSubject: {

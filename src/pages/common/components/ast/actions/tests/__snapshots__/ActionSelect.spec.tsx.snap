@@ -78,7 +78,7 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
       toggle={true}
       type="button"
     >
-      Set tags
+      Reset tags
     </DropdownItem>
     <DropdownItem
       key="7"
@@ -225,7 +225,7 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       toggle={true}
       type="button"
     >
-      Set tags
+      Reset tags
     </DropdownItem>
     <DropdownItem
       key="7"
