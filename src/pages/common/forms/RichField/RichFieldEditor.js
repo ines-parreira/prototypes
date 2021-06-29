@@ -41,6 +41,7 @@ import withGrammarlyUsageTracking, {
     type InjectedProps as GrammarlyUsageTrackingProps,
 } from './withGrammarlyUsageTracking'
 import Toolbar from './Toolbar'
+import css from './RichFieldEditor.less'
 
 type suggestionsType = List<*>
 type canAddMentionType = boolean
@@ -314,57 +315,59 @@ export class RichFieldEditor extends InputField<Props, State> {
                     className={classnames('editor-wrapper', {
                         drop: this.state.isDragging,
                     })}
-                    style={
-                        this.props.quickReply
-                            ? {marginBottom: '86px', paddingBottom: '26px'}
-                            : {paddingBottom: '26px'}
-                    }
                     onClick={onFocus}
                     onDragOver={this._onDragOver}
                     onDragLeave={this._onDragLeave}
                     onDrop={this._onDrop}
                 >
-                    <Editor
-                        editorState={this.props.editorState}
-                        onChange={this._onChange}
-                        onFocus={this._onEditorFocus}
-                        onBlur={this.props.onBlur}
-                        plugins={this.plugins}
-                        handleKeyCommand={this._handleKeyCommand}
-                        handlePastedText={this._handlePastedText}
-                        readOnly={displayOnly || this.props.readOnly}
-                        // once focused we're removing the placeholder (Gmail style)
-                        placeholder={
-                            !this.state.wasEverFocused && this.props.placeholder
-                        }
-                        ref={(editor: ?ElementRef<Editor>) => {
-                            this.editor = editor
-                        }}
-                        editorKey={this.props.editorKey}
-                        tabIndex={this.props.tabIndex}
-                        spellCheck={this.props.spellCheck}
-                        ticket={ticket}
-                    />
-                    <MentionSuggestions
-                        onSearchChange={this.props.onMentionSearchChange}
-                        suggestions={this.props.mentionSearchResults}
-                        canAddMention={!!this.props.canAddMention}
-                    />
-                    {required && (
-                        <input
-                            value={this.props.editorState
-                                .getCurrentContent()
-                                .getPlainText()}
-                            style={{
-                                opacity: 0,
-                                height: 0,
-                                padding: 0,
-                                margin: 'none',
-                                overflow: 'hidden',
+                    <div
+                        className={classnames({
+                            [css.withMinHeight]: !this.props.quickReply,
+                        })}
+                    >
+                        <Editor
+                            editorState={this.props.editorState}
+                            onChange={this._onChange}
+                            onFocus={this._onEditorFocus}
+                            onBlur={this.props.onBlur}
+                            plugins={this.plugins}
+                            handleKeyCommand={this._handleKeyCommand}
+                            handlePastedText={this._handlePastedText}
+                            readOnly={displayOnly || this.props.readOnly}
+                            // once focused we're removing the placeholder (Gmail style)
+                            placeholder={
+                                !this.state.wasEverFocused &&
+                                this.props.placeholder
+                            }
+                            ref={(editor: ?ElementRef<Editor>) => {
+                                this.editor = editor
                             }}
-                            required
+                            editorKey={this.props.editorKey}
+                            tabIndex={this.props.tabIndex}
+                            spellCheck={this.props.spellCheck}
+                            ticket={ticket}
                         />
-                    )}
+                        <MentionSuggestions
+                            onSearchChange={this.props.onMentionSearchChange}
+                            suggestions={this.props.mentionSearchResults}
+                            canAddMention={!!this.props.canAddMention}
+                        />
+                        {required && (
+                            <input
+                                value={this.props.editorState
+                                    .getCurrentContent()
+                                    .getPlainText()}
+                                style={{
+                                    opacity: 0,
+                                    height: 0,
+                                    padding: 0,
+                                    margin: 'none',
+                                    overflow: 'hidden',
+                                }}
+                                required
+                            />
+                        )}
+                    </div>
 
                     {emailExtraEnabled && (
                         <EmailExtraButton

@@ -46,43 +46,46 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                         >
                           <div
                             class="editor-wrapper"
-                            style="padding-bottom: 26px;"
                           >
                             <div
-                              class="DraftEditor-root"
+                              class="withMinHeight"
                             >
                               <div
-                                class="DraftEditor-editorContainer"
+                                class="DraftEditor-root"
                               >
                                 <div
-                                  aria-describedby="placeholder-42"
-                                  class="public-DraftEditor-content"
-                                  contenteditable="false"
-                                  spellcheck="false"
-                                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                                  class="DraftEditor-editorContainer"
                                 >
                                   <div
-                                    data-contents="true"
+                                    aria-describedby="placeholder-42"
+                                    class="public-DraftEditor-content"
+                                    contenteditable="false"
+                                    spellcheck="false"
+                                    style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                                   >
                                     <div
-                                      class=""
-                                      data-block="true"
-                                      data-editor="42"
-                                      data-offset-key="42-0-0"
+                                      data-contents="true"
                                     >
                                       <div
-                                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                        class=""
+                                        data-block="true"
+                                        data-editor="42"
                                         data-offset-key="42-0-0"
                                       >
-                                        <span
+                                        <div
+                                          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                                           data-offset-key="42-0-0"
                                         >
                                           <span
-                                            data-text="true"
+                                            data-offset-key="42-0-0"
                                           >
-                                            Thanks for placing an order with our company
+                                            <span
+                                              data-text="true"
+                                            >
+                                              Thanks for placing an order with our company
+                                            </span>
                                           </span>
-                                        </span>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

@@ -427,66 +427,69 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                       >
                         <div
                           class="editor-wrapper"
-                          style="padding-bottom: 26px;"
                         >
                           <div
-                            class="DraftEditor-root"
+                            class="withMinHeight"
                           >
                             <div
-                              class="public-DraftEditorPlaceholder-root"
+                              class="DraftEditor-root"
                             >
                               <div
-                                class="public-DraftEditorPlaceholder-inner"
-                                id="placeholder-someRandomKey"
-                                style="white-space: pre-wrap;"
-                              >
-                                Write your message
-                              </div>
-                            </div>
-                            <div
-                              class="DraftEditor-editorContainer"
-                            >
-                              <div
-                                aria-autocomplete="list"
-                                aria-describedby="placeholder-someRandomKey"
-                                aria-expanded="true"
-                                class="notranslate public-DraftEditor-content"
-                                contenteditable="true"
-                                role="combobox"
-                                spellcheck="false"
-                                style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                                class="public-DraftEditorPlaceholder-root"
                               >
                                 <div
-                                  data-contents="true"
+                                  class="public-DraftEditorPlaceholder-inner"
+                                  id="placeholder-someRandomKey"
+                                  style="white-space: pre-wrap;"
+                                >
+                                  Write your message
+                                </div>
+                              </div>
+                              <div
+                                class="DraftEditor-editorContainer"
+                              >
+                                <div
+                                  aria-autocomplete="list"
+                                  aria-describedby="placeholder-someRandomKey"
+                                  aria-expanded="true"
+                                  class="notranslate public-DraftEditor-content"
+                                  contenteditable="true"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                                 >
                                   <div
-                                    class=""
-                                    data-block="true"
-                                    data-editor="someRandomKey"
-                                    data-offset-key="someRandomKey-0-0"
+                                    data-contents="true"
                                   >
                                     <div
-                                      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                      class=""
+                                      data-block="true"
+                                      data-editor="someRandomKey"
                                       data-offset-key="someRandomKey-0-0"
                                     >
-                                      <span
+                                      <div
+                                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                                         data-offset-key="someRandomKey-0-0"
                                       >
-                                        <br
-                                          data-text="true"
-                                        />
-                                      </span>
+                                        <span
+                                          data-offset-key="someRandomKey-0-0"
+                                        >
+                                          <br
+                                            data-text="true"
+                                          />
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                            <input
+                              required=""
+                              style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                              value=""
+                            />
                           </div>
-                          <input
-                            required=""
-                            style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
-                            value=""
-                          />
                         </div>
                         <div
                           class="editor-toolbar page"
@@ -1205,57 +1208,60 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                       >
                         <div
                           class="editor-wrapper"
-                          style="padding-bottom: 26px;"
                         >
                           <div
-                            class="DraftEditor-root"
+                            class="withMinHeight"
                           >
                             <div
-                              class="DraftEditor-editorContainer"
+                              class="DraftEditor-root"
                             >
                               <div
-                                aria-autocomplete="list"
-                                aria-describedby="placeholder-someRandomKey"
-                                aria-expanded="true"
-                                class="notranslate public-DraftEditor-content"
-                                contenteditable="true"
-                                role="combobox"
-                                spellcheck="false"
-                                style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                                class="DraftEditor-editorContainer"
                               >
                                 <div
-                                  data-contents="true"
+                                  aria-autocomplete="list"
+                                  aria-describedby="placeholder-someRandomKey"
+                                  aria-expanded="true"
+                                  class="notranslate public-DraftEditor-content"
+                                  contenteditable="true"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                                 >
                                   <div
-                                    class=""
-                                    data-block="true"
-                                    data-editor="someRandomKey"
-                                    data-offset-key="someRandomKey-0-0"
+                                    data-contents="true"
                                   >
                                     <div
-                                      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                      class=""
+                                      data-block="true"
+                                      data-editor="someRandomKey"
                                       data-offset-key="someRandomKey-0-0"
                                     >
-                                      <span
+                                      <div
+                                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                                         data-offset-key="someRandomKey-0-0"
                                       >
                                         <span
-                                          data-text="true"
+                                          data-offset-key="someRandomKey-0-0"
                                         >
-                                          My little message
+                                          <span
+                                            data-text="true"
+                                          >
+                                            My little message
+                                          </span>
                                         </span>
-                                      </span>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                            <input
+                              required=""
+                              style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                              value="My little message"
+                            />
                           </div>
-                          <input
-                            required=""
-                            style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
-                            value="My little message"
-                          />
                         </div>
                         <div
                           class="editor-toolbar page"
@@ -1996,57 +2002,60 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                       >
                         <div
                           class="editor-wrapper"
-                          style="padding-bottom: 26px;"
                         >
                           <div
-                            class="DraftEditor-root"
+                            class="withMinHeight"
                           >
                             <div
-                              class="DraftEditor-editorContainer"
+                              class="DraftEditor-root"
                             >
                               <div
-                                aria-autocomplete="list"
-                                aria-describedby="placeholder-someRandomKey"
-                                aria-expanded="true"
-                                class="notranslate public-DraftEditor-content"
-                                contenteditable="true"
-                                role="combobox"
-                                spellcheck="false"
-                                style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                                class="DraftEditor-editorContainer"
                               >
                                 <div
-                                  data-contents="true"
+                                  aria-autocomplete="list"
+                                  aria-describedby="placeholder-someRandomKey"
+                                  aria-expanded="true"
+                                  class="notranslate public-DraftEditor-content"
+                                  contenteditable="true"
+                                  role="combobox"
+                                  spellcheck="false"
+                                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                                 >
                                   <div
-                                    class=""
-                                    data-block="true"
-                                    data-editor="someRandomKey"
-                                    data-offset-key="someRandomKey-0-0"
+                                    data-contents="true"
                                   >
                                     <div
-                                      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                      class=""
+                                      data-block="true"
+                                      data-editor="someRandomKey"
                                       data-offset-key="someRandomKey-0-0"
                                     >
-                                      <span
+                                      <div
+                                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                                         data-offset-key="someRandomKey-0-0"
                                       >
                                         <span
-                                          data-text="true"
+                                          data-offset-key="someRandomKey-0-0"
                                         >
-                                          My little message
+                                          <span
+                                            data-text="true"
+                                          >
+                                            My little message
+                                          </span>
                                         </span>
-                                      </span>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                            <input
+                              required=""
+                              style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                              value="My little message"
+                            />
                           </div>
-                          <input
-                            required=""
-                            style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
-                            value="My little message"
-                          />
                         </div>
                         <div
                           class="editor-toolbar page"
