@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import pluralize from 'pluralize'
 import classnames from 'classnames'

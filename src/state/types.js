@@ -1,3 +1,4 @@
+// @flow
 import type {Map, List} from 'immutable'
 
 import type {MacrosAction} from './entities/macros'

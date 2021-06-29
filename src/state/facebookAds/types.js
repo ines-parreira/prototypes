@@ -1,3 +1,4 @@
+// @flow
 type Ad = {
     comment_count: number,
     is_active: boolean,

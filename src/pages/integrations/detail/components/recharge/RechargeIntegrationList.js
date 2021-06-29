@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import type {List} from 'immutable'
 import {Link} from 'react-router-dom'
@@ -25,7 +26,7 @@ type Props = {
 
 type State = {
     isLightboxOpen: boolean,
-    currentImage: Number,
+    currentImage: number,
 }
 
 @connect(
@@ -53,14 +54,14 @@ export default class RechargeIntegrationList extends React.Component<
         return !this.props.shopifyIntegrations.size
     }
 
-    _toggleLightbox = (selectedImageId) => {
+    _toggleLightbox = (selectedImageId?: number) => {
         this.setState({
             isLightboxOpen: !this.state.isLightboxOpen,
             currentImage: selectedImageId || 0,
         })
     }
 
-    _gotoImage = (index) => {
+    _gotoImage = (index: number) => {
         this.setState({currentImage: index})
     }
 

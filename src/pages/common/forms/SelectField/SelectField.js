@@ -31,7 +31,7 @@ type Props = {
     required: boolean,
     onChange: (Value) => void,
     onSearchChange: (string) => void,
-    className?: string,
+    className?: ?string,
     fixedWidth: boolean,
     focusedPlaceholder?: string,
     fullWidth?: boolean,

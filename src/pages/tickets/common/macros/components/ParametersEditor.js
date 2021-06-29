@@ -1,6 +1,6 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import {Map} from 'immutable'
+import {Map, type List} from 'immutable'
 import classnames from 'classnames'
 import {Row, Col, Button} from 'reactstrap'
 
@@ -11,7 +11,13 @@ import {hasUnicodeChars} from '../../../../../utils.ts'
 
 import css from './ParametersEditor.less'
 
-export default class ParametersEditor extends React.Component {
+type Props = {
+    list: List<any>,
+    name: string,
+    updateDict: (list: List<any>) => void,
+}
+
+export default class ParametersEditor extends React.Component<Props> {
     addRow = () => {
         this.props.updateDict(
             this.props.list.push(
@@ -25,15 +31,15 @@ export default class ParametersEditor extends React.Component {
         )
     }
 
-    deleteRow = (index) => {
+    deleteRow = (index: number) => {
         this.props.updateDict(this.props.list.delete(index))
     }
 
-    changeValue = (key, index, value) => {
+    changeValue = (key: string, index: number, value: any) => {
         this.props.updateDict(this.props.list.setIn([index, key], value))
     }
 
-    validateHeaderName = (value: String): ?String => {
+    validateHeaderName = (value: string): ?string => {
         if (this.props.name === 'headers' && hasUnicodeChars(value)) {
             return "Header's name can't contain unicode characters."
         }
@@ -159,10 +165,4 @@ export default class ParametersEditor extends React.Component {
             </div>
         )
     }
-}
-
-ParametersEditor.propTypes = {
-    name: PropTypes.string.isRequired,
-    list: PropTypes.object.isRequired,
-    updateDict: PropTypes.func.isRequired,
 }

@@ -1,3 +1,4 @@
+// @flow
 import * as React from 'react'
 
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
@@ -19,7 +20,7 @@ type Props = {
     onLinkTextChange: (string) => void,
     onLinkOpen: () => void,
     onLinkClose: () => void,
-    quickReply: React.ReactNode,
+    quickReply: React.Node,
     pluginMethods?: PluginMethods,
 }
 

@@ -1,5 +1,5 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {
@@ -13,6 +13,7 @@ import {
     PopoverBody,
 } from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
+import {type List, type Map} from 'immutable'
 
 import shortcutManager from '../../../../services/shortcutManager/index.ts'
 
@@ -21,7 +22,20 @@ import * as viewsSelectors from '../../../../state/views/selectors.ts'
 
 import css from './CustomerListActions.less'
 
-class CustomerListActions extends React.Component {
+type Props = {
+    allViewItemsSelected: boolean,
+    actions: typeof customersActions,
+    selectedItemsIds: List<any>,
+    getViewCount: (id: number) => number,
+    view: Map<any, any>,
+}
+
+type State = {
+    popoverOpen: string,
+    displayDeleteConfirmation: boolean,
+}
+
+class CustomerListActions extends React.Component<Props, State> {
     state = {
         popoverOpen: '',
         displayDeleteConfirmation: false,
@@ -68,11 +82,11 @@ class CustomerListActions extends React.Component {
 
     _bulkDelete = () => {
         const {actions, selectedItemsIds} = this.props
-        this.toggleDeleteConfirmation(false)
+        this.toggleDeleteConfirmation()
         return actions.customers.bulkDeleteCustomer(selectedItemsIds)
     }
 
-    toggleActionsDropdown = (visible) => {
+    toggleActionsDropdown = (visible: boolean) => {
         const opens = !_isUndefined(visible)
             ? visible
             : !this._isPopoverOpen('delete')
@@ -159,14 +173,6 @@ class CustomerListActions extends React.Component {
             </div>
         )
     }
-}
-
-CustomerListActions.propTypes = {
-    view: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired, // tickets actions
-    selectedItemsIds: PropTypes.object.isRequired, // list of ids of selected tickets
-    allViewItemsSelected: PropTypes.bool.isRequired,
-    getViewCount: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

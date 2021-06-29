@@ -1,3 +1,4 @@
+// @flow
 import {fromJS, type Record} from 'immutable'
 
 import {SYSTEM_RULE_TYPE} from '../constants.ts'

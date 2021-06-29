@@ -1,4 +1,5 @@
-import {fromJS} from 'immutable'
+// @flow
+import {fromJS, type Map, type List} from 'immutable'
 import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 import _forEach from 'lodash/forEach'
@@ -18,6 +19,8 @@ import {tryLocalStorage} from '../../services/common/utils.ts'
 import * as responseUtils from '../newMessage/responseUtils.ts'
 import {TicketMessageSourceType} from '../../business/types/ticket.ts'
 import {PHONE_EVENTS} from '../../constants/event.ts'
+// eslint-disable-next-line no-unused-vars
+import {notify} from '../notifications/actions.ts'
 
 import {getProperty} from './selectors.ts'
 
@@ -27,7 +30,10 @@ import {getProperty} from './selectors.ts'
  * @param sourceType
  * @returns {*}
  */
-export function getLastSameSourceTypeMessage(messages, sourceType) {
+export function getLastSameSourceTypeMessage(
+    messages: List<any>,
+    sourceType: string
+) {
     const msg = ticketConfig
         .orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
@@ -73,8 +79,11 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * A utility function that gives the source type we should set on a **new** message based on the
  * source type of the message we're responding to.
  */
-export function getSourceTypeOfResponse(messages, via) {
-    const immutableMessages = isImmutable(messages)
+export function getSourceTypeOfResponse(
+    messages: List<any> | any[],
+    via: string
+) {
+    const immutableMessages: List<any> = isImmutable(messages)
         ? messages
         : toImmutable(messages)
     const ticketId = immutableMessages.getIn([0, 'ticket_id'])
@@ -91,13 +100,13 @@ export function getSourceTypeOfResponse(messages, via) {
  * Map a source type to a channel.
  * Returns undefined for internal note as we dont have enough information to guess the channel.
  */
-export function getChannelFromSourceType(sourceType, messages) {
+export function getChannelFromSourceType(sourceType: string, messages: any[]) {
     return ticketConfig.sourceTypeToChannel(sourceType, toImmutable(messages))
 }
 
 export function isSupportAddress(
-    addressToTest = '',
-    supportAddresses = fromJS([])
+    addressToTest?: string = '',
+    supportAddresses?: List<any> = fromJS([])
 ) {
     if (!addressToTest || !supportAddresses.size) {
         return false
@@ -122,7 +131,7 @@ export function isSupportAddress(
  * Return value prop from sender/receiver that is used to identify a person depending on the source type
  * @param sourceType
  */
-export function getValuePropFromSourceType(sourceType) {
+export function getValuePropFromSourceType(sourceType: string) {
     return SOURCE_VALUE_PROP[sourceType]
 }
 
@@ -134,9 +143,9 @@ export function getValuePropFromSourceType(sourceType) {
  * @returns {*}
  */
 export function guessReceiversFromTicket(
-    ticket,
-    newMessageSourceType,
-    channels = fromJS([])
+    ticket: Map<any, any>,
+    newMessageSourceType: string,
+    channels?: List<any> = fromJS([])
 ) {
     let toReceivers = fromJS([])
     let ccReceivers = fromJS([])
@@ -187,7 +196,10 @@ export function guessReceiversFromTicket(
                 )
             })
 
-    const ret = {
+    const ret: {
+        cc?: {name: string, address: string}[],
+        to: {name: string, address: string}[],
+    } = {
         to: cleanReceivers(toReceivers).toJS(),
     }
 
@@ -236,7 +248,7 @@ export function guessReceiversFromTicket(
  * @param sourceType
  * @returns {*}
  */
-export function receiversValueFromState(options, sourceType) {
+export function receiversValueFromState(options: Object, sourceType: string) {
     _forEach(options, (receivers, index) => {
         options[index] = receivers.map((receiver) => ({
             name: receiver.name || '',
@@ -254,7 +266,7 @@ export function receiversValueFromState(options, sourceType) {
  * @param sourceType
  * @returns {*}
  */
-export function receiversStateFromValue(value, sourceType) {
+export function receiversStateFromValue(value: any, sourceType: string) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
     if (!valueProp) {
@@ -279,7 +291,10 @@ export function receiversStateFromValue(value, sourceType) {
  * @param state - reducer state
  * @returns {*} - ex: {tags: [{name: 'refund'}], status: 'open'}
  */
-export function buildPartialUpdateFromAction(actionNames, state) {
+export function buildPartialUpdateFromAction(
+    actionNames: string | string[],
+    state: Object
+) {
     if (!state) {
         return {}
     }
@@ -312,7 +327,7 @@ export function buildPartialUpdateFromAction(actionNames, state) {
  * @param channels Available account channels (from email and gmail integrations)
  * @returns {*}
  */
-export function getPreferredChannel(channelType, channels) {
+export function getPreferredChannel(channelType: string, channels: List<any>) {
     // get the preferred channel
     let chan = channels.find((channel) => {
         return (
@@ -331,7 +346,7 @@ export function getPreferredChannel(channelType, channels) {
 
 const LAST_SENDER_CHANNEL_KEY = 'lastSenderChannel'
 
-export const persistLastSenderChannel = (channel) => {
+export const persistLastSenderChannel = (channel: Map<any, any>) => {
     tryLocalStorage(() => {
         window.localStorage.setItem(
             LAST_SENDER_CHANNEL_KEY,
@@ -359,7 +374,10 @@ export const getLastSenderChannel = () => {
     return null
 }
 
-export function getOutboundCallFrom(ticket, channels) {
+export function getOutboundCallFrom(
+    ticket: Map<any, any>,
+    channels: List<any>
+) {
     if (!channels.size) {
         return fromJS({
             id: null,
@@ -394,7 +412,11 @@ export function getOutboundCallFrom(ticket, channels) {
  * @param channels Available account channels (from email and gmail integrations)
  * @returns {*}
  */
-export function getNewMessageSender(ticket, newMessageSourceType, channels) {
+export function getNewMessageSender(
+    ticket: Map<any, any>,
+    newMessageSourceType: string,
+    channels: List<any>
+) {
     if (newMessageSourceType === 'internal-note') {
         return fromJS({
             name: '',
@@ -509,7 +531,10 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
  * @param message { body_html: '', ... }
  * @returns {*}
  */
-export function getPendingMessageIndex(pendingMessages, message) {
+export function getPendingMessageIndex(
+    pendingMessages: Object[],
+    message: Object
+) {
     let index = -1
 
     if (!pendingMessages.length) {
@@ -519,7 +544,7 @@ export function getPendingMessageIndex(pendingMessages, message) {
     // props that are the same in the post body and the response
     const props = ['body_html', 'body_text', 'channel', 'from_agent', 'source']
 
-    const whitelist = (v, key) => props.includes(key)
+    const whitelist = (v, key: string) => props.includes(key)
 
     pendingMessages.some((pending, i) => {
         if (
@@ -538,11 +563,11 @@ export function getPendingMessageIndex(pendingMessages, message) {
  * @param message
  * @returns {*|any|T|boolean}
  */
-export function isForwardedMessage(message) {
+export function isForwardedMessage(message: Map<any, any>) {
     return toImmutable(message).getIn(['source', 'extra', 'forward']) || false
 }
 
-export const renderObject = (argument, context) => {
+export const renderObject = (argument: any, context: Object) => {
     let ret = argument
 
     if (typeof argument === 'string') {
@@ -555,11 +580,11 @@ export const renderObject = (argument, context) => {
 }
 
 export const replaceIntegrationVariables = (
-    integrationType,
-    ticketState,
-    variable,
-    newArgument,
-    notify
+    integrationType: string,
+    ticketState: Map<any, any>,
+    variable: string,
+    newArgument: string,
+    notify: typeof notify
 ) => {
     let integrations = ticketState
         .getIn(['customer', 'integrations'], fromJS([]))
@@ -611,7 +636,12 @@ export const replaceIntegrationVariables = (
     return newArgument.replace(variable, newVariable)
 }
 
-export const replaceVariables = (argument, ticket, currentUser, notify) => {
+export const replaceVariables = (
+    argument: string,
+    ticket: ?Map<any, any>,
+    currentUser: ?Map<any, any>,
+    notify: typeof notify
+) => {
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.customer.integrations[XXX]`.
     let newArgument = argument
@@ -643,7 +673,12 @@ export const replaceVariables = (argument, ticket, currentUser, notify) => {
     })
 }
 
-export const nestedReplace = (obj, ticketState, currentUserState, notify) => {
+export const nestedReplace = (
+    obj: any,
+    ticketState: Map<any, any>,
+    currentUserState: Map<any, any>,
+    notify: typeof notify
+) => {
     if (typeof obj === 'string') {
         return replaceVariables(obj, ticketState, currentUserState, notify)
     }
@@ -658,7 +693,7 @@ export const nestedReplace = (obj, ticketState, currentUserState, notify) => {
     return obj
 }
 
-export const parseTimedelta = (timedelta: string): moment.Duration => {
+export const parseTimedelta = (timedelta: string) => {
     const timedeltaRegex = /^(?<value>\d+)(?<unit>[mhd])$/
     const groups = timedelta.match(timedeltaRegex)?.groups
     if (groups) {

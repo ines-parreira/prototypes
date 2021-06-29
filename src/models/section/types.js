@@ -1,3 +1,4 @@
+// @flow
 export type SectionDecoration = {
     emoji?: string,
 }

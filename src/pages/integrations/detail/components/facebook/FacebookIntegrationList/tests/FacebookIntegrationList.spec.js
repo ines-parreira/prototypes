@@ -1,3 +1,4 @@
+// @flow
 import React, {type Node} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'

@@ -1,5 +1,6 @@
+// @flow
 import React from 'react'
-import type {List} from 'immutable'
+import type {List, Map} from 'immutable'
 import {Link, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import {
@@ -35,12 +36,13 @@ type Props = {
 
 type State = {
     store_name: string,
+    integrationLoading?: boolean,
 }
 
 export class RechargeIntegrationDetail extends React.Component<Props, State> {
     isInitialized = false
 
-    state = {
+    state: State = {
         store_name: '',
     }
 
@@ -51,7 +53,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
             .concat(name)
     }
 
-    _installForShopifyStore = (shopifyIntegration) => {
+    _installForShopifyStore = (shopifyIntegration: Map<any, any>) => {
         const shopifyShopName = shopifyIntegration.getIn(['meta', 'shop_name'])
         window.location.href = this.props.redirectUri
             .concat('?store_name=')

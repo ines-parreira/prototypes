@@ -188,8 +188,10 @@ const mapStateToProps = (state: Object) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch, props: Props) => ({
+    // $FlowFixMe
     fetchAds: () => dispatch(fetchAds()),
     updateAd: (id: string, isActive: boolean) =>
+        // $FlowFixMe
         dispatch(updateAd(props.integration.get('id'), id, isActive)),
 })
 

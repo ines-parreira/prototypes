@@ -1,3 +1,4 @@
+// @flow
 import React, {type Node} from 'react'
 
 import {Badge} from 'reactstrap'

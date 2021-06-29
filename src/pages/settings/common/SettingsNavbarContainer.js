@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -9,6 +10,7 @@ import SettingsNavbar from './components/SettingsNavbar'
 type Props = {
     currentUser: Object,
     currentAccount: Object,
+    location: Object,
 }
 
 class SettingsNavbarContainer extends React.Component<Props> {

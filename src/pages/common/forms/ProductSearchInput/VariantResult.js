@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 import type {
@@ -6,10 +7,7 @@ import type {
     Variant,
 } from '../../../../models/integration'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import type {
-    Product as ShopifyProduct,
-    Variant as ShopifyVariant,
-} from '../../../../constants/integrations/types/shopify'
+import type {Product as ShopifyProduct} from '../../../../constants/integrations/types/shopify'
 import type {SearchInputSubResultProps} from '../SearchInput'
 
 import Result, {type Props as ResultProps} from './Result'
@@ -23,7 +21,8 @@ export default class VariantResult extends React.PureComponent<Props> {
 
     static _shopifyDataMapper(
         product: ShopifyProduct,
-        variant: ShopifyVariant
+        // $TsFixMe replace any type to Variant
+        variant: any
     ): ResultProps {
         const title =
             product.variants.length > 1 && variant.title
@@ -36,6 +35,7 @@ export default class VariantResult extends React.PureComponent<Props> {
                 : product.image
 
         return {
+            // $FlowFixMe
             image,
             title,
             subtitle: variant.sku ? `SKU: ${variant.sku}` : null,
@@ -53,6 +53,7 @@ export default class VariantResult extends React.PureComponent<Props> {
         const dataMapper = VariantResult._dataMappers[integrationType]
         const resultProps = dataMapper ? dataMapper(product, variant) : null
 
+        // $FlowFixMe
         return <Result {...resultProps} />
     }
 }

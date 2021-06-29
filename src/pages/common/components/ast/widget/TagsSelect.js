@@ -1,7 +1,9 @@
+// @flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import _isString from 'lodash/isString'
+import {type Map} from 'immutable'
 
 import MultiSelectField from '../../../forms/MultiSelectField'
 import SelectField from '../../../forms/SelectField'
@@ -9,7 +11,7 @@ import * as TagsActions from '../../../../../state/tags/actions.ts'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu.tsx'
 
 type Props = {
-    tags: ?Object,
+    tags: Map<any, any>,
     value: ?string,
     onChange: Function,
     multiple: ?boolean,
@@ -24,7 +26,7 @@ export class TagsSelectContainer extends Component<Props> {
         multiple: false,
     }
 
-    _onChange = (val) => {
+    _onChange = (val: string[]) => {
         const {multiple, value, tags, actions} = this.props
         const existingTagNames = tags.map((tag) => tag.get('name')).toJS()
 
@@ -54,7 +56,8 @@ export class TagsSelectContainer extends Component<Props> {
                 }
             })
             .toJS()
-        let values = value
+        // $TsFixMe remove any casting on migration
+        let values: any = value
 
         if (multiple) {
             // this component is used to select tags for `add tags` and `set tags` actions
@@ -83,7 +86,10 @@ export class TagsSelectContainer extends Component<Props> {
             <SelectField
                 allowCustomValue
                 options={options}
-                onChange={this._onChange}
+                onChange={
+                    // $FlowFixMe
+                    this._onChange
+                }
                 placeholder="Add a tag"
                 singular="tag"
                 style={style}

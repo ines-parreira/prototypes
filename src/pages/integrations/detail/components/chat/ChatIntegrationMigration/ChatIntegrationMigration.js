@@ -1,10 +1,11 @@
+// @flow
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Alert} from 'reactstrap'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
@@ -35,7 +36,7 @@ export class ChatIntegrationMigration extends React.Component<Props, State> {
         })
     }
 
-    _migrate = async (event) => {
+    _migrate = async (event: SyntheticEvent<HTMLButtonElement>) => {
         event.preventDefault()
         const {integration} = this.props
         this.setState({isUpdating: true})

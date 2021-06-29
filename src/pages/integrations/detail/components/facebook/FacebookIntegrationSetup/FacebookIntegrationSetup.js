@@ -149,6 +149,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         if (enable) {
             // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
             const instagramDMSettingStatus = getInstagramDMSettingStatus(
+                // $FlowFixMe
                 canEnableInstagramDirectMessage,
                 integration
             )
@@ -307,6 +308,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
 
                             // Todo(@Mehdi): change this when the feature will be available to all accounts
                             const instagramDMSettingStatus = getInstagramDMSettingStatus(
+                                // $FlowFixMe
                                 canEnableInstagramDirectMessage,
                                 integration
                             )

@@ -1,3 +1,4 @@
+// @flow
 import type {List} from 'immutable'
 import axios from 'axios'
 import {updateNotification} from 'reapop'
@@ -8,7 +9,7 @@ import {buildJobMessage} from '../../utils/notificationUtils.ts'
 
 import * as types from './constants'
 
-export const updateCursor = (cursor) => (dispatch) => {
+export const updateCursor = (cursor: string) => (dispatch: Dispatch) => {
     return dispatch({
         type: types.UPDATE_CURSOR,
         cursor,
@@ -30,7 +31,8 @@ export function createJob(
             ),
         }
 
-        const notification = dispatch(
+        // $TsFixMe remove casting on migration
+        const notification: any = dispatch(
             notify({
                 status: 'loading',
                 dismissAfter: 0,

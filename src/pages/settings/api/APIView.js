@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import {connect} from 'react-redux'
 import Clipboard from 'clipboard'
@@ -54,6 +55,7 @@ export class APIViewComponent extends React.Component<Props, State> {
                     // eslint-disable-next-line no-param-reassign
                     ((n = o.createElement('script')),
                     (n.id = s + t),
+                    // $FlowFixMe
                     (n.async = 1),
                     (n.src = m),
                     n)

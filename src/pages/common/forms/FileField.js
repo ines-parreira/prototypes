@@ -6,7 +6,7 @@ import {Button, Input} from 'reactstrap'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
-import type {attachmentType} from '../../../state/types'
+import type {attachmentType} from '../../../types'
 import {uploadFiles} from '../../../utils.ts'
 import {getFileTooLargeError} from '../../../utils/file.ts'
 
@@ -47,9 +47,9 @@ export class FileField extends InputField<Props, State> {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 
-    // TODO (@ghinda) switch to SyntheticEvent<HTMLInputElement> after react upgrade
-    _onChange = (event: {target: {files: FileList}}) => {
-        const files = event.target.files
+    _onChange = (event: SyntheticEvent<HTMLInputElement>) => {
+        // $FlowFixMe
+        const files: any = event.target.files
         const filesArray = Array.from(files)
         if (
             this.props.maxSize &&

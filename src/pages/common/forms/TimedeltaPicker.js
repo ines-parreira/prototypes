@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import _find from 'lodash/find'
 import {
@@ -43,7 +44,7 @@ const UNITS = [
 const MAX_QUANTITY = 9999
 
 export default class TimedeltaPicker extends React.Component<Props, State> {
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
         const {value} = this.props
         const units = this.props.units ? this.props.units : UNITS
@@ -64,13 +65,13 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
         }
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    componentWillReceiveProps = (nextProps: Props) => {
         if (isTimedelta(nextProps.value)) {
             this.setState(this._buildValue(nextProps.value))
         }
     }
 
-    _buildValue = (value) => {
+    _buildValue = (value: string) => {
         const quantity = value
             ? parseInt(value.replace(/[^\d]/g, ''))
             : TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
@@ -81,16 +82,16 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
         return {quantity, unit}
     }
 
-    _onChange = (quantity, unit) => {
+    _onChange = (quantity: number, unit: string) => {
         this.props.onChange(`${quantity}${unit}`)
     }
 
-    _onUnitChange = (unit) => {
+    _onUnitChange = (unit: string) => {
         this.setState({unit})
         this._onChange(this.state.quantity, unit)
     }
 
-    _onQuantityChange = (quantity) => {
+    _onQuantityChange = (quantity: number) => {
         if (quantity > MAX_QUANTITY) {
             return
         }
@@ -104,6 +105,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
     }
 
     render() {
+        // $FlowFixMe
         const unitLabel = _find(
             this.state.units,
             (unit) => unit.value === this.state.unit

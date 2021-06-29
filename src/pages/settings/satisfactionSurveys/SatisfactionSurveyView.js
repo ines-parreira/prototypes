@@ -1,7 +1,10 @@
+// @flow
 import React from 'react'
 import classnames from 'classnames'
 import {Form, FormGroup, Button, Container} from 'reactstrap'
 import {connect} from 'react-redux'
+import {type Map} from 'immutable'
+import {type EditorState} from 'draft-js'
 
 import {convertToHTML, getPlainText} from '../../../utils/editor.tsx'
 
@@ -18,11 +21,20 @@ import * as currentAccountConstants from '../../../state/currentAccount/constant
 import {DELAY_SURVEY_FOR} from './../../../config.ts'
 
 type Props = {
-    submitSetting: Object,
+    submitSetting: (settings: {
+        id: number,
+        type: string,
+        data: Object,
+    }) => Promise<void>,
     surveysSettings: Object,
 }
 
-class SatisfactionSurveyView extends React.Component<Props> {
+type State = {
+    isLoading: boolean,
+    settings: Map<any, any>,
+}
+
+class SatisfactionSurveyView extends React.Component<Props, State> {
     constructor(props) {
         super(props)
 
@@ -32,7 +44,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
         }
     }
 
-    _updateSurveyEmail = (editorState) => {
+    _updateSurveyEmail = (editorState: EditorState) => {
         const contentState = editorState.getCurrentContent()
 
         this.setState((prevState) => ({
@@ -54,7 +66,7 @@ class SatisfactionSurveyView extends React.Component<Props> {
             data: this.state.settings.toJS(),
         }
 
-        return this.props.submitSetting(newSettings, true).then(() => {
+        return this.props.submitSetting(newSettings).then(() => {
             this.setState({isLoading: false})
         })
     }

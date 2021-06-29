@@ -1,4 +1,6 @@
+// @flow
 import React from 'react'
+import {type Map} from 'immutable'
 
 import {connect} from 'react-redux'
 
@@ -7,7 +9,7 @@ import Select from './ReactSelect.tsx'
 type Props = {
     actions: ?Object,
     onChange: () => void,
-    schemas: ?Object,
+    schemas: Map<any, any>,
     value: ?string,
     className?: ?string,
 }

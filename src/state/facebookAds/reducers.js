@@ -1,7 +1,6 @@
+// @flow
 import type {Map} from 'immutable'
 import {fromJS} from 'immutable'
-
-import type {actionType} from '../types'
 
 import {
     ADD_LOADING_FACEBOOK_AD,
@@ -27,7 +26,8 @@ const getActivePath = (key, {integrationId, id}) => [
 
 export default function reducer(
     state: Map<*, *> = initialState,
-    action: actionType
+    // $TsFixMe replace with type GorgiasAction
+    action: any
 ): Map<*, *> {
     switch (action.type) {
         case SET_FACEBOOK_ADS_LOADING:

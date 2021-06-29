@@ -1,3 +1,4 @@
+// @flow
 import querystring from 'querystring'
 import url from 'url'
 
@@ -22,7 +23,8 @@ import {ViewVisibility} from '../../constants/view.ts'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
-        let apiMock = null
+        // $TSFixMe remove any casting on migration
+        let apiMock: any = null
 
         beforeEach(() => {
             apiMock = new MockAdapter(axios)
@@ -42,6 +44,7 @@ describe('services', () => {
                 } catch (error) {
                     errorCaught = error
                 }
+                // $FlowFixMe
                 expect(errorCaught.message).toMatchSnapshot()
             })
 

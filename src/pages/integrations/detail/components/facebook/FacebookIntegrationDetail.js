@@ -220,6 +220,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
 
         //Todo(@Mehdi): change this when the feature is available for all accounts
         const instagramDMSettingStatus = getInstagramDMSettingStatus(
+            // $FlowFixMe
             canEnableInstagramDirectMessage,
             integration
         )

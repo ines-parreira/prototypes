@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
@@ -8,8 +9,9 @@ import {
     setFacebookAdsLoading,
     updateFacebookAdsActiveAd,
 } from '../../../../../../state/facebookAds/actions'
+import type {Dispatch} from '../../../../../../state/types'
 
-export const fetchAds = () => async (dispatch) => {
+export const fetchAds = () => async (dispatch: Dispatch) => {
     try {
         dispatch(setFacebookAdsLoading(true))
         const response = await axios.get('/integrations/facebook/fads/state/')
@@ -30,7 +32,7 @@ export const updateAd = (
     integrationId: number,
     adId: string,
     isActive: boolean
-) => async (dispatch) => {
+) => async (dispatch: Dispatch) => {
     try {
         dispatch(addFacebookAdsLoadingAd(adId))
 

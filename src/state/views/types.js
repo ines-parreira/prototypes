@@ -1,3 +1,4 @@
+// @flow
 export type ViewNavDirection = 'prev' | 'next'
 
 export type viewsStateType = Map<*, *>

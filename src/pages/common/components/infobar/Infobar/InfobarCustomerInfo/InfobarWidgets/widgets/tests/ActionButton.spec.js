@@ -1,4 +1,5 @@
-import React, {ReactNode} from 'react'
+// @flow
+import React, {type Node as ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import {render, cleanup} from '@testing-library/react'
@@ -38,7 +39,13 @@ ActionButtonContextProvider.childContextTypes = {
 }
 
 describe('ActionButton component', () => {
-    const commonAttributes = {
+    const commonAttributes: {
+        key: string,
+        popover: string,
+        title: ReactNode,
+        child: ReactNode,
+        tooltip?: string,
+    } = {
         key: 'foo',
         popover: 'This action is little, but it is powerful.',
         title: (

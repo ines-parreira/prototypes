@@ -1,5 +1,6 @@
+// @flow
 import React from 'react'
-import {fromJS, Map} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import {Badge} from 'reactstrap'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
@@ -50,7 +51,7 @@ const Raven = window.Raven
  * @param value
  * @returns {*|boolean}
  */
-export function isArrayOfObjects(value) {
+export function isArrayOfObjects(value: any) {
     return _isArray(value) && !!value.length && _isObject(value[0])
 }
 
@@ -59,7 +60,7 @@ export function isArrayOfObjects(value) {
  * @param value
  * @returns {boolean}
  */
-export function isObject(value) {
+export function isObject(value: any) {
     return !!value && _isObject(value) && !_isArray(value)
 }
 
@@ -68,7 +69,7 @@ export function isObject(value) {
  * @param widget
  * @returns {boolean}
  */
-export function isSimpleTemplateWidget(widget) {
+export function isSimpleTemplateWidget(widget: Map<any, any>) {
     return !['card', 'list'].includes(widget.get('type'))
 }
 
@@ -78,11 +79,11 @@ export function isSimpleTemplateWidget(widget) {
  * @param widget
  * @returns {boolean}
  */
-export function hasNoSimpleWidget(widget) {
+export function hasNoSimpleWidget(widget: Map<any, any>) {
     return !widget.get('widgets', fromJS([])).some(isSimpleTemplateWidget)
 }
 
-export function isUppercase(string) {
+export function isUppercase(string: string) {
     return string === string.toUpperCase()
 }
 
@@ -91,7 +92,7 @@ export function isUppercase(string) {
  * @param data
  * @returns {boolean}
  */
-export const isCustomerDataValid = (data) => {
+export const isCustomerDataValid = (data: any) => {
     return !!data && utils.isImmutable(data)
 }
 
@@ -100,7 +101,7 @@ export const isCustomerDataValid = (data) => {
  * @param data
  * @returns {boolean}
  */
-export const isCustomerDataPresent = (data) => {
+export const isCustomerDataPresent = (data: any) => {
     return isCustomerDataValid(data) && !data.isEmpty()
 }
 
@@ -110,7 +111,7 @@ export const isCustomerDataPresent = (data) => {
  * @param path
  * @returns {*}
  */
-export function stripLastListsFromPath(path = []) {
+export function stripLastListsFromPath(path?: any[] = []) {
     let newPath = path
 
     while (_last(newPath) === '[]') {
@@ -126,7 +127,7 @@ export function stripLastListsFromPath(path = []) {
  * @param group (= absolute path OR 'root')
  * @returns {*}
  */
-export function isRootSource(group) {
+export function isRootSource(group: string) {
     return group === 'root'
 }
 
@@ -135,7 +136,7 @@ export function isRootSource(group) {
  * @param string
  * @returns {boolean|*}
  */
-export function isDate(string) {
+export function isDate(string: string) {
     const formats = [
         'YYYY-MM-DD LT',
         'YYYY-MM-DD h:mm:ss A',
@@ -158,7 +159,7 @@ export function isDate(string) {
  * @param string
  * @returns {boolean}
  */
-export function isBoolean(string) {
+export function isBoolean(string: any) {
     if (_isBoolean(string)) {
         return true
     }
@@ -180,7 +181,7 @@ export function isBoolean(string) {
 export function areSourcesReady(
     sources: Map<any, any>,
     context: string,
-    everySources = false
+    everySources?: boolean = false
 ): boolean {
     // for every source
     const currentSource = sources.get(context)
@@ -212,7 +213,7 @@ export function areSourcesReady(
  * @param source
  * @returns {boolean}
  */
-export function canDisplayWidget(widget, source) {
+export function canDisplayWidget(widget: Map<any, any>, source: Map<any, any>) {
     if (widget.get('type') !== 'wrapper') {
         return false
     }
@@ -236,7 +237,11 @@ export function canDisplayWidget(widget, source) {
     return ready && !isWidgetEmpty(widget, source)
 }
 
-export function isWidgetEmpty(widget, source, path = []) {
+export function isWidgetEmpty(
+    widget: Map<any, any>,
+    source: Map<any, any>,
+    path?: string[] = []
+) {
     switch (widget.get('type')) {
         case 'wrapper': {
             const subPath = widget.get('path')
@@ -281,6 +286,13 @@ export function makeWrapper({
     sourcePath,
     widgetType,
     integrationId,
+}: {
+    order: number,
+    context: string,
+    child: Map<any, any>,
+    sourcePath: string,
+    widgetType: ?string,
+    integrationId: ?number,
 }) {
     let type = getContextFromSourcePath(sourcePath).type
 
@@ -321,11 +333,19 @@ export function makeWrapper({
  * @param isChildOfList
  * @returns {*}
  */
-export function jsonToWidget(value, key = '', isChildOfList = false) {
+export function jsonToWidget(
+    value: any,
+    key?: string = '',
+    isChildOfList?: boolean = false
+) {
     try {
         // if array of objects
         if (isArrayOfObjects(value)) {
-            const response = {
+            const response: {
+                path?: string,
+                type: string,
+                widgets: Object[],
+            } = {
                 type: 'list',
                 widgets: [jsonToWidget(value[0], key, true)],
             }
@@ -340,7 +360,9 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
         // if object (and not an array, since Array is an Object in JS)
         if (isObject(value)) {
             // remove private keys from source
-            const filteredValue = _omitBy(value, (v, k) => k.startsWith('_'))
+            const filteredValue = _omitBy(value, (v, k: string) =>
+                k.startsWith('_')
+            )
 
             let enhancedValues = {}
 
@@ -361,7 +383,12 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
             const widgets = []
             _forIn(enhancedValues, (v, k) => widgets.push(jsonToWidget(v, k)))
 
-            const response = {
+            const response: {
+                type: string,
+                title: string,
+                widgets: Object[],
+                path?: string,
+            } = {
                 type: 'card',
                 title: utils.humanizeString(key),
                 widgets,
@@ -391,7 +418,11 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
             type = 'date'
         }
 
-        const response = {
+        const response: {
+            type: string,
+            title: string,
+            path?: string,
+        } = {
             type,
             title: isUppercase(key) ? key : utils.humanizeString(key),
         }
@@ -429,7 +460,10 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
  * @param context
  * @returns {*}
  */
-export function jsonToWidgets(json: Object, context = 'ticket'): Array {
+export function jsonToWidgets(
+    json: Object,
+    context?: string = 'ticket'
+): any[] {
     const defaultResponse = []
 
     try {
@@ -467,7 +501,7 @@ export function jsonToWidgets(json: Object, context = 'ticket'): Array {
             let source = _get(json, sourcePath, {})
 
             // remove private keys from source before we transform it into a template
-            source = _omitBy(source, (v, k) => k.startsWith('_'))
+            source = _omitBy(source, (v, k: string) => k.startsWith('_'))
 
             if (!source || !_size(source)) {
                 return null
@@ -519,13 +553,13 @@ export function jsonToWidgets(json: Object, context = 'ticket'): Array {
  * @param targetAbsolutePath
  * @returns {boolean}
  */
-export function canDrop(group = '', targetAbsolutePath = '') {
+export function canDrop(group?: string = '', targetAbsolutePath?: string = '') {
     // root source
     if (isRootSource(group)) {
         return !targetAbsolutePath
     }
 
-    return group === targetAbsolutePath.join('.')
+    return group === (targetAbsolutePath: any).join('.')
 }
 
 /**
@@ -536,9 +570,9 @@ export function canDrop(group = '', targetAbsolutePath = '') {
  * @returns {{updatedWidget: *, data: *, type: *, path: *}}
  */
 export function prepareWidgetToDisplay(
-    template = fromJS({}),
-    source = fromJS({}),
-    parent
+    template?: Map<any, any> = fromJS({}),
+    source?: Map<any, any> = fromJS({}),
+    parent: Map<any, any>
 ) {
     // build absolute path of widget
     const parentPath =
@@ -594,7 +628,7 @@ export const StarRatingColors = Object.freeze({
  * @param type
  * @returns {string}
  */
-export function guessFieldValueFromRawData(data, type) {
+export function guessFieldValueFromRawData(data: any, type: string) {
     let fieldValue = ''
 
     if (_isUndefined(data) || _isNull(data)) {
@@ -764,7 +798,7 @@ export function guessFieldValueFromRawData(data, type) {
  * @param label
  * @returns {*}
  */
-export const displayLabel = (label) => {
+export const displayLabel = (label: any) => {
     const defaultLabel = '-'
 
     if (_isUndefined(label)) {
@@ -787,7 +821,7 @@ export const displayLabel = (label) => {
  * @param timezoneOffset {string} // '+0100' (e.g: for Paris)
  * @returns {string}
  */
-export function getLocalTime(timezoneOffset) {
+export function getLocalTime(timezoneOffset: string) {
     const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
     const localTime = moment.utc().utcOffset(timezoneDifference)
 
@@ -802,9 +836,9 @@ export function getLocalTime(timezoneOffset) {
  * @returns {string}
  */
 export function getDisplayCustomerLastSeenOnChat(
-    customerLastSeenOnChatUtcDateTimeStamp,
-    timezone,
-    referenceDay = null
+    customerLastSeenOnChatUtcDateTimeStamp: number,
+    timezone: string,
+    referenceDay?: any = null
 ) {
     const now = momentTimezone.utc()
     const customerLastSeenOnChatUtcDateTime = momentTimezone.utc(

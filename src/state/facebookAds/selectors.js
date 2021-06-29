@@ -1,3 +1,4 @@
+// @flow
 import {fromJS} from 'immutable'
 
 import type {stateType} from '../types'

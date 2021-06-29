@@ -26,7 +26,7 @@ type Props = {
     currentUser: Map<*, *>,
     channels: List<Map<*, *>>,
     customerLocationInfo: Map<any, any>,
-    customerLastSeenOnChat: string,
+    customerLastSeenOnChat: number,
     children: Node,
 }
 

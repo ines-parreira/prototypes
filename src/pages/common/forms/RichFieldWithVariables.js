@@ -1,3 +1,4 @@
+// @flow
 import React, {Component} from 'react'
 import {
     Button,
@@ -28,7 +29,11 @@ type Props = {
 }
 
 export default class RichFieldWithVariables extends Component<Props> {
-    _insertText = (text) => {
+    // $TsFixMe should be of type RichField
+    richArea: any
+    id: ?string
+
+    _insertText = (text: string) => {
         if (!this.richArea) {
             return
         }

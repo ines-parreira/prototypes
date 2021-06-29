@@ -1,3 +1,4 @@
+// @flow
 import {
     ADD_LOADING_FACEBOOK_AD,
     REMOVE_LOADING_FACEBOOK_AD,

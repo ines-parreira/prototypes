@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
@@ -19,6 +20,7 @@ export default class ProductResult extends React.PureComponent<Props> {
         const sku = variant.sku ? `SKU: ${variant.sku}` : null
 
         return {
+            // $FlowFixMe
             image: product.image,
             title: product.title,
             subtitle:
@@ -27,9 +29,11 @@ export default class ProductResult extends React.PureComponent<Props> {
                     : sku,
             stock: {
                 tracked: product.variants.every(
+                    // $FlowFixMe
                     (variant) => !!variant.inventory_management
                 ),
                 quantity: product.variants.reduce(
+                    // $FlowFixMe
                     (total, variant) => total + variant.inventory_quantity,
                     0
                 ),
@@ -45,6 +49,7 @@ export default class ProductResult extends React.PureComponent<Props> {
         const dataMapper = ProductResult._dataMappers[integrationType]
         const resultProps = dataMapper ? dataMapper(product) : null
 
+        //$FlowFixMe
         return <Result {...resultProps} />
     }
 }
