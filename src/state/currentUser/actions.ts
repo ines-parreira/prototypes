@@ -114,19 +114,26 @@ export function submitSetting(data: UserSetting, notification: boolean) {
         })
 
         if (data.id != null) {
-            promise = axios.put<UserSetting>(
-                `/api/users/0/settings/${data.id}/`,
-                data
-            )
+            promise = axios.put<
+                UserSetting & Omit<{[key: string]: unknown}, keyof UserSetting>
+            >(`/api/users/0/settings/${data.id}/`, data)
         } else {
-            promise = axios.post<UserSetting>('/api/users/0/settings/', data)
+            promise = axios.post<
+                UserSetting & Omit<{[key: string]: unknown}, keyof UserSetting>
+            >('/api/users/0/settings/', data)
         }
 
         return promise
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    dispatch(submitSettingSuccess(data, !!data.id))
+                    const {id, type, data: respData} = resp
+                    dispatch(
+                        submitSettingSuccess(
+                            {id, type, data: respData} as UserSetting,
+                            !!data.id
+                        )
+                    )
 
                     // Refresh chat tickets if the current user updates his availability
                     if (

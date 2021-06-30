@@ -44,7 +44,9 @@ describe('current user actions', () => {
         it('creation', () => {
             const data = {type: 'macro', hello: 'world', data: {}}
 
-            mockServer.onPost('/api/users/0/settings/').reply(200, data)
+            mockServer
+                .onPost('/api/users/0/settings/')
+                .reply(200, {...data, id: 1})
 
             return store
                 .dispatch(actions.submitSetting(data))
@@ -77,7 +79,9 @@ describe('current user actions', () => {
             const chats = {
                 tickets: [{id: 1}],
             }
-            mockServer.onPost('/api/users/0/settings/').reply(200, newSetting)
+            mockServer
+                .onPost('/api/users/0/settings/')
+                .reply(200, {...newSetting, id: 1})
             mockServer.onGet('/api/activity/chats/').reply(200, chats)
 
             return store
