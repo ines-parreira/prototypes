@@ -20,7 +20,7 @@ describe('<BillingComparisonPlanCard />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        getCurrentPlanSpy = jest.spyOn(billingSelectors, 'currentPlan')
+        getCurrentPlanSpy = jest.spyOn(billingSelectors, 'getCurrentPlan')
         getCurrentPlanSpy.mockImplementation(
             () => fromJS(basicPlan) as Map<any, any>
         )
@@ -89,7 +89,7 @@ describe('<BillingComparisonPlanCard />', () => {
                 />
             </Provider>
         )
-        fireEvent.click(getByRole('button', {name: 'Change plan'}))
+        fireEvent.click(getByRole('button', {name: 'Upgrade to Pro Plan'}))
         expect(getByRole('tooltip')).toMatchSnapshot()
     })
 
@@ -105,7 +105,7 @@ describe('<BillingComparisonPlanCard />', () => {
                 />
             </Provider>
         )
-        fireEvent.click(getByRole('button', {name: 'Change plan'}))
+        fireEvent.click(getByRole('button', {name: 'Downgrade to Basic Plan'}))
         expect(getByRole('tooltip')).toMatchSnapshot()
     })
 
@@ -119,7 +119,7 @@ describe('<BillingComparisonPlanCard />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByRole('button', {name: 'Change plan'}))
+        fireEvent.click(getByRole('button', {name: 'Upgrade to Pro Plan'}))
         fireEvent.click(getByRole('button', {name: 'Confirm plan change'}))
 
         expect(onPlanChangeMock).toHaveBeenCalledWith()

@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
-import {currentPlan as getCurrentPlan} from '../../../../state/billing/selectors'
+import {getCurrentPlan} from '../../../../state/billing/selectors'
 import {RootState} from '../../../../state/types'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
 import {isFeatureEnabled} from '../../../../utils/account'
@@ -63,6 +63,15 @@ export default function BillingComparisonPlanCard({
                 ) as Map<any, any>).toJS()
             )
     const canChoosePlan = !isCurrentPlan && !isUpdating
+    const switchPlanButtonText = isCurrentPlan
+        ? 'Current Plan'
+        : `${
+              plan.name === currentPlan.get('name')
+                  ? 'Switch'
+                  : isDowngrade
+                  ? 'Downgrade'
+                  : 'Upgrade'
+          } to ${plan.name} Plan`
     return (
         <BillingPlanCard
             {...billingCardProps}
@@ -86,7 +95,7 @@ export default function BillingComparisonPlanCard({
             footer={
                 <>
                     <Button
-                        aria-label="Change plan"
+                        aria-label={switchPlanButtonText}
                         innerRef={buttonRef}
                         className={classNames({
                             'btn-loading': isUpdating,
@@ -101,15 +110,7 @@ export default function BillingComparisonPlanCard({
                             }
                         }}
                     >
-                        {isCurrentPlan
-                            ? 'Current Plan'
-                            : `${
-                                  plan.name === currentPlan.get('name')
-                                      ? 'Switch'
-                                      : isDowngrade
-                                      ? 'Downgrade'
-                                      : 'Upgrade'
-                              } to ${plan.name} Plan`}
+                        {switchPlanButtonText}
                     </Button>
                     {buttonRef.current && (
                         <Popover

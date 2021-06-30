@@ -1,0 +1,4424 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BillingPlansComparison /> should display notification when not allowed to change plan on plan change 1`] = `
+Array [
+  Array [
+    Object {
+      "message": "You cannot change your current plan because you have too many active integrations. Delete or deactivate a few integrations and try again.",
+      "status": "error",
+    },
+  ],
+]
+`;
+
+exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
+<div
+  class="page-container planContainer container-fluid"
+>
+  <div
+    class="intervalToggle"
+  >
+    <div
+      class="btn-group"
+      role="group"
+    >
+      <button
+        aria-label="Monthly interval"
+        class="btn btn-primary"
+        type="button"
+      >
+        Monthly
+      </button>
+      <button
+        aria-label="Yearly interval"
+        class="btn btn-secondary"
+        type="button"
+      >
+        Yearly
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-5 card-deck"
+  >
+    <div
+      class="plan greyTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div>
+          <div
+            class="d-inline-flex cursor-pointer"
+          >
+            <span
+              class="d-inline-flex flex-row badge badge-danger"
+            >
+              <i
+                class="material-icons"
+              >
+                warning
+              </i>
+              <div
+                class="ml-1"
+              >
+                LEGACY PLAN
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="headerText"
+        >
+          <strong>
+            Standard
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $30 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                350
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="standard-usd-1-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                25.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_bike
+              </i>
+            </span>
+            <span>
+              Lite onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Current Plan"
+          class="btn btn-link disabled"
+          disabled=""
+          type="button"
+        >
+          Current Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan blueTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Basic
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $60 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                350
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="basic-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                25.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_walk
+              </i>
+            </span>
+            <span>
+              Self onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Downgrade to Basic Plan"
+          class="btn btn-link"
+          type="button"
+        >
+          Downgrade to Basic Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan navyTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Pro
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $300 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                2000
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="pro-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                23.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_bike
+              </i>
+            </span>
+            <span>
+              Lite onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                3
+              </b>
+               Phone numbers
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Pro Plan"
+          class="btn btn-link"
+          type="button"
+        >
+          Upgrade to Pro Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan greenTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Advanced
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $700 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                3000
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="advanced-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                20.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_car
+              </i>
+            </span>
+            <span>
+              Full onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                10
+              </b>
+               Phone numbers
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Advanced Plan"
+          class="btn btn-link"
+          type="button"
+        >
+          Upgrade to Advanced Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan goldTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Enterprise
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            Custom price
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              Discounted prices for
+               
+              <b>
+                volumes of 10.000+ billable tickets
+              </b>
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                beach_access
+              </i>
+            </span>
+            <span>
+              Premium support
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              Custom limit of integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_car
+              </i>
+            </span>
+            <span>
+              Full onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Contact us"
+          class="btn btn-link"
+          type="button"
+        >
+          Contact us
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BillingPlansComparison /> should render available plans 1`] = `
+<div
+  class="page-container planContainer container-fluid"
+>
+  <div
+    class="intervalToggle"
+  >
+    <div
+      class="btn-group"
+      role="group"
+    >
+      <button
+        aria-label="Monthly interval"
+        class="btn btn-primary"
+        type="button"
+      >
+        Monthly
+      </button>
+      <button
+        aria-label="Yearly interval"
+        class="btn btn-secondary"
+        type="button"
+      >
+        Yearly
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-5 card-deck"
+  >
+    <div
+      class="plan blueTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Basic
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $60 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                350
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="basic-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                25.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_walk
+              </i>
+            </span>
+            <span>
+              Self onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Basic Plan"
+          class="btn btn-link"
+          type="button"
+        >
+          Upgrade to Basic Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan navyTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Pro
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $300 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                2000
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="pro-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                23.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_bike
+              </i>
+            </span>
+            <span>
+              Lite onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                3
+              </b>
+               Phone numbers
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Pro Plan"
+          class="btn btn-link"
+          type="button"
+        >
+          Upgrade to Pro Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan greenTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Advanced
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $700 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                3000
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="advanced-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                20.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_car
+              </i>
+            </span>
+            <span>
+              Full onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                10
+              </b>
+               Phone numbers
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Advanced Plan"
+          class="btn btn-link"
+          type="button"
+        >
+          Upgrade to Advanced Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan goldTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Enterprise
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            Custom price
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              Discounted prices for
+               
+              <b>
+                volumes of 10.000+ billable tickets
+              </b>
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                beach_access
+              </i>
+            </span>
+            <span>
+              Premium support
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              Custom limit of integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_car
+              </i>
+            </span>
+            <span>
+              Full onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Contact us"
+          class="btn btn-link"
+          type="button"
+        >
+          Contact us
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BillingPlansComparison /> should set plan cards to updating while plan is being updated 1`] = `
+<div
+  class="page-container planContainer container-fluid"
+>
+  <div
+    class="intervalToggle"
+  >
+    <div
+      class="btn-group"
+      role="group"
+    >
+      <button
+        aria-label="Monthly interval"
+        class="btn btn-primary"
+        type="button"
+      >
+        Monthly
+      </button>
+      <button
+        aria-label="Yearly interval"
+        class="btn btn-secondary"
+        type="button"
+      >
+        Yearly
+      </button>
+    </div>
+  </div>
+  <div
+    class="mb-5 card-deck"
+  >
+    <div
+      class="plan greyTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div>
+          <span
+            class="currentPlanBadge badge badge-primary"
+          >
+            CURRENT PLAN
+          </span>
+        </div>
+        <div
+          class="headerText"
+        >
+          <strong>
+            Basic
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $60 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                350
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="basic-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                25.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_walk
+              </i>
+            </span>
+            <span>
+              Self onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Current Plan"
+          class="btn-loading btn btn-link disabled"
+          disabled=""
+          type="button"
+        >
+          Current Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan navyTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Pro
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $300 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                2000
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="pro-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                23.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_bike
+              </i>
+            </span>
+            <span>
+              Lite onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                3
+              </b>
+               Phone numbers
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Pro Plan"
+          class="btn-loading btn btn-link disabled"
+          disabled=""
+          type="button"
+        >
+          Upgrade to Pro Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan greenTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Advanced
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            $700 / mo
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <b>
+                3000
+              </b>
+               
+              <span
+                class="billableTickets"
+                id="advanced-monthly-billable-ticket-label"
+              >
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add
+              </i>
+            </span>
+            <span>
+              <b>
+                $
+                20.00
+              </b>
+               
+              per 
+              100
+               extra tickets
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              <b>
+                200
+              </b>
+               integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_car
+              </i>
+            </span>
+            <span>
+              Full onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                10
+              </b>
+               Phone numbers
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Upgrade to Advanced Plan"
+          class="btn-loading btn btn-link disabled"
+          disabled=""
+          type="button"
+        >
+          Upgrade to Advanced Plan
+        </button>
+      </div>
+    </div>
+    <div
+      class="plan goldTheme mt-4 card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <strong>
+            Enterprise
+          </strong>
+          <span
+            class="headerPrice"
+          >
+            Custom price
+          </span>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              Discounted prices for
+               
+              <b>
+                volumes of 10.000+ billable tickets
+              </b>
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                beach_access
+              </i>
+            </span>
+            <span>
+              Premium support
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                code
+              </i>
+            </span>
+            <span>
+              Custom limit of integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up_alt
+              </i>
+            </span>
+            <span>
+              Social media integrations
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_car
+              </i>
+            </span>
+            <span>
+              Full onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                supervised_user_circle
+              </i>
+            </span>
+            <span>
+              User permissions
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                chat
+              </i>
+            </span>
+            <span>
+              Chat campaigns
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              Phone
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                people_outline
+              </i>
+            </span>
+            <span>
+              Team Management
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                view_carousel
+              </i>
+            </span>
+            <span>
+              View sharing
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <button
+          aria-label="Contact us"
+          class="btn btn-link"
+          type="button"
+        >
+          Contact us
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BillingPlansComparison /> should update subscription and call onSubscriptionChange callback on plan change  1`] = `
+Array [
+  Object {
+    "planId": "pro-monthly",
+    "type": "SET_FUTURE_SUBSCRIPTION_PLAN",
+  },
+]
+`;

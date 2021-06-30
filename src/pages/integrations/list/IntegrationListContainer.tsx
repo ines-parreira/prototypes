@@ -6,7 +6,7 @@ import {fetchIntegrations} from '../../../state/integrations/actions'
 import {
     getBillingState,
     planIntegrations,
-    currentPlan,
+    getCurrentPlan,
 } from '../../../state/billing/selectors'
 import {
     getActiveIntegrations,
@@ -45,7 +45,7 @@ const connector = connect(
     (state: RootState) => ({
         activeIntegrations: getActiveIntegrations(state).size,
         allowedIntegrations: planIntegrations(state),
-        currentPlan: currentPlan(state),
+        currentPlan: getCurrentPlan(state),
         integrations: getIntegrations(state),
         integrationsConfig: getIntegrationsConfig(state),
         plans: getBillingState(state).get('plans'),

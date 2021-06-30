@@ -1,29 +1,46 @@
-import React from 'react'
-import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
-import _noop from 'lodash/noop'
+import {createMemoryHistory} from 'history'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {fireEvent} from '@testing-library/react'
 
-import {BillingPlans} from '../BillingPlans.js'
+import history from '../../../../history'
+import BillingPlans from '../BillingPlans'
 import {
     basicPlan,
     proPlan,
-    customPlan,
     advancedPlan,
-    legacyPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {account} from '../../../../../fixtures/account'
+import BillingPlansComparison from '../BillingPlansComparison'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import {billingState} from '../../../../../fixtures/billing'
+import {renderWithRouter} from '../../../../../utils/testing'
 
-jest.mock('../PlanCard', () => {
-    return {
-        __esModule: true,
-        default: () => <div>PlanCard mock</div>,
-        PlanCardTheme: {},
-    }
-})
-jest.mock('../BillingPlanCard', () => () => <div>BillingPlanCard mock</div>)
-jest.mock('../BillingComparisonPlanCard', () => () => (
-    <div>BillingComparisonPlanCard mock</div>
-))
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+let mockPreviousSubscription: Map<any, any>
+
+jest.mock('../../../../history')
+jest.mock(
+    '../BillingPlansComparison',
+    () => ({
+        openedPlanPopover,
+        onSubscriptionChanged,
+    }: ComponentProps<typeof BillingPlansComparison>) => (
+        <div>
+            BillingPlansComparison mock, openedPlanPopover: {openedPlanPopover}
+            <button
+                value="Subscription changed"
+                data-testid="subscription-changed"
+                onClick={() => {
+                    onSubscriptionChanged(mockPreviousSubscription)
+                }}
+            />
+        </div>
+    )
+)
 
 describe('<BillingPlans/>', () => {
     const publicPlans = {
@@ -31,73 +48,126 @@ describe('<BillingPlans/>', () => {
         [proPlan.id]: proPlan,
         [advancedPlan.id]: advancedPlan,
     }
-    const accountWithLegacyFeatures = (fromJS(account) as Map<
-        string,
-        unknown
-    >).setIn(['meta', 'has_legacy_features'], true)
-    const accountWithNewFeatures = fromJS(account)
+    const defaultState: Partial<RootState> = {
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                ...account.current_subscription,
+                plan: Object.values(publicPlans)[0]!.id,
+            },
+        }),
+        billing: fromJS({
+            ...billingState,
+            plans: publicPlans,
+        }),
+    }
 
-    it.each([
-        [
-            'with available plans (without current plan)',
-            {
-                currentPlan: fromJS({}),
-            },
-        ],
-        [
-            'with available plans (legacy plan)',
-            {
-                currentPlan: fromJS(legacyPlan),
-                plans: fromJS({
-                    [legacyPlan.id]: legacyPlan,
-                    ...publicPlans,
-                }),
-                accountHasLegacyPlan: true,
-            },
-        ],
-        [
-            'with available plans (plan with legacy features)',
-            {
-                currentAccount: accountWithLegacyFeatures,
-                currentPlan: fromJS(basicPlan),
-                plans: fromJS(publicPlans),
-                accountHasLegacyPlan: true,
-            },
-        ],
-        ['with available plans (public plan)', {}],
-        [
-            '(custom plan)',
-            {
-                currentPlan: fromJS(customPlan),
-                plans: fromJS({
-                    [customPlan.id]: customPlan,
-                    ...publicPlans,
-                }),
-                accountHasLegacyPlan: false,
-            },
-        ],
-        [
-            'with available plans (with opened popover)',
-            {location: {state: {openedPlanPopover: proPlan.name}}},
-        ],
-    ])('should display current plan %s', (_, props) => {
-        const {container} = render(
-            <BillingPlans
-                currentAccount={accountWithNewFeatures}
-                plans={fromJS(publicPlans)}
-                subscription={fromJS({plan: basicPlan.id})}
-                currentPlan={fromJS(basicPlan)}
-                shouldPayWithShopify={false}
-                isTrialing={false}
-                notify={_noop}
-                location={fromJS({location: {state: {}}})}
-                updateSubscription={_noop}
-                isAllowedToChangePlan={_noop}
-                setFutureSubscriptionPlan={_noop}
-                accountHasLegacyPlan={false}
-                {...props}
-            />
-        )
-        expect(container.firstChild).toMatchSnapshot()
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockPreviousSubscription = fromJS({})
     })
+
+    it('it should render the component', () => {
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <BillingPlans />
+            </Provider>
+        )
+        expect(container).toMatchSnapshot()
+    })
+
+    it('it should render the initially opened plan popover', () => {
+        const history = createMemoryHistory({initialEntries: ['/']})
+        history.replace('/', {openedPlanPopover: 'Some plan'})
+        const {queryByText} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <BillingPlans />
+            </Provider>,
+            {history}
+        )
+        expect(queryByText(/Some plan/)).not.toBe(null)
+    })
+
+    it('should do nothing on subscription change when previous subscription had plan defined and the new subscription is not trialing', () => {
+        mockPreviousSubscription = fromJS({status: 'trialing'})
+        const {getByTestId} = renderWithRouter(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: defaultState.currentAccount?.set(
+                        'current_subscription',
+                        fromJS({status: 'active'})
+                    ),
+                })}
+            >
+                <BillingPlans />
+            </Provider>
+        )
+        fireEvent.click(getByTestId('subscription-changed'))
+    })
+
+    describe.each<[string, Map<any, any>, Map<any, any>]>([
+        [
+            'previous subscription did not have status defined',
+            fromJS({}),
+            fromJS({status: 'active'}),
+        ],
+        [
+            'current subscription is trialing',
+            fromJS({status: 'active'}),
+            fromJS({status: 'trialing'}),
+        ],
+    ])(
+        'subscription change when %s',
+        (testName, prevSubscription, currentSubscription) => {
+            beforeEach(() => {
+                mockPreviousSubscription = prevSubscription
+            })
+
+            it('should redirect to the billing page if have to pay with shopify', () => {
+                const {getByTestId} = renderWithRouter(
+                    <Provider
+                        store={mockStore({
+                            ...defaultState,
+                            currentAccount: defaultState.currentAccount
+                                ?.set(
+                                    'current_subscription',
+                                    currentSubscription
+                                )
+                                .setIn(
+                                    ['meta', 'should_pay_with_shopify'],
+                                    true
+                                ),
+                        })}
+                    >
+                        <BillingPlans />
+                    </Provider>
+                )
+                fireEvent.click(getByTestId('subscription-changed'))
+                expect(history.push).toHaveBeenLastCalledWith(
+                    '/app/settings/billing'
+                )
+            })
+
+            it('should redirect to the credit card page if do not have to pay with shopify', () => {
+                const {getByTestId} = renderWithRouter(
+                    <Provider
+                        store={mockStore({
+                            ...defaultState,
+                            currentAccount: defaultState.currentAccount?.set(
+                                'current_subscription',
+                                currentSubscription
+                            ),
+                        })}
+                    >
+                        <BillingPlans />
+                    </Provider>
+                )
+                fireEvent.click(getByTestId('subscription-changed'))
+                expect(history.push).toHaveBeenLastCalledWith(
+                    '/app/settings/billing/add-credit-card'
+                )
+            })
+        }
+    )
 })

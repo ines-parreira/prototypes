@@ -559,7 +559,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
 
 const mapStateToProps = (state) => ({
     currentAccount: state.currentAccount,
-    currentPlan: billingSelectors.currentPlan(state),
+    currentPlan: billingSelectors.getCurrentPlan(state),
 })
 
 export default connect(mapStateToProps)(FacebookIntegrationDetail)

@@ -331,7 +331,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
     class="cardFooter card-footer"
   >
     <button
-      aria-label="Change plan"
+      aria-label="Current Plan"
       class="btn btn-link disabled"
       disabled=""
       type="button"
@@ -666,7 +666,7 @@ exports[`<BillingComparisonPlanCard /> should render not current plan 1`] = `
     class="cardFooter card-footer"
   >
     <button
-      aria-label="Change plan"
+      aria-label="Switch to Basic Plan"
       class="btn btn-link"
       type="button"
     >
@@ -1000,7 +1000,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
     class="cardFooter card-footer"
   >
     <button
-      aria-label="Change plan"
+      aria-label="Switch to Basic Plan"
       class="btn-loading btn btn-link disabled"
       disabled=""
       type="button"

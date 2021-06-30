@@ -18,9 +18,7 @@ import {
 /***
  * Set the future subscription plan.
  */
-export const setFutureSubscriptionPlan = (
-    planId: string
-): ReturnType<StoreDispatch> => {
+export const setFutureSubscriptionPlan = (planId: string) => {
     return {
         type: constants.SET_FUTURE_SUBSCRIPTION_PLAN,
         planId,

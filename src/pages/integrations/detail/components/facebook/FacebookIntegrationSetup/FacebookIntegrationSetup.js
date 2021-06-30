@@ -766,7 +766,7 @@ const connector = connect((state) => ({
         FACEBOOK_INTEGRATION_TYPE
     )(state),
     currentAccount: state.currentAccount,
-    currentPlan: billingSelectors.currentPlan(state),
+    currentPlan: billingSelectors.getCurrentPlan(state),
 }))
 
 export default connector(FacebookIntegrationSetupContainer)

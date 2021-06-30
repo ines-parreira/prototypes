@@ -28,7 +28,7 @@ export const currentPlanId = createSelector<
     }
 )
 
-export const plans = createSelector<RootState, Map<any, any>, BillingState>(
+export const getPlans = createSelector<RootState, Map<any, any>, BillingState>(
     getBillingState,
     (state) => {
         return ((state.get('plans', fromJS({})) as Map<any, any>).sortBy(
@@ -42,16 +42,20 @@ export const plans = createSelector<RootState, Map<any, any>, BillingState>(
     }
 )
 
-export const currentPlan = createSelector<
+export const getCurrentPlan = createSelector<
     RootState,
     Map<any, any>,
     Map<any, any>,
     string
->(plans, currentPlanId, (p, id) => (p.get(id) as Map<any, any>) || fromJS({}))
+>(
+    getPlans,
+    currentPlanId,
+    (p, id) => (p.get(id) as Map<any, any>) || fromJS({})
+)
 
 export const getPlan = (planId: string) =>
     createSelector<RootState, Map<any, any>, Map<any, any>>(
-        plans,
+        getPlans,
         (p) => (p.get(planId) as Map<any, any>) || fromJS({})
     )
 
@@ -100,7 +104,7 @@ export const planIntegrations = createSelector<
     RootState,
     number,
     Map<any, any>
->(currentPlan, (plan) => plan.get('integrations', 0) as number)
+>(getCurrentPlan, (plan) => plan.get('integrations', 0) as number)
 
 export const isAllowedToCreateIntegration = createSelector<
     RootState,
@@ -134,7 +138,7 @@ export const hasLegacyPlan = createSelector<
     Map<any, any>,
     Map<any, any>
 >(
-    currentPlan,
+    getCurrentPlan,
     getCurrentAccountState as (state: RootState) => CurrentAccountState,
     (plan, account) => {
         return (

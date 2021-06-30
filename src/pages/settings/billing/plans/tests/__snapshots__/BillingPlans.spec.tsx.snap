@@ -1,829 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BillingPlans/> should display current plan (custom plan) 1`] = `
-<div
-  class="full-width"
->
+exports[`<BillingPlans/> it should render the component 1`] = `
+<div>
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="full-width"
   >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <ol
-        class="breadcrumb"
+      <nav
+        aria-label="breadcrumb"
+        class=""
       >
-        <li
-          class="breadcrumb-item"
+        <ol
+          class="breadcrumb"
         >
-          <a
-            class="section"
-            to="/app/settings/billing"
+          <li
+            class="breadcrumb-item"
           >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="page-container plans-container container-fluid"
-  >
-    <div
-      class="interval-toggle"
-    >
-      <div
-        class="btn-group"
-        role="group"
-      >
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Monthly
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Yearly
-        </button>
-      </div>
-    </div>
-    <div
-      class="mb-5 plans-cards card-deck"
-    >
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-    </div>
-  </div>
-  <div
-    class="page-container container-fluid"
-  >
-    <div>
-      <h3
-        class="mb-4"
-      >
-        Frequently asked questions
-      </h3>
-      <div
-        class="faq row"
-      >
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              What's a ticket?
-            </dt>
-            <dd>
-              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
-            </dd>
-            <dt>
-              Do I have to pay for all tickets received?
-            </dt>
-            <dd>
-              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
-            </dd>
-            <dt>
-              Do I need to pay for live chat?
-            </dt>
-            <dd>
-              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
-            </dd>
-          </dl>
-        </div>
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              How many tickets a month will I have?
-            </dt>
-            <dd>
-              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
-            </dd>
-            <dt>
-              What level of support is included in my plan?
-            </dt>
-            <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
-            </dd>
-            <dt>
-              How many tickets a day can a rep handle?
-            </dt>
-            <dd>
-              Top reps using built-in automations and macros close out 100-200 tickets per day.
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<BillingPlans/> should display current plan with available plans (legacy plan) 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            class="section"
-            to="/app/settings/billing"
+            <a
+              class="section"
+              to="/app/settings/billing"
+            >
+              Billing & Usage
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
           >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="page-container plans-container container-fluid"
-  >
-    <div
-      class="interval-toggle"
-    >
-      <div
-        class="btn-group"
-        role="group"
-      >
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Monthly
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Yearly
-        </button>
-      </div>
+            Plans
+          </li>
+        </ol>
+      </nav>
     </div>
-    <div
-      class="mb-5 plans-cards card-deck"
-    >
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        PlanCard mock
-      </div>
-    </div>
-  </div>
-  <div
-    class="page-container container-fluid"
-  >
     <div>
-      <h3
-        class="mb-4"
-      >
-        Frequently asked questions
-      </h3>
-      <div
-        class="faq row"
-      >
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              What's a ticket?
-            </dt>
-            <dd>
-              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
-            </dd>
-            <dt>
-              Do I have to pay for all tickets received?
-            </dt>
-            <dd>
-              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
-            </dd>
-            <dt>
-              Do I need to pay for live chat?
-            </dt>
-            <dd>
-              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
-            </dd>
-          </dl>
-        </div>
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              How many tickets a month will I have?
-            </dt>
-            <dd>
-              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
-            </dd>
-            <dt>
-              What level of support is included in my plan?
-            </dt>
-            <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
-            </dd>
-            <dt>
-              How many tickets a day can a rep handle?
-            </dt>
-            <dd>
-              Top reps using built-in automations and macros close out 100-200 tickets per day.
-            </dd>
-          </dl>
-        </div>
-      </div>
+      BillingPlansComparison mock, openedPlanPopover: 
+      <button
+        data-testid="subscription-changed"
+        value="Subscription changed"
+      />
     </div>
-  </div>
-</div>
-`;
-
-exports[`<BillingPlans/> should display current plan with available plans (plan with legacy features) 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <div
+      class="page-container container-fluid"
     >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
+      <div>
+        <h3
+          class="mb-4"
         >
-          <a
-            class="section"
-            to="/app/settings/billing"
+          Frequently asked questions
+        </h3>
+        <div
+          class="faq row"
+        >
+          <div
+            class="col-sm-6"
           >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="page-container plans-container container-fluid"
-  >
-    <div
-      class="interval-toggle"
-    >
-      <div
-        class="btn-group"
-        role="group"
-      >
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Monthly
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Yearly
-        </button>
-      </div>
-    </div>
-    <div
-      class="mb-5 plans-cards card-deck"
-    >
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        PlanCard mock
-      </div>
-    </div>
-  </div>
-  <div
-    class="page-container container-fluid"
-  >
-    <div>
-      <h3
-        class="mb-4"
-      >
-        Frequently asked questions
-      </h3>
-      <div
-        class="faq row"
-      >
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              What's a ticket?
-            </dt>
-            <dd>
-              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
-            </dd>
-            <dt>
-              Do I have to pay for all tickets received?
-            </dt>
-            <dd>
-              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
-            </dd>
-            <dt>
-              Do I need to pay for live chat?
-            </dt>
-            <dd>
-              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
-            </dd>
-          </dl>
-        </div>
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              How many tickets a month will I have?
-            </dt>
-            <dd>
-              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
-            </dd>
-            <dt>
-              What level of support is included in my plan?
-            </dt>
-            <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
-            </dd>
-            <dt>
-              How many tickets a day can a rep handle?
-            </dt>
-            <dd>
-              Top reps using built-in automations and macros close out 100-200 tickets per day.
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<BillingPlans/> should display current plan with available plans (public plan) 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            class="section"
-            to="/app/settings/billing"
+            <dl>
+              <dt>
+                What's a ticket?
+              </dt>
+              <dd>
+                A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
+              </dd>
+              <dt>
+                Do I have to pay for all tickets received?
+              </dt>
+              <dd>
+                No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
+              </dd>
+              <dt>
+                Do I need to pay for live chat?
+              </dt>
+              <dd>
+                No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
+              </dd>
+            </dl>
+          </div>
+          <div
+            class="col-sm-6"
           >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="page-container plans-container container-fluid"
-  >
-    <div
-      class="interval-toggle"
-    >
-      <div
-        class="btn-group"
-        role="group"
-      >
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Monthly
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Yearly
-        </button>
-      </div>
-    </div>
-    <div
-      class="mb-5 plans-cards card-deck"
-    >
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        PlanCard mock
-      </div>
-    </div>
-  </div>
-  <div
-    class="page-container container-fluid"
-  >
-    <div>
-      <h3
-        class="mb-4"
-      >
-        Frequently asked questions
-      </h3>
-      <div
-        class="faq row"
-      >
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              What's a ticket?
-            </dt>
-            <dd>
-              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
-            </dd>
-            <dt>
-              Do I have to pay for all tickets received?
-            </dt>
-            <dd>
-              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
-            </dd>
-            <dt>
-              Do I need to pay for live chat?
-            </dt>
-            <dd>
-              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
-            </dd>
-          </dl>
-        </div>
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              How many tickets a month will I have?
-            </dt>
-            <dd>
-              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
-            </dd>
-            <dt>
-              What level of support is included in my plan?
-            </dt>
-            <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
-            </dd>
-            <dt>
-              How many tickets a day can a rep handle?
-            </dt>
-            <dd>
-              Top reps using built-in automations and macros close out 100-200 tickets per day.
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<BillingPlans/> should display current plan with available plans (with opened popover) 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            class="section"
-            to="/app/settings/billing"
-          >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="page-container plans-container container-fluid"
-  >
-    <div
-      class="interval-toggle"
-    >
-      <div
-        class="btn-group"
-        role="group"
-      >
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Monthly
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Yearly
-        </button>
-      </div>
-    </div>
-    <div
-      class="mb-5 plans-cards card-deck"
-    >
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        PlanCard mock
-      </div>
-    </div>
-  </div>
-  <div
-    class="page-container container-fluid"
-  >
-    <div>
-      <h3
-        class="mb-4"
-      >
-        Frequently asked questions
-      </h3>
-      <div
-        class="faq row"
-      >
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              What's a ticket?
-            </dt>
-            <dd>
-              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
-            </dd>
-            <dt>
-              Do I have to pay for all tickets received?
-            </dt>
-            <dd>
-              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
-            </dd>
-            <dt>
-              Do I need to pay for live chat?
-            </dt>
-            <dd>
-              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
-            </dd>
-          </dl>
-        </div>
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              How many tickets a month will I have?
-            </dt>
-            <dd>
-              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
-            </dd>
-            <dt>
-              What level of support is included in my plan?
-            </dt>
-            <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
-            </dd>
-            <dt>
-              How many tickets a day can a rep handle?
-            </dt>
-            <dd>
-              Top reps using built-in automations and macros close out 100-200 tickets per day.
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<BillingPlans/> should display current plan with available plans (without current plan) 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            class="section"
-            to="/app/settings/billing"
-          >
-            Billing & Usage
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          Plans
-        </li>
-      </ol>
-    </nav>
-  </div>
-  <div
-    class="page-container plans-container container-fluid"
-  >
-    <div
-      class="interval-toggle"
-    >
-      <div
-        class="btn-group"
-        role="group"
-      >
-        <button
-          class="btn btn-primary"
-          type="button"
-        >
-          Monthly
-        </button>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Yearly
-        </button>
-      </div>
-    </div>
-    <div
-      class="mb-5 plans-cards card-deck"
-    >
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        BillingComparisonPlanCard mock
-      </div>
-      <div>
-        PlanCard mock
-      </div>
-    </div>
-  </div>
-  <div
-    class="page-container container-fluid"
-  >
-    <div>
-      <h3
-        class="mb-4"
-      >
-        Frequently asked questions
-      </h3>
-      <div
-        class="faq row"
-      >
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              What's a ticket?
-            </dt>
-            <dd>
-              A ticket is a conversation with a customer. It can be either an email thread, a chat, or Messenger conversation.
-            </dd>
-            <dt>
-              Do I have to pay for all tickets received?
-            </dt>
-            <dd>
-              No. You only pay for tickets that contain a response sent from Gorgias. Think of each ticket as a conversation.
-            </dd>
-            <dt>
-              Do I need to pay for live chat?
-            </dt>
-            <dd>
-              No, all channels, including live chat are included. You can connect as many chat widgets, Facebook pages, and email addresses as you want.
-            </dd>
-          </dl>
-        </div>
-        <div
-          class="col-sm-6"
-        >
-          <dl>
-            <dt>
-              How many tickets a month will I have?
-            </dt>
-            <dd>
-              As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
-            </dd>
-            <dt>
-              What level of support is included in my plan?
-            </dt>
-            <dd>
-              We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
-            </dd>
-            <dt>
-              How many tickets a day can a rep handle?
-            </dt>
-            <dd>
-              Top reps using built-in automations and macros close out 100-200 tickets per day.
-            </dd>
-          </dl>
+            <dl>
+              <dt>
+                How many tickets a month will I have?
+              </dt>
+              <dd>
+                As a general guideline, most stores can expect the number of tickets to be 0.25% - 0.5% of all orders.
+              </dd>
+              <dt>
+                What level of support is included in my plan?
+              </dt>
+              <dd>
+                We provide all our customers with the same level of support. We're available 9am-7pm PST, over chat, email & phone. You can also join our Slack community to chat with our team.
+              </dd>
+              <dt>
+                How many tickets a day can a rep handle?
+              </dt>
+              <dd>
+                Top reps using built-in automations and macros close out 100-200 tickets per day.
+              </dd>
+            </dl>
+          </div>
         </div>
       </div>
     </div>

@@ -355,7 +355,7 @@ const connector = connect(
     (state: RootState) => ({
         currentUser: currentUserSelectors.getCurrentUser(state),
         currentUserPreferences: currentUserSelectors.getPreferences(state),
-        currentPlan: billingSelectors.currentPlan(state),
+        currentPlan: billingSelectors.getCurrentPlan(state),
         available: currentUserSelectors.isAvailable(state),
         isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
     }),

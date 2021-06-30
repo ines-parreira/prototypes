@@ -253,7 +253,7 @@ export default connect(
             currentAccountDomain: state.currentAccount.get('domain'),
             creditCard: billingSelectors.creditCard(state),
             subscription: currentAccountSelectors.getCurrentSubscription(state),
-            currentPlan: billingSelectors.currentPlan(state),
+            currentPlan: billingSelectors.getCurrentPlan(state),
             paymentMethod: currentAccountSelectors.paymentMethod(state),
             shopifyBillingStatus: currentAccountSelectors.getShopifyBillingStatus(
                 state

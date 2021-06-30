@@ -19,7 +19,7 @@ import {fromJS} from 'immutable'
 
 import {setCreditCard} from '../../../../state/billing/actions.ts'
 import {
-    currentPlan as currentPlanSelector,
+    getCurrentPlan as currentPlanSelector,
     hasLegacyPlan as hasLegacyPlanSelector,
 } from '../../../../state/billing/selectors.ts'
 

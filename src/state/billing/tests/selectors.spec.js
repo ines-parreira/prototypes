@@ -38,9 +38,9 @@ describe('billing selectors', () => {
     })
 
     it('plans', () => {
-        expect(selectors.plans({})).toEqualImmutable(OrderedMap())
+        expect(selectors.getPlans({})).toEqualImmutable(OrderedMap())
 
-        const plans = selectors.plans(state)
+        const plans = selectors.getPlans(state)
 
         expect(state.billing.get('plans').size).toBe(plans.size)
 
