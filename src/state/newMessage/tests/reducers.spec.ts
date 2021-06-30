@@ -1,6 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
-import {EditorState, ContentState, ContentBlock, SelectionState} from 'draft-js'
+import {EditorState, ContentState, SelectionState} from 'draft-js'
 
 import {
     TicketMessageSourceType,
@@ -279,19 +279,19 @@ describe('new message reducer', () => {
 
     describe('SET_RESPONSE_TEXT action', () => {
         let addCacheSpy: jest.SpyInstance
-        let clearEmailExtraDataSpy: jest.SpyInstance
+        let updateEmailExtraOnUserInputSpy: jest.SpyInstance
 
         beforeEach(() => {
             addCacheSpy = jest.spyOn(responseUtils, 'addCache')
-            clearEmailExtraDataSpy = jest.spyOn(
+            updateEmailExtraOnUserInputSpy = jest.spyOn(
                 emailExtraUtils,
-                'clearEmailExtraData'
+                'updateEmailExtraOnUserInput'
             )
         })
 
         afterEach(() => {
             addCacheSpy.mockRestore()
-            clearEmailExtraDataSpy.mockRestore()
+            updateEmailExtraOnUserInputSpy.mockRestore()
         })
 
         it('should attach ids of any agent mentioned if in internal-note mode', () => {
@@ -471,9 +471,12 @@ describe('new message reducer', () => {
             ).toMatchSnapshot()
         })
 
-        it('should not clear email extra data when email extra content was not modified', () => {
+        it('should update content state when email extra data was updated', () => {
+            const contentStateWithoutEmailExtra = ContentState.createFromText(
+                ''
+            )
             const contentState = addEmailExtraContent(
-                ContentState.createFromText(''),
+                contentStateWithoutEmailExtra,
                 {
                     isForwarded: false,
                     replyThreadMessages: [],
@@ -481,6 +484,9 @@ describe('new message reducer', () => {
                     ticket,
                 }
             )
+            updateEmailExtraOnUserInputSpy.mockImplementation(() => {
+                return contentStateWithoutEmailExtra
+            })
             const action = {
                 type: types.SET_RESPONSE_TEXT,
                 args: fromJS({
@@ -494,105 +500,6 @@ describe('new message reducer', () => {
                     action
                 )
             ).toMatchSnapshot()
-            expect(clearEmailExtraDataSpy).not.toHaveBeenCalled()
-        })
-
-        it('should clear email extra data on email extra content modification', () => {
-            const contentState = addEmailExtraContent(
-                ContentState.createFromText(''),
-                {
-                    isForwarded: false,
-                    replyThreadMessages: [],
-                    signature: fromJS({text: 'Signature', html: 'Signature'}),
-                    ticket,
-                }
-            )
-            const modifiedContentState = ContentState.createFromBlockArray(
-                contentState.getBlocksAsArray().map((block, i) => {
-                    if (i === 0) {
-                        return block.set('text', 'Modified')
-                    }
-                    return block
-                }) as ContentBlock[]
-            )
-            const action = {
-                type: types.SET_RESPONSE_TEXT,
-                args: fromJS({
-                    contentState: modifiedContentState,
-                }),
-            }
-
-            expect(
-                reducer(
-                    initialState.setIn(['state', 'contentState'], contentState),
-                    action
-                )
-            ).toMatchSnapshot()
-            expect(clearEmailExtraDataSpy).toHaveBeenLastCalledWith(
-                modifiedContentState
-            )
-        })
-
-        it('should clear email extra data if new content was added below email extra content', () => {
-            const contentState = addEmailExtraContent(
-                ContentState.createFromText(''),
-                {
-                    isForwarded: false,
-                    replyThreadMessages: [],
-                    signature: fromJS({text: 'Signature', html: 'Signature'}),
-                    ticket,
-                }
-            )
-
-            const modifiedContentState = ContentState.createFromBlockArray([
-                ...contentState.getBlocksAsArray(),
-                contentState
-                    .getLastBlock()
-                    .merge({key: 'added-content'})
-                    .set('data', fromJS({})) as ContentBlock,
-            ])
-
-            const action = {
-                type: types.SET_RESPONSE_TEXT,
-                args: fromJS({
-                    contentState: modifiedContentState,
-                }),
-            }
-
-            expect(
-                reducer(
-                    initialState.setIn(['state', 'contentState'], contentState),
-                    action
-                )
-            ).toMatchSnapshot()
-            expect(clearEmailExtraDataSpy).toHaveBeenLastCalledWith(
-                modifiedContentState
-            )
-        })
-
-        it('should not clear email extra data if new content was added below user input', () => {
-            const contentState = ContentState.createFromText('')
-            const modifiedContentState = ContentState.createFromBlockArray([
-                ...contentState.getBlocksAsArray(),
-                contentState
-                    .getLastBlock()
-                    .merge({key: 'added-content'})
-                    .set('data', fromJS({})) as ContentBlock,
-            ])
-
-            const action = {
-                type: types.SET_RESPONSE_TEXT,
-                args: fromJS({
-                    contentState: modifiedContentState,
-                }),
-            }
-
-            reducer(
-                initialState.setIn(['state', 'contentState'], contentState),
-                action
-            )
-
-            expect(clearEmailExtraDataSpy).not.toHaveBeenCalled()
         })
 
         it('should return remove stripped_text and stripped_html if email extra was removed from the content state', () => {

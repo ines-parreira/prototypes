@@ -234,7 +234,6 @@ Object {
   "emailExtraAdded": false,
   "forceFocus": undefined,
   "forceUpdate": undefined,
-  "selectionState": null,
   "sourceType": "email",
   "state": Immutable.Map {
     "state": Immutable.Map {
@@ -275,426 +274,6 @@ Object {
         "extra": Immutable.Map {
           "include_thread": false,
         },
-      },
-    },
-  },
-}
-`;
-
-exports[`new message reducer SET_RESPONSE_TEXT action should clear email extra data if new content was added below email extra content 1`] = `
-Immutable.Map {
-  "state": Immutable.Map {
-    "selectionState": null,
-    "emailExtraAdded": false,
-    "forceFocus": false,
-    "appliedMacro": null,
-    "dirty": true,
-    "forceUpdate": true,
-    "firstNewMessage": true,
-    "contentState": Immutable.Record {
-      "entityMap": Object {
-        "__add": [Function],
-        "__create": [Function],
-        "__get": [Function],
-        "__getLastCreatedEntityKey": [Function],
-        "__mergeData": [Function],
-        "__replaceData": [Function],
-        "add": [Function],
-        "create": [Function],
-        "get": [Function],
-        "getLastCreatedEntityKey": [Function],
-        "mergeData": [Function],
-        "replaceData": [Function],
-      },
-      "blockMap": Immutable.OrderedMap {
-        "someRandomKey": Immutable.Record {
-          "key": "someRandomKey",
-          "type": "unstyled",
-          "text": "Signature",
-          "characterList": Immutable.List [
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-          ],
-          "depth": 0,
-          "data": Immutable.Map {},
-        },
-        "added-content": Immutable.Record {
-          "key": "added-content",
-          "type": "unstyled",
-          "text": "Signature",
-          "characterList": Immutable.List [
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-          ],
-          "depth": 0,
-          "data": Immutable.Map {},
-        },
-      },
-      "selectionBefore": Immutable.Record {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "isBackward": false,
-        "hasFocus": false,
-      },
-      "selectionAfter": Immutable.Record {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "isBackward": false,
-        "hasFocus": false,
-      },
-    },
-    "cacheAdded": true,
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "addAttachment": false,
-      "submitMessage": false,
-    },
-  },
-  "newMessage": Immutable.Map {
-    "channel": "email",
-    "mention_ids": Immutable.List [],
-    "macros": Immutable.List [],
-    "body_html": "<div>Signature</div><div>Signature</div>",
-    "public": true,
-    "body_text": "Signature
-Signature",
-    "subject": "",
-    "via": "helpdesk",
-    "from_agent": true,
-    "attachments": Immutable.List [],
-    "sender": null,
-    "source": Immutable.Map {
-      "type": "email",
-      "from": Immutable.Map {},
-      "to": Immutable.List [],
-      "cc": Immutable.List [],
-      "bcc": Immutable.List [],
-      "extra": Immutable.Map {
-        "include_thread": false,
-      },
-    },
-  },
-}
-`;
-
-exports[`new message reducer SET_RESPONSE_TEXT action should clear email extra data on email extra content modification 1`] = `
-Immutable.Map {
-  "state": Immutable.Map {
-    "selectionState": null,
-    "emailExtraAdded": false,
-    "forceFocus": false,
-    "appliedMacro": null,
-    "dirty": true,
-    "forceUpdate": true,
-    "firstNewMessage": true,
-    "contentState": Immutable.Record {
-      "entityMap": Object {
-        "__add": [Function],
-        "__create": [Function],
-        "__get": [Function],
-        "__getLastCreatedEntityKey": [Function],
-        "__mergeData": [Function],
-        "__replaceData": [Function],
-        "add": [Function],
-        "create": [Function],
-        "get": [Function],
-        "getLastCreatedEntityKey": [Function],
-        "mergeData": [Function],
-        "replaceData": [Function],
-      },
-      "blockMap": Immutable.OrderedMap {
-        "someRandomKey": Immutable.Record {
-          "key": "someRandomKey",
-          "type": "unstyled",
-          "text": "Modified",
-          "characterList": Immutable.List [
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-          ],
-          "depth": 0,
-          "data": Immutable.Map {},
-        },
-      },
-      "selectionBefore": Immutable.Record {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "isBackward": false,
-        "hasFocus": false,
-      },
-      "selectionAfter": Immutable.Record {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "isBackward": false,
-        "hasFocus": false,
-      },
-    },
-    "cacheAdded": true,
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "addAttachment": false,
-      "submitMessage": false,
-    },
-  },
-  "newMessage": Immutable.Map {
-    "channel": "email",
-    "mention_ids": Immutable.List [],
-    "macros": Immutable.List [],
-    "body_html": "<div>Modified</div>",
-    "public": true,
-    "body_text": "Modified",
-    "subject": "",
-    "via": "helpdesk",
-    "from_agent": true,
-    "attachments": Immutable.List [],
-    "sender": null,
-    "source": Immutable.Map {
-      "type": "email",
-      "from": Immutable.Map {},
-      "to": Immutable.List [],
-      "cc": Immutable.List [],
-      "bcc": Immutable.List [],
-      "extra": Immutable.Map {
-        "include_thread": false,
-      },
-    },
-  },
-}
-`;
-
-exports[`new message reducer SET_RESPONSE_TEXT action should not clear email extra data when email extra content was not modified 1`] = `
-Immutable.Map {
-  "state": Immutable.Map {
-    "selectionState": null,
-    "emailExtraAdded": false,
-    "forceFocus": false,
-    "appliedMacro": null,
-    "dirty": true,
-    "forceUpdate": false,
-    "firstNewMessage": true,
-    "contentState": Immutable.Record {
-      "entityMap": Object {
-        "__add": [Function],
-        "__create": [Function],
-        "__get": [Function],
-        "__getLastCreatedEntityKey": [Function],
-        "__mergeData": [Function],
-        "__replaceData": [Function],
-        "add": [Function],
-        "create": [Function],
-        "get": [Function],
-        "getLastCreatedEntityKey": [Function],
-        "mergeData": [Function],
-        "replaceData": [Function],
-      },
-      "blockMap": Immutable.OrderedMap {
-        "someRandomKey": Immutable.Record {
-          "key": "someRandomKey",
-          "type": "unstyled",
-          "text": "Signature",
-          "characterList": Immutable.List [
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-            Immutable.Record {
-              "style": Immutable.OrderedSet [],
-              "entity": null,
-            },
-          ],
-          "depth": 0,
-          "data": Immutable.Map {
-            "signature": true,
-            "emailExtra": true,
-          },
-        },
-      },
-      "selectionBefore": Immutable.Record {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 0,
-        "focusKey": "someRandomKey",
-        "focusOffset": 0,
-        "isBackward": false,
-        "hasFocus": false,
-      },
-      "selectionAfter": Immutable.Record {
-        "anchorKey": "someRandomKey",
-        "anchorOffset": 9,
-        "focusKey": "someRandomKey",
-        "focusOffset": 9,
-        "isBackward": false,
-        "hasFocus": false,
-      },
-    },
-    "cacheAdded": true,
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "addAttachment": false,
-      "submitMessage": false,
-    },
-  },
-  "newMessage": Immutable.Map {
-    "channel": "email",
-    "mention_ids": Immutable.List [],
-    "macros": Immutable.List [],
-    "body_html": "<div>Signature</div>",
-    "public": true,
-    "body_text": "Signature",
-    "subject": "",
-    "via": "helpdesk",
-    "from_agent": true,
-    "attachments": Immutable.List [],
-    "stripped_html": "<div><br></div>",
-    "stripped_text": "",
-    "sender": null,
-    "source": Immutable.Map {
-      "type": "email",
-      "from": Immutable.Map {},
-      "to": Immutable.List [],
-      "cc": Immutable.List [],
-      "bcc": Immutable.List [],
-      "extra": Immutable.Map {
-        "include_thread": false,
       },
     },
   },
@@ -816,7 +395,7 @@ Immutable.Map {
     "forceFocus": false,
     "appliedMacro": null,
     "dirty": false,
-    "forceUpdate": true,
+    "forceUpdate": false,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
       "entityMap": Object {
@@ -903,6 +482,92 @@ Immutable.Map {
     "appliedMacro": null,
     "dirty": false,
     "forceUpdate": false,
+    "firstNewMessage": true,
+    "contentState": Immutable.Record {
+      "entityMap": Object {
+        "__add": [Function],
+        "__create": [Function],
+        "__get": [Function],
+        "__getLastCreatedEntityKey": [Function],
+        "__mergeData": [Function],
+        "__replaceData": [Function],
+        "add": [Function],
+        "create": [Function],
+        "get": [Function],
+        "getLastCreatedEntityKey": [Function],
+        "mergeData": [Function],
+        "replaceData": [Function],
+      },
+      "blockMap": Immutable.OrderedMap {
+        "someRandomKey": Immutable.Record {
+          "key": "someRandomKey",
+          "type": "unstyled",
+          "text": "",
+          "characterList": Immutable.List [],
+          "depth": 0,
+          "data": Immutable.Map {},
+        },
+      },
+      "selectionBefore": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+      "selectionAfter": Immutable.Record {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "isBackward": false,
+        "hasFocus": false,
+      },
+    },
+    "cacheAdded": true,
+  },
+  "_internal": Immutable.Map {
+    "loading": Immutable.Map {
+      "addAttachment": false,
+      "submitMessage": false,
+    },
+  },
+  "newMessage": Immutable.Map {
+    "channel": "email",
+    "mention_ids": Immutable.List [],
+    "macros": Immutable.List [],
+    "body_html": "<div><br></div>",
+    "public": true,
+    "body_text": "",
+    "subject": "",
+    "via": "helpdesk",
+    "from_agent": true,
+    "attachments": Immutable.List [],
+    "sender": null,
+    "source": Immutable.Map {
+      "type": "email",
+      "from": Immutable.Map {},
+      "to": Immutable.List [],
+      "cc": Immutable.List [],
+      "bcc": Immutable.List [],
+      "extra": Immutable.Map {
+        "include_thread": false,
+      },
+    },
+  },
+}
+`;
+
+exports[`new message reducer SET_RESPONSE_TEXT action should update content state when email extra data was updated 1`] = `
+Immutable.Map {
+  "state": Immutable.Map {
+    "selectionState": null,
+    "emailExtraAdded": false,
+    "forceFocus": false,
+    "appliedMacro": null,
+    "dirty": false,
+    "forceUpdate": true,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
       "entityMap": Object {

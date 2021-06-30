@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable'
-import {ContentState} from 'draft-js'
+import {ContentBlock, ContentState, SelectionState} from 'draft-js'
 
 import {ticket} from '../../../fixtures/ticket'
 import {
@@ -7,7 +7,10 @@ import {
     TicketMessage,
     TicketSatisfactionSurvey,
 } from '../../../models/ticket/types'
-import {getContentStateBlocksSnapshot} from '../../../utils/editor'
+import {
+    getContentStateBlocksSnapshot,
+    getContentStateSelectionSnapshot,
+} from '../../../utils/editor'
 import {
     addEmailExtraContent,
     EmailExtraArgs,
@@ -17,9 +20,8 @@ import {
     deleteEmailExtraContent,
     ReplyThreadMessage,
     Signature,
-    getEmailExtraContent,
-    clearEmailExtraData,
     hasEmailExtraContent,
+    updateEmailExtraOnUserInput,
 } from '../emailExtraUtils'
 
 describe('emailExtraUtils', () => {
@@ -613,76 +615,6 @@ describe('emailExtraUtils', () => {
         })
     })
 
-    describe('getEmailExtraContent', () => {
-        it('should return empty content state when there is no email extra', () => {
-            const contentState = ContentState.createFromText('Foo bar')
-            expect(
-                getEmailExtraContent(contentState).getBlocksAsArray()
-            ).toEqual([])
-        })
-
-        it('should return email extra content state', () => {
-            let contentState = ContentState.createFromText('Foo\nBar')
-            contentState = addEmailExtraContent(contentState, {
-                ticket,
-                signature: fromJS({text: 'Signature', html: 'Signature'}),
-                replyThreadMessages: [
-                    ticket.messages[0],
-                ] as ReplyThreadMessage[],
-                isForwarded: false,
-            })
-            contentState = getEmailExtraContent(contentState)
-            expect(
-                getContentStateBlocksSnapshot(contentState)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('clearEmailExtraData', () => {
-        it('should return the same content state if there is no email extra', () => {
-            const contentState = ContentState.createFromText('Foo')
-            const cleanContentSate = clearEmailExtraData(contentState)
-            expect(cleanContentSate).toBe(contentState)
-        })
-
-        it('should clear email extra data', () => {
-            let contentState = ContentState.createFromText('Foo\nBar')
-            contentState = addEmailExtraContent(contentState, {
-                ticket,
-                signature: fromJS({text: 'Signature', html: 'Signature'}),
-                replyThreadMessages: [
-                    ticket.messages[0],
-                ] as ReplyThreadMessage[],
-                isForwarded: false,
-            })
-            contentState = clearEmailExtraData(contentState)
-            expect(
-                getContentStateBlocksSnapshot(contentState)
-            ).toMatchSnapshot()
-        })
-
-        it('should preserve the selection states', () => {
-            const contentState = addEmailExtraContent(
-                ContentState.createFromText('Foo\nBar'),
-                {
-                    ticket,
-                    signature: fromJS({}),
-                    replyThreadMessages: [
-                        ticket.messages[0],
-                    ] as ReplyThreadMessage[],
-                    isForwarded: false,
-                }
-            )
-            const cleanContentState = clearEmailExtraData(contentState)
-            expect(cleanContentState.getSelectionBefore()).toEqual(
-                contentState.getSelectionBefore()
-            )
-            expect(cleanContentState.getSelectionAfter()).toEqual(
-                contentState.getSelectionAfter()
-            )
-        })
-    })
-
     describe('hasEmailExtraContent', () => {
         it('should return false when content state does not contain email extra', () => {
             expect(
@@ -703,6 +635,216 @@ describe('emailExtraUtils', () => {
                 }
             )
             expect(hasEmailExtraContent(contentState)).toBe(true)
+        })
+    })
+
+    describe('updateEmailExtraOnUserInput', () => {
+        const emailExtraArgs: EmailExtraArgs = {
+            ticket,
+            signature: fromJS({text: 'Signature', html: 'Signature'}),
+            replyThreadMessages: [ticket.messages[0]] as ReplyThreadMessage[],
+            isForwarded: false,
+        }
+
+        it('should return the same content state when no change', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+
+            const newContentState = updateEmailExtraOnUserInput(
+                contentState,
+                contentState
+            )
+
+            expect(newContentState).toBe(contentState)
+        })
+
+        it('should not clear email extra data when email extra content was not modified', () => {
+            const prevContentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+            const contentState = ContentState.createFromBlockArray(
+                prevContentState.getBlocksAsArray().map((block, i) => {
+                    if (i === 0) {
+                        return block.set('text', 'Modified')
+                    }
+                    return block
+                }) as ContentBlock[]
+            )
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(newContentState).toBe(contentState)
+        })
+
+        it('should clear email extra data if new content was added below email extra content', () => {
+            const prevContentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+            const contentState = ContentState.createFromBlockArray([
+                ...prevContentState.getBlocksAsArray(),
+                prevContentState
+                    .getLastBlock()
+                    .merge({key: 'added-content'})
+                    .set('data', fromJS({})) as ContentBlock,
+            ])
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(newContentState).not.toBe(contentState)
+            expect(
+                getContentStateBlocksSnapshot(newContentState)
+            ).toMatchSnapshot()
+        })
+
+        it('should preserve the selection state if email extra content was removed', () => {
+            const prevContentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+            const contentState = ContentState.createFromBlockArray([
+                ...prevContentState.getBlocksAsArray(),
+                prevContentState
+                    .getLastBlock()
+                    .merge({key: 'added-content'})
+                    .set('data', fromJS({})) as ContentBlock,
+            ])
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(newContentState).not.toBe(contentState)
+            expect(
+                getContentStateBlocksSnapshot(newContentState)
+            ).toMatchSnapshot()
+        })
+
+        it('should not clear email extra data if new content was added below user input', () => {
+            const prevContentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+            const contentState = ContentState.createFromBlockArray(
+                prevContentState.getBlocksAsArray().map((block, i) => {
+                    if (i === 4) {
+                        return block.set('text', 'Modified')
+                    }
+                    return block
+                }) as ContentBlock[]
+            ).set(
+                'selectionAfter',
+                SelectionState.createEmpty(
+                    prevContentState.getLastBlock().getKey()
+                ).set('focusOffset', 1)
+            ) as ContentState
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(
+                getContentStateSelectionSnapshot(
+                    newContentState,
+                    newContentState.getSelectionAfter()
+                )
+            ).toMatchSnapshot()
+        })
+
+        it('should clear first line email extra data if only the first empty line was modified', () => {
+            const prevContentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+            const contentState = ContentState.createFromBlockArray(
+                prevContentState.getBlocksAsArray().map((block, i) => {
+                    if (i === 2) {
+                        return block.set('text', 'Modified')
+                    }
+                    return block
+                }) as ContentBlock[]
+            )
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(newContentState).not.toBe(contentState)
+            expect(
+                getContentStateBlocksSnapshot(newContentState)
+            ).toMatchSnapshot()
+        })
+
+        it('should clear email extra data if more than the first line was modified', () => {
+            const prevContentState = addEmailExtraContent(
+                ContentState.createFromText('Foo\nBar'),
+                emailExtraArgs
+            )
+            const contentState = ContentState.createFromBlockArray(
+                prevContentState.getBlocksAsArray().map((block, i) => {
+                    if (i === 2 || i === 4) {
+                        return block.set('text', 'Modified')
+                    }
+                    return block
+                }) as ContentBlock[]
+            )
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(newContentState).not.toBe(contentState)
+            expect(
+                getContentStateBlocksSnapshot(newContentState)
+            ).toMatchSnapshot()
+        })
+
+        it('should clear email extra data if only the first non-empty line was modified', () => {
+            const prevContentState = ContentState.createFromBlockArray(
+                addEmailExtraContent(
+                    ContentState.createFromText('Foo\nBar'),
+                    emailExtraArgs
+                )
+                    .getBlocksAsArray()
+                    .map((block, i) => {
+                        if (i === 2) {
+                            return block.set('text', 'Modified')
+                        }
+                        return block
+                    }) as ContentBlock[]
+            )
+
+            const contentState = ContentState.createFromBlockArray(
+                prevContentState.getBlocksAsArray().map((block, i) => {
+                    if (i === 2) {
+                        return block.set('text', 'Modified again')
+                    }
+                    return block
+                }) as ContentBlock[]
+            )
+
+            const newContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+
+            expect(newContentState).not.toBe(contentState)
+            expect(
+                getContentStateBlocksSnapshot(newContentState)
+            ).toMatchSnapshot()
         })
     })
 })

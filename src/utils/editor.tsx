@@ -789,6 +789,34 @@ export const getContentStateBlocksSnapshot = (
     })
 }
 
+export type ContentStateSelectionSnapshot = {
+    anchorBlockText: string | null
+    anchorOffset: string
+    focusBlockText: string | null
+    focusOffset: string
+    hasFocus: boolean
+    isBackward: false
+}
+export const getContentStateSelectionSnapshot = (
+    contentState: ContentState,
+    selectionState: SelectionState
+): ContentStateSelectionSnapshot => {
+    const selectionStateJS = selectionState.toJS()
+    delete (selectionStateJS as {anchorKey: string}).anchorKey
+    delete (selectionStateJS as {focusKey: string}).focusKey
+    return {
+        ...selectionStateJS,
+        anchorBlockText:
+            contentState
+                .getBlockForKey(selectionState.getAnchorKey())
+                ?.getText() || null,
+        focusBlockText:
+            contentState
+                .getBlockForKey(selectionState.getFocusKey())
+                ?.getText() || null,
+    } as ContentStateSelectionSnapshot
+}
+
 // $TSFixMe: Move to draftTestUtils
 export const createDraftJSKeyGeneratorMock = () => {
     let counter = 0

@@ -874,55 +874,6 @@ Array [
 ]
 `;
 
-exports[`emailExtraUtils clearEmailExtraData should clear email extra data 1`] = `
-Array [
-  Object {
-    "data": Object {},
-    "depth": 0,
-    "text": "Foo",
-    "type": "unstyled",
-  },
-  Object {
-    "data": Object {},
-    "depth": 0,
-    "text": "Bar",
-    "type": "unstyled",
-  },
-  Object {
-    "data": Object {},
-    "depth": 0,
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "data": Object {},
-    "depth": 0,
-    "text": "Signature",
-    "type": "unstyled",
-  },
-  Object {
-    "data": Object {},
-    "depth": 0,
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "data": Object {},
-    "depth": 0,
-    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
-    "type": "unstyled",
-  },
-  Object {
-    "data": Object {
-      "quoteDepth": 1,
-    },
-    "depth": 0,
-    "text": "Hi! How are you?",
-    "type": "unstyled",
-  },
-]
-`;
-
 exports[`emailExtraUtils deleteEmailExtraContent should remove the reply thread from the response 1`] = `
 Array [
   Object {
@@ -985,15 +936,177 @@ Array [
 ]
 `;
 
-exports[`emailExtraUtils getEmailExtraContent should return email extra content state 1`] = `
+exports[`emailExtraUtils updateEmailExtraOnUserInput should clear email extra data if more than the first line was modified 1`] = `
 Array [
   Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Modified",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Modified",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
     "data": Object {
-      "emailExtra": true,
-      "signature": true,
+      "quoteDepth": 1,
     },
     "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils updateEmailExtraOnUserInput should clear email extra data if new content was added below email extra content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
     "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 1,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils updateEmailExtraOnUserInput should clear email extra data if only the first non-empty line was modified 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Modified again",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 1,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils updateEmailExtraOnUserInput should clear first line email extra data if only the first empty line was modified 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Modified",
     "type": "unstyled",
   },
   Object {
@@ -1029,6 +1142,72 @@ Array [
       "quoteDepth": 1,
       "replyThread": true,
     },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils updateEmailExtraOnUserInput should not clear email extra data if new content was added below user input 1`] = `
+Object {
+  "anchorBlockText": "Hi! How are you?",
+  "anchorOffset": 0,
+  "focusBlockText": "Hi! How are you?",
+  "focusOffset": 1,
+  "hasFocus": false,
+  "isBackward": false,
+}
+`;
+
+exports[`emailExtraUtils updateEmailExtraOnUserInput should preserve the selection state if email extra content was removed 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 1,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
     "depth": 0,
     "text": "Hi! How are you?",
     "type": "unstyled",

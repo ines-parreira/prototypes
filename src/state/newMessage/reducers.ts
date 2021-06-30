@@ -28,10 +28,9 @@ import {NewMessage, NewMessageState, ReplyAreaState} from './types'
 import {addEmailExtra} from './actions'
 import {
     addEmailExtraContent,
-    clearEmailExtraData,
     deleteEmailExtraContent,
-    getEmailExtraContent,
     hasEmailExtraContent,
+    updateEmailExtraOnUserInput,
 } from './emailExtraUtils'
 
 const defaultSourceExtra = {
@@ -361,17 +360,12 @@ export default function reducer(
             const forward = source.getIn(['extra', 'forward'])
             const sourceType = forward ? 'email-forward' : source.get('type')
 
-            const prevEmailExtraContent = getEmailExtraContent(prevContentState)
-            const emailExtraContent = getEmailExtraContent(contentState)
-            const wasContentAddedBelowEmailExtra =
-                hasEmailExtraContent(prevEmailExtraContent) &&
-                prevEmailExtraContent.getLastBlock() !==
-                    contentState.getLastBlock()
-            if (
-                !emailExtraContent.equals(prevEmailExtraContent) ||
-                wasContentAddedBelowEmailExtra
-            ) {
-                contentState = clearEmailExtraData(contentState)
+            const emailExtraUpdatedContentState = updateEmailExtraOnUserInput(
+                prevContentState,
+                contentState
+            )
+            if (!emailExtraUpdatedContentState.equals(contentState)) {
+                contentState = emailExtraUpdatedContentState
                 forceUpdate = true
             }
 

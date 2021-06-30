@@ -1,5 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`responseUtils addCache it should set the selection to end of user content if the removed email extras were selected 1`] = `
+Object {
+  "action": Object {
+    "args": Immutable.Map {
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_text": "Hello, check this out
+
+ 
+
+should be good now",
+    },
+    "currentUser": Immutable.Map {},
+    "fromMacro": false,
+    "signature": Immutable.Map {},
+    "ticket": Immutable.Map {},
+    "ticketId": "0",
+  },
+  "cacheAdded": true,
+  "contentState": "<div>Foo bar baz</div>",
+  "emailExtraAdded": false,
+  "forceFocus": true,
+  "forceUpdate": true,
+  "selectionState": Object {
+    "anchorBlockText": "Foo bar baz",
+    "anchorOffset": 11,
+    "focusBlockText": "Foo bar baz",
+    "focusOffset": 11,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+  "state": Immutable.Map {
+    "state": Immutable.Map {
+      "selectionState": null,
+      "emailExtraAdded": false,
+      "forceFocus": false,
+      "appliedMacro": null,
+      "dirty": false,
+      "forceUpdate": false,
+      "firstNewMessage": true,
+      "contentState": "<div><br></div>",
+      "cacheAdded": true,
+    },
+    "_internal": Immutable.Map {
+      "loading": Immutable.Map {
+        "addAttachment": false,
+        "submitMessage": false,
+      },
+    },
+    "newMessage": Immutable.Map {
+      "channel": "email",
+      "mention_ids": Immutable.List [],
+      "macros": Immutable.List [],
+      "body_html": "",
+      "public": true,
+      "body_text": "",
+      "subject": "",
+      "via": "helpdesk",
+      "from_agent": true,
+      "attachments": Immutable.List [],
+      "sender": null,
+      "source": Immutable.Map {
+        "type": "email",
+        "from": Immutable.Map {},
+        "to": Immutable.List [],
+        "cc": Immutable.List [],
+        "bcc": Immutable.List [],
+        "extra": Immutable.Map {
+          "include_thread": false,
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`responseUtils addCache should not restore the message if action is from macro 1`] = `
 Object {
   "action": Object {
@@ -66,6 +141,81 @@ should be good now",
 }
 `;
 
+exports[`responseUtils addCache should remove the email extras from the restored message 1`] = `
+Object {
+  "action": Object {
+    "args": Immutable.Map {
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_text": "Hello, check this out
+
+ 
+
+should be good now",
+    },
+    "currentUser": Immutable.Map {},
+    "fromMacro": false,
+    "signature": Immutable.Map {},
+    "ticket": Immutable.Map {},
+    "ticketId": "0",
+  },
+  "cacheAdded": true,
+  "contentState": "<div>Foo bar baz</div>",
+  "emailExtraAdded": false,
+  "forceFocus": true,
+  "forceUpdate": true,
+  "selectionState": Object {
+    "anchorBlockText": "Foo bar baz",
+    "anchorOffset": "1",
+    "focusBlockText": "Foo bar baz",
+    "focusOffset": "2",
+    "hasFocus": false,
+    "isBackward": false,
+  },
+  "state": Immutable.Map {
+    "state": Immutable.Map {
+      "selectionState": null,
+      "emailExtraAdded": false,
+      "forceFocus": false,
+      "appliedMacro": null,
+      "dirty": false,
+      "forceUpdate": false,
+      "firstNewMessage": true,
+      "contentState": "<div><br></div>",
+      "cacheAdded": true,
+    },
+    "_internal": Immutable.Map {
+      "loading": Immutable.Map {
+        "addAttachment": false,
+        "submitMessage": false,
+      },
+    },
+    "newMessage": Immutable.Map {
+      "channel": "email",
+      "mention_ids": Immutable.List [],
+      "macros": Immutable.List [],
+      "body_html": "",
+      "public": true,
+      "body_text": "",
+      "subject": "",
+      "via": "helpdesk",
+      "from_agent": true,
+      "attachments": Immutable.List [],
+      "sender": null,
+      "source": Immutable.Map {
+        "type": "email",
+        "from": Immutable.Map {},
+        "to": Immutable.List [],
+        "cc": Immutable.List [],
+        "bcc": Immutable.List [],
+        "extra": Immutable.Map {
+          "include_thread": false,
+        },
+      },
+    },
+  },
+}
+`;
+
 exports[`responseUtils addCache should restore message state from cache when cache is not added 1`] = `
 Object {
   "action": Object {
@@ -85,16 +235,16 @@ should be good now",
   },
   "cacheAdded": true,
   "contentState": "<div>Foo bar baz</div>",
-  "emailExtraAdded": true,
+  "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
-  "selectionState": Immutable.Record {
-    "anchorKey": "foo",
+  "selectionState": Object {
+    "anchorBlockText": "Foo bar baz",
     "anchorOffset": "1",
-    "focusKey": "bar",
+    "focusBlockText": "Foo bar baz",
     "focusOffset": "2",
-    "isBackward": false,
     "hasFocus": false,
+    "isBackward": false,
   },
   "state": Immutable.Map {
     "state": Immutable.Map {

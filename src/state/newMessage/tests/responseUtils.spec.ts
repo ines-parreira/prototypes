@@ -131,23 +131,24 @@ describe('responseUtils', () => {
 
     describe('addCache', () => {
         let ticketReplyCacheGetSpy: jest.SpyInstance
-
-        const cachedTicket: RawCachedTicket = {
-            contentState: convertToRaw(
-                ContentState.createFromText('Foo bar baz')
-            ),
-            selectionState: SelectionState.createEmpty('foo')
+        const defaultCachedContentState = ContentState.createFromText(
+            'Foo bar baz'
+        )
+        const defaultCachedTicket: RawCachedTicket = {
+            contentState: convertToRaw(defaultCachedContentState),
+            selectionState: SelectionState.createEmpty(
+                defaultCachedContentState.getFirstBlock().getKey()
+            )
                 .set('anchorOffset', '1')
-                .set('focusKey', 'bar')
                 .set('focusOffset', '2') as SelectionState,
-            emailExtraAdded: true,
+            emailExtraAdded: false,
             macro: null,
             sourceType: TicketMessageSourceType.Email,
         }
 
         beforeEach(() => {
             ticketReplyCacheGetSpy = jest.spyOn(ticketReplyCache, 'get')
-            ticketReplyCacheGetSpy.mockReturnValue(fromJS(cachedTicket))
+            ticketReplyCacheGetSpy.mockReturnValue(fromJS(defaultCachedTicket))
         })
 
         afterEach(() => {
@@ -181,6 +182,55 @@ describe('responseUtils', () => {
         it('should restore message state from cache when cache is not added', () => {
             const context = {...defaultMessageContext}
             addCache(context)
+            expect(getMessageContextSnapshot(context)).toMatchSnapshot()
+        })
+
+        it('should remove the email extras from the restored message', () => {
+            const contentState = addEmailExtraContent(
+                defaultCachedContentState,
+                {
+                    ticket,
+                    replyThreadMessages: [],
+                    isForwarded: false,
+                    signature: fromJS({text: 'Signature'}),
+                }
+            )
+            const context = {...defaultMessageContext}
+            const cachedTicket: RawCachedTicket = {
+                ...defaultCachedTicket,
+                contentState: convertToRaw(contentState),
+                emailExtraAdded: true,
+            }
+            ticketReplyCacheGetSpy.mockReturnValue(fromJS(cachedTicket))
+
+            addCache(context)
+
+            expect(getMessageContextSnapshot(context)).toMatchSnapshot()
+        })
+
+        it('it should set the selection to end of user content if the removed email extras were selected', () => {
+            const contentState = addEmailExtraContent(
+                defaultCachedContentState,
+                {
+                    ticket,
+                    replyThreadMessages: [],
+                    isForwarded: false,
+                    signature: fromJS({text: 'Signature'}),
+                }
+            )
+            const context = {...defaultMessageContext}
+            const cachedTicket: RawCachedTicket = {
+                ...defaultCachedTicket,
+                contentState: convertToRaw(contentState),
+                emailExtraAdded: true,
+                selectionState: SelectionState.createEmpty(
+                    contentState.getLastBlock().getKey()
+                ),
+            }
+            ticketReplyCacheGetSpy.mockReturnValue(fromJS(cachedTicket))
+
+            addCache(context)
+
             expect(getMessageContextSnapshot(context)).toMatchSnapshot()
         })
     })

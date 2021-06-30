@@ -344,30 +344,36 @@ export const hasEmailExtraContent = (contentState: ContentState): boolean => {
     return !!contentState.getBlocksAsArray().find(isEmailExtraContentBlock)
 }
 
-export const getEmailExtraContent = (
-    contentState: ContentState
-): ContentState => {
+const getEmailExtraContent = (contentState: ContentState): ContentState => {
     return ContentState.createFromBlockArray(
         contentState.getBlocksAsArray().filter(isEmailExtraContentBlock)
     )
 }
 
-export const clearEmailExtraData = (
-    contentState: ContentState
+const clearEmailExtraData = (
+    contentState: ContentState,
+    iteratee?: (block: ContentBlock, emailExtraBlockIndex: number) => boolean
 ): ContentState => {
     let modified = false
+    let emailExtraBlockIndex = 0
     const cleanContentState = ContentState.createFromBlockArray(
         contentState.getBlocksAsArray().map((block) => {
             const data = block.getData()
             if (isEmailExtraContentBlock(block)) {
-                modified = true
-                const newData = Object.values(BlockDataKey).reduce(
-                    (data, key) => {
-                        return data.delete(key)
-                    },
-                    data
-                )
-                return block.set('data', newData)
+                const removeData = iteratee
+                    ? iteratee(block, emailExtraBlockIndex)
+                    : true
+                emailExtraBlockIndex++
+                if (removeData) {
+                    modified = true
+                    const newData = Object.values(BlockDataKey).reduce(
+                        (data, key) => {
+                            return data.delete(key)
+                        },
+                        data
+                    )
+                    return block.set('data', newData)
+                }
             }
             return block
         }) as ContentBlock[]
@@ -378,4 +384,42 @@ export const clearEmailExtraData = (
             contentState.getSelectionBefore()
         ) as ContentState
     return modified ? cleanContentState : contentState
+}
+
+export const updateEmailExtraOnUserInput = (
+    prevContentState: ContentState,
+    contentState: ContentState
+): ContentState => {
+    const prevEmailExtraContent = getEmailExtraContent(prevContentState)
+    const emailExtraContent = getEmailExtraContent(contentState)
+
+    if (
+        hasEmailExtraContent(prevEmailExtraContent) &&
+        prevEmailExtraContent.getLastBlock() !== contentState.getLastBlock()
+    ) {
+        return clearEmailExtraData(contentState)
+    }
+
+    if (!emailExtraContent.equals(prevEmailExtraContent)) {
+        const prevEmailExtraTail = ContentState.createFromBlockArray(
+            prevEmailExtraContent.getBlocksAsArray().slice(1)
+        )
+        const emailExtraTail = ContentState.createFromBlockArray(
+            emailExtraContent.getBlocksAsArray().slice(1)
+        )
+        if (
+            !prevEmailExtraContent.getFirstBlock().getLength() &&
+            emailExtraContent.getFirstBlock() !==
+                prevEmailExtraContent.getFirstBlock() &&
+            prevEmailExtraTail.equals(emailExtraTail)
+        ) {
+            return clearEmailExtraData(
+                contentState,
+                (block, emailExtraBlockIndex) => !emailExtraBlockIndex
+            )
+        }
+        return clearEmailExtraData(contentState)
+    }
+
+    return contentState
 }

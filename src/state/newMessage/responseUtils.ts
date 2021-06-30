@@ -96,6 +96,32 @@ const getCache = (context: MessageContext): MessageContext => {
                     cachedSelectionState
                 ) as SelectionState
             }
+
+            if (hasEmailExtraContent(context.contentState)) {
+                context.contentState = deleteEmailExtraContent(
+                    context.contentState
+                )
+                context.emailExtraAdded = false
+                if (
+                    context.selectionState &&
+                    (!context.contentState.getBlockForKey(
+                        context.selectionState.getAnchorKey()
+                    ) ||
+                        !context.contentState.getBlockForKey(
+                            context.selectionState.getFocusKey()
+                        ))
+                ) {
+                    const lastBlock = context.contentState.getLastBlock()
+                    context.selectionState = SelectionState.createEmpty(
+                        lastBlock.getKey()
+                    )
+                        .set('anchorOffset', lastBlock.getLength())
+                        .set(
+                            'focusOffset',
+                            lastBlock.getLength()
+                        ) as SelectionState
+                }
+            }
         }
     }
 
