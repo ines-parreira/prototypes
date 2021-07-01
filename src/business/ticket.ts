@@ -103,6 +103,8 @@ export const TicketMessageSourceTypes = Object.freeze({
     FACEBOOK_MESSAGE: 'facebook-message',
     FACEBOOK_MESSENGER: 'facebook-messenger',
     FACEBOOK_POST: 'facebook-post',
+    FACEBOOK_MENTION_POST: 'facebook-mention-post',
+    FACEBOOK_MENTION_COMMENT: 'facebook-mention-comment',
     FACEBOOK_REVIEW: 'facebook-review',
     INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
     INSTAGRAM_AD_MEDIA: 'instagram-ad-media',

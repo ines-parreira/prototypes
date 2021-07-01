@@ -58,6 +58,8 @@ const sourceTypeToIcon = (
         case TicketMessageSourceType.FacebookReview:
         case TicketMessageSourceType.FacebookPost:
         case TicketMessageSourceType.FacebookRecommendations:
+        case TicketMessageSourceType.FacebookMentionPost:
+        case TicketMessageSourceType.FacebookMentionComment:
             icon.custom = true
             icon.name = 'facebook-feed'
             break

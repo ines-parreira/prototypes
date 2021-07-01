@@ -47,6 +47,10 @@ export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceType.FacebookMessage
 export const FACEBOOK_MESSENGER_SOURCE =
     TicketMessageSourceType.FacebookMessenger
 export const FACEBOOK_POST_SOURCE = TicketMessageSourceType.FacebookPost
+export const FACEBOOK_MENTION_POST_SOURCE =
+    TicketMessageSourceType.FacebookMentionPost
+export const FACEBOOK_MENTION_COMMENT_SOURCE =
+    TicketMessageSourceType.FacebookMentionComment
 export const FACEBOOK_REVIEW_SOURCE = TicketMessageSourceType.FacebookReview
 export const INSTAGRAM_AD_COMMENT_SOURCE =
     TicketMessageSourceType.InstagramAdComment

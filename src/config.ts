@@ -106,6 +106,8 @@ export const SOURCE_VALUE_PROP = {
     'facebook-review-comment': 'address',
     'facebook-messenger': 'address',
     'facebook-post': 'address',
+    'facebook-mention-post': 'address',
+    'facebook-mention-comment': 'address',
     'facebook-review': 'address',
     'facebook-ad-post': 'address',
     'facebook-ad-comment': 'address',

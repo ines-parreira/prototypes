@@ -158,6 +158,31 @@ describe('ticket message meta', () => {
 
             expect(component).toMatchSnapshot()
         })
+
+        it('should display "go to post" link for mentions', () => {
+            const pageId = '871900732905218'
+            const postId = '2750858871676052'
+            const source = {
+                extra: {
+                    page_id: pageId,
+                    post_id: `${pageId}_${postId}`,
+                    permalink: 'https://facebook.com/permalink',
+                },
+                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                type: 'facebook-mention-post',
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+            }
+
+            const component = shallow(
+                <Meta via="facebook" integrationId={118} source={source} />
+            )
+
+            const from = component.find('From').dive()
+            expect(from.text()).toBe('go to post')
+            expect(from.find('a').prop('href')).toEqual(
+                'https://facebook.com/permalink'
+            )
+        })
     })
 
     describe('instagram', () => {

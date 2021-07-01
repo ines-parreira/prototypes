@@ -10,6 +10,8 @@ import {Meta as MetaType, Source} from '../../../../../models/ticket/types.ts'
 import {
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_POST_SOURCE,
+    FACEBOOK_MENTION_POST_SOURCE,
+    FACEBOOK_MENTION_COMMENT_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
     INSTAGRAM_MENTION_MEDIA_SOURCE,
@@ -66,6 +68,8 @@ export default function Meta(props: Props) {
     const GO_TO_WIDGET_SOURCES = [
         FACEBOOK_COMMENT_SOURCE,
         FACEBOOK_POST_SOURCE,
+        FACEBOOK_MENTION_POST_SOURCE,
+        FACEBOOK_MENTION_COMMENT_SOURCE,
         INSTAGRAM_AD_MEDIA_SOURCE,
         INSTAGRAM_MEDIA_SOURCE,
         INSTAGRAM_MENTION_MEDIA_SOURCE,
@@ -116,6 +120,8 @@ export default function Meta(props: Props) {
         const parentId = source.extra.parent_id
         const permalink = source.extra.permalink
 
+        const isFacebookMentionPost =
+            source.type === FACEBOOK_MENTION_POST_SOURCE
         const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
         const isFacebookReview = source.type === FACEBOOK_REVIEW_SOURCE
         const isFacebookReviewComment =
@@ -134,6 +140,9 @@ export default function Meta(props: Props) {
             const postId = isFacebookPost ? getId(fullPostId) : fullPostId
             type = 'post'
             link = `https://facebook.com/${pageId}/posts/${postId}`
+        } else if (isFacebookMentionPost) {
+            type = 'post'
+            link = permalink
         } else if (!!messageId && isFacebookReview) {
             type = 'review'
             link = `https://facebook.com/${messageId}`
