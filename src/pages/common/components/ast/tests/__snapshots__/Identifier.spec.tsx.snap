@@ -5,16 +5,14 @@ exports[`Identifier component should render 1`] = `
   className="Identifier"
 >
   <Connect(Widget)
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="foo"
     leftsiblings={
-      Object {
-        "foo": "leftsiblings",
-      }
+      Immutable.List [
+        Immutable.Map {
+          "foo": "leftsiblings",
+        },
+      ]
     }
     parent={
       Immutable.List [
@@ -29,6 +27,7 @@ exports[`Identifier component should render 1`] = `
         "foo": "rule",
       }
     }
+    schemas={Immutable.Map {}}
     value="eq"
   />
 </span>

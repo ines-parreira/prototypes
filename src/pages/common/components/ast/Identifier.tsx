@@ -1,24 +1,18 @@
-// @flow
 import React from 'react'
-import type {Map, List} from 'immutable'
+import {Map, List} from 'immutable'
 
-import Widget from './Widget.tsx'
+import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
 
-/*
- interface Identifier <: Node, Expression, Pattern {
- type: "Identifier";
- name: string;
- }
- */
+import Widget from './Widget'
 
 type Props = {
-    rule: Map<*, *>,
-    actions: Object,
-    leftsiblings: Object,
-    name: string,
-    parent: List<*>,
-    schemas: Object,
-    className?: string,
+    rule: Map<any, any>
+    actions: RuleItemActions
+    leftsiblings?: List<any>
+    name: string
+    parent: List<any>
+    schemas: Map<any, any>
+    className?: string
 }
 
 const Identifier = ({

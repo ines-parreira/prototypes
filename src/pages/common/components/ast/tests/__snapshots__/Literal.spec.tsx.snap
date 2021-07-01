@@ -5,17 +5,15 @@ exports[`Literal component should display an error because the value is empty 1`
   className="Literal"
 >
   <Connect(Widget)
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="LiteralWidget"
     compact={true}
     leftsiblings={
-      Object {
-        "foo": "leftsiblings",
-      }
+      Immutable.List [
+        Immutable.Map {
+          "foo": "leftsiblings",
+        },
+      ]
     }
     parent={
       Immutable.List [
@@ -31,16 +29,14 @@ exports[`Literal component should display an error because the value is empty 1`
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
     value=""
   />
   <Errors
-    belowInput={false}
     inline={true}
-    tag="div"
   >
     This field cannot be empty
   </Errors>
@@ -52,17 +48,15 @@ exports[`Literal component should not display an error because the value is not 
   className="Literal"
 >
   <Connect(Widget)
-    actions={
-      Object {
-        "foo": "actions",
-      }
-    }
+    actions={Object {}}
     className="LiteralWidget"
     compact={true}
     leftsiblings={
-      Object {
-        "foo": "leftsiblings",
-      }
+      Immutable.List [
+        Immutable.Map {
+          "foo": "leftsiblings",
+        },
+      ]
     }
     parent={
       Immutable.List [
@@ -78,7 +72,7 @@ exports[`Literal component should not display an error because the value is not 
       }
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }

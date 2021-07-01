@@ -4,7 +4,7 @@ import {Map, List} from 'immutable'
 import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
 import {UNARY_OPERATORS} from '../../../../config'
 
-import Errors from './Errors.js'
+import Errors from './Errors'
 import Widget from './Widget'
 
 type Props = {

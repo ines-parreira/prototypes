@@ -68,9 +68,7 @@ exports[`Action render() should render an error saying an action cannot be empty
     value=""
   />
   <Errors
-    belowInput={false}
     inline={true}
-    tag="div"
   >
     An action cannot be empty
   </Errors>

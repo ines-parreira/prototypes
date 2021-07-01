@@ -138,7 +138,7 @@ class Right extends Component<Props, State> {
                 const selectedOptions = node.elements.map((opt) => {
                     return (opt as Literal).value
                 })
-                const options = (this.props.integrations as List<Map<any, any>>)
+                const options = this.props.integrations
                     .map((integration) => ({
                         label: integration!.get('name') as string,
                         displayLabel: (
@@ -163,9 +163,7 @@ class Right extends Component<Props, State> {
                 )
             }
 
-            const integration = (this.props.integrations as List<
-                Map<any, any>
-            >).find(
+            const integration = this.props.integrations.find(
                 (integration) =>
                     (integration!.get('id') as number).toString() ===
                     displayedValue!.toString()

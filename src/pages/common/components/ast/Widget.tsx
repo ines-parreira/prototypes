@@ -32,7 +32,7 @@ import {RootState} from '../../../../state/types'
 
 import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
 import TagsSelect from './widget/TagsSelect.js'
-import IntegrationSelect from './widget/IntegrationSelect.js'
+import IntegrationSelect from './widget/IntegrationSelect'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import MacroSelect from './widget/MacroSelect'
@@ -591,7 +591,6 @@ export class Widget extends Component<Props, State> {
                 return (
                     <IntegrationSelect
                         {...widget}
-                        className={className}
                         onChange={this._handleChange}
                     />
                 )

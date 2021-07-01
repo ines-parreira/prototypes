@@ -1,7 +1,7 @@
 import React from 'react'
 import {List, Map} from 'immutable'
 
-import Errors from '../Errors.js'
+import Errors from '../Errors'
 import Widget from '../Widget'
 
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'

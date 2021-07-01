@@ -10,9 +10,8 @@ describe('ast', () => {
             it('should render a loading imput (no integrations)', () => {
                 const component = shallow(
                     <IntegrationSelectContainer
-                        actions={{
-                            fetchIntegrations: jest.fn(),
-                        }}
+                        value={undefined}
+                        fetchIntegrations={jest.fn()}
                         onChange={jest.fn()}
                         integrations={fromJS([])}
                     />
@@ -42,9 +41,7 @@ describe('ast', () => {
                 const component = shallow(
                     <IntegrationSelectContainer
                         value={1}
-                        actions={{
-                            fetchIntegrations: jest.fn(),
-                        }}
+                        fetchIntegrations={jest.fn()}
                         integrations={integrations}
                         onChange={jest.fn()}
                     />

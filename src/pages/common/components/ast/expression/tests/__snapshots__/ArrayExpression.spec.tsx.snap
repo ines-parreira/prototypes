@@ -24,9 +24,7 @@ exports[`ast expressions ArrayExpression should display an error because the fie
     value={Array []}
   />
   <Errors
-    belowInput={false}
     inline={true}
-    tag="div"
   >
     This field cannot be empty
   </Errors>

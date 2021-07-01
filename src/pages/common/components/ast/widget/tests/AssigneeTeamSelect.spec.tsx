@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 
-import {AssigneeTeamSelectContainer} from '../AssigneeTeamSelect.tsx'
+import {AssigneeTeamSelectContainer} from '../AssigneeTeamSelect'
 
 describe('ast', () => {
     describe('widgets', () => {
@@ -13,10 +13,15 @@ describe('ast', () => {
                     2: {id: 2, name: 'Team 2'},
                     3: {id: 3, name: 'Team 3'},
                 }
+                const commonProps = ({
+                    teams: fromJS(teams),
+                } as unknown) as ComponentProps<
+                    typeof AssigneeTeamSelectContainer
+                >
 
                 it('should render a dropdown without selected value', () => {
                     const component = shallow(
-                        <AssigneeTeamSelectContainer teams={fromJS(teams)} />
+                        <AssigneeTeamSelectContainer {...commonProps} />
                     )
                     expect(component).toMatchSnapshot()
                 })
@@ -24,8 +29,8 @@ describe('ast', () => {
                 it('should render a dropdown with selected value', () => {
                     const component = shallow(
                         <AssigneeTeamSelectContainer
+                            {...commonProps}
                             value={1}
-                            teams={fromJS(teams)}
                         />
                     )
                     expect(component).toMatchSnapshot()
@@ -34,8 +39,8 @@ describe('ast', () => {
                 it('should render a dropdown without "Unassign" option', () => {
                     const component = shallow(
                         <AssigneeTeamSelectContainer
+                            {...commonProps}
                             value={1}
-                            teams={fromJS(teams)}
                             allowUnassign={false}
                         />
                     )

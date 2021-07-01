@@ -6,7 +6,8 @@ import {List, Map} from 'immutable'
 import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
 
 import Widget from './Widget'
-import Errors from './Errors.js'
+import Errors from './Errors'
+import {validateEmailList} from './actions/Action'
 
 type Props = {
     compact: boolean
@@ -15,7 +16,7 @@ type Props = {
     theKey: Record<string, unknown>
     value: {value?: any}
     config?: {
-        validate?: (value: any, schemas: Map<any, any>) => boolean
+        validate?: typeof validateEmailList
     }
     actions: RuleItemActions
     rule: Map<any, any>

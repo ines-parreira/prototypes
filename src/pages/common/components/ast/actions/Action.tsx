@@ -9,7 +9,7 @@ import _isArray from 'lodash/isArray'
 import {computeLeftPadding} from '../utils.js'
 import {templateRegex} from '../../../utils/template.js'
 
-import Errors from '../Errors.js'
+import Errors from '../Errors'
 
 import {isEmailList, findProperty} from '../../../../../utils'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'

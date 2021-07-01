@@ -3,7 +3,7 @@ import {List, Map} from 'immutable'
 
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import Literal from '../Literal'
-import Identifier from '../Identifier.js'
+import Identifier from '../Identifier'
 import UnknownSyntax from '../UnknownSyntax'
 
 import LogicalExpression from './LogicalExpression'

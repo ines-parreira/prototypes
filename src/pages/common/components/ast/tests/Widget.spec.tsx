@@ -1,16 +1,16 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {Widget} from '../Widget.tsx'
+import {Widget} from '../Widget'
 import _schemas from '../../../../../fixtures/openapi.json'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 
 import _astCodeEq from './fixtures/astCodeEq.json'
 import _astCodeContains from './fixtures/astCodeContains.json'
 import _astCodeGteTimedelta from './fixtures/astCodeGteTimedelta.json'
 import _astCodeReplyToTicket from './fixtures/astCodeReplyToTicket.json'
 
-const schemas = fromJS(_schemas)
 const astCodeEq = fromJS(_astCodeEq)
 const astCodeContains = fromJS(_astCodeContains)
 const astCodeGteTimedelta = fromJS(_astCodeGteTimedelta)
@@ -18,13 +18,17 @@ const astCodeReplyToTicket = fromJS(_astCodeReplyToTicket)
 
 describe('ast', () => {
     describe('Widget', () => {
-        const parent = fromJS(['body', 0, 'test', 'arguments', 1, 'elements'])
-        let leftsiblings = fromJS([
-            'definitions',
-            'Ticket',
-            'properties',
-            'subject',
-        ])
+        const commonProps = {
+            actions: {} as RuleItemActions,
+            leftsiblings: fromJS([
+                'definitions',
+                'Ticket',
+                'properties',
+                'subject',
+            ]),
+            parent: fromJS(['body', 0, 'test', 'arguments', 1, 'elements']),
+            schemas: fromJS(_schemas),
+        } as ComponentProps<typeof Widget>
 
         it('should render case-insensitive MultiSelectField (containsAll operator)', () => {
             const value = ['hello', 'world!']
@@ -33,16 +37,7 @@ describe('ast', () => {
             })
 
             expect(
-                shallow(
-                    <Widget
-                        actions={{}}
-                        value={value}
-                        leftsiblings={leftsiblings}
-                        parent={parent}
-                        rule={rule}
-                        schemas={schemas}
-                    />
-                )
+                shallow(<Widget {...commonProps} value={value} rule={rule} />)
             ).toMatchSnapshot()
         })
 
@@ -52,21 +47,12 @@ describe('ast', () => {
                 code_ast: astCodeEq,
             })
             expect(
-                shallow(
-                    <Widget
-                        actions={{}}
-                        value={value}
-                        leftsiblings={leftsiblings}
-                        parent={parent}
-                        rule={rule}
-                        schemas={schemas}
-                    />
-                )
+                shallow(<Widget {...commonProps} value={value} rule={rule} />)
             ).toMatchSnapshot()
         })
 
         it('should render DatetimeSelect field', () => {
-            let leftsiblings = fromJS([
+            const leftsiblings = fromJS([
                 'definitions',
                 'Ticket',
                 'properties',
@@ -79,19 +65,17 @@ describe('ast', () => {
             expect(
                 shallow(
                     <Widget
-                        actions={{}}
+                        {...commonProps}
                         value={value}
                         leftsiblings={leftsiblings}
-                        parent={parent}
                         rule={rule}
-                        schemas={schemas}
                     />
                 )
             ).toMatchSnapshot()
         })
 
         it('should render TimedeltaSelect field', () => {
-            let leftsiblings = fromJS([
+            const leftsiblings = fromJS([
                 'definitions',
                 'Ticket',
                 'properties',
@@ -104,19 +88,21 @@ describe('ast', () => {
             expect(
                 shallow(
                     <Widget
-                        actions={{}}
+                        {...commonProps}
                         value={value}
                         leftsiblings={leftsiblings}
-                        parent={parent}
                         rule={rule}
-                        schemas={schemas}
                     />
                 )
             ).toMatchSnapshot()
         })
 
         it('should render RichFieldWithVariables', () => {
-            let leftsiblings = fromJS(['actions', 'replyToTicket', 'body_html'])
+            const leftsiblings = fromJS([
+                'actions',
+                'replyToTicket',
+                'body_html',
+            ])
             const value = 'hello my good lad'
             const rule = fromJS({code_ast: astCodeReplyToTicket})
             const parent = fromJS([
@@ -134,12 +120,11 @@ describe('ast', () => {
             expect(
                 shallow(
                     <Widget
-                        actions={{}}
+                        {...commonProps}
                         value={value}
                         leftsiblings={leftsiblings}
                         parent={parent}
                         rule={rule}
-                        schemas={schemas}
                         config={{
                             widget: 'rich-field',
                             textField: 'body_text',
@@ -158,7 +143,7 @@ describe('ast', () => {
 
         describe('TagsSelect', () => {
             it('should render case sensitive TagsSelect field (tags properties)', () => {
-                let leftsiblings = fromJS([
+                const leftsiblings = fromJS([
                     'definitions',
                     'Ticket',
                     'properties',
@@ -172,19 +157,17 @@ describe('ast', () => {
                 expect(
                     shallow(
                         <Widget
-                            actions={{}}
+                            {...commonProps}
                             value={value}
                             leftsiblings={leftsiblings}
-                            parent={parent}
                             rule={rule}
-                            schemas={schemas}
                         />
                     )
                 ).toMatchSnapshot()
             })
 
             it('should render multi TagsSelect field (addTags action)', () => {
-                let leftsiblings = fromJS(['actions', 'addTags', 'tags'])
+                const leftsiblings = fromJS(['actions', 'addTags', 'tags'])
                 const value = 'hello, world, !'
                 const rule = fromJS({
                     code_ast: astCodeEq,
@@ -192,48 +175,42 @@ describe('ast', () => {
                 expect(
                     shallow(
                         <Widget
-                            actions={{}}
+                            {...commonProps}
                             value={value}
                             leftsiblings={leftsiblings}
-                            parent={parent}
                             rule={rule}
-                            schemas={schemas}
                         />
                     )
                 ).toMatchSnapshot()
             })
 
             it('should render component AssigneeUserSelect', () => {
-                let leftsiblings = fromJS(['actions', 'assignee_user'])
+                const leftsiblings = fromJS(['actions', 'assignee_user'])
                 const rule = fromJS({
                     code_ast: astCodeEq,
                 })
                 expect(
                     shallow(
                         <Widget
-                            actions={{}}
+                            {...commonProps}
                             leftsiblings={leftsiblings}
-                            parent={parent}
                             rule={rule}
-                            schemas={schemas}
                         />
                     )
                 ).toMatchSnapshot()
             })
 
             it('should render component AssigneeTeamSelect', () => {
-                let leftsiblings = fromJS(['actions', 'assignee_team'])
+                const leftsiblings = fromJS(['actions', 'assignee_team'])
                 const rule = fromJS({
                     code_ast: astCodeEq,
                 })
                 expect(
                     shallow(
                         <Widget
-                            actions={{}}
+                            {...commonProps}
                             leftsiblings={leftsiblings}
-                            parent={parent}
                             rule={rule}
-                            schemas={schemas}
                         />
                     )
                 ).toMatchSnapshot()
@@ -241,13 +218,16 @@ describe('ast', () => {
         })
 
         describe('should handle change', () => {
-            let modifyCodeASTSpy = null
-            let actions = null
+            let modifyCodeASTSpy: jest.MockedFunction<any>
+            let getCondition: jest.MockedFunction<any>
+            let actions: RuleItemActions
 
             beforeEach(() => {
                 modifyCodeASTSpy = jest.fn()
+                getCondition = jest.fn()
                 actions = {
                     modifyCodeAST: modifyCodeASTSpy,
+                    getCondition,
                 }
             })
 
@@ -256,20 +236,18 @@ describe('ast', () => {
                 const rule = fromJS({
                     code_ast: astCodeContains,
                 })
-                const component = shallow(
+                const component = shallow<Widget>(
                     <Widget
+                        {...commonProps}
                         actions={actions}
                         value={value}
-                        leftsiblings={leftsiblings}
-                        parent={parent}
                         rule={rule}
-                        schemas={schemas}
                     />
                 )
                 const newValue = ['hello', 'you!']
                 component.instance()._handleChange(newValue)
                 expect(modifyCodeASTSpy).toBeCalledWith(
-                    parent,
+                    commonProps.parent,
                     newValue.map((val) => ({
                         type: 'Literal',
                         raw: `'${val}'`,
@@ -284,24 +262,18 @@ describe('ast', () => {
                 const rule = fromJS({
                     code_ast: astCodeEq,
                 })
-                const modifyCodeASTSpy = jest.fn()
-                const actions = {
-                    modifyCodeAST: modifyCodeASTSpy,
-                }
-                const component = shallow(
+                const component = shallow<Widget>(
                     <Widget
+                        {...commonProps}
                         actions={actions}
                         value={value}
-                        leftsiblings={leftsiblings}
-                        parent={parent}
                         rule={rule}
-                        schemas={schemas}
                     />
                 )
                 const newValue = 'hello you!'
                 component.instance()._handleChange(newValue)
                 expect(modifyCodeASTSpy).toBeCalledWith(
-                    parent,
+                    commonProps.parent,
                     newValue,
                     'UPDATE'
                 )

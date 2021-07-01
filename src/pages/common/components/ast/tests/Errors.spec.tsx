@@ -5,7 +5,7 @@ import Errors from '../Errors'
 
 describe('Errors component', () => {
     it('should return null if there is no errors', () => {
-        const component = shallow(<Errors></Errors>)
+        const component = shallow(<Errors />)
         expect(component).toMatchSnapshot()
     })
 

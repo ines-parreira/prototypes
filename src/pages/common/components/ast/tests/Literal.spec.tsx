@@ -2,15 +2,16 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import Literal from '../Literal.tsx'
+import Literal from '../Literal'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 
 const value = 'hey'
 const commonProps = {
     rule: fromJS({foo: 'rule'}),
-    actions: {foo: 'actions'},
-    leftsiblings: {foo: 'leftsiblings'},
+    actions: {} as RuleItemActions,
+    leftsiblings: fromJS([{foo: 'leftsiblings'}]),
     parent: fromJS(['body', 0, 'test']),
-    schemas: {foo: 'schemas'},
+    schemas: fromJS({foo: 'schemas'}),
 }
 
 describe('Literal component', () => {

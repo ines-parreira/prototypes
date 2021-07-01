@@ -424,17 +424,20 @@ export const makeGetRedirectUri = (state: RootState) => (
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector<
     RootState,
-    List<any>,
-    List<any>
+    List<Map<any, any>>,
+    List<Map<any, any>>
 >(getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES), (integrations) => {
-    return integrations.map((integration: Map<any, any>) => {
+    return integrations.map((integration) => {
         if (
-            integration.get('type') === IntegrationType.FacebookIntegrationType
+            integration!.get('type') === IntegrationType.FacebookIntegrationType
         ) {
-            return integration.set('name', integration.getIn(['meta', 'name']))
+            return integration!.set(
+                'name',
+                integration!.getIn(['meta', 'name'])
+            )
         }
         return integration
-    }) as List<any>
+    }) as List<Map<any, any>>
 })
 
 export const hasIntegrationOfTypes = (

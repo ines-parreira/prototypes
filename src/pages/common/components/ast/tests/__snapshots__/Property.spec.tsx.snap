@@ -21,7 +21,7 @@ exports[`Property component should display errors if the validate method of the 
       ]
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -34,8 +34,6 @@ exports[`Property component should display errors if the validate method of the 
   />
   <Errors
     belowInput={true}
-    inline={false}
-    tag="div"
   >
     error!error!
   </Errors>
@@ -63,7 +61,7 @@ exports[`Property component should not display errors if the validate method of 
       ]
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -94,7 +92,7 @@ exports[`Property component should not display errors if there is no validate me
       ]
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
@@ -125,7 +123,7 @@ exports[`Property component should render a compact (inline) Property 1`] = `
       ]
     }
     schemas={
-      Object {
+      Immutable.Map {
         "foo": "schemas",
       }
     }
