@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {Editor} from 'react-draft-wysiwyg'
 import {EditorState, convertToRaw, convertFromRaw} from 'draft-js'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 import {
     insertAtomicBlocksForImagesEntities,
