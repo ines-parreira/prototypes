@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LanguageSelect/> should display the component correctly 1`] = `
+<InputField
+  label="Language select"
+  onChange={[MockFunction]}
+  options={
+    Array [
+      Object {
+        "code": "en-US",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "English - USA",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "fr-FR",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "French - France",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "fr-CA",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "French - Canada",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "cs-CZ",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Czech - Czech Republic",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "da-DK",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Danish - Denmark",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "nl-NL",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Dutch - Netherlands",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "de-DE",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "German - Germany",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "it-IT",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Italian - Italy",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "no-NO",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Norwegian - Norway",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "es-ES",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Spanish - Spain",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+      Object {
+        "code": "sv-SE",
+        "created_datetime": "2021-05-17T18:20:50.067Z",
+        "deleted_datetime": null,
+        "name": "Swedish - Sweden",
+        "updated_datetime": "2021-05-17T18:20:50.067Z",
+      },
+    ]
+  }
+  type="select"
+  value="en-US"
+>
+  <option
+    key="en-US"
+    value="en-US"
+  >
+    🇺🇸 English - USA
+  </option>
+  <option
+    key="fr-FR"
+    value="fr-FR"
+  >
+    🇫🇷 French - France
+  </option>
+  <option
+    key="fr-CA"
+    value="fr-CA"
+  >
+    🇨🇦 French - Canada
+  </option>
+  <option
+    key="cs-CZ"
+    value="cs-CZ"
+  >
+    🇨🇿 Czech - Czech Republic
+  </option>
+  <option
+    key="da-DK"
+    value="da-DK"
+  >
+    🇩🇰 Danish - Denmark
+  </option>
+  <option
+    key="nl-NL"
+    value="nl-NL"
+  >
+    🇳🇱 Dutch - Netherlands
+  </option>
+  <option
+    key="de-DE"
+    value="de-DE"
+  >
+    🇩🇪 German - Germany
+  </option>
+  <option
+    key="it-IT"
+    value="it-IT"
+  >
+    🇮🇹 Italian - Italy
+  </option>
+  <option
+    key="no-NO"
+    value="no-NO"
+  >
+    🇳🇴 Norwegian - Norway
+  </option>
+  <option
+    key="es-ES"
+    value="es-ES"
+  >
+    🇪🇸 Spanish - Spain
+  </option>
+  <option
+    key="sv-SE"
+    value="sv-SE"
+  >
+    🇸🇪 Swedish - Sweden
+  </option>
+</InputField>
+`;

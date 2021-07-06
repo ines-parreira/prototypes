@@ -3128,7 +3128,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         </button>
                                                                       </Button>
                                                                       <div
-                                                                        className="popover hidden"
+                                                                        className="popover top-left hidden"
                                                                       />
                                                                     </span>
                                                                   </Popover>
@@ -3189,7 +3189,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         </button>
                                                                       </Button>
                                                                       <div
-                                                                        className="popover hidden"
+                                                                        className="popover top-left hidden"
                                                                       />
                                                                     </span>
                                                                   </Popover>
@@ -3247,7 +3247,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         </button>
                                                                       </Button>
                                                                       <div
-                                                                        className="p-0 d-flex popover hidden"
+                                                                        className="p-0 d-flex popover top-left hidden"
                                                                       />
                                                                     </span>
                                                                   </Popover>

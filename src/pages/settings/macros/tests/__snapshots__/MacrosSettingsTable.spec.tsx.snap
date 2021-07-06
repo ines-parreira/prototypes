@@ -25,8 +25,8 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
     />
     <HeaderCell />
   </TableHead>
-  <TableBody>
-    <TableBodyRow
+  <ForwardRef(TableBody)>
+    <ForwardRef(TableBodyRow)
       className="tableBodyRow"
       key="1"
       onClick={[Function]}
@@ -77,7 +77,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </i>
         </Button>
       </BodyCell>
-    </TableBodyRow>
+    </ForwardRef(TableBodyRow)>
     <Popover
       isOpen={false}
       placement="left"
@@ -112,7 +112,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         </Button>
       </PopoverBody>
     </Popover>
-    <TableBodyRow
+    <ForwardRef(TableBodyRow)
       className="tableBodyRow"
       key="2"
       onClick={[Function]}
@@ -163,7 +163,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </i>
         </Button>
       </BodyCell>
-    </TableBodyRow>
+    </ForwardRef(TableBodyRow)>
     <Popover
       isOpen={false}
       placement="left"
@@ -198,7 +198,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         </Button>
       </PopoverBody>
     </Popover>
-  </TableBody>
+  </ForwardRef(TableBody)>
 </TableWrapper>
 `;
 

@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`] = `
+<div>
+  <header
+    class="header"
+  >
+    <input
+      class="titleInput"
+      disabled=""
+      type="text"
+      value="Article"
+    />
+    <div
+      class="headerControls"
+    >
+      <div
+        class="InputField languageSelect form-group"
+        color=""
+      >
+        <div
+          class=""
+        >
+          <select
+            class="form-control"
+            id="id-input-1"
+            options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+          >
+            <option
+              value="en-US"
+            >
+              🇺🇸 English - USA
+            </option>
+            <option
+              value="fr-FR"
+            >
+              🇫🇷 French - France
+            </option>
+            <option
+              value="fr-CA"
+            >
+              🇨🇦 French - Canada
+            </option>
+            <option
+              value="cs-CZ"
+            >
+              🇨🇿 Czech - Czech Republic
+            </option>
+            <option
+              value="da-DK"
+            >
+              🇩🇰 Danish - Denmark
+            </option>
+            <option
+              value="nl-NL"
+            >
+              🇳🇱 Dutch - Netherlands
+            </option>
+            <option
+              value="de-DE"
+            >
+              🇩🇪 German - Germany
+            </option>
+            <option
+              value="it-IT"
+            >
+              🇮🇹 Italian - Italy
+            </option>
+            <option
+              value="no-NO"
+            >
+              🇳🇴 Norwegian - Norway
+            </option>
+            <option
+              value="es-ES"
+            >
+              🇪🇸 Spanish - Spain
+            </option>
+            <option
+              value="sv-SE"
+            >
+              🇸🇪 Swedish - Sweden
+            </option>
+          </select>
+        </div>
+      </div>
+      <button
+        aria-label="close modal"
+        class="controlButton"
+        type="button"
+      >
+        <i
+          class="material-icons mr-2"
+        >
+          keyboard_tab
+        </i>
+      </button>
+    </div>
+  </header>
+</div>
+`;

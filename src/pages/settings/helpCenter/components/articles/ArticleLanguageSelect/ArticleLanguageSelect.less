@@ -1,0 +1,87 @@
+@import (reference) '~css/new/colors';
+
+:local {
+    .wrapper {
+        position: relative;
+
+        color: @neutral10;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+
+        user-select: none;
+    }
+
+    .trigger {
+        padding: 8px;
+        border: 0;
+
+        background: transparent;
+    }
+
+    .dropdown {
+        position: absolute;
+        right: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        min-width: 200px;
+        padding: 8px;
+        border: 1px solid @neutral4;
+        border-radius: 4px;
+
+        background: white;
+        box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
+        z-index: 100;
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            height: 36px;
+            padding: 8px;
+            border-radius: 4px;
+
+            white-space: nowrap;
+
+            cursor: pointer;
+            transition: background 250ms ease-out;
+
+            &:hover {
+                background: @neutral1;
+
+                .status:not(.completed) {
+                    background: @green;
+                }
+            }
+        }
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 14px;
+        height: 14px;
+        margin-left: 8px;
+        border-radius: 100%;
+
+        background: @neutral4;
+        color: @white;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        &.completed {
+            background: @blue;
+        }
+    }
+}

@@ -1,0 +1,65 @@
+@import (reference) '~css/new/colors';
+
+:local {
+    @localTextColor: @neutral10;
+
+    .title {
+        color: @localTextColor;
+
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 600;
+    }
+
+    .close-btn {
+        border: 0;
+        background-color: transparent;
+
+        font-size: 20px;
+    }
+
+    .textfield {
+        margin-bottom: 16px;
+
+        label {
+            color: @localTextColor;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        &.required {
+            label:after {
+                content: '*';
+                margin-left: 4px;
+                color: @red;
+                font-size: 14px;
+            }
+        }
+
+        input {
+            height: 32px;
+            border-color: @neutral4;
+            color: @localTextColor;
+        }
+
+        small {
+            color: #556885 !important;
+        }
+    }
+
+    .slug-domain {
+        height: 32px;
+        padding: 6px 8px;
+        border: 1px solid @neutral4;
+        border-right: 0;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+
+        background-color: @neutral1;
+
+        color: @localTextColor;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+}

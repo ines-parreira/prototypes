@@ -1,0 +1,23 @@
+:local {
+    .language-bullet-list {
+        display: flex;
+        flex-direction: row-reverse;
+
+        > div {
+            margin-left: -6px;
+            &:last-child {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .language-tooltip {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+
+        span:first-child {
+            font-weight: bold;
+        }
+    }
+}

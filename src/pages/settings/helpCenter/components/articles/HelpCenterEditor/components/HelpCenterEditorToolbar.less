@@ -1,0 +1,39 @@
+@import '~css/new/colors';
+
+:local {
+    @toolbarHeight: 42px;
+
+    .toolbar {
+        display: flex;
+        align-items: center;
+        height: @toolbarHeight;
+        background-color: @neutral1;
+    }
+    .editor-btn {
+        margin: 0 2px;
+        border-radius: 4px;
+        color: @neutral10;
+        background-color: transparent;
+        border: 0;
+    }
+    .editor-btn:hover:not(:disabled) {
+        background-color: @neutral2;
+    }
+    .editor-btn.active,
+    .editor-btn:active:not(:disabled) {
+        color: white;
+        background-color: @neutral4;
+    }
+    .editor-btn:disabled {
+        color: @neutral4;
+    }
+    .separator {
+        height: 26px;
+        width: 1px;
+        background-color: @neutral4;
+    }
+    .innerEditor {
+        flex: 1;
+        padding: 16px;
+    }
+}

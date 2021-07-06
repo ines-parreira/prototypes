@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterStartView/> should render the component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Help Center
+      </h1>
+      <div>
+        <button
+          class="btn btn-success"
+          type="button"
+        >
+          <div
+            class="create-new-btn"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              add
+            </i>
+            Add New
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <p>
+        Help center is a tool that makes it easier to answer your client’s questions in an organic way. Set up a dedicated site to sideload your support flow.
+         
+        <a
+          to="#"
+        >
+          Read more
+        </a>
+         about how to set it up.
+      </p>
+    </div>
+    <table
+      class="table"
+    >
+      <thead
+        class="tableHead"
+      >
+        <tr
+          class="headerRow"
+        >
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Help Center name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Languages
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Last updated
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          />
+        </tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row"
+        >
+          <td
+            colspan="4"
+          >
+            <div
+              class="cellContent"
+            >
+              <div
+                class="container"
+              >
+                <div
+                  class="inner"
+                  style="min-height: 500px;"
+                >
+                  <i
+                    class="icon-custom icon-circle-o-notch md-spin"
+                    style="font-size: 40px;"
+                  />
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

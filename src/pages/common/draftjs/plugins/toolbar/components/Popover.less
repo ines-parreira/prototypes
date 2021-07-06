@@ -12,8 +12,23 @@
         background-color: @white;
         width: 300px;
         box-shadow: @midWhite 0 1px 2px;
-        left: 25px;
-        bottom: -23px;
+
+        &.top-left {
+            left: 25px;
+            bottom: -23px;
+        }
+        &.top-right {
+            right: 25px;
+            bottom: -23px;
+        }
+        &.bottom-right {
+            right: 25px;
+            top: -23px;
+        }
+        &.bottom-left {
+            left: 25px;
+            top: -23px;
+        }
 
         &::before {
             content: '';
@@ -24,9 +39,27 @@
             background: @white;
             border-top: none;
             border-right: none;
+        }
+
+        &.top-left::before {
             bottom: 28px;
-            left: -6px;
             transform: rotateZ(45deg);
+            left: -6px;
+        }
+        &.top-right::before {
+            bottom: 28px;
+            transform: rotateZ(225deg);
+            right: -6px;
+        }
+        &.bottom-left::before {
+            top: 28px;
+            transform: rotateZ(45deg);
+            left: -6px;
+        }
+        &.bottom-right::before {
+            top: 28px;
+            transform: rotateZ(225deg);
+            right: -6px;
         }
 
         &.hidden {

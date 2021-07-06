@@ -1,0 +1,34 @@
+@import '~css/new/colors';
+
+:local {
+    .listItem {
+        display: flex;
+        justify-content: space-between;
+        padding: 18px 30px;
+        cursor: pointer;
+        background-color: @neutral1;
+        border-width: 1px 0;
+        border-style: solid;
+        border-color: @neutral4;
+    }
+    .listItem:first-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    .listItem:last-child {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .articleTitle {
+        display: flex;
+        align-items: center;
+    }
+    .iconBtn,
+    .iconBtn:hover,
+    .iconBtn:active,
+    .iconBtn:focus {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+}

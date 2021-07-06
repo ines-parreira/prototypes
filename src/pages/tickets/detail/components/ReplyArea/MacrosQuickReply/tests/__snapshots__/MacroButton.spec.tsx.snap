@@ -150,7 +150,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                     </i>
                                   </button>
                                   <div
-                                    class="popover hidden"
+                                    class="popover top-left hidden"
                                   />
                                 </span>
                                 <span
@@ -168,7 +168,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                     </i>
                                   </button>
                                   <div
-                                    class="popover hidden"
+                                    class="popover top-left hidden"
                                   />
                                 </span>
                                 <span
@@ -186,7 +186,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                                     </i>
                                   </button>
                                   <div
-                                    class="p-0 d-flex popover hidden"
+                                    class="p-0 d-flex popover top-left hidden"
                                   />
                                 </span>
                               </div>

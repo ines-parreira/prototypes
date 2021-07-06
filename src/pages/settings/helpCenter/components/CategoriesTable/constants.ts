@@ -1,0 +1,4 @@
+export enum DND_ENTITIES {
+    CATEGORY = 'CATEGORY',
+    ARTICLE = 'ARTICLE',
+}

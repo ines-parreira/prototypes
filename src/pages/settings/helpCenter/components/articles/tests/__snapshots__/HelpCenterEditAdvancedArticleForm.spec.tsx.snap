@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterEditAdvancedArticleForm/> should display the component correctly 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="InputField required form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-title"
+      >
+        Title
+      </label>
+      <div
+        class=""
+      >
+        <input
+          class="form-control"
+          id="id-title"
+          required=""
+          type="text"
+          value="Free article (EN)"
+        />
+      </div>
+    </div>
+    <div
+      class="InputField required form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-slug"
+      >
+        Slug
+      </label>
+      <div
+        class="input-group"
+      >
+        <span
+          class="input-group-append"
+        >
+          <span
+            class="input-group-text"
+          >
+            https://acme.gorgias.help/
+          </span>
+        </span>
+        <input
+          class="form-control"
+          id="id-slug"
+          required=""
+          type="text"
+          value="free-article"
+        />
+      </div>
+    </div>
+    <div
+      class="InputField required form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-excerpt"
+      >
+        Description
+      </label>
+      <div
+        class=""
+      >
+        <textarea
+          class="form-control"
+          id="id-excerpt"
+          required=""
+          rows="2"
+        >
+          Paragraph lorem ipsum, Yiddish xylophone wonder.
+        </textarea>
+      </div>
+    </div>
+    <i
+      class="articleIDHint"
+    >
+      Article id: 1
+    </i>
+  </div>
+</div>
+`;

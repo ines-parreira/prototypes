@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterNewView/> should render the component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/help-center"
+            >
+              Help Center
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            New Help Center
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="page-container container-fluid"
+    >
+      <form
+        class="mb-4"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col-md-9"
+          >
+            <div
+              class="InputField formInput required form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-name"
+              >
+                Help Center name
+              </label>
+              <div
+                class=""
+              >
+                <input
+                  class="form-control"
+                  id="id-name"
+                  placeholder="Ex. Customer Support"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                This is going to be displayed whenever your logo isn’t available and also in search engines.
+              </small>
+            </div>
+            <div
+              class="InputField formInput form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-input-2"
+              >
+                Default language
+              </label>
+              <div
+                class=""
+              >
+                <select
+                  class="form-control"
+                  id="id-input-2"
+                  options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                >
+                  <option
+                    value="en-US"
+                  >
+                    🇺🇸 English - USA
+                  </option>
+                  <option
+                    value="fr-FR"
+                  >
+                    🇫🇷 French - France
+                  </option>
+                  <option
+                    value="fr-CA"
+                  >
+                    🇨🇦 French - Canada
+                  </option>
+                  <option
+                    value="cs-CZ"
+                  >
+                    🇨🇿 Czech - Czech Republic
+                  </option>
+                  <option
+                    value="da-DK"
+                  >
+                    🇩🇰 Danish - Denmark
+                  </option>
+                  <option
+                    value="nl-NL"
+                  >
+                    🇳🇱 Dutch - Netherlands
+                  </option>
+                  <option
+                    value="de-DE"
+                  >
+                    🇩🇪 German - Germany
+                  </option>
+                  <option
+                    value="it-IT"
+                  >
+                    🇮🇹 Italian - Italy
+                  </option>
+                  <option
+                    value="no-NO"
+                  >
+                    🇳🇴 Norwegian - Norway
+                  </option>
+                  <option
+                    value="es-ES"
+                  >
+                    🇪🇸 Spanish - Spain
+                  </option>
+                  <option
+                    value="sv-SE"
+                  >
+                    🇸🇪 Swedish - Sweden
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="btn btn-success disabled"
+          disabled=""
+          type="submit"
+        >
+          Add new Helpcenter
+        </button>
+        <button
+          class="cancelButton btn btn-secondary disabled"
+          disabled=""
+          type="button"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;

@@ -8,18 +8,30 @@ type Props = {
     children: ReactNode
     isOpen: boolean
     className?: string
+    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 }
 
 export default class Popover extends Component<Props> {
     render() {
-        const {isOpen, children, trigger, className} = this.props
+        const {
+            isOpen,
+            children,
+            trigger,
+            className,
+            position = 'top-left',
+        } = this.props
         return (
             <span className={css.popoverWrapper}>
                 {trigger}
                 <div
-                    className={classnames(className, css.popover, {
-                        [css.hidden]: !isOpen,
-                    })}
+                    className={classnames(
+                        className,
+                        css.popover,
+                        css[position],
+                        {
+                            [css.hidden]: !isOpen,
+                        }
+                    )}
                 >
                     {isOpen && children}
                 </div>

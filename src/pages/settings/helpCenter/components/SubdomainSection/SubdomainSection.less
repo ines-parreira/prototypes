@@ -1,0 +1,93 @@
+@import (reference) '~css/new/colors.less';
+
+:local {
+    @formColor: @neutral10;
+    @formHeight: 32px;
+    @formBorder: 1px solid @neutral4;
+    @formBorderRadius: 4px;
+
+    .subdomain-content {
+        position: relative;
+    }
+
+    .title {
+        display: flex;
+
+        h4 + a {
+            margin-left: 12px;
+        }
+    }
+
+    .anchor {
+        display: inline-block;
+        font-size: 12px;
+
+        i {
+            margin-left: 4px;
+
+            font-size: 14px;
+        }
+    }
+
+    .subdomain-input {
+        height: @formHeight;
+        border: @formBorder;
+        border-right: 0;
+        border-top-left-radius: @formBorderRadius;
+        border-bottom-left-radius: @formBorderRadius;
+        box-sizing: border-box;
+
+        background-color: @white;
+
+        color: @neutral10;
+
+        &.error {
+            border-color: @red;
+            box-shadow: 0 0 0 0.2rem fade(@red, 10%);
+        }
+    }
+
+    .domain {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: @formHeight;
+        padding-left: 8px;
+        padding-right: 8px;
+        border: @formBorder;
+        border-left: 0;
+        border-top-right-radius: @formBorderRadius;
+        border-bottom-right-radius: @formBorderRadius;
+        box-sizing: border-box;
+
+        background-color: @neutral1;
+
+        color: @neutral10;
+        font-size: 1rem;
+
+        &.error {
+            border-color: @red;
+            background-color: @red0;
+        }
+    }
+
+    .error-container {
+        position: absolute;
+        margin-top: 4px;
+    }
+
+    .error-message {
+        color: @red;
+
+        i {
+            margin-right: 4px;
+        }
+    }
+
+    .policy {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+    }
+}

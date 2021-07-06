@@ -1,0 +1,46 @@
+@import '~css/new/colors';
+
+:local {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 16px;
+    }
+    .titleInput,
+    .titleInput:disabled {
+        font-size: 20px;
+        line-height: 28px;
+        color: @neutral10;
+        font-weight: 600;
+        border: 0;
+        background-color: white;
+    }
+    .headerControls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+    .controlButton {
+        border: 0;
+        background-color: white;
+    }
+    .controlButton:focus:not(:focus-visible) {
+        outline: none;
+    }
+    .controlButton > i {
+        font-size: 20px;
+    }
+    .languageSelect {
+        margin-bottom: 0;
+        margin-right: 15px;
+    }
+    .languageSelect > div > select {
+        width: 110px;
+        border: 0;
+        color: @neutral10;
+        font-size: 14px;
+        line-height: 20px;
+    }
+}

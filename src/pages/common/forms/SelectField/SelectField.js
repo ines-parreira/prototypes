@@ -91,7 +91,7 @@ export default class SelectField extends Component<Props, State> {
                 filteredOptions: this._filterOptions(
                     nextProps.options,
                     nextProps.value,
-                    this.state.input
+                    ''
                 ),
             })
         }

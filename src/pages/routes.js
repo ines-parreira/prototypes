@@ -60,6 +60,9 @@ import OnboardingContent from './onboarding/OnboardingContent.tsx'
 import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView.tsx'
 import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView.tsx'
 import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView.tsx'
+import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView.tsx'
+import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView.tsx'
+import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter.tsx'
 
 const appRender = (props: {
     navbar: ComponentType<any>,
@@ -359,6 +362,13 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/integrations`}
                 render={IntegrationsSettingsRoutes}
             />
+            {/* TODO: remove the condition once the production infrastructure is setup */}
+            {window.location.hostname.indexOf('gorgias.help') === -1 && (
+                <Route
+                    path={`${path}/help-center`}
+                    render={HelpCenterSettingsRoutes}
+                />
+            )}
             <Route path={`${path}/macros`} render={MacrosSettingsRoutes} />
             <Route
                 path={`${path}/rules`}
@@ -370,47 +380,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             />
             <Route
                 path={`${path}/self-service`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceContainer,
-                        ADMIN_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/self-service/:integrationType/:shopName/preferences`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServicePreferencesContainer,
-                        ADMIN_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/self-service/:integrationType/:shopName/preferences/cancellations`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceCancellationsPolicyContainer,
-                        ADMIN_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/self-service/:integrationType/:shopName/preferences/returns`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceReturnsPolicyContainer,
-                        ADMIN_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
+                render={SelfServiceSettingsRoutes}
             />
             <Route
                 path={`${path}/profile`}
@@ -513,6 +483,98 @@ export function IntegrationsSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         IntegrationDetailContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        HelpCenterStartView,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        HelpCenterNewView,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:helpcenterId`}
+                render={appRender({
+                    content: withUserRoleRequired(
+                        CurrentHelpCenter,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function SelfServiceSettingsRoutes({
+    match: {path},
+}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServicePreferencesContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/cancellations`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceCancellationsPolicyContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/returns`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceReturnsPolicyContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

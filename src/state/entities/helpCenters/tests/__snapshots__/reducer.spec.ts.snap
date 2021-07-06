@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`helpCenters reducer createHelpcenter action should add a new helpcenter to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-05-17T18:21:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "en-US",
+    "deleted_datetime": undefined,
+    "id": 1,
+    "name": "ACME Helpcenter",
+    "subdomain": "acme",
+    "supported_locales": Array [
+      "en-US",
+    ],
+    "updated_datetime": "2021-05-17T18:21:42.022Z",
+  },
+}
+`;
+
+exports[`helpCenters reducer deleteHelpcenter action should delete a helpcenter from the state 1`] = `
+Object {
+  "2": Object {
+    "created_datetime": "2021-05-17T18:22:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "de-DE",
+    "deleted_datetime": undefined,
+    "id": 2,
+    "name": "ACME Helpcenter 2",
+    "subdomain": "acme2",
+    "supported_locales": Array [
+      "en-US",
+      "de-DE",
+    ],
+    "updated_datetime": "2021-05-17T18:22:42.022Z",
+  },
+}
+`;
+
+exports[`helpCenters reducer fetchHelpcenter action should add a new helpcenter to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-05-17T18:21:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "en-US",
+    "deleted_datetime": undefined,
+    "id": 1,
+    "name": "ACME Helpcenter",
+    "subdomain": "acme",
+    "supported_locales": Array [
+      "en-US",
+    ],
+    "updated_datetime": "2021-05-17T18:21:42.022Z",
+  },
+}
+`;
+
+exports[`helpCenters reducer fetchHelpcenters action should add the helpcenters to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-05-17T18:21:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "en-US",
+    "deleted_datetime": undefined,
+    "id": 1,
+    "name": "ACME Helpcenter",
+    "subdomain": "acme",
+    "supported_locales": Array [
+      "en-US",
+    ],
+    "updated_datetime": "2021-05-17T18:21:42.022Z",
+  },
+  "2": Object {
+    "created_datetime": "2021-05-17T18:22:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "de-DE",
+    "deleted_datetime": undefined,
+    "id": 2,
+    "name": "ACME Helpcenter 2",
+    "subdomain": "acme2",
+    "supported_locales": Array [
+      "en-US",
+      "de-DE",
+    ],
+    "updated_datetime": "2021-05-17T18:22:42.022Z",
+  },
+  "3": Object {
+    "created_datetime": "2021-05-17T18:23:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "fr-FR",
+    "deleted_datetime": undefined,
+    "id": 3,
+    "name": "ACME Helpcenter 3",
+    "subdomain": "acme3",
+    "supported_locales": Array [
+      "en-US",
+      "fr-FR",
+    ],
+    "updated_datetime": "2021-05-17T18:23:42.022Z",
+  },
+}
+`;
+
+exports[`helpCenters reducer updateHelpcenter action should replace an existing helpcenter in the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-05-17T18:21:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "en-US",
+    "deleted_datetime": undefined,
+    "id": 1,
+    "name": "bar",
+    "subdomain": "acme",
+    "supported_locales": Array [
+      "en-US",
+    ],
+    "updated_datetime": "2021-05-17T18:21:42.022Z",
+  },
+  "2": Object {
+    "created_datetime": "2021-05-17T18:22:42.022Z",
+    "deactivated_datetime": null,
+    "default_locale": "de-DE",
+    "deleted_datetime": undefined,
+    "id": 2,
+    "name": "ACME Helpcenter 2",
+    "subdomain": "acme2",
+    "supported_locales": Array [
+      "en-US",
+      "de-DE",
+    ],
+    "updated_datetime": "2021-05-17T18:22:42.022Z",
+  },
+}
+`;

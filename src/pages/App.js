@@ -161,7 +161,7 @@ class App extends React.Component<Props> {
                             />
                         ))}
 
-                        <div className={css.app}>
+                        <div id="app-root" className={css.app}>
                             <Navbar />
 
                             <div

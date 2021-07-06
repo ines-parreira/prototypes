@@ -1,0 +1,33 @@
+@import '~css/new/colors';
+
+:local {
+    .footer {
+        background-color: @neutral1;
+        height: 64px;
+        width: 100%;
+        padding: 16px;
+    }
+    .dropdownButton {
+        display: flex;
+    }
+    .submitButton {
+        border: 1px solid @blue6;
+    }
+    .dropdownButton > button,
+    .dropdownButton > button:hover,
+    .dropdownButton > button:focus:not(:focus-visible),
+    .dropdownButton > button:active {
+        border: 1px solid @blue6 !important;
+        background-color: @blue !important;
+    }
+    .dropdownButton > button::after {
+        margin: 0;
+        color: white;
+    }
+    .dropdownMenu {
+        margin-bottom: 7px;
+    }
+    .danger {
+        color: @red;
+    }
+}

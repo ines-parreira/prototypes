@@ -1,0 +1,377 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterTable/> should display the table correctly when loading 1`] = `
+<div>
+  <table
+    class="table"
+  >
+    <thead
+      class="tableHead"
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Help Center name
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Languages
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Last updated
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody"
+    >
+      <tr
+        class="row"
+      >
+        <td
+          colspan="4"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="inner"
+                style="min-height: 500px;"
+              >
+                <i
+                  class="icon-custom icon-circle-o-notch md-spin"
+                  style="font-size: 40px;"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`<HelpCenterTable/> should display the table correctly when not loading 1`] = `
+<div>
+  <table
+    class="table"
+  >
+    <thead
+      class="tableHead"
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Help Center name
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Languages
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Last updated
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody"
+    >
+      <tr
+        class="row tableBodyRow isClickable"
+      >
+        <td
+          class="helpCenterName"
+        >
+          <div
+            class="cellContent"
+          >
+            ACME Helpcenter
+          </div>
+        </td>
+        <td>
+          <div
+            class="cellContent"
+          >
+            <div
+              class="language-bullet-list"
+            >
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-overflow"
+                id="more-items-1"
+              >
+                +4
+              </div>
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-en-US"
+              >
+                <span
+                  class="flag-emoji"
+                  data-testid="flag-en-US"
+                >
+                  🇺🇸
+                </span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div
+            class="cellContent"
+          >
+            05/17/2021
+          </div>
+        </td>
+        <td
+          class="smallest actions"
+        >
+          <div
+            class="cellContent"
+          >
+            <i
+              class="material-icons forwardIcon"
+            >
+              keyboard_arrow_right
+            </i>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row tableBodyRow isClickable"
+      >
+        <td
+          class="helpCenterName"
+        >
+          <div
+            class="cellContent"
+          >
+            ACME Helpcenter 2
+          </div>
+        </td>
+        <td>
+          <div
+            class="cellContent"
+          >
+            <div
+              class="language-bullet-list"
+            >
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-overflow"
+                id="more-items-2"
+              >
+                +4
+              </div>
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-de-DE"
+              >
+                <span
+                  class="flag-emoji"
+                  data-testid="flag-de-DE"
+                >
+                  🇩🇪
+                </span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div
+            class="cellContent"
+          >
+            05/17/2021
+          </div>
+        </td>
+        <td
+          class="smallest actions"
+        >
+          <div
+            class="cellContent"
+          >
+            <i
+              class="material-icons forwardIcon"
+            >
+              keyboard_arrow_right
+            </i>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row tableBodyRow isClickable"
+      >
+        <td
+          class="helpCenterName"
+        >
+          <div
+            class="cellContent"
+          >
+            ACME Helpcenter 3
+          </div>
+        </td>
+        <td>
+          <div
+            class="cellContent"
+          >
+            <div
+              class="language-bullet-list"
+            >
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-overflow"
+                id="more-items-3"
+              >
+                +4
+              </div>
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-fr-FR"
+              >
+                <span
+                  class="flag-emoji"
+                  data-testid="flag-fr-FR"
+                >
+                  🇫🇷
+                </span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div
+            class="cellContent"
+          >
+            05/17/2021
+          </div>
+        </td>
+        <td
+          class="smallest actions"
+        >
+          <div
+            class="cellContent"
+          >
+            <i
+              class="material-icons forwardIcon"
+            >
+              keyboard_arrow_right
+            </i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

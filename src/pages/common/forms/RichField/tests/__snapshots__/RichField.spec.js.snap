@@ -3123,7 +3123,7 @@ exports[`RichField should render default content state 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="popover hidden"
+                                            className="popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -3184,7 +3184,7 @@ exports[`RichField should render default content state 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="popover hidden"
+                                            className="popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -3242,7 +3242,7 @@ exports[`RichField should render default content state 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="p-0 d-flex popover hidden"
+                                            className="p-0 d-flex popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -8665,7 +8665,7 @@ exports[`RichField should render immutable variable 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="popover hidden"
+                                            className="popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -8726,7 +8726,7 @@ exports[`RichField should render immutable variable 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="popover hidden"
+                                            className="popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -8784,7 +8784,7 @@ exports[`RichField should render immutable variable 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="p-0 d-flex popover hidden"
+                                            className="p-0 d-flex popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -11445,7 +11445,7 @@ exports[`RichField should render mutable variable 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="popover hidden"
+                                            className="popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -11506,7 +11506,7 @@ exports[`RichField should render mutable variable 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="popover hidden"
+                                            className="popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>
@@ -11564,7 +11564,7 @@ exports[`RichField should render mutable variable 1`] = `
                                             </button>
                                           </Button>
                                           <div
-                                            className="p-0 d-flex popover hidden"
+                                            className="p-0 d-flex popover top-left hidden"
                                           />
                                         </span>
                                       </Popover>

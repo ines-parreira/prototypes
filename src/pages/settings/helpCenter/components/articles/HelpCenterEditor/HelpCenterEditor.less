@@ -1,0 +1,145 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        // height of content minus modal header and modal footer
+        height: ~'calc(100% - 134px)';
+        display: flex;
+        flex-direction: column;
+        .toolbar  {
+            padding: 5px 0;
+            margin: 0;
+            border: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            background-color: @neutral1;
+        }
+
+        // The style within the editor should be what will be rendered on the help center
+        // side.
+        // cf. help-center/packages/front/components/ArticleContent/components/Wrapper.tsx
+        .editor {
+            @helpCenterPrimaryColor: '#0075FF';
+            @helpCenterRed: '#F24F66';
+            @helpCenterN0: '#FFFFFF';
+            @helpCenterN05: '#F9F9F9';
+            @helpCenterN1: '#EEEEEE';
+            @helpCenterN2: '#DDDDDD';
+            @helpCenterN3: '#AFAFAF';
+            @helpCenterN4: '#6A6A6A';
+            @helpCenterN5: '#161616';
+
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: scroll;
+            color: @helpCenterN5;
+
+            // blocks
+            p,
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            ul,
+            blockquote,
+            table,
+            pre,
+            figure {
+                margin-block-start: 0;
+                margin-inline-start: 0;
+                margin-inline-end: 0;
+                // margin-block-end: 24px;
+            }
+
+            a {
+                color: @helpCenterPrimaryColor;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            ul,
+            ol {
+                padding-inline-start: 24px;
+            }
+
+            ul {
+                list-style-type: disc;
+            }
+
+            ol ol {
+                list-style-type: lower-alpha;
+            }
+
+            img {
+                display: block;
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            figure {
+                max-width: 100%;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            figcaption {
+                margin-block-end: 8px;
+                margin-block-start: 8px;
+                color: @helpCenterN4;
+            }
+
+            blockquote {
+                border-left: 2px solid @helpCenterN2;
+                padding-left: 20px;
+            }
+
+            // pre {
+            //     color: @helpCenterN5;
+            //     background-color: @helpCenterN05;
+            //     border: 1px solid @helpCenterN1;
+            //     border-radius: 4px;
+            //     padding: 16px;
+            //     overflow: scroll;
+            // }
+
+            code {
+                background: @helpCenterN1;
+                border-radius: 3px;
+                color: @helpCenterRed;
+                padding-inline-start: 6px;
+                padding-inline-end: 6px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+
+            table {
+                border-collapse: collapse;
+                table-layout: fixed;
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 10px 4px;
+                vertical-align: bottom;
+            }
+
+            th {
+                text-align: start;
+            }
+
+            thead {
+                border-bottom: 2px solid @helpCenterN2;
+            }
+
+            tr {
+                border-bottom: 1px solid @helpCenterN2;
+            }
+        }
+    }
+}

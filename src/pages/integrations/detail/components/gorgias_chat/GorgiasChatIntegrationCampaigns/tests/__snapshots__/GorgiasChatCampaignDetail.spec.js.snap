@@ -548,7 +548,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                   </i>
                                 </button>
                                 <div
-                                  class="popover hidden"
+                                  class="popover top-left hidden"
                                 />
                               </span>
                               <span
@@ -566,7 +566,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                   </i>
                                 </button>
                                 <div
-                                  class="popover hidden"
+                                  class="popover top-left hidden"
                                 />
                               </span>
                               <span
@@ -584,7 +584,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                   </i>
                                 </button>
                                 <div
-                                  class="p-0 d-flex popover hidden"
+                                  class="p-0 d-flex popover top-left hidden"
                                 />
                               </span>
                             </div>
@@ -1320,7 +1320,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   </i>
                                 </button>
                                 <div
-                                  class="popover hidden"
+                                  class="popover top-left hidden"
                                 />
                               </span>
                               <span
@@ -1338,7 +1338,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   </i>
                                 </button>
                                 <div
-                                  class="popover hidden"
+                                  class="popover top-left hidden"
                                 />
                               </span>
                               <span
@@ -1356,7 +1356,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   </i>
                                 </button>
                                 <div
-                                  class="p-0 d-flex popover hidden"
+                                  class="p-0 d-flex popover top-left hidden"
                                 />
                               </span>
                             </div>
@@ -2114,7 +2114,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   </i>
                                 </button>
                                 <div
-                                  class="popover hidden"
+                                  class="popover top-left hidden"
                                 />
                               </span>
                               <span
@@ -2132,7 +2132,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   </i>
                                 </button>
                                 <div
-                                  class="popover hidden"
+                                  class="popover top-left hidden"
                                 />
                               </span>
                               <span
@@ -2150,7 +2150,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   </i>
                                 </button>
                                 <div
-                                  class="p-0 d-flex popover hidden"
+                                  class="p-0 d-flex popover top-left hidden"
                                 />
                               </span>
                             </div>

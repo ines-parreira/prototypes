@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Drawer/> should display the component correctly 1`] = `
+<div>
+  <div
+    class="drawer opened"
+    data-testid="test"
+  >
+    Modal content
+  </div>
+</div>
+`;
+
+exports[`<Drawer/> should display the component in fullscreen mode correctly 1`] = `
+<div>
+  <div
+    class="drawer fullscreen opened"
+    data-testid="test"
+  >
+    Modal content
+  </div>
+</div>
+`;

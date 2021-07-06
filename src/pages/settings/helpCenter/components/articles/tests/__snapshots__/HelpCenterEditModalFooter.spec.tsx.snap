@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterEditModalFooter/> should display the component correctly 1`] = `
+<div>
+  <footer
+    class="footer"
+  >
+    <div
+      class="btn-group"
+      role="group"
+    >
+      <button
+        class="submitButton btn btn-primary"
+        type="submit"
+      >
+        Save
+      </button>
+      <div
+        class="dropdownButton btn-group"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          <span
+            class="sr-only"
+          >
+            Toggle Dropdown
+          </span>
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdownMenu dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="danger"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                delete
+              </i>
+              Delete
+            </span>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              save
+            </i>
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;

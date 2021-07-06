@@ -9,15 +9,14 @@ type Props = HTMLProps<HTMLTableRowElement> & {
     onClick?: () => void
 }
 
-export default function TableBodyRow({
-    children,
-    className,
-    onClick,
-    ...otherProps
-}: Props) {
+function TableBodyRow(
+    {children, className, onClick, ...otherProps}: Props,
+    ref: React.Ref<HTMLTableRowElement> | null | undefined
+) {
     return (
         <tr
             {...otherProps}
+            ref={ref}
             className={classnames(css.row, className, {
                 [css.isClickable]: !!onClick,
             })}
@@ -27,3 +26,5 @@ export default function TableBodyRow({
         </tr>
     )
 }
+
+export default React.forwardRef(TableBodyRow)

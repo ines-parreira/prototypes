@@ -1,0 +1,305 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterArticleList/> should render the component 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <h6
+      class="label"
+    >
+      Article list
+    </h6>
+    <ul
+      class="list-group"
+    >
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Free article (EN)
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          English only post
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          English only post
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          English only post
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          English only post
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Return policy
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Return policy
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Return policy
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Return policy
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Pricing
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Pricing
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Pricing
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+      <li
+        aria-label="open article"
+        class="listItem list-group-item"
+      >
+        <div
+          class="articleTitle"
+        >
+          Pricing
+        </div>
+        <div>
+          <button
+            aria-label="open article settings"
+            class="iconBtn btn btn-secondary"
+            type="button"
+          >
+            <img
+              alt="gear icon"
+              src="test-file-stub"
+            />
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;

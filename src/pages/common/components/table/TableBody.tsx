@@ -8,10 +8,19 @@ type Props = HTMLProps<HTMLTableSectionElement> & {
     className?: string
 }
 
-export default function TableBody({children, className, ...otherProps}: Props) {
+function TableBody(
+    {children, className, ...otherProps}: Props,
+    ref: React.Ref<HTMLTableSectionElement> | null | undefined
+) {
     return (
-        <tbody {...otherProps} className={classnames(css.tableBody, className)}>
+        <tbody
+            {...otherProps}
+            ref={ref}
+            className={classnames(css.tableBody, className)}
+        >
             {children}
         </tbody>
     )
 }
+
+export default React.forwardRef(TableBody)

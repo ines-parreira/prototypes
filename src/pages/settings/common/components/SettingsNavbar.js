@@ -69,6 +69,13 @@ export default class SettingsNavbar extends React.Component<Props> {
                         text: 'Integrations',
                         className: 'd-none d-md-block',
                     },
+                    // TODO: uncomment when help-center v1 released
+                    // {
+                    //     requiredRole: ADMIN_ROLE,
+                    //     to: 'help-center',
+                    //     text: 'Help Center',
+                    //     className: 'd-none d-md-block',
+                    // },
                     {
                         requiredRole: AGENT_ROLE,
                         to: 'manage-tags',

@@ -1,0 +1,58 @@
+@import (reference) '~css/new/colors';
+
+:local {
+    .drag-handler {
+        color: @neutral4;
+        font-size: 22px;
+    }
+
+    .caret {
+        margin-right: 16px;
+        color: @neutral6;
+        font-size: 22px;
+    }
+
+    .caret-placeholder {
+        width: 22px;
+        margin-right: 16px;
+    }
+
+    .parent-cell {
+        > div {
+            background: @neutral1;
+            padding: 0;
+            margin: -1px 0;
+        }
+    }
+
+    .category-cell {
+        color: @neutral10;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+
+        user-select: none;
+
+        > div {
+            padding-left: 0;
+        }
+
+        .count {
+            padding: 2px 9px;
+            border: 1px solid @neutral4;
+            margin-left: 8px;
+            background: @neutral1;
+
+            color: @neutral8;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 16px;
+        }
+    }
+
+    .language {
+        > div {
+            width: 125px;
+        }
+    }
+}

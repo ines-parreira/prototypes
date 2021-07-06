@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterEditModal/> should display the component correctly 1`] = `
+<div>
+  <div
+    class="modal opened"
+  >
+    Modal content
+  </div>
+</div>
+`;
+
+exports[`<HelpCenterEditModal/> should display the component in fullscreen mode correctly 1`] = `
+<div>
+  <div
+    class="modal fullscreen opened"
+  >
+    Modal content
+  </div>
+</div>
+`;

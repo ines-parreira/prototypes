@@ -1,0 +1,21 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        position: relative;
+        height: 100%;
+    }
+    .toggleModalBtn {
+        background-color: transparent;
+        border: 0;
+        color: @blue;
+    }
+    .toggleModalBtn:focus:not(:focus-visible) {
+        outline: none;
+    }
+    .modalForm {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+}
