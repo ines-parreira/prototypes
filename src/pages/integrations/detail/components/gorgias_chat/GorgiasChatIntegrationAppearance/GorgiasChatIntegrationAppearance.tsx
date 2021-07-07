@@ -41,11 +41,11 @@ import {RootState} from '../../../../../../state/types'
 
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField.js'
-import FileField from '../../../../../common/forms/FileField.js'
+import FileField from '../../../../../common/forms/FileField'
 import InputField from '../../../../../common/forms/InputField.js'
 import Loader from '../../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../../common/components/PageHeader'
-import RadioField from '../../../../../common/forms/RadioField.js'
+import RadioField from '../../../../../common/forms/RadioField'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation.js'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'

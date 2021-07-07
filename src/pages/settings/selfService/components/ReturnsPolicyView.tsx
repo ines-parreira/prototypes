@@ -22,7 +22,7 @@ import {getSelfServiceConfigurations} from '../../../../state/self_service/selec
 import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
 import * as SelfServiceActions from '../../../../state/self_service/actions'
 import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField.js'
+import SelectField from '../../../common/forms/SelectField/SelectField'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
@@ -222,11 +222,9 @@ export const ReturnsPolicyView = ({
                                                 options={
                                                     ReturnsDropdownOptionsList
                                                 }
-                                                onChange={(
-                                                    condition: string
-                                                ) => {
+                                                onChange={(condition) => {
                                                     setEligibilityWindowCondition(
-                                                        condition
+                                                        condition as string
                                                     )
                                                     setShowLessThan(true)
                                                 }}

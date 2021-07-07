@@ -5,7 +5,7 @@ import {Alert} from 'reactstrap'
 
 import * as agentSelectors from '../../../../../state/agents/selectors'
 import * as teamsSelectors from '../../../../../state/teams/selectors'
-import RadioChoiceField from '../../../forms/RadioChoiceField.js'
+import RadioChoiceField from '../../../forms/RadioChoiceField'
 import {ViewVisibility} from '../../../../../models/view/types'
 import {RootState} from '../../../../../state/types'
 import Loader from '../../Loader/Loader'

@@ -1,19 +1,18 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {List} from 'immutable'
 import {Row, Col, Button} from 'reactstrap'
 
-import InputField from './InputField'
+import InputField from './InputField.js'
 
 type Props = {
-    className?: string,
-    items: List<*>,
-    onChange: (List<*>) => void,
-    maxLength: number,
-    maxItems: number,
+    className?: string
+    items: List<any>
+    onChange: (value: List<any>) => void
+    maxLength: number
+    maxItems: number
 }
 
-export default class ListField extends React.Component<Props> {
+export default class ListField extends Component<Props> {
     static defaultProps = {
         maxLength: 100,
         maxItems: 100,
@@ -42,18 +41,18 @@ export default class ListField extends React.Component<Props> {
 
         return (
             <div className={className}>
-                {items.map((item, index) => {
+                {items.map((item: Map<any, any>, index) => {
                     return (
                         <Row key={index} className="mb-3 form-row">
                             <Col className="flex-grow">
                                 <InputField
-                                    name={`item-${index}`}
+                                    name={`item-${index!}`}
                                     type="text"
                                     placeholder={`Type something (limited to ${maxLength} characters)`}
                                     value={item}
                                     maxLength={maxLength}
                                     onChange={(value) =>
-                                        this.updateRow(value, index)
+                                        this.updateRow(value, index!)
                                     }
                                     required
                                 />
@@ -62,7 +61,7 @@ export default class ListField extends React.Component<Props> {
                                 <Button
                                     type="button"
                                     size="sm"
-                                    onClick={() => this.deleteRow(index)}
+                                    onClick={() => this.deleteRow(index!)}
                                 >
                                     <i className="material-icons md-2 text-danger">
                                         delete

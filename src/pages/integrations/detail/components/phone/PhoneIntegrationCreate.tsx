@@ -19,7 +19,7 @@ import {updateOrCreateIntegration} from '../../../../../state/integrations/actio
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
-import SelectField from '../../../../common/forms/SelectField/SelectField.js'
+import SelectField from '../../../../common/forms/SelectField/SelectField'
 import type {Option} from '../../../../common/forms/SelectField/types'
 import {PhoneCountry, PhoneType} from '../../../../../business/twilio'
 
@@ -290,7 +290,9 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 <SelectField
                                     id="area-code"
                                     value={areaCode}
-                                    onChange={setAreaCode}
+                                    onChange={(value) =>
+                                        setAreaCode(value as string)
+                                    }
                                     options={areaCodes}
                                     fullWidth
                                     required

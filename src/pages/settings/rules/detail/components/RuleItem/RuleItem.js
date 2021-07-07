@@ -12,7 +12,7 @@ import {
 } from 'reactstrap'
 
 import InputField from '../../../../../common/forms/InputField'
-import SelectField from '../../../../../common/forms/MultiSelectField'
+import SelectField from '../../../../../common/forms/MultiSelectField.tsx'
 import * as rulesConfig from '../../../../../../config/rules.ts'
 
 import EditableTitle from '../../../../../common/components/EditableTitle.tsx'

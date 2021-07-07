@@ -23,7 +23,7 @@ import {
     PopoverHeader,
 } from 'reactstrap'
 
-import SelectField from '../../../../../../forms/SelectField/SelectField.js'
+import SelectField from '../../../../../../forms/SelectField/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField.js'
 import InputField from '../../../../../../forms/InputField.js'
 

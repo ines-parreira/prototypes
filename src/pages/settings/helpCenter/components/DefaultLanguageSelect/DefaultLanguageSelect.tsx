@@ -6,7 +6,7 @@ import {
     LocaleCode,
 } from '../../../../../models/helpCenter/types'
 
-import SelectField from '../../../../common/forms/SelectField/SelectField.js'
+import SelectField from '../../../../common/forms/SelectField/SelectField'
 
 import {useLanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
 import {useLocaleSelectOptions} from '../../hooks/useLocaleSelectOptions'
@@ -44,7 +44,7 @@ export const DefaultLanguageSelect = ({localesAvailable}: Props) => {
                     <SelectField
                         options={localesOptions}
                         value={preferences.defaultLanguage}
-                        onChange={onChangeLanguage}
+                        onChange={onChangeLanguage as any}
                         style={{display: 'inline-block'}}
                     />
                 </Col>

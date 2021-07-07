@@ -1,4 +1,3 @@
-// @flow
 import {ContentState, EditorState} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import _isEqual from 'lodash/isEqual'
@@ -7,38 +6,31 @@ import React from 'react'
 import {
     contentStateFromTextOrHTML,
     convertToHTML,
-} from '../../../../utils/editor.tsx'
-import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'
-import InputField from '../InputField'
+} from '../../../../utils/editor'
+import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils.js'
+import InputField from '../InputField.js'
 
-import RichFieldEditor, {
-    type Props as RichFieldEditorProps,
-} from './RichFieldEditor'
+import RichFieldEditor, {Props as RichFieldEditorProps} from './RichFieldEditor'
 
 type Props = {
-    allowExternalChanges: boolean,
+    allowExternalChanges?: boolean
     value: {
-        html?: string,
-        text: string,
-    },
-    defaultContentState?: ContentState,
-} & $Diff<
-    RichFieldEditorProps,
-    {
-        editorState: EditorState,
+        html?: string
+        text: string
     }
->
+    defaultContentState?: ContentState
+} & Partial<Omit<RichFieldEditorProps, 'editorState'>>
 
 type State = {
-    editorState: EditorState,
-    isFocused: boolean,
+    editorState: EditorState
+    isFocused: boolean
 }
 
 // Deprecated component, use RichFieldEditor instead
 export default class RichField extends InputField<Props, State> {
     constructor(props: Props) {
-        const {defaultContentState} = props
         super(props)
+        const {defaultContentState} = props
 
         let editorState = EditorState.createEmpty()
 
@@ -47,10 +39,10 @@ export default class RichField extends InputField<Props, State> {
             editorState = attachEntitiesToVariables(editorState, true)
         }
 
-        this.state = ({
+        this.state = {
             editorState,
             isFocused: false,
-        }: State)
+        } as State
     }
 
     componentWillMount() {
@@ -89,7 +81,10 @@ export default class RichField extends InputField<Props, State> {
     }
 
     _updateEditorState = (
-        value: {html?: string, text: string},
+        value: {
+            html?: string
+            text: string
+        },
         callback?: () => any
     ) => {
         // if incoming value is the same as the current one, don't update the current one
@@ -103,7 +98,10 @@ export default class RichField extends InputField<Props, State> {
         const contentState = contentStateFromTextOrHTML(value.text, value.html)
 
         // set content state in editor state
-        editorState = EditorState.push(editorState, contentState)
+        editorState = (EditorState.push as (
+            editorState: EditorState,
+            contentState: ContentState
+        ) => EditorState)(editorState, contentState)
 
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)
@@ -114,7 +112,7 @@ export default class RichField extends InputField<Props, State> {
     _onChange = (editorState: EditorState) => {
         this.setState({editorState}, () => {
             // notify the parent of the new editor state
-            this.props.onChange(editorState)
+            this.props.onChange!(editorState)
         })
     }
 
@@ -129,7 +127,7 @@ export default class RichField extends InputField<Props, State> {
     _getField = () => {
         return (
             <RichFieldEditor
-                {...this.props}
+                {...(this.props as Omit<RichFieldEditorProps, 'editorState'>)}
                 editorState={this.state.editorState}
                 isFocused={this.state.isFocused}
                 onChange={this._onChange}

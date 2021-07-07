@@ -1,22 +1,21 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {FormGroup, Input, Label, FormText} from 'reactstrap'
 
 import css from './RadioField.less'
 
 type Props = {
     options: Array<{
-        value: any,
-        label: string,
-        description?: string,
-    }>,
-    value: ?any,
-    onChange: (any) => void,
-    disabled: boolean,
-    label?: string,
+        value: any
+        label: string
+        description?: string
+    }>
+    value: any | null
+    onChange: (value: any) => void
+    disabled: boolean
+    label?: string
 }
 
-export default class RadioField extends React.Component<Props> {
+export default class RadioField extends Component<Props> {
     static defaultProps = {
         disabled: false,
     }
@@ -38,7 +37,7 @@ export default class RadioField extends React.Component<Props> {
                             checked={selectedValue === option.value}
                             onChange={
                                 disabled
-                                    ? null
+                                    ? undefined
                                     : () => this._onChange(option.value)
                             }
                             disabled={disabled}
@@ -47,7 +46,7 @@ export default class RadioField extends React.Component<Props> {
                             className="control-label ml-2"
                             onClick={
                                 disabled
-                                    ? null
+                                    ? undefined
                                     : () => this._onChange(option.value)
                             }
                             check

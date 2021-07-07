@@ -18,7 +18,7 @@ import {
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions.ts'
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 import ToggleButton from '../../../../common/components/ToggleButton.tsx'
-import RadioField from '../../../../common/forms/RadioField'
+import RadioField from '../../../../common/forms/RadioField.tsx'
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 

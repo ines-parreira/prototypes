@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import classnames from 'classnames'
 
@@ -8,15 +6,13 @@ import radioUnchecked from '../../../../img/icons/radio-unchecked.svg'
 
 import css from './RadioChoiceField.less'
 
-type Choice = {
-    value: string,
-    label: string,
-}
-
 type Props = {
-    value: string,
-    choices: Array<Choice>,
-    onChange: (label: string) => void,
+    value: string
+    choices: Array<{
+        value: string
+        label: string
+    }>
+    onChange: (label: string) => void
 }
 
 export default function RadioChoiceField({value, choices, onChange}: Props) {
@@ -36,10 +32,10 @@ export default function RadioChoiceField({value, choices, onChange}: Props) {
 }
 
 type ChoiceProps = {
-    value: string,
-    label: string,
-    isSelected: boolean,
-    onClick: (value: string) => void,
+    value: string
+    label: string
+    isSelected: boolean
+    onClick: (value: string) => void
 }
 
 function RadioChoice({value, label, isSelected, onClick}: ChoiceProps) {

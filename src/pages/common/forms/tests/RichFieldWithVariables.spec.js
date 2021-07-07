@@ -2,7 +2,7 @@ import React from 'react'
 import _noop from 'lodash/noop'
 import {shallow} from 'enzyme'
 
-import RichFieldWithVariables from '../RichFieldWithVariables'
+import RichFieldWithVariables from '../RichFieldWithVariables.tsx'
 
 describe('RichFieldWithVariables', () => {
     it('should render an input with variable dropdowns', () => {

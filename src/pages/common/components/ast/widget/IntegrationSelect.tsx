@@ -4,7 +4,7 @@ import {fromJS, List} from 'immutable'
 import {Input} from 'reactstrap'
 import _isNumber from 'lodash/isNumber'
 
-import SelectField from '../../../forms/SelectField/SelectField.js'
+import SelectField from '../../../forms/SelectField/SelectField'
 import {RenderLabel} from '../../../utils/labels.js'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import {RootState} from '../../../../../state/types'

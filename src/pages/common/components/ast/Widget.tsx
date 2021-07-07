@@ -14,7 +14,7 @@ import InputField from '../../forms/InputField.js'
 import {humanizeString} from '../../../../utils'
 import {stringToDatetime} from '../../../../utils/date'
 import {convertToHTML, getPlainText} from '../../../../utils/editor'
-import MultiSelectField from '../../forms/MultiSelectField.js'
+import MultiSelectField from '../../forms/MultiSelectField'
 import {
     caseInsensitiveOperators,
     collectionOperators,
@@ -22,8 +22,8 @@ import {
     timedeltaOperators,
 } from '../../../../config/rules'
 import {removeSuffix} from '../../../../utils/string'
-import TimedeltaPicker from '../../forms/TimedeltaPicker.js'
-import RichFieldWithVariables from '../../forms/RichFieldWithVariables.js'
+import TimedeltaPicker from '../../forms/TimedeltaPicker'
+import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
 import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
 import {RuleOperation} from '../../../../state/rules/types'
 import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
@@ -143,11 +143,11 @@ export class Widget extends Component<Props, State> {
             <InputField
                 className={className}
                 type={type}
-                label={config.name}
+                label={config.name as string}
                 value={value}
                 onChange={this._handleChange}
-                placeholder={config.placeholder || ''}
-                required={config.required || false}
+                placeholder={(config.placeholder as string) || ''}
+                required={(config.required as boolean) || false}
                 inline={compact || false}
                 caseInsensitive={caseInsensitive}
             />
@@ -162,11 +162,11 @@ export class Widget extends Component<Props, State> {
                 className={className}
                 type="textarea"
                 rows="8"
-                label={config.name}
+                label={config.name as string}
                 value={value}
                 onChange={this._handleChange}
-                placeholder={config.placeholder || ''}
-                required={config.required || false}
+                placeholder={(config.placeholder as string) || ''}
+                required={(config.required as boolean) || false}
             />
         )
     }

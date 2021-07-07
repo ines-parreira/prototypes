@@ -124,7 +124,7 @@ export const createEditorStateFromHtml = (html: string) => {
     ) => EditorState)(editorState, contentState)
 }
 
-export const createCompositeDecorator = (decorators: any[] = []) => {
+export const createCompositeDecorator = (decorators: any | any[] = []) => {
     return new CompositeDecorator(
         !_isArray(decorators) ? [decorators] : decorators
     )

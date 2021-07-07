@@ -23,8 +23,8 @@ import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
 import FilterDropdown from '../FilterDropdown'
 import DatePicker from '../../../forms/DatePicker'
-import TimedeltaPicker from '../../../forms/TimedeltaPicker.js'
-import MultiSelectField from '../../../forms/MultiSelectField.js'
+import TimedeltaPicker from '../../../forms/TimedeltaPicker'
+import MultiSelectField from '../../../forms/MultiSelectField'
 import FilterMultiSelectField from '../FilterMultiSelectField'
 
 type OwnProps = {

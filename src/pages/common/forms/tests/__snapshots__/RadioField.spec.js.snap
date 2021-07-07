@@ -124,13 +124,11 @@ exports[`<RadioField/> should render a disabled Radio field 1`] = `
     <Input
       checked={false}
       disabled={true}
-      onChange={null}
       type="radio"
     />
     <Label
       check={true}
       className="control-label ml-2"
-      onClick={null}
       tag="label"
       widths={
         Array [
@@ -161,13 +159,11 @@ exports[`<RadioField/> should render a disabled Radio field 1`] = `
     <Input
       checked={true}
       disabled={true}
-      onChange={null}
       type="radio"
     />
     <Label
       check={true}
       className="control-label ml-2"
-      onClick={null}
       tag="label"
       widths={
         Array [
@@ -198,13 +194,11 @@ exports[`<RadioField/> should render a disabled Radio field 1`] = `
     <Input
       checked={false}
       disabled={true}
-      onChange={null}
       type="radio"
     />
     <Label
       check={true}
       className="control-label ml-2"
-      onClick={null}
       tag="label"
       widths={
         Array [

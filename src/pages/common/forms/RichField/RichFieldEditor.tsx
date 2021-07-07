@@ -1,82 +1,89 @@
-// @flow
 import classnames from 'classnames'
-import {EditorState, Modifier, RichUtils} from 'draft-js'
+import {EditorState, Modifier, RichUtils, ContentState} from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, {composeDecorators} from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
 import 'draft-js/dist/Draft.css'
-import type {List} from 'immutable'
+import {Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
-import React, {type ElementRef} from 'react'
+import React, {
+    ReactNode,
+    ComponentType,
+    MouseEvent,
+    DragEvent,
+    ComponentProps,
+} from 'react'
 
-import {scrollToReactNode} from '../../../common/utils/keyboard.ts'
+import {scrollToReactNode} from '../../../common/utils/keyboard'
 
-import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
-import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
-import createMentionPlugin from '../../draftjs/plugins/mentions'
-import createPasteImagePlugin from '../../draftjs/plugins/pasteImage/index.ts'
-import createVariablesPlugin from '../../draftjs/plugins/variables'
-import createPredictionPlugin from '../../draftjs/plugins/prediction/index.ts'
-import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin.tsx'
+import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks/index.js'
+import createDndUploadPlugin from '../../draftjs/plugins/dndUpload/index.js'
+import createMentionPlugin from '../../draftjs/plugins/mentions/index.js'
+import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
+import createVariablesPlugin from '../../draftjs/plugins/variables/index.js'
+import createPredictionPlugin from '../../draftjs/plugins/prediction'
+import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
 
-import InputField from '../InputField'
-import type {ActionName} from '../../draftjs/plugins/toolbar/types'
-import {type Plugin} from '../../draftjs/plugins/types'
+import InputField from '../InputField.js'
+import {ActionName} from '../../draftjs/plugins/toolbar/types'
+import {Plugin} from '../../draftjs/plugins/types'
 import {
     contentStateFromTextOrHTML,
     isValidSelectionKey,
     refreshEditor,
     removeMentions,
-} from '../../../../utils/editor.tsx'
+} from '../../../../utils/editor'
 
-import EmailExtraButton from './EmailExtraButton.tsx'
+import EmailExtraButton from './EmailExtraButton'
 import provideToolbarPlugin, {
-    type InjectedProps as ToolbarPluginProps,
+    InjectedProps as ToolbarPluginProps,
 } from './provideToolbarPlugin'
 import provideMentionFilteredSuggestions, {
-    type InjectedProps as MentionFilteredSuggestionsProps,
+    InjectedProps as MentionFilteredSuggestionsProps,
 } from './provideMentionSearchResults'
 import withGrammarlyUsageTracking, {
-    type InjectedProps as GrammarlyUsageTrackingProps,
+    InjectedProps as GrammarlyUsageTrackingProps,
 } from './withGrammarlyUsageTracking'
-import Toolbar from './Toolbar'
+import Toolbar from './Toolbar.js'
 import css from './RichFieldEditor.less'
 
-type suggestionsType = List<*>
+type suggestionsType = List<any>
 type canAddMentionType = boolean
 
 export type Props = {
-    editorState: EditorState,
-    onChange: (EditorState) => void,
-    required: boolean,
-    displayOnly: boolean,
-    emailExtraEnabled: boolean,
-    isFocused: boolean,
-    onFocus: () => boolean,
-    onBlur: () => boolean,
-    placeholder: string,
-    notify: ({status: string, message: string}) => void,
-    attachFiles: (T: Array<Blob>) => void,
-    canDropFiles: boolean,
-    canInsertInlineImages: boolean,
-    mentionSuggestions?: suggestionsType,
-    canAddMention?: canAddMentionType,
-    buttons?: Node[],
-    displayedActions?: ActionName[],
-    attachments?: File[],
-    editorKey?: string,
-    tabIndex?: string,
-    readOnly?: boolean,
-    spellCheck?: boolean,
-    quickReply?: Node,
+    quickReply?: ReactNode
+    editorState: EditorState
+    onChange: (editorState: EditorState) => void
+    required: boolean
+    displayOnly: boolean
+    emailExtraEnabled: boolean
+    isFocused: boolean
+    onFocus: (event: MouseEvent<HTMLDivElement>) => void
+    onBlur: () => void
+    placeholder: string
+    notify: (notification: {status: string; message: string}) => void
+    attachFiles: (T: Array<Blob>) => void
+    canDropFiles: boolean
+    canInsertInlineImages: boolean
+    mentionSuggestions?: suggestionsType
+    canAddMention?: canAddMentionType
+    buttons?: ReactNode[]
+    displayedActions?: ActionName[]
+    attachments?: File[]
+    editorKey?: string
+    tabIndex?: number
+    readOnly?: boolean
+    spellCheck?: boolean
+    predictionContext: Map<any, any>
+    ticket: any
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
 
 type State = {
-    isDragging: boolean,
-    wasEverFocused: boolean,
+    isDragging: boolean
+    wasEverFocused: boolean
 }
 
 export class RichFieldEditor extends InputField<Props, State> {
@@ -92,7 +99,18 @@ export class RichFieldEditor extends InputField<Props, State> {
 
     plugins: Plugin[]
 
-    editor: ?ElementRef<Editor>
+    editor: Editor | null = null
+
+    dndPlugin?: ReturnType<typeof createDndUploadPlugin>
+    pasteImage?: ReturnType<typeof createPasteImagePlugin>
+    blockBreakoutPlugin?: Plugin
+    resizeablePlugin?: Plugin
+    toolbarPlugin?: ReturnType<Props['createToolbarPlugin']>
+    mentionPlugin?: ReturnType<typeof createMentionPlugin>
+    connectedLinksPlugin?: ReturnType<typeof createConnectedLinksPlugin>
+    variablesPlugin?: ReturnType<typeof createVariablesPlugin>
+    quotesPlugin?: ReturnType<typeof createQuotesPlugin>
+    predictionPlugin?: ReturnType<typeof createPredictionPlugin>
 
     state: State = {
         isDragging: false,
@@ -104,7 +122,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         this.plugins = this._createPlugins(props)
     }
 
-    _createPlugins = (props: Props): Plugin[] => {
+    _createPlugins = (props: Props) => {
         const imagePluginProps = {
             notify: props.notify,
             getAttachFiles: this._getAttachFiles,
@@ -150,7 +168,7 @@ export class RichFieldEditor extends InputField<Props, State> {
             plugins.push(this.predictionPlugin)
         }
 
-        return plugins
+        return plugins as Plugin[]
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -206,7 +224,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         setTimeout(() => {
             if (this.editor) {
                 this.editor.focus()
-                scrollToReactNode(this.editor)
+                scrollToReactNode(this.editor as any)
             }
         }, 0)
     }
@@ -225,7 +243,7 @@ export class RichFieldEditor extends InputField<Props, State> {
 
     _handlePastedText = (
         text: string,
-        html?: string,
+        html: string | undefined,
         editorState: EditorState
     ) => {
         if (!this.editor) {
@@ -250,7 +268,10 @@ export class RichFieldEditor extends InputField<Props, State> {
             contentStateFromTextOrHTML(text, html).getBlockMap()
         )
 
-        const newEditorState = EditorState.push(editorState, contentState)
+        const newEditorState = (EditorState.push as (
+            editorState: EditorState,
+            contentState: ContentState
+        ) => EditorState)(editorState, contentState)
         this._onChange(newEditorState)
 
         // draft-js-plugins-editor requires `handled`, instead of `true` like the native draft-js instance,
@@ -285,12 +306,12 @@ export class RichFieldEditor extends InputField<Props, State> {
 
     _onDragLeave = () => this.setState({isDragging: false})
 
-    _onDrop = (event: Event) => {
+    _onDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
         this.setState({isDragging: false})
     }
 
-    _onEditorFocus = (event: Event) => {
+    _onEditorFocus = (event: MouseEvent<HTMLDivElement>) => {
         const {onFocus, detectGrammarly} = this.props
         onFocus(event)
         detectGrammarly()
@@ -304,7 +325,14 @@ export class RichFieldEditor extends InputField<Props, State> {
             emailExtraEnabled,
             ticket,
         } = this.props
-        const {MentionSuggestions} = this.mentionPlugin
+        // $TsFixMe remove casting after migrating createMentionPlugin
+        const {MentionSuggestions} = this.mentionPlugin as {
+            MentionSuggestions: ComponentType<{
+                onSearchChange: (arg: {value: string}) => void
+                suggestions: List<any>
+                canAddMention: boolean
+            }>
+        }
         return (
             <div
                 className={classnames('rich-textarea-wrapper', {
@@ -336,10 +364,11 @@ export class RichFieldEditor extends InputField<Props, State> {
                             readOnly={displayOnly || this.props.readOnly}
                             // once focused we're removing the placeholder (Gmail style)
                             placeholder={
-                                !this.state.wasEverFocused &&
-                                this.props.placeholder
+                                !this.state.wasEverFocused
+                                    ? this.props.placeholder
+                                    : undefined
                             }
-                            ref={(editor: ?ElementRef<Editor>) => {
+                            ref={(editor: Editor | null) => {
                                 this.editor = editor
                             }}
                             editorKey={this.props.editorKey}
@@ -376,11 +405,9 @@ export class RichFieldEditor extends InputField<Props, State> {
                     )}
                 </div>
                 <Toolbar
-                    {...this.props}
+                    {...(this.props as ComponentProps<typeof Toolbar>)}
                     canDropFiles={this._getCanDropFiles()}
-                    pluginMethods={
-                        this.editor && this.editor.getPluginMethods()
-                    }
+                    pluginMethods={this.editor?.getPluginMethods()}
                 />
             </div>
         )

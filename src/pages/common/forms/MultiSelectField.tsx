@@ -1,21 +1,20 @@
-// @flow
-import React, {type ComponentType} from 'react'
+import React, {ComponentType, CSSProperties} from 'react'
 
-import MultiSelectOptionsField, {type Option} from './MultiSelectOptionsField'
+import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
+import {Option} from './MultiSelectOptionsField/types'
 
 type Props = {
-    allowCustomValues: boolean,
-    options: Option[],
-    plural: string,
-    singular: string,
-    style?: {},
-    tagColor: string,
-    values: ?(any[]),
-    className?: ?string,
-    caseInsensitive?: ?boolean,
-    onChange: (options: any[]) => void,
-    dropdownMenu?: ComponentType<*>,
-    void?: any,
+    allowCustomValues: boolean
+    options: Option[]
+    plural: string
+    singular: string
+    style?: CSSProperties
+    tagColor: string
+    values: any[] | null
+    className?: string
+    caseInsensitive?: boolean
+    onChange: (options: any[]) => void
+    dropdownMenu?: ComponentType<unknown>
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
@@ -30,13 +29,14 @@ export default class MultiSelectField extends React.Component<Props> {
     }
 
     _onChange = (options: Option[]) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         const selectedValues = options.map((option: Option) => option.value)
         this.props.onChange(selectedValues)
     }
 
     render() {
         const selectedOptions: Option[] = (this.props.values || []).map(
-            (value: any) => {
+            (value) => {
                 return (
                     this.props.options.find(
                         (option: Option) => option.value === value

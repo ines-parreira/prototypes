@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Badge} from 'reactstrap'
 
-import FileField from '../../../../../common/forms/FileField'
+import FileField from '../../../../../common/forms/FileField.tsx'
 
 import {fileIconFromContentType} from '../../../utils'
 

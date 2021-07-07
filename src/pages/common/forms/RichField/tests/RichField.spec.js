@@ -3,7 +3,7 @@ import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
 
-import RichField from '../RichField'
+import RichField from '../RichField.tsx'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
 import {convertToHTML} from '../../../../../utils/editor.tsx'
 

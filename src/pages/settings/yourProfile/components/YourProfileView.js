@@ -23,7 +23,7 @@ import type {Map} from 'immutable'
 import BooleanField from '../../../common/forms/BooleanField'
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
-import FileField from '../../../common/forms/FileField'
+import FileField from '../../../common/forms/FileField.tsx'
 import SelectField from '../../../common/forms/SelectField'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 

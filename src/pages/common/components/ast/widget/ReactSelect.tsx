@@ -4,7 +4,7 @@ import sortBy from 'lodash/sortBy'
 import _noop from 'lodash/noop'
 
 import 'react-select/dist/react-select.css'
-import SelectField from '../../../forms/SelectField/SelectField.js'
+import SelectField from '../../../forms/SelectField/SelectField'
 import {
     Option as SelectOption,
     Value as SelectValue,

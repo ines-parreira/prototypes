@@ -2,7 +2,7 @@ import React, {KeyboardEvent, Component} from 'react'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import FileField from '../../../../forms/FileField.js'
+import FileField from '../../../../forms/FileField'
 import {ActionInjectedProps} from '../types'
 import {getMaxAttachmentSize} from '../../../../../../utils/file'
 import {addImage} from '../../utils'

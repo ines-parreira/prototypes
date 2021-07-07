@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 
-import MultiSelectField from '../../../forms/MultiSelectField.js'
+import MultiSelectField from '../../../forms/MultiSelectField'
 import type {Option} from '../../../forms/MultiSelectOptionsField/types'
 
 type OwnProps = {

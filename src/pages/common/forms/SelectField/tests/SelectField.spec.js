@@ -14,7 +14,7 @@ jest.mock('popper.js', () => {
     }
 })
 
-import SelectField from '../SelectField'
+import SelectField from '../SelectField.tsx'
 
 describe('SelectField', () => {
     const minProps = {

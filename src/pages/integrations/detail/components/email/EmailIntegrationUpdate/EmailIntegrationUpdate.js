@@ -48,7 +48,7 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
-import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
+import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 type Props = {

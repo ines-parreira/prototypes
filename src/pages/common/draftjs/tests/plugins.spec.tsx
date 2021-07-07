@@ -35,10 +35,7 @@ describe('DraftJS convertToHtml', () => {
 
 describe('DraftJS display entities', () => {
     it('variable entity in text', () => {
-        const composite = createCompositeDecorator(
-            //$TsFixMe remove casting once plugins/variables/decorators is migrated
-            (variableDecorator as unknown) as any[]
-        )
+        const composite = createCompositeDecorator(variableDecorator)
         const text =
             'variable {{current_user.name}} and {{ticket.customer.email}}'
         let editorState = createEditorStateFromHtml(text)

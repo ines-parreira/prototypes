@@ -36,7 +36,7 @@ import {getIntegrationsByTypes} from '../../../../../state/integrations/selector
 import PageHeader from '../../../../common/components/PageHeader.tsx'
 import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import Tooltip from '../../../../common/components/Tooltip.tsx'
-import RadioField from '../../../../common/forms/RadioField'
+import RadioField from '../../../../common/forms/RadioField.tsx'
 import SelectField from '../../../../common/forms/SelectField'
 import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration.ts'
 

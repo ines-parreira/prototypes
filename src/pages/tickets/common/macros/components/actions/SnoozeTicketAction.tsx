@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Map, fromJS} from 'immutable'
 
-import TimedeltaPicker from '../../../../../common/forms/TimedeltaPicker.js'
+import TimedeltaPicker from '../../../../../common/forms/TimedeltaPicker'
 
 import css from './SnoozeTicketAction.less'
 

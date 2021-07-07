@@ -1,5 +1,4 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import _find from 'lodash/find'
 import {
     DropdownItem,
@@ -10,28 +9,28 @@ import {
     InputGroupButtonDropdown,
 } from 'reactstrap'
 
-import {isTimedelta} from '../../../utils/ast.ts'
+import {isTimedelta} from '../../../utils/ast'
 import {
     TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
-} from '../../../config.ts'
+} from '../../../config'
 
 type Unit = {
-    label: string,
-    value: string,
+    label: string
+    value: string
 }
 
 type Props = {
-    value: string,
-    onChange: (string) => void,
-    units?: Array<Unit>,
+    value: string
+    onChange: (value: string) => void
+    units?: Array<Unit>
 }
 
 type State = {
-    quantity: number,
-    unit: string,
-    dropdownOpen: boolean,
-    units: Array<Unit>,
+    quantity: number
+    unit: string
+    dropdownOpen: boolean
+    units: Array<Unit>
 }
 
 const UNITS = [
@@ -43,7 +42,7 @@ const UNITS = [
 
 const MAX_QUANTITY = 9999
 
-export default class TimedeltaPicker extends React.Component<Props, State> {
+export default class TimedeltaPicker extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
         const {value} = this.props
@@ -71,7 +70,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
         }
     }
 
-    _buildValue = (value: string) => {
+    _buildValue = (value?: string) => {
         const quantity = value
             ? parseInt(value.replace(/[^\d]/g, ''))
             : TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
@@ -109,7 +108,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
         const unitLabel = _find(
             this.state.units,
             (unit) => unit.value === this.state.unit
-        ).label
+        )?.label
 
         return (
             <div className="d-flex">
@@ -118,7 +117,7 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
                         type="number"
                         value={this.state.quantity}
                         onChange={(event) =>
-                            this._onQuantityChange(event.target.value)
+                            this._onQuantityChange(event.target.value as any)
                         }
                         style={{width: '62px'}}
                         min="0"

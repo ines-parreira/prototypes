@@ -37,6 +37,7 @@ export type Decorator = {
 
 export type Plugin = {
     initialize?: (pluginMethods: PluginMethods) => void
+    decorator?: Decorator
     decorators?: Decorator[]
     blockRendererFn?: (
         contentBlock: ContentBlock,

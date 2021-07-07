@@ -3,7 +3,7 @@ import {mount, shallow} from 'enzyme'
 
 import withGrammarlyUsageTracking, {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
-} from '../withGrammarlyUsageTracking'
+} from '../withGrammarlyUsageTracking.tsx'
 
 import {logEvent, EVENTS} from '../../../../../store/middlewares/segmentTracker'
 

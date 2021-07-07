@@ -1,7 +1,7 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 
-import RadioField from '../RadioField'
+import RadioField from '../RadioField.tsx'
 
 describe('<RadioField/>', () => {
     describe('_onChange()', () => {

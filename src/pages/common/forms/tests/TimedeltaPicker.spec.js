@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import TimedeltaPicker from '../TimedeltaPicker'
+import TimedeltaPicker from '../TimedeltaPicker.tsx'
 
 describe('TimedeltaPicker component', () => {
     it('should render correct passed data', () => {

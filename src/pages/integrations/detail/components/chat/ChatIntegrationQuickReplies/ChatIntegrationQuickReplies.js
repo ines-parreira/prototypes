@@ -16,7 +16,7 @@ import classnames from 'classnames'
 
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import BooleanField from '../../../../../common/forms/BooleanField'
-import ListField from '../../../../../common/forms/ListField'
+import ListField from '../../../../../common/forms/ListField.tsx'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions.ts'
 import {
     QUICK_REPLIES_DEFAULTS,

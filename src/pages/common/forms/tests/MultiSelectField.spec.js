@@ -2,7 +2,7 @@ import React from 'react'
 import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import MultiSelectField from '../MultiSelectField'
+import MultiSelectField from '../MultiSelectField.tsx'
 import MultiSelectOptionsField from '../MultiSelectOptionsField'
 
 describe('MultiSelectField', () => {

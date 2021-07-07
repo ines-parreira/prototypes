@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 import _isString from 'lodash/isString'
 import {type Map} from 'immutable'
 
-import MultiSelectField from '../../../forms/MultiSelectField'
+import MultiSelectField from '../../../forms/MultiSelectField.tsx'
 import SelectField from '../../../forms/SelectField'
 import * as TagsActions from '../../../../../state/tags/actions.ts'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu.tsx'

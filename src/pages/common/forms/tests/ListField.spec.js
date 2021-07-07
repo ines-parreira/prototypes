@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import ListField from '../ListField'
+import ListField from '../ListField.tsx'
 
 describe('ListField component', () => {
     it('should render with no items and an "add" button', () => {

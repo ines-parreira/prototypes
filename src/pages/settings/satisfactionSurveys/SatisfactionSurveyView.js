@@ -10,7 +10,7 @@ import {convertToHTML, getPlainText} from '../../../utils/editor.tsx'
 
 import BooleanField from '../../common/forms/BooleanField'
 import InputField from '../../common/forms/InputField'
-import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
+import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables.tsx'
 
 import PageHeader from '../../common/components/PageHeader.tsx'
 

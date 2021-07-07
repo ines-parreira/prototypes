@@ -22,7 +22,7 @@ export type ActionInjectedProps = {
 export type Config = {
     imageDecorator?: (node: ReactNode) => ReactNode
     theme?: any
-    getDisplayedActions: () => ActionName[] | null
+    getDisplayedActions: () => ActionName[] | null | undefined
     onLinkEdit: (entityKey: string, text: string, url: string) => void
     onLinkCreate: (text: string) => void
 }

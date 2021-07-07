@@ -1,7 +1,4 @@
 import React, {useState} from 'react'
-// $TsFixMe: remove after plugin is upgraded
-// to version with TS definitions
-// @ts-ignore
 import Editor from 'draft-js-plugins-editor'
 import {EditorState} from 'draft-js'
 

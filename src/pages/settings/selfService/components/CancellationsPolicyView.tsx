@@ -21,7 +21,7 @@ import {getSelfServiceConfigurations} from '../../../../state/self_service/selec
 import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
 import * as SelfServiceActions from '../../../../state/self_service/actions'
 import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField.js'
+import SelectField from '../../../common/forms/SelectField/SelectField'
 
 import {
     FilterKeyEnum,
@@ -239,8 +239,10 @@ export const CancellationsPolicyView = ({
                                                 options={
                                                     CancellationsDropdownOptionsList
                                                 }
-                                                onChange={
-                                                    setEligibilityWindowOptionValue
+                                                onChange={(value) =>
+                                                    setEligibilityWindowOptionValue(
+                                                        value as string
+                                                    )
                                                 }
                                             />
                                         </div>

@@ -1,2 +1,2 @@
-import RichField from './RichField'
+import RichField from './RichField.tsx'
 export default RichField

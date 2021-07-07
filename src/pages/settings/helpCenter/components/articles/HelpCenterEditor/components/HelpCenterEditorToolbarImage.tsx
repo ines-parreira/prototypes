@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react'
 import {Button} from 'reactstrap'
 import classnames from 'classnames'
 
-import FileField from '../../../../../../common/forms/FileField.js'
+import FileField from '../../../../../../common/forms/FileField'
 import {isUrl} from '../../../../../../../utils'
 import {MAX_IMAGE_SIZE} from '../../../../constants'
 

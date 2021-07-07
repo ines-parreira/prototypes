@@ -1,47 +1,48 @@
-//@flow
-import * as React from 'react'
+import React, {ReactNode, ComponentType, Component} from 'react'
 
-import createToolbarPlugin from '../../draftjs/plugins/toolbar/index.ts'
-import type {ActionName} from '../../draftjs/plugins/toolbar/types'
-import type {Plugin} from '../../draftjs/plugins/types'
+import createToolbarPlugin from '../../draftjs/plugins/toolbar/index'
+import {ActionName} from '../../draftjs/plugins/toolbar/types'
+import {Plugin} from '../../draftjs/plugins/types'
 
 export type RequiredProps = {
-    displayedActions?: ActionName[],
+    displayedActions?: ActionName[]
 }
 
 type State = {
-    linkEntityKey?: string,
-    linkIsOpen: boolean,
-    linkText: string,
-    linkUrl: string,
+    linkEntityKey?: string
+    linkIsOpen: boolean
+    linkText: string
+    linkUrl: string
 }
 
 export type InjectedProps = {
     createToolbarPlugin: (
-        imageDecorator?: (React.Node) => React.Node
-    ) => Plugin,
-    onLinkUrlChange: (string) => void,
-    onLinkTextChange: (string) => void,
-    onLinkOpen: () => void,
-    onLinkClose: () => void,
+        imageDecorator?: (decorator: ReactNode) => ReactNode
+    ) => Plugin
+    onLinkUrlChange: (url: string) => void
+    onLinkTextChange: (text: string) => void
+    onLinkOpen: () => void
+    onLinkClose: () => void
 } & State
 
-export default function provideToolbarPlugin<Props: RequiredProps>(
-    WrappedComponent: React.ComponentType<Props & InjectedProps>
-): React.ComponentType<Props> {
-    class Wrapper extends React.Component<Props, State> {
+export default function provideToolbarPlugin<Props extends RequiredProps>(
+    WrappedComponent: ComponentType<Props & InjectedProps>
+): ComponentType<Props> {
+    class Wrapper extends Component<Props, State> {
         state: State = {
             linkIsOpen: false,
             linkText: '',
             linkUrl: '',
         }
 
-        _createToolbarPlugin = (imageDecorator?: (React.Node) => React.Node) =>
+        _createToolbarPlugin = (
+            imageDecorator?: (decorator: ReactNode) => ReactNode
+        ) =>
             createToolbarPlugin({
                 onLinkEdit: this._onToolbarPluginLinkEdit,
                 onLinkCreate: this._onToolbarPluginLinkCreate,
                 getDisplayedActions: () => this.props.displayedActions,
-                imageDecorator: imageDecorator,
+                imageDecorator,
             })
 
         _onLinkTextChange = (linkText: string) => this.setState({linkText})

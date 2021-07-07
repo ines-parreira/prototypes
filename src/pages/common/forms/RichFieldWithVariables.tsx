@@ -1,4 +1,3 @@
-// @flow
 import React, {Component} from 'react'
 import {
     Button,
@@ -9,29 +8,28 @@ import {
     Label,
 } from 'reactstrap'
 
-import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils'
-import {insertText} from '../../../utils.ts'
-import {getVariables} from '../../../config/ticket.ts'
+import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils.js'
+import {insertText} from '../../../utils'
+import {getVariables} from '../../../config/ticket'
 
-import RichField from './RichField'
+import RichField from './RichField/RichField'
 
 type Props = {
-    label?: string,
-    name?: string,
-    value: Object,
-    allowExternalChanges?: boolean,
-    variableTypes: Array<string>,
-    onChange: () => any,
-    type?: string,
-    rows?: string,
-    placeholder?: string,
-    required?: boolean,
+    label?: string
+    name?: string
+    value: Record<string, unknown>
+    allowExternalChanges?: boolean
+    variableTypes: Array<string>
+    onChange: () => void
+    type?: string
+    rows?: string
+    placeholder?: string
+    required?: boolean
 }
 
 export default class RichFieldWithVariables extends Component<Props> {
-    // $TsFixMe should be of type RichField
-    richArea: any
-    id: ?string
+    id?: string
+    richArea?: RichField | null
 
     _insertText = (text: string) => {
         if (!this.richArea) {
@@ -101,7 +99,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                                 color="link"
                                 style={{color: 'inherit'}}
                                 onClick={() => {
-                                    this._insertText(category.value)
+                                    this._insertText(category.value!)
                                 }}
                             >
                                 {category.name}

@@ -5,7 +5,7 @@ import {EditorState} from 'draft-js'
 import {convertToHTML} from 'draft-convert'
 import Editor from 'draft-js-plugins-editor'
 
-import {RichFieldEditor} from '../RichFieldEditor'
+import {RichFieldEditor} from '../RichFieldEditor.tsx'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
 import {convertFromHTML} from '../../../../../utils/editor.tsx'
 

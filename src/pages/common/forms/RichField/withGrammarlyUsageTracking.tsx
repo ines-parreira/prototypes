@@ -1,15 +1,14 @@
-//@flow
-import * as React from 'react'
+import React, {ComponentType, Component} from 'react'
 
-import {tryLocalStorage} from '../../../../services/common/utils.ts'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import {tryLocalStorage} from '../../../../services/common/utils'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 
 export type InjectedProps = {
-    detectGrammarly: () => void,
+    detectGrammarly: () => void
 }
 
 type State = {
-    grammarlyAlreadyLogged: boolean,
+    grammarlyAlreadyLogged: boolean
 }
 
 const GRAMMARLY_EXTENSION_TAG = 'grammarly-extension'
@@ -22,9 +21,9 @@ function findGrammarlyOnPage(): boolean {
 }
 
 export default function withGrammarlyUsageTracking<Props>(
-    WrappedComponent: React.ComponentType<Props & InjectedProps>
-): React.ComponentType<Props> {
-    class Wrapper extends React.Component<Props, State> {
+    WrappedComponent: ComponentType<Props & InjectedProps>
+): ComponentType<Props> {
+    class Wrapper extends Component<Props, State> {
         state: State = {
             grammarlyAlreadyLogged: false,
         }
@@ -37,7 +36,7 @@ export default function withGrammarlyUsageTracking<Props>(
                     Date.now() -
                         +localStorage.getItem(
                             GRAMMARLY_FOUND_LOCAL_STORAGE_TAG
-                        ) <
+                        )! <
                         SEGMENT_LOG_THROTTLE_TIME)
 
             // Grammarly extension is activated (and its elements created) only after the editor is focused

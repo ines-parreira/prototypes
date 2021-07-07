@@ -1157,7 +1157,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                 className="d-flex flex-direction-row mb-2"
                 key="file-field"
               >
-                <Connect(FileField)
+                <Connect(FileFieldContainer)
                   maxSize={500000}
                   noPreview={true}
                   onChange={[Function]}
@@ -1901,7 +1901,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                     }
                   }
                 />
-                <Connect(FileField)
+                <Connect(FileFieldContainer)
                   maxSize={500000}
                   noPreview={true}
                   onChange={[Function]}

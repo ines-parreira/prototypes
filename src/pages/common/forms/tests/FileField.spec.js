@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
 import {uploadFiles} from '../../../../utils.ts'
-import {FileField} from '../FileField'
+import {FileFieldContainer} from '../FileField.tsx'
 
 jest.mock('../../../../utils', () => {
     return {
@@ -29,7 +29,10 @@ describe('<FileField/>', () => {
             let calledNotify = false
 
             const component = shallow(
-                <FileField {...minProps} notify={() => (calledNotify = true)} />
+                <FileFieldContainer
+                    {...minProps}
+                    notify={() => (calledNotify = true)}
+                />
             )
 
             component.instance()._onChange({
@@ -51,7 +54,7 @@ describe('<FileField/>', () => {
             const notify = jest.fn()
 
             const component = shallow(
-                <FileField
+                <FileFieldContainer
                     {...minProps}
                     maxSize={10 * 1000 * 1000}
                     notify={notify}
@@ -75,7 +78,11 @@ describe('<FileField/>', () => {
             const notify = jest.fn()
 
             const component = shallow(
-                <FileField {...minProps} maxSize={1000} notify={notify} />
+                <FileFieldContainer
+                    {...minProps}
+                    maxSize={1000}
+                    notify={notify}
+                />
             )
 
             component.instance()._onChange({
@@ -95,27 +102,27 @@ describe('<FileField/>', () => {
     describe('render()', () => {
         it('should render a basic file input', () => {
             const component = shallow(
-                <FileField value="value" onChange={_noop} />
+                <FileFieldContainer value="value" onChange={_noop} />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should render preview', () => {
             const component = shallow(
-                <FileField {...minProps} previewUrl="url" />
+                <FileFieldContainer {...minProps} previewUrl="url" />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should not render preview', () => {
             const component = shallow(
-                <FileField {...minProps} previewUrl="url" noPreview />
+                <FileFieldContainer {...minProps} previewUrl="url" noPreview />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should display loading when loading', () => {
-            const component = shallow(<FileField {...minProps} />)
+            const component = shallow(<FileFieldContainer {...minProps} />)
             component.setState({isUploading: true})
             expect(component).toMatchSnapshot()
         })

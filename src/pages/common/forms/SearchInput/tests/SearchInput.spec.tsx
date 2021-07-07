@@ -1,36 +1,39 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {FunctionComponent} from 'react'
 import {shallow} from 'enzyme'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {DropdownItem, Input} from 'reactstrap'
 
 import SearchInput from '../SearchInput'
-import type {SearchInputResultProps, SearchInputSubResultProps} from '../types'
+import {SearchInputResultProps, SearchInputSubResultProps} from '../types'
 
 type SubResultType = {
-    id: number,
+    id: number
 }
 
 type ResultType = {
-    id: number,
-    subResults: SubResultType[],
+    id: number
+    subResults: SubResultType[]
 }
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 describe('<SearchInput/>', () => {
     describe('render()', () => {
         const endpoint = '/api/foo'
-        const Result = ({result}: SearchInputResultProps<ResultType>): Node =>
-            result.id
-        const SubResult = ({
+        const Result: FunctionComponent<SearchInputResultProps<ResultType>> = ({
+            result,
+        }: SearchInputResultProps<ResultType>) => <div>{result.id}</div>
+        const SubResult: FunctionComponent<SearchInputSubResultProps<
+            ResultType,
+            SubResultType
+        >> = ({
             result,
             subResult,
-        }: SearchInputSubResultProps<ResultType, SubResultType>): Node =>
-            `${result.id} / ${subResult.id}`
-        let mockServer
+        }: SearchInputSubResultProps<ResultType, SubResultType>) => (
+            <div>{`${result.id} / ${subResult.id}`}</div>
+        )
+        let mockServer: MockAdapter
 
         beforeEach(() => {
             mockServer = new MockAdapter(axios)
@@ -48,7 +51,7 @@ describe('<SearchInput/>', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should render a closed dropdown because input is empty', async () => {
+        it('should render a closed dropdown because input is empty', () => {
             const component = shallow(
                 <SearchInput endpoint={endpoint} renderResult={Result} />
             )

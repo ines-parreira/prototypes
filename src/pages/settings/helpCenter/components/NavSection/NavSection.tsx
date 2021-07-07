@@ -2,7 +2,7 @@ import React from 'react'
 
 import {LocaleCode} from '../../../../../models/helpCenter/types'
 
-import SelectField from '../../../../common/forms/SelectField/SelectField.js'
+import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {Option} from '../../../../common/forms/SelectField/types'
 
 import {LinkList, LinkEntity} from '../LinkList'
@@ -49,7 +49,7 @@ export const NavSection = ({
                     <SelectField
                         options={availableLocales}
                         value={selectedLocale}
-                        onChange={onChangeLocale}
+                        onChange={onChangeLocale as any}
                         style={{display: 'inline-block'}}
                     />
                 </div>

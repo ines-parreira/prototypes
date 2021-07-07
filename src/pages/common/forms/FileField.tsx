@@ -1,37 +1,45 @@
-// @flow
-import React from 'react'
-import {fromJS} from 'immutable'
-import {connect} from 'react-redux'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import {Button, Input} from 'reactstrap'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
+import {AxiosError} from 'axios'
+import {InputType} from 'reactstrap/lib/Input'
+import _omit from 'lodash/omit'
 
-import type {attachmentType} from '../../../types'
-import {uploadFiles} from '../../../utils.ts'
-import {getFileTooLargeError} from '../../../utils/file.ts'
-
-import {notify} from './../../../state/notifications/actions.ts'
+import {uploadFiles} from '../../../utils'
+import {getFileTooLargeError} from '../../../utils/file'
+import {notify} from '../../../state/notifications/actions'
+import {NotificationStatus} from '../../../state/notifications/types'
 
 import InputField from './InputField'
-
 import css from './FileField.less'
 
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
 
 type Props = {
-    noPreview: boolean,
-    returnFiles: boolean,
-    uploadType?: string,
-    maxSize?: number,
-    params?: Object,
-}
+    className?: string
+    noPreview: boolean
+    returnFiles: boolean
+    uploadType?: string
+    maxSize?: number
+    params?: Record<string, unknown>
+    type: InputType
+    accept?: string
+    onClick?: () => void
+} & ConnectedProps<typeof connector> &
+    ComponentProps<typeof InputField>
 
 type State = {
-    isUploading: boolean,
+    isUploading: boolean
 }
 
-export class FileField extends InputField<Props, State> {
-    static defaultProps = {
+export class FileFieldContainer extends InputField<Props, State> {
+    static defaultProps: Pick<
+        Props,
+        'noPreview' | 'placeholder' | 'returnFiles' | 'type' | 'maxSize'
+    > = {
         noPreview: false,
         placeholder: 'Select a file...',
         returnFiles: false, // return urls of files only by default
@@ -43,20 +51,25 @@ export class FileField extends InputField<Props, State> {
         isUploading: false,
     }
 
-    _getFilesSize = (files: Array<attachmentType>) => {
+    id?: string
+
+    _getFilesSize = (files: File[]) => {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 
-    _onChange = (event: SyntheticEvent<HTMLInputElement>) => {
-        // $FlowFixMe
-        const files: any = event.target.files
+    _onChange = (event: {
+        target: {
+            files: FileList
+        }
+    }) => {
+        const files = event.target.files
         const filesArray = Array.from(files)
         if (
             this.props.maxSize &&
             this._getFilesSize(filesArray) > this.props.maxSize
         ) {
             return this.props.notify({
-                status: 'error',
+                status: NotificationStatus.Error,
                 message: getFileTooLargeError(this.props.maxSize),
             })
         }
@@ -72,9 +85,9 @@ export class FileField extends InputField<Props, State> {
         })
 
         if (isSvg) {
-            this.props.notify({
-                type: 'error',
-                status: 'warning',
+            void this.props.notify({
+                type: NotificationStatus.Error,
+                status: NotificationStatus.Warning,
                 message: 'Uploading SVGs is not allowed.',
             })
             this.setState({isUploading: false})
@@ -90,7 +103,7 @@ export class FileField extends InputField<Props, State> {
 
                 // if we want to return files, return them otherwise return urls only
                 if (this.props.returnFiles) {
-                    return this.props.onChange(files)
+                    return this.props.onChange!(files)
                 }
 
                 if (files.length < 1) {
@@ -98,7 +111,7 @@ export class FileField extends InputField<Props, State> {
                 }
 
                 const image = files[0]
-                let result = image.url
+                let result: string | string[] = image.url
 
                 if (!result) {
                     return
@@ -108,25 +121,27 @@ export class FileField extends InputField<Props, State> {
                     result = files.map((file) => file.url)
                 }
 
-                this.props.onChange(result)
+                this.props.onChange!(result)
             },
             (error) => {
                 this.setState({isUploading: false})
-                let errorMessage = fromJS(error.response).getIn(
+                const errorMessage = (fromJS(
+                    (error as AxiosError).response
+                ) as Map<any, any>).getIn(
                     ['data', 'error', 'msg'],
                     DEFAULT_ERROR
                 )
 
-                if (error.response.status === 413) {
+                if ((error as AxiosError).response?.status === 413) {
                     return this.props.notify({
-                        status: 'error',
-                        message: getFileTooLargeError(this.props.maxSize),
+                        status: NotificationStatus.Error,
+                        message: getFileTooLargeError(this.props.maxSize!),
                     })
                 }
 
-                this.props.notify({
-                    type: 'error',
-                    status: 'error',
+                void this.props.notify({
+                    type: NotificationStatus.Error,
+                    status: NotificationStatus.Error,
                     message: errorMessage,
                 })
             }
@@ -134,23 +149,7 @@ export class FileField extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {
-            children, // eslint-disable-line
-            error, // eslint-disable-line
-            help, // eslint-disable-line
-            inline, // eslint-disable-line
-            label, // eslint-disable-line
-            noPreview,
-            onChange, // eslint-disable-line
-            placeholder,
-            className,
-            returnFiles, // eslint-disable-line
-            notify, // eslint-disable-line
-            uploadType, // eslint-disable-line
-            maxSize, // eslint-disable-line
-            value,
-            ...rest
-        } = this.props
+        const {noPreview, placeholder, className, value} = this.props
 
         const {isUploading} = this.state
 
@@ -184,10 +183,25 @@ export class FileField extends InputField<Props, State> {
                     )}
                     <Input
                         id={this.id}
-                        onChange={this._onChange}
+                        onChange={this._onChange as any}
                         disabled={disabled}
                         className={classnames(css.input, className)}
-                        {...rest}
+                        {..._omit(this.props, [
+                            'children',
+                            'error',
+                            'help',
+                            'inline',
+                            'label',
+                            'noPreview',
+                            'onChange',
+                            'placeholder',
+                            'className',
+                            'returnFiles',
+                            'notify',
+                            'uploadType',
+                            'maxSize',
+                            'value',
+                        ])}
                     />
                 </Button>
             </div>
@@ -195,6 +209,6 @@ export class FileField extends InputField<Props, State> {
     }
 }
 
-export default connect(null, {
-    notify,
-})(FileField)
+const connector = connect(null, {notify})
+
+export default connector(FileFieldContainer)

@@ -1,6 +1,10 @@
-// @flow
-
-import React, {type ComponentType, type Node} from 'react'
+import React, {
+    ComponentType,
+    Component,
+    ReactNode,
+    ChangeEvent,
+    KeyboardEvent,
+} from 'react'
 import {
     Button,
     Dropdown,
@@ -13,50 +17,48 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import GorgiasApi from '../../../../services/gorgiasApi.ts'
+import GorgiasApi, {SearchResultType} from '../../../../services/gorgiasApi'
 
-//$TsFixMe on migration import type SearchResultType from gorgiasApi.ts
-type SearchResultType = {
-    id: number,
-}
-
-import type {SearchInputResultProps, SearchInputSubResultProps} from './types'
+import {SearchInputResultProps, SearchInputSubResultProps} from './types'
 import css from './SearchInput.less'
 
 type Props<ResultType, SubResultType> = {
-    endpoint: string,
-    autoFocus?: boolean,
-    searchOnFocus?: boolean,
-    className?: string,
-    placeholder?: string,
-    renderResult: ComponentType<SearchInputResultProps<ResultType>>,
+    endpoint: string
+    autoFocus?: boolean
+    searchOnFocus?: boolean
+    className?: string
+    placeholder?: string
+    renderResult: ComponentType<SearchInputResultProps<ResultType>>
     renderSubResult?: ComponentType<
         SearchInputSubResultProps<ResultType, SubResultType>
-    >,
+    >
     onResultClicked: (
         result: ResultType
-    ) => Array<SearchResultType & SubResultType> | void,
-    onSubResultClicked: (result: ResultType, subResult: SubResultType) => void,
-    resultLabel: string,
-    resultLabelPlural: string,
-    subResultLabel: string,
-    subResultLabelPlural: string,
+    ) => Array<SearchResultType & SubResultType> | void
+    onSubResultClicked: (result: ResultType, subResult: SubResultType) => void
+    resultLabel: string
+    resultLabelPlural: string
+    subResultLabel: string
+    subResultLabelPlural: string
 }
 
-type State = {
-    filter: string,
-    isLoading: boolean,
-    isOpen: boolean,
-    results: Array<any>, // TODO should be `Array<ResultType>` but leads to flow error "expected type is not parametric"
-    subResults: Array<SearchResultType & any>, // TODO should be `Array<SearchResultType & SubResultType>`
-    clickedResult: any,
-    hoveredIndex: number,
+type State<ResultType extends SearchResultType, SubResultType> = {
+    filter: string
+    isLoading: boolean
+    isOpen: boolean
+    results: ResultType[]
+    subResults: Array<SearchResultType & SubResultType>
+    clickedResult: ResultType | null
+    hoveredIndex: number
 }
 
 export default class SearchInput<
-    ResultType,
+    ResultType extends SearchResultType,
     SubResultType = void
-> extends React.PureComponent<Props<ResultType, SubResultType>, State> {
+> extends Component<
+    Props<ResultType, SubResultType>,
+    State<ResultType, SubResultType>
+> {
     static defaultProps = {
         autoFocus: true,
         searchOnFocus: false,
@@ -69,7 +71,7 @@ export default class SearchInput<
         subResultLabelPlural: 'sub results',
     }
 
-    state = {
+    state: State<ResultType, SubResultType> = {
         filter: '',
         isLoading: false,
         isOpen: false,
@@ -79,14 +81,14 @@ export default class SearchInput<
         hoveredIndex: -1,
     }
 
-    _inputElement: HTMLInputElement
+    _inputElement?: HTMLInputElement
     _gorgiasApi = new GorgiasApi()
 
     componentDidMount() {
         const {autoFocus} = this.props
 
         if (autoFocus && this._inputElement) {
-            setTimeout(() => this._inputElement.focus(), 0)
+            setTimeout(() => this._inputElement?.focus(), 0)
         }
     }
 
@@ -103,7 +105,7 @@ export default class SearchInput<
         this.setState({isOpen: !isOpen})
     }
 
-    _onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onChange = (event: ChangeEvent<HTMLInputElement>) => {
         const filter = event.target.value
         this.setState({
             filter,
@@ -111,10 +113,10 @@ export default class SearchInput<
             isLoading: true,
             hoveredIndex: -1,
         })
-        this._fetchResults(filter)
+        void this._fetchResults(filter)
     }
 
-    _onKeyDown = (event: SyntheticKeyboardEvent<HTMLInputElement>) => {
+    _onKeyDown = (event: KeyboardEvent) => {
         const {results, subResults} = this.state
         const items = subResults.length ? subResults : results
 
@@ -170,28 +172,30 @@ export default class SearchInput<
         }
     }
 
-    _onFocus = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onFocus = (event: ChangeEvent<HTMLInputElement>) => {
         const filter = event.target.value
         const {searchOnFocus} = this.props
         const {isLoading, results} = this.state
 
         if (searchOnFocus && !isLoading && !results.length) {
-            this._fetchResults(filter)
+            void this._fetchResults(filter)
         }
     }
 
     _scrollToItem(index: number) {
-        const dropdown = this._inputElement.closest('.dropdown')
+        const dropdown = this._inputElement?.closest('.dropdown')
         if (!dropdown) {
             return
         }
 
-        const dropdownMenu = dropdown.querySelector('.dropdown-menu')
+        const dropdownMenu = dropdown.querySelector<HTMLDivElement>(
+            '.dropdown-menu'
+        )
         if (!dropdownMenu) {
             return
         }
 
-        const item = dropdownMenu.querySelector(
+        const item = dropdownMenu.querySelector<HTMLDivElement>(
             `.dropdown-item:nth-of-type(${index + 1})`
         )
         if (!item) {
@@ -208,12 +212,15 @@ export default class SearchInput<
         }
     }
 
-    _fetchResults = _debounce(async (filter) => {
+    _fetchResults = _debounce(async (filter: string) => {
         try {
             this.setState({isOpen: false, isLoading: true})
             this._gorgiasApi.cancelPendingRequests(true)
             const {endpoint} = this.props
-            const results = await this._gorgiasApi.search(endpoint, filter)
+            const results = (await this._gorgiasApi.search(
+                endpoint,
+                filter
+            )) as ResultType[]
             this.setState({results})
         } catch (error) {
             this.setState({results: []})
@@ -299,7 +306,7 @@ export default class SearchInput<
         )
     }
 
-    _renderResults(): Node {
+    _renderResults = () => {
         const {renderResult: Result} = this.props
         const {results, hoveredIndex} = this.state
 
@@ -325,7 +332,7 @@ export default class SearchInput<
         const {hoveredIndex, clickedResult, subResults} = this.state
 
         return subResults.length && clickedResult && SubResult
-            ? subResults.map<Node>((subResult, index) => (
+            ? subResults.map<ReactNode>((subResult, index) => (
                   <DropdownItem
                       key={`sub-result-${subResult.id}`}
                       onMouseEnter={() => this.setState({hoveredIndex: index})}
