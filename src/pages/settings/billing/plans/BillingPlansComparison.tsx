@@ -20,11 +20,15 @@ import {updateSubscription} from '../../../../state/currentAccount/actions'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions'
 import {getCurrentSubscription} from '../../../../state/currentAccount/selectors'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
+import SynchronizedScrollTopProvider from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
+import SynchronizedScrollTopContainer from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 
 import css from './BillingPlansComparison.less'
 import BillingComparisonPlanCard from './BillingComparisonPlanCard'
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import {getEnterprisePlanCardFeatures} from './billingPlanFeatures'
+
+const PLAN_FEATURES_HEIGHT = 516
 
 type Props = {
     openedPlanPopover?: string
@@ -96,95 +100,121 @@ export default function BillingPlansComparison({
     )
 
     return (
-        <Container
-            fluid
-            className={classNames('page-container', css.planContainer)}
-        >
-            <div className={css.intervalToggle}>
-                <ButtonGroup>
-                    <Button
-                        aria-label="Monthly interval"
-                        onClick={handleIntervalToggle}
-                        color={
-                            selectedInterval === PlanInterval.Month
-                                ? 'primary'
-                                : 'secondary'
-                        }
-                    >
-                        Monthly
-                    </Button>
-                    <Button
-                        aria-label="Yearly interval"
-                        onClick={handleIntervalToggle}
-                        color={
-                            selectedInterval === PlanInterval.Year
-                                ? 'primary'
-                                : 'secondary'
-                        }
-                    >
-                        Yearly
-                    </Button>
-                </ButtonGroup>
-            </div>
-            <CardDeck className={classNames('mb-5')}>
-                <>
-                    {accountHasLegacyPlan && (
-                        <BillingComparisonPlanCard
+        <SynchronizedScrollTopProvider>
+            <Container
+                fluid
+                className={classNames('page-container', css.planContainer)}
+            >
+                <div className={css.intervalToggle}>
+                    <ButtonGroup>
+                        <Button
+                            aria-label="Monthly interval"
+                            onClick={handleIntervalToggle}
+                            color={
+                                selectedInterval === PlanInterval.Month
+                                    ? 'primary'
+                                    : 'secondary'
+                            }
+                        >
+                            Monthly
+                        </Button>
+                        <Button
+                            aria-label="Yearly interval"
+                            onClick={handleIntervalToggle}
+                            color={
+                                selectedInterval === PlanInterval.Year
+                                    ? 'primary'
+                                    : 'secondary'
+                            }
+                        >
+                            Yearly
+                        </Button>
+                    </ButtonGroup>
+                </div>
+                <CardDeck className={classNames('mb-5')}>
+                    <>
+                        {accountHasLegacyPlan && (
+                            <BillingComparisonPlanCard
+                                className="mt-4"
+                                plan={currentPlan.toJS()}
+                                isCurrentPlan
+                                isUpdating={isSubscriptionUpdating}
+                                renderBody={(features) => (
+                                    <SynchronizedScrollTopContainer
+                                        height={PLAN_FEATURES_HEIGHT}
+                                    >
+                                        {features}
+                                    </SynchronizedScrollTopContainer>
+                                )}
+                            />
+                        )}
+                        {availablePlans
+                            .mapEntries((entry) => {
+                                const [planId, plan] = entry as [
+                                    string,
+                                    Map<any, any>
+                                ]
+                                const isCurrentPlan =
+                                    !accountHasLegacyPlan &&
+                                    plan.get('id') === currentPlan.get('id')
+                                return [
+                                    planId,
+                                    <BillingComparisonPlanCard
+                                        key={planId.split('-')[0]}
+                                        className="mt-4"
+                                        plan={plan.toJS()}
+                                        isCurrentPlan={isCurrentPlan}
+                                        isUpdating={isSubscriptionUpdating}
+                                        renderBody={(features) => (
+                                            <SynchronizedScrollTopContainer
+                                                height={PLAN_FEATURES_HEIGHT}
+                                            >
+                                                {features}
+                                            </SynchronizedScrollTopContainer>
+                                        )}
+                                        onPlanChange={() => {
+                                            void handleSubscriptionUpdate(
+                                                planId
+                                            )
+                                        }}
+                                        defaultIsPlanChangeConfirmationOpen={
+                                            openedPlanPopover ===
+                                            plan.get('name')
+                                        }
+                                    />,
+                                ]
+                            })
+                            .toList()}
+                    </>
+                    {!isCustomPlan && (
+                        <PlanCard
                             className="mt-4"
-                            plan={currentPlan.toJS()}
-                            isCurrentPlan
-                            isUpdating={isSubscriptionUpdating}
+                            planName="Enterprise"
+                            theme={PlanCardTheme.Gold}
+                            price="Custom price"
+                            features={getEnterprisePlanCardFeatures()}
+                            renderBody={(features) => (
+                                <SynchronizedScrollTopContainer
+                                    height={PLAN_FEATURES_HEIGHT}
+                                >
+                                    {features}
+                                </SynchronizedScrollTopContainer>
+                            )}
+                            footer={
+                                <Button
+                                    aria-label="Contact us"
+                                    color="link"
+                                    onClick={(event) => {
+                                        openChat((event as unknown) as Event)
+                                    }}
+                                >
+                                    Contact us
+                                </Button>
+                            }
                         />
                     )}
-                    {availablePlans
-                        .mapEntries((entry) => {
-                            const [planId, plan] = entry as [
-                                string,
-                                Map<any, any>
-                            ]
-                            const isCurrentPlan =
-                                !accountHasLegacyPlan &&
-                                plan.get('id') === currentPlan.get('id')
-                            return [
-                                planId,
-                                <BillingComparisonPlanCard
-                                    key={planId.split('-')[0]}
-                                    className="mt-4"
-                                    plan={plan.toJS()}
-                                    isCurrentPlan={isCurrentPlan}
-                                    isUpdating={isSubscriptionUpdating}
-                                    onPlanChange={() => {
-                                        void handleSubscriptionUpdate(planId)
-                                    }}
-                                    defaultIsPlanChangeConfirmationOpen={
-                                        openedPlanPopover === plan.get('name')
-                                    }
-                                />,
-                            ]
-                        })
-                        .toList()}
-                </>
-                {!isCustomPlan && (
-                    <PlanCard
-                        className="mt-4"
-                        planName="Enterprise"
-                        theme={PlanCardTheme.Gold}
-                        price="Custom price"
-                        features={getEnterprisePlanCardFeatures()}
-                        footer={
-                            <Button
-                                aria-label="Contact us"
-                                color="link"
-                                onClick={(event) => {
-                                    openChat((event as unknown) as Event)
-                                }}
-                            >
-                                Contact us
-                            </Button>
-                        }
-                    />
-                )}
-            </CardDeck>
-        </Container>
+                </CardDeck>
+            </Container>
+        </SynchronizedScrollTopProvider>
     )
 }

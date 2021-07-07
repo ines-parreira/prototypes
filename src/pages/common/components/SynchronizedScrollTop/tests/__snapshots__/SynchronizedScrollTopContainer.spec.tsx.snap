@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SynchronizedScrollTopContainer /> should render the component with default synchronized scroll top values 1`] = `
+<div
+  class="container"
+  style="height: 300px;"
+>
+  <div
+    style="height: auto;"
+  >
+    <div>
+      Foo
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SynchronizedScrollTopContainer /> should render the component with no scroll bar 1`] = `
+<div
+  class="container hideScrollbar"
+  style="height: 300px;"
+>
+  <div
+    style="height: 500px;"
+  >
+    <div>
+      Foo
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SynchronizedScrollTopContainer /> should render the component with scrollHeight and container height set 1`] = `
+<div
+  class="container"
+  style="height: 300px;"
+>
+  <div
+    style="height: 500px;"
+  >
+    <div>
+      Foo
+    </div>
+  </div>
+</div>
+`;

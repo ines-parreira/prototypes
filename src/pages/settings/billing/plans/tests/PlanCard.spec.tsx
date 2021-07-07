@@ -46,4 +46,11 @@ describe('<PlanCard />', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should render custom body', () => {
+        const {container} = render(
+            <PlanCard {...minProps} renderBody={() => <div>Custom body</div>} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })

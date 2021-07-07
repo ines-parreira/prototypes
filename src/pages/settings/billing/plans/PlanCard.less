@@ -11,6 +11,7 @@
     .planHeader {
         display: flex;
         flex-direction: column;
+        flex-shrink: 0;
         justify-content: flex-end;
         padding: 15px 16px 20px 16px;
         border-bottom: 0;
@@ -40,17 +41,21 @@
     }
 
     .cardBody {
-        padding-left: 20px;
+        padding: 0 10px;
     }
 
     .featureList {
+        margin: 0;
         list-style: none;
-        padding-left: 0;
+        padding: 24px 10px;
     }
 
     .featureListItem {
-        margin-bottom: 11px;
-        min-height: 40px;
+        margin-bottom: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     .featureIcon {
@@ -64,6 +69,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        align-self: flex-start;
     }
 
     .disabledFeatureListItem {

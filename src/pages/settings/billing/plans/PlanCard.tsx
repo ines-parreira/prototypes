@@ -26,6 +26,7 @@ type Props = {
     headerBadge?: ReactNode
     footer?: ReactNode
     className?: string
+    renderBody?: (featureList: ReactNode) => ReactNode
 }
 
 export default function PlanCard({
@@ -36,6 +37,7 @@ export default function PlanCard({
     price,
     footer,
     className,
+    renderBody = (featureList) => featureList,
 }: Props) {
     return (
         <Card
@@ -60,31 +62,33 @@ export default function PlanCard({
                 </div>
             </CardHeader>
             <CardBody className={css.cardBody}>
-                <ul className={css.featureList}>
-                    {features.map((feature, i) => {
-                        return (
-                            <li
-                                key={`${planName}-feature-${i}`}
-                                className={classNames(
-                                    'd-flex align-items-center',
-                                    css.featureListItem,
-                                    feature.isDisabled &&
-                                        css.disabledFeatureListItem
-                                )}
-                            >
-                                <span
+                {renderBody(
+                    <ul className={css.featureList}>
+                        {features.map((feature, i) => {
+                            return (
+                                <li
+                                    key={`${planName}-feature-${i}`}
                                     className={classNames(
-                                        css.featureIcon,
-                                        'mr-3'
+                                        'd-flex align-items-center',
+                                        css.featureListItem,
+                                        feature.isDisabled &&
+                                            css.disabledFeatureListItem
                                     )}
                                 >
-                                    {feature.icon}
-                                </span>
-                                <span>{feature.label}</span>
-                            </li>
-                        )
-                    })}
-                </ul>
+                                    <span
+                                        className={classNames(
+                                            css.featureIcon,
+                                            'mr-3'
+                                        )}
+                                    >
+                                        {feature.icon}
+                                    </span>
+                                    <span>{feature.label}</span>
+                                </li>
+                            )
+                        })}
+                    </ul>
+                )}
             </CardBody>
             {footer && (
                 <CardFooter className={css.cardFooter}>{footer}</CardFooter>
