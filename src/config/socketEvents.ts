@@ -509,6 +509,9 @@ export const receivedEvents: ReceivedEvent[] = [
             // send browser notifications only for new customer messages
             const shouldNotify = !ticket.last_message_from_agent
 
+            const playSoundNotification = (json as TicketMessageChatCreatedEvent)
+                .event.play_sound_notification
+
             const state = typeSafeReduxStore.getState()
             const {currentUser} = state
 
@@ -537,7 +540,11 @@ export const receivedEvents: ReceivedEvent[] = [
                 )
             ) {
                 typeSafeReduxStore.dispatch(
-                    chatsActions.addChat(ticket, shouldNotify) as any
+                    chatsActions.addChat(
+                        ticket,
+                        shouldNotify,
+                        playSoundNotification
+                    ) as any
                 )
                 return
             }

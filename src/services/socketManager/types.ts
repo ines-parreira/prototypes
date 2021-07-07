@@ -173,6 +173,7 @@ export type SIDUpdatedEvent = {
 export type TicketMessageChatCreatedEvent = {
     event: {
         type: SocketEventType.TicketMessageChatCreated
+        play_sound_notification?: boolean
     }
     data: RecentChatTicket
 }

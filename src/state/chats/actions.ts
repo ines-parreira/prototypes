@@ -32,9 +32,11 @@ export const fetchChatsThrottled = _throttle((dispatch: StoreDispatch) => {
     void dispatch(fetchChats())
 }, 10000)
 
-export const addChat = (ticket: RecentChatTicket, notify = true) => (
-    dispatch: StoreDispatch
-) => {
+export const addChat = (
+    ticket: RecentChatTicket,
+    notify = true,
+    playSoundNotification = true
+) => (dispatch: StoreDispatch) => {
     dispatch({
         type: constants.ADD_CHAT,
         ticket,
@@ -44,6 +46,7 @@ export const addChat = (ticket: RecentChatTicket, notify = true) => (
             title: ticket.customer.name,
             body: ticket.last_message_body_text || '',
             ticketId: ticket.id,
+            playSoundNotification: playSoundNotification,
         })
     }
 }

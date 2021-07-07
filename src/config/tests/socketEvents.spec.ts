@@ -379,12 +379,17 @@ describe('Config: socketEvents', () => {
 
                     if (mockSocketManager.ticketMessageChatCreatedHandler) {
                         mockSocketManager.ticketMessageChatCreatedHandler({
+                            event: {
+                                type: SocketEventType.TicketMessageChatCreated,
+                                play_sound_notification: true,
+                            },
                             data: ticket,
                         } as any)
                     }
                     expect(chatActions.addChat).toHaveBeenCalledWith(
                         ticket,
-                        !lastMessageFromAgent
+                        !lastMessageFromAgent,
+                        true
                     )
                 }
             )
@@ -418,12 +423,17 @@ describe('Config: socketEvents', () => {
 
                     if (mockSocketManager.ticketMessageChatCreatedHandler) {
                         mockSocketManager.ticketMessageChatCreatedHandler({
+                            event: {
+                                type: SocketEventType.TicketMessageChatCreated,
+                                play_sound_notification: true,
+                            },
                             data: ticket,
                         } as any)
                     }
                     expect(chatActions.addChat).toHaveBeenCalledWith(
                         expectedTicket,
-                        !lastMessageFromAgent
+                        !lastMessageFromAgent,
+                        true
                     )
                 }
             )
@@ -448,6 +458,10 @@ describe('Config: socketEvents', () => {
 
                     if (mockSocketManager.ticketMessageChatCreatedHandler) {
                         mockSocketManager.ticketMessageChatCreatedHandler({
+                            event: {
+                                type: SocketEventType.TicketMessageChatCreated,
+                                play_sound_notification: true,
+                            },
                             data: ticket,
                         } as any)
                     }

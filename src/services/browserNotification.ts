@@ -17,12 +17,20 @@ class BrowserNotification {
             title,
             body,
             ticketId,
+            playSoundNotification,
         }: {
             title?: unknown
             body?: unknown
             ticketId?: number | string
+            playSoundNotification?: boolean
         } = {}) => {
-            sound.play().catch(_noop)
+            if (
+                playSoundNotification === null ||
+                playSoundNotification === undefined ||
+                !!playSoundNotification
+            ) {
+                sound.play().catch(_noop)
+            }
 
             void notification.create(
                 _isString(title) && title ? title : 'Gorgias',

@@ -85,6 +85,7 @@ describe('actions', () => {
                     1,
                     {
                         body: 'Hi',
+                        playSoundNotification: true,
                         ticketId: 1,
                         title: 'Mark Frizeli',
                     }
