@@ -230,6 +230,9 @@ export class ReplyMessageChannelContainer extends React.Component {
             isTicketExisting && !!replyOptions.get('instagram-direct-message')
         const suggestInstagramMention =
             isTicketExisting && !!replyOptions.get('instagram-mention-comment')
+        const suggestTwitterTweet =
+            isTicketExisting &&
+            !!replyOptions.get(TicketMessageSourceType.TwitterTweet)
         const suggestPhone =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.Phone)
@@ -387,6 +390,23 @@ export class ReplyMessageChannelContainer extends React.Component {
                                         type={INSTAGRAM_MENTION_COMMENT_SOURCE}
                                     />
                                     Reply via Instagram mention
+                                </DropdownItem>
+                            )}
+                            {suggestTwitterTweet && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.TwitterTweet
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.TwitterTweet
+                                        }
+                                    />
+                                    Reply via Twitter tweet
                                 </DropdownItem>
                             )}
                             {suggestInternalNote && (

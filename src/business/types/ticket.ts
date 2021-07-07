@@ -27,7 +27,7 @@ export enum TicketMessageSourceType {
     Phone = 'phone',
     SystemMessage = 'system-message',
     Twilio = 'twilio',
-    Twitter = 'twitter',
+    TwitterTweet = 'twitter-tweet',
 }
 
 export enum TicketStatus {

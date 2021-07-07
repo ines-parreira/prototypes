@@ -118,6 +118,7 @@ export const SOURCE_VALUE_PROP = {
     'instagram-direct-message': 'address',
     'instagram-mention-media': 'address',
     'instagram-mention-comment': 'address',
+    'twitter-tweet': 'address',
 }
 
 //$TsFixMe fallback for js files, replace with TicketStatus enum

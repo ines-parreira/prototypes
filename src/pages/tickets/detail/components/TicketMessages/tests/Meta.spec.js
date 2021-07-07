@@ -4,6 +4,8 @@ import React from 'react'
 
 import {TicketVias} from '../../../../../../business/ticket.ts'
 import Meta from '../Meta'
+import {TWITTER_TWEET_SOURCE} from '../../../../../../config/ticket.ts'
+import {TicketChannel} from '../../../../../../business/types/ticket.ts'
 
 describe('ticket message meta', () => {
     it('should add a -sent via rule- label because the message was sent by a rule', () => {
@@ -202,6 +204,66 @@ describe('ticket message meta', () => {
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to media')
             expect(from.find('a').prop('href')).toEqual(permalink)
+        })
+    })
+
+    describe('twitter', () => {
+        it('should display "go to tweet" link', () => {
+            const fromUsername = 'gorgiasio'
+            const tweetId = '1399880580741935107'
+            const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
+            const source = {
+                from: {name: fromUsername, address: '12345'},
+                to: [{name: fromUsername, address: '12345'}],
+                extra: {
+                    parent_id: null,
+                    conversation_id: tweetId,
+                },
+                type: TWITTER_TWEET_SOURCE,
+            }
+
+            const component = shallow(
+                <Meta
+                    via={TicketChannel.Twitter}
+                    integrationId={118}
+                    source={source}
+                />
+            )
+
+            const from = component.find('From').dive()
+            expect(from.text()).toBe('go to tweet')
+            expect(from.find('a').prop('href')).toEqual(tweetPermalink)
+        })
+
+        it('should display "replying to @twitter_handle - go to tweet" link', () => {
+            const fromUsername = 'SmsBump'
+            const toUsername = 'gorgiasio'
+            const tweetId = '1400472973371445249'
+            const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
+            const toProfileLink = `https://twitter.com/${toUsername}`
+            const source = {
+                from: {name: fromUsername, address: '12346'},
+                to: [{name: toUsername, address: '12345'}],
+                extra: {
+                    parent_id: '1399880580741935107',
+                    conversation_id: tweetId,
+                },
+                type: TWITTER_TWEET_SOURCE,
+            }
+
+            const component = shallow(
+                <Meta
+                    via={TicketChannel.Twitter}
+                    integrationId={118}
+                    source={source}
+                />
+            )
+
+            const from = component.find('From').dive()
+
+            expect(from.text()).toBe(`replying to @${toUsername} - go to tweet`)
+            expect(from.find('a').at(0).prop('href')).toEqual(toProfileLink)
+            expect(from.find('a').at(1).prop('href')).toEqual(tweetPermalink)
         })
     })
 })

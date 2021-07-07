@@ -68,7 +68,7 @@ export const INTERNAL_NOTE_SOURCE = TicketMessageSourceType.InternalNote
 export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceType.OttspottCall
 export const PHONE_SOURCE = TicketMessageSourceType.Phone
 export const SYSTEM_MESSAGE_SOURCE = TicketMessageSourceType.SystemMessage
-export const TWITTER_SOURCE = TicketMessageSourceType.Twitter
+export const TWITTER_TWEET_SOURCE = TicketMessageSourceType.TwitterTweet
 
 export const SOURCE_TYPES = Object.values(TicketMessageSourceType)
 
@@ -88,6 +88,7 @@ export const USABLE_SOURCE_TYPES = [
     INSTAGRAM_MENTION_COMMENT_SOURCE,
     INSTAGRAM_DM_SOURCE,
     INTERNAL_NOTE_SOURCE,
+    TWITTER_TWEET_SOURCE,
 ]
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
@@ -307,6 +308,10 @@ export function sourceTypeToChannel(
 
     if (sourceType === 'ottspott-call') {
         return TicketChannel.Phone
+    }
+
+    if (sourceType === TicketMessageSourceType.TwitterTweet) {
+        return TicketChannel.Twitter
     }
 
     return sourceType

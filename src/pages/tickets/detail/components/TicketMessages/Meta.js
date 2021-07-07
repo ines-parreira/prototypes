@@ -18,6 +18,7 @@ import {
     FACEBOOK_REVIEW_COMMENT_SOURCE,
     FACEBOOK_REVIEW_SOURCE,
     INSTAGRAM_DM_SOURCE,
+    TWITTER_TWEET_SOURCE,
 } from '../../../../../config/ticket.ts'
 
 import css from './Meta.less'
@@ -75,6 +76,7 @@ export default function Meta(props: Props) {
         INSTAGRAM_MENTION_MEDIA_SOURCE,
         FACEBOOK_REVIEW_SOURCE,
         FACEBOOK_REVIEW_COMMENT_SOURCE,
+        TWITTER_TWEET_SOURCE,
     ]
 
     const isStoryMentionDirectMessage =
@@ -93,6 +95,8 @@ export default function Meta(props: Props) {
 
     let type
     let link
+    let label = 'go to'
+    let replyingToUsername
 
     if (
         !!messageId &&
@@ -133,6 +137,14 @@ export default function Meta(props: Props) {
         const isInstagramMentionMedia =
             source.type === INSTAGRAM_MENTION_MEDIA_SOURCE
 
+        const tweetId = messageId ? messageId : source.extra.conversation_id
+        const twitterFromUsername = source.from?.name
+        const twitterToUsername = source.to[0]?.name
+        const isTwitterRootTweet =
+            source.type === TWITTER_TWEET_SOURCE && !parentId
+        const isTwitterReplyTweet =
+            source.type === TWITTER_TWEET_SOURCE && !!parentId
+
         const getId = (input) =>
             input && input.includes('_') ? input.split('_')[1] : ''
 
@@ -165,6 +177,14 @@ export default function Meta(props: Props) {
             const commentId = getId(messageId)
             type = 'comment'
             link = `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
+        } else if (isTwitterRootTweet) {
+            type = 'tweet'
+            link = `https://twitter.com/${twitterFromUsername}/status/${tweetId}`
+        } else if (isTwitterReplyTweet) {
+            type = 'tweet'
+            label = 'replying to'
+            replyingToUsername = twitterToUsername
+            link = `https://twitter.com/${twitterFromUsername}/status/${tweetId}`
         } else if (!!messageId) {
             const postId = getId(fullPostId)
             const commentId = getId(parentId)
@@ -175,8 +195,8 @@ export default function Meta(props: Props) {
     }
 
     if (type && link) {
-        widgets.push(
-            <From label="go to" key="ref-widget">
+        let fromComponent = (
+            <From label={label} key="ref-widget">
                 <a
                     target="_blank"
                     href={link}
@@ -187,6 +207,33 @@ export default function Meta(props: Props) {
                 </a>
             </From>
         )
+
+        if (replyingToUsername) {
+            const profileLink = `https://twitter.com/${replyingToUsername}`
+            fromComponent = (
+                <From label={label} key="ref-widget">
+                    <a
+                        target="_blank"
+                        href={profileLink}
+                        title={profileLink}
+                        rel="noopener noreferrer"
+                    >
+                        @{replyingToUsername}
+                    </a>{' '}
+                    - go to{' '}
+                    <a
+                        target="_blank"
+                        href={link}
+                        title={link}
+                        rel="noopener noreferrer"
+                    >
+                        {type}
+                    </a>
+                </From>
+            )
+        }
+
+        widgets.push(fromComponent)
     }
 
     let sentViaLabel

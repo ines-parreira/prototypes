@@ -14,6 +14,7 @@ import {
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
+    TWITTER_TWEET_SOURCE,
 } from '../../../../../../config/ticket.ts'
 import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket.ts'
@@ -78,6 +79,7 @@ describe('ReplyMessageChannel component', () => {
         INSTAGRAM_AD_COMMENT_SOURCE,
         INSTAGRAM_MEDIA_SOURCE,
         INSTAGRAM_COMMENT_SOURCE,
+        TWITTER_TWEET_SOURCE,
     ]
 
     types.forEach((type) => {
