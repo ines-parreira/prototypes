@@ -4,7 +4,7 @@ import facebookLogo from '../../../../../../img/icons/social/facebook.svg'
 import twitterLogo from '../../../../../../img/icons/social/twitter.svg'
 import instagramLogo from '../../../../../../img/icons/social/instagram.svg'
 
-import {LinkEntity} from '../LinkList'
+import {LocalSocialNavigationLink} from '../../../../../models/helpCenter/types'
 
 import css from './SocialNavigationLinks.less'
 import {SocialNavigationItem} from './SocialNavigationItem'
@@ -16,10 +16,10 @@ const LOGO_MAP: {[key: string]: string} = {
 }
 
 type Props = {
-    links: LinkEntity[]
+    links: LocalSocialNavigationLink[]
     onBlurLink: (
         ev: React.FocusEvent<HTMLInputElement>,
-        key: string,
+        key: 'value',
         id: number
     ) => void
 }
@@ -32,14 +32,16 @@ export const SocialNavigationLinks = ({
         <div className={css['social-list']}>
             <h3>Social network links</h3>
             {links.map((link) => {
-                if (LOGO_MAP[link.label.toLowerCase()]) {
+                if (LOGO_MAP[link.translation.label.toLowerCase()]) {
                     return (
                         <SocialNavigationItem
                             key={link.id}
                             id={link.id}
-                            label={link.label}
-                            value={link.value}
-                            logo={LOGO_MAP[link.label.toLowerCase()]}
+                            label={link.translation.label}
+                            value={link.translation.value}
+                            logo={
+                                LOGO_MAP[link.translation.label.toLowerCase()]
+                            }
                             onBlur={onBlurLink}
                         />
                     )

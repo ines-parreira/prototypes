@@ -11,7 +11,7 @@ type Props = LinkEntity & {
     logo: string
     onBlur: (
         ev: React.FocusEvent<HTMLInputElement>,
-        key: string,
+        key: 'value',
         id: number
     ) => void
 }

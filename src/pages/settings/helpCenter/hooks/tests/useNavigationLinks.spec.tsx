@@ -1,60 +1,66 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import {NavigationLink} from '../../../../../models/helpCenter/types'
-import {getHelpCenterAllNavigationLinksEnglishFixture} from '../../fixtures/getNavigationLinksResponse.fixtures'
+import {NavigationLinkDto} from '../../../../../models/helpCenter/types'
+import {getHelpCenterAllNavigationLinksEnglishFixture as mockData} from '../../fixtures/getNavigationLinksResponse.fixtures'
 
 import {useNavigationLinks} from '../useNavigationLinks'
 
 const Example = () => {
     const navigation = useNavigationLinks(
         'header',
-        (getHelpCenterAllNavigationLinksEnglishFixture.data as unknown) as NavigationLink[]
+        mockData.data as NavigationLinkDto[]
     )
 
     return (
         <div>
             {navigation.links.map((link) => {
-                const uniqueId = link.id ? link.id.toString() : '123'
                 return (
-                    <div key={link.id} data-testid={`link-${uniqueId}`}>
+                    <div key={link.id} data-testid={`link-${link.id}`}>
                         <input
-                            data-testid={`label-${uniqueId}`}
-                            defaultValue={link.label}
+                            data-testid={`label-${link.id}`}
+                            defaultValue={link.translation.label}
                             onBlur={(ev) =>
                                 navigation.update(
                                     ev.target.value,
-                                    link.id as number,
+                                    link.id,
                                     'label'
                                 )
                             }
                         />
                         <input
-                            data-testid={`value-${uniqueId}`}
-                            defaultValue={link.value}
+                            data-testid={`value-${link.id}`}
+                            defaultValue={link.translation.value}
                             onBlur={(ev) =>
                                 navigation.update(
                                     ev.target.value,
-                                    link.id as number,
+                                    link.id,
                                     'value'
                                 )
                             }
                         />
                         <span
-                            data-testid={`delete-${uniqueId}`}
-                            onClick={() => navigation.remove(link.id as number)}
+                            data-testid={`delete-${link.id}`}
+                            onClick={() => navigation.remove(link.id)}
                         >
                             delete
                         </span>
                     </div>
                 )
             })}
-            <button data-testid="add" onClick={navigation.add}>
+            <button data-testid="add" onClick={() => navigation.add('en-US')}>
                 add
             </button>
         </div>
     )
 }
+
+const nextId = mockData.data.reduce((sum, link) => {
+    if (link.group === 'header') {
+        return sum + link.id
+    }
+    return sum
+}, 1)
 
 describe('useNavigationLinks', () => {
     it('renders all the header navigation links', () => {
@@ -67,12 +73,12 @@ describe('useNavigationLinks', () => {
 
         fireEvent.click(getByTestId('add'))
 
-        getByTestId('link-new-1')
+        getByTestId(`link-${nextId}`)
 
-        const newLabel = getByTestId('label-new-1') as HTMLInputElement
+        const newLabel = getByTestId(`label-${nextId}`) as HTMLInputElement
         expect(newLabel.value).toBe('')
 
-        const newValue = getByTestId('value-new-1') as HTMLInputElement
+        const newValue = getByTestId(`value-${nextId}`) as HTMLInputElement
         expect(newValue.value).toBe('')
     })
 

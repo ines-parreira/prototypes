@@ -20,6 +20,10 @@ export type HelpCenterLocaleCode = HelpCenter['default_locale']
 
 export type LocaleCode = Components.Schemas.LocaleEntity['code']
 
+export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto
+export type NavigationLinkMeta = Components.Schemas.NavigationLinkMeta
+export type NavigationSocialLinks = Components.Schemas.NavigationLinkMeta['network']
+
 export type HelpCenterPreferences = {
     id: number
     subdomain: string
@@ -52,6 +56,37 @@ export type NavigationTranslation = {
     locale: string
 }
 
+export type NavigationLinkSections = Components.Schemas.NavigationLinkEntity['group']
+
+export type BaseNavigationLink = Pick<
+    Components.Schemas.NavigationLinkWithLocalTranslation,
+    'id' | 'group'
+> & {
+    translation: LinkTranslation
+}
+
+export type LinkTranslation = Pick<
+    Components.Schemas.LocalNavigationLinkTranslation,
+    | 'label'
+    | 'value'
+    | 'locale'
+    | 'updated_datetime'
+    | 'created_datetime'
+    | 'navigation_link_id'
+>
+
+export type LocalNavigationLink = BaseNavigationLink & {
+    position: number
+}
+
+export type LocalSocialNavigationLink = Omit<
+    LocalNavigationLink,
+    'translation'
+> & {
+    meta: Components.Schemas.NavigationLinkMeta
+    translation: Omit<LinkTranslation, 'locale'>
+}
+
 export type Category = {
     created_datetime: string
     updated_datetime: string
@@ -73,4 +108,4 @@ export type Category = {
     }
 }
 
-export type NavigationLink = Components.Schemas.NavigationLinkWithLocalTranslation
+export type NavigationLinkDto = Components.Schemas.NavigationLinkWithLocalTranslation

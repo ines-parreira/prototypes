@@ -11,16 +11,20 @@ export type LinkEntity = {
     value: string
 }
 
-type Props = LinkEntity & {
-    titlePlaceholder?: string
-    urlPlaceholder?: string
+export type LinkItemEventHandlers = {
     onBlur: (
         ev: React.FocusEvent<HTMLInputElement>,
-        key: string,
+        key: 'label' | 'value',
         id: number
     ) => void
     onDelete: (id: number) => void
 }
+
+type Props = LinkEntity &
+    LinkItemEventHandlers & {
+        titlePlaceholder?: string
+        urlPlaceholder?: string
+    }
 
 export const LinkItem = ({
     id,

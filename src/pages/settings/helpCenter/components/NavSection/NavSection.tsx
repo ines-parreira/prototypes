@@ -1,29 +1,28 @@
 import React from 'react'
 
-import {LocaleCode} from '../../../../../models/helpCenter/types'
+import {
+    LocaleCode,
+    LocalNavigationLink,
+} from '../../../../../models/helpCenter/types'
 
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import {Option} from '../../../../common/forms/SelectField/types'
 
-import {LinkList, LinkEntity} from '../LinkList'
+import {LinkList, LinkItemEventHandlers} from '../LinkList'
 
 import css from './NavSection.less'
 
 type Props = {
     availableLocales: Option[]
     description: string
-    items: LinkEntity[]
+    items: LocalNavigationLink[]
     name: string
     selectedLocale: LocaleCode
     title: string
-    onBlurLink: (
-        ev: React.FocusEvent<HTMLInputElement>,
-        key: string,
-        id: number
-    ) => void
+    onBlurLink: LinkItemEventHandlers['onBlur']
     onChangeLocale: (value: LocaleCode) => void
     onClickAdd: () => void
-    onClickRemove: (id: number) => void
+    onClickRemove: LinkItemEventHandlers['onDelete']
 }
 
 export const NavSection = ({
@@ -44,7 +43,7 @@ export const NavSection = ({
                 <h3>{title}</h3>
                 <p>{description}</p>
             </div>
-            {availableLocales.length > 0 && (
+            {availableLocales?.length > 0 && (
                 <div>
                     <SelectField
                         options={availableLocales}
@@ -61,8 +60,12 @@ export const NavSection = ({
             name={name}
             titlePlaceholder="Link title"
             urlPlaceholder="Link URL"
-            list={items}
-            onBlurInput={onBlurLink}
+            list={items.map((item) => ({
+                id: item.id,
+                value: item.translation.value,
+                label: item.translation.label,
+            }))}
+            onBlur={onBlurLink}
             onDelete={onClickRemove}
             onAddNew={onClickAdd}
         />

@@ -3,23 +3,17 @@ import {Button} from 'reactstrap'
 
 import Tooltip from '../../../../common/components/Tooltip'
 
-import {LinkItem, LinkEntity} from './LinkItem'
+import {LinkItem, LinkEntity, LinkItemEventHandlers} from './LinkItem'
 
 import css from './LinkList.less'
 
-type Props = {
+type Props = LinkItemEventHandlers & {
     list: LinkEntity[]
     limit?: number
     name: string
     titlePlaceholder?: string
     urlPlaceholder?: string
     onAddNew?: () => void
-    onBlurInput: (
-        ev: React.FocusEvent<HTMLInputElement>,
-        key: string,
-        id: number
-    ) => void
-    onDelete: (id: number) => void
 }
 
 export const LinkList = ({
@@ -29,7 +23,7 @@ export const LinkList = ({
     titlePlaceholder,
     urlPlaceholder,
     onAddNew,
-    onBlurInput,
+    onBlur,
     onDelete,
 }: Props) => {
     const isLimitExceeded = list.length >= limit
@@ -49,7 +43,7 @@ export const LinkList = ({
                             titlePlaceholder={titlePlaceholder}
                             value={item.value}
                             urlPlaceholder={urlPlaceholder}
-                            onBlur={onBlurInput}
+                            onBlur={onBlur}
                             onDelete={onDelete}
                         />
                     ))}
