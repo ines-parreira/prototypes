@@ -6,7 +6,7 @@ import {
 
 export const articleRequiredFields: Partial<
     keyof HelpCenterArticleTranslation
->[] = ['title', 'slug', 'excerpt', 'content']
+>[] = ['title', 'slug', 'content']
 
 export const getNewTranslation = (
     locale: HelpCenterLocaleCode
@@ -17,3 +17,11 @@ export const getNewTranslation = (
     slug: '',
     locale,
 })
+
+export function slugify(title: string): string {
+    if (title) {
+        return encodeURI(title.replace(/ /g, '-').toLowerCase())
+    }
+
+    return ''
+}

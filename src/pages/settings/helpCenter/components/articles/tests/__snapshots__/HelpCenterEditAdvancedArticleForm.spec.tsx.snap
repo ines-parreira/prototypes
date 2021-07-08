@@ -59,7 +59,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
     </div>
     <div
-      class="InputField required form-group"
+      class="InputField form-group"
       color=""
     >
       <label
@@ -74,7 +74,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         <textarea
           class="form-control"
           id="id-excerpt"
-          required=""
           rows="2"
         >
           Paragraph lorem ipsum, Yiddish xylophone wonder.

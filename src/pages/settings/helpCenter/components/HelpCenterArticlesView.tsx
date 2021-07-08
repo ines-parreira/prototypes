@@ -36,6 +36,7 @@ import {getCategoriesResponseEnglish} from '../fixtures/getCategoriesResponse.fi
 import {
     getNewTranslation,
     articleRequiredFields,
+    slugify,
 } from '../utils/helpCenter.utils'
 import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
 
@@ -274,6 +275,7 @@ export const HelpCenterArticlesView = ({
                                             translation: {
                                                 ...prevSelectedArticle.translation,
                                                 title,
+                                                slug: slugify(title),
                                             },
                                         }) ||
                                         null

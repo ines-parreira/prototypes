@@ -18,6 +18,8 @@ import {
     HELP_CENTER_DOMAIN,
     HELP_CENTER_LANGUAGE_DEFAULT,
 } from '../../../constants'
+import {slugify} from '../../../utils/helpCenter.utils'
+
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
 import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
 
@@ -68,12 +70,12 @@ export const HelpCenterCategory = ({
         setTitle(ev.target.value)
 
         if (isPristineSlug) {
-            setSlug(ev.target.value.replace(/ /g, '-').toLocaleLowerCase())
+            setSlug(slugify(ev.target.value))
         }
     }
 
     const handleChangeSlug = (ev: React.ChangeEvent<HTMLInputElement>) => {
-        setSlug(ev.target.value.replace(/ /g, '-').toLocaleLowerCase())
+        setSlug(slugify(ev.target.value))
 
         if (isPristineSlug) {
             setPristineSlug(false)

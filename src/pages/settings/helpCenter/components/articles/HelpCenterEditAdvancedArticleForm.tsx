@@ -4,6 +4,7 @@ import InputField from '../../../../common/forms/InputField.js'
 import {HelpCenterArticleTranslation} from '../../../../../models/helpCenter/types'
 
 import {HELP_CENTER_DOMAIN} from '../../constants'
+import {slugify} from '../../utils/helpCenter.utils'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
 
@@ -21,9 +22,17 @@ export const HelpCenterEditAdvancedArticleForm = ({
     onChange,
 }: Props) => {
     const onEditArticle = (editKey: string) => (newValue: string) => {
+        if (editKey === 'title') {
+            onChange({
+                ...translation,
+                [editKey]: newValue,
+                slug: newValue.replace(/ /g, '-').toLowerCase(),
+            })
+            return
+        }
         onChange({
             ...translation,
-            [editKey]: newValue,
+            [editKey]: editKey === 'slug' ? slugify(newValue) : newValue,
         })
     }
 
@@ -47,7 +56,6 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 onChange={onEditArticle('slug')}
             />
             <InputField
-                required
                 type="textarea"
                 rows="2"
                 name="excerpt"

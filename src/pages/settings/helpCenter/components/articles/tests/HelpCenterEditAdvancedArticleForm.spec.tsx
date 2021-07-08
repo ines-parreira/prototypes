@@ -31,10 +31,10 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
             <HelpCenterEditAdvancedArticleForm {...props} />
         )
         const slugInput = getByRole('textbox', {name: /slug/i})
-        fireEvent.change(slugInput, {target: {value: 'newSlug'}})
+        fireEvent.change(slugInput, {target: {value: 'new slug'}})
         expect(mockedOnChange).toHaveBeenCalledWith({
             ...translation,
-            slug: 'newSlug',
+            slug: 'new-slug',
         })
     })
 })

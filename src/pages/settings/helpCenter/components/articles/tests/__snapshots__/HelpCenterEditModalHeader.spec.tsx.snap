@@ -8,6 +8,7 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`]
     <input
       class="titleInput"
       disabled=""
+      placeholder="Title"
       type="text"
       value="Article"
     />

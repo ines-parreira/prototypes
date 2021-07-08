@@ -57,6 +57,7 @@ export const HelpCenterEditModalHeader = ({
             <input
                 type="text"
                 value={title}
+                placeholder="Title"
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onEditTitle && onEditTitle(event.target.value)
                 }
