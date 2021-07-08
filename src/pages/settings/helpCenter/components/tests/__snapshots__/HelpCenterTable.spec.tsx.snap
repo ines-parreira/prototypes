@@ -209,13 +209,6 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
             >
               <div
                 class="language-bullet-item"
-                data-testid="locale-bullet-overflow"
-                id="more-items-1"
-              >
-                +4
-              </div>
-              <div
-                class="language-bullet-item"
                 data-testid="locale-bullet-en-US"
               >
                 <span
@@ -270,13 +263,6 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
             >
               <div
                 class="language-bullet-item"
-                data-testid="locale-bullet-overflow"
-                id="more-items-2"
-              >
-                +4
-              </div>
-              <div
-                class="language-bullet-item"
                 data-testid="locale-bullet-de-DE"
               >
                 <span
@@ -329,13 +315,6 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
             <div
               class="language-bullet-list"
             >
-              <div
-                class="language-bullet-item"
-                data-testid="locale-bullet-overflow"
-                id="more-items-3"
-              >
-                +4
-              </div>
               <div
                 class="language-bullet-item"
                 data-testid="locale-bullet-fr-FR"

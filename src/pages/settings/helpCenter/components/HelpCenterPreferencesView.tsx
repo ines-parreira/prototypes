@@ -2,13 +2,14 @@ import React from 'react'
 import {connect, useSelector} from 'react-redux'
 import {Button, Container} from 'reactstrap'
 
+import {readHelpcenterById} from '../../../../state/entities/helpCenters/selectors'
+
 import PageHeader from '../../../common/components/PageHeader'
+import Tooltip from '../../../common/components/Tooltip'
 
 import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
 import {LanguagePreferencesSettings} from '../providers/LanguagePreferencesSettings'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-
-import {readHelpcenterById} from '../../../../state/entities/helpCenters/selectors'
 
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {DefaultLanguageSelect} from './DefaultLanguageSelect'
@@ -20,6 +21,7 @@ import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 export const HelpCenterPreferencesView = () => {
     const helpcenterId = useHelpCenterIdParam()
     const data = useSelector(readHelpcenterById(helpcenterId.toString()))
+    const $ref = React.createRef<HTMLElement>()
 
     return (
         <div className="full-width">
@@ -42,10 +44,28 @@ export const HelpCenterPreferencesView = () => {
                         localesAvailable={getLocalesResponseFixture}
                     />
                     <AvailableLanguagesTags />
-                    <footer style={{marginTop: 64}}>
-                        <Button color="success">Save Changes</Button>
-                        <Button className="ml-2">Cancel</Button>
+                    <footer
+                        style={{marginTop: 64, display: 'inline-flex'}}
+                        ref={$ref}
+                    >
+                        <Button
+                            disabled
+                            color="success"
+                            style={{pointerEvents: 'none', cursor: 'disabled'}}
+                        >
+                            Save Changes
+                        </Button>
+                        <Button
+                            disabled
+                            className="ml-2"
+                            style={{pointerEvents: 'none', cursor: 'disabled'}}
+                        >
+                            Cancel
+                        </Button>
                     </footer>
+                    <Tooltip placement="left" target={$ref}>
+                        Not supported right now
+                    </Tooltip>
                 </Container>
             </LanguagePreferencesSettings>
         </div>

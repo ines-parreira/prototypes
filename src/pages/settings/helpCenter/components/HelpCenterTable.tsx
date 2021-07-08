@@ -89,12 +89,8 @@ OwnProps) {
                                             }
                                             // TODO : use supported_locale from helpcenter when API will support it
                                             languageList={[
-                                                'en-US',
-                                                'fr-FR',
-                                                'cs-CZ',
-                                                'da-DK',
-                                                'nl-NL',
-                                            ].map((code) => locales[code])}
+                                                locales[default_locale],
+                                            ]}
                                         />
                                     </BodyCell>
                                     <BodyCell>
