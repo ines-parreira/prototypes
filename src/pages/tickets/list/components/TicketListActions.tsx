@@ -27,7 +27,7 @@ import _isUndefined from 'lodash/isUndefined'
 
 import shortcutManager from '../../../../services/shortcutManager'
 import * as viewsActions from '../../../../state/views/actions'
-import * as ticketsActions from '../../../../state/tickets/actions.js'
+import * as ticketsActions from '../../../../state/tickets/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import {getAgents} from '../../../../state/agents/selectors'
 import {getTeams} from '../../../../state/teams/selectors'
@@ -228,7 +228,8 @@ export const TicketListActionsContainer = ({
         const actionsArgs = allViewItemsSelected ? activeView : selectedItemsIds
 
         try {
-            await actionsToUse.createJob(actionsArgs, jobType, jobParams)
+            // eslint-disable-next-line @typescript-eslint/await-thenable
+            await actionsToUse.createJob(actionsArgs as any, jobType, jobParams)
             actions.views.updateSelectedItemsIds(fromJS([]))
         } catch {
             // Don't raise an exception in the console

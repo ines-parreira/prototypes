@@ -1,13 +1,12 @@
-// @flow
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import Header from '../Header'
-import Meta from '../Meta'
+import Header from '../Header.js'
+import Meta from '../Meta.js'
 import {
     message,
     duplicatedHiddenFacebookMessage,
-} from '../../../../../../models/ticket/tests/mocks.ts'
+} from '../../../../../../models/ticket/tests/mocks'
 
 describe('Header', () => {
     it('should display header', () => {

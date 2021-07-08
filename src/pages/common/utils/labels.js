@@ -34,7 +34,7 @@ import SourceIcon from '../components/SourceIcon.tsx'
 import type {SourceType} from '../../../models/ticket/types'
 import {getAgents} from '../../../state/agents/selectors.ts'
 import {getTeams} from '../../../state/teams/selectors.ts'
-import {parseTimedelta} from '../../../state/ticket/utils'
+import {parseTimedelta} from '../../../state/ticket/utils.ts'
 
 import css from './labels.less'
 

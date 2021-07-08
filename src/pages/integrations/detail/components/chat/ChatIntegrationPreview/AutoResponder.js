@@ -2,7 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations'
+import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations/index.ts'
 import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside.ts'
 
 import css from './ChatIntegrationPreview.less'

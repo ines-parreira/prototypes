@@ -8,7 +8,7 @@ import {MESSAGING_INTEGRATION_TYPES} from '../../models/integration/constants'
 import {compare} from '../../utils'
 import {RootState} from '../types'
 import {getCurrentUserState} from '../currentUser/selectors'
-import {nestedReplace} from '../ticket/utils.js'
+import {nestedReplace} from '../ticket/utils'
 
 import {IntegrationsState} from './types'
 

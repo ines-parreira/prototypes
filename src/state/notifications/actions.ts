@@ -73,9 +73,10 @@ export const notify = (message: Notification) => (
         return Promise.resolve()
     }
 
-    const status = AUTHORIZED_NOTIFICATION_TYPES.includes(message.status)
-        ? message.status
-        : NotificationStatus.Info
+    const status =
+        message.status && AUTHORIZED_NOTIFICATION_TYPES.includes(message.status)
+            ? message.status
+            : NotificationStatus.Info
 
     const finalMessage: Notification = {
         ...INITIAL_MESSAGE,

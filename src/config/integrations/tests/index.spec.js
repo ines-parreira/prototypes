@@ -4,7 +4,7 @@ import {
     INTEGRATION_PREVIOUS_VARIABLES,
     INTEGRATION_TYPE_WITH_VARIABLES,
     INTEGRATION_VARIABLES,
-} from '../index'
+} from '../index.ts'
 
 describe('config', () => {
     describe('integrations', () => {

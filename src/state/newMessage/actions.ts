@@ -20,7 +20,7 @@ import {
     getLastSameSourceTypeMessage,
     getSourceTypeOfResponse,
     persistLastSenderChannel,
-} from '../ticket/utils.js'
+} from '../ticket/utils'
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
@@ -587,11 +587,10 @@ export function prepareTicketDataToSend(
             replyAreaState.contentState = newContentState
         }
 
-        //$TsFixMe remove casting once migrated
         const lastSameTypeMessage = getLastSameSourceTypeMessage(
             ticketState.get('messages'),
             sourceType
-        ) as Map<any, any>
+        )
 
         if (ticket.messages.length && lastSameTypeMessage) {
             const lastMessage = lastSameTypeMessage.toJS() as NewMessage
@@ -862,7 +861,7 @@ export function sendTicketMessage(
     return (
         dispatch: StoreDispatch,
         getState: () => RootState
-    ): Promise<ReturnType<StoreDispatch>> =>
+    ): Promise<Message> =>
         new Promise((resolve) => {
             const {ticket} = getState()
             let promise
@@ -912,11 +911,10 @@ export function sendTicketMessage(
                                 messages,
                                 messageId,
                             })
-                            //$TsFixMe remove casting once utils are migrated
                             const sourceTypeOfResponse = getSourceTypeOfResponse(
                                 messages,
                                 via
-                            ) as TicketMessageSourceType
+                            )
 
                             if (
                                 [
@@ -944,12 +942,12 @@ export function sendTicketMessage(
                         })
                     }
                 )
-                .then(resolve)
+                .then(resolve as any)
         })
 }
 
 export function retrySubmitTicketMessage(message: Map<any, any>) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return (dispatch: StoreDispatch) => {
         return dispatch(
             prepareTicketMessage(
                 message.getIn(['_internal', 'status']),

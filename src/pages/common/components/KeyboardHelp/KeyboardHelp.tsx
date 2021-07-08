@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {Badge} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 import classnames from 'classnames'
@@ -11,10 +11,13 @@ import keymap from '../../../../config/shortcuts'
 import css from './KeyboardHelp.less'
 
 type State = {
-    isOpen: boolean
+    isOpen?: boolean
 }
 
-export default class KeyboardHelp extends React.Component<void, State> {
+export default class KeyboardHelp extends Component<
+    Record<string, never>,
+    State
+> {
     state = {
         isOpen: false,
     }

@@ -31,7 +31,7 @@ import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index.js'
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {Language} from '../../../../../../constants/languages'
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'

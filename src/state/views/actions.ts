@@ -512,7 +512,7 @@ export function toggleIdInSelectedItemsIds(id: number) {
 }
 
 export function createJob(
-    view: ViewImmutable,
+    view: Map<any, any>,
     jobType: JobType,
     jobPartialParams: Record<string, unknown>
 ) {

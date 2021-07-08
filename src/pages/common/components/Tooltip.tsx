@@ -10,6 +10,8 @@ type Props = {
     children: ReactNode
     delay?: number | {show: number; hide: number}
     disabled?: boolean
+    offset?: string | number
+    boundariesElement?: string | Element
 } & Pick<UncontrolledTooltipProps, KnownKeys<UncontrolledTooltipProps>>
 
 export default function Tooltip({

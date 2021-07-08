@@ -629,8 +629,10 @@ export function emoji(
     })
 }
 
-export function getActionTemplate(actionName: string): Maybe<ActionTemplate> {
-    return ACTION_TEMPLATES.find((template) => template.name === actionName)
+export function getActionTemplate(actionName: string) {
+    return ACTION_TEMPLATES.find(
+        (template) => template.name === actionName
+    ) as Maybe<ActionTemplate>
 }
 
 export const createImmutableSelector = createSelectorCreator(

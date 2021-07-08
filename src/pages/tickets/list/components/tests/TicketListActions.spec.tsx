@@ -14,7 +14,7 @@ import {initialState as currentUser} from '../../../../../state/currentUser/redu
 import {TicketListActionsContainer} from '../TicketListActions'
 import {AGENT_ROLE, LITE_AGENT_ROLE} from '../../../../../config/user'
 import * as viewsActions from '../../../../../state/views/actions'
-import * as ticketsActions from '../../../../../state/tickets/actions.js'
+import * as ticketsActions from '../../../../../state/tickets/actions'
 import {JobType} from '../../../../../models/job/types'
 import shortcutManager from '../../../../../services/shortcutManager/shortcutManager'
 import history from '../../../../history'
@@ -22,7 +22,7 @@ import {ticket} from '../../../../../fixtures/ticket'
 
 jest.mock('../../../../../services/shortcutManager/shortcutManager')
 jest.mock('../../../../../state/views/actions')
-jest.mock('../../../../../state/tickets/actions.js')
+jest.mock('../../../../../state/tickets/actions')
 jest.mock('../../../../history')
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
@@ -736,9 +736,9 @@ describe('TicketListActions component', () => {
             })
 
             it('should disable buttons when job is being created', async () => {
-                ticketsActionsMock.createJob.mockImplementation(() => {
+                ticketsActionsMock.createJob.mockImplementation((() => {
                     return new Promise(_noop)
-                })
+                }) as any)
                 const renderResult = render(
                     <TicketListActionsContainer {...getTestProps(suiteProps)} />
                 )

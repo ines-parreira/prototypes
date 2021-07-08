@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/integrations'
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/integrations/index.ts'
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,

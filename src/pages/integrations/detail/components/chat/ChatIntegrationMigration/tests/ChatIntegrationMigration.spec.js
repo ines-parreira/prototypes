@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS} from 'immutable'
 
-import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from '../../../../../../../config/integrations'
+import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from '../../../../../../../config/integrations/index.ts'
 
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,

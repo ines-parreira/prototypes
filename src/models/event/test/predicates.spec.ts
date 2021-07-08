@@ -1,14 +1,13 @@
-// @flow
-import {fromJS, type Record} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import {SYSTEM_RULE_TYPE} from '../constants.ts'
+import {SYSTEM_RULE_TYPE} from '../constants'
 import {
     isRuleExecutedType,
     isSystemRuleEvent,
     isViaRuleEvent,
-} from '../predicates.ts'
-import {RULE_EXECUTED, TICKET_ASSIGNED} from '../../../constants/event.ts'
-import type {AuditLogEvent, AuditLogEventType} from '../types'
+} from '../predicates'
+import {RULE_EXECUTED, TICKET_ASSIGNED} from '../../../constants/event'
+import {AuditLogEventType} from '../types'
 
 describe('Event predicates', () => {
     describe('isSystemRuleEvent()', () => {
@@ -52,9 +51,7 @@ describe('Event predicates', () => {
     })
 
     describe('isViaRuleEvent()', () => {
-        const getEvent = (
-            eventType: AuditLogEventType
-        ): Record<AuditLogEvent> =>
+        const getEvent = (eventType: AuditLogEventType) =>
             fromJS({
                 id: 1,
                 account_id: 1,
@@ -65,18 +62,15 @@ describe('Event predicates', () => {
                 context: 'foo',
                 type: eventType,
                 created_datetime: '2019-11-15 19:00:00.000000',
-            })
+            }) as Map<any, any>
 
-        /**
-         * @returns {AuditLogEvent} Event added after `ruleExecutedEvent`, with the same `context`
-         */
         const getValidEvent = () =>
-            getEvent(TICKET_ASSIGNED)
+            getEvent(AuditLogEventType.TicketAssigned)
                 .set('id', 2)
                 .set('created_datetime', '2019-11-15 19:00:00.500000')
 
         it('should return truthy value', () => {
-            const ruleExecutedEvent = getEvent(RULE_EXECUTED)
+            const ruleExecutedEvent = getEvent(AuditLogEventType.RuleExecuted)
             const event = getValidEvent()
             const events = fromJS([ruleExecutedEvent, event])
             expect(isViaRuleEvent(event, events)).toBeTruthy()
@@ -84,14 +78,18 @@ describe('Event predicates', () => {
 
         describe('should return falsy value', () => {
             it('because the context is empty', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED)
+                const ruleExecutedEvent = getEvent(
+                    AuditLogEventType.RuleExecuted
+                )
                 const event = getValidEvent().set('context', '')
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
 
             it('because the context is null', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED)
+                const ruleExecutedEvent = getEvent(
+                    AuditLogEventType.RuleExecuted
+                )
                 const event = getValidEvent().set('context', null)
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
@@ -109,34 +107,34 @@ describe('Event predicates', () => {
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
 
-            it('because there is no RULE_EXECUTED event in the events array', () => {
-                const otherEvent = getEvent(TICKET_ASSIGNED)
+            it('because there is no "rule executed" event in the events array', () => {
+                const otherEvent = getEvent(AuditLogEventType.TicketAssigned)
                 const event = getValidEvent()
                 const events = fromJS([otherEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
 
-            it('because there is only the RULE_EXECUTED event in the events array', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED)
+            it('because there is only the "rule executed" event in the events array', () => {
+                const ruleExecutedEvent = getEvent(
+                    AuditLogEventType.RuleExecuted
+                )
                 const events = fromJS([ruleExecutedEvent])
                 expect(isViaRuleEvent(ruleExecutedEvent, events)).toBeFalsy()
             })
 
             it('because the context is different', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED).set(
-                    'context',
-                    'bar'
-                )
+                const ruleExecutedEvent = getEvent(
+                    AuditLogEventType.RuleExecuted
+                ).set('context', 'bar')
                 const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
 
             it('because the created datetime is not older', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED).set(
-                    'created_datetime',
-                    '2019-11-15 20:00:00.000000'
-                )
+                const ruleExecutedEvent = getEvent(
+                    AuditLogEventType.RuleExecuted
+                ).set('created_datetime', '2019-11-15 20:00:00.000000')
                 const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()

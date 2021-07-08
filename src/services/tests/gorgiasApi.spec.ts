@@ -1,30 +1,31 @@
-// @flow
 import querystring from 'querystring'
 import url from 'url'
 
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios/index'
+import {fromJS, List} from 'immutable'
 
-import {fromJS} from 'immutable'
-
-import GorgiasApi from '../gorgiasApi.ts'
-import type {AuditLogEvent} from '../../models/event'
-import {TICKET_REOPENED} from '../../constants/event.ts'
-import type {IntegrationDataItem} from '../../models/integration'
+import GorgiasApi from '../gorgiasApi'
 import {
-    INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
-    SHOPIFY_INTEGRATION_TYPE,
-} from '../../constants/integration.ts'
+    AuditLogEvent,
+    AuditLogEventObjectType,
+    AuditLogEventType,
+} from '../../models/event/types'
+
+import {
+    IntegrationDataItem,
+    IntegrationType,
+    IntegrationDataItemType,
+} from '../../models/integration/types'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
-} from '../../fixtures/shopify.ts'
-import {ViewVisibility} from '../../constants/view.ts'
+} from '../../fixtures/shopify'
+import {ViewVisibility} from '../../constants/view'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
-        // $TSFixMe remove any casting on migration
-        let apiMock: any = null
+        let apiMock: MockAdapter
 
         beforeEach(() => {
             apiMock = new MockAdapter(axios)
@@ -37,15 +38,14 @@ describe('services', () => {
         describe('cancelPendingRequests()', () => {
             it('should not be able to cancel pending requests because instance was not created with this ability', () => {
                 const gorgiasApi = new GorgiasApi({requestsCancellation: false})
-                let errorCaught = null
+                let errorCaught: Error | null = null
 
                 try {
                     gorgiasApi.cancelPendingRequests()
                 } catch (error) {
                     errorCaught = error
                 }
-                // $FlowFixMe
-                expect(errorCaught.message).toMatchSnapshot()
+                expect(errorCaught?.message).toMatchSnapshot()
             })
 
             it('should cancel pending requests', async () => {
@@ -104,11 +104,11 @@ describe('services', () => {
                 const matcher = new RegExp(`${path}/*`)
 
                 apiMock.onGet(matcher).reply((config) => {
-                    const parsedUrl = url.parse(config.url)
+                    const parsedUrl = url.parse(config.url || '')
                     const parsedQuery = querystring.parse(parsedUrl.query || '')
                     const page =
                         parsedQuery && parsedQuery.page
-                            ? parseInt(parsedQuery.page)
+                            ? parseInt(parsedQuery.page as string)
                             : 1
                     const index = page - 1
                     return [200, mocks[index]]
@@ -198,11 +198,11 @@ describe('services', () => {
                 id,
                 account_id: 1,
                 user_id: 1,
-                object_type: 'Ticket',
+                object_type: AuditLogEventObjectType.Ticket,
                 object_id: 1,
                 data: null,
                 context: 'foo',
-                type: TICKET_REOPENED,
+                type: AuditLogEventType.TicketReopened,
                 created_datetime: '2019-11-15 19:00:00.000000',
             })
 
@@ -216,16 +216,17 @@ describe('services', () => {
                     [getEvent(7), getEvent(8), getEvent(9)],
                 ]
 
-                gorgiasApi.paginate = function* (url) {
+                gorgiasApi.paginate = function* (url: string) {
                     expect(url).toBe(expectedUrl)
 
                     for (const mock of mocks) {
                         yield mock
                     }
-                }
+                } as any
 
                 const pages = []
 
+                // @ts-ignore ts(2763)
                 for await (const events of gorgiasApi.getTicketEvents(
                     ticketId
                 )) {
@@ -258,9 +259,10 @@ describe('services', () => {
             const getItem = (id: number): IntegrationDataItem<null> => ({
                 id,
                 integration_id: 1,
-                integration_type: SHOPIFY_INTEGRATION_TYPE,
+                integration_type: IntegrationType.ShopifyIntegrationType,
                 external_id: id.toString(),
-                item_type: INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
+                item_type:
+                    IntegrationDataItemType.IntegrationDataItemTypeProduct,
                 search: 'foo',
                 data: null,
                 created_datetime: '2020-02-19 18:30:00.000000',
@@ -271,7 +273,8 @@ describe('services', () => {
             it('should yield each page of events until last page is reached', async () => {
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 123
-                const integrationDataItemType = INTEGRATION_DATA_ITEM_TYPE_PRODUCT
+                const integrationDataItemType =
+                    IntegrationDataItemType.IntegrationDataItemTypeProduct
                 const expectedUrl = `/api/integrations/${integrationId}/${integrationDataItemType}`
                 const mocks = [
                     [getItem(1), getItem(2), getItem(3)],
@@ -279,13 +282,13 @@ describe('services', () => {
                     [getItem(7), getItem(8), getItem(9)],
                 ]
 
-                gorgiasApi.paginate = function* (url) {
+                gorgiasApi.paginate = function* (url: string) {
                     expect(url).toBe(expectedUrl)
 
                     for (const mock of mocks) {
                         yield mock
                     }
-                }
+                } as any
 
                 const pages = []
                 const generator = gorgiasApi.getIntegrationDataItems(
@@ -529,8 +532,8 @@ describe('services', () => {
             it("should update view's sharing options", async () => {
                 const viewId = 1
                 const visibility = ViewVisibility.PUBLIC
-                const teams = fromJS([{id: 2}])
-                const users = fromJS([{id: 3}])
+                const teams = fromJS([{id: 2}]) as List<any>
+                const users = fromJS([{id: 3}]) as List<any>
                 const expectedResult = {
                     visibility,
                     shared_with_teams: teams.toJS(),

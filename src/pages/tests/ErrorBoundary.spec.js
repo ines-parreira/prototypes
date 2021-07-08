@@ -1,7 +1,7 @@
 import React from 'react'
 import {mount} from 'enzyme'
 
-import {ErrorBoundary} from '../ErrorBoundary'
+import {ErrorBoundary} from '../ErrorBoundary.tsx'
 
 describe('<ErrorBoundary/>', () => {
     const Foo = () => <div>foo</div>

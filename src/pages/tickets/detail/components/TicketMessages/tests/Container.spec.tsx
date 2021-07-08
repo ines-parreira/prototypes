@@ -1,13 +1,12 @@
-// @flow
 import React from 'react'
 import {shallow} from 'enzyme'
 import moment from 'moment'
 
-import Container from '../Container'
+import Container from '../Container.js'
 import {
     message,
     duplicatedHiddenFacebookMessage,
-} from '../../../../../../models/ticket/tests/mocks.ts'
+} from '../../../../../../models/ticket/tests/mocks'
 import css from '../Container.less'
 
 describe('Container', () => {

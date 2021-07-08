@@ -1,6 +1,4 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React, {ReactNode, PureComponent} from 'react'
 import {datadogLogs} from '@datadog/browser-logs'
 import {Button, Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
@@ -8,16 +6,16 @@ import {Emoji} from 'emoji-mart'
 import css from './ErrorBoundary.less'
 
 type Props = {
-    children: Node,
+    children: ReactNode
 }
 
 type State = {
-    error: ?Error,
-    areDetailsOpen: boolean,
+    error: Error | null
+    areDetailsOpen: boolean
 }
 
-export class ErrorBoundary extends React.PureComponent<Props, State> {
-    state = {
+export class ErrorBoundary extends PureComponent<Props, State> {
+    state: State = {
         error: null,
         areDetailsOpen: false,
     }
@@ -29,7 +27,12 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
         }
     }
 
-    componentDidCatch(error: Error, errorInfo: {componentStack: string}) {
+    componentDidCatch(
+        error: Error,
+        errorInfo: {
+            componentStack: string
+        }
+    ) {
         if (window.PRODUCTION) {
             datadogLogs.logger.error(error.toString(), {
                 extra: errorInfo,

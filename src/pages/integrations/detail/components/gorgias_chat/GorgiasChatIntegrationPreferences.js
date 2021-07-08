@@ -22,7 +22,7 @@ import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
-} from '../../../../../config/integrations'
+} from '../../../../../config/integrations/index.ts'
 
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,

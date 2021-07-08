@@ -21,6 +21,7 @@ import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType} from './widgets/types'
 import {SelfServiceState} from './self_service/types'
 import {TwilioState} from './twilio/types'
+import {Notification} from './notifications/types'
 
 export type StoreState = {
     agents: Map<any, any>
@@ -39,7 +40,7 @@ export type StoreState = {
     layout: Map<any, any>
     macros: Map<any, any>
     newMessage: Map<any, any>
-    notifications: Map<any, any>
+    notifications: Notification[]
     rules: Map<any, any>
     selfService: SelfServiceState
     schemas: Map<any, any>

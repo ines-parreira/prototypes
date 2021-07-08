@@ -8,9 +8,9 @@ import {NotificationButton} from '../../../state/notifications/types'
 import Modal from '../components/Modal'
 
 type OwnProps = {
-    id: number
+    id?: string | null
     title?: string
-    message: string
+    message?: string
     buttons: NotificationButton[]
     dismissible: boolean
 }
@@ -32,7 +32,7 @@ class ModalNotification extends Component<Props> {
     }
 
     _toggle = () => {
-        ;(this.props.hide as (id: number) => void)(this.props.id)
+        ;(this.props.hide as (id?: string | null) => void)(this.props.id)
     }
 
     render() {

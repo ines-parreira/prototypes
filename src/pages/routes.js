@@ -10,7 +10,7 @@ import {
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
 import {AccountFeature} from '../state/currentAccount/types.ts'
 
-import App from './App'
+import App from './App.tsx'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer.tsx'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer.tsx'
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'

@@ -8,7 +8,7 @@ import * as newMessageTypes from '../newMessage/constants'
 import {compare} from '../../utils'
 import {GorgiasAction} from '../types'
 
-import {getPendingMessageIndex, parseTimedelta} from './utils.js'
+import {getPendingMessageIndex, parseTimedelta} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,

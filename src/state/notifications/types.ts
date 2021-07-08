@@ -7,7 +7,7 @@ export enum NotificationStatus {
 }
 
 export type Notification = {
-    status: NotificationStatus
+    status?: NotificationStatus
     message?: string
     id?: Maybe<string>
     title?: string

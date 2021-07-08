@@ -8,7 +8,7 @@ import {
     setFacebookAdsInternals,
     setFacebookAdsLoading,
     updateFacebookAdsActiveAd,
-} from '../../../../../../state/facebookAds/actions'
+} from '../../../../../../state/facebookAds/actions.ts'
 import type {Dispatch} from '../../../../../../state/types'
 
 export const fetchAds = () => async (dispatch: Dispatch) => {

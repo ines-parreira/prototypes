@@ -8,7 +8,7 @@ import {
     getValuePropFromSourceType,
     receiversValueFromState,
     receiversStateFromValue,
-} from '../../../../../../../state/ticket/utils'
+} from '../../../../../../../state/ticket/utils.ts'
 import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions.ts'
 import withCancellableRequest from '../../../../../../common/utils/withCancellableRequest'
 

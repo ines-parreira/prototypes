@@ -16,7 +16,7 @@ import * as segmentTracker from '../../../../../store/middlewares/segmentTracker
 import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 
 import * as macroActions from '../../../../../state/macro/actions.ts'
-import * as ticketsActions from '../../../../../state/tickets/actions'
+import * as ticketsActions from '../../../../../state/tickets/actions.ts'
 import * as viewsActions from '../../../../../state/views/actions.ts'
 
 import css from './MacroModal.less'

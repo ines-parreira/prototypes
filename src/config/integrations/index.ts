@@ -1,11 +1,12 @@
-// @flow
-import * as facebook from './facebook.ts'
-import * as magento2 from './magento2.ts'
-import * as recharge from './recharge.ts'
-import * as shopify from './shopify.ts'
-import * as smile from './smile.ts'
-import * as smooch from './smooch.ts'
-import * as smoochInside from './smooch_inside.ts'
+import CHAT_AUTO_RESPONDER_TEXTS from '../../../../../integrations/common/texts/chat_auto_responder_texts.json'
+
+import * as facebook from './facebook'
+import * as magento2 from './magento2'
+import * as recharge from './recharge'
+import * as shopify from './shopify'
+import * as smile from './smile'
+import * as smooch from './smooch'
+import * as smoochInside from './smooch_inside'
 
 const allIntegrations = [
     facebook,
@@ -30,20 +31,18 @@ export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
 ]
 
-export const CHAT_AUTO_RESPONDER_TEXTS = require('../../../../../integrations/common/texts/chat_auto_responder_texts.json')
+export {CHAT_AUTO_RESPONDER_TEXTS}
 
-/**
- * Generate a list of variables separated by integration.
- * @param variableStoreName: the name of the constant defining the variables (can be `MACRO_VARIABLES`,
- *  `MACRO_HIDDEN_VARIABLES` or `MACRO_PREVIOUS_VARIABLES`)
- * @returns {Array<Object>} the list of variables separated by integration
- */
-const getIntegrationVariables = (variableStoreName: string): Array<Object> => {
-    let variables: Array<Object> = []
+const getIntegrationVariables = (variableStoreName: string) => {
+    let variables: Array<ValueOf<typeof allIntegrations[number]>> = []
 
     allIntegrations.forEach((integration) => {
-        if (integration[variableStoreName]) {
-            variables = variables.concat(integration[variableStoreName])
+        const selectedVariables =
+            integration[
+                variableStoreName as keyof typeof allIntegrations[number]
+            ]
+        if (selectedVariables) {
+            variables = variables.concat(selectedVariables)
         }
     })
 
@@ -60,20 +59,15 @@ export const INTEGRATION_PREVIOUS_VARIABLES = getIntegrationVariables(
     'MACRO_PREVIOUS_VARIABLES'
 )
 
-/**
- * Generate a list of all integrations which define at least one variable to be used in the macro.
- * @returns {Array<string>} the list of integration types which define at least one variable
- */
-const getIntegrationTypesWithVariables = (): Array<string> => {
+const getIntegrationTypesWithVariables = () => {
     const integrationTypesWithVariables: Array<string> = []
 
-    allIntegrations.forEach((integration) => {
-        const variableStore =
-            integration.MACRO_VARIABLES ||
-            //$FlowFixMe
+    allIntegrations.forEach((integration: Record<string, unknown>) => {
+        const variableStore = (integration.MACRO_VARIABLES ||
             integration.MACRO_HIDDEN_VARIABLES ||
-            //$FlowFixMe
-            integration.MACRO_PREVIOUS_VARIABLES
+            integration.MACRO_PREVIOUS_VARIABLES) as
+            | Record<string, string>
+            | undefined
 
         if (variableStore) {
             integrationTypesWithVariables.push(variableStore.type)
@@ -85,9 +79,7 @@ const getIntegrationTypesWithVariables = (): Array<string> => {
 
 export const INTEGRATION_TYPE_WITH_VARIABLES = getIntegrationTypesWithVariables()
 
-export const getAutoResponderReplyOptions = (
-    language: ?string
-): Array<Object> => {
+export const getAutoResponderReplyOptions = (language: string | null) => {
     if (!language) {
         return []
     }
@@ -95,7 +87,12 @@ export const getAutoResponderReplyOptions = (
     return CHAT_AUTO_RESPONDER_REPLY_OPTIONS.map((option) => {
         return {
             value: option,
-            label: `"${CHAT_AUTO_RESPONDER_TEXTS[language][option]}"`,
+            label: `"${
+                (CHAT_AUTO_RESPONDER_TEXTS as Record<
+                    string,
+                    Record<string, string>
+                >)[language][option]
+            }"`,
         }
     })
 }

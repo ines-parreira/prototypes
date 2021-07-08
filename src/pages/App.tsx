@@ -1,69 +1,50 @@
-// @flow
 import classnames from 'classnames'
-import React, {type ComponentType, type Node} from 'react'
+import React, {ComponentType, ReactNode} from 'react'
 import DocumentTitle from 'react-document-title'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container} from 'reactstrap'
 import NotificationsSystem from 'reapop'
+import {RouteComponentProps} from 'react-router-dom'
+import {Map} from 'immutable'
 
 import '../../css/main.less'
-import pendingMessageManager from '../services/pendingMessageManager'
-import pollingManager from '../services/pollingManager'
-import shortcutManager from '../services/shortcutManager/index.ts'
-import userActivityManager from '../services/userActivityManager'
-import statusPageManager from '../services/statusPageManager'
-import * as layoutActions from '../state/layout/actions.ts'
-import * as layoutSelectors from '../state/layout/selectors.ts'
-import type {currentAccountType, currentUserType} from '../state/types'
-import * as viewsActions from '../state/views/actions.ts'
-import * as viewsSelectors from '../state/views/selectors.ts'
-import * as segmentTracker from '../store/middlewares/segmentTracker'
-import type {reactRouterLocation} from '../types'
-import {injectInterceptor} from '../utils/axios.ts'
-import {handleUsageBanner} from '../state/notifications/actions.ts'
-import {hasIntegrationOfTypes} from '../state/integrations/selectors.ts'
-import {IntegrationType} from '../models/integration/types.ts'
+import pendingMessageManager from '../services/pendingMessageManager/pendingMessageManager'
+import pollingManager from '../services/pollingManager.js'
+import shortcutManager from '../services/shortcutManager'
+import userActivityManager from '../services/userActivityManager.js'
+import statusPageManager from '../services/statusPageManager/statusPageManager'
+import * as layoutActions from '../state/layout/actions'
+import * as layoutSelectors from '../state/layout/selectors'
+import {RootState} from '../state/types'
+import * as viewsActions from '../state/views/actions'
+import * as segmentTracker from '../store/middlewares/segmentTracker.js'
+import {injectInterceptor} from '../utils/axios'
+import {handleUsageBanner} from '../state/notifications/actions'
+import {hasIntegrationOfTypes} from '../state/integrations/selectors'
+import {IntegrationType} from '../models/integration/types'
+import {Notification} from '../state/notifications/types'
 
 import css from './App.less'
-import BannerNotifications from './common/components/BannerNotifications/'
-import FullPage from './common/components/FullPage.tsx'
-import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp.tsx'
-import ModalNotification from './common/components/ModalNotification.tsx'
-import notificationsTheme from './common/components/Notifications.ts'
+import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
+import FullPage from './common/components/FullPage'
+import KeyboardHelp from './common/components/KeyboardHelp/KeyboardHelp'
+import ModalNotification from './common/components/ModalNotification'
+import notificationsTheme from './common/components/Notifications'
 import {ErrorBoundary} from './ErrorBoundary'
-import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar.tsx'
+import PhoneIntegrationBar from './common/components/PhoneIntegrationBar/PhoneIntegrationBar'
 
 type Props = {
-    // current logged in user
-    currentUser: currentUserType,
-    currentAccount: currentAccountType,
-    infobarOnMobile?: boolean,
-    isEditingWidgets?: boolean,
-    containerPadding?: boolean,
-    noContainerWidthLimit?: boolean,
-    injectInterceptor: typeof injectInterceptor,
-    handleUsageBanner: typeof handleUsageBanner,
-    fetchVisibleViewsCounts: typeof viewsActions.fetchVisibleViewsCounts,
-    openPanel: typeof layoutActions.openPanel,
-    closePanels: typeof layoutActions.closePanels,
-    gotoActiveView: typeof viewsActions.gotoActiveView,
-    hasPhoneIntegration: boolean,
-
-    openedPanel?: string,
-
-    // Injected by React Router
-    children: Node,
-    params?: {},
-    location: reactRouterLocation,
-
+    infobarOnMobile?: boolean
+    isEditingWidgets?: boolean
+    containerPadding?: boolean
+    noContainerWidthLimit?: boolean
+    children: ReactNode
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
-    navbar: ComponentType<any>,
-    infobar: ComponentType<any>,
-    activeContent: {},
-
-    content: ComponentType<any>,
-    notifications: Array<*>,
-}
+    navbar: ComponentType<any>
+    infobar: ComponentType<any>
+    content: ComponentType<any>
+} & ConnectedProps<typeof connector> &
+    RouteComponentProps
 
 class App extends React.Component<Props> {
     componentDidMount() {
@@ -71,7 +52,10 @@ class App extends React.Component<Props> {
 
         const item = this.props.currentAccount
         const newAccountStatus = item.getIn(['status', 'status'])
-        const notification = item.getIn(['status', 'notification'])
+        const notification: Map<any, any> | undefined = item.getIn([
+            'status',
+            'notification',
+        ])
         this.props.handleUsageBanner({
             newAccountStatus,
             notification: notification ? notification.toJS() : null,
@@ -104,7 +88,7 @@ class App extends React.Component<Props> {
         statusPageManager.stopPolling()
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         const isUserActive = this.props.currentUser.get('is_active')
         const isNextUserActive = nextProps.currentUser.get('is_active')
 
@@ -156,7 +140,7 @@ class App extends React.Component<Props> {
 
                         {modalNotifications.map((notification) => (
                             <ModalNotification
-                                key={notification.id}
+                                key={notification.id!}
                                 {...notification}
                             />
                         ))}
@@ -243,7 +227,7 @@ class App extends React.Component<Props> {
 
                         <NotificationsSystem
                             theme={notificationsTheme}
-                            filter={(n) => n.style === 'alert'}
+                            filter={(n: Notification) => n.style === 'alert'}
                         />
                     </div>
                 </ErrorBoundary>
@@ -252,24 +236,24 @@ class App extends React.Component<Props> {
     }
 }
 
-function mapStateToProps(state) {
-    return {
+const connector = connect(
+    (state: RootState) => ({
         currentUser: state.currentUser,
         currentAccount: state.currentAccount,
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
-        activeView: viewsSelectors.getActiveView(state),
         hasPhoneIntegration: hasIntegrationOfTypes(
             IntegrationType.PhoneIntegrationType
         )(state),
+    }),
+    {
+        injectInterceptor: injectInterceptor,
+        fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
+        openPanel: layoutActions.openPanel,
+        closePanels: layoutActions.closePanels,
+        gotoActiveView: viewsActions.gotoActiveView,
+        handleUsageBanner: handleUsageBanner,
     }
-}
+)
 
-export default connect(mapStateToProps, {
-    injectInterceptor: injectInterceptor,
-    fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
-    openPanel: layoutActions.openPanel,
-    closePanels: layoutActions.closePanels,
-    gotoActiveView: viewsActions.gotoActiveView,
-    handleUsageBanner: handleUsageBanner,
-})(App)
+export default connector(App)

@@ -7,7 +7,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-} from '../../../../../../config/integrations'
+} from '../../../../../../config/integrations/index.ts'
 import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'

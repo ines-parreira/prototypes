@@ -1,4 +1,3 @@
-// @flow
 import {
     ADD_LOADING_FACEBOOK_AD,
     REMOVE_LOADING_FACEBOOK_AD,
@@ -6,7 +5,7 @@ import {
     SET_FACEBOOK_ADS_LOADING,
     UPDATE_ACTIVE_FACEBOOK_AD,
 } from './constants'
-import type {Internals} from './types'
+import {Internals} from './types'
 
 export const setFacebookAdsLoading = (loading: boolean) => ({
     type: SET_FACEBOOK_ADS_LOADING,

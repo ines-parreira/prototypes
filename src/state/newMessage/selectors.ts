@@ -9,7 +9,7 @@ import {
 import {IntegrationType} from '../../models/integration/types'
 import {isImmutable, createImmutableSelector} from '../../utils'
 import {getChannelSignature} from '../integrations/selectors'
-import {isForwardedMessage} from '../ticket/utils.js'
+import {isForwardedMessage} from '../ticket/utils'
 import {RootState} from '../types'
 
 import {NewMessageState, ReceiverProperty} from './types'
@@ -125,9 +125,7 @@ export const isNewMessagePublic = createImmutableSelector<
 
 export const isForward = createSelector<RootState, boolean, Map<any, any>>(
     getNewMessage,
-    (message) =>
-        //$TsFixMe remove casting once state/ticket/utils is migrated
-        (isForwardedMessage as (value: Map<any, any>) => boolean)(message)
+    (message) => isForwardedMessage(message)
 )
 
 // in props usage

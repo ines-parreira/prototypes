@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 
-import {getValuePropFromSourceType} from '../../../state/ticket/utils'
+import {getValuePropFromSourceType} from '../../../state/ticket/utils.ts'
 
 import {getActionTemplate} from './../../../utils.ts'
 

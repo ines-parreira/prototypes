@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 
 import type {TicketMessage} from '../../../../../models/ticket/types'
 
-import Error from './Error'
+import Error from './Error.tsx'
 
 type Props = {
     message: TicketMessage,

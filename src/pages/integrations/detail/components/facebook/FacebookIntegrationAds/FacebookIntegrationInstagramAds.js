@@ -24,7 +24,7 @@ import {
     getFacebookIntegrationInternals,
     getFacebookIntegrationLoading,
     getFacebookIntegrationLoadingAds,
-} from '../../../../../../state/facebookAds/selectors'
+} from '../../../../../../state/facebookAds/selectors.ts'
 import type {Dispatch} from '../../../../../../state/types'
 
 import Loader from '../../../../../common/components/Loader/Loader.tsx'

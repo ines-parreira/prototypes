@@ -13,7 +13,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     getAutoResponderReplyOptions,
-} from '../../../../../config/integrations'
+} from '../../../../../config/integrations/index.ts'
 
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions.ts'
 import PageHeader from '../../../../common/components/PageHeader.tsx'

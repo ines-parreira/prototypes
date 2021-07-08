@@ -4,7 +4,7 @@ import {fromJS, List, Map} from 'immutable'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {notify} from '../notifications/actions'
 import {StoreDispatch, RootState} from '../types'
-import {createErrorNotification} from '../utils.js'
+import {createErrorNotification} from '../utils'
 import {NotificationStatus} from '../notifications/types'
 
 import {Rule, RuleOperation, RuleDraft, RulePriority} from './types'

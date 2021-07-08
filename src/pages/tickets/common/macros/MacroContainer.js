@@ -11,7 +11,7 @@ import withCancellableRequest from '../../../common/utils/withCancellableRequest
 import * as ViewsActions from '../../../../state/views/actions.ts'
 import * as viewsSelectors from '../../../../state/views/selectors.ts'
 import * as MacroActions from '../../../../state/macro/actions.ts'
-import * as TicketsActions from '../../../../state/tickets/actions'
+import * as TicketsActions from '../../../../state/tickets/actions.ts'
 import {getAgents} from '../../../../state/agents/selectors.ts'
 
 import MacroModal from './components/MacroModal'

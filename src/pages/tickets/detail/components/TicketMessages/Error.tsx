@@ -1,15 +1,16 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Button, Alert} from 'reactstrap'
 import classnames from 'classnames'
+import {Map} from 'immutable'
 
-import Tooltip from '../../../../common/components/Tooltip.tsx'
-
-import * as TicketActions from '../../../../../state/ticket/actions.ts'
-import * as NewMessageActions from '../../../../../state/newMessage/actions.ts'
-import {getActionTemplate, stripErrorMessage} from '../../../../../utils.ts'
+import {Action} from '../../../../../models/ticket/types'
+import Tooltip from '../../../../common/components/Tooltip'
+import * as TicketActions from '../../../../../state/ticket/actions'
+import * as NewMessageActions from '../../../../../state/newMessage/actions'
+import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
+import {RootState} from '../../../../../state/types'
 
 import css from './Error.less'
 
@@ -18,32 +19,28 @@ const FORCE = 'force'
 const RETRY = 'retry'
 
 type Props = {
-    error?: string,
-    retryTooltipMessage: string,
-    actions: Object,
-
-    ticketId: number,
-
-    // TODO (@pwlmaciejewski): Once we upgrade Immutable to v4, it should be a RecordOf<Message>
-    message: any,
-    messageId: number,
-    messageActions: Array<*>,
-
-    setStatus?: (string) => void,
-
-    retry?: boolean,
-    force?: boolean,
-    cancel?: boolean,
-    newMessage: any,
-}
+    error: string
+    retryTooltipMessage: string
+    ticketId: number
+    message: Map<any, any>
+    messageId: number
+    messageActions: Array<Action>
+    setStatus?: (status: string) => void
+    retry?: boolean
+    force?: boolean
+    cancel?: boolean
+} & ConnectedProps<typeof connector>
 
 type State = {
-    showActions: boolean,
-    loading: string,
+    showActions: boolean
+    loading: string
 }
 
-class Error extends React.Component<Props, State> {
-    static defaultProps = {
+class Error extends Component<Props, State> {
+    static defaultProps: Pick<
+        Props,
+        'error' | 'messageActions' | 'retryTooltipMessage'
+    > = {
         error: '',
         messageActions: [],
         retryTooltipMessage: 'Retry to send the message.',
@@ -86,12 +83,13 @@ class Error extends React.Component<Props, State> {
             )
         }
 
-        const status = message.getIn(['_internal', 'status'])
-        return actions.newMessage.retrySubmitTicketMessage(message).then(() => {
+        const status = message.getIn(['_internal', 'status']) as string
+        return ((actions.newMessage.retrySubmitTicketMessage(
+            message
+        ) as unknown) as Promise<any>).then(() => {
             if (status && setStatus) {
                 return setStatus(status)
             }
-
             return message
         })
     }
@@ -282,17 +280,16 @@ class Error extends React.Component<Props, State> {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
+const connector = connect(
+    (state: RootState) => ({
+        newMessage: state.newMessage,
+    }),
+    (dispatch) => ({
         actions: {
             ticket: bindActionCreators(TicketActions, dispatch),
             newMessage: bindActionCreators(NewMessageActions, dispatch),
         },
-    }
-}
+    })
+)
 
-const mapStateToProps = (state) => ({
-    newMessage: state.newMessage,
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Error)
+export default connector(Error)

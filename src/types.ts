@@ -33,6 +33,8 @@ export type ActionTemplate = {
         validate: (value: Customer) => unknown | boolean
         error: string
     }>
+    partialUpdateKeys: string | string[]
+    partialUpdateValues: string
 }
 
 export type Attachment = {

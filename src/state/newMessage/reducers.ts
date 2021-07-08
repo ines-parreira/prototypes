@@ -10,7 +10,7 @@ import _get from 'lodash/get'
 import {
     getSourceTypeOfResponse,
     getChannelFromSourceType,
-} from '../ticket/utils.js'
+} from '../ticket/utils'
 
 import {
     TicketMessageSourceType,
@@ -207,15 +207,10 @@ export default function reducer(
                 return newState
             }
 
-            //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
-            const sourceType = getSourceTypeOfResponse(
-                messages,
-                via
-            ) as TicketMessageSourceType
+            const sourceType = getSourceTypeOfResponse(messages, via!)
             return resetContentState(state).set(
                 'newMessage',
                 makeNewMessage(
-                    //$TsFixMe remove casting once getChannelFromSourceType is migrated
                     getChannelFromSourceType(
                         sourceType,
                         messages
@@ -239,8 +234,10 @@ export default function reducer(
                 messageType || getSourceTypeOfResponse(messages, via)
 
             const newMessage = makeNewMessage(
-                //$TsFixMe remove casting once getChannelFromSourceType is migrated
-                getChannelFromSourceType(sourceType) as TicketChannel,
+                getChannelFromSourceType(
+                    sourceType,
+                    fromJS([])
+                ) as TicketChannel,
                 sourceType
             )
                 .set('subject', state.getIn(['newMessage', 'subject']))
@@ -277,14 +274,7 @@ export default function reducer(
 
             return newState.set(
                 'newMessage',
-                //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
-                makeNewMessage(
-                    channel,
-                    getSourceTypeOfResponse(
-                        messages,
-                        via
-                    ) as TicketMessageSourceType
-                )
+                makeNewMessage(channel, getSourceTypeOfResponse(messages, via))
             )
         }
 
@@ -293,16 +283,11 @@ export default function reducer(
                 messages: unknown[]
                 via: TicketVia
             }
-            //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
-            const sourceType = getSourceTypeOfResponse(
-                messages,
-                via
-            ) as TicketMessageSourceType
+            const sourceType = getSourceTypeOfResponse(messages, via)
 
             return resetContentState(state).set(
                 'newMessage',
                 makeNewMessage(
-                    //$TsFixMe remove casting once getChannelFromSourceType is migrated
                     getChannelFromSourceType(
                         sourceType,
                         messages
@@ -314,7 +299,7 @@ export default function reducer(
 
         case types.NEW_MESSAGE_SET_SOURCE_TYPE: {
             const {messages, sourceType} = action
-            const channel = getChannelFromSourceType(sourceType, messages)
+            const channel = getChannelFromSourceType(sourceType!, messages!)
 
             return state
                 .setIn(['newMessage', 'channel'], channel)

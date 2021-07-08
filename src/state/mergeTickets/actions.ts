@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 
 import {StoreDispatch} from '../types'
 import {notify} from '../notifications/actions'
-import {createErrorNotification} from '../utils.js'
+import {createErrorNotification} from '../utils'
 import {defaultMergeTicketsView} from '../../config/views'
 import {BASE_VIEW_ID} from '../../constants/view'
 import {ApiListResponsePagination} from '../../models/api/types'

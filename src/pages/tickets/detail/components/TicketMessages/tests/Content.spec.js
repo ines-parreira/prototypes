@@ -2,7 +2,7 @@
 import React from 'react'
 import {mount} from 'enzyme'
 
-import Content from '../Content'
+import Content from '../Content.tsx'
 
 describe('Content', () => {
     it('should render empty if empty props', () => {

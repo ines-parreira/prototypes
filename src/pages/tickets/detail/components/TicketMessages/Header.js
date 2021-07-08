@@ -6,7 +6,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import type {TicketMessage} from '../../../../../models/ticket/types'
-import {isForwardedMessage} from '../../../../../state/ticket/utils'
+import {isForwardedMessage} from '../../../../../state/ticket/utils.ts'
 import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 
 import css from './Header.less'

@@ -43,7 +43,7 @@ import {
     setCustomer,
     setStatus,
 } from '../../../state/ticket/actions.ts'
-import {updateCursor} from '../../../state/tickets/actions'
+import {updateCursor} from '../../../state/tickets/actions.ts'
 import {getActiveView} from '../../../state/views/selectors.ts'
 
 import Loader from '../../common/components/Loader/Loader.tsx'

@@ -19,7 +19,7 @@ import {RootState, StoreDispatch} from '../../types'
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
 import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
-import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils.js'
+import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils'
 import {
     emailTicket,
     instagramMedia,
@@ -161,10 +161,10 @@ describe('actions', () => {
                     'messages',
                     fromJS([])
                 )
-                const preferred = getPreferredChannel('email', channels) as Map<
-                    any,
-                    any
-                >
+                const preferred = getPreferredChannel(
+                    TicketMessageSourceType.Email,
+                    channels
+                )
                 const expectedSender = fromJS({
                     name: preferred.get('name'),
                     address: preferred.get('address'),
@@ -299,10 +299,10 @@ describe('actions', () => {
                     'messages',
                     1,
                 ])
-                const from = getPreferredChannel('email', channels) as Map<
-                    any,
-                    any
-                >
+                const from = getPreferredChannel(
+                    TicketMessageSourceType.Email,
+                    channels
+                )
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
@@ -468,10 +468,10 @@ describe('actions', () => {
                 // it should still be null because we didn't specify a sender param
                 expect(getLastSenderChannel()).toBe(null)
 
-                const from = getPreferredChannel('email', channels) as Map<
-                    any,
-                    any
-                >
+                const from = getPreferredChannel(
+                    TicketMessageSourceType.Email,
+                    channels
+                )
                 const expectedChannel = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),

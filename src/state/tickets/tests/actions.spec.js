@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import * as actions from '../actions'
+import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 
 const middlewares = [thunk]

@@ -1,5 +1,4 @@
-// @flow
-import {fromJS, type Map, type List} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 import _forEach from 'lodash/forEach'
@@ -8,27 +7,39 @@ import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 
-import {SOURCE_VALUE_PROP} from '../../config.ts'
+import {SOURCE_VALUE_PROP} from '../../config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
-import * as ticketConfig from '../../config/ticket.ts'
-import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration.ts'
-import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
-import {getActionTemplate, isImmutable, toImmutable} from '../../utils.ts'
-import {renderTemplate} from '../../pages/common/utils/template'
-import {tryLocalStorage} from '../../services/common/utils.ts'
-import * as responseUtils from '../newMessage/responseUtils.ts'
-import {TicketMessageSourceType} from '../../business/types/ticket.ts'
-import {PHONE_EVENTS} from '../../constants/event.ts'
-// eslint-disable-next-line no-unused-vars
-import {notify} from '../notifications/actions.ts'
+import * as ticketConfig from '../../config/ticket'
+import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration'
+import {getPersonLabelFromSource} from '../../pages/tickets/common/utils.js'
+import {getActionTemplate, isImmutable, toImmutable} from '../../utils'
+import {renderTemplate} from '../../pages/common/utils/template.js'
+import {tryLocalStorage} from '../../services/common/utils'
+import * as responseUtils from '../newMessage/responseUtils'
+import {TicketVia, TicketMessageSourceType} from '../../business/types/ticket'
+import {PHONE_EVENTS} from '../../constants/event'
+import {notify as notifyAction} from '../notifications/actions'
+import {NotificationStatus} from '../notifications/types'
+import {RootState} from '../types'
+import {TicketMessage} from '../../models/ticket/types'
 
-import {getProperty} from './selectors.ts'
+import {getProperty} from './selectors'
+
+type Receivers = {
+    cc?: {
+        name: string
+        address: string
+        value?: string
+    }[]
+    to: {
+        name: string
+        address: string
+        value?: string
+    }[]
+}
 
 /**
  * Get the most recent messages which have the matching sourceType
- * @param messages
- * @param sourceType
- * @returns {*}
  */
 export function getLastSameSourceTypeMessage(
     messages: List<any>,
@@ -37,39 +48,41 @@ export function getLastSameSourceTypeMessage(
     const msg = ticketConfig
         .orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
-        .filter((m) => m.getIn(['source', 'type']) === sourceType)
-        .last()
+        .filter(
+            (m: Map<any, any>) => m.getIn(['source', 'type']) === sourceType
+        )
+        .last() as Map<any, any>
 
     if (!msg && sourceType === TicketMessageSourceType.FacebookComment) {
         return messages
             .filter(
-                (m) =>
+                (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
                     TicketMessageSourceType.FacebookPost
             )
-            .last()
+            .last() as Map<any, any>
     } else if (
         !msg &&
         sourceType === TicketMessageSourceType.FacebookReviewComment
     ) {
         return messages
             .filter(
-                (m) =>
+                (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
                     TicketMessageSourceType.FacebookReview
             )
-            .last()
+            .last() as Map<any, any>
     } else if (
         !msg &&
         sourceType === TicketMessageSourceType.InstagramMentionComment
     ) {
         return messages
             .filter(
-                (m) =>
+                (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
                     TicketMessageSourceType.InstagramMentionMedia
             )
-            .last()
+            .last() as Map<any, any>
     }
 
     return msg
@@ -81,10 +94,10 @@ export function getLastSameSourceTypeMessage(
  */
 export function getSourceTypeOfResponse(
     messages: List<any> | any[],
-    via: string
+    via: TicketVia
 ) {
     const immutableMessages: List<any> = isImmutable(messages)
-        ? messages
+        ? (messages as List<any>)
         : toImmutable(messages)
     const ticketId = immutableMessages.getIn([0, 'ticket_id'])
     if (ticketId) {
@@ -100,21 +113,24 @@ export function getSourceTypeOfResponse(
  * Map a source type to a channel.
  * Returns undefined for internal note as we dont have enough information to guess the channel.
  */
-export function getChannelFromSourceType(sourceType: string, messages: any[]) {
+export function getChannelFromSourceType(
+    sourceType: TicketMessageSourceType,
+    messages: List<any> | any[]
+) {
     return ticketConfig.sourceTypeToChannel(sourceType, toImmutable(messages))
 }
 
 export function isSupportAddress(
-    addressToTest?: string = '',
-    supportAddresses?: List<any> = fromJS([])
+    addressToTest = '',
+    supportAddresses: List<any> = fromJS([])
 ) {
     if (!addressToTest || !supportAddresses.size) {
         return false
     }
     const formattedAddress = _toLower(addressToTest)
 
-    for (const supportAddress of supportAddresses) {
-        const splitSupportAddress = supportAddress.split('@')
+    for (const supportAddress of supportAddresses as any) {
+        const splitSupportAddress = (supportAddress as string).split('@')
 
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
         if (
@@ -129,29 +145,28 @@ export function isSupportAddress(
 
 /**
  * Return value prop from sender/receiver that is used to identify a person depending on the source type
- * @param sourceType
  */
-export function getValuePropFromSourceType(sourceType: string) {
-    return SOURCE_VALUE_PROP[sourceType]
+export function getValuePropFromSourceType(
+    sourceType: TicketMessageSourceType
+) {
+    return SOURCE_VALUE_PROP[sourceType as keyof typeof SOURCE_VALUE_PROP]
 }
 
 /**
  * Guess receivers from a ticket based on its messages
- * @param ticket
- * @param newMessageSourceType
- * @param channels
- * @returns {*}
  */
 export function guessReceiversFromTicket(
     ticket: Map<any, any>,
-    newMessageSourceType: string,
-    channels?: List<any> = fromJS([])
+    newMessageSourceType: TicketMessageSourceType,
+    channels: List<any> = fromJS([])
 ) {
-    let toReceivers = fromJS([])
+    let toReceivers: List<any> = fromJS([])
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
-    const supportAddresses = channels.map((channel) => channel.get('address'))
+    const supportAddresses = channels.map(
+        (channel: Map<any, any>) => channel.get('address') as string
+    ) as List<any>
     const lastMessage = getLastSameSourceTypeMessage(
         messages,
         newMessageSourceType
@@ -161,7 +176,7 @@ export function guessReceiversFromTicket(
         if (lastMessage.get('from_agent')) {
             toReceivers = toReceivers.concat(
                 lastMessage.getIn(['source', 'to'])
-            )
+            ) as List<any>
         } else {
             toReceivers = toReceivers.push(
                 lastMessage.getIn(['source', 'from'])
@@ -171,16 +186,16 @@ export function guessReceiversFromTicket(
             if (supportAddresses.size) {
                 toReceivers = toReceivers.concat(
                     lastMessage.getIn(['source', 'to'])
-                )
+                ) as List<any>
             }
         }
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    const cleanReceivers = (receivers) =>
+    const cleanReceivers = (receivers: List<any>) =>
         receivers
             .filter((receiver) => !!receiver) // remove falsy values
-            .map((receiver) => {
+            .map((receiver: Map<any, any>) => {
                 // set address to lowercase
                 if (receiver.get('address')) {
                     return receiver.update('address', _toLower)
@@ -191,19 +206,18 @@ export function guessReceiversFromTicket(
             .filter((receiver) => {
                 // remove support addresses
                 return !isSupportAddress(
-                    receiver.get('address'),
+                    receiver!.get('address'),
                     supportAddresses
                 )
             })
 
-    const ret: {
-        cc?: {name: string, address: string}[],
-        to: {name: string, address: string}[],
-    } = {
+    const ret: Receivers = {
         to: cleanReceivers(toReceivers).toJS(),
     }
 
-    const cc = cleanReceivers(ccReceivers).toJS()
+    const cc: {name: string; address: string}[] | undefined = cleanReceivers(
+        ccReceivers
+    ).toJS()
 
     // To avoid setting an empty `cc` field in every source
     if (cc && cc.length) {
@@ -218,11 +232,16 @@ export function guessReceiversFromTicket(
                 newMessageSourceType,
                 messages
             )
-            const customerChannel = ticket
-                .getIn(['customer', 'channels'], fromJS([]))
-                .filter((channel) => channel.get('type') === newMessageChannel) // keep only matching channels
-                .sortBy((channel) => !channel.get('preferred')) // preferred channel is now first of the list
-                .first()
+            const customerChannel = (ticket.getIn(
+                ['customer', 'channels'],
+                fromJS([])
+            ) as List<any>)
+                .filter(
+                    (channel: Map<any, any>) =>
+                        channel.get('type') === newMessageChannel
+                ) // keep only matching channels
+                .sortBy((channel: Map<any, any>) => !channel.get('preferred')) // preferred channel is now first of the list
+                .first() as Map<any, any> | undefined
 
             if (customerChannel) {
                 const receivers = fromJS([
@@ -244,13 +263,14 @@ export function guessReceiversFromTicket(
 
 /**
  * Return receivers value (to send to server and use on UI) from state (reducers)
- * @param options
- * @param sourceType
- * @returns {*}
  */
-export function receiversValueFromState(options: Object, sourceType: string) {
+export function receiversValueFromState(
+    options: Receivers,
+    sourceType: string
+) {
     _forEach(options, (receivers, index) => {
-        options[index] = receivers.map((receiver) => ({
+        // @ts-ignore
+        options[index] = receivers!.map((receiver) => ({
             name: receiver.name || '',
             label: getPersonLabelFromSource(receiver, sourceType),
             value: receiver.address || '',
@@ -262,11 +282,11 @@ export function receiversValueFromState(options: Object, sourceType: string) {
 
 /**
  * Return receivers state (reducers) from value (to send to server and use on UI)
- * @param value
- * @param sourceType
- * @returns {*}
  */
-export function receiversStateFromValue(value: any, sourceType: string) {
+export function receiversStateFromValue(
+    value: Receivers,
+    sourceType: TicketMessageSourceType
+) {
     const valueProp = getValuePropFromSourceType(sourceType)
 
     if (!valueProp) {
@@ -276,7 +296,8 @@ export function receiversStateFromValue(value: any, sourceType: string) {
     const newValue = value || {}
 
     _forEach(newValue, (receivers, index) => {
-        newValue[index] = receivers.map((receiver) => ({
+        // @ts-ignore
+        newValue[index] = receivers!.map((receiver) => ({
             name: receiver.name || '',
             address: receiver.value || '',
         }))
@@ -287,13 +308,10 @@ export function receiversStateFromValue(value: any, sourceType: string) {
 
 /**
  * Build a partial update object from macro actions (or any crafted action with the same form)
- * @param actionNames - 'addTags', ['addTags', 'setStatus'], etc.
- * @param state - reducer state
- * @returns {*} - ex: {tags: [{name: 'refund'}], status: 'open'}
  */
 export function buildPartialUpdateFromAction(
     actionNames: string | string[],
-    state: Object
+    state: RootState
 ) {
     if (!state) {
         return {}
@@ -304,12 +322,12 @@ export function buildPartialUpdateFromAction(
 
     return formattedActionNames
         .map((actionName) => getActionTemplate(actionName))
-        .filter((config) => !!config.partialUpdateKeys)
-        .reduce((result, config) => {
-            const keys = config.partialUpdateKeys
-            const values = config.partialUpdateValues
+        .filter((config) => !!config!.partialUpdateKeys)
+        .reduce((result: Record<string, Map<any, any>>, config) => {
+            const keys = config!.partialUpdateKeys
+            const values = config!.partialUpdateValues
             if (Array.isArray(keys)) {
-                config.partialUpdateKeys.forEach(
+                ;(config!.partialUpdateKeys as string[]).forEach(
                     (key, idx) =>
                         (result[key] = getProperty(values[idx])(state))
                 )
@@ -323,25 +341,29 @@ export function buildPartialUpdateFromAction(
 /**
  * Return preferred channel of account
  * return first available channels as a fallback
- * @param channelType E.g: email, messenger
- * @param channels Available account channels (from email and gmail integrations)
- * @returns {*}
  */
-export function getPreferredChannel(channelType: string, channels: List<any>) {
+export function getPreferredChannel(
+    channelType: TicketMessageSourceType,
+    channels: List<any>
+) {
     // get the preferred channel
-    let chan = channels.find((channel) => {
-        return (
-            channel.get('type') === channelType &&
-            channel.get('preferred', false)
-        )
-    })
+    let chan: Map<any, any> | undefined = channels.find(
+        (channel: Map<any, any>) => {
+            return (
+                channel.get('type') === channelType &&
+                (channel.get('preferred', false) as boolean)
+            )
+        }
+    )
 
     // get the first channel available
     if (!chan) {
-        chan = channels.find((channel) => channel.get('type') === channelType)
+        chan = channels.find(
+            (channel: Map<any, any>) => channel.get('type') === channelType
+        )
     }
 
-    return chan || fromJS({})
+    return chan || (fromJS({}) as Map<any, any>)
 }
 
 const LAST_SENDER_CHANNEL_KEY = 'lastSenderChannel'
@@ -362,7 +384,7 @@ export const getLastSenderChannel = () => {
         )
         if (lastSenderChannel) {
             try {
-                return fromJS(JSON.parse(lastSenderChannel))
+                return fromJS(JSON.parse(lastSenderChannel)) as Map<any, any>
             } catch (error) {
                 console.error(
                     `Failed to decode window.localStorage."${LAST_SENDER_CHANNEL_KEY}"`,
@@ -383,45 +405,41 @@ export function getOutboundCallFrom(
             id: null,
             name: '',
             address: '',
-        })
+        }) as Map<any, any>
     }
 
-    const events = ticket.get('events') || fromJS([])
-    const phoneEvents = events.filter((event) =>
+    const events: List<any> = ticket.get('events') || fromJS([])
+    const phoneEvents = events.filter((event: Map<any, any>) =>
         PHONE_EVENTS.includes(event.get('type'))
     )
 
     if (!phoneEvents.size) {
-        return channels.get(0)
+        return channels.get(0) as Map<any, any>
     }
 
     const lastIndex = phoneEvents.size - 1
-    const lastEvent = phoneEvents.get(lastIndex)
+    const lastEvent = phoneEvents.get(lastIndex) as Map<any, any>
     const integrationId = lastEvent.getIn(['data', 'integration', 'id'])
     const channel = channels.find(
-        (channel) => channel.get('id') === integrationId
-    )
+        (channel: Map<any, any>) => channel.get('id') === integrationId
+    ) as Map<any, any> | undefined
 
-    return channel || channels.get(0)
+    return channel || (channels.get(0) as Map<any, any>)
 }
 
 /**
  * Return sender based on ticket messages and available channels
- * @param ticket
- * @param newMessageSourceType
- * @param channels Available account channels (from email and gmail integrations)
- * @returns {*}
  */
 export function getNewMessageSender(
     ticket: Map<any, any>,
-    newMessageSourceType: string,
+    newMessageSourceType: TicketMessageSourceType,
     channels: List<any>
 ) {
     if (newMessageSourceType === 'internal-note') {
         return fromJS({
             name: '',
             address: '',
-        })
+        }) as Map<any, any>
     }
 
     if (newMessageSourceType === TicketMessageSourceType.Phone) {
@@ -430,7 +448,9 @@ export function getNewMessageSender(
 
     const preferredChannel =
         getPreferredChannel(newMessageSourceType, channels) || fromJS({})
-    const lastMessage = ticket.get('messages').findLast((message) => {
+    const lastMessage: Map<any, any> | undefined = (ticket.get(
+        'messages'
+    ) as List<any>).findLast((message: Map<any, any>) => {
         const type = message.getIn(['source', 'type'], '')
 
         // a message can be a facebook post
@@ -465,13 +485,13 @@ export function getNewMessageSender(
     // because channels only list email addresses
     if (preferredChannel.isEmpty()) {
         if (!lastMessage) {
-            return fromJS({})
+            return fromJS({}) as Map<any, any>
         }
 
         if (lastMessage.get('from_agent')) {
-            return lastMessage.getIn(['source', 'from'])
+            return lastMessage.getIn(['source', 'from']) as Map<any, any>
         }
-        return lastMessage.getIn(['source', 'to', 0])
+        return lastMessage.getIn(['source', 'to', 0]) as Map<any, any>
     }
 
     // new ticket
@@ -481,7 +501,10 @@ export function getNewMessageSender(
         // make sure the persisted sender is in the list of channels
         if (
             lastSender &&
-            channels.find((c) => c.get('address') === lastSender.get('address'))
+            channels.find(
+                (c: Map<any, any>) =>
+                    c.get('address') === lastSender.get('address')
+            )
         ) {
             return lastSender
         }
@@ -499,7 +522,7 @@ export function getNewMessageSender(
         if (!sender.isEmpty() && newMessageSourceType === 'email') {
             sender =
                 channels.find(
-                    (channel) =>
+                    (channel: Map<any, any>) =>
                         channel.get('address') === sender.get('address') &&
                         EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
                 ) || preferredChannel
@@ -510,13 +533,16 @@ export function getNewMessageSender(
 
     // last message sent by an agent
     // search in recipients of `to` and `cc` fields to match with an email of account channels
-    const receivers = lastMessage
-        .getIn(['source', 'to'], fromJS([]))
-        .concat(lastMessage.getIn(['source', 'cc'], fromJS([])))
-    for (const receiver of receivers) {
-        for (const channel of channels) {
-            if (receiver.get('address') === channel.get('address')) {
-                return channel
+    const receivers = (lastMessage.getIn(['source', 'to'], fromJS([])) as List<
+        any
+    >).concat(lastMessage.getIn(['source', 'cc'], fromJS([]))) as List<any>
+    for (const receiver of (receivers as unknown) as any[]) {
+        for (const channel of (channels as unknown) as any[]) {
+            if (
+                (receiver as Map<any, any>).get('address') ===
+                (channel as Map<any, any>).get('address')
+            ) {
+                return channel as Map<any, any>
             }
         }
     }
@@ -527,13 +553,10 @@ export function getNewMessageSender(
 /**
  * Return pending message index
  * match a newly posted message to a pending message and return it's index
- * @param pendingMessages E.g: []
- * @param message { body_html: '', ... }
- * @returns {*}
  */
 export function getPendingMessageIndex(
-    pendingMessages: Object[],
-    message: Object
+    pendingMessages: TicketMessage[],
+    message: TicketMessage
 ) {
     let index = -1
 
@@ -544,7 +567,7 @@ export function getPendingMessageIndex(
     // props that are the same in the post body and the response
     const props = ['body_html', 'body_text', 'channel', 'from_agent', 'source']
 
-    const whitelist = (v, key: string) => props.includes(key)
+    const whitelist = (v: string, key: string) => props.includes(key)
 
     pendingMessages.some((pending, i) => {
         if (
@@ -560,20 +583,28 @@ export function getPendingMessageIndex(
 
 /**
  * Return whether or not the message is forwarded
- * @param message
- * @returns {*|any|T|boolean}
  */
-export function isForwardedMessage(message: Map<any, any>) {
-    return toImmutable(message).getIn(['source', 'extra', 'forward']) || false
+export function isForwardedMessage(message: Map<any, any> | TicketMessage) {
+    return (
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        ((toImmutable(message) as Map<any, any>).getIn([
+            'source',
+            'extra',
+            'forward',
+        ]) as boolean) || false
+    )
 }
 
-export const renderObject = (argument: any, context: Object) => {
+export const renderObject = (
+    argument: string | Map<any, any>,
+    context: Record<string, string>
+) => {
     let ret = argument
 
     if (typeof argument === 'string') {
         ret = renderTemplate(argument, context)
     } else if (typeof argument === 'object') {
-        ret = argument.map((v) => renderObject(v, context))
+        ret = argument.map((v) => renderObject(v, context)) as Map<any, any>
     }
 
     return ret
@@ -584,22 +615,27 @@ export const replaceIntegrationVariables = (
     ticketState: Map<any, any>,
     variable: string,
     newArgument: string,
-    notify: typeof notify
+    notify?: typeof notifyAction
 ) => {
-    let integrations = ticketState
-        .getIn(['customer', 'integrations'], fromJS([]))
-        .filter((integration) => {
-            return integration.get('__integration_type__') === integrationType
-        })
+    let integrations = (ticketState.getIn(
+        ['customer', 'integrations'],
+        fromJS([])
+    ) as List<any>).filter((integration: Map<any, any>) => {
+        return integration.get('__integration_type__') === integrationType
+    })
 
     // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
     if (
         !integrations.isEmpty() &&
-        integrations.first().getIn(['customer', 'updated_at'])
+        (integrations.first() as Map<any, any>).getIn([
+            'customer',
+            'updated_at',
+        ])
     ) {
         integrations = integrations
-            .sortBy((integration) =>
-                integration.getIn(['customer', 'updated_at'])
+            .sortBy(
+                (integration: Map<any, any>) =>
+                    integration.getIn(['customer', 'updated_at']) as string
             )
             .reverse()
     }
@@ -610,9 +646,9 @@ export const replaceIntegrationVariables = (
 
     const integrationId = integrationIds.first()
 
-    if (!integrationId) {
+    if (!integrationId && notify) {
         notify({
-            type: 'warning',
+            type: NotificationStatus.Warning,
             title: `This customer does not have any ${_capitalize(
                 integrationType
             )} information`,
@@ -623,10 +659,10 @@ export const replaceIntegrationVariables = (
     const variableConfig = ticketConfig.getVariableWithValue(variable)
     let newVariable = variable.replace(
         `integrations.${integrationType}`,
-        `integrations[${integrationId}]`
+        `integrations[${integrationId!}]`
     )
 
-    if (variableConfig && variableConfig.replace) {
+    if (variableConfig && variableConfig.replace != null) {
         newVariable = variableConfig.replace(
             fromJS({ticket: ticketState}),
             integrationId
@@ -638,14 +674,14 @@ export const replaceIntegrationVariables = (
 
 export const replaceVariables = (
     argument: string,
-    ticket: ?Map<any, any>,
-    currentUser: ?Map<any, any>,
-    notify: typeof notify
+    ticket: Map<any, any> | null,
+    currentUser: Map<any, any> | null,
+    notify?: typeof notifyAction
 ) => {
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.customer.integrations[XXX]`.
     let newArgument = argument
-    let variables = argument.match(
+    const variables = argument.match(
         /{{ticket\.customer\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g
     )
 
@@ -657,7 +693,7 @@ export const replaceVariables = (
                 if (variable.includes('integrations.' + integrationType)) {
                     newArgument = replaceIntegrationVariables(
                         integrationType,
-                        ticket,
+                        ticket!,
                         variable,
                         newArgument,
                         notify
@@ -674,20 +710,20 @@ export const replaceVariables = (
 }
 
 export const nestedReplace = (
-    obj: any,
+    obj: unknown,
     ticketState: Map<any, any>,
     currentUserState: Map<any, any>,
-    notify: typeof notify
-) => {
+    notify?: typeof notifyAction
+): unknown => {
     if (typeof obj === 'string') {
         return replaceVariables(obj, ticketState, currentUserState, notify)
     }
 
     // since typeof null === 'object', we also need to verify obj is not null
     if (typeof obj === 'object' && obj !== null) {
-        return obj.map((item) =>
+        return (obj as Map<any, any>).map((item) =>
             nestedReplace(item, ticketState, currentUserState, notify)
-        )
+        ) as Map<any, any>
     }
 
     return obj
@@ -695,10 +731,11 @@ export const nestedReplace = (
 
 export const parseTimedelta = (timedelta: string) => {
     const timedeltaRegex = /^(?<value>\d+)(?<unit>[mhd])$/
+    // eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
     const groups = timedelta.match(timedeltaRegex)?.groups
     if (groups) {
         const {value, unit} = groups
-        return moment.duration(Number(value), unit)
+        return moment.duration(Number(value), unit as any)
     }
     throw new Error(`${timedelta} is not a properly formatted timedelta`)
 }

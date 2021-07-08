@@ -16,7 +16,7 @@ import {
     receiversStateFromValue,
     receiversValueFromState,
     replaceIntegrationVariables,
-} from '../utils'
+} from '../utils.ts'
 import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
 import {
     TicketMessageSourceType,

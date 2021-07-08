@@ -52,7 +52,7 @@ import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
     nestedReplace,
-} from './utils.js'
+} from './utils'
 import * as types from './constants'
 
 export const mergeTicket = (ticket: Ticket) => (
@@ -511,14 +511,11 @@ export const applyMacro = (
             return action.update(
                 'arguments',
                 (args: List<any>) =>
-                    nestedReplace(
-                        args,
-                        state.ticket,
-                        state.currentUser,
-                        (args: Notification) => {
-                            return dispatch(notify(args))
-                        }
-                    ) as List<any>
+                    nestedReplace(args, state.ticket, state.currentUser, ((
+                        args: Notification
+                    ) => {
+                        return dispatch(notify(args))
+                    }) as any) as List<any>
             )
         })
     })
@@ -546,10 +543,7 @@ export const applyMacro = (
     const actionNames = (actions.map(
         (action: Map<any, any>) => action.get('name') as string
     ) as List<any>).toJS() as string[]
-    const partialUpdate = buildPartialUpdateFromAction(
-        actionNames,
-        state
-    ) as Map<any, any>
+    const partialUpdate = buildPartialUpdateFromAction(actionNames, state)
 
     void dispatch(ticketPartialUpdate(partialUpdate))
     if (shouldUpdateNewMessage) {
@@ -979,9 +973,9 @@ export const handleMessageError = (json: TicketMessageFailedEvent) => (
 }
 
 export function updateTicketMessage(
-    ticketId: string,
+    ticketId: string | number,
     messageId: number,
-    data: TicketMessage,
+    data: Partial<TicketMessage>,
     action: Maybe<string> = null
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {

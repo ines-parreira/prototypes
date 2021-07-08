@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-} from '../../../../../../config/integrations'
+} from '../../../../../../config/integrations/index.ts'
 
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,

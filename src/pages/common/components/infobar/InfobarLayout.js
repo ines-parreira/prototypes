@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import {tryLocalStorage} from '../../../../services/common/utils.ts'
 import * as layoutSelectors from '../../../../state/layout/selectors.ts'
-import {ErrorBoundary} from '../../../ErrorBoundary'
+import {ErrorBoundary} from '../../../ErrorBoundary.tsx'
 
 import {getInfobarMinWidth, getInfobarWidth} from './utils'
 import css from './Infobar.less'

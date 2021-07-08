@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-} from '../../../../../../../config/integrations'
+} from '../../../../../../../config/integrations/index.ts'
 
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,

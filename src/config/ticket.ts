@@ -9,13 +9,13 @@ import {
 } from '../business/types/ticket'
 import {TicketMessage} from '../models/ticket/types'
 import {compare, getLastMessage, toImmutable} from '../utils'
-import {isForwardedMessage} from '../state/ticket/utils.js'
+import {isForwardedMessage} from '../state/ticket/utils'
 
 import {
     INTEGRATION_HIDDEN_VARIABLES,
     INTEGRATION_PREVIOUS_VARIABLES,
     INTEGRATION_VARIABLES,
-} from './integrations/index.js'
+} from './integrations/index'
 
 // TODO(business-extract): Deprecated constants => Use directly Channels.XXX in your code
 //$TsFixMe fallback constants for js files, remove once replaced with TicketChannel enum
@@ -101,6 +101,7 @@ type Variable = {
     explicit?: boolean
     fullName?: string
     integration?: string
+    replace?: (object: Map<any, any>, value: any) => string
 }
 
 type VariableChild = {
@@ -214,7 +215,9 @@ export const PREVIOUS_VARIABLES: Variable[] = [
 /**
  * Return passed messages ordered by created_datetime
  */
-export function orderedMessages(messages: Array<TicketMessage>): Map<any, any> {
+export function orderedMessages(
+    messages: Array<TicketMessage> | List<any>
+): Map<any, any> {
     return toImmutable<List<any>>(
         messages
     ).sort((a: Map<any, any>, b: Map<any, any>) =>

@@ -1,34 +1,33 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classNames from 'classnames'
 import _trim from 'lodash/trim'
 
-import {proxifyImages} from '../../../../../utils.ts'
+import {proxifyImages} from '../../../../../utils'
 import {
     linkifyHtml,
     linkifyString,
     sanitizeHtmlDefault,
-} from '../../../../../utils/html.ts'
-import Ellipsis from '../../../../common/components/Ellipsis.tsx'
+} from '../../../../../utils/html'
+import Ellipsis from '../../../../common/components/Ellipsis'
 
 type Props = {
-    html?: string,
-    text?: string,
-    strippedHtml?: string | null,
-    strippedText?: string | null,
+    html?: string
+    text?: string
+    strippedHtml?: string | null
+    strippedText?: string | null
 }
 
 type State = {
-    showFullBody: boolean,
+    showFullBody: boolean
 }
 
-export default class Content extends React.Component<Props, State> {
-    constructor() {
-        super()
+export default class Content extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {showFullBody: false}
     }
 
-    _getDisplayContent = (content: string, isHtml: boolean): ?string => {
+    _getDisplayContent = (content: string, isHtml: boolean): string | null => {
         let displayContent = content
 
         displayContent = proxifyImages(displayContent, '1000x')
@@ -57,8 +56,8 @@ export default class Content extends React.Component<Props, State> {
         // trim values so we avoid displaying space only values
         html = _trim(html)
         text = _trim(text)
-        strippedHtml = _trim(strippedHtml)
-        strippedText = _trim(strippedText)
+        strippedHtml = _trim(strippedHtml!)
+        strippedText = _trim(strippedText!)
 
         const content = html || text || ''
         const isHtml = !!html
@@ -86,7 +85,7 @@ export default class Content extends React.Component<Props, State> {
             <div>
                 <div
                     className={classNames({'new-line-interpret': !isHtml})}
-                    dangerouslySetInnerHTML={{__html: displayContent}}
+                    dangerouslySetInnerHTML={{__html: displayContent!}}
                 />
                 {isStripped && (
                     <Ellipsis

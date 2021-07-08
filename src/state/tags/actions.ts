@@ -5,7 +5,7 @@ import {List} from 'immutable'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
-import {createErrorNotification} from '../utils.js'
+import {createErrorNotification} from '../utils'
 
 import type {RootState, StoreDispatch} from '../types'
 

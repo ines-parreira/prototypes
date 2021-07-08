@@ -6,7 +6,7 @@ import FacebookCarousel from '../FacebookCarousel'
 import type {TicketMessage} from '../../../../../models/ticket/types'
 
 import css from './Body.less'
-import Content from './Content'
+import Content from './Content.tsx'
 
 const classNames = classNamesBind.bind(css)
 
