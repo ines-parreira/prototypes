@@ -81,7 +81,7 @@ class Error extends React.Component<Props, State> {
             return actions.ticket.updateTicketMessage(
                 ticketId,
                 messageId,
-                {failed_datetime: null},
+                {},
                 RETRY
             )
         }
