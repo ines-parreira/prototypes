@@ -36,7 +36,7 @@ import {
 
 type OwnProps = {
     message: TicketMessage
-    allIntents: Record<string, string>
+    allIntents?: Record<string, string>
 }
 
 export const IntentsFeedbackContainer = ({

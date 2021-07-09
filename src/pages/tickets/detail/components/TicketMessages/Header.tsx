@@ -1,31 +1,29 @@
-//@flow
 import classNamesBind from 'classnames/bind'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import React from 'react'
-
 import classnames from 'classnames'
 
-import type {TicketMessage} from '../../../../../models/ticket/types'
-import {isForwardedMessage} from '../../../../../state/ticket/utils.ts'
-import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
+import {TicketMessage} from '../../../../../models/ticket/types'
+import {isForwardedMessage} from '../../../../../state/ticket/utils'
+import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels.js'
 
 import css from './Header.less'
 import Meta from './Meta'
-import Source from './Source.tsx'
+import Source from './Source'
 import SourceDetailsHeader from './SourceDetailsHeader'
-import Intents from './IntentsFeedback/IntentsFeedback.tsx'
+import Intents from './IntentsFeedback/IntentsFeedback'
 
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    id: string,
-    message: TicketMessage,
-    timezone: string,
-    isLastRead: boolean,
-    showIntents: boolean,
-    hasError?: boolean,
-    isMessageHidden?: boolean,
-    isMessageDeleted?: boolean,
+    id: string
+    message: TicketMessage
+    timezone: string
+    isLastRead: boolean
+    showIntents: boolean
+    hasError?: boolean
+    isMessageHidden?: boolean
+    isMessageDeleted?: boolean
 }
 
 export default function Header(props: Props) {
@@ -38,7 +36,7 @@ export default function Header(props: Props) {
         isMessageHidden,
         isMessageDeleted,
     } = props
-    const sender = fromJS(message.sender || {})
+    const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
     let metaContent = (
         <Meta

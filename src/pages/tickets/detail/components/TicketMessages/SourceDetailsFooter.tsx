@@ -1,17 +1,16 @@
-//@flow
 import classnames from 'classnames'
 import React from 'react'
 
-import type {TicketMessage} from '../../../../../models/ticket'
+import {TicketMessage} from '../../../../../models/ticket/types'
 
 import SourceActionsFooter from './SourceActionsFooter'
 import css from './SourceDetails.less'
 
 type Props = {
-    message: TicketMessage,
-    className?: string,
-    isMessageHidden: boolean,
-    isMessageDeleted: boolean,
+    message: TicketMessage
+    className?: string
+    isMessageHidden: boolean
+    isMessageDeleted: boolean
 }
 
 export default function SourceDetailsFooter(props: Props) {
@@ -20,7 +19,7 @@ export default function SourceDetailsFooter(props: Props) {
         <div className={classnames(css.wrapper, props.className)}>
             <SourceActionsFooter
                 source={message.source}
-                meta={message.meta}
+                meta={message.meta!}
                 integrationId={message.integration_id}
                 messageId={message.message_id}
                 isMessageHidden={isMessageHidden}

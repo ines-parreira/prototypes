@@ -5,7 +5,7 @@ import {
     duplicatedHiddenFacebookMessage,
     facebookMessageNoMeta,
 } from '../../../../../../models/ticket/tests/mocks.ts'
-import SourceDetailsHeader from '../SourceDetailsHeader'
+import SourceDetailsHeader from '../SourceDetailsHeader.tsx'
 
 describe('<SourceDetailsHeader/>', () => {
     it(

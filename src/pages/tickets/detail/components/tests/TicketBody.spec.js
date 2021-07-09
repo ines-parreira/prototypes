@@ -11,7 +11,7 @@ import {
     TICKET_ASSIGNED,
 } from '../../../../../constants/event.ts'
 import type {TicketMessage} from '../../../../../models/ticket'
-import TicketMessages from '../TicketMessages/TicketMessages'
+import TicketMessages from '../TicketMessages/TicketMessages.tsx'
 import Event from '../Event'
 
 describe('TicketBody', () => {

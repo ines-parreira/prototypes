@@ -43,10 +43,10 @@ import {NOTIFICATION_STATUS} from '../../../../state/notifications/constants.ts'
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
 import TicketAssignee from './TicketDetails/TicketAssignee'
-import TicketSpam from './TicketDetails/TicketSpam'
+import TicketSpam from './TicketDetails/TicketSpam.tsx'
 import TicketSnooze from './TicketDetails/TicketSnooze.tsx'
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker.tsx'
-import TicketTrash from './TicketDetails/TicketTrash'
+import TicketTrash from './TicketDetails/TicketTrash.tsx'
 
 import css from './TicketHeader.less'
 

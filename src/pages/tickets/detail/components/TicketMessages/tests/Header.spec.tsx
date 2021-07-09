@@ -1,8 +1,8 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import Header from '../Header.js'
-import Meta from '../Meta.js'
+import Header from '../Header'
+import Meta from '../Meta'
 import {
     message,
     duplicatedHiddenFacebookMessage,

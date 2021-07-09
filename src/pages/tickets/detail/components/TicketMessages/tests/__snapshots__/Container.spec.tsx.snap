@@ -10,7 +10,7 @@ exports[`Container should render container 1`] = `
     <Avatar
       email="john.doe@example.com"
       name="John Doe"
-      size="36"
+      size={36}
       style={Object {}}
       url=""
     />
@@ -122,7 +122,7 @@ exports[`Container should render container with an avatar because the hidden mes
     <Avatar
       email="john.doe@example.com"
       name="John Doe"
-      size="36"
+      size={36}
       style={Object {}}
       url=""
     />

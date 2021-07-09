@@ -1,14 +1,13 @@
-//@flow
 import React from 'react'
 
-import {formatDatetime} from '../../../../../utils.ts'
-import Tooltip from '../../../../common/components/Tooltip.tsx'
+import {formatDatetime} from '../../../../../utils'
+import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './SeenIndicator.style.less'
 
 type Props = {
-    openedDatetime?: string,
-    timezone: string,
+    openedDatetime?: string | null
+    timezone: string
 }
 
 export default function SeenIndicator(props: Props) {

@@ -835,7 +835,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
 <ContextProvider
   value={null}
 >
-  <TicketAssignee
+  <TicketAssigneeContainer
     currentUser={
       Immutable.Map {
         "id": 1,

@@ -1,8 +1,7 @@
-//@flow
 import React from 'react'
 import {mount} from 'enzyme'
 
-import Content from '../Content.tsx'
+import Content from '../Content'
 
 describe('Content', () => {
     it('should render empty if empty props', () => {

@@ -1,39 +1,25 @@
-//@flow
 import classnames from 'classnames'
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 
-import {TicketVias} from '../../../../../business/ticket.ts'
-import {Meta as MetaType, Source} from '../../../../../models/ticket/types.ts'
-
-import {
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_POST_SOURCE,
-    FACEBOOK_MENTION_POST_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-    INSTAGRAM_AD_MEDIA_SOURCE,
-    INSTAGRAM_MEDIA_SOURCE,
-    INSTAGRAM_MENTION_MEDIA_SOURCE,
-    FACEBOOK_REVIEW_COMMENT_SOURCE,
-    FACEBOOK_REVIEW_SOURCE,
-    INSTAGRAM_DM_SOURCE,
-    TWITTER_TWEET_SOURCE,
-} from '../../../../../config/ticket.ts'
+import {TicketVias} from '../../../../../business/ticket'
+import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
+import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 
 import css from './Meta.less'
 
 type Props = {
-    messageId?: string,
-    via: string,
-    integrationId?: number | null,
-    ruleId?: string | null,
-    meta?: MetaType | null,
-    source?: Source,
-    messageCreatedDatetime?: string,
+    messageId?: string
+    via: string
+    integrationId?: number | null
+    ruleId?: string | null
+    meta?: MetaType | null
+    source?: Source
+    messageCreatedDatetime?: string
 }
 
-const From = ({label, children}: {label: string, children?: Node}) => (
+const From = ({label, children}: {label: string; children?: ReactNode}) => (
     <span className={classnames(css.from)}>
         <span className={css.fromLabel}>{label}</span>{' '}
         <span className={css.fromValue}>{children}</span>
@@ -67,29 +53,29 @@ export default function Meta(props: Props) {
     }
 
     const GO_TO_WIDGET_SOURCES = [
-        FACEBOOK_COMMENT_SOURCE,
-        FACEBOOK_POST_SOURCE,
-        FACEBOOK_MENTION_POST_SOURCE,
-        FACEBOOK_MENTION_COMMENT_SOURCE,
-        INSTAGRAM_AD_MEDIA_SOURCE,
-        INSTAGRAM_MEDIA_SOURCE,
-        INSTAGRAM_MENTION_MEDIA_SOURCE,
-        FACEBOOK_REVIEW_SOURCE,
-        FACEBOOK_REVIEW_COMMENT_SOURCE,
-        TWITTER_TWEET_SOURCE,
+        TicketMessageSourceType.FacebookComment,
+        TicketMessageSourceType.FacebookPost,
+        TicketMessageSourceType.FacebookMentionPost,
+        TicketMessageSourceType.FacebookMentionComment,
+        TicketMessageSourceType.InstagramAdMedia,
+        TicketMessageSourceType.InstagramMedia,
+        TicketMessageSourceType.InstagramMentionMedia,
+        TicketMessageSourceType.FacebookReview,
+        TicketMessageSourceType.FacebookReviewComment,
+        TicketMessageSourceType.TwitterTweet,
     ]
 
     const isStoryMentionDirectMessage =
         source &&
         source.type &&
-        source.type === INSTAGRAM_DM_SOURCE &&
+        source.type === TicketMessageSourceType.InstagramDirectMessage &&
         meta &&
         meta.is_story_mention
 
     const isStoryReplyDirectMessage =
         source &&
         source.type &&
-        source.type === INSTAGRAM_DM_SOURCE &&
+        source.type === TicketMessageSourceType.InstagramDirectMessage &&
         meta &&
         meta.is_story_reply
 
@@ -125,39 +111,43 @@ export default function Meta(props: Props) {
         const permalink = source.extra.permalink
 
         const isFacebookMentionPost =
-            source.type === FACEBOOK_MENTION_POST_SOURCE
+            source.type === TicketMessageSourceType.FacebookMentionPost
         const isFacebookMentionComment =
-            source.type === FACEBOOK_MENTION_COMMENT_SOURCE
-        const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
-        const isFacebookReview = source.type === FACEBOOK_REVIEW_SOURCE
+            source.type === TicketMessageSourceType.FacebookMentionComment
+        const isFacebookPost =
+            source.type === TicketMessageSourceType.FacebookPost
+        const isFacebookReview =
+            source.type === TicketMessageSourceType.FacebookReview
         const isFacebookReviewComment =
-            source.type === FACEBOOK_REVIEW_COMMENT_SOURCE
+            source.type === TicketMessageSourceType.FacebookReviewComment
 
         const isFacebookComment = parentId === fullPostId
-        const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
-        const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
+        const isInstagramMedia =
+            source.type === TicketMessageSourceType.InstagramMedia
+        const isInstagramAdMedia =
+            source.type === TicketMessageSourceType.InstagramAdMedia
         const isInstagramMentionMedia =
-            source.type === INSTAGRAM_MENTION_MEDIA_SOURCE
+            source.type === TicketMessageSourceType.InstagramMentionMedia
 
         const tweetId = messageId ? messageId : source.extra.conversation_id
         const twitterFromUsername = source.from?.name
         const twitterToUsername = source.to[0]?.name
         const isTwitterRootTweet =
-            source.type === TWITTER_TWEET_SOURCE && !parentId
+            source.type === TicketMessageSourceType.TwitterTweet && !parentId
         const isTwitterReplyTweet =
-            source.type === TWITTER_TWEET_SOURCE && !!parentId
+            source.type === TicketMessageSourceType.TwitterTweet && !!parentId
 
-        const getId = (input, place = 1) =>
+        const getId = (input: string, place = 1) =>
             input && input.includes('_') ? input.split('_')[place] : ''
 
         let pageFeedId = pageId
         if (isFacebookMentionComment) {
-            pageFeedId = getId(fullPostId, 0)
+            pageFeedId = getId(fullPostId!, 0)
         }
         if (isFacebookPost) {
-            const postId = isFacebookPost ? getId(fullPostId) : fullPostId
+            const postId = isFacebookPost ? getId(fullPostId!) : fullPostId
             type = 'post'
-            link = `https://facebook.com/${pageId}/posts/${postId}`
+            link = `https://facebook.com/${pageId!}/posts/${postId!}`
         } else if (isFacebookMentionPost) {
             type = 'post'
             link = permalink
@@ -179,24 +169,24 @@ export default function Meta(props: Props) {
                 link = `https://facebook.com/${source.extra.open_graph_story_id}/?comment_id=${commentId}`
             }
         } else if (!!messageId && isFacebookComment) {
-            const postId = getId(fullPostId)
+            const postId = getId(fullPostId!)
             const commentId = getId(messageId)
             type = 'comment'
-            link = `https://facebook.com/${pageFeedId}/posts/${postId}?comment_id=${commentId}`
+            link = `https://facebook.com/${pageFeedId!}/posts/${postId}?comment_id=${commentId}`
         } else if (isTwitterRootTweet) {
             type = 'tweet'
-            link = `https://twitter.com/${twitterFromUsername}/status/${tweetId}`
+            link = `https://twitter.com/${twitterFromUsername!}/status/${tweetId!}`
         } else if (isTwitterReplyTweet) {
             type = 'tweet'
             label = 'replying to'
             replyingToUsername = twitterToUsername
-            link = `https://twitter.com/${twitterFromUsername}/status/${tweetId}`
+            link = `https://twitter.com/${twitterFromUsername!}/status/${tweetId!}`
         } else if (!!messageId) {
-            const postId = getId(fullPostId)
-            const commentId = getId(parentId)
+            const postId = getId(fullPostId!)
+            const commentId = getId(parentId!)
             const replyId = getId(messageId)
             type = 'reply'
-            link = `https://facebook.com/${pageFeedId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+            link = `https://facebook.com/${pageFeedId!}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
         }
     }
 
@@ -262,7 +252,7 @@ export default function Meta(props: Props) {
         widgets.push(
             <From key="via-widget" label="sent via a">
                 <b>
-                    <Link tag="a" to={sentViaLink} title={sentViaLabel}>
+                    <Link to={sentViaLink} title={sentViaLabel}>
                         <i className="material-icons mr-1">settings</i>
                         {sentViaLabel}
                     </Link>
@@ -271,5 +261,5 @@ export default function Meta(props: Props) {
         )
     }
 
-    return widgets
+    return <>{widgets}</>
 }

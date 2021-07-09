@@ -1,16 +1,14 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip.tsx'
+import Tooltip from '../../../../common/components/Tooltip'
 
 type Props = {
-    className: ?string,
-    trashed: ?boolean,
+    className?: string
+    trashed?: boolean
 }
 
-export default class TicketTrash extends React.Component<Props> {
-    static defaultProps = {
-        className: null,
+export default class TicketTrash extends Component<Props> {
+    static defaultProps: Pick<Props, 'trashed'> = {
         trashed: false,
     }
 

@@ -1,49 +1,48 @@
-// @flow
-import React from 'react'
+import React, {Component, createRef, KeyboardEvent} from 'react'
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import {connect} from 'react-redux'
+import {Map, List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
-import * as currentUserSelectors from '../../../../../../state/currentUser/selectors.ts'
-import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
-import * as teamsSelectors from '../../../../../../state/teams/selectors.ts'
-
-import shortcutManager from '../../../../../../services/shortcutManager/index.ts'
-import {AgentLabel, TeamLabel} from '../../../../../common/utils/labels'
-import {setAgent, setTeam} from '../../../../../../state/ticket/actions.ts'
-import PeopleSearchInput from '../../../../../common/forms/PeopleSearchInput'
-import PeopleSearchResults from '../../../../../common/forms/PeopleSearchInput/PeopleSearchResults.tsx'
+import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
+import {getAgents} from '../../../../../../state/agents/selectors'
+import {getTeams} from '../../../../../../state/teams/selectors'
+import {RootState} from '../../../../../../state/types'
+import shortcutManager from '../../../../../../services/shortcutManager/index'
+import {AgentLabel, TeamLabel} from '../../../../../common/utils/labels.js'
+import {setAgent, setTeam} from '../../../../../../state/ticket/actions'
+import PeopleSearchInput from '../../../../../common/forms/PeopleSearchInput/PeopleSearchInput'
+import PeopleSearchResults from '../../../../../common/forms/PeopleSearchInput/PeopleSearchResults'
 
 import css from './TicketAssignee.less'
 
 type Props = {
-    handleTeams: boolean,
-    handleUsers: boolean,
-    users: Map<*, *>,
-    teams: Map<*, *>,
-    currentAssigneeUser: ?Map<*, *>,
-    currentAssigneeTeam: ?Map<*, *>,
-    currentUser: Map<*, *>,
-    direction: string,
-    setUser: typeof setAgent,
-    setTeam: typeof setTeam,
-    profilePictureUrl?: string,
-    className?: string,
-    transparent?: boolean,
-}
+    handleTeams: boolean
+    handleUsers: boolean
+    currentAssigneeUser: Map<any, any> | null
+    currentAssigneeTeam: Map<any, any> | null
+    direction: string
+    setUser: typeof setAgent
+    setTeam: typeof setTeam
+    profilePictureUrl?: string
+    className?: string
+    transparent?: boolean
+} & ConnectedProps<typeof connector>
 
 type State = {
-    dropdownOpen: boolean,
-    users: Object,
-    teams: Object,
-    search: string,
+    dropdownOpen: boolean
+    users: List<any>
+    teams: List<any>
+    search: string
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
-export class TicketAssignee extends React.Component<Props, State> {
-    static defaultProps = {
+export class TicketAssigneeContainer extends Component<Props, State> {
+    static defaultProps: Pick<
+        Props,
+        'handleTeams' | 'handleUsers' | 'direction' | 'transparent'
+    > = {
         handleTeams: true,
         handleUsers: true,
         direction: 'left',
@@ -94,7 +93,7 @@ export class TicketAssignee extends React.Component<Props, State> {
         this.setState({search: ''})
     }
 
-    _selectUser = (user: Map<*, *>) => {
+    _selectUser = (user: Map<any, any>) => {
         this.props.setUser({
             id: user.get('id'),
             name: user.get('name'),
@@ -104,7 +103,7 @@ export class TicketAssignee extends React.Component<Props, State> {
         this.setState({search: ''})
     }
 
-    _selectTeam = (team: Map<*, *>) => {
+    _selectTeam = (team: Map<any, any>) => {
         this.props.setTeam({
             id: team.get('id'),
             name: team.get('name'),
@@ -136,13 +135,15 @@ export class TicketAssignee extends React.Component<Props, State> {
 
     _filterResults = (search: string) => {
         this.setState({
-            users: this.props.users.filter((user) => {
-                const agentLabel = user.get('name') || user.get('email')
+            users: this.props.users.filter((user: Map<any, any>) => {
+                const agentLabel: string = user.get('name') || user.get('email')
                 return agentLabel.toLowerCase().includes(search.toLowerCase())
-            }),
-            teams: this.props.teams.filter((team) =>
-                team.get('name').toLowerCase().includes(search.toLowerCase())
-            ),
+            }) as List<any>,
+            teams: this.props.teams.filter((team: Map<any, any>) =>
+                (team.get('name') as string)
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+            ) as List<any>,
         })
     }
 
@@ -194,11 +195,12 @@ export class TicketAssignee extends React.Component<Props, State> {
         )
     }
 
-    searchRef = React.createRef()
+    searchRef = createRef<HTMLDivElement>()
 
     handleSearchKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'ArrowDown' && this.searchRef.current) {
-            const firstChild = this.searchRef.current.firstChild
+            const firstChild = this.searchRef.current
+                .firstChild as HTMLInputElement
             firstChild.focus()
         }
     }
@@ -215,15 +217,17 @@ export class TicketAssignee extends React.Component<Props, State> {
         const {teams: filteredTeams, users: filteredUsers} = this.state
 
         const availableTeams = currentAssigneeTeam
-            ? filteredTeams.filter(
-                  (team) => team.get('id') !== currentAssigneeTeam.get('id')
-              )
+            ? (filteredTeams.filter(
+                  (team: Map<any, any>) =>
+                      team.get('id') !== currentAssigneeTeam.get('id')
+              ) as List<any>)
             : filteredTeams
 
         const availableUsers = currentAssigneeUser
-            ? filteredUsers.filter(
-                  (user) => user.get('id') !== currentAssigneeUser.get('id')
-              )
+            ? (filteredUsers.filter(
+                  (user: Map<any, any>) =>
+                      user.get('id') !== currentAssigneeUser.get('id')
+              ) as List<any>)
             : filteredUsers
 
         return (
@@ -350,10 +354,10 @@ export class TicketAssignee extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    users: agentSelectors.getAgents(state),
-    teams: teamsSelectors.getTeams(state),
-    currentUser: currentUserSelectors.getCurrentUser(state),
-})
+const connector = connect((state: RootState) => ({
+    users: getAgents(state),
+    teams: getTeams(state) as List<any>,
+    currentUser: getCurrentUser(state),
+}))
 
-export default connect(mapStateToProps)(TicketAssignee)
+export default connector(TicketAssigneeContainer)

@@ -5,6 +5,7 @@ import {
     TicketVia,
 } from '../../business/types/ticket'
 import {AuditLogEvent} from '../event/types'
+import {FacebookReactionType} from '../../constants/integrations/facebook'
 
 export type Ticket = {
     id: number
@@ -143,6 +144,12 @@ export type Source = {
     bcc?: SourceAddress[]
     extra?: {
         forward?: boolean
+        page_id?: string
+        post_id?: string
+        parent_id?: string
+        permalink?: string
+        conversation_id?: string
+        open_graph_story_id?: string
     }
 }
 
@@ -167,17 +174,36 @@ export type Meta = {
     is_duplicated?: boolean
     is_story_mention?: boolean
     is_story_reply?: boolean
+    facebook_reactions?: FacebookReactions
 }
 
 export type FacebookPrivateReply = {
     already_sent?: boolean
     sent_datetime?: string
     messenger_ticket_id?: number
+    original_ticket_id?: string
 }
 
 export type LastSendingError = {
     error?: string
 }
+
+export type FacebookReactions = {
+    page_reaction?: FacebookReaction
+    customer_reaction?: FacebookReaction
+    reactions_counter: FacebookReactionCounter
+}
+
+export type FacebookReaction = {
+    reaction_type: FacebookReactionType
+    reaction_datetime: string
+    reaction_made_by?: string
+    is_reacting?: boolean
+}
+
+export type FacebookReactionCounter = {
+    total_reactions: number
+} & Partial<{[key in FacebookReactionType]: number}>
 
 export type FacebookCarouselTemplate = {
     type: 'template'

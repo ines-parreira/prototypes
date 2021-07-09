@@ -1,24 +1,22 @@
-//@flow
 import classnames from 'classnames'
-import React from 'react'
-import type {Node} from 'react'
+import React, {ReactNode} from 'react'
 
-import type {TicketMessage} from '../../../../../models/ticket'
-import {DatetimeLabel} from '../../../../common/utils/labels'
+import {TicketMessage} from '../../../../../models/ticket/types'
+import {DatetimeLabel} from '../../../../common/utils/labels.js'
 
 import SeenIndicator from './SeenIndicator'
 import SourceActionsHeader from './SourceActionsHeader'
 import css from './SourceDetails.less'
 
 type Props = {
-    message: TicketMessage,
-    isLastRead: boolean,
-    timezone: string,
-    className?: string,
-    isMessageDeleted?: boolean,
+    message: TicketMessage
+    isLastRead: boolean
+    timezone: string
+    className?: string
+    isMessageDeleted?: boolean
 }
 
-const From = ({label, children}: {label: string, children?: Node}) => (
+const From = ({label, children}: {label: string; children?: ReactNode}) => (
     <span className={classnames(css.from)}>
         <span className={css.fromLabel}>{label}</span>{' '}
         <span className={css.fromValue}>{children}</span>
@@ -34,12 +32,12 @@ export default function SourceDetailsHeader(props: Props) {
         actionHeader = (
             <SourceActionsHeader
                 source={message.source}
-                meta={message.meta}
+                meta={message.meta!}
                 integrationId={message.integration_id}
                 messageId={message.message_id}
                 fromAgent={message.from_agent}
                 senderId={message.sender.id}
-                ticketMessageId={message.id}
+                ticketMessageId={message.id!}
                 ticketId={message.ticket_id}
                 bodyText={message.body_text}
                 sender={message.sender}
@@ -53,7 +51,7 @@ export default function SourceDetailsHeader(props: Props) {
             <From label="go to" key="ref-widget">
                 <a
                     target="_blank"
-                    href={message.meta.private_reply.original_ticket_id}
+                    href={message.meta.private_reply!.original_ticket_id}
                     rel="noopener noreferrer"
                 >
                     ticket

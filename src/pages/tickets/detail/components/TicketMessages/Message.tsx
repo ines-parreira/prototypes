@@ -1,4 +1,3 @@
-//@flow
 import classNamesBind from 'classnames/bind'
 import React from 'react'
 
@@ -6,10 +5,10 @@ import {
     hasFailedAction,
     isFailed,
     isPending,
-    TicketMessage,
-} from '../../../../../models/ticket'
+} from '../../../../../models/ticket/predicates'
+import {TicketMessage} from '../../../../../models/ticket/types'
 
-import Actions from './Actions'
+import Actions from './Actions.js'
 import Attachments from './Attachments'
 import Body from './Body'
 import Errors from './Errors'
@@ -19,12 +18,12 @@ import SourceDetailsHeader from './SourceDetailsHeader'
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    message: TicketMessage,
-    ticketId: number,
-    setStatus?: (status: string) => void,
-    showSourceDetails: boolean,
-    isLastRead: boolean,
-    timezone: string,
+    message: TicketMessage
+    ticketId: number
+    setStatus?: (status: string) => void
+    showSourceDetails: boolean
+    isLastRead: boolean
+    timezone: string
 }
 
 export default function Message(props: Props) {

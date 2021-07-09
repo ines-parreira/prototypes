@@ -1,22 +1,20 @@
-//@flow
-import React, {type ElementProps} from 'react'
+import React, {ComponentProps} from 'react'
 import {act, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import {createMemoryHistory} from 'history'
 
-import {renderWithRouter} from '../../../../utils/testing.tsx'
-import {initialState as currentUser} from '../../../../state/currentUser/reducers.ts'
-import pendingMessageManager from '../../../../services/pendingMessageManager'
-import {TicketDetailContainer} from '../TicketDetailContainer'
-import TicketView from '../components/TicketView.tsx'
+import {renderWithRouter} from '../../../../utils/testing'
+import {initialState as currentUser} from '../../../../state/currentUser/reducers'
+import pendingMessageManager from '../../../../services/pendingMessageManager/pendingMessageManager'
+import {TicketDetailContainer} from '../TicketDetailContainer.js'
 
 jest.useFakeTimers()
 
 jest.mock(
     '../components/TicketView',
-    () => ({submit}: ElementProps<typeof TicketView>) => (
+    () => ({submit}: {submit: (param: string) => void}) => (
         <div
             data-testid="TicketView-close"
             onClick={() => {
@@ -26,13 +24,16 @@ jest.mock(
     )
 )
 
-jest.mock('../../../../services/pendingMessageManager', () => ({
-    sendMessage: jest.fn(),
-    skipExistingTimer: jest.fn(),
-}))
+jest.mock(
+    '../../../../services/pendingMessageManager/pendingMessageManager',
+    () => ({
+        sendMessage: jest.fn(),
+        skipExistingTimer: jest.fn(),
+    })
+)
 
 describe('TicketDetailContainer component', () => {
-    const minProps: any = {
+    const minProps = ({
         activeCustomer: fromJS({}),
         activeView: fromJS({}),
         canSendMessage: false,
@@ -63,7 +64,7 @@ describe('TicketDetailContainer component', () => {
             messages: [],
         }),
         updateCursor: jest.fn(),
-    }
+    } as unknown) as ComponentProps<typeof TicketDetailContainer>
     const preparedData = {
         messageId: 1,
         messageToSend: {
@@ -147,7 +148,7 @@ describe('TicketDetailContainer component', () => {
             id: 1,
             name: 'Pizza Pepperoni',
             email: 'pizza@pepperoni.com',
-        })
+        }) as Map<any, any>
 
         const {rerender} = renderWithRouter(
             <TicketDetailContainer {...minProps} />,
@@ -170,7 +171,9 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should not go to next ticket when setting status=closed and history is open', () => {
-        minProps.setStatus.mockImplementationOnce((v, cb) => {
+        ;(minProps.setStatus as jest.MockedFunction<
+            (value: any, cb: () => void) => void
+        >).mockImplementationOnce((v, cb) => {
             act(cb)
         })
 
@@ -205,7 +208,9 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should go to next ticket when setting status=closed and history is closed', async () => {
-        minProps.setStatus.mockImplementationOnce((v, cb) => {
+        ;(minProps.setStatus as jest.MockedFunction<
+            (status: string, cb: () => void) => void
+        >).mockImplementationOnce((v, cb) => {
             act(cb)
         })
 
@@ -244,7 +249,7 @@ describe('TicketDetailContainer component', () => {
             id: 1,
             name: 'Pizza Pepperoni',
             email: 'pizza@pepperoni.com',
-        })
+        }) as Map<any, any>
         const expectedReceiver = {
             name: activeCustomer.get('name'),
             address: activeCustomer.get('email'),
@@ -282,8 +287,14 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should update cursor of the view when the id of the ticket changes', () => {
-        const activeView = fromJS({order_by: 'updated_datetime'})
-        const newTicket = fromJS({id: 9999, updated_datetime: '2018-12-20'})
+        const activeView = fromJS({order_by: 'updated_datetime'}) as Map<
+            any,
+            any
+        >
+        const newTicket = fromJS({
+            id: 9999,
+            updated_datetime: '2018-12-20',
+        }) as Map<any, any>
         const {rerender} = renderWithRouter(
             <TicketDetailContainer {...minProps} />,
             {
@@ -704,15 +715,12 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should defer sending new message when new message is of type email', async () => {
-        minProps.prepareTicketMessage.mockReturnValueOnce(preparedData)
+        ;(minProps.prepareTicketMessage as jest.MockedFunction<
+            () => typeof preparedData
+        >).mockReturnValueOnce(preparedData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
-                currentAccount={fromJS({
-                    status: {
-                        status: 'active',
-                    },
-                })}
                 ticket={fromJS({
                     id: 1,
                     messages: [],
@@ -766,15 +774,12 @@ describe('TicketDetailContainer component', () => {
             },
             type: 'foo',
         }
-        minProps.prepareTicketMessage.mockReturnValueOnce(preparedFacebookData)
+        ;(minProps.prepareTicketMessage as jest.MockedFunction<
+            () => typeof preparedFacebookData
+        >).mockReturnValueOnce(preparedFacebookData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
-                currentAccount={fromJS({
-                    status: {
-                        status: 'active',
-                    },
-                })}
                 ticket={fromJS({
                     id: 1,
                     messages: [],
@@ -801,15 +806,12 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should send a deferred message when sending a new deferred message', async () => {
-        minProps.prepareTicketMessage.mockReturnValue(preparedData)
+        ;(minProps.prepareTicketMessage as jest.MockedFunction<
+            () => typeof preparedData
+        >).mockReturnValue(preparedData)
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer
                 {...minProps}
-                currentAccount={fromJS({
-                    status: {
-                        status: 'active',
-                    },
-                })}
                 ticket={fromJS({
                     id: 1,
                     messages: [],
@@ -841,7 +843,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should close the ticket and redirect to the next ticket on new ticket submit success', async () => {
-        let resolveSubmitTicket
+        let resolveSubmitTicket: (value?: unknown) => void
         const submitTicketMock = jest.fn().mockImplementation(
             () =>
                 new Promise((resolve) => {
@@ -850,7 +852,7 @@ describe('TicketDetailContainer component', () => {
         )
         const setStatus = jest
             .fn()
-            .mockImplementation((status, callback) => callback())
+            .mockImplementation((status, callback: () => void) => callback())
         const history = createMemoryHistory({initialEntries: ['/foo/new']})
         const {getByTestId} = renderWithRouter(
             <TicketDetailContainer

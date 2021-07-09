@@ -1,1 +1,1 @@
-export default, {TicketAssignee} from './TicketAssignee'
+export default, {TicketAssigneeContainer} from './TicketAssignee.tsx'

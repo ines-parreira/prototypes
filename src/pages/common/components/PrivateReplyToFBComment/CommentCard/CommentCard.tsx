@@ -8,7 +8,7 @@ import {fromJS} from 'immutable'
 
 import Avatar from '../../../components/Avatar/Avatar'
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
-import {default as TicketMessageMeta} from '../../../../tickets/detail/components/TicketMessages/Meta.js'
+import {default as TicketMessageMeta} from '../../../../tickets/detail/components/TicketMessages/Meta'
 import {DatetimeLabel} from '../../../utils/labels.js'
 import facebookIcon from '../../../../../../img/integrations/facebook-feed-round-icon.svg'
 import instagramIcon from '../../../../../../img/integrations/instagram-icon-grey.svg'

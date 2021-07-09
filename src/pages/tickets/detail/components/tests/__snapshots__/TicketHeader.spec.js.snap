@@ -200,7 +200,7 @@ exports[`<TicketHeader /> should render an unread ticket without the "Mark as un
     <div
       className="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssignee)
+      <Connect(TicketAssigneeContainer)
         className="assignee"
         direction="right"
         setTeam={[MockFunction]}
@@ -437,7 +437,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
     <div
       className="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssignee)
+      <Connect(TicketAssigneeContainer)
         className="assignee"
         direction="right"
         setTeam={[MockFunction]}
@@ -505,7 +505,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
     <div
       className="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssignee)
+      <Connect(TicketAssigneeContainer)
         className="assignee"
         direction="right"
         setTeam={[MockFunction]}
@@ -740,7 +740,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
     <div
       className="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssignee)
+      <Connect(TicketAssigneeContainer)
         className="assignee"
         direction="right"
         setTeam={[MockFunction]}
@@ -937,7 +937,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
     <div
       className="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssignee)
+      <Connect(TicketAssigneeContainer)
         className="assignee"
         direction="right"
         setTeam={[MockFunction]}

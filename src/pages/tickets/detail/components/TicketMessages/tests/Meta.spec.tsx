@@ -1,11 +1,12 @@
-//@flow
 import {shallow} from 'enzyme'
 import React from 'react'
 
-import {TicketVias} from '../../../../../../business/ticket.ts'
+import {TicketVias} from '../../../../../../business/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../../../../business/types/ticket'
 import Meta from '../Meta'
-import {TWITTER_TWEET_SOURCE} from '../../../../../../config/ticket.ts'
-import {TicketChannel} from '../../../../../../business/types/ticket.ts'
 
 describe('ticket message meta', () => {
     it('should add a -sent via rule- label because the message was sent by a rule', () => {
@@ -64,7 +65,7 @@ describe('ticket message meta', () => {
             const source = {
                 extra: {page_id: pageId, post_id: `${pageId}_${postId}`},
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
-                type: 'facebook-post',
+                type: TicketMessageSourceType.FacebookPost,
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
@@ -91,7 +92,7 @@ describe('ticket message meta', () => {
                     parent_id: `${pageId}_${postId}`,
                 },
                 from: {address: `${pageId}-${userId}`, name: 'Foo Bar'},
-                type: 'facebook-comment',
+                type: TicketMessageSourceType.FacebookComment,
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
@@ -124,7 +125,7 @@ describe('ticket message meta', () => {
                     parent_id: `${pageId}_${commentId}`,
                 },
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
-                type: 'facebook-comment',
+                type: TicketMessageSourceType.FacebookComment,
                 to: [{address: `${pageId}-${userId}`, name: 'Foo Bar'}],
             }
 
@@ -148,9 +149,9 @@ describe('ticket message meta', () => {
             const pageId = '2022935111288280'
             const userId = '1940476102688095'
             const source = {
-                extra: {page_id: pageId, post_id: null, parent_id: null},
+                extra: {page_id: pageId},
                 from: {address: `${pageId}-${userId}`, name: 'A Virk'},
-                type: 'facebook-comment',
+                type: TicketMessageSourceType.FacebookComment,
                 to: [{address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²'}],
             }
 
@@ -171,7 +172,7 @@ describe('ticket message meta', () => {
                     permalink: 'https://facebook.com/permalink',
                 },
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
-                type: 'facebook-mention-post',
+                type: TicketMessageSourceType.FacebookMentionPost,
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
@@ -199,7 +200,7 @@ describe('ticket message meta', () => {
                     permalink: 'https://facebook.com/permalink',
                 },
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
-                type: 'facebook-mention-comment',
+                type: TicketMessageSourceType.FacebookMentionComment,
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
@@ -233,7 +234,7 @@ describe('ticket message meta', () => {
                     permalink: 'https://facebook.com/permalink',
                 },
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
-                type: 'facebook-mention-comment',
+                type: TicketMessageSourceType.FacebookMentionComment,
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
@@ -261,7 +262,7 @@ describe('ticket message meta', () => {
                 from: {name: 'trudoglife', address: 'trudoglife'},
                 to: [{name: 'trudoglife', address: 'trudoglife'}],
                 extra: {media_id: '18101302111081366', permalink},
-                type: 'instagram-media',
+                type: TicketMessageSourceType.InstagramMedia,
             }
 
             const component = shallow(
@@ -283,10 +284,9 @@ describe('ticket message meta', () => {
                 from: {name: fromUsername, address: '12345'},
                 to: [{name: fromUsername, address: '12345'}],
                 extra: {
-                    parent_id: null,
                     conversation_id: tweetId,
                 },
-                type: TWITTER_TWEET_SOURCE,
+                type: TicketMessageSourceType.TwitterTweet,
             }
 
             const component = shallow(
@@ -315,7 +315,7 @@ describe('ticket message meta', () => {
                     parent_id: '1399880580741935107',
                     conversation_id: tweetId,
                 },
-                type: TWITTER_TWEET_SOURCE,
+                type: TicketMessageSourceType.TwitterTweet,
             }
 
             const component = shallow(

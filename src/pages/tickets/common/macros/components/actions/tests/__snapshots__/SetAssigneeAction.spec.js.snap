@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
-<Connect(TicketAssignee)
+<Connect(TicketAssigneeContainer)
   className="assignee"
   handleTeams={true}
   handleUsers={false}
@@ -42,7 +42,7 @@ exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
 `;
 
 exports[`<SetAssigneeAction/> render() should render team dropdown with current assignee 1`] = `
-<Connect(TicketAssignee)
+<Connect(TicketAssigneeContainer)
   className="assignee"
   currentAssigneeTeam={
     Immutable.Map {
@@ -90,7 +90,7 @@ exports[`<SetAssigneeAction/> render() should render team dropdown with current 
 `;
 
 exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
-<Connect(TicketAssignee)
+<Connect(TicketAssigneeContainer)
   className="assignee"
   handleTeams={false}
   handleUsers={true}
@@ -131,7 +131,7 @@ exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
 `;
 
 exports[`<SetAssigneeAction/> render() should render user dropdown with current assignee 1`] = `
-<Connect(TicketAssignee)
+<Connect(TicketAssigneeContainer)
   className="assignee"
   currentAssigneeUser={
     Immutable.Map {

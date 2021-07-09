@@ -1,24 +1,16 @@
-//@flow
-import React from 'react'
+import React, {Component, ReactNode} from 'react'
 import classNamesBind from 'classnames/bind'
-import {connect} from 'react-redux'
-
+import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
-import * as infobarActions from '../../../../../state/infobar/actions.ts'
-import type {
+import * as infobarActions from '../../../../../state/infobar/actions'
+import {
     FacebookReactionCounter,
+    FacebookReaction,
     Meta,
     Source,
 } from '../../../../../models/ticket/types'
-
-import {
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-} from '../../../../../config/ticket.ts'
-
-import FacebookReactionType from '../../../../../constants/integrations/facebook'
-
+import {FacebookReactionType} from '../../../../../constants/integrations/facebook'
 import likeIcon from '../../../../../../img/integrations/facebook-reaction-like.svg'
 import likedIcon from '../../../../../../img/integrations/facebook-reaction-liked.svg'
 import hahaIcon from '../../../../../../img/integrations/facebook-reaction-haha.svg'
@@ -28,48 +20,45 @@ import angryIcon from '../../../../../../img/integrations/facebook-reaction-angr
 import sadIcon from '../../../../../../img/integrations/facebook-reaction-sad.svg'
 import prideIcon from '../../../../../../img/integrations/facebook-reaction-pride.png'
 import careIcon from '../../../../../../img/integrations/facebook-reaction-care.svg'
-
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-
-import type {FacebookReaction} from '../../../../../models/ticket'
+import Loader from '../../../../common/components/Loader/Loader'
+import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 
 import css from './SourceActions.less'
 
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    source?: Source,
-    meta?: Meta,
-    integrationId?: string,
-    messageId?: string,
-    isMessageHidden?: boolean,
-    isMessageDeleted?: boolean,
-    executeAction: typeof infobarActions.executeAction,
-}
+    source?: Source
+    meta?: Meta
+    integrationId?: string | number | null
+    messageId?: string
+    isMessageHidden?: boolean
+    isMessageDeleted?: boolean
+} & ConnectedProps<typeof connector>
 
-export class SourceActionsFooter extends React.Component<Props> {
-    reactionIcons: Object = {
-        [FacebookReactionType.LIKE]: likedIcon,
-        [FacebookReactionType.LOVE]: loveIcon,
-        [FacebookReactionType.SAD]: sadIcon,
-        [FacebookReactionType.ANGRY]: angryIcon,
-        [FacebookReactionType.WOW]: wowIcon,
-        [FacebookReactionType.HAHA]: hahaIcon,
-        [FacebookReactionType.PRIDE]: prideIcon,
-        [FacebookReactionType.CARE]: careIcon,
+export class SourceActionsFooter extends Component<Props> {
+    reactionIcons: Partial<{[key in FacebookReactionType]: string}> = {
+        [FacebookReactionType.Like]: likedIcon,
+        [FacebookReactionType.Love]: loveIcon,
+        [FacebookReactionType.Sad]: sadIcon,
+        [FacebookReactionType.Angry]: angryIcon,
+        [FacebookReactionType.Wow]: wowIcon,
+        [FacebookReactionType.Haha]: hahaIcon,
+        [FacebookReactionType.Pride]: prideIcon,
+        [FacebookReactionType.Care]: careIcon,
     }
 
     _executeAction = (name: string) => {
         const {integrationId, messageId, executeAction} = this.props
         if (integrationId) {
-            executeAction(name, integrationId, undefined, {
+            void executeAction(name, integrationId, undefined, {
                 comment_id: messageId,
             })
         }
     }
 
-    _handlePageReaction = (pageReactionType: string) => {
-        if (pageReactionType === FacebookReactionType.LIKE) {
+    _handlePageReaction = (pageReactionType: FacebookReactionType) => {
+        if (pageReactionType === FacebookReactionType.Like) {
             return (
                 <Badge color="light" pill className={css.pageReactionBadge}>
                     You
@@ -169,16 +158,16 @@ export class SourceActionsFooter extends React.Component<Props> {
         customerReactionType: string
     ) => {
         let totalReactions = reactionCounter.total_reactions
-        let reactionImages = []
+        const reactionImages: ReactNode[] = []
 
         const reactionsCounterKeys = Object.keys(reactionCounter)
         const reactions = reactionsCounterKeys.filter(
             (key) => key !== 'total_reactions'
-        )
+        ) as FacebookReactionType[]
 
         for (let i = 0; i < reactions.length; i++) {
-            let reaction = reactions[i]
-            let reactionCount = reactionCounter[reaction]
+            const reaction = reactions[i]
+            let reactionCount = reactionCounter[reaction]!
 
             if (
                 reaction === customerReactionType ||
@@ -245,7 +234,7 @@ export class SourceActionsFooter extends React.Component<Props> {
         let likingState = 'Liking'
         if (
             pageReaction.reaction_type &&
-            pageReaction.reaction_type === FacebookReactionType.LIKE
+            pageReaction.reaction_type === FacebookReactionType.Like
         ) {
             likingState = 'Unliking'
         }
@@ -273,7 +262,7 @@ export class SourceActionsFooter extends React.Component<Props> {
 
     render() {
         const {source, meta, isMessageHidden, isMessageDeleted} = this.props
-        const widgets = []
+        const widgets: ReactNode[] = []
 
         if (meta?.is_duplicated) {
             return widgets
@@ -284,9 +273,10 @@ export class SourceActionsFooter extends React.Component<Props> {
             !source.type ||
             isMessageHidden ||
             isMessageDeleted ||
-            [FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE].indexOf(
-                source.type
-            ) < 0
+            [
+                TicketMessageSourceType.FacebookComment,
+                TicketMessageSourceType.FacebookMentionComment,
+            ].indexOf(source.type) < 0
         ) {
             return widgets
         }
@@ -353,6 +343,6 @@ export class SourceActionsFooter extends React.Component<Props> {
     }
 }
 
-export default connect(null, {executeAction: infobarActions.executeAction})(
-    SourceActionsFooter
-)
+const connector = connect(null, {executeAction: infobarActions.executeAction})
+
+export default connector(SourceActionsFooter)

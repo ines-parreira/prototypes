@@ -1,32 +1,27 @@
-//@flow
 import React from 'react'
+import {Moment} from 'moment'
 
 import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
-    TicketMessage,
-} from '../../../../../models/ticket'
+} from '../../../../../models/ticket/predicates'
+import {TicketMessage} from '../../../../../models/ticket/types'
+import {HighlightedElements} from '../AuditLogEvent'
 
 import Container from './Container'
 import Message from './Message'
 
-// $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
-type HighlightedElements = {
-    first: number,
-    last: number,
-}
-
 type Props = {
-    id: string,
-    messages: TicketMessage[],
-    ticketId: number,
-    timezone: string,
-    isLastReadMessage: boolean,
-    hasCursor: boolean,
-    lastMessageDatetimeAfterMount: ?moment$Moment,
-    setStatus?: () => void,
-    lastReadMessageId?: number,
-    highlightedElements: HighlightedElements,
+    id: string
+    messages: TicketMessage[]
+    ticketId: number
+    timezone: string
+    isLastReadMessage: boolean
+    hasCursor: boolean
+    lastMessageDatetimeAfterMount: Moment | null
+    setStatus?: () => void
+    lastReadMessageId?: number
+    highlightedElements: HighlightedElements
 }
 
 export default class TicketMessages extends React.Component<Props> {
@@ -42,9 +37,9 @@ export default class TicketMessages extends React.Component<Props> {
         return (
             this.props.highlightedElements &&
             message.from_agent &&
-            !isNaN(message.id) &&
-            this.props.highlightedElements.first <= message.id &&
-            message.id <= this.props.highlightedElements.last
+            !isNaN(message.id!) &&
+            this.props.highlightedElements.first <= message.id! &&
+            message.id! <= this.props.highlightedElements.last
         )
     }
 
@@ -55,7 +50,7 @@ export default class TicketMessages extends React.Component<Props> {
     }
 
     render() {
-        let {messages} = this.props
+        const {messages} = this.props
 
         if (!messages.length) {
             return null

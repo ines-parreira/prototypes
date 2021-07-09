@@ -1,1 +1,1 @@
-export default from './TicketMessages'
+export default from './TicketMessages.tsx'

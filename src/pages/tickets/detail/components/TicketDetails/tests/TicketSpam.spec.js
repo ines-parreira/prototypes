@@ -1,7 +1,7 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 
-import TicketSpam from '../TicketSpam'
+import TicketSpam from '../TicketSpam.tsx'
 
 describe('TicketSpam', () => {
     describe('props', () => {

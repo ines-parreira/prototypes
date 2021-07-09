@@ -12,7 +12,7 @@ import {
     duplicatedHiddenFacebookMessage,
 } from '../../../../../../models/ticket/tests/mocks.ts'
 
-import SourceActionsFooter from '../SourceActionsFooter'
+import SourceActionsFooter from '../SourceActionsFooter.tsx'
 import * as infobarActions from '../../../../../../state/infobar/actions.ts'
 import {
     FACEBOOK_COMMENT_SOURCE,

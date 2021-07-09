@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
-import TicketAssigneeContainer, {TicketAssignee} from '../TicketAssignee'
+import TicketAssignee, {TicketAssigneeContainer} from '../TicketAssignee'
 
 const teams = fromJS({
     all: {
@@ -38,13 +38,15 @@ describe('<TicketAssignee/>', () => {
         }
 
         it('should not display any agent info because there is no assignee', () => {
-            const component = shallow(<TicketAssignee {...defaultProps} />)
+            const component = shallow(
+                <TicketAssigneeContainer {...defaultProps} />
+            )
             expect(component).toMatchSnapshot()
         })
 
         it('should display the info of the agent assigned', () => {
             const component = shallow(
-                <TicketAssignee
+                <TicketAssigneeContainer
                     {...defaultProps}
                     currentAssigneeUser={fromJS({id: 1, name: 'Steve Frizeli'})}
                     profilePictureUrl="profilePictureUrl"
@@ -56,7 +58,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display the email of the agent assigned as its name because it has no name', () => {
             const component = shallow(
-                <TicketAssignee
+                <TicketAssigneeContainer
                     {...defaultProps}
                     users={fromJS([
                         {id: 1, email: 'steve@acme.gorgias.io'},
@@ -74,7 +76,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display the info of the agent assigned even if a team is assigned too', () => {
             const component = shallow(
-                <TicketAssignee
+                <TicketAssigneeContainer
                     {...defaultProps}
                     currentAssigneeUser={fromJS({
                         id: 1,
@@ -89,7 +91,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display the name of the team assigned because there is no user assigned', () => {
             const component = shallow(
-                <TicketAssignee
+                <TicketAssigneeContainer
                     {...defaultProps}
                     currentAssigneeTeam={fromJS({id: 1, name: 'Team 1'})}
                 />
@@ -100,7 +102,10 @@ describe('<TicketAssignee/>', () => {
 
         it('should display users only', () => {
             const component = shallow(
-                <TicketAssignee {...defaultProps} handleTeams={false} />
+                <TicketAssigneeContainer
+                    {...defaultProps}
+                    handleTeams={false}
+                />
             )
 
             expect(component).toMatchSnapshot()
@@ -108,7 +113,10 @@ describe('<TicketAssignee/>', () => {
 
         it('should display teams only', () => {
             const component = shallow(
-                <TicketAssignee {...defaultProps} handleUsers={false} />
+                <TicketAssigneeContainer
+                    {...defaultProps}
+                    handleUsers={false}
+                />
             )
 
             expect(component).toMatchSnapshot()
@@ -116,7 +124,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should not display teams because object is empty', () => {
             const component = shallow(
-                <TicketAssignee {...defaultProps} teams={fromJS([])} />
+                <TicketAssigneeContainer {...defaultProps} teams={fromJS([])} />
             )
 
             expect(component).toMatchSnapshot()
@@ -131,7 +139,7 @@ describe('<TicketAssignee/>', () => {
             teams,
             currentUser: fromJS({id: 1, email: 'steve@acme.gorgias.io'}),
         })
-        const component = shallow(<TicketAssigneeContainer store={store} />)
+        const component = shallow(<TicketAssignee store={store} />)
         expect(component).toMatchSnapshot()
     })
 })

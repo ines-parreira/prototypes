@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import moment from 'moment'
 
-import Container from '../Container.js'
+import Container from '../Container'
 import {
     message,
     duplicatedHiddenFacebookMessage,

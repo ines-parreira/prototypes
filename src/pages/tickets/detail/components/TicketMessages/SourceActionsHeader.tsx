@@ -1,46 +1,37 @@
-//@flow
-import React from 'react'
+import React, {Component, ReactNode} from 'react'
 import classNamesBind from 'classnames/bind'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
-import * as infobarActions from '../../../../../state/infobar/actions.ts'
-import type {Actor, Meta, Source} from '../../../../../models/ticket/types'
-
-import {
-    FACEBOOK_COMMENT_SOURCE,
-    INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE,
-} from '../../../../../config/ticket.ts'
-
-import PrivateReplyButton from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyButton.tsx'
-
-import * as billingSelectors from '../../../../../state/billing/selectors.ts'
+import * as infobarActions from '../../../../../state/infobar/actions'
+import {Actor, Meta, Source} from '../../../../../models/ticket/types'
+import PrivateReplyButton from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyButton'
+import * as billingSelectors from '../../../../../state/billing/selectors'
+import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+import {RootState} from '../../../../../state/types'
 
 import css from './SourceActions.less'
 
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    source?: Source,
-    meta?: Meta,
-    integrationId?: string,
-    messageId?: string,
-    fromAgent: boolean,
-    executeAction: typeof infobarActions.executeAction,
-    ticketMessageId: number,
-    senderId: number,
-    ticketId?: number,
-    bodyText?: string,
-    sender: Actor,
-    messageCreatedDatetime: string,
-    accountHasLegacyPlan: boolean,
-}
+    source?: Source
+    meta?: Meta
+    integrationId: number | null
+    messageId?: string
+    fromAgent: boolean
+    ticketMessageId: number
+    senderId: number
+    ticketId?: number
+    bodyText?: string
+    sender: Actor
+    messageCreatedDatetime: string
+} & ConnectedProps<typeof connector>
 
-export class SourceActionsHeader extends React.Component<Props> {
+export class SourceActionsHeader extends Component<Props> {
     _executeAction = (name: string) => {
         const {integrationId, messageId, executeAction} = this.props
         if (integrationId) {
-            executeAction(name, integrationId, undefined, {
+            void executeAction(name, integrationId, undefined, {
                 comment_id: messageId,
             })
         }
@@ -74,17 +65,18 @@ export class SourceActionsHeader extends React.Component<Props> {
             accountHasLegacyPlan,
         } = this.props
 
-        const widgets = []
+        const widgets: ReactNode[] = []
 
         if (!source || !source.type || meta?.is_duplicated) {
             return widgets
         }
 
         const isInstagramComment = [
-            INSTAGRAM_COMMENT_SOURCE,
-            INSTAGRAM_AD_COMMENT_SOURCE,
+            TicketMessageSourceType.InstagramComment,
+            TicketMessageSourceType.InstagramAdComment,
         ].includes(source.type)
-        const isFacebookComment = source.type === FACEBOOK_COMMENT_SOURCE
+        const isFacebookComment =
+            source.type === TicketMessageSourceType.FacebookComment
 
         // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.
         // So we don't even display the `hide` button to avoid frustration.
@@ -104,12 +96,12 @@ export class SourceActionsHeader extends React.Component<Props> {
                 widgets.push(
                     <PrivateReplyButton
                         key="private_reply-action"
-                        integrationId={integrationId}
-                        messageId={messageId}
+                        integrationId={integrationId!}
+                        messageId={messageId!}
                         ticketMessageId={ticketMessageId}
                         senderId={senderId}
-                        ticketId={ticketId}
-                        commentMessage={bodyText}
+                        ticketId={ticketId!}
+                        commentMessage={bodyText!}
                         source={source}
                         sender={sender}
                         meta={meta}
@@ -157,12 +149,15 @@ export class SourceActionsHeader extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
+const connector = connect(
+    (state: RootState) => {
+        return {
+            accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
+        }
+    },
+    {
+        executeAction: infobarActions.executeAction,
     }
-}
+)
 
-export default connect(mapStateToProps, {
-    executeAction: infobarActions.executeAction,
-})(SourceActionsHeader)
+export default connector(SourceActionsHeader)

@@ -1,7 +1,7 @@
 import React from 'react'
 import {mount} from 'enzyme'
 
-import Body from '../Body'
+import Body from '../Body.tsx'
 
 describe('Body', () => {
     it("should display the Facebook carousel if there's matching metadata", () => {

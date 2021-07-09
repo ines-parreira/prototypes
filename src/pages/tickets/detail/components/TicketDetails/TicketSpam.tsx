@@ -1,16 +1,14 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip.tsx'
+import Tooltip from '../../../../common/components/Tooltip'
 
 type Props = {
-    className: ?string,
-    spam: ?boolean,
+    className?: string
+    spam?: boolean
 }
 
-export default class TicketSpam extends React.Component<Props> {
-    static defaultProps = {
-        className: null,
+export default class TicketSpam extends Component<Props> {
+    static defaultProps: Pick<Props, 'spam'> = {
         spam: false,
     }
 

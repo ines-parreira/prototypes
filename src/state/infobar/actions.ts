@@ -111,12 +111,12 @@ export const fetchPreviewCustomer = (customerId: string) => (
  */
 export const executeAction = (
     actionName: string,
-    integrationId: string,
+    integrationId: string | number,
     customerId?: string,
     payload: {
         order_id?: Maybe<number>
         customer_id?: number
-        comment_id?: number
+        comment_id?: number | string
         draft_order_id?: number
         draft_order_name?: string
         draft_order_invoice?: unknown

@@ -1,5 +1,6 @@
 import {findDOMNode} from 'react-dom'
 import scrollIntoView from 'scroll-into-view-if-needed'
+import {Component} from 'react'
 
 /**
  * Scroll DOM node into view
@@ -15,7 +16,7 @@ function scrollToNode(node: HTMLElement) {
 /**
  * Scroll React component into view
  */
-export function scrollToReactNode(node: HTMLElement) {
+export function scrollToReactNode(node: HTMLElement | Component) {
     return scrollToNode(findDOMNode(node) as HTMLElement)
 }
 

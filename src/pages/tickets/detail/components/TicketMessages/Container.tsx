@@ -1,12 +1,12 @@
-//@flow
-import React, {type Node} from 'react'
+import React, {Component, ReactNode} from 'react'
 import classNamesBind from 'classnames/bind'
-import moment from 'moment'
-import {fromJS} from 'immutable/dist/immutable'
+import moment, {Moment} from 'moment'
+import {fromJS, Map} from 'immutable'
 
-import {scrollToReactNode} from '../../../../common/utils/keyboard.ts'
-import Avatar from '../../../../common/components/Avatar'
-import {TicketMessage, isFailed, isPending} from '../../../../../models/ticket'
+import {scrollToReactNode} from '../../../../common/utils/keyboard'
+import Avatar from '../../../../common/components/Avatar/Avatar'
+import {isFailed, isPending} from '../../../../../models/ticket/predicates'
+import {TicketMessage} from '../../../../../models/ticket/types'
 
 import css from './Container.less'
 import Header from './Header'
@@ -15,20 +15,20 @@ import Footer from './Footer'
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    id: string,
-    className?: string,
-    message: TicketMessage,
-    hasCursor: boolean,
-    lastMessageDatetimeAfterMount: ?moment$Moment,
-    children?: Node,
-    timezone: string,
-    isLastRead: boolean,
-    isMessageHidden: boolean,
-    isMessageDeleted: boolean,
-    isBodyHighlighted: boolean,
+    id: string
+    className?: string
+    message: TicketMessage
+    hasCursor: boolean
+    lastMessageDatetimeAfterMount: Moment | null
+    children?: ReactNode
+    timezone: string
+    isLastRead: boolean
+    isMessageHidden: boolean
+    isMessageDeleted: boolean
+    isBodyHighlighted: boolean
 }
 
-export default class Container extends React.Component<Props> {
+export default class Container extends Component<Props> {
     componentDidUpdate(prevProps: Props) {
         // only if it just got the cursor.
         // to prevent focusing on the cursor item when a different one updates.
@@ -47,7 +47,7 @@ export default class Container extends React.Component<Props> {
             isMessageHidden,
             isMessageDeleted,
         } = this.props
-        const sender = fromJS(message.sender || {})
+        const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
 
         const isMessageDuplicated = message?.meta?.is_duplicated
@@ -62,7 +62,7 @@ export default class Container extends React.Component<Props> {
                         email={message.from_agent ? null : sender.get('email')}
                         name={sender.get('name')}
                         url={sender.getIn(['meta', 'profile_picture_url'])}
-                        size="36"
+                        size={36}
                     />
                 </div>
             )

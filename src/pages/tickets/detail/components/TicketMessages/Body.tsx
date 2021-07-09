@@ -1,19 +1,18 @@
-// @flow
 import React from 'react'
 import classNamesBind from 'classnames/bind'
 
-import FacebookCarousel from '../FacebookCarousel'
-import type {TicketMessage} from '../../../../../models/ticket/types'
+import FacebookCarousel from '../FacebookCarousel.js'
+import {TicketMessage} from '../../../../../models/ticket/types'
 
 import css from './Body.less'
-import Content from './Content.tsx'
+import Content from './Content'
 
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    message: TicketMessage,
-    className?: string,
-    hasError?: boolean,
+    message: TicketMessage
+    className?: string
+    hasError?: boolean
 }
 
 const Body = (props: Props) => {
