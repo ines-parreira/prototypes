@@ -4,12 +4,16 @@ import {Button, Container} from 'reactstrap'
 
 import {readHelpcenterById} from '../../../../state/entities/helpCenters/selectors'
 
+import {HelpCenterLocale} from '../../../../models/helpCenter/types'
+
 import PageHeader from '../../../common/components/PageHeader'
 import Tooltip from '../../../common/components/Tooltip'
 
 import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
 import {LanguagePreferencesSettings} from '../providers/LanguagePreferencesSettings'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+
+import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {DefaultLanguageSelect} from './DefaultLanguageSelect'
@@ -25,49 +29,59 @@ export const HelpCenterPreferencesView = () => {
 
     return (
         <div className="full-width">
-            <PageHeader
-                title={
-                    <HelpCenterDetailsBreadcrumb
-                        helpcenterName={data.name}
-                        activeLabel="Preferences"
-                    />
-                }
-            />
-            <HelpCenterNavigation helpcenterId={helpcenterId} />
-            <LanguagePreferencesSettings helpcenterId={helpcenterId}>
-                <Container
-                    fluid
-                    className="page-container"
-                    style={{maxWidth: 680, marginLeft: 0}}
-                >
-                    <DefaultLanguageSelect
-                        localesAvailable={getLocalesResponseFixture}
-                    />
-                    <AvailableLanguagesTags />
-                    <footer
-                        style={{marginTop: 64, display: 'inline-flex'}}
-                        ref={$ref}
+            <SupportedLocalesProvider>
+                <PageHeader
+                    title={
+                        <HelpCenterDetailsBreadcrumb
+                            helpcenterName={data.name}
+                            activeLabel="Preferences"
+                        />
+                    }
+                />
+                <HelpCenterNavigation helpcenterId={helpcenterId} />
+                <LanguagePreferencesSettings helpcenterId={helpcenterId}>
+                    <Container
+                        fluid
+                        className="page-container"
+                        style={{maxWidth: 680, marginLeft: 0}}
                     >
-                        <Button
-                            disabled
-                            color="success"
-                            style={{pointerEvents: 'none', cursor: 'disabled'}}
+                        <DefaultLanguageSelect
+                            localesAvailable={
+                                getLocalesResponseFixture as HelpCenterLocale[]
+                            }
+                        />
+                        <AvailableLanguagesTags />
+                        <footer
+                            style={{marginTop: 64, display: 'inline-flex'}}
+                            ref={$ref}
                         >
-                            Save Changes
-                        </Button>
-                        <Button
-                            disabled
-                            className="ml-2"
-                            style={{pointerEvents: 'none', cursor: 'disabled'}}
-                        >
-                            Cancel
-                        </Button>
-                    </footer>
-                    <Tooltip placement="left" target={$ref}>
-                        Not supported right now
-                    </Tooltip>
-                </Container>
-            </LanguagePreferencesSettings>
+                            <Button
+                                disabled
+                                color="success"
+                                style={{
+                                    pointerEvents: 'none',
+                                    cursor: 'disabled',
+                                }}
+                            >
+                                Save Changes
+                            </Button>
+                            <Button
+                                disabled
+                                className="ml-2"
+                                style={{
+                                    pointerEvents: 'none',
+                                    cursor: 'disabled',
+                                }}
+                            >
+                                Cancel
+                            </Button>
+                        </footer>
+                        <Tooltip placement="left" target={$ref}>
+                            Not supported right now
+                        </Tooltip>
+                    </Container>
+                </LanguagePreferencesSettings>
+            </SupportedLocalesProvider>
         </div>
     )
 }

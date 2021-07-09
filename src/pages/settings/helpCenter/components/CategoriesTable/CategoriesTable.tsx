@@ -12,12 +12,15 @@ import {
     TableBodyProps,
 } from './components/CategoriesTableBody'
 
-type Props = Partial<TableBodyProps>
+type Props = Partial<TableBodyProps> & {
+    onReorderFinish?: (categories: Category[]) => void
+}
 
 export const CategoriesTable = ({
     categories = [],
     renderArticleList,
     onRowClick,
+    onReorderFinish,
 }: Props): JSX.Element => {
     const [records, setRecords] = React.useState(
         chain(categories)
@@ -50,6 +53,10 @@ export const CategoriesTable = ({
         }
     }
 
+    const handleOnReorderFinish = () => {
+        onReorderFinish && onReorderFinish(records)
+    }
+
     return (
         <TableWrapper>
             <TableHead>
@@ -63,6 +70,7 @@ export const CategoriesTable = ({
                 renderArticleList={renderArticleList}
                 onRowClick={onRowClick}
                 onMoveEntity={handleOnDropCategory}
+                onDropEntity={handleOnReorderFinish}
             />
         </TableWrapper>
     )

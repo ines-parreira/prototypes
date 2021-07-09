@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDrag, useDrop} from 'react-dnd'
+import {useDrag, useDrop, DropTargetMonitor} from 'react-dnd'
 
 type DragItemRequired = {
     type: string
@@ -15,6 +15,7 @@ type useReorderDnDInterface = {
 
 export type Callbacks = {
     onHover?: (dragIndex: number, hoverIndex: number) => void
+    onDrop?: (item: unknown, monitor: DropTargetMonitor) => void
 }
 
 export const useReorderDnD = <ItemType extends DragItemRequired>(
@@ -30,6 +31,11 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
+            }
+        },
+        drop(item: ItemType, monitor) {
+            if (callbacks.onDrop) {
+                callbacks.onDrop(item, monitor)
             }
         },
         hover(item: ItemType, monitor) {

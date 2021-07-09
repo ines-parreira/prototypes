@@ -1,6 +1,11 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
+import {
+    LocaleCode,
+    HelpCenterLocale,
+} from '../../../../../../models/helpCenter/types'
+
 import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
 
@@ -11,8 +16,8 @@ const mockedOnResize = jest.fn()
 describe('<HelpCenterEditModalHeader/>', () => {
     const props = {
         title: 'Article',
-        language: 'fr-fr',
-        languageOptions: getLocalesResponseFixture,
+        language: 'fr-FR' as LocaleCode,
+        languageOptions: getLocalesResponseFixture as HelpCenterLocale[],
         onChangeLanguage: mockedOnChangeLanguage,
         onClose: mockedOnClose,
     }

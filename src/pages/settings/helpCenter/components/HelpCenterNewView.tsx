@@ -20,6 +20,7 @@ import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures
 import {
     HelpCenterLocale,
     CreateHelpCenterInput,
+    LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
@@ -36,7 +37,7 @@ type Props = ConnectedProps<typeof connector>
 
 const initialFormState: CreateHelpCenterInput = {
     name: '',
-    default_locale: HELP_CENTER_LANGUAGE_DEFAULT,
+    default_locale: HELP_CENTER_LANGUAGE_DEFAULT as LocaleCode,
 }
 
 let helpCenterClient: HelpCenterClient
@@ -56,7 +57,9 @@ export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
             try {
                 helpCenterClient = await getHelpCenterClient()
                 // Retrieve the default locale options from the API
-                setLocaleOptions(getLocalesResponseFixture)
+                setLocaleOptions(
+                    getLocalesResponseFixture as HelpCenterLocale[]
+                )
             } catch (err) {
                 notify({
                     message:

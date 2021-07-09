@@ -2,6 +2,8 @@ import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import keyBy from 'lodash/keyBy'
 
+import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
+
 import HelpCenterTable from '../HelpCenterTable'
 import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
@@ -13,7 +15,10 @@ describe('<HelpCenterTable/>', () => {
     const props = {
         isLoading: false,
         list: getHelpcentersResponseFixture,
-        locales: keyBy(getLocalesResponseFixture, 'code'),
+        locales: keyBy<HelpCenterLocale>(
+            getLocalesResponseFixture as HelpCenterLocale[],
+            'code'
+        ),
         // toggle: mockedToggle,
         onClick: mockedOnClick,
     }

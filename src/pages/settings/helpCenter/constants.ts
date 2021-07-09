@@ -63,3 +63,24 @@ export const SOCIAL_NAVIGATION_LINKS: Record<
 
 // 5Mb
 export const MAX_IMAGE_SIZE = 5 * 1000 * 1000
+
+export enum MODALS {
+    CATEGORY = 'CATEGORY',
+    ARTICLE = 'ARTICLE',
+}
+
+export const ARTICLE_ROW_ACTIONS = [
+    {
+        name: 'articleSettings',
+        icon: 'settings',
+        // tooltip: 'Article settings',
+    },
+    {
+        name: 'duplicateArticle',
+        icon: 'content_copy',
+    },
+    {
+        name: 'copyToClipboard',
+        icon: 'link',
+    },
+]

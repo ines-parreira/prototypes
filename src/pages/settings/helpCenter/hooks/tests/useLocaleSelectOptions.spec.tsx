@@ -1,7 +1,10 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {LocaleCode} from '../../../../../models/helpCenter/types'
+import {
+    LocaleCode,
+    HelpCenterLocale,
+} from '../../../../../models/helpCenter/types'
 
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
@@ -11,7 +14,7 @@ const availableLanguages = ['en-US']
 
 const Example = () => {
     const options = useLocaleSelectOptions(
-        getLocalesResponseFixture,
+        getLocalesResponseFixture as HelpCenterLocale[],
         availableLanguages as LocaleCode[]
     )
 

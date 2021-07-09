@@ -10,7 +10,13 @@ import {
     InputGroup,
 } from 'reactstrap'
 
-import {HelpCenter, LocaleCode} from '../../../../../../models/helpCenter/types'
+import {
+    HelpCenter,
+    CategoryTranslation,
+    Category,
+    LocaleCode,
+    CreateCategoryDto,
+} from '../../../../../../models/helpCenter/types'
 
 import {Drawer} from '../../../../../common/components/Drawer'
 
@@ -20,51 +26,54 @@ import {
 } from '../../../constants'
 import {slugify} from '../../../utils/helpCenter.utils'
 
-import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
-import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
-
-import {ArticleLanguageSelect} from '../ArticleLanguageSelect'
-
 import css from './HelpCenterCategory.less'
 
 type Props = {
     isOpen: boolean
+    isCreate?: boolean
+    isLoading: boolean
     helpCenter: HelpCenter | null
-    getCategory: () => Promise<unknown>
+    category: Category | null
+    onCreate?: (payload: CreateCategoryDto) => void
+    onSave?: (payload: Partial<CategoryTranslation>, locale: LocaleCode) => void
     onClose: () => void
 }
 
 export const HelpCenterCategory = ({
     isOpen,
+    isCreate,
+    isLoading,
+    category,
     helpCenter,
-    getCategory,
+    onSave,
+    onCreate,
     onClose,
 }: Props): JSX.Element => {
-    const [isLoading, setLoading] = React.useState(true)
-    const [title, setTitle] = React.useState('')
-    const [slug, setSlug] = React.useState('')
+    const [title, setTitle] = React.useState(category?.translation?.title || '')
+    const [slug, setSlug] = React.useState(category?.translation?.slug || '')
     const [isPristineSlug, setPristineSlug] = React.useState(true)
-    const [description, setDescription] = React.useState('')
+    const [description, setDescription] = React.useState(
+        category?.translation?.description || ''
+    )
     const [currentLocale, setCurrentLocale] = React.useState(
-        HELP_CENTER_LANGUAGE_DEFAULT
+        category?.translation?.locale || HELP_CENTER_LANGUAGE_DEFAULT
     )
 
     React.useEffect(() => {
         if (isOpen) {
-            getCategory()
-                .then(() => {
-                    setLoading(false)
-                })
-                .catch((err) => {
-                    throw err
-                })
+            setTitle(category?.translation?.title || '')
+            setSlug(category?.translation?.slug || '')
+            setDescription(category?.translation?.description || '')
+            setCurrentLocale(
+                category?.translation?.locale || HELP_CENTER_LANGUAGE_DEFAULT
+            )
         } else {
             setTitle('')
             setSlug('')
             setDescription('')
             setCurrentLocale(HELP_CENTER_LANGUAGE_DEFAULT)
         }
-    }, [isOpen])
+    }, [isOpen, category])
 
     const handleChangeTitle = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(ev.target.value)
@@ -88,25 +97,49 @@ export const HelpCenterCategory = ({
         setDescription(ev.target.value)
     }
 
-    // TODO: add the helpcenter.supported_languages
-    const options = useLocaleSelectOptions(getLocalesResponseFixture, [
-        (helpCenter?.default_locale as LocaleCode) ||
-            HELP_CENTER_LANGUAGE_DEFAULT,
-        'fr-FR',
-        'de-DE',
-        'es-ES',
-    ])
+    const handleOnSave = () => {
+        if (isCreate) {
+            onCreate &&
+                onCreate({
+                    translation: {
+                        title,
+                        slug,
+                        description,
+                        locale: currentLocale,
+                    },
+                })
+            return
+        }
+        onSave &&
+            onSave(
+                {
+                    title,
+                    slug,
+                    description,
+                },
+                currentLocale
+            )
+    }
+
+    // const options = useLocaleSelectOptions(getLocalesResponseFixture, [
+    //     helpCenter?.default_locale || HELP_CENTER_LANGUAGE_DEFAULT,
+    // ])
 
     const content = () => (
         <>
             <Drawer.Header>
                 <span className={css.title}>Category Settings</span>
                 <Drawer.HeaderActions>
-                    <ArticleLanguageSelect
+                    {
+                        // TODO: Uncomment this when we support locales
+                        /* <ArticleLanguageSelect
                         selected={currentLocale}
                         list={options}
-                        onSelect={(_, value) => setCurrentLocale(value)}
-                    />
+                        onSelect={(_, value) =>
+                            setCurrentLocale(value as LocaleCode)
+                        }
+                    /> */
+                    }
                     <button
                         type="button"
                         data-testid="close-drawer"
@@ -180,6 +213,7 @@ export const HelpCenterCategory = ({
                     data-testid="button-save"
                     color="primary"
                     disabled={Boolean(title === '' || slug === '')}
+                    onClick={handleOnSave}
                 >
                     Save
                 </Button>

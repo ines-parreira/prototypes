@@ -3,7 +3,8 @@ import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
 import classnames from 'classnames'
-import keyBy from 'lodash/keyBy'
+import copy from 'copy-to-clipboard'
+import {chain} from 'lodash'
 
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
@@ -16,13 +17,12 @@ import {
     helpCenterArticleUpdated,
 } from '../../../../state/entities/helpCenterArticles/actions'
 import {
-    Category,
     CreateArticleInput,
-    HelpCenter,
     HelpCenterArticle,
     HelpCenterArticleTranslation,
     HelpCenterLocaleCode,
     UpdateHelpCenterArticleTranslationInput,
+    HelpCenterLocale,
 } from '../../../../models/helpCenter/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {
@@ -30,8 +30,10 @@ import {
     HelpCenterClient,
 } from '../../../../../../../rest_api/help_center_api/index'
 
+import {useModalManager, Event} from '../../../../hooks/useModalManager'
+
 import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
-import {getCategoriesResponseEnglish} from '../fixtures/getCategoriesResponse.fixtures'
+import {MODALS, HELP_CENTER_DOMAIN} from '../constants'
 
 import {
     getNewTranslation,
@@ -39,8 +41,12 @@ import {
     slugify,
 } from '../utils/helpCenter.utils'
 import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
+import {CategoriesViews} from '../providers/CategoriesView'
+import {SupportedLocalesProvider} from '../providers/SupportedLocales'
+import {CategoryDrawer} from '../providers/CategoryDrawer'
+import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 
-import {CategoriesTable} from './CategoriesTable'
+import {ArticlesTable} from './ArticlesTable'
 import CreateFirst from './articles/CreateFirst'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
@@ -50,10 +56,9 @@ import HelpCenterEditArticleForm from './articles/HelpCenterEditArticleForm'
 import HelpCenterEditAdvancedArticleForm from './articles/HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalHeader from './articles/HelpCenterEditModalHeader'
 import HelpCenterEditModalFooter from './articles/HelpCenterEditModalFooter'
-import {HelpCenterCategory} from './articles/HelpCenterCategory'
+// import {HelpCenterCategory} from './articles/HelpCenterCategory'
 
 import css from './HelpCenterArticlesView.less'
-import {ArticlesTable} from './ArticlesTable'
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
@@ -64,32 +69,6 @@ enum HelpCenterModalContent {
 
 let helpCenterClient: HelpCenterClient
 
-type DictionaryCategory = {
-    [key: number]: Category
-}
-
-// TODO: Transform this into a selector once we plug this to the API
-function readCategoriesWithArticles(
-    categories: Partial<Category>[],
-    articles: HelpCenterArticle[]
-): DictionaryCategory {
-    const output = keyBy(
-        categories.map((category) => ({
-            ...category,
-            articles: [] as HelpCenterArticle[],
-        })),
-        'id'
-    ) as DictionaryCategory
-
-    articles.forEach((article) => {
-        if (article.category_id && output[article.category_id]) {
-            output[article.category_id].articles.push(article)
-        }
-    })
-
-    return output
-}
-
 export const HelpCenterArticlesView = ({
     articles,
     helpCenterArticleCreated,
@@ -99,7 +78,9 @@ export const HelpCenterArticlesView = ({
     notify,
     match,
 }: Props) => {
-    const [helpCenter, setHelpCenter] = useState<HelpCenter | null>(null)
+    const helpCenterId = parseInt(
+        (match.params as {helpcenterId: string}).helpcenterId
+    )
     const [editModal, setEditModal] = useState<HelpCenterModalContent | null>(
         null
     )
@@ -119,42 +100,45 @@ export const HelpCenterArticlesView = ({
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
-    const [isCategoryDrawerOpen, setCategoryDrawerOpen] = useState(false)
+
+    const helpCenter = useCurrentHelpCenter(helpCenterId).data
+    const categoryModal = useModalManager(MODALS.CATEGORY)
+    const articleModal = useModalManager(MODALS.ARTICLE)
+
     const screenSize = useScreenSize()
-    const helpCenterId = parseInt(
-        (match.params as {helpcenterId: string}).helpcenterId
-    )
+
+    useEffect(() => {
+        articleModal.on(MODALS.ARTICLE, Event.afterOpen, createArticle)
+    }, [])
 
     useEffect(() => {
         async function init() {
             setIsLoading(true)
             try {
                 helpCenterClient = await getHelpCenterClient()
-                const {data: helpCenter} = await helpCenterClient.getHelpCenter(
-                    {
-                        id: helpCenterId,
-                    }
-                )
-                setHelpCenter(helpCenter)
-                const {
-                    data: {data: articles},
-                } = await helpCenterClient.listArticles({
-                    help_center_id: helpCenter.id,
-                    locale: helpCenter.default_locale,
-                })
-                helpCenterArticlesFetched(articles)
+                if (helpCenter) {
+                    const {
+                        data: {data: articles},
+                    } = await helpCenterClient.listArticles({
+                        help_center_id: helpCenter.id,
+                        locale: helpCenter.default_locale,
+                        has_category: false,
+                    })
+                    helpCenterArticlesFetched(articles)
+                }
             } catch (err) {
                 void notify({
                     message: 'Failed to retrieve the article list',
                     status: NotificationStatus.Error,
                 })
+                console.error(err)
             } finally {
                 setIsLoading(false)
             }
         }
 
         void init()
-    }, [])
+    }, [helpCenter])
 
     // Make sure to exit fullscreen mode when modal view changes
     useEffect(() => {
@@ -204,6 +188,11 @@ export const HelpCenterArticlesView = ({
         void updateSelectedArticleTranslations()
     }, [selectedArticle])
 
+    const handleOnArticleModalClose = () => {
+        articleModal.closeModal()
+        setEditModal(null)
+    }
+
     const articleList = useMemo(
         () =>
             Object.values(articles).sort(
@@ -252,9 +241,11 @@ export const HelpCenterArticlesView = ({
                         <HelpCenterEditModalHeader
                             title={selectedArticle.translation.title}
                             isFullscreen={fullscreenEditModal}
-                            languageOptions={localeOptions}
+                            languageOptions={
+                                localeOptions as HelpCenterLocale[]
+                            }
                             onChangeLanguage={switchArticleTranslation}
-                            onClose={() => setEditModal(null)}
+                            onClose={handleOnArticleModalClose}
                             onResize={
                                 screenSize !== SCREEN_SIZE.SMALL
                                     ? () =>
@@ -324,10 +315,12 @@ export const HelpCenterArticlesView = ({
                                 selectedArticle.translation.locale ||
                                 helpCenter.default_locale
                             }
-                            languageOptions={localeOptions}
+                            languageOptions={
+                                localeOptions as HelpCenterLocale[]
+                            }
                             onChangeLanguage={switchArticleTranslation}
                             title="Article Settings"
-                            onClose={() => setEditModal(null)}
+                            onClose={handleOnArticleModalClose}
                             toggleModalBtn={
                                 <button
                                     type="button"
@@ -386,10 +379,109 @@ export const HelpCenterArticlesView = ({
         setEditModal(HelpCenterModalContent.ARTICLE)
     }
 
-    const editArticleSettings = (article: HelpCenterArticle) => {
-        setSelectedArticleTranslations(null)
-        setSelectedArticle(article)
-        setEditModal(HelpCenterModalContent.ARTICLE_ADVANCED)
+    const editArticleSettings = async (
+        action: string,
+        article: HelpCenterArticle
+    ) => {
+        if (action === 'articleSettings') {
+            setSelectedArticleTranslations(null)
+            setSelectedArticle(article)
+            setEditModal(HelpCenterModalContent.ARTICLE_ADVANCED)
+        }
+
+        if (action === 'copyToClipboard') {
+            if (article?.translation && helpCenter?.subdomain) {
+                try {
+                    copy(
+                        `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/${article.translation.slug}`
+                    )
+                    void notify({
+                        message: 'Successfully copied the link',
+                        status: NotificationStatus.Success,
+                    })
+                } catch (err) {
+                    void notify({
+                        message: 'Failed to copy the link',
+                        status: NotificationStatus.Error,
+                    })
+                    console.error(err)
+                }
+            }
+            return
+        }
+
+        if (action === 'duplicateArticle') {
+            if (!article.translation) {
+                void notify({
+                    message: 'Failed to duplicate the article',
+                    status: NotificationStatus.Error,
+                })
+                return
+            }
+
+            const payload: CreateArticleInput = {
+                translation: {
+                    locale: article.translation?.locale,
+                    content: article.translation.content || '',
+                    excerpt: article.translation.excerpt,
+                    slug: `${article.translation.slug}-1`,
+                    title: `${
+                        article.translation
+                            ? article.translation?.title
+                            : 'Untitled'
+                    } (1)`,
+                },
+            }
+
+            if ((article?.category_id as number) >= 0) {
+                payload['category_id'] = article.category_id
+            }
+
+            try {
+                const translations = await helpCenterClient
+                    .listArticleTranslations({
+                        help_center_id: helpCenterId,
+                        article_id: article.id,
+                    })
+                    .then((response) => response.data.data)
+
+                const duplicateArticle = await helpCenterClient
+                    .createArticle(
+                        {
+                            help_center_id: helpCenterId,
+                        },
+                        payload
+                    )
+                    .then((response) => response.data)
+
+                await Promise.all(
+                    translations.map((translation) =>
+                        helpCenterClient.updateArticleTranslation(
+                            {
+                                help_center_id: helpCenterId,
+                                article_id: duplicateArticle.id,
+                                locale: translation.locale,
+                            },
+                            {
+                                title: `${translation.title} (1)`,
+                                excerpt: translation.excerpt,
+                                content: translation.content,
+                                slug: `${translation.slug}-1`,
+                            }
+                        )
+                    )
+                )
+                void notify({
+                    message: 'Duplicated the article with success',
+                    status: NotificationStatus.Success,
+                })
+            } catch (err) {
+                void notify({
+                    message: 'Failed to duplicate the article',
+                    status: NotificationStatus.Error,
+                })
+            }
+        }
     }
 
     const switchArticleTranslation = (locale: HelpCenterLocaleCode) => {
@@ -457,6 +549,8 @@ export const HelpCenterArticlesView = ({
         }
         // Create Article
         else {
+            const articleModalParams = articleModal.getParams()
+
             const createArticleInput: CreateArticleInput = {
                 translation: {
                     title: selectedArticle.translation.title,
@@ -466,6 +560,12 @@ export const HelpCenterArticlesView = ({
                     locale: selectedArticle.translation.locale,
                 },
             }
+
+            if (articleModalParams && articleModalParams?.categoryId >= 0) {
+                createArticleInput['category_id'] =
+                    articleModalParams.categoryId
+            }
+
             try {
                 const {
                     data: createdArticle,
@@ -512,6 +612,35 @@ export const HelpCenterArticlesView = ({
         }
     }
 
+    const handleOnReorder = (
+        categoryId: number,
+        articles: HelpCenterArticle[]
+    ): void => {
+        if (helpCenterClient && helpCenter) {
+            const sortedArticles = chain(articles)
+                .sortBy(['position'])
+                .map((article) => article.id)
+                .value()
+
+            if (categoryId >= 0) {
+                void helpCenterClient.setArticlesPositionsInCategory(
+                    {
+                        help_center_id: helpCenter.id,
+                        category_id: categoryId,
+                    },
+                    sortedArticles
+                )
+            } else {
+                void helpCenterClient.setUncategorizedArticlesPositions(
+                    {
+                        help_center_id: helpCenter.id,
+                    },
+                    sortedArticles
+                )
+            }
+        }
+    }
+
     return (
         <div className={classnames('full-width', css.wrapper)}>
             <PageHeader
@@ -524,17 +653,27 @@ export const HelpCenterArticlesView = ({
                     )
                 }
             >
-                <Button onClick={() => setCategoryDrawerOpen(true)}>
+                <Button
+                    className="mr-2"
+                    onClick={() =>
+                        categoryModal.openModal(MODALS.CATEGORY, true, {
+                            isCreate: true,
+                        })
+                    }
+                >
                     Create Category
+                </Button>
+                <Button color="success" onClick={createArticle}>
+                    Create Article
                 </Button>
             </PageHeader>
             <HelpCenterNavigation helpcenterId={helpCenterId} />
-            {isLoading ? (
+            {isLoading && helpCenter === null ? (
                 <Container fluid className="page-container">
                     <Loader />
                 </Container>
             ) : (
-                <>
+                <SupportedLocalesProvider>
                     <Container fluid className="page-container">
                         <CreateFirst
                             title="Create your first article 📚"
@@ -544,44 +683,32 @@ export const HelpCenterArticlesView = ({
                             onClick={createArticle}
                         />
                     </Container>
-                    <CategoriesTable
-                        categories={Object.values(
-                            readCategoriesWithArticles(
-                                getCategoriesResponseEnglish.data,
-                                articleList
-                            )
-                        )}
-                        renderArticleList={(category) => (
-                            <ArticlesTable
-                                isNested
-                                categoryId={category.id}
-                                list={category.articles}
-                                onClick={selectArticle}
-                                onClickSettings={editArticleSettings}
-                            />
-                        )}
-                    />
+                    {helpCenter && (
+                        <CategoriesViews
+                            helpcenter={helpCenter}
+                            renderArticleList={(category) => (
+                                <ArticlesTable
+                                    isNested
+                                    categoryId={category.id}
+                                    list={category.articles}
+                                    onClick={selectArticle}
+                                    onReorderFinish={handleOnReorder}
+                                    onClickSettings={editArticleSettings}
+                                />
+                            )}
+                        />
+                    )}
 
                     {articleList.length > 0 && (
                         <HelpCenterArticleList
                             label="uncategorised articles"
-                            list={articleList.filter(
-                                (article) => !article.category_id
-                            )}
+                            list={articleList}
                             onClick={selectArticle}
+                            onReorderFinish={handleOnReorder}
                             onClickSettings={editArticleSettings}
                         />
                     )}
-                    <HelpCenterCategory
-                        helpCenter={helpCenter}
-                        isOpen={isCategoryDrawerOpen}
-                        getCategory={() =>
-                            new Promise((resolve) => {
-                                setTimeout(resolve, 500)
-                            })
-                        }
-                        onClose={() => setCategoryDrawerOpen(false)}
-                    />
+                    {helpCenter && <CategoryDrawer helpCenter={helpCenter} />}
                     <HelpCenterEditModal
                         open={Boolean(editModal)}
                         fullscreen={
@@ -593,7 +720,7 @@ export const HelpCenterArticlesView = ({
                     >
                         {getEditModalContent()}
                     </HelpCenterEditModal>
-                </>
+                </SupportedLocalesProvider>
             )}
         </div>
     )

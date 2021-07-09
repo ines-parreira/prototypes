@@ -18,6 +18,7 @@ export const CategoriesTableBody = ({
     renderArticleList,
     onRowClick,
     onMoveEntity,
+    onDropEntity,
 }: TableBodyProps): JSX.Element => {
     return (
         <TableBody className={css['main-table']}>
@@ -28,6 +29,7 @@ export const CategoriesTableBody = ({
                     renderArticleList={renderArticleList}
                     onRowClick={onRowClick}
                     onMoveEntity={onMoveEntity}
+                    onDropEntity={onDropEntity}
                 />
             ))}
         </TableBody>

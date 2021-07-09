@@ -127,6 +127,7 @@ export const HelpCenterCustomizationView = () => {
         allowEmpty: true,
     })
 
+    // TODO: Uncomment this when we support locales
     // const localesOptions = useLocaleSelectOptions(
     //     getLocalesResponseFixture,
     //     data?.supported_locales

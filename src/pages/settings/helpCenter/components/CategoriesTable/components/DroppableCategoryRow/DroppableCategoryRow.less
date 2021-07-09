@@ -12,9 +12,29 @@
         font-size: 22px;
     }
 
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        opacity: 0;
+
+        transition: opacity 250ms ease;
+    }
+
     .caret-placeholder {
         width: 22px;
         margin-right: 16px;
+    }
+
+    .row {
+        background-color: @white;
+
+        &:hover {
+            background-color: @neutral0;
+
+            .actions {
+                opacity: 1;
+            }
+        }
     }
 
     .parent-cell {

@@ -54,7 +54,7 @@ export const useCurrentHelpCenter = (
         if (!data) {
             void init()
         }
-    }, [client, data, dispatch, helpcenterId, isReady])
+    }, [client, data, helpcenterId, isReady])
 
     return {
         isLoading,

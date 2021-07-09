@@ -1,11 +1,6 @@
 @import (reference) '~css/new/colors';
 
 :local {
-    .drag-handler {
-        color: @neutral4;
-        font-size: 22px;
-    }
-
     .nested-table {
         margin-bottom: 0;
 
@@ -17,18 +12,13 @@
         }
     }
 
-    .nested-cell {
-        &:first-child {
-            padding-left: 64px;
+    .header-tr {
+        tr {
+            border: 0;
         }
-    }
 
-    .iconBtn,
-    .iconBtn:hover,
-    .iconBtn:active,
-    .iconBtn:focus {
-        border: 0;
-        background: transparent;
-        box-shadow: none;
+        td {
+            padding: 0;
+        }
     }
 }

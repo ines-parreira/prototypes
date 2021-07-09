@@ -2,24 +2,19 @@ import React from 'react'
 import {
     fireEvent,
     render,
-    waitForElementToBeRemoved,
+    // waitForElementToBeRemoved,
 } from '@testing-library/react'
 
 import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../fixtures/getHelpcenterResponse.fixture'
+// import {getSingleCategoryEnglish as category} from '../../../../fixtures/getCategoriesResponse.fixtures'
 import {HelpCenterCategory} from '../HelpCenterCategory'
-import {HELP_CENTER_DOMAIN} from '../../../../constants'
+// import {HELP_CENTER_DOMAIN} from '../../../../constants'
 type Props = {
     isOpen?: boolean
     getCategory?: () => Promise<unknown>
 }
 
-const Example = ({
-    isOpen = false,
-    getCategory = () =>
-        new Promise((resolve) => {
-            resolve('')
-        }),
-}: Props) => {
+const Example = ({isOpen = false}: Props) => {
     const [open, setOpen] = React.useState(isOpen)
 
     return (
@@ -29,29 +24,31 @@ const Example = ({
             </button>
             <HelpCenterCategory
                 isOpen={open}
+                isLoading={false}
                 helpCenter={helpCenter}
-                getCategory={getCategory}
+                category={null}
                 onClose={() => setOpen(false)}
             />
         </>
     )
 }
 
-async function renderAndWait(props: Props) {
-    const payload = render(<Example {...props} />)
+// function renderAndWait(props: Props) {
+//     const payload = render(<Example {...props} />)
 
-    await waitForElementToBeRemoved(() => payload.getByTestId('spinner-loader'))
+//     await waitForElementToBeRemoved(() => payload.getByTestId('spinner-loader'))
 
-    return payload
-}
+//     return payload
+// }
 
 describe('<HelpCenterCategory>', () => {
     it('renders in a hidden state by default', () => {
         const {getByTestId} = render(
             <HelpCenterCategory
                 isOpen={false}
+                isLoading={false}
                 helpCenter={helpCenter}
-                getCategory={jest.fn(() => Promise.resolve())}
+                category={null}
                 onClose={jest.fn()}
             />
         )
@@ -59,22 +56,22 @@ describe('<HelpCenterCategory>', () => {
         expect(getByTestId('category-edit').className).toEqual('drawer closed')
     })
 
-    it('appears when isOpen is true', async () => {
-        const {getByTestId} = await renderAndWait({isOpen: true})
+    it('appears when isOpen is true', () => {
+        const {getByTestId} = render(<Example isOpen />)
 
         expect(getByTestId('category-edit').className).toEqual('drawer opened')
     })
 
-    it('focuses the Title input when in view', async () => {
-        const {getByTestId} = await renderAndWait({isOpen: true})
+    it('focuses the Title input when in view', () => {
+        const {getByTestId} = render(<Example isOpen />)
         const titleInput = getByTestId('title-input')
 
         expect(document.activeElement).toEqual(titleInput)
     })
 
     describe('when the slug input is pristine', () => {
-        it('autocomplete the Slug input when Title is changed', async () => {
-            const {getByTestId} = await renderAndWait({isOpen: true})
+        it('autocomplete the Slug input when Title is changed', () => {
+            const {getByTestId} = render(<Example isOpen />)
 
             const slugInput = getByTestId('slug-input') as HTMLInputElement
             expect(slugInput.value).toEqual('')
@@ -90,8 +87,8 @@ describe('<HelpCenterCategory>', () => {
     })
 
     describe('when the slug was touched', () => {
-        it(`doesn't change the Slug input when Title is changed`, async () => {
-            const {getByTestId} = await renderAndWait({isOpen: true})
+        it(`doesn't change the Slug input when Title is changed`, () => {
+            const {getByTestId} = render(<Example isOpen />)
 
             const slugInput = getByTestId('slug-input') as HTMLInputElement
             fireEvent.change(getByTestId('slug-input'), {
@@ -112,23 +109,24 @@ describe('<HelpCenterCategory>', () => {
         })
     })
 
-    it('changes the language in the slug domain', async () => {
-        const {getByTestId} = await renderAndWait({isOpen: true})
+    // TODO: uncomment this when we support different languages
+    // it('changes the language in the slug domain', () => {
+    //     const {getByTestId} = render(<Example isOpen />)
 
-        expect(getByTestId('slug-domain').textContent).toEqual(
-            `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/en-us`
-        )
+    //     expect(getByTestId('slug-domain').textContent).toEqual(
+    //         `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/en-us`
+    //     )
 
-        fireEvent.click(getByTestId('dropdown-select-trigger'))
-        fireEvent.click(getByTestId('option-fr-FR'))
+    //     fireEvent.click(getByTestId('dropdown-select-trigger'))
+    //     fireEvent.click(getByTestId('option-fr-FR'))
 
-        expect(getByTestId('slug-domain').textContent).toEqual(
-            `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/fr-fr`
-        )
-    })
+    //     expect(getByTestId('slug-domain').textContent).toEqual(
+    //         `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/fr-fr`
+    //     )
+    // })
 
-    it('disables the Save button if Title or Slug are missing', async () => {
-        const {getByTestId} = await renderAndWait({isOpen: true})
+    it('disables the Save button if Title or Slug are missing', () => {
+        const {getByTestId} = render(<Example isOpen />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
         expect(button.disabled).toBeTruthy()
@@ -141,8 +139,8 @@ describe('<HelpCenterCategory>', () => {
         expect(button.disabled).toBeFalsy()
     })
 
-    it('resets the fields when isOpen changes to false', async () => {
-        const {getByTestId} = await renderAndWait({isOpen: true})
+    it('resets the fields when isOpen changes to false', () => {
+        const {getByTestId} = render(<Example isOpen />)
         const titleInput = getByTestId('title-input') as HTMLInputElement
 
         expect(titleInput.value).toEqual('')

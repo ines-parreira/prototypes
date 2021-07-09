@@ -15,14 +15,14 @@ const FLAGS: {[key: string]: string} = {
     'sv-se': '🇸🇪',
 }
 
-export function getEmojiFlag(code: string) {
+export function getEmojiFlag(code: string): string {
     return FLAGS[code.toLowerCase()] || ''
 }
 
 export function moveLocaleToFront(
     list: HelpCenterLocale[],
     defaultLocale: HelpCenterLocale
-) {
+): HelpCenterLocale[] {
     return [
         defaultLocale,
         ...list.filter((locale) => locale.code !== defaultLocale.code),
@@ -32,7 +32,7 @@ export function moveLocaleToFront(
 export function moveLocaleToBack(
     list: HelpCenterLocale[],
     defaultLocale: HelpCenterLocale
-) {
+): HelpCenterLocale[] {
     return [
         ...list.filter((locale) => locale.code !== defaultLocale.code),
         defaultLocale,

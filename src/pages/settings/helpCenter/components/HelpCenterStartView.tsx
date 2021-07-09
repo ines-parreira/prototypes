@@ -4,6 +4,8 @@ import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container, Button} from 'reactstrap'
 import keyBy from 'lodash/keyBy'
 
+import {HelpCenterLocale} from '../../../../models/helpCenter/types'
+
 import PageHeader from '../../../common/components/PageHeader'
 import {HELP_CENTER_BASE_PATH} from '../constants'
 import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
@@ -25,7 +27,10 @@ import css from './HelpCenterStartView.less'
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
-const localesByCode = keyBy(getLocalesResponseFixture, 'code')
+const localesByCode = keyBy<HelpCenterLocale>(
+    getLocalesResponseFixture as HelpCenterLocale[],
+    'code'
+)
 
 // let helpCenterClient: HelpCenterClient
 

@@ -4,7 +4,7 @@ import {Button} from 'reactstrap'
 
 import Modal from '../../../../common/components/Modal'
 
-import {useSupportedLocales} from '../../hooks/useSupportedLocales'
+import {useSupportedLocales} from '../../providers/SupportedLocales'
 
 import {useLanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
 

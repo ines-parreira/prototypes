@@ -12,6 +12,24 @@
         }
     }
 
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        opacity: 0;
+
+        transition: opacity 250ms ease;
+    }
+
+    .row {
+        &:hover {
+            background-color: @neutral0;
+
+            .actions {
+                opacity: 1;
+            }
+        }
+    }
+
     .iconBtn,
     .iconBtn:hover,
     .iconBtn:active,

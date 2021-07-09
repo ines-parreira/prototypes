@@ -1,0 +1,21 @@
+@import (reference) '~css/new/colors';
+
+:local {
+    .action-list {
+        display: flex;
+
+        .action + .action {
+            margin-left: 10px;
+        }
+    }
+
+    .action {
+        font-size: 18px;
+        color: @neutral6;
+        cursor: pointer;
+
+        &:hover {
+            color: @neutral10;
+        }
+    }
+}

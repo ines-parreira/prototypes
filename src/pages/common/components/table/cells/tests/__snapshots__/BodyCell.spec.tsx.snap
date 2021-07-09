@@ -6,6 +6,11 @@ exports[`<BodyCell/> should render 1`] = `
 >
   <div
     className="cellContent"
+    style={
+      Object {
+        "width": undefined,
+      }
+    }
   >
     Foo
   </div>

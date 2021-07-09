@@ -15,6 +15,8 @@ export type HelpCenterArticle = Components.Schemas.ArticleWithLocalTranslation &
 export type HelpCenterArticleTranslation = Components.Schemas.ArticleTranslationEntity
 export type CreateHelpCenterTranslationInput = Components.Schemas.CreateArticleTranslationDto
 export type UpdateHelpCenterArticleTranslationInput = Components.Schemas.UpdateArticleTranslationDto
+export type CategoryTranslation = Components.Schemas.LocalCategoryTranslation
+export type CreateCategoryDto = Components.Schemas.CreateCategoryDto
 
 export type HelpCenterLocaleCode = HelpCenter['default_locale']
 
@@ -36,13 +38,7 @@ export type HelpCenterPreferences = {
     default_locale: HelpCenterLocale
 }
 
-export type HelpCenterLocale = {
-    name: string
-    code: string
-    created_datetime: string
-    updated_datetime: string
-    deleted_datetime: string | null
-}
+export type HelpCenterLocale = Components.Schemas.LocaleEntity
 
 export type NavigationTranslation = {
     created_datetime: string
@@ -95,17 +91,7 @@ export type Category = {
     position: number
     help_center_id: number
     articles: HelpCenterArticle[]
-    translation: {
-        created_datetime: string
-        updated_datetime: string
-        deleted_datetime: string | null
-        id: number
-        title: string
-        description: string
-        slug: string
-        category_id: number
-        locale: string
-    }
+    translation?: CategoryTranslation
 }
 
 export type NavigationLinkDto = Components.Schemas.NavigationLinkWithLocalTranslation

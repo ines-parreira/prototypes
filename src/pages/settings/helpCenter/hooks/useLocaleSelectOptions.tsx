@@ -17,7 +17,7 @@ export const useLocaleSelectOptions = (
     return supportedLocales
         .filter((locale) => {
             if (languageList?.length > 0) {
-                return languageList.includes(locale.code as LocaleCode)
+                return languageList.includes(locale.code)
             }
             return false
         })

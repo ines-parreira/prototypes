@@ -8,7 +8,7 @@ import {
 
 import {FlagLanguageItem} from '../../../../common/components/LanguageBulletList'
 
-import {LocalesByKey} from '../../hooks/useSupportedLocales'
+import {LocalesByKey} from '../../providers/SupportedLocales'
 
 // TODO: this is common util and needs to be moved probably as selector
 export function appendLocaleDataToHelpcenter(

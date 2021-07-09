@@ -3,6 +3,8 @@ import {chain} from 'lodash'
 import classNames from 'classnames'
 
 import {HelpCenterArticle} from '../../../../../models/helpCenter/types'
+import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
+import TableHead from '../../../../common/components/table/TableHead'
 
 import TableWrapper from '../../../../common/components/table/TableWrapper'
 
@@ -15,7 +17,11 @@ type Props = {
     categoryId: number
     list: HelpCenterArticle[]
     onClick: (article: HelpCenterArticle) => void
-    onClickSettings: (article: HelpCenterArticle) => void
+    onClickSettings: (name: string, article: HelpCenterArticle) => void
+    onReorderFinish?: (
+        categoryId: number,
+        articles: HelpCenterArticle[]
+    ) => void
 }
 
 export const ArticlesTable = ({
@@ -24,6 +30,7 @@ export const ArticlesTable = ({
     list,
     onClick,
     onClickSettings,
+    onReorderFinish,
 }: Props): JSX.Element => {
     const [records, setRecords] = React.useState(
         chain(list)
@@ -35,15 +42,18 @@ export const ArticlesTable = ({
             })
             .value()
     )
+
     const handleOnClickRow = (article: HelpCenterArticle) => {
         onClick(article)
     }
     const handleOnClickSettings = (
-        event: React.MouseEvent<HTMLButtonElement>,
+        event: React.MouseEvent,
+        name: string,
         article: HelpCenterArticle
     ) => {
         event.stopPropagation()
-        onClickSettings(article)
+
+        onClickSettings(name, article)
     }
 
     const handleOnMoveArticle = (dragIndex: number, hoverIndex: number) => {
@@ -68,18 +78,30 @@ export const ArticlesTable = ({
         }
     }
 
+    const handleOnReorderFinish = () => {
+        onReorderFinish && onReorderFinish(categoryId, records)
+    }
+
     return (
         <TableWrapper
             className={classNames({
                 [css['nested-table']]: isNested,
             })}
         >
+            <TableHead className={css['header-tr']}>
+                <HeaderCell style={{width: 25}} />
+                <HeaderCell />
+                <HeaderCell style={{width: 124}} />
+                <HeaderCell style={{width: 160}} />
+            </TableHead>
             <ArticlesTableBody
+                isNested={isNested}
                 categoryId={categoryId}
                 list={records}
                 onMoveEntity={handleOnMoveArticle}
                 onClickRow={handleOnClickRow}
                 onClickSettings={handleOnClickSettings}
+                onDropEntity={handleOnReorderFinish}
             />
         </TableWrapper>
     )
