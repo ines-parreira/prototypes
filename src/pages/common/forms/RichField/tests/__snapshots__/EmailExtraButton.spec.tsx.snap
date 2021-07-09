@@ -644,7 +644,7 @@ Some signature",
 
 exports[`<EmailExtraButton /> should render the email extra button 1`] = `
 <div
-  class="btn-more ellipsis"
+  class="btn-more"
   title="Show trimmed content"
 >
   …
