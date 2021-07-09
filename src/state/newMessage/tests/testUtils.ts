@@ -1,3 +1,5 @@
+import _omit from 'lodash/omit'
+
 import {MessageContext} from '../responseUtils'
 import {
     convertToHTML,
@@ -60,12 +62,11 @@ export type ReplyAreaStateSnapshot = Omit<
 export const getReplyAreaStateSnapshot = (
     replyAreaState: ReplyAreaState
 ): ReplyAreaStateSnapshot => {
-    const snapshot = {
-        ...replyAreaState,
+    const snapshot: ReplyAreaStateSnapshot = {
+        ..._omit(replyAreaState, 'selectionState'),
         contentState: getContentStateBlocksSnapshot(
             replyAreaState.contentState
         ),
     }
-    delete snapshot.selectionState
     return snapshot
 }

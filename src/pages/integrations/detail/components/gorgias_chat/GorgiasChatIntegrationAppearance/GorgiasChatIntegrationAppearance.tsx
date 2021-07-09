@@ -202,7 +202,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const _canSubmit = () => {
         return (
-            (state.showSelectStoreField && storeName && state.name) ||
+            (state.showSelectStoreField && !!storeName && state.name) ||
             (!state.showSelectStoreField && state.name)
         )
     }

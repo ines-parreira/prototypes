@@ -140,13 +140,15 @@ export function TicketNavbarContentContainer({
         [views, sections, isPrivate, viewUpdated, notify, elements]
     )
     const handleClickOnSection = (sectionId: number) => {
-        setCollapsedSections(
-            collapsedSections.includes(sectionId)
-                ? produce(collapsedSections, (sections) => {
-                      sections.splice(sections.indexOf(sectionId), 1)
-                  })
-                : [...collapsedSections, sectionId]
-        )
+        if (collapsedSections) {
+            setCollapsedSections(
+                collapsedSections.includes(sectionId)
+                    ? produce(collapsedSections, (sections) => {
+                          sections.splice(sections.indexOf(sectionId), 1)
+                      })
+                    : [...collapsedSections, sectionId]
+            )
+        }
     }
 
     return (
@@ -177,6 +179,7 @@ export function TicketNavbarContentContainer({
                     <TicketNavbarSection
                         key={`section-${element.data.id}`}
                         isExpanded={
+                            !!collapsedSections &&
                             !collapsedSections.includes(element.data.id)
                         }
                         onSectionClick={handleClickOnSection}

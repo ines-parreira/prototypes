@@ -802,8 +802,8 @@ export const getContentStateSelectionSnapshot = (
     selectionState: SelectionState
 ): ContentStateSelectionSnapshot => {
     const selectionStateJS = selectionState.toJS()
-    delete (selectionStateJS as {anchorKey: string}).anchorKey
-    delete (selectionStateJS as {focusKey: string}).focusKey
+    delete (selectionStateJS as {anchorKey?: string}).anchorKey
+    delete (selectionStateJS as {focusKey?: string}).focusKey
     return {
         ...selectionStateJS,
         anchorBlockText:

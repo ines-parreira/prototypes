@@ -221,7 +221,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
         const filterableFields = (config.get('fields') as List<any>)
             .filter(
                 (field: Map<any, any>) =>
-                    field.get('filter') &&
+                    !!field.get('filter') &&
                     (field.getIn(['filter', 'show'], true) as boolean)
             )
             .sortBy((field: Map<any, any>) => field.get('title') as string)

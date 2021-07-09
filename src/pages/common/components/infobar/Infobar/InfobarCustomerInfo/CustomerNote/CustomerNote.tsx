@@ -43,7 +43,7 @@ export class CustomerNote extends React.Component<Props, State> {
     }
 
     _updateNote = async (event: ChangeEvent<HTMLTextAreaElement>) => {
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
             this.setState(
                 {
                     note: event.currentTarget.value,

@@ -64,7 +64,7 @@ export const invoices = createSelector<RootState, List<any>, BillingState>(
     (billing) =>
         (billing.get('invoices', fromJS([])) as List<any>).filter(
             (invoice: Map<any, any>) =>
-                invoice.get('attempted') && invoice.get('amount_due') > 0
+                !!invoice.get('attempted') && invoice.get('amount_due') > 0
         ) as List<any>
 )
 

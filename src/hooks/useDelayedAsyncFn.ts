@@ -1,9 +1,10 @@
 import {useEffect, useRef, useState, DependencyList} from 'react'
 import {useAsyncFn} from 'react-use'
+import {FunctionReturningPromise} from 'react-use/lib/misc/types'
 import {AsyncState} from 'react-use/lib/useAsyncFn'
 
 const useDelayedAsyncFn = <T extends any[], Y>(
-    fn: (...args: T | []) => Promise<Y>,
+    fn: FunctionReturningPromise,
     deps: DependencyList = [],
     delay = 100
 ): [AsyncState<Y>, (...args: T) => Promise<Y>] => {

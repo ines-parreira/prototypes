@@ -42,7 +42,7 @@ describe('useAppDispatch', () => {
 
         await dispatch(
             (() => async (dispatch: StoreDispatch) => {
-                await new Promise((resolve) => {
+                await new Promise<void>((resolve) => {
                     resolve()
                 })
                 dispatch({type: 'Bar', payload: 'bar'})

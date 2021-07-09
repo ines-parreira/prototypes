@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 import {ContentBlock, ContentState, SelectionState} from 'draft-js'
+import _omit from 'lodash/omit'
 
 import {ticket} from '../../../fixtures/ticket'
 import {
@@ -95,8 +96,9 @@ describe('emailExtraUtils', () => {
         const messageFixture = ticket.messages[0] as TicketMessage
 
         it('should filter out non-messages', () => {
-            const message = {...messageFixture}
-            delete message.isMessage
+            const message = {
+                ..._omit(messageFixture, 'isMessage'),
+            } as TicketMessage
             const event: TicketEvent = {
                 ...message,
                 isEvent: true,

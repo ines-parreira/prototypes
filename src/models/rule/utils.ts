@@ -17,7 +17,7 @@ import {RuleObject, IdentifierCategoryKey} from './types'
 const unaryOperatorsNames = Object.keys(UNARY_OPERATORS)
 const collectionOperatorsNames = Object.values(CollectionOperator)
 
-export function getAstPath<T>(
+export function getAstPath(
     property: ObjectExpressionPropertyKey,
     object: RuleObject | ObjectExpressionPropertyKey
 ): string[] {

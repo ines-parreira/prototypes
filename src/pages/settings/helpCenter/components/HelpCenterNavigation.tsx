@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
-    helpcenterId: number
+    helpcenterId: string | number
 }
 
 export const HelpCenterNavigation = ({helpcenterId}: Props) => {

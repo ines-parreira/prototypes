@@ -1,6 +1,5 @@
 import React from 'react'
 import {act, render} from '@testing-library/react'
-import * as reactUse from 'react-use'
 
 import {createContextConsumer} from '../../../../../utils/testing'
 import SynchronizedScrollTopContext from '../SynchronizedScrollTopContext'
@@ -12,18 +11,16 @@ const SynchronizedScrollTopConsumer = createContextConsumer(
 
 describe('<SynchronizedScrollTopProvider />', () => {
     let windowAddEventListenerSpy: jest.SpyInstance
-    let useWindowSizeSpy: jest.SpyInstance
+
     beforeEach(() => {
         jest.clearAllMocks()
         jest.useFakeTimers()
         windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener')
-        useWindowSizeSpy = jest.spyOn(reactUse, 'useWindowSize')
     })
 
     afterEach(() => {
         jest.useRealTimers()
         windowAddEventListenerSpy.mockRestore()
-        useWindowSizeSpy.mockRestore()
     })
 
     it('should return default values on first render', () => {
@@ -111,7 +108,7 @@ describe('<SynchronizedScrollTopProvider />', () => {
     })
 
     it('should debounce reset scrollTop and scrollHeight on window width change', () => {
-        useWindowSizeSpy.mockImplementation(() => ({width: 300}))
+        global.innerWidth = 300
         const {rerender} = render(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
@@ -125,8 +122,7 @@ describe('<SynchronizedScrollTopProvider />', () => {
                 50
             )
         })
-
-        useWindowSizeSpy.mockImplementation(() => ({width: 400}))
+        global.innerWidth = 400
         rerender(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />

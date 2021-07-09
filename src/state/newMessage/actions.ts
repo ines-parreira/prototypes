@@ -5,6 +5,7 @@ import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
+import _omit from 'lodash/omit'
 import axios, {CancelToken, AxiosError} from 'axios'
 
 import * as ticketConstants from '../ticket/constants'
@@ -534,7 +535,7 @@ export function prepareTicketDataToSend(
     actionsForMacro: Maybe<MacroActions>,
     currentUser: CurrentUser
 ): Maybe<{
-    ticket: Ticket
+    ticket: Omit<Ticket, 'state' | '_internal' | 'newMessage'>
     newMessage: NewMessage
     replyAreaState: ReplyAreaState
 }> {
@@ -649,13 +650,10 @@ export function prepareTicketDataToSend(
     }
 
     const newMessageData = ticket.newMessage
-    delete ticket.state
-    delete ticket._internal
-    delete ticket.newMessage
 
     return {
         replyAreaState,
-        ticket: ticket,
+        ticket: _omit(ticket, ['state', '_internal', 'newMessage']),
         newMessage: newMessageData,
     }
 }

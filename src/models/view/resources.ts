@@ -35,9 +35,7 @@ export const updateView = async (id: number, view: Partial<View>) => {
         ..._omit(view, 'filters_ast'),
         ...sharedProps,
     })
-    delete res.data.shared_with_teams
-    delete res.data.shared_with_users
-    return res.data as View
+    return _omit(res.data, ['shared_with_teams', 'shared_with_users']) as View
 }
 
 export const deleteView = async (viewId: number) => {

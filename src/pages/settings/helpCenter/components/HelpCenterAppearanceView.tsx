@@ -11,7 +11,7 @@ import {HelpCenterNavigation} from './HelpCenterNavigation'
 // type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
 export const HelpCenterAppearanceView = () => {
-    const {helpcenterId} = useParams()
+    const {helpcenterId} = useParams<{helpcenterId: string}>()
     return (
         <div className="full-width">
             <PageHeader

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import ReactPaginate from 'react-paginate'
+import _omit from 'lodash/omit'
 
 type Props = {
     onChange: (nextPage: number) => void
@@ -37,7 +38,6 @@ export default class Pagination extends Component<Props> {
             typeof properties.currentPage === 'string'
                 ? parseInt(properties.currentPage) - 1
                 : properties.currentPage - 1
-        delete properties.currentPage
 
         if (pageCount <= 1) {
             return null
@@ -66,7 +66,7 @@ export default class Pagination extends Component<Props> {
                 activeClassName={'active'}
                 disableInitialCallback={true}
                 forcePage={forcePage}
-                {...properties}
+                {..._omit(properties, 'currentPage')}
                 pageCount={pageCount}
             />
         )
