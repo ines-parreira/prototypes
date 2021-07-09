@@ -126,6 +126,8 @@ export default function Meta(props: Props) {
 
         const isFacebookMentionPost =
             source.type === FACEBOOK_MENTION_POST_SOURCE
+        const isFacebookMentionComment =
+            source.type === FACEBOOK_MENTION_COMMENT_SOURCE
         const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
         const isFacebookReview = source.type === FACEBOOK_REVIEW_SOURCE
         const isFacebookReviewComment =
@@ -145,9 +147,13 @@ export default function Meta(props: Props) {
         const isTwitterReplyTweet =
             source.type === TWITTER_TWEET_SOURCE && !!parentId
 
-        const getId = (input) =>
-            input && input.includes('_') ? input.split('_')[1] : ''
+        const getId = (input, place = 1) =>
+            input && input.includes('_') ? input.split('_')[place] : ''
 
+        let pageFeedId = pageId
+        if (isFacebookMentionComment) {
+            pageFeedId = getId(fullPostId, 0)
+        }
         if (isFacebookPost) {
             const postId = isFacebookPost ? getId(fullPostId) : fullPostId
             type = 'post'
@@ -176,7 +182,7 @@ export default function Meta(props: Props) {
             const postId = getId(fullPostId)
             const commentId = getId(messageId)
             type = 'comment'
-            link = `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
+            link = `https://facebook.com/${pageFeedId}/posts/${postId}?comment_id=${commentId}`
         } else if (isTwitterRootTweet) {
             type = 'tweet'
             link = `https://twitter.com/${twitterFromUsername}/status/${tweetId}`
@@ -190,7 +196,7 @@ export default function Meta(props: Props) {
             const commentId = getId(parentId)
             const replyId = getId(messageId)
             type = 'reply'
-            link = `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+            link = `https://facebook.com/${pageFeedId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
         }
     }
 

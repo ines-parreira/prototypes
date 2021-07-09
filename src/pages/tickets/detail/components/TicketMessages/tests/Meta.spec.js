@@ -161,7 +161,7 @@ describe('ticket message meta', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should display "go to post" link for mentions', () => {
+        it('should display "go to post" link for mention posts', () => {
             const pageId = '871900732905218'
             const postId = '2750858871676052'
             const source = {
@@ -183,6 +183,73 @@ describe('ticket message meta', () => {
             expect(from.text()).toBe('go to post')
             expect(from.find('a').prop('href')).toEqual(
                 'https://facebook.com/permalink'
+            )
+        })
+
+        it('should display "go to comment" link for mention comments', () => {
+            const pageId = '871900732905218'
+            const postId = '2750858871676052'
+            const feedId = '19837193719213'
+            const commentId = '18762371983'
+            const source = {
+                extra: {
+                    page_id: pageId,
+                    post_id: `${feedId}_${postId}`,
+                    parent_id: `${feedId}_${postId}`,
+                    permalink: 'https://facebook.com/permalink',
+                },
+                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                type: 'facebook-mention-comment',
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+            }
+
+            const component = shallow(
+                <Meta
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    messageId={`${postId}_${commentId}`}
+                />
+            )
+
+            const from = component.find('From').dive()
+            expect(from.text()).toBe('go to comment')
+            expect(from.find('a').prop('href')).toEqual(
+                `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}`
+            )
+        })
+
+        it('should display "go to reply" link for mention reply comments', () => {
+            const pageId = '871900732905218'
+            const postId = '2750858871676052'
+            const feedId = '19837193719213'
+            const replyId = '18762371983'
+            const commentId = '12321890383'
+            const source = {
+                extra: {
+                    page_id: pageId,
+                    post_id: `${feedId}_${postId}`,
+                    parent_id: `${postId}_${commentId}`,
+                    permalink: 'https://facebook.com/permalink',
+                },
+                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                type: 'facebook-mention-comment',
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+            }
+
+            const component = shallow(
+                <Meta
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    messageId={`${commentId}_${replyId}`}
+                />
+            )
+
+            const from = component.find('From').dive()
+            expect(from.text()).toBe('go to reply')
+            expect(from.find('a').prop('href')).toEqual(
+                `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
             )
         })
     })

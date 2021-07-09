@@ -12,7 +12,10 @@ import type {
     Source,
 } from '../../../../../models/ticket/types'
 
-import {FACEBOOK_COMMENT_SOURCE} from '../../../../../config/ticket.ts'
+import {
+    FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_MENTION_COMMENT_SOURCE,
+} from '../../../../../config/ticket.ts'
 
 import FacebookReactionType from '../../../../../constants/integrations/facebook'
 
@@ -281,7 +284,9 @@ export class SourceActionsFooter extends React.Component<Props> {
             !source.type ||
             isMessageHidden ||
             isMessageDeleted ||
-            source.type !== FACEBOOK_COMMENT_SOURCE
+            [FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE].indexOf(
+                source.type
+            ) < 0
         ) {
             return widgets
         }
