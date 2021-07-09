@@ -3,7 +3,11 @@ import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
 import {TicketMessageSourceType, TicketVia} from '../business/types/ticket'
-import {Integration, IntegrationType} from '../models/integration/types'
+import {
+    EmailDomain,
+    Integration,
+    IntegrationType,
+} from '../models/integration/types'
 import {PaginationMeta, OrderDirection} from '../models/api/types'
 
 import {BillingContactResponse, Subscription} from './billing/types'
@@ -96,6 +100,7 @@ export type GorgiasAction = {
     products?: Map<any, any>
     defaultShippingLine?: string
     integration?: Integration | Map<any, any>
+    emailDomain?: EmailDomain | Map<any, any>
     response?: Record<string, any>
     integrationId?: number
     integrationType?: IntegrationType

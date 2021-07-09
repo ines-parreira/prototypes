@@ -246,6 +246,8 @@ describe('<IntegrationDetailContainer />', () => {
             updateOrCreateIntegration: jest.fn(),
             importEmails: jest.fn(),
             onVerify: jest.fn(),
+            fetchEmailDomain: jest.fn(),
+            createEmailDomain: jest.fn(),
             onEmailForwardingActivated: jest.fn(),
             verifyEmailIntegration: jest.fn(),
             sendVerificationEmail: jest.fn(),

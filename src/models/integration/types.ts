@@ -117,6 +117,22 @@ export type Integration = {
     }
 }
 
+export type DomainDNSRecord = {
+    verified: boolean
+    record_type: string
+    host: string
+    value: string
+    current_values: Array<string>
+}
+
+export type EmailDomain = {
+    name: string
+    verified: boolean
+    data: {
+        sending_dns_records: Array<DomainDNSRecord>
+    }
+}
+
 export type IntegrationAuthentication<
     T extends IntegrationType
 > = T extends IntegrationType.AircallIntegrationType

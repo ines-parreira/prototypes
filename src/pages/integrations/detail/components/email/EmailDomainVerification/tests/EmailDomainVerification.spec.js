@@ -1,0 +1,62 @@
+import React from 'react'
+
+import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
+
+import {EmailDomainVerificationContainer} from '../EmailDomainVerification.tsx'
+
+describe('<EmailDomainVerificationContainer/>', () => {
+    const commonProps = {
+        integration: fromJS({id: 1}),
+        integrationId: 1,
+
+        loading: fromJS({}),
+        actions: {
+            fetchEmailDomain: jest.fn(),
+            createEmailDomain: jest.fn(),
+        },
+    }
+
+    describe('render()', () => {
+        it('should render the page when domain is verified', () => {
+            const {container} = render(
+                <EmailDomainVerificationContainer
+                    emailDomain={fromJS({
+                        verified: true,
+                        data: {
+                            sending_dns_records: [],
+                        },
+                    })}
+                    {...commonProps}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+        })
+        it('should render the page when domain is not verified', () => {
+            const {container} = render(
+                <EmailDomainVerificationContainer
+                    emailDomain={fromJS({
+                        verified: false,
+                        data: {
+                            sending_dns_records: [],
+                        },
+                    })}
+                    {...commonProps}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+        })
+        it('should render the page when there is no domain', () => {
+            const {container} = render(
+                <EmailDomainVerificationContainer
+                    emailDomain={null}
+                    {...commonProps}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+        })
+    })
+})

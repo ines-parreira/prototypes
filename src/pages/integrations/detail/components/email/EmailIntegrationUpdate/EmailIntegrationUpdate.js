@@ -12,8 +12,6 @@ import {
     Container,
     Form,
     Button,
-    Breadcrumb,
-    BreadcrumbItem,
     InputGroup,
     InputGroupAddon,
     Alert,
@@ -49,7 +47,6 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables.tsx'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 type Props = {
     domain: string,
@@ -357,7 +354,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://docs.gorgias.com/email-integrations/email"
+                        href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                         onClick={() => {
                             segmentTracker.logEvent(
                                 segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED,
@@ -365,7 +362,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                                     name:
                                         'Step by step instructions in add email integration',
                                     url:
-                                        'https://docs.gorgias.com/email-integrations/email',
+                                        'https://docs.gorgias.com/email-integrations/spf-dkim-support',
                                 }
                             )
                         }}
@@ -398,7 +395,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
-                        href="https://docs.gorgias.com/email-integrations/email"
+                        href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                     >
                         setup SPF
                     </a>{' '}
@@ -477,7 +474,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                 directly instead of going through Gmail. In order to keep a good
                 deliverability in this case, you will need to{' '}
                 <a
-                    href="https://docs.gorgias.com/email-integrations/email#spf_setup"
+                    href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -633,43 +630,18 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         }
 
         return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/email">
-                                    Email
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                {integration.get('name')}{' '}
-                                <span className="text-faded">
-                                    {integration.getIn(['meta', 'address'])}
-                                </span>
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                />
+            <Container fluid className="page-container">
+                {integration.get('type') === EMAIL_INTEGRATION_TYPE &&
+                    this._renderInstructions()}
 
-                <Container fluid className="page-container">
-                    {integration.get('type') === EMAIL_INTEGRATION_TYPE &&
-                        this._renderInstructions()}
+                {integration.get('type') === GMAIL_INTEGRATION_TYPE &&
+                    this._gmailRenderImport()}
 
-                    {integration.get('type') === GMAIL_INTEGRATION_TYPE &&
-                        this._gmailRenderImport()}
+                {integration.get('type') === OUTLOOK_INTEGRATION_TYPE &&
+                    this._outlookRenderImport()}
 
-                    {integration.get('type') === OUTLOOK_INTEGRATION_TYPE &&
-                        this._outlookRenderImport()}
-
-                    {this._renderSettings()}
-                </Container>
-            </div>
+                {this._renderSettings()}
+            </Container>
         )
     }
 }

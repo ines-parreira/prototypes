@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmailIntegrationUpdateLayout should render the layout for an email integration update 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/email"
+            >
+              Email
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+             
+            <span
+              class="text-faded"
+            >
+              some-email@addres.com
+            </span>
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/email/1"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/email/1/dns"
+      >
+        Domain Verification
+      </a>
+    </nav>
+    <span>
+      Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+    </span>
+  </div>
+</div>
+`;

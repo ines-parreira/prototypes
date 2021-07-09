@@ -347,8 +347,70 @@ exports[`<IntegrationDetailContainer /> should render the list of integrations f
 `;
 
 exports[`<IntegrationDetailContainer /> should render the page of a specific integration for email 1`] = `
-<div>
-  EmailIntegrationUpdate
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+           
+          <span
+            class="text-faded"
+          />
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/email/1"
+    >
+      Preferences
+    </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/email/1/dns"
+    >
+      Domain Verification
+    </a>
+  </nav>
+  <div>
+    EmailIntegrationUpdate
+  </div>
 </div>
 `;
 

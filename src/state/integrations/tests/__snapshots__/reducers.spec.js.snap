@@ -19,11 +19,13 @@ Immutable.Map {
     "id": 118712,
     "type": "smooch_inside",
   },
+  "emailDomain": Immutable.Map {},
   "authentication": Immutable.Map {},
   "state": Immutable.Map {
     "loading": Immutable.Map {
       "integration": false,
       "integrations": false,
+      "emailDomain": false,
       "updateIntegration": false,
       "testing": false,
       "delete": false,
@@ -71,11 +73,13 @@ Immutable.Map {
       "foo": "bar",
     },
   },
+  "emailDomain": Immutable.Map {},
   "authentication": Immutable.Map {},
   "state": Immutable.Map {
     "loading": Immutable.Map {
       "integration": false,
       "integrations": false,
+      "emailDomain": false,
       "updateIntegration": false,
       "testing": false,
       "delete": false,

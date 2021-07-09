@@ -1,0 +1,36 @@
+import React from 'react'
+
+import TableWrapper from '../../../../../../common/components/table/TableWrapper'
+import TableHead from '../../../../../../common/components/table/TableHead'
+import HeaderCell from '../../../../../../common/components/table/cells/HeaderCell'
+import TableBody from '../../../../../../common/components/table/TableBody'
+import {DomainDNSRecord} from '../../../../../../../models/integration/types'
+
+import css from '../EmailDomainVerification.less'
+
+import RecordItem from './RecordItem'
+
+type Props = {
+    records: Array<DomainDNSRecord>
+}
+
+const RecordsTable = ({records}: Props) => {
+    return (
+        <TableWrapper className={css['records-table']}>
+            <TableHead>
+                <HeaderCell>Status</HeaderCell>
+                <HeaderCell>Record Type</HeaderCell>
+                <HeaderCell>Host</HeaderCell>
+                <HeaderCell>Value</HeaderCell>
+                <HeaderCell>Current Values</HeaderCell>
+            </TableHead>
+            <TableBody>
+                {records.map((record: DomainDNSRecord, index: number) => (
+                    <RecordItem key={index} record={record} />
+                ))}
+            </TableBody>
+        </TableWrapper>
+    )
+}
+
+export default RecordsTable

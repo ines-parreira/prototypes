@@ -65,6 +65,8 @@ import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/Em
 import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding.js'
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification.js'
 import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom.js'
+import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
+import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList.js'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance.js'
@@ -91,6 +93,7 @@ import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 export enum Tab {
     EmailForwarding = 'forwarding',
     EmailVerification = 'verification',
+    EmailDomainVerification = 'dns',
     EmailCustom = 'custom',
     FacebookCustomerChat = 'customer_chat',
     Preferences = 'preferences',
@@ -219,12 +222,27 @@ export const IntegrationDetailContainer = ({
                         )
                     }
 
+                    if (extra === Tab.EmailDomainVerification) {
+                        return (
+                            <EmailIntegrationLayout integration={integration}>
+                                <EmailDomainVerification
+                                    actions={actions}
+                                    integration={integration}
+                                    integrationId={integrationId}
+                                    loading={loading}
+                                />
+                            </EmailIntegrationLayout>
+                        )
+                    }
+
                     return (
-                        <EmailIntegrationUpdate
-                            actions={actions}
-                            integration={integration}
-                            loading={loading}
-                        />
+                        <EmailIntegrationLayout integration={integration}>
+                            <EmailIntegrationUpdate
+                                actions={actions}
+                                integration={integration}
+                                loading={loading}
+                            />
+                        </EmailIntegrationLayout>
                     )
                 }
 
