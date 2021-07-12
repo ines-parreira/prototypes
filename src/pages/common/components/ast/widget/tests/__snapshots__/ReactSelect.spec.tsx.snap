@@ -1,0 +1,229 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReactSelect/> should add warning for selected deprecated option 1`] = `
+<div>
+  <div
+    style="display: inline-block; vertical-align: middle;"
+  >
+    <div>
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <div
+            class="select dropdown-toggle"
+          >
+            <span
+              class="label"
+              style="min-width: 10px; opacity: 1;"
+            >
+              foo
+            </span>
+            <input
+              autocomplete="chrome-off"
+              class="input"
+              style="min-width: 10px;"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="options dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              bar
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="d-inline-block text-danger ml-2"
+  >
+    <span
+      class="material-icons mr-1"
+    >
+      warning
+    </span>
+    Deprecated items: 
+    foo
+  </div>
+</div>
+`;
+
+exports[`<ReactSelect/> should filter hidden options 1`] = `
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
+          >
+            foo
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          No result
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ReactSelect/> should render normally as deprecated option is not selected 1`] = `
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
+          >
+            foo
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            bar
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ReactSelect/> should render with the correct options 1`] = `
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
+          >
+            foo
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            bar
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -9,6 +9,7 @@ import {
     Option as SelectOption,
     Value as SelectValue,
 } from '../../../forms/SelectField/types'
+import Errors from '../Errors'
 
 type Props = {
     className?: string
@@ -18,6 +19,8 @@ type Props = {
     onSearchChange: (value: any) => void
     placeholder?: string
     focusedPlaceholder?: string
+    hiddenOptions?: string[]
+    deprecatedOptions?: string[]
 }
 
 type Option = SelectOption | SelectValue
@@ -28,8 +31,8 @@ export default class Select extends Component<Props> {
     }
 
     _getOptions = () => {
-        const {options} = this.props
-        let formattedOptions: SelectOption[]
+        const {options, hiddenOptions} = this.props
+        let formattedOptions: SelectOption[] = []
 
         if (options) {
             if (Array.isArray(options) || List.isList(options)) {
@@ -57,6 +60,10 @@ export default class Select extends Component<Props> {
                 )
             }
         }
+        if (hiddenOptions)
+            formattedOptions = formattedOptions.filter(
+                (option) => !hiddenOptions.includes(option.value.toString())
+            )
         // order alphabetically
         return sortBy<SelectOption>(
             //@ts-ignore is used before being declared
@@ -84,6 +91,7 @@ export default class Select extends Component<Props> {
             onSearchChange,
             placeholder,
             focusedPlaceholder,
+            deprecatedOptions,
         } = this.props
         let newValue = value
 
@@ -94,23 +102,31 @@ export default class Select extends Component<Props> {
         }
 
         return (
-            <div
-                style={{
-                    display: 'inline-block',
-                    verticalAlign: 'middle',
-                }}
-            >
-                <SelectField
-                    className={className}
-                    //$TsFixMe remove casting once SelectField is migrated
-                    value={newValue as string | number}
-                    onChange={this._onChange}
-                    onSearchChange={onSearchChange}
-                    options={this._getOptions()}
-                    placeholder={placeholder}
-                    focusedPlaceholder={focusedPlaceholder}
-                />
-            </div>
+            <>
+                <div
+                    style={{
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                    }}
+                >
+                    <SelectField
+                        className={className}
+                        //$TsFixMe remove casting once SelectField is migrated
+                        value={newValue as string | number}
+                        onChange={this._onChange}
+                        onSearchChange={onSearchChange}
+                        options={this._getOptions()}
+                        placeholder={placeholder}
+                        focusedPlaceholder={focusedPlaceholder}
+                    />
+                </div>
+                {newValue && deprecatedOptions?.includes(newValue.toString()) && (
+                    <Errors inline>
+                        <span className="material-icons mr-1">warning</span>
+                        Deprecated items: {deprecatedOptions.join(',')}
+                    </Errors>
+                )}
+            </>
         )
     }
 }

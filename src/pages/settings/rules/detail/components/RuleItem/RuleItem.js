@@ -407,7 +407,6 @@ export default class RuleItem extends React.Component<Props, State> {
                                                     )
                                                 ) || fromJS({}),
                                         }}
-                                        triggers={eventTypes}
                                     />
                                 </FormGroup>
                             </BootstrapForm>
