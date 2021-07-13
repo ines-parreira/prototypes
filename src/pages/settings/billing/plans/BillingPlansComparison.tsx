@@ -71,11 +71,7 @@ export default function BillingPlansComparison({
         {loading: isSubscriptionUpdating},
         handleSubscriptionUpdate,
     ] = useAsyncFn(
-        async (planId?: string) => {
-            // https://linear.app/gorgias/issue/COR-1140/update-react-use-dependency
-            if (!planId) {
-                return
-            }
+        async (planId: string) => {
             if (!isAllowedToChangePlan(planId)) {
                 void dispatch(
                     notify({
