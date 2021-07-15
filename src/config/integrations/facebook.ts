@@ -16,3 +16,9 @@ export const FACEBOOK_LANGUAGE_OPTIONS = fromJS([
 ]) as List<any>
 
 export const FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH = 2000
+
+export const FACEBOOK_MENTION_ENABLED_DOMAINS = fromJS([
+    'acme',
+    'walter-test',
+    'facebooktest',
+])

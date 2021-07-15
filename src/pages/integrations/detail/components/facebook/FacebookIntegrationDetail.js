@@ -18,6 +18,7 @@ import {connect} from 'react-redux'
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
+    FACEBOOK_MENTION_ENABLED_DOMAINS,
 } from '../../../../../config/integrations/facebook.ts'
 
 import InputField from '../../../../common/forms/InputField'
@@ -55,6 +56,7 @@ type Props = {
 type State = {
     settings: {
         posts_enabled: boolean,
+        mentions_enabled: boolean,
         recommendations_enabled: boolean,
         messenger_enabled: boolean,
         import_history_enabled: boolean,
@@ -71,6 +73,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
     state = {
         settings: {
             posts_enabled: true,
+            mentions_enabled: true,
             recommendations_enabled: true,
             messenger_enabled: true,
             import_history_enabled: true,
@@ -92,6 +95,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
         if (!settings.isEmpty()) {
             newState.settings = {
                 posts_enabled: settings.get('posts_enabled'),
+                mentions_enabled: settings.get('mentions_enabled'),
                 recommendations_enabled: settings.get(
                     'recommendations_enabled'
                 ),
@@ -186,6 +190,10 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
             canModerate &&
             canEnableMetaSetting(userPermissions, 'posts_enabled')
 
+        const canEnableMentions =
+            canModerate &&
+            canEnableMetaSetting(userPermissions, 'mentions_enabled')
+
         const canEnableRecommendations =
             canModerate &&
             canEnableMetaSetting(userPermissions, 'recommendations_enabled')
@@ -212,6 +220,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
         const displayPermissionAlert =
             !canEnableMessenger ||
             !canEnablePosts ||
+            !canEnableMentions ||
             !canEnableRecommendations ||
             !canEnableInstagramComments ||
             !canEnableInstagramMentions ||
@@ -246,6 +255,10 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
         if (loading.get('integration') || integration.isEmpty()) {
             return <Loader />
         }
+        const mentionEnabledDomain =
+            FACEBOOK_MENTION_ENABLED_DOMAINS.indexOf(
+                currentAccount.get('domain')
+            ) >= 0
 
         return (
             <div className="full-width">
@@ -384,6 +397,21 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                 }
                                 disabled={!canEnablePosts}
                             />
+                            {mentionEnabledDomain && (
+                                <BooleanField
+                                    name="mentions_enabled"
+                                    type="checkbox"
+                                    label="Enable Facebook mentions"
+                                    value={this.state.settings.mentions_enabled}
+                                    onChange={(value) =>
+                                        this._onSettingChange(
+                                            value,
+                                            'mentions_enabled'
+                                        )
+                                    }
+                                    disabled={!canEnableMentions}
+                                />
+                            )}
                             <BooleanField
                                 name="recommendations_enabled"
                                 type="checkbox"

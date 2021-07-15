@@ -67,6 +67,9 @@ describe('FacebookIntegrationSetup', () => {
                 instagram_dm: {enabled: true},
             },
         }),
+        currentAccount: fromJS({
+            domain: 'acme',
+        }),
     }
 
     const onboardingIntegrations = fromJS([
@@ -276,6 +279,12 @@ describe('FacebookIntegrationSetup', () => {
         PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled']
             .slice(0, -1)
             .join(','),
+        // Mentions enabled
+        PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled'].join(','),
+        // Mentions disabled
+        PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled']
+            .slice(0, -1)
+            .join(','),
         // Instagram comments enabled
         PERMISSIONS_PER_INTEGRATION_META_SETTING[
             'instagram_comments_enabled'
@@ -370,6 +379,18 @@ describe('FacebookIntegrationSetup', () => {
             expect(component).toMatchSnapshot()
         }
     )
+
+    it('should render the integration list without showing mentions cause the domain doesnt support it', () => {
+        const component = shallow(
+            <FacebookIntegrationSetupContainer
+                {...minProps}
+                currentAccount={fromJS({domain: 'notacme'})}
+                integrations={onboardingIntegrations}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
 
     it.each([
         [

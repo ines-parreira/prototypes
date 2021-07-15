@@ -99,6 +99,19 @@ describe('facebook roles and permissions utils', () => {
                 false,
             ],
             [
+                PERMISSIONS_PER_INTEGRATION_META_SETTING.mentions_enabled,
+                'mentions_enabled',
+                true,
+            ],
+            [
+                PERMISSIONS_PER_INTEGRATION_META_SETTING.mentions_enabled.slice(
+                    0,
+                    -1
+                ),
+                'mentions_enabled',
+                false,
+            ],
+            [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.instagram_comments_enabled,
                 'instagram_comments_enabled',
                 true,

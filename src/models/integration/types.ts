@@ -76,6 +76,7 @@ type IntegrationFacebook = {
         instagram_comments_enabled: boolean
         messenger_enabled: boolean
         posts_enabled: boolean
+        mentions_enabled: boolean
     }
 }
 

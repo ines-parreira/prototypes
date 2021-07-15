@@ -42,6 +42,8 @@ import * as billingSelectors from '../../../../../../state/billing/selectors.ts'
 
 import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 
+import {FACEBOOK_MENTION_ENABLED_DOMAINS} from '../../../../../../config/integrations/facebook.ts'
+
 import css from './FacebookIntegrationSetup.less'
 
 type Props = {
@@ -125,6 +127,10 @@ export class FacebookIntegrationSetupContainer extends React.Component<
             userPermissions,
             'posts_enabled'
         )
+        const canEnableMentions = canEnableMetaSetting(
+            userPermissions,
+            'mentions_enabled'
+        )
         const canEnableRecommendations = canEnableMetaSetting(
             userPermissions,
             'recommendations_enabled'
@@ -160,6 +166,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
             const settings = {
                 messenger_enabled: canEnableMessenger,
                 posts_enabled: canEnablePosts,
+                mentions_enabled: canEnableMentions,
                 recommendations_enabled: canEnableRecommendations,
                 instagram_comments_enabled:
                     canEnableInstagramComments &&
@@ -233,6 +240,10 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         if (integrations.isEmpty()) {
             return null
         }
+        const mentionEnabledDomain =
+            FACEBOOK_MENTION_ENABLED_DOMAINS.indexOf(
+                currentAccount.get('domain')
+            ) >= 0
 
         return (
             <div className="mb-4">
@@ -279,6 +290,11 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                             const canEnablePosts = canEnableMetaSetting(
                                 userPermissions,
                                 'posts_enabled'
+                            )
+
+                            const canEnableMentions = canEnableMetaSetting(
+                                userPermissions,
+                                'mentions_enabled'
                             )
 
                             const canEnableRecommendations = canEnableMetaSetting(
@@ -333,6 +349,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                             const displayPermissionAlert =
                                 !canEnableMessenger ||
                                 !canEnablePosts ||
+                                !canEnableMentions ||
                                 !canEnableRecommendations ||
                                 !canEnableInstagramComments ||
                                 !canEnableInstagramMentions ||
@@ -342,6 +359,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                             const nothingToEnable =
                                 !canEnableMessenger &&
                                 !canEnablePosts &&
+                                !canEnableMentions &&
                                 !canEnableRecommendations &&
                                 !canEnableInstagramComments &&
                                 !canEnableInstagramMentions &&
@@ -530,6 +548,27 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             !canEnablePosts
                                                         }
                                                     />
+                                                    {mentionEnabledDomain && (
+                                                        <BooleanField
+                                                            name={`${id}.mentions_enabled`}
+                                                            type="checkbox"
+                                                            label="Enable Facebook mentions"
+                                                            value={this._getSettingValue(
+                                                                id,
+                                                                'mentions_enabled'
+                                                            )}
+                                                            onChange={(value) =>
+                                                                this._setSettingValue(
+                                                                    id,
+                                                                    'mentions_enabled',
+                                                                    value
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                !canEnableMentions
+                                                            }
+                                                        />
+                                                    )}
                                                     <BooleanField
                                                         name={`${id}.recommendations_enabled`}
                                                         type="checkbox"

@@ -45,6 +45,14 @@ export const PERMISSIONS_PER_INTEGRATION_META_SETTING = {
         PAGES_READ_USER_CONTENT,
         PAGES_MANAGE_ADS,
     ],
+    mentions_enabled: [
+        PAGES_MANAGE_POSTS,
+        PAGES_SHOW_LIST,
+        PAGES_MANAGE_METADATA,
+        PAGES_READ_ENGAGEMENT,
+        PAGES_MANAGE_ENGAGEMENT,
+        PAGES_READ_USER_CONTENT,
+    ],
     instagram_comments_enabled: [
         INSTAGRAM_BASIC,
         PAGES_READ_ENGAGEMENT,

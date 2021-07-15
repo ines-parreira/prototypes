@@ -51,10 +51,14 @@ const defaultProps = {
             instagram_dm: {enabled: true},
         },
     }),
+    currentAccount: fromJS({
+        domain: 'acme',
+    }),
 }
 
 const defaultFacebookIntegrationSettings = {
     posts_enabled: true,
+    mentions_enabled: true,
     recommendations_enabled: true,
     messenger_enabled: true,
     import_history_enabled: true,
@@ -95,6 +99,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         it('should only set settings in the state because there is no language in the integration', () => {
             const newSettings = {
                 posts_enabled: false,
+                mentions_enabled: false,
                 messenger_enabled: true,
                 import_history_enabled: false,
                 instagram_comments_enabled: true,
@@ -143,6 +148,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         it('should set both language and settings in the integration', () => {
             const newSettings = {
                 posts_enabled: false,
+                mentions_enabled: false,
                 messenger_enabled: true,
                 import_history_enabled: false,
                 instagram_comments_enabled: true,
@@ -188,6 +194,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     name: 'My facebook page',
                     settings: {
                         posts_enabled: true,
+                        mentions_enabled: true,
                         messenger_enabled: true,
                         import_history_enabled: true,
                         instagram_comments_enabled: false,
@@ -236,6 +243,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         instagram_mentions_enabled: undefined,
                         messenger_enabled: true,
                         posts_enabled: true,
+                        mentions_enabled: true,
                         recommendations_enabled: undefined,
                     },
                 },
@@ -252,6 +260,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         instagram_mentions_enabled: undefined,
                         messenger_enabled: true,
                         posts_enabled: false,
+                        mentions_enabled: false,
                         recommendations_enabled: undefined,
                     })
                 )
@@ -313,6 +322,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         instagram_mentions_enabled: undefined,
                         messenger_enabled: true,
                         posts_enabled: postsEnabled,
+                        mentions_enabled: true,
                         recommendations_enabled: undefined,
                     },
                 },
@@ -369,6 +379,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     name: 'My facebook page',
                     settings: {
                         posts_enabled: true,
+                        mentions_enabled: true,
                         messenger_enabled: true,
                         import_history_enabled: true,
                         instagram_comments_enabled: false,
@@ -591,6 +602,14 @@ describe('<FacebookIntegrationDetail/>', () => {
             PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled'].join(','),
             // Posts && History disabled
             PERMISSIONS_PER_INTEGRATION_META_SETTING['posts_enabled']
+                .slice(0, -1)
+                .join(','),
+            // Mentions enabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled'].join(
+                ','
+            ),
+            // Mentions disabled
+            PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled']
                 .slice(0, -1)
                 .join(','),
             // Instagram comments enabled
@@ -924,6 +943,26 @@ describe('<FacebookIntegrationDetail/>', () => {
                 expect(component).toMatchSnapshot()
             }
         )
+
+        it('should render an integration without showing mentions cause the domain doesnt support it', () => {
+            const integration = fromJS({
+                id: 1,
+                type: FACEBOOK_INTEGRATION_TYPE,
+            })
+            const component = shallow(
+                <FacebookIntegrationDetail
+                    store={store}
+                    {...defaultProps}
+                    currentAccount={fromJS({domain: 'notacme'})}
+                    loading={fromJS({
+                        updateIntegration: integration.get('id'),
+                    })}
+                    integration={integration}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
 
         it.each([
             [
