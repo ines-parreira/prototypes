@@ -102,7 +102,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
             to pass the email of the ticket customer. See other
              
             <a
-              href="https://api.gorgias.io/#Customer-object"
+              href="https://developers.gorgias.com/reference#the-customer-object"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -362,7 +362,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
             to pass the email of the ticket customer. See other
              
             <a
-              href="https://api.gorgias.io/#Customer-object"
+              href="https://developers.gorgias.com/reference#the-customer-object"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -633,7 +633,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
             to pass the email of the ticket customer. See other
              
             <a
-              href="https://api.gorgias.io/#Customer-object"
+              href="https://developers.gorgias.com/reference#the-customer-object"
               rel="noopener noreferrer"
               target="_blank"
             >

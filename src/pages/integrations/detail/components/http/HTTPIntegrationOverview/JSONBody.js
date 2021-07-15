@@ -97,7 +97,7 @@ export default class JSONBody extends React.Component<Props, State> {
                         <FormText color="muted">
                             See full list of variables{' '}
                             <a
-                                href="https://api.gorgias.io/#Customer-object"
+                                href="https://developers.gorgias.com/reference#the-customer-object"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >

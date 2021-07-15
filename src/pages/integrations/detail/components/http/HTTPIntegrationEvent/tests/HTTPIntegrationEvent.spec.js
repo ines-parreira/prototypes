@@ -10,7 +10,7 @@ const HTTPEventWithHTMLResp = fromJS({
     status: 200,
     request: {
         method: 'GET',
-        url: 'https://api.gorgias.io',
+        url: 'https://developers.gorgias.com',
         status: 200,
         headers: {headersKey1: 'headersValue1'},
         params: {paramKey1: 'paramValue1'},
@@ -27,7 +27,7 @@ const HTTPEventWithJSONResp = fromJS({
     status: 200,
     request: {
         method: 'GET',
-        url: 'https://api.gorgias.io',
+        url: 'https://developers.gorgias.com',
         status: 200,
         headers: {headersKey1: 'headersValue1'},
         params: {paramKey1: 'paramValue1'},
@@ -44,7 +44,7 @@ const HTTPEventWithEmptyBodies = fromJS({
     status: 200,
     request: {
         method: 'GET',
-        url: 'https://api.gorgias.io',
+        url: 'https://developers.gorgias.com',
         status: 200,
         headers: {headersKey1: 'headersValue1'},
     },
@@ -58,7 +58,7 @@ const HTTPEventWithErrorInResponse = fromJS({
     status: null,
     request: {
         method: 'GET',
-        url: 'https://api.gorgias.io',
+        url: 'https://developers.gorgias.com',
         status: null,
         headers: {headersKey1: 'headersValue1'},
     },

@@ -391,7 +391,7 @@ export default class HTTPIntegrationOverview extends React.Component<
                                     to pass the email of the ticket customer.
                                     See other{' '}
                                     <a
-                                        href="https://api.gorgias.io/#Customer-object"
+                                        href="https://developers.gorgias.com/reference#the-customer-object"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >

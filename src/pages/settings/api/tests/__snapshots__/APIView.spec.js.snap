@@ -24,12 +24,12 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
        
       to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
       <a
-        href="https://api.gorgias.com/"
+        href="https://developers.gorgias.com/"
         rel="noopener noreferrer"
         target="_blank"
       >
          
-        https://api.gorgias.com/
+        https://developers.gorgias.com/
       </a>
       .
     </p>
@@ -250,12 +250,12 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
        
       to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
       <a
-        href="https://api.gorgias.com/"
+        href="https://developers.gorgias.com/"
         rel="noopener noreferrer"
         target="_blank"
       >
          
-        https://api.gorgias.com/
+        https://developers.gorgias.com/
       </a>
       .
     </p>

@@ -202,12 +202,12 @@ export class APIViewComponent extends React.Component<Props, State> {
                         messages and events. To find out more about our API,
                         please consult our docs here:
                         <a
-                            href="https://api.gorgias.com/"
+                            href="https://developers.gorgias.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
                             {' '}
-                            https://api.gorgias.com/
+                            https://developers.gorgias.com/
                         </a>
                         .
                     </p>

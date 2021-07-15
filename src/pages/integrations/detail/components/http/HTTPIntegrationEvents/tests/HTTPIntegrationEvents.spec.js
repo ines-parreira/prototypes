@@ -10,7 +10,7 @@ const events = fromJS([
         created_datetime: getMomentNow(),
         request: {
             method: 'GET',
-            url: 'https://api.gorgias.io',
+            url: 'https://developers.gorgias.com',
             status: 200,
             headers: {headersKey1: 'headersValue1'},
             params: {paramKey1: 'paramValue1'},

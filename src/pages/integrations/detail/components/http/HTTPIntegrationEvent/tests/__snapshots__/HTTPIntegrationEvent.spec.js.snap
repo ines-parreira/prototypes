@@ -72,7 +72,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
         />
         <HTTPIntegrationEventItem
           name="URL"
-          value="https://api.gorgias.io"
+          value="https://developers.gorgias.com"
         />
         <HTTPIntegrationEventItem
           name="Sent"
@@ -209,7 +209,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
         />
         <HTTPIntegrationEventItem
           name="URL"
-          value="https://api.gorgias.io"
+          value="https://developers.gorgias.com"
         />
         <HTTPIntegrationEventItem
           name="Sent"
@@ -376,7 +376,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP req
         />
         <HTTPIntegrationEventItem
           name="URL"
-          value="https://api.gorgias.io"
+          value="https://developers.gorgias.com"
         />
         <HTTPIntegrationEventItem
           name="Sent"
@@ -540,7 +540,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         />
         <HTTPIntegrationEventItem
           name="URL"
-          value="https://api.gorgias.io"
+          value="https://developers.gorgias.com"
         />
         <HTTPIntegrationEventItem
           name="Sent"
@@ -693,7 +693,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         />
         <HTTPIntegrationEventItem
           name="URL"
-          value="https://api.gorgias.io"
+          value="https://developers.gorgias.com"
         />
         <HTTPIntegrationEventItem
           name="Sent"
