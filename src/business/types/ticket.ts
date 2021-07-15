@@ -41,6 +41,7 @@ export enum TicketChannel {
     Chat = 'chat',
     Email = 'email',
     Facebook = 'facebook',
+    FacebookMention = 'facebook-mention',
     FacebookMessenger = 'facebook-messenger',
     FacebookRecommendations = 'facebook-recommendations',
     InstagramAdComment = 'instagram-ad-comment',

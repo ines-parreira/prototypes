@@ -79,6 +79,7 @@ export const USABLE_SOURCE_TYPES = [
     CHAT_SOURCE,
     EMAIL_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_MENTION_COMMENT_SOURCE,
     FACEBOOK_REVIEW_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
@@ -279,6 +280,10 @@ export function sourceTypeToChannel(
         return sourceTypeToChannel(lastSourceType, messages)
     }
 
+    if (sourceType.startsWith('facebook-mention')) {
+        return TicketChannel.FacebookMention
+    }
+
     if (
         sourceType.startsWith('facebook') &&
         sourceType !== TicketMessageSourceType.FacebookMessenger
@@ -344,6 +349,10 @@ export function responseSourceType(
 
     if (lastSourceType === TicketMessageSourceType.FacebookPost) {
         return TicketMessageSourceType.FacebookComment
+    }
+
+    if (lastSourceType === TicketMessageSourceType.FacebookMentionPost) {
+        return TicketMessageSourceType.FacebookMentionComment
     }
 
     if (lastSourceType === TicketMessageSourceType.FacebookReview) {

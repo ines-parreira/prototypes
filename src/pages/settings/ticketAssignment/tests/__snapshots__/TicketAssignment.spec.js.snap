@@ -256,6 +256,10 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
                     "value": "facebook",
                   },
                   Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
+                  },
+                  Object {
                     "label": "facebook-messenger",
                     "value": "facebook-messenger",
                   },
@@ -487,6 +491,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                   Object {
                     "label": "facebook",
                     "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
                   },
                   Object {
                     "label": "facebook-messenger",
@@ -722,6 +730,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                     "value": "facebook",
                   },
                   Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
+                  },
+                  Object {
                     "label": "facebook-messenger",
                     "value": "facebook-messenger",
                   },
@@ -953,6 +965,10 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                   Object {
                     "label": "facebook",
                     "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
                   },
                   Object {
                     "label": "facebook-messenger",
@@ -1188,6 +1204,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "value": "facebook",
                   },
                   Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
+                  },
+                  Object {
                     "label": "facebook-messenger",
                     "value": "facebook-messenger",
                   },
@@ -1421,6 +1441,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "value": "facebook",
                   },
                   Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
+                  },
+                  Object {
                     "label": "facebook-messenger",
                     "value": "facebook-messenger",
                   },
@@ -1652,6 +1676,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                   Object {
                     "label": "facebook",
                     "value": "facebook",
+                  },
+                  Object {
+                    "label": "facebook-mention",
+                    "value": "facebook-mention",
                   },
                   Object {
                     "label": "facebook-messenger",

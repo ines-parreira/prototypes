@@ -88,6 +88,8 @@ describe('ReplyMessageChannel component', () => {
 
             if (type === FACEBOOK_POST_SOURCE) {
                 newMessageType = FACEBOOK_COMMENT_SOURCE
+            } else if (type === FACEBOOK_MENTION_POST_SOURCE) {
+                newMessageType = FACEBOOK_MENTION_COMMENT_SOURCE
             } else if (type === INSTAGRAM_MEDIA_SOURCE) {
                 newMessageType = INSTAGRAM_COMMENT_SOURCE
             } else if (type === INSTAGRAM_AD_MEDIA_SOURCE) {

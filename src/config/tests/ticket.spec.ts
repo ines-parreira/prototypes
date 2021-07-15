@@ -4,7 +4,11 @@ import _isObject from 'lodash/isObject'
 import _isBoolean from 'lodash/isBoolean'
 import {Map} from 'immutable'
 
-import {TicketMessageSourceType, TicketVia} from '../../business/types/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+    TicketVia,
+} from '../../business/types/ticket'
 import {TicketMessage} from '../../models/ticket/types'
 import * as ticketConfig from '../ticket'
 
@@ -337,6 +341,18 @@ describe('Config: ticket', () => {
                 ticketConfig.DEFAULT_SOURCE_TYPE
             )
         })
+
+        it('should return facebook mention comment channel if the last source is facebook mention post', () => {
+            const message = {
+                source: {type: TicketMessageSourceType.FacebookMentionPost},
+            } as TicketMessage
+            const messages: TicketMessage[] = [message]
+            const via = TicketVia.Facebook
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.FacebookMentionComment
+            )
+        })
     })
 
     describe('sourceTypeToChannel()', () => {
@@ -362,6 +378,19 @@ describe('Config: ticket', () => {
                 [{via: TicketVia.Twilio} as TicketMessage]
             )
             expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
+        })
+
+        it('should return the FacebookMention channel if the last not system message is from a Facebook Mention Post or Comment', () => {
+            const postChannel = ticketConfig.sourceTypeToChannel(
+                TicketMessageSourceType.FacebookMentionPost,
+                [{via: TicketVia.Facebook} as TicketMessage]
+            )
+            const commentChannel = ticketConfig.sourceTypeToChannel(
+                TicketMessageSourceType.FacebookMentionComment,
+                [{via: TicketVia.Facebook} as TicketMessage]
+            )
+            expect(postChannel).toBe(TicketChannel.FacebookMention)
+            expect(commentChannel).toBe(TicketChannel.FacebookMention)
         })
     })
 })

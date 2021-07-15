@@ -909,7 +909,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
     },
     intents: {
         name: 'Intents',
-        description: `Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face. 
+        description: `Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face.
 Intents can be used in rules and macros to automate your ticket-reply workflow.`,
         url: 'https://docs.gorgias.com/intents-sentiments/customer-intents',
         filters: [
@@ -920,6 +920,7 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
                     TicketChannel.Chat,
                     TicketChannel.Email,
                     TicketChannel.Facebook,
+                    TicketChannel.FacebookMention,
                     TicketChannel.FacebookMessenger,
                     TicketChannel.InstagramAdComment,
                     TicketChannel.InstagramComment,

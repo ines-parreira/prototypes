@@ -410,6 +410,17 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
           type="button"
         >
           <SourceIcon
+            type="facebook-mention-comment"
+          />
+          Reply via Facebook mention comment
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
             type="internal-note"
           />
           Leave an internal note
@@ -455,7 +466,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       >
         <SourceIcon
           className="md-2"
-          type="facebook-mention-post"
+          type="facebook-mention-comment"
         />
       </DropdownToggle>
       <DropdownMenu
@@ -483,6 +494,17 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
             type="email-forward"
           />
           Forward by email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="facebook-mention-comment"
+          />
+          Reply via Facebook mention comment
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}

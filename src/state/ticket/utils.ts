@@ -63,6 +63,17 @@ export function getLastSameSourceTypeMessage(
             .last() as Map<any, any>
     } else if (
         !msg &&
+        sourceType === TicketMessageSourceType.FacebookMentionComment
+    ) {
+        return messages
+            .filter(
+                (m: Map<any, any>) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.FacebookMentionPost
+            )
+            .last() as Map<any, any>
+    } else if (
+        !msg &&
         sourceType === TicketMessageSourceType.FacebookReviewComment
     ) {
         return messages

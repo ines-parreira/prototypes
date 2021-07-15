@@ -61,6 +61,7 @@ export function canAddAttachments(
 
     const maxAttachmentsCount = new Map([
         [TicketMessageSourceType.FacebookComment, 1],
+        [TicketMessageSourceType.FacebookMentionComment, 1],
         [TicketMessageSourceType.FacebookReviewComment, 1],
         [TicketMessageSourceType.InstagramDirectMessage, 1],
         [TicketMessageSourceType.InstagramComment, 0],
@@ -133,6 +134,7 @@ export const TicketChannels = Object.freeze({
     CHAT: 'chat',
     EMAIL: 'email',
     FACEBOOK: 'facebook',
+    FACEBOOK_MENTION: 'facebook-mention',
     FACEBOOK_RECOMMENDATIONS_CHANNEL: 'facebook-recommendations',
     FACEBOOK_MESSENGER: 'facebook-messenger',
     INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',

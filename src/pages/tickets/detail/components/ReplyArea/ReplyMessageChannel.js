@@ -179,7 +179,6 @@ export class ReplyMessageChannelContainer extends React.Component {
             FACEBOOK_MESSENGER_SOURCE,
             FACEBOOK_POST_SOURCE,
             FACEBOOK_MENTION_POST_SOURCE,
-            FACEBOOK_MENTION_COMMENT_SOURCE,
             INSTAGRAM_AD_COMMENT_SOURCE,
             INSTAGRAM_AD_MEDIA_SOURCE,
             INSTAGRAM_COMMENT_SOURCE,
@@ -218,6 +217,8 @@ export class ReplyMessageChannelContainer extends React.Component {
         const suggestChat = isTicketExisting && !!replyOptions.get('chat')
         const suggestFacebookComment =
             isTicketExisting && !!replyOptions.get('facebook-comment')
+        const suggestFacebookMentionComment =
+            isTicketExisting && !!replyOptions.get('facebook-mention-comment')
         const suggestFacebookReviewComment =
             isTicketExisting && !!replyOptions.get('facebook-review-comment')
         const suggestFacebookMessenger =
@@ -304,6 +305,21 @@ export class ReplyMessageChannelContainer extends React.Component {
                                         type={FACEBOOK_COMMENT_SOURCE}
                                     />
                                     Reply via Facebook comment
+                                </DropdownItem>
+                            )}
+                            {suggestFacebookMentionComment && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            FACEBOOK_MENTION_COMMENT_SOURCE
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={FACEBOOK_MENTION_COMMENT_SOURCE}
+                                    />
+                                    Reply via Facebook mention comment
                                 </DropdownItem>
                             )}
                             {suggestFacebookReviewComment && (
