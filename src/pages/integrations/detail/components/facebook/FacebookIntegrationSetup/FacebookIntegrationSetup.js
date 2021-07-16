@@ -127,10 +127,13 @@ export class FacebookIntegrationSetupContainer extends React.Component<
             userPermissions,
             'posts_enabled'
         )
-        const canEnableMentions = canEnableMetaSetting(
-            userPermissions,
-            'mentions_enabled'
-        )
+        const canEnableMentions = false
+        /* Disabled by default until mentions are available to all accounts
+         * canEnableMetaSetting(
+         *   userPermissions,
+         *   'mentions_enabled'
+         * )
+         */
         const canEnableRecommendations = canEnableMetaSetting(
             userPermissions,
             'recommendations_enabled'
