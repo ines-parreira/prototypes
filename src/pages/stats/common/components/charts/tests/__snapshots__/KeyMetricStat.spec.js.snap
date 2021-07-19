@@ -278,7 +278,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-tickets-closed"
         >
-          Number of tickets closed (if a ticket was closed multiple times, we only count the last time)
+          Number of tickets closed (if a ticket was closed multiple times, we only count the last time). This metric can evolve over time if tickets are reopened and closed on the following days.
         </Tooltip>
       </span>
     </div>

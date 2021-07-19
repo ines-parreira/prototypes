@@ -475,7 +475,7 @@ export const stats: Map<any, any> = fromJS({
                 label: 'Tickets closed',
                 name: 'total_closed_tickets',
                 tooltip:
-                    'Number of tickets closed (if a ticket was closed multiple times, we only count the last time)',
+                    'Number of tickets closed (if a ticket was closed multiple times, we only count the last time). This metric can evolve over time if tickets are reopened and closed on the following days.',
             },
             {
                 api_resource_name: 'total-messages-sent',
