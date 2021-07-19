@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 
 import {TicketViewContainer} from '../TicketView'
 
-jest.mock('../TicketHeader', () => () => <div>TicketHeader</div>)
+jest.mock('../TicketHeader.js', () => () => <div>TicketHeader</div>)
 jest.mock('../ReplyArea/ReplyMessageChannel.js', () => () => (
     <div>ReplyMessageChannel</div>
 ))

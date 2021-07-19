@@ -7,7 +7,7 @@ type Props = {
     datetime?: string
     onSubmit: (date: Moment) => void
     isOpen: boolean
-    timezone: string | null
+    timezone: string
     toggle: () => void
 }
 
@@ -18,7 +18,7 @@ const TicketSnoozePicker = ({
     timezone,
     toggle,
 }: Props) => {
-    const formattedDate = moment.tz(datetime, timezone!)
+    const formattedDate = moment.tz(datetime, timezone)
     const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
     const ranges: {[label: string]: [Moment, Moment]} = {
         '1 hour': [moment().add(1, 'hours'), moment().add(1, 'hours')],

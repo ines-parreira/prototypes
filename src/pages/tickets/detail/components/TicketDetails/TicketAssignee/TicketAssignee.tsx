@@ -23,12 +23,8 @@ type Props = {
     currentAssigneeUser: Map<any, any> | null
     currentAssigneeTeam: Map<any, any> | null
     direction: string
-    setUser: (
-        ...args: ArgumentsOf<typeof setAgent>
-    ) => ReturnType<ReturnType<typeof setAgent>>
-    setTeam: (
-        ...args: ArgumentsOf<typeof setTeam>
-    ) => ReturnType<ReturnType<typeof setTeam>>
+    setUser: typeof setAgent
+    setTeam: typeof setTeam
     profilePictureUrl?: string
     className?: string
     transparent?: boolean
@@ -88,17 +84,17 @@ export class TicketAssigneeContainer extends Component<Props, State> {
     }
 
     _clearUser = () => {
-        void this.props.setUser(null)
+        this.props.setUser(null)
         this.setState({search: ''})
     }
 
     _clearTeam = () => {
-        void this.props.setTeam(null)
+        this.props.setTeam(null)
         this.setState({search: ''})
     }
 
     _selectUser = (user: Map<any, any>) => {
-        void this.props.setUser({
+        this.props.setUser({
             id: user.get('id'),
             name: user.get('name'),
             email: user.get('email'),
@@ -108,7 +104,7 @@ export class TicketAssigneeContainer extends Component<Props, State> {
     }
 
     _selectTeam = (team: Map<any, any>) => {
-        void this.props.setTeam({
+        this.props.setTeam({
             id: team.get('id'),
             name: team.get('name'),
             decoration: team.get('decoration'),

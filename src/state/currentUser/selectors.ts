@@ -121,7 +121,7 @@ export const isActive = createSelector<RootState, boolean, CurrentUserState>(
 
 export const getTimezone = createSelector<
     RootState,
-    string | null,
+    Maybe<string>,
     CurrentUserState
 >(
     getCurrentUserState,

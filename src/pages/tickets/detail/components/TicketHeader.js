@@ -1,6 +1,7 @@
+// @flow
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import moment, {Moment} from 'moment-timezone'
+import {connect} from 'react-redux'
+import moment, {type Moment} from 'moment-timezone'
 import classnames from 'classnames'
 import {
     UncontrolledDropdown,
@@ -12,12 +13,13 @@ import {
     PopoverHeader,
     PopoverBody,
 } from 'reactstrap'
-import {Map} from 'immutable'
 
-import shortcutManager from '../../../../services/shortcutManager'
-import EditableTitle from '../../../common/components/EditableTitle'
-import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
-import {notify} from '../../../../state/notifications/actions'
+import type {Map} from 'immutable'
+
+import shortcutManager from '../../../../services/shortcutManager/index.ts'
+import EditableTitle from '../../../common/components/EditableTitle.tsx'
+import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer.tsx'
+import {notify} from '../../../../state/notifications/actions.ts'
 import {
     addTags,
     clearTicket,
@@ -33,31 +35,48 @@ import {
     setTrashed,
     snoozeTicket,
     ticketPartialUpdate,
-} from '../../../../state/ticket/actions'
-import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors'
-import {getTimezone} from '../../../../state/currentUser/selectors'
-import {RootState} from '../../../../state/types'
-import {NotificationStatus} from '../../../../state/notifications/types'
+} from '../../../../state/ticket/actions.ts'
+import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors.ts'
+import {getTimezone} from '../../../../state/currentUser/selectors.ts'
+import {NOTIFICATION_STATUS} from '../../../../state/notifications/constants.ts'
 
-import TicketTags from './TicketDetails/TicketTags.js'
-import TicketStatus from './TicketDetails/TicketStatus.js'
-import TicketAssignee from './TicketDetails/TicketAssignee/TicketAssignee'
-import TicketSpam from './TicketDetails/TicketSpam'
-import TicketSnooze from './TicketDetails/TicketSnooze'
-import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
-import TicketTrash from './TicketDetails/TicketTrash'
+import TicketTags from './TicketDetails/TicketTags'
+import TicketStatus from './TicketDetails/TicketStatus'
+import TicketAssignee from './TicketDetails/TicketAssignee'
+import TicketSpam from './TicketDetails/TicketSpam.tsx'
+import TicketSnooze from './TicketDetails/TicketSnooze.tsx'
+import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker.tsx'
+import TicketTrash from './TicketDetails/TicketTrash.tsx'
+
 import css from './TicketHeader.less'
 
 type Props = {
-    ticket: Map<any, any>
-    className: string
-    hideTicket: () => Promise<void>
-} & ConnectedProps<typeof connector>
+    ticket: Map<any, any>,
+    timezone: string,
+    addTags: typeof addTags,
+    className: string,
+    clearTicket: typeof clearTicket,
+    displayAuditLogEvents: typeof displayAuditLogEvents,
+    goToNextTicket: typeof goToNextTicket,
+    hideAuditLogEvents: typeof hideAuditLogEvents,
+    hideTicket: () => Promise<*>,
+    notify: typeof notify,
+    removeTag: typeof removeTag,
+    setAgent: typeof setAgent,
+    setSpam: typeof setSpam,
+    setStatus: typeof setStatus,
+    setSubject: typeof setSubject,
+    setTeam: typeof setTeam,
+    setTrashed: typeof setTrashed,
+    shouldDisplayAuditLogEvents: boolean,
+    snoozeTicket: typeof snoozeTicket,
+    ticketPartialUpdate: typeof ticketPartialUpdate,
+}
 
 type State = {
-    askTrashConfirmation: boolean
-    showSnoozePicker: boolean
-    isMergeTicketModalOpen: boolean
+    askTrashConfirmation: boolean,
+    showSnoozePicker: boolean,
+    isMergeTicketModalOpen: boolean,
 }
 
 export class TicketHeaderContainer extends React.Component<Props, State> {
@@ -90,22 +109,24 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
         const promise = hideTicket().then(clearTicket)
 
-        void goToNextTicket(this.props.ticket.get('id'), promise)
+        goToNextTicket(this.props.ticket.get('id'), promise)
     }
 
     _setStatus = (status: string) => {
         const {notify, setStatus} = this.props
 
         return setStatus(status, () => {
-            void notify({
-                status: NotificationStatus.Success,
+            notify({
+                status: 'success',
                 message: 'Ticket has been closed',
             })
             this._goToNextTicket()
         })
     }
 
-    _toggleTrashConfirmation = (status = !this.state.askTrashConfirmation) => {
+    _toggleTrashConfirmation = (
+        status: boolean = !this.state.askTrashConfirmation
+    ) => {
         this.setState({askTrashConfirmation: status})
     }
 
@@ -120,15 +141,10 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         return this.props.setTrashed(null)
     }
 
-    _snoozeTicket = (datetime: Moment | null) => {
-        const {snoozeTicket} = this.props
-
-        if (datetime) {
-            return this.props.snoozeTicket(datetime.format(), () => {
-                this._goToNextTicket()
-            })
-        }
-        void snoozeTicket(null)
+    _snoozeTicket = (datetime: Moment) => {
+        return this.props.snoozeTicket(datetime.format(), () => {
+            this._goToNextTicket()
+        })
     }
 
     _toggleSnoozePicker = () => {
@@ -156,7 +172,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             .shouldDisplayAuditLogEvents
 
         if (shouldDisplayAuditLogEvents) {
-            void displayAuditLogEvents(ticket.get('id'))
+            displayAuditLogEvents(ticket.get('id'))
         } else {
             hideAuditLogEvents()
         }
@@ -166,12 +182,12 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         shortcutManager.bind('TicketDetailContainer', {
             CLOSE_TICKET: {
                 action: () => {
-                    void this._setStatus('closed')
+                    this._setStatus('closed')
                 },
             },
             OPEN_TICKET: {
                 action: () => {
-                    void this._setStatus('open')
+                    this._setStatus('open')
                 },
             },
             DELETE_TICKET: {
@@ -262,9 +278,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                 id="ticket-actions-button"
                                 className="btn-transparent"
                             >
-                                <i className="material-icons md-2">
-                                    {showSnoozePicker ? 'snooze' : 'more_vert'}
-                                </i>
+                                <i className="material-icons md-2">more_vert</i>
                             </DropdownToggle>
                             <TicketSnoozePicker
                                 datetime={ticket.get('snooze_datetime')}
@@ -281,21 +295,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                     <i className="icon material-icons">
                                         snooze
                                     </i>
-                                    {ticket.get('snooze_datetime')
-                                        ? 'Change snooze time'
-                                        : 'Snooze'}
+                                    Snooze
                                 </DropdownItem>
-                                {ticket.get('snooze_datetime') && (
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={() => this._snoozeTicket(null)}
-                                    >
-                                        <i className="icon material-icons">
-                                            timer_off
-                                        </i>
-                                        Clear snooze
-                                    </DropdownItem>
-                                )}
                                 <DropdownItem
                                     type="button"
                                     onClick={this._toggleMergeTicketModal}
@@ -314,7 +315,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                             })
                                             void notify({
                                                 status:
-                                                    NotificationStatus.Success,
+                                                    NOTIFICATION_STATUS.SUCCESS,
                                                 message:
                                                     'Ticket has been marked as unread',
                                             })
@@ -476,7 +477,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 }
 
 const connector = connect(
-    (state: RootState) => ({
+    (state) => ({
         timezone: getTimezone(state),
         shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
     }),
