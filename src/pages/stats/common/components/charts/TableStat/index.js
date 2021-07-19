@@ -1,2 +1,2 @@
-import TableStat from './TableStat'
+import TableStat from './TableStat.tsx'
 export default TableStat

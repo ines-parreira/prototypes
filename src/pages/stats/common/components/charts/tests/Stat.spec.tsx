@@ -22,7 +22,7 @@ jest.mock('../BarStat.js', () => () => <div>BarStat</div>)
 
 jest.mock('../LineStat', () => () => <div>LineStat</div>)
 
-jest.mock('../TableStat/TableStat.js', () => () => <div>TableStat</div>)
+jest.mock('../TableStat/TableStat', () => () => <div>TableStat</div>)
 
 jest.mock('../KeyMetricStat/KeyMetricStat.js', () => () => (
     <div>KeyMetricStat</div>

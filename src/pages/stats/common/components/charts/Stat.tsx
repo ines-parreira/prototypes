@@ -24,7 +24,7 @@ import {downloadStat} from '../../../../../models/stat/resources'
 import {getFetchingStatusByName} from '../../../../../state/ui/stats/selectors'
 
 import LineStat from './LineStat'
-import TableStat from './TableStat/TableStat.js'
+import TableStat from './TableStat/TableStat'
 import PerHourPerWeekTableStat from './PerHourPerWeekTableStat/PerHourPerWeekTableStat.js'
 import KeyMetricStat from './KeyMetricStat/KeyMetricStat.js'
 import BarStat from './BarStat.js'

@@ -1,13 +1,12 @@
-// @flow
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {TableStat} from '../TableStat/TableStat'
 import {
     stats as statsConfig,
     TICKETS_PER_TAG,
-} from '../../../../../../config/stats.tsx'
+} from '../../../../../../config/stats'
 
 const tableStatData = fromJS({
     data: {
@@ -83,13 +82,13 @@ const tableStatData = fromJS({
         previous_start_datetime: '2018-10-22',
         previous_end_datetime: '2018-10-23',
     },
-})
+}) as Map<any, any>
 const tableStatNoData = fromJS({
     data: {
         lines: [],
     },
     meta: {},
-})
+}) as Map<any, any>
 
 describe('TableStat', () => {
     it('should render a table chart', () => {
@@ -98,9 +97,11 @@ describe('TableStat', () => {
         )
         const component = shallow(
             <TableStat
+                {...(tableStatData.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
                 context={{tagColors: null}}
                 config={config}
-                {...tableStatData.toObject()}
             />
         )
         expect(component).toMatchSnapshot()
@@ -112,9 +113,11 @@ describe('TableStat', () => {
         )
         const component = shallow(
             <TableStat
+                {...(tableStatNoData.toObject() as ComponentProps<
+                    typeof TableStat
+                >)}
                 context={{tagColors: null}}
                 config={config}
-                {...tableStatNoData.toObject()}
             />
         )
         expect(component).toMatchSnapshot()

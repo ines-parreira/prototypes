@@ -1,49 +1,52 @@
-// @flow
-import type {Map} from 'immutable'
-import React from 'react'
+import {Map, List} from 'immutable'
+import React, {Component, ReactNode} from 'react'
 import moment from 'moment'
 import _isFunction from 'lodash/isFunction'
 import _truncate from 'lodash/truncate'
 import {Table} from 'reactstrap'
-import {Link, withRouter} from 'react-router-dom'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 
-import Tooltip from '../../../../../common/components/Tooltip.tsx'
-import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
+import Tooltip from '../../../../../common/components/Tooltip'
+import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
     TICKET_MAX_SUBJECT_LENGTH,
-} from '../../../../../../config/stats.tsx'
-import {comparedPeriodString, formatCurrency} from '../../../utils'
-import DistributionVariantStat from '../DistributionVariantStat'
-import StatPercentageDiff from '../../StatPercentageDiff.tsx'
+} from '../../../../../../config/stats'
+import {comparedPeriodString, formatCurrency} from '../../../utils.js'
+import DistributionVariantStat from '../DistributionVariantStat.js'
+import StatPercentageDiff from '../../StatPercentageDiff'
 
 import css from './TableStat.less'
 
-type Props = {
-    data: Map<*, *>,
-    config: Map<*, *>,
-    meta: Map<*, *>,
-    name?: string,
-    context?: {
-        tagColors: Map<*, *>,
-    },
+type OwnProps = {
+    data: Map<any, any>
+    config: Map<any, any>
+    meta: Map<any, any>
+    name?: string
+    context: {
+        tagColors: Map<any, any> | null
+    }
 }
 
-export class TableStat extends React.Component<Props> {
+export class TableStat extends Component<OwnProps & RouteComponentProps> {
     // Render a table cell depending on its value type (percent, date, delta, etc.)
     _renderCell = (
-        line: Map<*, *>,
-        metric: Map<*, *>,
+        line: List<any>,
+        metric: Map<any, any>,
         type: string,
         index: number
     ) => {
         const {meta, config, context} = this.props
 
-        let callback = config.getIn(['callbacks', 'cell'])
+        let callback = config.getIn(['callbacks', 'cell']) as (
+            line: List<any>,
+            val: string | number,
+            context?: OwnProps['context']
+        ) => string | number | ReactNode
         if (!_isFunction(callback)) {
-            callback = ((line, val) => val: any)
+            callback = (line: List<any>, val: string | number) => val
         }
 
         switch (type) {
@@ -66,11 +69,13 @@ export class TableStat extends React.Component<Props> {
                     <span>
                         <span id={id}>
                             <StatPercentageDiff
-                                label={callback(
-                                    line,
-                                    metric.get('value'),
-                                    context
-                                )}
+                                label={
+                                    callback(
+                                        line,
+                                        metric.get('value'),
+                                        context
+                                    ) as string | number
+                                }
                                 percentage={metric.get('value')}
                             />
                         </span>
@@ -91,7 +96,11 @@ export class TableStat extends React.Component<Props> {
                 )
             }
             case 'percent': {
-                return callback(line, `${metric.get('value')}%`, context)
+                return callback(
+                    line,
+                    `${metric.get('value') as string}%`,
+                    context
+                )
             }
             case 'date': {
                 return <DatetimeLabel dateTime={metric.get('value')} />
@@ -100,11 +109,15 @@ export class TableStat extends React.Component<Props> {
                 return formatCurrency(
                     metric.get('value'),
                     metric.get('currency')
-                )
+                ) as string
             }
             case 'customer-link': {
                 return (
-                    <Link to={`/app/customer/${metric.get('customer_id')}`}>
+                    <Link
+                        to={`/app/customer/${
+                            metric.get('customer_id') as string
+                        }`}
+                    >
                         {metric.get('customer_name')}
                     </Link>
                 )
@@ -112,9 +125,9 @@ export class TableStat extends React.Component<Props> {
             case 'satisfaction-survey-link': {
                 return (
                     <Link
-                        to={`/app/ticket/${metric.get(
-                            'ticket_id'
-                        )}#satisfactionSurvey`}
+                        to={`/app/ticket/${
+                            metric.get('ticket_id') as string
+                        }#satisfactionSurvey`}
                     >
                         {_truncate(metric.get('comment') || 'Go to ticket', {
                             length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
@@ -124,10 +137,12 @@ export class TableStat extends React.Component<Props> {
             }
             case 'ticket-link': {
                 return (
-                    <Link to={`/app/ticket/${metric.get('ticket_id')}`}>
+                    <Link
+                        to={`/app/ticket/${metric.get('ticket_id') as string}`}
+                    >
                         {_truncate(
                             metric.get('subject') ||
-                                `Ticket #${metric.get('ticket_id')}`,
+                                `Ticket #${metric.get('ticket_id') as string}`,
                             {length: TICKET_MAX_SUBJECT_LENGTH}
                         )}
                     </Link>
@@ -142,38 +157,43 @@ export class TableStat extends React.Component<Props> {
     render() {
         const {data} = this.props
 
-        return data.get('lines').isEmpty() ? (
+        return (data.get('lines') as List<any>).isEmpty() ? (
             <div className="text-muted">There is no data for this period.</div>
         ) : (
             <Table hover className={css.table}>
                 <thead>
                     <tr>
-                        {data.getIn(['axes', 'x']).map((axe, index) => {
-                            return (
-                                <th
-                                    key={index}
-                                    className={css[`${axe.get('type')}`]}
-                                >
-                                    <span className={css['cell-wrapper']}>
-                                        {axe.get('name').toUpperCase()}
-                                    </span>
-                                </th>
-                            )
-                        })}
+                        {(data.getIn(['axes', 'x']) as List<Map<any, any>>).map(
+                            (axe, index) => {
+                                return (
+                                    <th
+                                        key={index}
+                                        className={
+                                            css[`${axe!.get('type') as string}`]
+                                        }
+                                    >
+                                        <span className={css['cell-wrapper']}>
+                                            {(axe!.get(
+                                                'name'
+                                            ) as string).toUpperCase()}
+                                        </span>
+                                    </th>
+                                )
+                            }
+                        )}
                     </tr>
                 </thead>
                 <tbody>
-                    {data
-                        .get('lines')
+                    {(data.get('lines') as List<List<Map<any, any>>>)
                         .map((line, lineIdx) => (
                             <tr key={lineIdx}>
-                                {line.map((metric, metricIdx) => {
+                                {line!.map((metric, metricIdx) => {
                                     const type = data.getIn([
                                         'axes',
                                         'x',
                                         metricIdx,
                                         'type',
-                                    ])
+                                    ]) as string
                                     return (
                                         <td
                                             key={metricIdx}
@@ -183,10 +203,10 @@ export class TableStat extends React.Component<Props> {
                                                 className={css['cell-wrapper']}
                                             >
                                                 {this._renderCell(
-                                                    line,
-                                                    metric,
+                                                    line!,
+                                                    metric!,
                                                     type,
-                                                    lineIdx
+                                                    lineIdx!
                                                 )}
                                             </span>
                                         </td>
