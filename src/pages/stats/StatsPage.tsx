@@ -3,6 +3,7 @@ import {useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
 import moment from 'moment-timezone'
 import {fromJS, Map} from 'immutable'
+import classNames from 'classnames'
 
 import {STORE_INTEGRATION_TYPES, views} from '../../config/stats'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions'
@@ -17,6 +18,8 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import StatsFilters from './StatsFilters'
 import Stats from './Stats'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
+
+import css from './StatsPage.less'
 
 export default function StatsPage() {
     const dispatch = useAppDispatch()
@@ -79,9 +82,13 @@ export default function StatsPage() {
     }
 
     return (
-        <div className="full-width">
-            <StatsFilters />
-            <Stats />
+        <div className={classNames('full-width', css.wrapper)}>
+            <div className={css.filtersWrapper}>
+                <StatsFilters />
+            </div>
+            <div className={css.statsWrapper}>
+                <Stats />
+            </div>
         </div>
     )
 }

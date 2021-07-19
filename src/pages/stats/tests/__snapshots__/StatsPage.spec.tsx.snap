@@ -21,36 +21,60 @@ exports[`StatsPage should not render statistics because there is no filter 1`] =
 
 exports[`StatsPage should render "Overview" statistics 1`] = `
 <div
-  class="full-width"
+  class="full-width wrapper"
 >
-  StatsFilters
-  <div>
-    Stats Component: 
-    overview
+  <div
+    class="filtersWrapper"
+  >
+    StatsFilters
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div>
+      Stats Component: 
+      overview
+    </div>
   </div>
 </div>
 `;
 
 exports[`StatsPage should render "Revenue" statistics 1`] = `
 <div
-  class="full-width"
+  class="full-width wrapper"
 >
-  StatsFilters
-  <div>
-    Stats Component: 
-    revenue
+  <div
+    class="filtersWrapper"
+  >
+    StatsFilters
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div>
+      Stats Component: 
+      revenue
+    </div>
   </div>
 </div>
 `;
 
 exports[`StatsPage should render "Satisfaction" statistics 1`] = `
 <div
-  class="full-width"
+  class="full-width wrapper"
 >
-  StatsFilters
-  <div>
-    Stats Component: 
-    satisfaction
+  <div
+    class="filtersWrapper"
+  >
+    StatsFilters
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div>
+      Stats Component: 
+      satisfaction
+    </div>
   </div>
 </div>
 `;
