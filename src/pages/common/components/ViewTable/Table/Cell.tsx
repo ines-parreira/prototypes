@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import {RenderLabel} from '../../../utils/labels.js'
+import {RenderLabel} from '../../../utils/labels'
 
 import * as viewsConfig from '../../../../../config/views'
 

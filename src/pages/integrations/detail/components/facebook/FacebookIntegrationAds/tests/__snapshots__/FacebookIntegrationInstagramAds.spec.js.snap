@@ -939,10 +939,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                     </a>
                   </td>
                   <td>
-                    <Connect(DatetimeLabel)
+                    <Connect(DatetimeLabelContainer)
                       dateTime="2019-01-01 10:30:00"
                     >
-                      <DatetimeLabel
+                      <DatetimeLabelContainer
                         dateTime="2019-01-01 10:30:00"
                         dispatch={[Function]}
                         hasTooltip={true}
@@ -1016,8 +1016,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                             </UncontrolledTooltip>
                           </Tooltip>
                         </span>
-                      </DatetimeLabel>
-                    </Connect(DatetimeLabel)>
+                      </DatetimeLabelContainer>
+                    </Connect(DatetimeLabelContainer)>
                   </td>
                   <td
                     className="smallest align-middle"
@@ -1059,10 +1059,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                     </a>
                   </td>
                   <td>
-                    <Connect(DatetimeLabel)
+                    <Connect(DatetimeLabelContainer)
                       dateTime="2019-01-01 10:30:00"
                     >
-                      <DatetimeLabel
+                      <DatetimeLabelContainer
                         dateTime="2019-01-01 10:30:00"
                         dispatch={[Function]}
                         hasTooltip={true}
@@ -1136,8 +1136,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                             </UncontrolledTooltip>
                           </Tooltip>
                         </span>
-                      </DatetimeLabel>
-                    </Connect(DatetimeLabel)>
+                      </DatetimeLabelContainer>
+                    </Connect(DatetimeLabelContainer)>
                   </td>
                   <td
                     className="smallest align-middle"
@@ -1179,10 +1179,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                     </a>
                   </td>
                   <td>
-                    <Connect(DatetimeLabel)
+                    <Connect(DatetimeLabelContainer)
                       dateTime="2019-01-01 10:30:00"
                     >
-                      <DatetimeLabel
+                      <DatetimeLabelContainer
                         dateTime="2019-01-01 10:30:00"
                         dispatch={[Function]}
                         hasTooltip={true}
@@ -1256,8 +1256,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                             </UncontrolledTooltip>
                           </Tooltip>
                         </span>
-                      </DatetimeLabel>
-                    </Connect(DatetimeLabel)>
+                      </DatetimeLabelContainer>
+                    </Connect(DatetimeLabelContainer)>
                   </td>
                   <td
                     className="smallest align-middle"
@@ -1634,10 +1634,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                     </a>
                   </td>
                   <td>
-                    <Connect(DatetimeLabel)
+                    <Connect(DatetimeLabelContainer)
                       dateTime="2019-01-01 10:30:00"
                     >
-                      <DatetimeLabel
+                      <DatetimeLabelContainer
                         dateTime="2019-01-01 10:30:00"
                         dispatch={[Function]}
                         hasTooltip={true}
@@ -1711,8 +1711,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                             </UncontrolledTooltip>
                           </Tooltip>
                         </span>
-                      </DatetimeLabel>
-                    </Connect(DatetimeLabel)>
+                      </DatetimeLabelContainer>
+                    </Connect(DatetimeLabelContainer)>
                   </td>
                   <td
                     className="smallest align-middle"
@@ -2106,10 +2106,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                     </a>
                   </td>
                   <td>
-                    <Connect(DatetimeLabel)
+                    <Connect(DatetimeLabelContainer)
                       dateTime="2019-01-01 10:30:00"
                     >
-                      <DatetimeLabel
+                      <DatetimeLabelContainer
                         dateTime="2019-01-01 10:30:00"
                         dispatch={[Function]}
                         hasTooltip={true}
@@ -2183,8 +2183,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                             </UncontrolledTooltip>
                           </Tooltip>
                         </span>
-                      </DatetimeLabel>
-                    </Connect(DatetimeLabel)>
+                      </DatetimeLabelContainer>
+                    </Connect(DatetimeLabelContainer)>
                   </td>
                   <td
                     className="smallest align-middle"
@@ -2226,10 +2226,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                     </a>
                   </td>
                   <td>
-                    <Connect(DatetimeLabel)
+                    <Connect(DatetimeLabelContainer)
                       dateTime="2019-01-01 10:30:00"
                     >
-                      <DatetimeLabel
+                      <DatetimeLabelContainer
                         dateTime="2019-01-01 10:30:00"
                         dispatch={[Function]}
                         hasTooltip={true}
@@ -2303,8 +2303,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                             </UncontrolledTooltip>
                           </Tooltip>
                         </span>
-                      </DatetimeLabel>
-                    </Connect(DatetimeLabel)>
+                      </DatetimeLabelContainer>
+                    </Connect(DatetimeLabelContainer)>
                   </td>
                   <td
                     className="smallest align-middle"

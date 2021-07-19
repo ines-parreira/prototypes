@@ -4,9 +4,9 @@ import {render, fireEvent} from '@testing-library/react'
 
 import Source from '../Source'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
-import {DatetimeLabel} from '../../../../../common/utils/labels.js'
+import {DatetimeLabel} from '../../../../../common/utils/labels'
 
-jest.mock('../../../../../common/utils/labels.js', () => ({
+jest.mock('../../../../../common/utils/labels', () => ({
     DatetimeLabel: ({dateTime}: ComponentProps<typeof DatetimeLabel>) => {
         return <div>{dateTime}</div>
     },

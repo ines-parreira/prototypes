@@ -18,7 +18,7 @@ import {integrationsStateWithShopify} from '../../../../../../../../../../../../
 import {ShopifyActionType} from '../../../types'
 import {RefundOrderModalContainer} from '../RefundOrderModal'
 
-jest.mock('../../../../../../../../../../utils/labels.js', () => ({
+jest.mock('../../../../../../../../../../utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),

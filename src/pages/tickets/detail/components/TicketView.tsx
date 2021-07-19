@@ -24,7 +24,7 @@ import {
     makeIsLoading,
 } from '../../../../state/customers/selectors'
 import {getBody, getDisplayHistory} from '../../../../state/ticket/selectors'
-import {AgentLabel} from '../../../common/utils/labels.js'
+import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
 import appCss from '../../../App.less'
 

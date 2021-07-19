@@ -54,7 +54,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         </span>
       </div>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2021-04-27T01:50:16.832898+00:00"
     />
@@ -116,7 +116,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
         </span>
       </div>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2021-04-27T01:50:16.832898+00:00"
     />
@@ -160,7 +160,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Instagram D
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2021-04-27T01:50:16.832898+00:00"
     />
@@ -204,7 +204,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2021-04-27T01:50:16.832898+00:00"
     />
@@ -292,7 +292,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2021-04-27T01:50:16.832898+00:00"
     />
@@ -348,7 +348,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2021-04-27T01:50:16.832898+00:00"
     />

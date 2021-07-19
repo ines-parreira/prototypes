@@ -1,6 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 import React, {ComponentType, Component} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import * as customersHelpers from '../../../../state/customers/helpers'
@@ -12,7 +12,7 @@ import {
     isImmutable,
     resolveLiteral,
 } from '../../../../utils'
-import {RenderLabel} from '../../utils/labels.js'
+import {RenderLabel} from '../../utils/labels'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../utils/withCancellableRequest'
@@ -21,18 +21,21 @@ import {RootState} from '../../../../state/types'
 
 import css from './FilterDropdown.less'
 
-type Props = {
+type OwnProps = {
     viewConfig: Map<any, any>
     field: Map<any, any>
-    schemas: Map<any, any>
     updateFieldFilter: (field: string) => void
     toggleDropdown: () => void
     menu: ComponentType<any>
-} & CancellableRequestInjectedProps<
-    'fieldEnumSearchCancellable',
-    'cancelFieldEnumSearchCancellable',
-    typeof fieldEnumSearch
->
+}
+
+type Props = OwnProps &
+    ConnectedProps<typeof connector> &
+    CancellableRequestInjectedProps<
+        'fieldEnumSearchCancellable',
+        'cancelFieldEnumSearchCancellable',
+        typeof fieldEnumSearch
+    >
 
 type State = {
     isLoading: boolean
@@ -228,11 +231,9 @@ class FilterDropdown extends Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        schemas: schemasSelectors.getSchemas(state),
-    }
-}
+const connector = connect((state: RootState) => ({
+    schemas: schemasSelectors.getSchemas(state),
+}))
 
 export default withCancellableRequest<
     'fieldEnumSearchCancellable',
@@ -241,4 +242,4 @@ export default withCancellableRequest<
 >(
     'fieldEnumSearchCancellable',
     fieldEnumSearch
-)(connect(mapStateToProps)(FilterDropdown))
+)(connector(FilterDropdown))

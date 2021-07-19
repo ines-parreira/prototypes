@@ -8,7 +8,7 @@ import {Table} from 'reactstrap'
 import {Link, withRouter} from 'react-router-dom'
 
 import Tooltip from '../../../../../common/components/Tooltip.tsx'
-import {DatetimeLabel} from '../../../../../common/utils/labels'
+import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,

@@ -11,7 +11,7 @@ import axios, {CancelToken, AxiosError} from 'axios'
 import * as ticketConstants from '../ticket/constants'
 import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
-import {renderTemplate} from '../../pages/common/utils/template.js'
+import {Context, renderTemplate} from '../../pages/common/utils/template'
 import {getActionTemplate, uploadFiles, toJS} from '../../utils'
 import {
     guessReceiversFromTicket,
@@ -661,7 +661,7 @@ export function prepareTicketDataToSend(
 export const formatAction = (
     action: Map<any, any>,
     template: Map<any, any>,
-    context: Record<string, unknown>
+    context: Context
 ) => {
     /**
      * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :

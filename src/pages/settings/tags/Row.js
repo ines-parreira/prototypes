@@ -7,7 +7,7 @@ import classNames from 'classnames'
 
 import InputField from '../../common/forms/InputField'
 import ColorPicker from '../../common/components/ColorPicker.tsx'
-import {TagLabel} from '../../common/utils/labels'
+import {TagLabel} from '../../common/utils/labels.tsx'
 import {toJS} from '../../../utils.ts'
 import {DEFAULT_TAG_COLOR} from '../../../config.ts'
 import * as tagsActions from '../../../state/tags/actions.ts'

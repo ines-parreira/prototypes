@@ -33,7 +33,7 @@ import {getAgents} from '../../../../state/agents/selectors'
 import {getTeams} from '../../../../state/teams/selectors'
 import {RootState} from '../../../../state/types'
 import {AGENT_ROLE} from '../../../../config/user'
-import {AgentLabel, TeamLabel} from '../../../common/utils/labels.js'
+import {AgentLabel, TeamLabel} from '../../../common/utils/labels'
 import {hasRole} from '../../../../utils'
 import TagDropdownMenu from '../../../common/components/TagDropdownMenu/TagDropdownMenu'
 import withCancellableRequest, {

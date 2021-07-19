@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react'
 import {DropdownItem} from 'reactstrap'
 import {Map, List, Seq} from 'immutable'
 
-import {AgentLabel, TeamLabel} from '../../utils/labels.js'
+import {AgentLabel, TeamLabel} from '../../utils/labels'
 
 import css from './PeopleSearchResults.less'
 

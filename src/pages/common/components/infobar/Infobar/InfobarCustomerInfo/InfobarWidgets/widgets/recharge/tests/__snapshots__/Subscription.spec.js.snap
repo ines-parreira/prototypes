@@ -49,7 +49,7 @@ exports[`Subscription AfterTitle should display only the activate action because
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>
@@ -146,7 +146,7 @@ exports[`Subscription AfterTitle should display only the cancel action because t
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>

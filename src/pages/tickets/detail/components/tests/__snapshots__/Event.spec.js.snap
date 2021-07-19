@@ -72,7 +72,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
@@ -203,7 +203,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
@@ -324,7 +324,7 @@ exports[`Event component should display correctly a failed event for a Shopify O
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
@@ -445,7 +445,7 @@ exports[`Event component should display correctly a successful event for a Recha
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
@@ -565,7 +565,7 @@ exports[`Event component should display correctly a successful event for a Recha
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
@@ -675,7 +675,7 @@ exports[`Event component should display correctly a successful event for a Shopi
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={
@@ -785,7 +785,7 @@ exports[`Event component should display correctly a successful event for a Shopi
         </i>
       </Button>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
       settings={

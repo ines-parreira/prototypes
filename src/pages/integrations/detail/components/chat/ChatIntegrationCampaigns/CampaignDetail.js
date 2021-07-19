@@ -23,7 +23,7 @@ import SelectField from '../../../../../common/forms/SelectField'
 import RichField from '../../../../../common/forms/RichField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import {AgentLabel} from '../../../../../common/utils/labels'
+import {AgentLabel} from '../../../../../common/utils/labels.tsx'
 
 import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
 import {convertToHTML} from '../../../../../../utils/editor.tsx'

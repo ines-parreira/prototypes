@@ -3,7 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import type {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/infobar/magento.svg'
-import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {DatetimeLabel} from '../../../../../../../utils/labels'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import {CardHeaderTitle} from '../CardHeaderTitle'

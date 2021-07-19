@@ -8,7 +8,7 @@ import {
     DatetimeLabel,
     TagLabel,
     TeamLabel,
-} from '../../../common/utils/labels.js'
+} from '../../../common/utils/labels'
 import {
     TAGS_ADDED_KEY,
     TAGS_REMOVED_KEY,
@@ -390,9 +390,6 @@ export class AuditLogEventContainer extends Component<Props> {
 
                     <DatetimeLabel
                         dateTime={event.get('created_datetime')}
-                        settings={{
-                            position: 'top left',
-                        }}
                         className={classnames(css.date, 'text-faded')}
                     />
                 </div>

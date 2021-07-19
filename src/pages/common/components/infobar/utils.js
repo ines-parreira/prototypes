@@ -29,7 +29,7 @@ import moment from 'moment'
 
 import ReactStars from 'react-rating-stars-component'
 
-import {DatetimeLabel} from '../../utils/labels'
+import {DatetimeLabel} from '../../utils/labels.tsx'
 import * as utils from '../../../../utils.ts'
 import {
     getContextFromSourcePath,

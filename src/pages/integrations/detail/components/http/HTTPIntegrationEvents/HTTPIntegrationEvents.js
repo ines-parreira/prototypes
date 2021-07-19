@@ -9,7 +9,7 @@ import {HTTP_METHOD_GET} from '../../../../../../config.ts'
 
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import ForwardIcon from '../../ForwardIcon'
-import {DatetimeLabel} from '../../../../../common/utils/labels'
+import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
 
 import {fetchHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/actions.ts'

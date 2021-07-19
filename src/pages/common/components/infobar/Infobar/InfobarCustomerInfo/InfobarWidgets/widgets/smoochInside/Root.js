@@ -5,7 +5,7 @@ import {type Map} from 'immutable'
 import logo from '../../../../../../../../../../img/infobar/chat.svg'
 import {CardHeaderTitle} from '../CardHeaderTitle.tsx'
 import {CardHeaderIcon} from '../CardHeaderIcon.tsx'
-import {renderTemplate} from '../../../../../../../utils/template'
+import {renderTemplate} from '../../../../../../../utils/template.ts'
 
 export default function Root() {
     return {

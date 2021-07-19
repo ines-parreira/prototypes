@@ -6,7 +6,7 @@ import {Badge} from 'reactstrap'
 
 import type {Map} from 'immutable'
 
-import {RoleLabel} from '../../common/utils/labels'
+import {RoleLabel} from '../../common/utils/labels.tsx'
 import Avatar from '../../common/components/Avatar'
 
 import DeleteUser from './DeleteUser'

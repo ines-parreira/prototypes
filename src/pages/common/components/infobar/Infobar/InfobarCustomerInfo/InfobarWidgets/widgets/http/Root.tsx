@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import logo from '../../../../../../../../../../img/integrations/http.png'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
-import {renderTemplate} from '../../../../../../../utils/template.js'
+import {renderTemplate} from '../../../../../../../utils/template'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 
 export default function Root() {

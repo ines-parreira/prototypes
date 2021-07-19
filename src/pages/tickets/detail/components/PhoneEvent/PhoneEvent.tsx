@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import {DatetimeLabel} from '../../../../common/utils/labels.js'
+import {DatetimeLabel} from '../../../../common/utils/labels'
 import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
 
 import css from '../Event.less'

@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import Avatar from '../../common/components/Avatar/Avatar.tsx'
-import {DatetimeLabel} from '../../common/utils/labels'
+import {DatetimeLabel} from '../../common/utils/labels.tsx'
 import {getAgents} from '../../../state/agents/selectors.ts'
 
 import {DATETIME_LABEL_FORMAT} from './constants'

@@ -4,7 +4,7 @@ import _isArray from 'lodash/isArray'
 
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import SourceIcon from '../../../../common/components/SourceIcon'
-import {DatetimeLabel} from '../../../../common/utils/labels.js'
+import {DatetimeLabel} from '../../../../common/utils/labels'
 import {
     Source as SourceType,
     SourceAddress,

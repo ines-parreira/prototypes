@@ -52,14 +52,9 @@ exports[`<AuditLogEvent/> render() should render when the customer has changed -
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -111,14 +106,9 @@ exports[`<AuditLogEvent/> render() should render when the customer has changed 1
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -150,14 +140,9 @@ exports[`<AuditLogEvent/> render() should render when the event has been added v
         via rule
       </Filler>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.500000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -195,14 +180,9 @@ exports[`<AuditLogEvent/> render() should render when the event is the last comp
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -242,14 +222,9 @@ exports[`<AuditLogEvent/> render() should render when the rule has a triggering 
         "
       </Filler>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -289,14 +264,9 @@ exports[`<AuditLogEvent/> render() should render when the ticket subject updated
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -325,14 +295,9 @@ exports[`<AuditLogEvent/> render() should render when the user ID is missing 1`]
         Reopened
       </ActionName>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -367,14 +332,9 @@ exports[`<AuditLogEvent/> render() should render with event type rule-executed 1
         " executed
       </ActionName>
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -426,14 +386,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -473,14 +428,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -518,14 +468,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -563,14 +508,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -610,14 +550,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-marked-s
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -655,14 +590,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -715,14 +645,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-message-
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -760,14 +685,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-reopened
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -805,14 +725,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-self-uns
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -850,14 +765,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -921,14 +831,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-subject-
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -975,14 +880,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1036,14 +936,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1090,14 +985,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1151,14 +1041,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1210,14 +1095,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1257,14 +1137,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1302,14 +1177,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-una
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1347,14 +1217,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1392,14 +1257,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unassign
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1437,14 +1297,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unmarked
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>
@@ -1482,14 +1337,9 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-untrashe
         shouldDisplayAvatar={false}
       />
     </div>
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2019-11-15 19:00:00.000000"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
 </div>

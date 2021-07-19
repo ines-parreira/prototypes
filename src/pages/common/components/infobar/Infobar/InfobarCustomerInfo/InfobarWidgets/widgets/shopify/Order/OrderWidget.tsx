@@ -7,7 +7,7 @@ import {
     FulfillmentStatus,
     FinancialStatus,
 } from '../../../../../../../../../../constants/integrations/types/shopify'
-import {DatetimeLabel} from '../../../../../../../../utils/labels.js'
+import {DatetimeLabel} from '../../../../../../../../utils/labels'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
 import {CardHeaderDetails} from '../../CardHeaderDetails'
 import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal'

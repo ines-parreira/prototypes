@@ -29,7 +29,7 @@ import type {Dispatch} from '../../../../../../state/types'
 
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
 
-import {DatetimeLabel} from '../../../../../common/utils/labels'
+import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
 
 import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationInstagramAds.less'

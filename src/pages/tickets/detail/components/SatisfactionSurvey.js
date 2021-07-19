@@ -3,7 +3,7 @@ import React from 'react'
 import pluralize from 'pluralize'
 import classnames from 'classnames'
 
-import {DatetimeLabel} from '../../../common/utils/labels'
+import {DatetimeLabel} from '../../../common/utils/labels.tsx'
 
 import css from './SatisfactionSurvey.less'
 import fullStar from './../../../../../img/satisfaction-survey/full-star.svg'

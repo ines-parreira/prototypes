@@ -6,7 +6,7 @@ import {List} from 'immutable'
 
 import {CardHeaderValue} from '../CardHeaderValue'
 
-import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {DatetimeLabel} from '../../../../../../../utils/labels'
 
 import {CardHeaderBadge} from '../CardHeaderBadge'
 

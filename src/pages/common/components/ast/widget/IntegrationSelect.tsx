@@ -5,7 +5,7 @@ import {Input} from 'reactstrap'
 import _isNumber from 'lodash/isNumber'
 
 import SelectField from '../../../forms/SelectField/SelectField'
-import {RenderLabel} from '../../../utils/labels.js'
+import {RenderLabel} from '../../../utils/labels'
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
 import {RootState} from '../../../../../state/types'
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'

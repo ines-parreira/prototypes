@@ -10,7 +10,7 @@ import {
     humanizeString,
     isCurrentlyOnTicket,
 } from '../../../../../../../../../utils'
-import {renderTemplate} from '../../../../../../../utils/template.js'
+import {renderTemplate} from '../../../../../../../utils/template'
 
 import {
     RECHARGE_CANCELLATION_REASONS,
@@ -20,7 +20,7 @@ import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../..
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 import {RootState} from '../../../../../../../../../state/types'
 
-import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {DatetimeLabel} from '../../../../../../../utils/labels'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'

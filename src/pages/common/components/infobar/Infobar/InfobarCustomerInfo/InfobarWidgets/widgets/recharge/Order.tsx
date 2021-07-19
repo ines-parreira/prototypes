@@ -12,8 +12,8 @@ import {
     isCurrentlyOnTicket,
 } from '../../../../../../../../../utils'
 import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
-import {renderTemplate} from '../../../../../../../utils/template.js'
-import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {renderTemplate} from '../../../../../../../utils/template'
+import {DatetimeLabel} from '../../../../../../../utils/labels'
 import {RootState} from '../../../../../../../../../state/types'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'

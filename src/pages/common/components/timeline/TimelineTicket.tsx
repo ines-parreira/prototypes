@@ -4,7 +4,7 @@ import {Card, CardBody} from 'reactstrap'
 import {Map} from 'immutable'
 
 import history from '../../../history'
-import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels.js'
+import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
 import {stripHTML} from '../../../../utils'
 import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
 

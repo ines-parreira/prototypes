@@ -7,7 +7,7 @@ import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
 
 import {computeLeftPadding} from '../utils.js'
-import {templateRegex} from '../../../utils/template.js'
+import {templateRegex} from '../../../utils/template'
 
 import Errors from '../Errors'
 

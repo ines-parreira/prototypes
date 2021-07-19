@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
 import {TicketMessage} from '../../../../../models/ticket/types'
-import {DatetimeLabel} from '../../../../common/utils/labels.js'
+import {DatetimeLabel} from '../../../../common/utils/labels'
 
 import SeenIndicator from './SeenIndicator'
 import SourceActionsHeader from './SourceActionsHeader'

@@ -18,7 +18,7 @@ import {
     initCancelOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
 
-jest.mock('../../../../../../../../../../utils/labels.js', () => ({
+jest.mock('../../../../../../../../../../utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),

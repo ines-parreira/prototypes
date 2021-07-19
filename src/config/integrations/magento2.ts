@@ -1,6 +1,6 @@
 import {Map, List} from 'immutable'
 
-import {LDMLToMomentFormat} from '../../pages/common/utils/template.js'
+import {LDMLToMomentFormat} from '../../pages/common/utils/template'
 import {formatDatetime} from '../../utils'
 import {getTrackingUrl} from '../../utils/delivery'
 import {IntegrationType} from '../../models/integration/types'

@@ -7,7 +7,7 @@ import _debounce from 'lodash/debounce'
 
 import type {Map, List} from 'immutable'
 
-import withCancellableRequest from '../../../common/utils/withCancellableRequest'
+import withCancellableRequest from '../../../common/utils/withCancellableRequest.tsx'
 import * as ViewsActions from '../../../../state/views/actions.ts'
 import * as viewsSelectors from '../../../../state/views/selectors.ts'
 import * as MacroActions from '../../../../state/macro/actions.ts'

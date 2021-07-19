@@ -37,7 +37,7 @@ exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
       <span
         className="date text-faded float-right"
       >
-        <Connect(DatetimeLabel)
+        <Connect(DatetimeLabelContainer)
           dateTime="now"
         />
       </span>

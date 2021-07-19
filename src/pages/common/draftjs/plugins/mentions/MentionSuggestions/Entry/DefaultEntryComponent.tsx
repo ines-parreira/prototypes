@@ -4,7 +4,7 @@
 import React from 'react'
 import {Map} from 'immutable'
 
-import {AgentLabel} from '../../../../../utils/labels.js'
+import {AgentLabel} from '../../../../../utils/labels'
 
 type Props = {
     mention: Map<any, any>

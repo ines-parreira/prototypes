@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import {Button, Card, CardBody} from 'reactstrap'
 
-import {AgentLabel, DatetimeLabel} from '../../../../common/utils/labels.js'
+import {AgentLabel, DatetimeLabel} from '../../../../common/utils/labels'
 import CommentCard from '../../../../common/components/PrivateReplyToFBComment/CommentCard/CommentCard'
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
 import facebookIcon from '../../../../../../img/integrations/facebook-dark-icon.svg'

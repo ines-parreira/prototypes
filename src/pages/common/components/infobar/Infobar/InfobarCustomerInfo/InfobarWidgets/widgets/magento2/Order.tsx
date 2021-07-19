@@ -1,11 +1,10 @@
-import React, {ReactNode} from 'react'
+import React, {Component, ReactNode} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {Badge, CardBody} from 'reactstrap'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import {getTimezone} from '../../../../../../../../../state/currentUser/selectors'
 import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
 import {RootState} from '../../../../../../../../../state/types'
 
@@ -15,7 +14,7 @@ import {
     isCurrentlyOnTicket,
 } from '../../../../../../../../../utils'
 import {getTrackingUrl} from '../../../../../../../../../utils/delivery'
-import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {DatetimeLabel} from '../../../../../../../utils/labels'
 import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils.js'
 
 export default function Order() {
@@ -64,13 +63,13 @@ type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {
     currentUserTimezone: string
 }
 
-class BeforeContentContainer extends React.Component<BeforeContentProps> {
+class BeforeContentContainer extends Component<BeforeContentProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
-        const {source, getIntegrationData, currentUserTimezone} = this.props
+        const {source, getIntegrationData} = this.props
 
         const state = (
             (source.get('state') as string) || ''
@@ -103,10 +102,7 @@ class BeforeContentContainer extends React.Component<BeforeContentProps> {
                 <div className="simple-field">
                     <span className="field-label">Created at:</span>
                     <span className="field-value">
-                        <DatetimeLabel
-                            dateTime={source.get('created_at')}
-                            timezone={currentUserTimezone}
-                        />
+                        <DatetimeLabel dateTime={source.get('created_at')} />
                     </span>
                 </div>
                 <div className="mt-3">
@@ -132,17 +128,15 @@ const connectorBeforeContent = connect((state: RootState) => {
 
 const BeforeContent = connectorBeforeContent(BeforeContentContainer)
 
-type ShipmentsProps = ConnectedProps<typeof connectorShipments> & {
+export class Shipments extends Component<{
     shipments: List<any>
-}
-
-class ShipmentsContainer extends React.Component<ShipmentsProps> {
+}> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
-        const {shipments, currentUserTimezone} = this.props
+        const {shipments} = this.props
         const {integration} = this.context as {integration: Map<any, any>}
 
         const storeUrl = integration.getIn(['meta', 'store_url']) as string
@@ -219,7 +213,6 @@ class ShipmentsContainer extends React.Component<ShipmentsProps> {
                             <span className="field-value">
                                 <DatetimeLabel
                                     dateTime={shipment.get('updated_at')}
-                                    timezone={currentUserTimezone as any}
                                 />
                             </span>
                         </div>
@@ -248,25 +241,15 @@ class ShipmentsContainer extends React.Component<ShipmentsProps> {
     }
 }
 
-const connectorShipments = connect((state: RootState) => {
-    return {
-        currentUserTimezone: getTimezone(state),
-    }
-})
-
-const Shipments = connectorShipments(ShipmentsContainer)
-
-type CreditMemosProps = ConnectedProps<typeof connectorCreditMemos> & {
+export class CreditMemos extends Component<{
     creditMemos: List<any>
-}
-
-class CreditMemosContainer extends React.Component<CreditMemosProps> {
+}> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
-        const {creditMemos, currentUserTimezone} = this.props
+        const {creditMemos} = this.props
         const {integration} = this.context as {integration: Map<any, any>}
 
         const storeUrl = integration.getIn(['meta', 'store_url']) as string
@@ -302,7 +285,6 @@ class CreditMemosContainer extends React.Component<CreditMemosProps> {
                             <span className="field-value">
                                 <DatetimeLabel
                                     dateTime={creditMemo.get('updated_at')}
-                                    timezone={currentUserTimezone as any}
                                 />
                             </span>
                         </div>
@@ -330,19 +312,11 @@ class CreditMemosContainer extends React.Component<CreditMemosProps> {
     }
 }
 
-const connectorCreditMemos = connect((state: RootState) => {
-    return {
-        currentUserTimezone: getTimezone(state),
-    }
-})
-
-const CreditMemos = connectorCreditMemos(CreditMemosContainer)
-
 type AfterContentProps = ConnectedProps<typeof connectorAfterContent> & {
     source: Map<any, any>
 }
 
-class AfterContentContainer extends React.Component<AfterContentProps> {
+class AfterContentContainer extends Component<AfterContentProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
@@ -392,7 +366,7 @@ type TitleWrapperProps = {
     source: Map<any, any>
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapper extends Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }

@@ -1,4 +1,3 @@
-// @flow
 import _get from 'lodash/get'
 import _isNull from 'lodash/isNull'
 import _unescape from 'lodash/unescape'
@@ -14,7 +13,6 @@ export const templateRegex = /{{([a-zA-Z0-9.\[\]"'_]+)\|?([\w_]+\([^(]*\))?}}/g
  *
  * /!\ This function is not exhaustive and only replaces tokens which we currently use. Feel free to extend it.
  *
- * @param pattern: the LDML pattern to transform
  */
 export function LDMLToMomentFormat(pattern: string): string {
     return (
@@ -42,13 +40,17 @@ const filters = {
     },
 }
 
+export type Context = {
+    [key: string]: Context | string | number | undefined | null
+}
+
 /**
  * Render a template like: `Order {self.id}` to `Order 37337`
- * @param body: the text in which to replace variables
- * @param context: the context containing values to render the body
- * @returns {string}: the body rendered with values from the context
  */
-export const renderTemplate = (body: string, context: {} = {}): string => {
+export const renderTemplate = (
+    body?: Maybe<string>,
+    context: Context = {}
+): string => {
     if (!body) {
         return ''
     }
@@ -57,15 +59,15 @@ export const renderTemplate = (body: string, context: {} = {}): string => {
         templateRegex,
         (match: string, variable: string, filter: string): string => {
             try {
-                let value = _get(context, variable, '')
+                let value = _get(context, variable, '') as string
                 value = _isNull(value) ? '' : value
 
                 if (filter) {
-                    const filterMatch = filter.match(filterRegex)
+                    const filterMatch = filterRegex.exec(filter)
                     if (!filterMatch) {
                         return value
                     }
-                    const filterFunc = filterMatch[1]
+                    const filterFunc = filterMatch[1] as keyof typeof filters
                     const filterArgs = eval(`[${_unescape(filterMatch[2])}]`)
                     if (typeof filters[filterFunc] !== 'function') {
                         return value

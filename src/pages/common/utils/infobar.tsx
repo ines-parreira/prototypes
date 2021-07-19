@@ -1,6 +1,4 @@
-// @flow
-
-import React, {Fragment, type Node} from 'react'
+import React, {Fragment, ReactNode} from 'react'
 import hash from 'object-hash'
 
 import {renderTemplate} from './template'
@@ -19,22 +17,26 @@ const icons = {
     ':campaign:': 'send',
 }
 
+type IconName = keyof typeof icons
+
+const isValidIcon = (value: string): value is IconName => value in icons
+
 /**
  * Render a template like: `Order {self.id}` to `Order 37337`.
  * Then render icons (for instance `":shipping_address:"`).
  *
- * @param body: the text in which to replace variables and icons
- * @param context: the context containing values to render the body
- * @returns {Node}
  */
-export const renderInfobarTemplate = (body: string, context: {} = {}): Node => {
+export const renderInfobarTemplate = (
+    body: string,
+    context: Record<string, Maybe<string>> = {}
+): ReactNode => {
     return renderTemplate(body, context)
         .split(iconRegex)
         .filter((part) => !!part)
         .map((part) => {
             const key = hash(part)
 
-            if (icons[part]) {
+            if (isValidIcon(part) && icons[part]) {
                 return (
                     <i key={key} className="material-icons">
                         {icons[part]}

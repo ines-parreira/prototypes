@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Col, Container, Row} from 'reactstrap'
 
-import {DatetimeLabel} from '../../../../../common/utils/labels'
+import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
 import InputField from '../../../../../common/forms/InputField'
 import Loader from '../../../../../common/components/Loader/Loader.tsx'

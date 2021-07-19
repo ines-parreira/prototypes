@@ -6,8 +6,8 @@ import _uniqueId from 'lodash/uniqueId'
 import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
 import expandUp from '../../../../../../../../../img/infobar/expand-up.svg'
-import {renderInfobarTemplate} from '../../../../../../utils/infobar'
-import {renderTemplate} from '../../../../../../utils/template'
+import {renderInfobarTemplate} from '../../../../../../utils/infobar.tsx'
+import {renderTemplate} from '../../../../../../utils/template.ts'
 import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
 

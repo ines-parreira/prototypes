@@ -10,8 +10,8 @@ import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
 import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 import {fieldEnumSearch} from '../../../../../state/views/actions.ts'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu.tsx'
-import {TagLabel} from '../../../../common/utils/labels'
-import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
+import {TagLabel} from '../../../../common/utils/labels.tsx'
+import withCancellableRequest from '../../../../common/utils/withCancellableRequest.tsx'
 
 import css from './TicketTags.less'
 

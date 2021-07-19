@@ -5,7 +5,7 @@ import {
     MacroAction,
     MacroActionName,
 } from '../../../../../../../models/macroAction/types'
-import * as Label from '../../../../../../common/utils/labels.js'
+import * as Label from '../../../../../../common/utils/labels'
 import {fileIconFromContentType} from '../../../../../common/utils.js'
 import {getActionTemplate} from '../../../../../../../utils'
 

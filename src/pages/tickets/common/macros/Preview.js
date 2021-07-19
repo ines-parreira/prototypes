@@ -14,7 +14,7 @@ import {
     StatusLabel,
     TimedeltaLabel,
     TeamLabel,
-} from '../../../common/utils/labels'
+} from '../../../common/utils/labels.tsx'
 import RichField from '../../../common/forms/RichField'
 
 import {isRichType} from '../../../../config/ticket.ts'

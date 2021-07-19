@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import logo from '../../../../../../../../../../img/infobar/recharge.svg'
-import {renderTemplate} from '../../../../../../../utils/template.js'
+import {renderTemplate} from '../../../../../../../utils/template'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import {CardHeaderTitle} from '../CardHeaderTitle'

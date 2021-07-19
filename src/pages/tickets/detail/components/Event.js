@@ -10,7 +10,7 @@ import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
 import {getActionByName} from '../../../../config/actions.ts'
-import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
+import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels.tsx'
 import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 
 import {getIntegrationById} from '../../../../state/integrations/selectors.ts'

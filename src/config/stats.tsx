@@ -7,7 +7,7 @@ import {defaults} from 'react-chartjs-2'
 
 import {TicketChannel} from '../business/types/ticket'
 import {formatDuration} from '../pages/stats/common/utils.js'
-import {TagLabel} from '../pages/common/utils/labels.js'
+import {TagLabel} from '../pages/common/utils/labels'
 import {IntegrationType} from '../models/integration/types'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor} from '../utils'

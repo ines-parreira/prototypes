@@ -7,7 +7,7 @@ import _takeRight from 'lodash/takeRight'
 
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {isRichType} from '../../config/ticket'
-import {renderTemplate} from '../../pages/common/utils/template.js'
+import {renderTemplate} from '../../pages/common/utils/template'
 import {convertFromHTML, convertToHTML} from '../../utils/editor'
 import {sanitizeHtmlForFacebookMessenger} from '../../utils/html'
 import {CurrentUser, StoreState} from '../types'

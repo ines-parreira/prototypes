@@ -23,7 +23,7 @@ import AddCustomItemPopover from '../AddCustomItemPopover/AddCustomItemPopover'
 import EmailInvoicePopover from '../EmailInvoicePopover/EmailInvoicePopover'
 import OrderFooter from '../OrderFooter/OrderFooter'
 
-jest.mock('../../../../../../../../../../utils/labels.js', () => ({
+jest.mock('../../../../../../../../../../utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),

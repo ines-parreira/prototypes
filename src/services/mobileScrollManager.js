@@ -6,7 +6,7 @@
 import {
     isTouchDevice,
     isMediumOrSmallScreen,
-} from '../pages/common/utils/mobile'
+} from '../pages/common/utils/mobile.ts'
 
 import {isEditable} from './common/utils.ts'
 

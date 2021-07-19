@@ -11,7 +11,7 @@ import {
 import {type List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {AgentLabel} from '../../../common/utils/labels'
+import {AgentLabel} from '../../../common/utils/labels.tsx'
 import type {teamType} from '../../../../state/teams/types'
 import * as agentSelectors from '../../../../state/agents/selectors.ts'
 

@@ -1,40 +1,26 @@
-// @flow
-import React, {type Node} from 'react'
-import {connect} from 'react-redux'
-import {fromJS, type List, type Map} from 'immutable'
+import React, {CSSProperties, Component, ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
-import _isObject from 'lodash/isObject'
-import _isArray from 'lodash/isArray'
-import _isString from 'lodash/isString'
 import _capitalize from 'lodash/capitalize'
 import _omit from 'lodash/omit'
-import {Badge} from 'reactstrap'
+import {Badge, UncontrolledTooltipProps} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
-import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration.ts'
-import {
-    ADMIN_ROLE,
-    AGENT_ROLE,
-    BASIC_AGENT_ROLE,
-    LITE_AGENT_ROLE,
-    OBSERVER_AGENT_ROLE,
-} from '../../../config/user.ts'
-import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import Tooltip from '../components/Tooltip.tsx'
-import Avatar from '../components/Avatar'
-import {
-    formatDatetime,
-    humanizeString,
-    isImmutable,
-    toJS,
-} from '../../../utils.ts'
-import * as customersHelpers from '../../../state/customers/helpers.ts'
-import {DEFAULT_TAG_COLOR} from '../../../config.ts'
-import SourceIcon from '../components/SourceIcon.tsx'
-import type {SourceType} from '../../../models/ticket/types'
-import {getAgents} from '../../../state/agents/selectors.ts'
-import {getTeams} from '../../../state/teams/selectors.ts'
-import {parseTimedelta} from '../../../state/ticket/utils.ts'
+import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
+import {UserRole} from '../../../config/types/user'
+import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import {RootState} from '../../../state/types'
+import Tooltip from '../components/Tooltip'
+import Avatar from '../components/Avatar/Avatar'
+import {formatDatetime, humanizeString, isImmutable, toJS} from '../../../utils'
+import * as customersHelpers from '../../../state/customers/helpers'
+import {DEFAULT_TAG_COLOR} from '../../../config'
+import SourceIcon from '../components/SourceIcon'
+import {SourceType} from '../../../models/ticket/types'
+import {getAgents} from '../../../state/agents/selectors'
+import {getTeams} from '../../../state/teams/selectors'
+import {parseTimedelta} from '../../../state/ticket/utils'
 
 import css from './labels.less'
 
@@ -42,14 +28,14 @@ import css from './labels.less'
  * AGENT
  */
 type AgentLabelProps = {
-    name?: string,
-    maxWidth?: string,
-    className?: string,
-    profilePictureUrl?: string,
-    shouldDisplayAvatar?: boolean,
+    name?: string
+    maxWidth?: string
+    className?: string
+    profilePictureUrl?: string
+    shouldDisplayAvatar?: boolean
 }
 
-export class AgentLabel extends React.Component<AgentLabelProps> {
+export class AgentLabel extends Component<AgentLabelProps> {
     static defaultProps = {
         name: '',
         className: '',
@@ -66,7 +52,7 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
             shouldDisplayAvatar,
         } = this.props
         const showAvatar = shouldDisplayAvatar || profilePictureUrl
-        const style = {}
+        const style: CSSProperties = {}
         if (maxWidth) {
             style.maxWidth = `${maxWidth}px`
         }
@@ -77,7 +63,7 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
                     <Avatar
                         name={name}
                         url={profilePictureUrl}
-                        size="26"
+                        size={26}
                         className={css.avatar}
                     />
                 ) : (
@@ -98,15 +84,15 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
  * TEAM
  */
 type TeamLabelProps = {
-    name: string,
-    maxWidth?: number,
-    className?: string,
-    emoji?: Map<*, *>,
-    shouldDisplayAvatar?: boolean,
-    shouldDisplayTeamIcon?: boolean,
+    name: string
+    maxWidth?: number
+    className?: string
+    emoji?: Map<any, any>
+    shouldDisplayAvatar?: boolean
+    shouldDisplayTeamIcon?: boolean
 }
 
-export class TeamLabel extends React.Component<TeamLabelProps> {
+export class TeamLabel extends Component<TeamLabelProps> {
     static defaultProps = {
         name: '',
         className: '',
@@ -124,12 +110,11 @@ export class TeamLabel extends React.Component<TeamLabelProps> {
                         emoji={emoji.toJS()}
                         size={26}
                         sheetSize={32}
-                        className={css.avatar}
                         forceSize
                     />
                 </span>
             ) : (
-                <Avatar name={name} size="26" className={css.avatar} />
+                <Avatar name={name} size={26} className={css.avatar} />
             )
         }
 
@@ -138,7 +123,7 @@ export class TeamLabel extends React.Component<TeamLabelProps> {
 
     render() {
         const {name, maxWidth, className, shouldDisplayTeamIcon} = this.props
-        const style = {}
+        const style: CSSProperties = {}
         if (maxWidth) {
             style.maxWidth = `${maxWidth}px`
         }
@@ -170,15 +155,16 @@ export class TeamLabel extends React.Component<TeamLabelProps> {
  * USER
  */
 type CustomerLabelParamType = {
-    customer: {
-        name: string,
-        id: string,
-    },
+    customer:
+        | {
+              name: string
+              id: string
+          }
+        | string
+        | Map<any, any>
 }
 export const CustomerLabel = ({customer}: CustomerLabelParamType) => {
-    if (_isString(customer)) {
-        // flow discourages type detection
-        // $FlowFixMe
+    if (typeof customer === 'string') {
         return <span>{customer}</span>
     }
 
@@ -190,19 +176,19 @@ CustomerLabel.displayName = 'CustomerLabel'
  * TAG
  */
 type TagLabelParamType = {
-    className?: ?string,
-    style: {
-        color?: string,
-    },
-    decoration?: Map<*, *>,
-    children?: Node,
+    className?: string
+    style: CSSProperties
+    decoration?: Map<any, any>
+    children?: ReactNode
 }
 export const TagLabel = ({
     className,
     decoration,
     children,
 }: TagLabelParamType) => {
-    const color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
+    const color =
+        ((decoration || fromJS({})) as Map<any, any>).get('color') ||
+        DEFAULT_TAG_COLOR
 
     return (
         <Badge className={classnames('badge-tag', className)} style={{color}}>
@@ -210,19 +196,22 @@ export const TagLabel = ({
         </Badge>
     )
 }
+
 TagLabel.defaultProps = {
     className: null,
     style: {},
 }
+
 TagLabel.displayName = 'TagLabel'
 
 /**
  * TIMEDELTA LABEL
  */
 type TimedeltaLabelParamType = {
-    duration: string,
-    className?: string,
+    duration: string
+    className?: string
 }
+
 export const TimedeltaLabel = ({
     duration,
     className,
@@ -249,13 +238,15 @@ export const TimedeltaLabel = ({
         </Badge>
     )
 }
+
 /**
  * STATUS
  */
 type StatusLabelParam = {
-    status: string,
-    className?: string,
+    status: string
+    className?: string
 }
+
 export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
     let color = 'info'
 
@@ -275,6 +266,7 @@ export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
         </Badge>
     )
 }
+
 StatusLabel.displayName = 'StatusLabel'
 
 /**
@@ -291,17 +283,17 @@ export const ChannelLabel = ({channel}: {channel: SourceType}) => (
 export const IntegrationsDetailLabel = ({
     integration,
 }: {
-    integration: Map<*, *>,
+    integration: Map<any, any>
 }) => {
     const type = integration.get('type')
     let label = integration.get('name', integration.get('address'))
-    let address =
-        integration.get('address') || integration.getIn(['meta', 'address'])
+    const address = (integration.get('address') ||
+        integration.getIn(['meta', 'address'])) as string
 
     if (EMAIL_INTEGRATION_TYPES.includes(type) && address) {
-        label = `${integration.get('name')} <${address}>`
+        label = `${integration.get('name') as string} <${address}>`
     } else if (type === 'aircall' && address) {
-        label = `${integration.get('name')} (${address})`
+        label = `${integration.get('name') as string} (${address})`
     }
 
     return (
@@ -311,43 +303,53 @@ export const IntegrationsDetailLabel = ({
         </span>
     )
 }
+
 IntegrationsDetailLabel.displayName = 'IntegrationsDetailLabel'
+
+type Role = {
+    id: number
+    name: string
+}
 
 /**
  * ROLE
  */
-export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
-    const rolesJS = toJS(roles)
-    let userRoles = !_isArray(rolesJS) ? [rolesJS] : rolesJS
+export const RoleLabel = ({
+    roles = 'user',
+}: {
+    roles: string | Role | List<any>
+}) => {
+    const rolesJS = toJS(roles as List<any>)
+    let userRoles = (Array.isArray(rolesJS) ? rolesJS : [rolesJS]) as
+        | Role[]
+        | string[]
 
-    // if there are roles in the incoming array
-    if (userRoles.length) {
-        // if roles are objects (like {name: 'refund'})
-        if (_isObject(userRoles[0])) {
-            if (userRoles[0].name) {
-                userRoles = userRoles.map((v) => v.name)
-            }
-        }
+    if (
+        userRoles.length &&
+        typeof userRoles[0] === 'object' &&
+        userRoles[0].name
+    ) {
+        userRoles = (userRoles as Role[]).map((v) => v.name)
     }
 
-    let color = null
+    let color: string | undefined
     let role = null
 
-    if (userRoles.includes(ADMIN_ROLE)) {
+    if ((userRoles as string[]).includes(UserRole.Admin)) {
         color = 'danger'
-        role = _capitalize(ADMIN_ROLE)
-    } else if (userRoles.includes(AGENT_ROLE)) {
+        role = _capitalize(UserRole.Admin)
+    } else if ((userRoles as string[]).includes(UserRole.Agent)) {
         color = 'warning'
         role = 'Lead agent'
-    } else if (userRoles.includes(BASIC_AGENT_ROLE)) {
+    } else if ((userRoles as string[]).includes(UserRole.BasicAgent)) {
         color = 'info'
-        role = _capitalize(humanizeString(BASIC_AGENT_ROLE))
-    } else if (userRoles.includes(LITE_AGENT_ROLE)) {
+        role = _capitalize(humanizeString(UserRole.BasicAgent))
+    } else if ((userRoles as string[]).includes(UserRole.LiteAgent)) {
         color = 'primary'
-        role = _capitalize(humanizeString(LITE_AGENT_ROLE))
-    } else if (userRoles.includes(OBSERVER_AGENT_ROLE)) {
+        role = _capitalize(humanizeString(UserRole.LiteAgent))
+    } else if ((userRoles as string[]).includes(UserRole.ObserverAgent)) {
         color = 'success'
-        role = _capitalize(humanizeString(OBSERVER_AGENT_ROLE))
+        role = _capitalize(humanizeString(UserRole.ObserverAgent))
     }
 
     return (
@@ -356,25 +358,25 @@ export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
         </Badge>
     )
 }
+
 RoleLabel.displayName = 'RoleLabel'
 
 /**
  * DATETIME
  */
-type DatetimeLabelProps = {
-    dateTime?: string,
-    labelFormat?: string,
-    timezone?: string,
-    breakDate?: boolean,
-    hasTooltip?: boolean,
+type DatetimeLabelOwnProps = {
+    breakDate?: boolean
+    className?: string
+    dateTime?: string
+    labelFormat?: string
+    hasTooltip?: boolean
+    placement?: UncontrolledTooltipProps['placement']
 }
 
-@connect((state) => {
-    return {
-        timezone: currentUserSelectors.getTimezone(state),
-    }
-})
-export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
+type DatetimeLabelProps = DatetimeLabelOwnProps &
+    ConnectedProps<typeof datetimeLabelConnector>
+
+class DatetimeLabelContainer extends React.PureComponent<DatetimeLabelProps> {
     id: string
 
     static defaultProps = {
@@ -388,12 +390,13 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
 
     render() {
         const {
-            dateTime,
-            labelFormat,
-            timezone,
-            hasTooltip,
             breakDate,
-            ...rest
+            className,
+            dateTime,
+            hasTooltip,
+            labelFormat,
+            placement = 'top',
+            timezone,
         } = _omit(this.props, 'dispatch')
 
         if (!dateTime) {
@@ -404,23 +407,23 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
         const tooltipDatetime = formatDatetime(dateTime, timezone, 'L LT')
 
         return (
-            <span {...rest}>
+            <span className={className}>
                 <span id={this.id}>
                     {breakDate
                         ? // u200B is the unicode character for 'ZERO WIDTH SPACE'
                           // it is intended for invisible word separation and line break control
                           // in this case it allows us to break the date at forward slashes
-                          labelDatetime.split('/').join('/\u200B')
+                          labelDatetime.toString().split('/').join('/\u200B')
                         : labelDatetime}
                 </span>
                 {hasTooltip && (
                     <Tooltip
-                        placement="top"
+                        placement={placement}
                         target={this.id}
                         delay={{show: 200, hide: 0}}
                         className={classnames(css.datetimeTooltip)}
                     >
-                        {tooltipDatetime}
+                        {tooltipDatetime.toString()}
                     </Tooltip>
                 )}
             </span>
@@ -428,15 +431,23 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     }
 }
 
+const datetimeLabelConnector = connect((state: RootState) => {
+    return {
+        timezone: currentUserSelectors.getTimezone(state),
+    }
+})
+
+export const DatetimeLabel = datetimeLabelConnector(DatetimeLabelContainer)
+
 const UserAssigneeLabelComponent = ({
     assigneeUser,
     agents,
 }: {
-    assigneeUser: Map<*, *>,
-    agents: List<*>,
+    assigneeUser: Map<any, any>
+    agents: List<Map<any, any>>
 }) => {
     const agent = agents.find(
-        (agent) => agent.get('id') === assigneeUser.get('id')
+        (agent) => agent!.get('id') === assigneeUser.get('id')
     )
     const avatarUrl =
         assigneeUser.getIn(['meta', 'profile_picture_url']) ||
@@ -454,19 +465,22 @@ const UserAssigneeLabelComponent = ({
     )
 }
 
-export const UserAssigneeLabel = connect((state) => ({
+export const UserAssigneeLabel = connect((state: RootState) => ({
     agents: getAgents(state),
 }))(UserAssigneeLabelComponent)
+
+type TeamAssigneeLabelProps = {assigneeTeam: Map<any, any>} & ConnectedProps<
+    typeof teamAssigneeLabelConnector
+>
 
 const TeamAssigneeLabelComponent = ({
     assigneeTeam,
     teams,
-}: {
-    assigneeTeam: Map<*, *>,
-    teams: List<*>,
-}) => {
-    const team = teams.find((team) => team.get('id') === assigneeTeam.get('id'))
-    const emoji = team && team.getIn(['decoration', 'emoji'])
+}: TeamAssigneeLabelProps) => {
+    const team = teams.find(
+        (team) => team!.get('id') === assigneeTeam.get('id')
+    )
+    const emoji = team && (team.getIn(['decoration', 'emoji']) as Map<any, any>)
 
     return assigneeTeam.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
@@ -482,7 +496,7 @@ const TeamAssigneeLabelComponent = ({
             ) : (
                 <Avatar
                     name={assigneeTeam.get('name')}
-                    size="26"
+                    size={26}
                     className={css.assigneeLabelAvatar}
                 />
             )}
@@ -491,16 +505,20 @@ const TeamAssigneeLabelComponent = ({
     )
 }
 
-export const TeamAssigneeLabel = connect((state) => ({
+const teamAssigneeLabelConnector = connect((state: RootState) => ({
     teams: getTeams(state),
-}))(TeamAssigneeLabelComponent)
+}))
+
+export const TeamAssigneeLabel = teamAssigneeLabelConnector(
+    TeamAssigneeLabelComponent
+)
 
 type RenderLabelProps = {
-    field: Map<*, *>,
-    value?: any,
+    field: Map<any, any>
+    value?: any
 }
 
-export class RenderLabel extends React.Component<RenderLabelProps> {
+export class RenderLabel extends Component<RenderLabelProps> {
     render() {
         const {field, value} = this.props
 
@@ -539,7 +557,11 @@ export class RenderLabel extends React.Component<RenderLabelProps> {
             case 'roles':
                 return (
                     <RoleLabel
-                        roles={isImmutable(value) ? value.toJS() : value}
+                        roles={
+                            isImmutable(value)
+                                ? (value as Map<any, any>).toJS()
+                                : value
+                        }
                     />
                 )
             case 'via':

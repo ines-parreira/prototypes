@@ -1,0 +1,404 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components utils: labels <AgentLabel/> render() should not render the name of the agent because no name is passed 1`] = `
+<div
+  class="AgentLabel"
+>
+  <div
+    class="component hasImage avatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      />
+    </div>
+    <img
+      alt="avatar"
+      class="gravatar"
+      src="https://gorgias.io/profilepicture.png"
+    />
+  </div>
+  
+</div>
+`;
+
+exports[`components utils: labels <AgentLabel/> render() should render the agent icon because no profile picture url nor the \`avatar\` option are passed 1`] = `
+<div
+  class="AgentLabel"
+>
+  <span
+    class="material-icons md-2"
+  >
+    account_circle
+  </span>
+  <span
+    class="name"
+  >
+    Marie Curie
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <AgentLabel/> render() should render the avatar because a profile picture url is passed 1`] = `
+<div
+  class="AgentLabel"
+>
+  <div
+    class="component hasImage avatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      >
+        MC
+      </span>
+    </div>
+    <img
+      alt="avatar"
+      class="gravatar"
+      src="https://gorgias.io/profilepicture.png"
+    />
+  </div>
+  <span
+    class="name"
+  >
+    Marie Curie
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <AgentLabel/> render() should render the avatar because the \`avatar\` option is passed but no profile picture url is passed 1`] = `
+<div
+  class="AgentLabel"
+>
+  <div
+    class="component avatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      >
+        MC
+      </span>
+    </div>
+  </div>
+  <span
+    class="name"
+  >
+    Marie Curie
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <DatetimeLabel/> render() should render with zero width space 1`] = `
+<span>
+  <span
+    id="datetime-tooltip-"
+  >
+    01/​15/​2016
+  </span>
+  TooltipMock
+</span>
+`;
+
+exports[`components utils: labels <TeamLabel/> render() should render with default avatar 1`] = `
+<div
+  class="TeamLabel"
+>
+  <div
+    class="component avatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      >
+        T1
+      </span>
+    </div>
+  </div>
+  <span
+    class="name"
+  >
+    Team 1
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <TeamLabel/> render() should render with default avatar and "team" icon 1`] = `
+<div
+  class="TeamLabel"
+>
+  <div
+    class="component avatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      >
+        T1
+      </span>
+    </div>
+  </div>
+  <span
+    class="name"
+  >
+    Team 1
+    <span
+      class="nameIcon material-icons md-2"
+    >
+      people
+    </span>
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <TeamLabel/> render() should render with emoji 1`] = `
+<div
+  class="TeamLabel"
+>
+  <span
+    class="avatar"
+  >
+    <span
+      class="emoji-mart-emoji"
+    >
+      <span
+        style="width: 26px; height: 26px; display: inline-block; background-image: url(https://unpkg.com/emoji-datasource-apple@^3.0.0/img/apple/sheets/32.png); background-size: 4900%; background-position: 45.833333333333336% 87.5%;"
+      />
+    </span>
+  </span>
+  <span
+    class="name"
+  >
+    Team 1
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <TeamLabel/> render() should render without avatar 1`] = `
+<div
+  class="TeamLabel"
+>
+  <span
+    class="material-icons md-2"
+  >
+    people
+  </span>
+  <span
+    class="name"
+  >
+    Team 1
+  </span>
+</div>
+`;
+
+exports[`components utils: labels <TimedeltaLabel/> render() should render with day duration 1`] = `
+<span
+  class="text-center badge badge-secondary badge-pill"
+>
+  1 day(s)
+</span>
+`;
+
+exports[`components utils: labels <TimedeltaLabel/> render() should render with hour duration 1`] = `
+<span
+  class="text-center badge badge-secondary badge-pill"
+>
+  1 hour(s)
+</span>
+`;
+
+exports[`components utils: labels <TimedeltaLabel/> render() should render with minute duration 1`] = `
+<span
+  class="text-center badge badge-secondary badge-pill"
+>
+  1 minute(s)
+</span>
+`;
+
+exports[`components utils: labels RenderLabel ValueRendered should display name and address formatted as aircall eg: with address into parenthesis 1`] = `
+<span>
+  <i
+    class="icon d-inline-block material-icons mr-2"
+  >
+    phone
+  </i>
+  common (aircall style)
+</span>
+`;
+
+exports[`components utils: labels RenderLabel ValueRendered should display name and address formatted in-lined 1`] = `
+<span>
+  <i
+    class="icon d-inline-block material-icons mr-2"
+  >
+    email
+  </i>
+  common &lt;inlined email&gt;
+</span>
+`;
+
+exports[`components utils: labels RenderLabel ValueRendered should display the address to prevent confusion 1`] = `
+<span>
+  <i
+    class="icon d-inline-block material-icons mr-2"
+  >
+    email
+  </i>
+  common &lt;specific&gt;
+</span>
+`;
+
+exports[`components utils: labels RenderLabel ValueRendered should display the name because the address is empty 1`] = `
+<span>
+  <i
+    class="icon d-inline-block material-icons mr-2"
+  >
+    email
+  </i>
+  common
+</span>
+`;
+
+exports[`components utils: labels RenderLabel ValueRendered should display the name because the type is facebook 1`] = `
+<span>
+  <i
+    class="icon d-inline-block icon-custom icon-facebook-feed mr-2"
+  />
+  common
+</span>
+`;
+
+exports[`components utils: labels RenderLabel distribution assignee label 1`] = `
+<div
+  class="assigneeLabelContainer"
+>
+  <div
+    class="component hasImage assigneeLabelAvatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      >
+        M
+      </span>
+    </div>
+    <img
+      alt="avatar"
+      class="gravatar"
+      src="https://gorgias.io/avatar.png"
+    />
+  </div>
+  <div
+    class="d-inline-block"
+  >
+    Mario
+  </div>
+</div>
+`;
+
+exports[`components utils: labels RenderLabel distribution assignee_team label 1`] = `
+<div
+  class="assigneeLabelContainer"
+>
+  <div
+    class="component assigneeLabelAvatar"
+    style="width: 26px; height: 26px;"
+  >
+    <div
+      class="initials"
+      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+    >
+      <span
+        style="line-height: 28px;"
+      >
+        T1
+      </span>
+    </div>
+  </div>
+  <div
+    class="d-inline-block"
+  >
+    Team 1
+  </div>
+</div>
+`;
+
+exports[`components utils: labels RenderLabel distribution channel label 1`] = `
+<i
+  class="icon d-inline-block material-icons text-secondary"
+>
+  email
+</i>
+`;
+
+exports[`components utils: labels RenderLabel distribution created label 1`] = `
+<span>
+  <span
+    id="datetime-tooltip-"
+  >
+    01/15/2016
+  </span>
+  TooltipMock
+</span>
+`;
+
+exports[`components utils: labels RenderLabel distribution customer label 1`] = `
+<span>
+  Luigi
+</span>
+`;
+
+exports[`components utils: labels RenderLabel distribution integrations label 1`] = `
+<span>
+  <i
+    class="icon d-inline-block material-icons mr-2"
+  >
+    email
+  </i>
+  common &lt;specific&gt;
+</span>
+`;
+
+exports[`components utils: labels RenderLabel distribution status label 1`] = `
+<span
+  class="text-center badge badge-primary badge-pill"
+>
+  open
+</span>
+`;
+
+exports[`components utils: labels RenderLabel distribution tags label 1`] = `
+<span
+  class="badge-tag badge badge-secondary"
+  style="color: rgb(128, 136, 214);"
+>
+  help
+</span>
+`;
+
+exports[`components utils: labels RenderLabel distribution thisshouldreturnnull label 1`] = `null`;

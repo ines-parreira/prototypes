@@ -5,7 +5,7 @@ import {List, Map, Seq} from 'immutable'
 import moment from 'moment-timezone'
 import {Input} from 'reactstrap'
 
-import {IntegrationsDetailLabel} from '../../../utils/labels.js'
+import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {getLanguageDisplayName} from '../../../../../utils'
 import {stringToDatetime} from '../../../../../utils/date'
 

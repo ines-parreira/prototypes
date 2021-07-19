@@ -113,7 +113,7 @@ exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActi
     }
     ticketMessageId={1}
   />
-  <Connect(DatetimeLabel)
+  <Connect(DatetimeLabelContainer)
     dateTime=""
   />
 </div>
@@ -123,7 +123,7 @@ exports[`<SourceDetailsHeader/> should render a DatetimeLabel because the messag
 <div
   className="wrapper"
 >
-  <Connect(DatetimeLabel)
+  <Connect(DatetimeLabelContainer)
     dateTime=""
   />
 </div>

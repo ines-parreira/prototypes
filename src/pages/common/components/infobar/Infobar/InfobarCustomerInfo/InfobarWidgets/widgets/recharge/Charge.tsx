@@ -15,7 +15,7 @@ import {
     isCurrentlyOnTicket,
     toJS,
 } from '../../../../../../../../../utils'
-import {renderTemplate} from '../../../../../../../utils/template.js'
+import {renderTemplate} from '../../../../../../../utils/template'
 import {LineItem} from '../../../../../../../../../constants/integrations/types/shopify'
 import {RootState} from '../../../../../../../../../state/types'
 

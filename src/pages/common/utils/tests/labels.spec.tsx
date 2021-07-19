@@ -1,22 +1,21 @@
-import React from 'react'
-import {mount, shallow} from 'enzyme'
+import React, {ReactElement} from 'react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {IntegrationType} from '../../../../models/integration/types'
 import {
-    AIRCALL_INTEGRATION_TYPE,
-    EMAIL_INTEGRATION_TYPE,
-    FACEBOOK_INTEGRATION_TYPE,
-    GMAIL_INTEGRATION_TYPE,
-} from '../../../../constants/integration.ts'
-import {EMAIL_CHANNEL, OPEN_STATUS} from '../../../../config/ticket.ts'
+    TicketChannel,
+    TicketMessageSourceType,
+    TicketStatus,
+} from '../../../../business/types/ticket'
 import * as labels from '../labels'
 
 /* DatetimeLabel uses Math.random.
  * Mock it to always return the same data.
  */
-const mockMath = Object.create(global.Math)
+const mockMath = Object.create(global.Math) as typeof global.Math
 const integrationJsObject = {
     type: 'email',
     name: 'common',
@@ -27,9 +26,9 @@ mockMath.random = () => 1
 global.Math = mockMath
 const mockStore = configureMockStore()
 
-jest.mock('../../components/Tooltip', () => 'TooltipMock')
+jest.mock('../../components/Tooltip', () => () => 'TooltipMock')
 
-describe('components utils : labels', () => {
+describe('components utils: labels', () => {
     describe('RenderLabel', () => {
         describe('distribution', () => {
             ;[
@@ -42,8 +41,8 @@ describe('components utils : labels', () => {
                     type: 'created',
                     value: '2016-01-15',
                     expected: <labels.DatetimeLabel dateTime="2016-01-15" />,
-                    toHTML: (comp) => {
-                        return mount(
+                    wrapper: (comp: ReactElement) => {
+                        return render(
                             <Provider
                                 store={mockStore({
                                     currentUser: fromJS({timezone: 'utc'}),
@@ -51,13 +50,13 @@ describe('components utils : labels', () => {
                             >
                                 {comp}
                             </Provider>
-                        ).html()
+                        )
                     },
                 },
                 {
                     type: 'status',
-                    value: OPEN_STATUS,
-                    expected: <labels.StatusLabel status={OPEN_STATUS} />,
+                    value: TicketStatus.Open,
+                    expected: <labels.StatusLabel status={TicketStatus.Open} />,
                 },
                 {
                     type: 'assignee',
@@ -81,10 +80,10 @@ describe('components utils : labels', () => {
                             })}
                         />
                     ),
-                    toHTML: (comp) => {
-                        return mount(
+                    wrapper: (comp: ReactElement) => {
+                        return render(
                             <Provider store={mockStore()}>{comp}</Provider>
-                        ).html()
+                        )
                     },
                 },
                 {
@@ -105,10 +104,10 @@ describe('components utils : labels', () => {
                             })}
                         />
                     ),
-                    toHTML: (comp) => {
-                        return mount(
+                    wrapper: (comp: ReactElement) => {
+                        return render(
                             <Provider store={mockStore()}>{comp}</Provider>
-                        ).html()
+                        )
                     },
                 },
                 {
@@ -116,12 +115,20 @@ describe('components utils : labels', () => {
                     value: {
                         name: 'Luigi',
                     },
-                    expected: <labels.CustomerLabel customer="Luigi" />,
+                    expected: (
+                        <labels.CustomerLabel
+                            customer={{name: 'Luigi', id: '8'}}
+                        />
+                    ),
                 },
                 {
                     type: 'channel',
-                    value: EMAIL_CHANNEL,
-                    expected: <labels.ChannelLabel channel={EMAIL_CHANNEL} />,
+                    value: TicketChannel.Email,
+                    expected: (
+                        <labels.ChannelLabel
+                            channel={TicketMessageSourceType.Email}
+                        />
+                    ),
                 },
                 {
                     type: 'thisshouldreturnnull',
@@ -137,99 +144,94 @@ describe('components utils : labels', () => {
                         />
                     ),
                 },
-            ].forEach((element) => {
-                const {type, value, expected, toHTML} = element
-                const render = (comp) => {
-                    if (!React.isValidElement(comp)) {
-                        return comp
-                    }
-                    return toHTML ? toHTML(comp) : shallow(comp).html()
-                }
-
+            ].forEach(({type, value, wrapper}) => {
                 it(`${type} label`, () => {
-                    const rendered = render(
-                        <labels.RenderLabel
-                            field={fromJS({name: type})}
-                            value={fromJS(value)}
-                        />
-                    )
-                    expect(rendered).toEqual(render(expected))
+                    let result
+                    if (wrapper) {
+                        result = wrapper(
+                            <labels.RenderLabel
+                                field={fromJS({name: type})}
+                                value={fromJS(value)}
+                            />
+                        ).container
+                    } else {
+                        result = render(
+                            <labels.RenderLabel
+                                field={fromJS({name: type})}
+                                value={fromJS(value)}
+                            />
+                        ).container
+                    }
+
+                    expect(result.firstChild).toMatchSnapshot()
                 })
             })
         })
 
         describe('ValueRendered', () => {
             it('should display the address to prevent confusion', () => {
-                const componentRuleIntegrationListTypeEmail = mount(
+                const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: EMAIL_INTEGRATION_TYPE,
+                            type: IntegrationType.EmailIntegrationType,
                             name: 'common',
                             meta: {address: 'specific'},
                         })}
                     />
                 )
-                expect(componentRuleIntegrationListTypeEmail).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display the name because the address is empty', () => {
-                const componentRuleIntegrationListTypeEmailNoAddress = mount(
+                const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: EMAIL_INTEGRATION_TYPE,
+                            type: IntegrationType.EmailIntegrationType,
                             name: 'common',
                             meta: {address: ''},
                         })}
                     />
                 )
-                expect(
-                    componentRuleIntegrationListTypeEmailNoAddress
-                ).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display the name because the type is facebook', () => {
-                const componentRuleIntegrationListTypeFacebook = mount(
+                const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: FACEBOOK_INTEGRATION_TYPE,
+                            type: IntegrationType.FacebookIntegrationType,
                             name: 'common',
                             meta: {address: 'specific'},
                         })}
                     />
                 )
-                expect(
-                    componentRuleIntegrationListTypeFacebook
-                ).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display name and address formatted in-lined', () => {
-                const componentRuleIntegrationListTypeMailInline = mount(
+                const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: GMAIL_INTEGRATION_TYPE,
+                            type: IntegrationType.GmailIntegrationType,
                             name: 'common',
                             address: 'inlined email',
                         })}
                     />
                 )
-                expect(
-                    componentRuleIntegrationListTypeMailInline
-                ).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display name and address formatted as aircall eg: with address into parenthesis', () => {
-                const componentRuleIntegrationListTypeAircall = mount(
+                const {container} = render(
                     <labels.IntegrationsDetailLabel
                         integration={fromJS({
-                            type: AIRCALL_INTEGRATION_TYPE,
+                            type: IntegrationType.AircallIntegrationType,
                             name: 'common',
                             address: 'aircall style',
                         })}
                     />
                 )
-                expect(
-                    componentRuleIntegrationListTypeAircall
-                ).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })
@@ -237,38 +239,38 @@ describe('components utils : labels', () => {
     describe('<AgentLabel/>', () => {
         describe('render()', () => {
             it('should render the avatar because a profile picture url is passed', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.AgentLabel
                         name="Marie Curie"
                         profilePictureUrl="https://gorgias.io/profilepicture.png"
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render the avatar because the `avatar` option is passed but no profile picture url is passed', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.AgentLabel name="Marie Curie" />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should not render the name of the agent because no name is passed', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.AgentLabel profilePictureUrl="https://gorgias.io/profilepicture.png" />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })
@@ -276,20 +278,20 @@ describe('components utils : labels', () => {
     describe('<TeamLabel/>', () => {
         describe('render()', () => {
             it('should render without avatar', () => {
-                const component = shallow(<labels.TeamLabel name="Team 1" />)
-                expect(component).toMatchSnapshot()
+                const {container} = render(<labels.TeamLabel name="Team 1" />)
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render with default avatar', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.TeamLabel name="Team 1" shouldDisplayAvatar />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render with emoji', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.TeamLabel
                         name="Team 1"
                         shouldDisplayAvatar
@@ -305,11 +307,11 @@ describe('components utils : labels', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render with default avatar and "team" icon', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.TeamLabel
                         name="Team 1"
                         shouldDisplayAvatar
@@ -317,7 +319,7 @@ describe('components utils : labels', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })
@@ -325,22 +327,22 @@ describe('components utils : labels', () => {
     describe('<TimedeltaLabel/>', () => {
         describe('render()', () => {
             it('should render with hour duration', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.TimedeltaLabel duration={'1h'} />
                 )
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
             it('should render with minute duration', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.TimedeltaLabel duration={'1m'} />
                 )
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
             it('should render with day duration', () => {
-                const component = shallow(
+                const {container} = render(
                     <labels.TimedeltaLabel duration={'1d'} />
                 )
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })
@@ -348,7 +350,7 @@ describe('components utils : labels', () => {
     describe('<DatetimeLabel/>', () => {
         describe('render()', () => {
             it('should render with zero width space', () => {
-                const component = mount(
+                const {container} = render(
                     <Provider
                         store={mockStore({
                             currentUser: fromJS({timezone: 'utc'}),
@@ -358,7 +360,7 @@ describe('components utils : labels', () => {
                     </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })

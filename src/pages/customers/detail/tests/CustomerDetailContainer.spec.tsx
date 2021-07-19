@@ -6,17 +6,27 @@ import {createBrowserHistory} from 'history'
 
 import {renderWithRouter} from '../../../../utils/testing'
 import {ticket} from '../../../../fixtures/ticket'
-import * as labels from '../../../common/utils/labels.js'
+import * as labels from '../../../common/utils/labels'
 import {CustomerDetailContainer} from '../CustomerDetailContainer'
 
 jest.mock('../../common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>
 ))
 
-jest.mock('../../../common/utils/labels.js', (): typeof labels => ({
-    ...jest.requireActual('../../../common/utils/labels.js'),
-    DatetimeLabel: jest.fn(() => <div>DatetimeLabel</div>),
-}))
+type MockLabels = typeof labels
+
+jest.mock(
+    '../../../common/utils/labels',
+    () =>
+        ({
+            ...jest.requireActual('../../../common/utils/labels'),
+            DatetimeLabel: ({
+                dateTime,
+            }: ComponentProps<MockLabels['DatetimeLabel']>) => {
+                return <div>{dateTime}</div>
+            },
+        } as MockLabels)
+)
 
 describe('<CustomerDetailContainer />', () => {
     const minProps = ({

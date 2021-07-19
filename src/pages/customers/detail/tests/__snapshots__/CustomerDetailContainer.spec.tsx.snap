@@ -77,7 +77,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
             class="secondMeta d-flex align-items-center justify-content-end"
           >
             <div>
-              DatetimeLabel
+              2017-07-31T23:07:35.150000+00:00
             </div>
             <i
               class="icon d-inline-block material-icons sourceIcon uncolored ml-3"

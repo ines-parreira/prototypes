@@ -22,7 +22,7 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
     <div
       className="mt-3"
     >
-      <Connect(CreditMemosContainer)
+      <CreditMemos
         creditMemos={
           Immutable.List [
             Immutable.Map {
@@ -51,198 +51,164 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
           ]
         }
       >
-        <CreditMemosContainer
-          creditMemos={
-            Immutable.List [
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 852,
-                "updated_at": "2018-11-07 05:22",
-                "items": Immutable.List [
-                  Immutable.Map {
-                    "order_item_id": 741,
-                    "qty": 4,
-                    "name": "Sneakers",
-                  },
-                  Immutable.Map {
-                    "order_item_id": 753,
-                    "qty": 1,
-                    "name": "T-shirt",
-                  },
-                ],
-              },
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 852,
-                "updated_at": "2018-11-07 05:22",
-                "items": Immutable.List [],
-              },
-            ]
-          }
-          currentUserTimezone={null}
-          dispatch={[Function]}
+        <div
+          className="card"
+          key="852"
         >
-          <div
-            className="card"
-            key="852"
+          <CardBody
+            className="header clearfix"
+            tag="div"
           >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+            <div
+              className="header clearfix card-body"
             >
-              <div
-                className="header clearfix card-body"
+              <a
+                href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span>
-                    <i
-                      className="material-icons"
-                    >
-                      redeem
-                    </i>
-                     Credit memo: 
-                     
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
-              >
-                <div
-                  className="simple-field"
-                >
-                  <span
-                    className="field-label"
+                <span>
+                  <i
+                    className="material-icons"
                   >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2018-11-07 05:22"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <div
-                    className="card"
-                    key="741"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          4
-                           x
-                           
-                          Sneakers
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                  <div
-                    className="card"
-                    key="753"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          1
-                           x
-                           
-                          T-shirt
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                </div>
-              </div>
-            </CardBody>
-          </div>
-          <div
-            className="card"
-            key="852"
+                    redeem
+                  </i>
+                   Credit memo: 
+                   
+                </span>
+              </a>
+            </div>
+          </CardBody>
+          <CardBody
+            className="content"
+            tag="div"
           >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+            <div
+              className="content card-body"
             >
               <div
-                className="header clearfix card-body"
+                className="simple-field"
               >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <span
+                  className="field-label"
                 >
-                  <span>
-                    <i
-                      className="material-icons"
+                  Last updated:
+                </span>
+                <span
+                  className="field-value"
+                >
+                  <DatetimeLabelMock
+                    dateTime="2018-11-07 05:22"
+                  />
+                </span>
+              </div>
+              <div
+                className="list mt-3"
+              >
+                <div
+                  className="card"
+                  key="741"
+                >
+                  <CardBody
+                    className="header clearfix"
+                    tag="div"
+                  >
+                    <div
+                      className="header clearfix card-body"
                     >
-                      redeem
-                    </i>
-                     Credit memo: 
-                     
-                  </span>
-                </a>
+                      <span>
+                        4
+                         x
+                         
+                        Sneakers
+                      </span>
+                    </div>
+                  </CardBody>
+                </div>
+                <div
+                  className="card"
+                  key="753"
+                >
+                  <CardBody
+                    className="header clearfix"
+                    tag="div"
+                  >
+                    <div
+                      className="header clearfix card-body"
+                    >
+                      <span>
+                        1
+                         x
+                         
+                        T-shirt
+                      </span>
+                    </div>
+                  </CardBody>
+                </div>
               </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
+            </div>
+          </CardBody>
+        </div>
+        <div
+          className="card"
+          key="852"
+        >
+          <CardBody
+            className="header clearfix"
+            tag="div"
+          >
+            <div
+              className="header clearfix card-body"
+            >
+              <a
+                href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <span>
+                  <i
+                    className="material-icons"
+                  >
+                    redeem
+                  </i>
+                   Credit memo: 
+                   
+                </span>
+              </a>
+            </div>
+          </CardBody>
+          <CardBody
+            className="content"
+            tag="div"
+          >
+            <div
+              className="content card-body"
             >
               <div
-                className="content card-body"
+                className="simple-field"
               >
-                <div
-                  className="simple-field"
+                <span
+                  className="field-label"
                 >
-                  <span
-                    className="field-label"
-                  >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2018-11-07 05:22"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="list mt-3"
+                  Last updated:
+                </span>
+                <span
+                  className="field-value"
                 >
-                  <Component />
-                </div>
+                  <DatetimeLabelMock
+                    dateTime="2018-11-07 05:22"
+                  />
+                </span>
               </div>
-            </CardBody>
-          </div>
-        </CreditMemosContainer>
-      </Connect(CreditMemosContainer)>
+              <div
+                className="list mt-3"
+              >
+                <Component />
+              </div>
+            </div>
+          </CardBody>
+        </div>
+      </CreditMemos>
     </div>
   </AfterContentContainer>
 </Connect(AfterContentContainer)>
@@ -270,7 +236,7 @@ exports[`Order <AfterContent/> render() should display credit memos without link
     <div
       className="mt-3"
     >
-      <Connect(CreditMemosContainer)
+      <CreditMemos
         creditMemos={
           Immutable.List [
             Immutable.Map {
@@ -299,198 +265,164 @@ exports[`Order <AfterContent/> render() should display credit memos without link
           ]
         }
       >
-        <CreditMemosContainer
-          creditMemos={
-            Immutable.List [
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 852,
-                "updated_at": "2018-11-07 05:22",
-                "items": Immutable.List [
-                  Immutable.Map {
-                    "order_item_id": 741,
-                    "qty": 4,
-                    "name": "Sneakers",
-                  },
-                  Immutable.Map {
-                    "order_item_id": 753,
-                    "qty": 1,
-                    "name": "T-shirt",
-                  },
-                ],
-              },
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 852,
-                "updated_at": "2018-11-07 05:22",
-                "items": Immutable.List [],
-              },
-            ]
-          }
-          currentUserTimezone={null}
-          dispatch={[Function]}
+        <div
+          className="card"
+          key="852"
         >
-          <div
-            className="card"
-            key="852"
+          <CardBody
+            className="header clearfix"
+            tag="div"
           >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+            <div
+              className="header clearfix card-body"
             >
-              <div
-                className="header clearfix card-body"
+              <a
+                href=""
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <a
-                  href=""
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span>
-                    <i
-                      className="material-icons"
-                    >
-                      redeem
-                    </i>
-                     Credit memo: 
-                     
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
-              >
-                <div
-                  className="simple-field"
-                >
-                  <span
-                    className="field-label"
+                <span>
+                  <i
+                    className="material-icons"
                   >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2018-11-07 05:22"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <div
-                    className="card"
-                    key="741"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          4
-                           x
-                           
-                          Sneakers
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                  <div
-                    className="card"
-                    key="753"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          1
-                           x
-                           
-                          T-shirt
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                </div>
-              </div>
-            </CardBody>
-          </div>
-          <div
-            className="card"
-            key="852"
+                    redeem
+                  </i>
+                   Credit memo: 
+                   
+                </span>
+              </a>
+            </div>
+          </CardBody>
+          <CardBody
+            className="content"
+            tag="div"
           >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+            <div
+              className="content card-body"
             >
               <div
-                className="header clearfix card-body"
+                className="simple-field"
               >
-                <a
-                  href=""
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <span
+                  className="field-label"
                 >
-                  <span>
-                    <i
-                      className="material-icons"
+                  Last updated:
+                </span>
+                <span
+                  className="field-value"
+                >
+                  <DatetimeLabelMock
+                    dateTime="2018-11-07 05:22"
+                  />
+                </span>
+              </div>
+              <div
+                className="list mt-3"
+              >
+                <div
+                  className="card"
+                  key="741"
+                >
+                  <CardBody
+                    className="header clearfix"
+                    tag="div"
+                  >
+                    <div
+                      className="header clearfix card-body"
                     >
-                      redeem
-                    </i>
-                     Credit memo: 
-                     
-                  </span>
-                </a>
+                      <span>
+                        4
+                         x
+                         
+                        Sneakers
+                      </span>
+                    </div>
+                  </CardBody>
+                </div>
+                <div
+                  className="card"
+                  key="753"
+                >
+                  <CardBody
+                    className="header clearfix"
+                    tag="div"
+                  >
+                    <div
+                      className="header clearfix card-body"
+                    >
+                      <span>
+                        1
+                         x
+                         
+                        T-shirt
+                      </span>
+                    </div>
+                  </CardBody>
+                </div>
               </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
+            </div>
+          </CardBody>
+        </div>
+        <div
+          className="card"
+          key="852"
+        >
+          <CardBody
+            className="header clearfix"
+            tag="div"
+          >
+            <div
+              className="header clearfix card-body"
+            >
+              <a
+                href=""
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <span>
+                  <i
+                    className="material-icons"
+                  >
+                    redeem
+                  </i>
+                   Credit memo: 
+                   
+                </span>
+              </a>
+            </div>
+          </CardBody>
+          <CardBody
+            className="content"
+            tag="div"
+          >
+            <div
+              className="content card-body"
             >
               <div
-                className="content card-body"
+                className="simple-field"
               >
-                <div
-                  className="simple-field"
+                <span
+                  className="field-label"
                 >
-                  <span
-                    className="field-label"
-                  >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2018-11-07 05:22"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="list mt-3"
+                  Last updated:
+                </span>
+                <span
+                  className="field-value"
                 >
-                  <Component />
-                </div>
+                  <DatetimeLabelMock
+                    dateTime="2018-11-07 05:22"
+                  />
+                </span>
               </div>
-            </CardBody>
-          </div>
-        </CreditMemosContainer>
-      </Connect(CreditMemosContainer)>
+              <div
+                className="list mt-3"
+              >
+                <Component />
+              </div>
+            </div>
+          </CardBody>
+        </div>
+      </CreditMemos>
     </div>
   </AfterContentContainer>
 </Connect(AfterContentContainer)>
@@ -563,7 +495,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       <div
         className="mt-3"
       >
-        <Connect(ShipmentsContainer)
+        <Shipments
           shipments={
             Immutable.List [
               Immutable.Map {
@@ -611,90 +543,59 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
             ]
           }
         >
-          <ShipmentsContainer
-            currentUserTimezone={null}
-            dispatch={[Function]}
-            shipments={
-              Immutable.List [
-                Immutable.Map {
-                  "order_id": 2,
-                  "entity_id": 963,
-                  "updated_at": "2019-03-04 11:12",
-                  "tracks": Immutable.List [
-                    Immutable.Map {
-                      "track_number": "123ABC",
-                      "carrier_code": "UPS",
-                      "tracking_url": "https://foo.com",
-                    },
-                    Immutable.Map {
-                      "track_number": "456DEF",
-                      "carrier_code": "DHL",
-                      "tracking_url": "https://bar.com",
-                    },
-                  ],
-                  "items": Immutable.List [
-                    Immutable.Map {
-                      "order_item_id": 118,
-                      "qty": 4,
-                      "name": "Sneakers",
-                    },
-                    Immutable.Map {
-                      "order_item_id": 218,
-                      "qty": 1,
-                      "name": "Pants",
-                    },
-                  ],
-                },
-                Immutable.Map {
-                  "order_id": 2,
-                  "entity_id": 741,
-                  "updated_at": "2019-02-04 11:12",
-                  "tracks": Immutable.List [
-                    Immutable.Map {
-                      "track_number": "789GHJ",
-                      "carrier_code": "LaPoste",
-                      "tracking_url": "https://laposte.net",
-                    },
-                  ],
-                  "items": Immutable.List [],
-                },
-              ]
-            }
+          <div
+            className="card"
+            key="963"
           >
-            <div
-              className="card"
-              key="963"
+            <CardBody
+              className="header clearfix"
+              tag="div"
             >
-              <CardBody
-                className="header clearfix"
-                tag="div"
+              <div
+                className="header clearfix card-body"
               >
-                <div
-                  className="header clearfix card-body"
+                <a
+                  href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <a
-                    href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <i
+                    className="material-icons"
                   >
-                    <i
-                      className="material-icons"
-                    >
-                      local_shipping
-                    </i>
-                     
-                    <span>
-                      Shipment
-                    </span>
-                  </a>
-                </div>
-              </CardBody>
-              <CardBody
-                className="content"
-                tag="div"
+                    local_shipping
+                  </i>
+                   
+                  <span>
+                    Shipment
+                  </span>
+                </a>
+              </div>
+            </CardBody>
+            <CardBody
+              className="content"
+              tag="div"
+            >
+              <div
+                className="content card-body"
               >
                 <div
-                  className="content card-body"
+                  className="simple-field"
+                >
+                  <span
+                    className="field-label"
+                  >
+                    Last updated:
+                  </span>
+                  <span
+                    className="field-value"
+                  >
+                    <DatetimeLabelMock
+                      dateTime="2019-03-04 11:12"
+                    />
+                  </span>
+                </div>
+                <div
+                  key="123ABC"
                 >
                   <div
                     className="simple-field"
@@ -702,144 +603,143 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
                     <span
                       className="field-label"
                     >
-                      Last updated:
+                      Carrier code:
                     </span>
                     <span
                       className="field-value"
                     >
-                      <DatetimeLabelMock
-                        dateTime="2019-03-04 11:12"
-                        timezone={null}
-                      />
+                      UPS
                     </span>
                   </div>
                   <div
-                    key="123ABC"
+                    className="simple-field"
                   >
-                    <div
-                      className="simple-field"
+                    <span
+                      className="field-label"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Carrier code:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        UPS
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
+                      Tracking number:
+                    </span>
+                    <span
+                      className="field-value"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking number:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        123ABC
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
-                    >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking URL:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        -
-                      </span>
-                    </div>
+                      123ABC
+                    </span>
                   </div>
                   <div
-                    className="list mt-3"
+                    className="simple-field"
                   >
-                    <div
-                      className="card"
-                      key="118"
+                    <span
+                      className="field-label"
                     >
-                      <CardBody
-                        className="header clearfix"
-                        tag="div"
-                      >
-                        <div
-                          className="header clearfix card-body"
-                        >
-                          <span>
-                            4
-                             x
-                             
-                            Sneakers
-                          </span>
-                        </div>
-                      </CardBody>
-                    </div>
-                    <div
-                      className="card"
-                      key="218"
+                      Tracking URL:
+                    </span>
+                    <span
+                      className="field-value"
                     >
-                      <CardBody
-                        className="header clearfix"
-                        tag="div"
-                      >
-                        <div
-                          className="header clearfix card-body"
-                        >
-                          <span>
-                            1
-                             x
-                             
-                            Pants
-                          </span>
-                        </div>
-                      </CardBody>
-                    </div>
+                      -
+                    </span>
                   </div>
                 </div>
-              </CardBody>
-            </div>
-            <div
-              className="card"
-              key="741"
-            >
-              <CardBody
-                className="header clearfix"
-                tag="div"
-              >
                 <div
-                  className="header clearfix card-body"
+                  className="list mt-3"
                 >
-                  <a
-                    href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    className="card"
+                    key="118"
                   >
-                    <i
-                      className="material-icons"
+                    <CardBody
+                      className="header clearfix"
+                      tag="div"
                     >
-                      local_shipping
-                    </i>
-                     
-                    <span>
-                      Shipment
-                    </span>
-                  </a>
+                      <div
+                        className="header clearfix card-body"
+                      >
+                        <span>
+                          4
+                           x
+                           
+                          Sneakers
+                        </span>
+                      </div>
+                    </CardBody>
+                  </div>
+                  <div
+                    className="card"
+                    key="218"
+                  >
+                    <CardBody
+                      className="header clearfix"
+                      tag="div"
+                    >
+                      <div
+                        className="header clearfix card-body"
+                      >
+                        <span>
+                          1
+                           x
+                           
+                          Pants
+                        </span>
+                      </div>
+                    </CardBody>
+                  </div>
                 </div>
-              </CardBody>
-              <CardBody
-                className="content"
-                tag="div"
+              </div>
+            </CardBody>
+          </div>
+          <div
+            className="card"
+            key="741"
+          >
+            <CardBody
+              className="header clearfix"
+              tag="div"
+            >
+              <div
+                className="header clearfix card-body"
+              >
+                <a
+                  href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
+                  <span>
+                    Shipment
+                  </span>
+                </a>
+              </div>
+            </CardBody>
+            <CardBody
+              className="content"
+              tag="div"
+            >
+              <div
+                className="content card-body"
               >
                 <div
-                  className="content card-body"
+                  className="simple-field"
+                >
+                  <span
+                    className="field-label"
+                  >
+                    Last updated:
+                  </span>
+                  <span
+                    className="field-value"
+                  >
+                    <DatetimeLabelMock
+                      dateTime="2019-02-04 11:12"
+                    />
+                  </span>
+                </div>
+                <div
+                  key="789GHJ"
                 >
                   <div
                     className="simple-field"
@@ -847,73 +747,52 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
                     <span
                       className="field-label"
                     >
-                      Last updated:
+                      Carrier code:
                     </span>
                     <span
                       className="field-value"
                     >
-                      <DatetimeLabelMock
-                        dateTime="2019-02-04 11:12"
-                        timezone={null}
-                      />
+                      LaPoste
                     </span>
                   </div>
                   <div
-                    key="789GHJ"
+                    className="simple-field"
                   >
-                    <div
-                      className="simple-field"
+                    <span
+                      className="field-label"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Carrier code:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        LaPoste
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
+                      Tracking number:
+                    </span>
+                    <span
+                      className="field-value"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking number:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        789GHJ
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
-                    >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking URL:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        -
-                      </span>
-                    </div>
+                      789GHJ
+                    </span>
                   </div>
                   <div
-                    className="list mt-3"
+                    className="simple-field"
                   >
-                    <Component />
+                    <span
+                      className="field-label"
+                    >
+                      Tracking URL:
+                    </span>
+                    <span
+                      className="field-value"
+                    >
+                      -
+                    </span>
                   </div>
                 </div>
-              </CardBody>
-            </div>
-          </ShipmentsContainer>
-        </Connect(ShipmentsContainer)>
+                <div
+                  className="list mt-3"
+                >
+                  <Component />
+                </div>
+              </div>
+            </CardBody>
+          </div>
+        </Shipments>
       </div>
     </div>
   </BeforeContentContainer>
@@ -987,7 +866,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       <div
         className="mt-3"
       >
-        <Connect(ShipmentsContainer)
+        <Shipments
           shipments={
             Immutable.List [
               Immutable.Map {
@@ -1035,90 +914,59 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
             ]
           }
         >
-          <ShipmentsContainer
-            currentUserTimezone={null}
-            dispatch={[Function]}
-            shipments={
-              Immutable.List [
-                Immutable.Map {
-                  "order_id": 2,
-                  "entity_id": 963,
-                  "updated_at": "2019-03-04 11:12",
-                  "tracks": Immutable.List [
-                    Immutable.Map {
-                      "track_number": "123ABC",
-                      "carrier_code": "UPS",
-                      "tracking_url": "https://foo.com",
-                    },
-                    Immutable.Map {
-                      "track_number": "456DEF",
-                      "carrier_code": "DHL",
-                      "tracking_url": "https://bar.com",
-                    },
-                  ],
-                  "items": Immutable.List [
-                    Immutable.Map {
-                      "order_item_id": 118,
-                      "qty": 4,
-                      "name": "Sneakers",
-                    },
-                    Immutable.Map {
-                      "order_item_id": 218,
-                      "qty": 1,
-                      "name": "Pants",
-                    },
-                  ],
-                },
-                Immutable.Map {
-                  "order_id": 2,
-                  "entity_id": 741,
-                  "updated_at": "2019-02-04 11:12",
-                  "tracks": Immutable.List [
-                    Immutable.Map {
-                      "track_number": "789GHJ",
-                      "carrier_code": "LaPoste",
-                      "tracking_url": "https://laposte.net",
-                    },
-                  ],
-                  "items": Immutable.List [],
-                },
-              ]
-            }
+          <div
+            className="card"
+            key="963"
           >
-            <div
-              className="card"
-              key="963"
+            <CardBody
+              className="header clearfix"
+              tag="div"
             >
-              <CardBody
-                className="header clearfix"
-                tag="div"
+              <div
+                className="header clearfix card-body"
               >
-                <div
-                  className="header clearfix card-body"
+                <a
+                  href=""
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <a
-                    href=""
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <i
+                    className="material-icons"
                   >
-                    <i
-                      className="material-icons"
-                    >
-                      local_shipping
-                    </i>
-                     
-                    <span>
-                      Shipment
-                    </span>
-                  </a>
-                </div>
-              </CardBody>
-              <CardBody
-                className="content"
-                tag="div"
+                    local_shipping
+                  </i>
+                   
+                  <span>
+                    Shipment
+                  </span>
+                </a>
+              </div>
+            </CardBody>
+            <CardBody
+              className="content"
+              tag="div"
+            >
+              <div
+                className="content card-body"
               >
                 <div
-                  className="content card-body"
+                  className="simple-field"
+                >
+                  <span
+                    className="field-label"
+                  >
+                    Last updated:
+                  </span>
+                  <span
+                    className="field-value"
+                  >
+                    <DatetimeLabelMock
+                      dateTime="2019-03-04 11:12"
+                    />
+                  </span>
+                </div>
+                <div
+                  key="123ABC"
                 >
                   <div
                     className="simple-field"
@@ -1126,144 +974,143 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
                     <span
                       className="field-label"
                     >
-                      Last updated:
+                      Carrier code:
                     </span>
                     <span
                       className="field-value"
                     >
-                      <DatetimeLabelMock
-                        dateTime="2019-03-04 11:12"
-                        timezone={null}
-                      />
+                      UPS
                     </span>
                   </div>
                   <div
-                    key="123ABC"
+                    className="simple-field"
                   >
-                    <div
-                      className="simple-field"
+                    <span
+                      className="field-label"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Carrier code:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        UPS
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
+                      Tracking number:
+                    </span>
+                    <span
+                      className="field-value"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking number:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        123ABC
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
-                    >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking URL:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        -
-                      </span>
-                    </div>
+                      123ABC
+                    </span>
                   </div>
                   <div
-                    className="list mt-3"
+                    className="simple-field"
                   >
-                    <div
-                      className="card"
-                      key="118"
+                    <span
+                      className="field-label"
                     >
-                      <CardBody
-                        className="header clearfix"
-                        tag="div"
-                      >
-                        <div
-                          className="header clearfix card-body"
-                        >
-                          <span>
-                            4
-                             x
-                             
-                            Sneakers
-                          </span>
-                        </div>
-                      </CardBody>
-                    </div>
-                    <div
-                      className="card"
-                      key="218"
+                      Tracking URL:
+                    </span>
+                    <span
+                      className="field-value"
                     >
-                      <CardBody
-                        className="header clearfix"
-                        tag="div"
-                      >
-                        <div
-                          className="header clearfix card-body"
-                        >
-                          <span>
-                            1
-                             x
-                             
-                            Pants
-                          </span>
-                        </div>
-                      </CardBody>
-                    </div>
+                      -
+                    </span>
                   </div>
                 </div>
-              </CardBody>
-            </div>
-            <div
-              className="card"
-              key="741"
-            >
-              <CardBody
-                className="header clearfix"
-                tag="div"
-              >
                 <div
-                  className="header clearfix card-body"
+                  className="list mt-3"
                 >
-                  <a
-                    href=""
-                    rel="noopener noreferrer"
-                    target="_blank"
+                  <div
+                    className="card"
+                    key="118"
                   >
-                    <i
-                      className="material-icons"
+                    <CardBody
+                      className="header clearfix"
+                      tag="div"
                     >
-                      local_shipping
-                    </i>
-                     
-                    <span>
-                      Shipment
-                    </span>
-                  </a>
+                      <div
+                        className="header clearfix card-body"
+                      >
+                        <span>
+                          4
+                           x
+                           
+                          Sneakers
+                        </span>
+                      </div>
+                    </CardBody>
+                  </div>
+                  <div
+                    className="card"
+                    key="218"
+                  >
+                    <CardBody
+                      className="header clearfix"
+                      tag="div"
+                    >
+                      <div
+                        className="header clearfix card-body"
+                      >
+                        <span>
+                          1
+                           x
+                           
+                          Pants
+                        </span>
+                      </div>
+                    </CardBody>
+                  </div>
                 </div>
-              </CardBody>
-              <CardBody
-                className="content"
-                tag="div"
+              </div>
+            </CardBody>
+          </div>
+          <div
+            className="card"
+            key="741"
+          >
+            <CardBody
+              className="header clearfix"
+              tag="div"
+            >
+              <div
+                className="header clearfix card-body"
+              >
+                <a
+                  href=""
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
+                  <span>
+                    Shipment
+                  </span>
+                </a>
+              </div>
+            </CardBody>
+            <CardBody
+              className="content"
+              tag="div"
+            >
+              <div
+                className="content card-body"
               >
                 <div
-                  className="content card-body"
+                  className="simple-field"
+                >
+                  <span
+                    className="field-label"
+                  >
+                    Last updated:
+                  </span>
+                  <span
+                    className="field-value"
+                  >
+                    <DatetimeLabelMock
+                      dateTime="2019-02-04 11:12"
+                    />
+                  </span>
+                </div>
+                <div
+                  key="789GHJ"
                 >
                   <div
                     className="simple-field"
@@ -1271,73 +1118,52 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
                     <span
                       className="field-label"
                     >
-                      Last updated:
+                      Carrier code:
                     </span>
                     <span
                       className="field-value"
                     >
-                      <DatetimeLabelMock
-                        dateTime="2019-02-04 11:12"
-                        timezone={null}
-                      />
+                      LaPoste
                     </span>
                   </div>
                   <div
-                    key="789GHJ"
+                    className="simple-field"
                   >
-                    <div
-                      className="simple-field"
+                    <span
+                      className="field-label"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Carrier code:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        LaPoste
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
+                      Tracking number:
+                    </span>
+                    <span
+                      className="field-value"
                     >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking number:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        789GHJ
-                      </span>
-                    </div>
-                    <div
-                      className="simple-field"
-                    >
-                      <span
-                        className="field-label"
-                      >
-                        Tracking URL:
-                      </span>
-                      <span
-                        className="field-value"
-                      >
-                        -
-                      </span>
-                    </div>
+                      789GHJ
+                    </span>
                   </div>
                   <div
-                    className="list mt-3"
+                    className="simple-field"
                   >
-                    <Component />
+                    <span
+                      className="field-label"
+                    >
+                      Tracking URL:
+                    </span>
+                    <span
+                      className="field-value"
+                    >
+                      -
+                    </span>
                   </div>
                 </div>
-              </CardBody>
-            </div>
-          </ShipmentsContainer>
-        </Connect(ShipmentsContainer)>
+                <div
+                  className="list mt-3"
+                >
+                  <Component />
+                </div>
+              </div>
+            </CardBody>
+          </div>
+        </Shipments>
       </div>
     </div>
   </BeforeContentContainer>

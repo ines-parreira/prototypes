@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import {TicketMessage} from '../../../../../models/ticket/types'
 import {isForwardedMessage} from '../../../../../state/ticket/utils'
-import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels.js'
+import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 
 import css from './Header.less'
 import Meta from './Meta'

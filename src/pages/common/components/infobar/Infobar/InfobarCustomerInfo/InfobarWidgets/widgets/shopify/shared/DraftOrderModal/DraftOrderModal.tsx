@@ -30,7 +30,7 @@ import {
     IntegrationDataItem,
 } from '../../../../../../../../../../../models/integration/types'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
-import {DatetimeLabel} from '../../../../../../../../../utils/labels.js'
+import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import {CustomerContext} from '../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'

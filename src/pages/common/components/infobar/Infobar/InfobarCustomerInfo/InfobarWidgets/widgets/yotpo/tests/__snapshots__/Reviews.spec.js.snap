@@ -7,7 +7,7 @@ exports[`<AfterTitle/> render() should render with different score values 1`] = 
   <CardHeaderValue
     label="Created"
   >
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       dateTime={2021-01-31T19:12:00.000Z}
       key="created-at"
     />
@@ -60,7 +60,7 @@ exports[`<AfterTitle/> render() should render with different score values 2`] = 
   <CardHeaderValue
     label="Created"
   >
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       dateTime={2021-01-31T19:12:00.000Z}
       key="created-at"
     />
@@ -113,7 +113,7 @@ exports[`<AfterTitle/> render() should render with different score values 3`] = 
   <CardHeaderValue
     label="Created"
   >
-    <Connect(DatetimeLabel)
+    <Connect(DatetimeLabelContainer)
       dateTime={2021-01-31T19:12:00.000Z}
       key="created-at"
     />

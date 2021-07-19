@@ -62,7 +62,7 @@ exports[`<CommentCard/> render should render the comment card 1`] = `
           <div
             className="right wrapper"
           >
-            <Connect(DatetimeLabel)
+            <Connect(DatetimeLabelContainer)
               dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
             />
           </div>
@@ -140,7 +140,7 @@ exports[`<CommentCard/> render should render the comment card 2`] = `
           <div
             className="right wrapper"
           >
-            <Connect(DatetimeLabel)
+            <Connect(DatetimeLabelContainer)
               dateTime="Sun Nov 01 2020 01:01:01 UTC+0000"
             />
           </div>

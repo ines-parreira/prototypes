@@ -1,11 +1,7 @@
-// @flow
 import _isNull from 'lodash/isNull'
 
-/**
- * Detect touch support
- */
-let touchSupport = null
-export function isTouchDevice(): ?boolean {
+let touchSupport: boolean | null = null
+export function isTouchDevice(): boolean {
     if (_isNull(touchSupport)) {
         touchSupport = 'ontouchstart' in window
     }

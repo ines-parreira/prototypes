@@ -55,7 +55,7 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>
@@ -126,7 +126,7 @@ exports[`Order <AfterTitle/> should display the refund action with its max equal
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>
@@ -156,7 +156,7 @@ exports[`Order <AfterTitle/> should not display the refund action because the ch
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>
@@ -186,7 +186,7 @@ exports[`Order <AfterTitle/> should not display the refund action because the or
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>
@@ -216,7 +216,7 @@ exports[`Order <AfterTitle/> should not display the refund action because the or
     <CardHeaderValue
       label="Created"
     >
-      <Connect(DatetimeLabel)
+      <Connect(DatetimeLabelContainer)
         key="created-at"
       />
     </CardHeaderValue>

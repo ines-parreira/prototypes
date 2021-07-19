@@ -2,7 +2,7 @@ import {EditorState, SelectionState, Modifier} from 'draft-js'
 import findWithRegex from 'find-with-regex'
 import _get from 'lodash/get'
 
-import {templateRegex} from '../../../utils/template'
+import {templateRegex} from '../../../utils/template.ts'
 import * as ticketConfig from '../../../../../config/ticket.ts'
 
 /**

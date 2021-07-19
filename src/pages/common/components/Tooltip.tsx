@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 import {UncontrolledTooltip, UncontrolledTooltipProps} from 'reactstrap'
 
-import {isTouchDevice} from '../utils/mobile.js'
+import {isTouchDevice} from '../utils/mobile'
 
 import css from './Tooltip.less'
 
