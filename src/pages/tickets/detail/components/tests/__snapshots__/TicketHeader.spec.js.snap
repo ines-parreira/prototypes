@@ -662,7 +662,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
             >
               undo
             </i>
-            unmark as spam
+            Unmark as spam
           </span>
         </DropdownItem>
         <DropdownItem

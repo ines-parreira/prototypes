@@ -361,7 +361,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                             <i className="icon material-icons">
                                                 undo
                                             </i>
-                                            unmark as spam
+                                            Unmark as spam
                                         </span>
                                     ) : (
                                         <span>
