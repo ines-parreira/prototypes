@@ -1,22 +1,22 @@
-import React, {ComponentProps, ReactElement} from 'react'
-import {shallow} from 'enzyme'
+import React, {ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
+import {createEvent, fireEvent, render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 
 import * as viewsConfig from '../../../../../config/views'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import BlankState from '../../BlankState/index.js'
-import {TableContainer} from '../Table'
+import Table from '../Table'
 import Row from '../Table/Row'
+import shortcutManager from '../../../../../services/shortcutManager/shortcutManager'
+import {RootState, StoreDispatch} from '../../../../../state/types'
 
-jest.mock('../../../../../state/views/actions', () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const _identity: <T>(arg: T) => T = require('lodash/identity')
-
-    return {
-        updateSelectedItemsIds: jest.fn(() => _identity),
-        resetView: jest.fn(() => _identity),
-    }
-})
+const middlewares = [thunk]
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
+    middlewares
+)
 
 jest.mock(
     '../Table/Row',
@@ -38,11 +38,12 @@ jest.mock(
         </div>
     )
 )
+jest.mock('../../../../../services/shortcutManager/shortcutManager')
 
-describe('ViewTable::Table', () => {
+describe('<Table />', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
-
-    const minProps = {
+    const defaultState: Partial<RootState> = {}
+    const minProps: ComponentProps<typeof Table> = {
         view: fromJS({}),
         type: viewConfig.get('name'),
         fields: (viewConfig.get('fields') as List<any>).take(3) as List<any>,
@@ -52,87 +53,116 @@ describe('ViewTable::Table', () => {
         isLoading: () => false,
         navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
         fetchViewItems: jest.fn(),
-        getItemUrl: () => '',
+        getItemUrl: jest.fn(),
         onItemClick: () => undefined,
         ActionsComponent: null,
         selectedItemsIds: fromJS([]),
-        viewSelected: false,
-        toggleIdInPageSelection: jest.fn(),
-        toggleViewSelection: jest.fn(),
-        resetView: jest.fn(),
-        updatePageSelection: jest.fn(),
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        jest.resetAllMocks()
     })
 
     it('should display a view with no fields', () => {
-        const component = shallow(
-            <TableContainer {...minProps} fields={fromJS([])} />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table {...minProps} fields={fromJS([])} />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a default view', () => {
-        const component = shallow(<TableContainer {...minProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table {...minProps} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a default view with option selectable set to false', () => {
-        const component = shallow(
-            <TableContainer {...minProps} selectable={false} />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table {...minProps} selectable={false} />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a default view with no items', () => {
-        const component = shallow(
-            <TableContainer {...minProps} items={fromJS([])} />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table {...minProps} items={fromJS([])} />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a modified view with no items, should reset the view and fetch first items ', () => {
-        const component = shallow(
-            <TableContainer
-                {...minProps}
-                items={fromJS([])}
-                view={fromJS({dirty: true})}
-            />
+        const store = mockStore(defaultState)
+        const {getByText} = render(
+            <Provider store={store}>
+                <Table
+                    {...minProps}
+                    items={fromJS([])}
+                    view={fromJS({dirty: true})}
+                />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
 
-        const message = shallow(
-            (component.find(BlankState).props() as {message: ReactElement})
-                .message
-        )
-        message.find('a').simulate('click')
-        expect(minProps.resetView).toBeCalled()
-        expect(minProps.fetchViewItems).toBeCalledWith()
+        fireEvent.click(getByText('Reset view'))
+
+        expect(store.getActions()).toMatchSnapshot()
+        expect(minProps.fetchViewItems).toHaveBeenLastCalledWith()
     })
 
     it(
         'should select all items on the current page of the active view when there is a click on the "select all"' +
             ' checkbox',
         () => {
-            const component = shallow(<TableContainer {...minProps} />)
-            const selectAllButton = component.find('thead').find('td').first()
-            selectAllButton.simulate('click')
-            expect(minProps.updatePageSelection).toBeCalledWith(
-                fromJS([ticketFixtures.ticket.id])
+            const store = mockStore(defaultState)
+            const {getByRole} = render(
+                <Provider store={store}>
+                    <Table {...minProps} />
+                </Provider>
             )
+
+            fireEvent.click(getByRole('checkbox'))
+
+            expect(store.getActions()).toMatchSnapshot()
         }
     )
 
     it('should display all checkboxes as checked when all items are selected', () => {
-        const component = shallow(
-            <TableContainer
-                {...minProps}
-                selectedItemsIds={fromJS([ticketFixtures.ticket.id])}
-            />
+        const {getByRole} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table
+                    {...minProps}
+                    selectedItemsIds={fromJS([ticketFixtures.ticket.id])}
+                />
+            </Provider>
         )
-        const selectAllButton = component.find('thead').find('td')
-        expect(selectAllButton.find('input')).toBeChecked()
+
+        expect((getByRole('checkbox') as HTMLInputElement).checked).toBe(true)
+    })
+
+    it('should not getItemUrl on open item shortcut callback when no items', () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table
+                    {...minProps}
+                    items={fromJS([])}
+                    onItemClick={undefined}
+                />
+            </Provider>
+        )
+
+        const boundShortcuts = (shortcutManager.bind as jest.MockedFunction<
+            typeof shortcutManager.bind
+        >).mock.calls[0][1]
+        boundShortcuts!['OPEN_ITEM'].action!(createEvent.keyDown(container))
+
+        expect(minProps.getItemUrl).not.toBeCalled()
     })
 })

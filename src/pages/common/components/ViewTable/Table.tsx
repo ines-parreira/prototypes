@@ -10,7 +10,13 @@ import Navigation from '../Navigation/index.js'
 import {RootState} from '../../../../state/types'
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex, MoveIndexDirection} from '../../../common/utils/keyboard'
-import * as viewsActions from '../../../../state/views/actions'
+import {
+    toggleViewSelection,
+    toggleIdInSelectedItemsIds,
+    updateSelectedItemsIds,
+    resetView,
+    fetchViewItems,
+} from '../../../../state/views/actions'
 import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
 import {ViewImmutable, ViewNavDirection} from '../../../../state/views/types'
 import history from '../../../history'
@@ -34,14 +40,14 @@ type OwnProps = {
     ActionsComponent?: Maybe<React.ComponentType>
     getItemUrl?: (item: Map<any, any>) => string
     fetchViewItems: (
-        ...args: Parameters<typeof viewsActions.fetchViewItems>
+        ...args: Parameters<typeof fetchViewItems>
     ) => Promise<unknown> | void
     onItemClick?: (item: Map<any, any>) => void
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export const TableContainer = ({
+const TableContainer = ({
     ActionsComponent,
     config,
     fetchViewItems,
@@ -130,7 +136,9 @@ export const TableContainer = ({
                 action: (e) => {
                     e.preventDefault()
                     const item = items.get(rowCursor)
-
+                    if (!item) {
+                        return
+                    }
                     if (onItemClick) {
                         onItemClick(item)
                     } else if (getItemUrl) {
@@ -317,10 +325,10 @@ const connector = connect(
         }
     },
     {
-        toggleIdInPageSelection: viewsActions.toggleIdInSelectedItemsIds,
-        updatePageSelection: viewsActions.updateSelectedItemsIds,
-        toggleViewSelection: viewsActions.toggleViewSelection,
-        resetView: viewsActions.resetView,
+        toggleIdInPageSelection: toggleIdInSelectedItemsIds,
+        updatePageSelection: updateSelectedItemsIds,
+        toggleViewSelection,
+        resetView,
     }
 )
 
