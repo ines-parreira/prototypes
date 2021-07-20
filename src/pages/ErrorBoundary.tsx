@@ -3,6 +3,8 @@ import {datadogLogs} from '@datadog/browser-logs'
 import {Button, Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
+import {isProduction, isStaging} from '../utils/environment'
+
 import css from './ErrorBoundary.less'
 
 type Props = {
@@ -33,7 +35,7 @@ export class ErrorBoundary extends PureComponent<Props, State> {
             componentStack: string
         }
     ) {
-        if (window.PRODUCTION) {
+        if (isStaging() || isProduction()) {
             datadogLogs.logger.error(error.toString(), {
                 extra: errorInfo,
             })

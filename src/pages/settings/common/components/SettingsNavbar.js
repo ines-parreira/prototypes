@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 import {hasRole} from '../../../../utils.ts'
 import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user.ts'
 import type {UserRole} from '../../../../config/types/user'
+import {isProduction} from '../../../../utils/environment.ts'
 
 type Props = {
     currentUser: Object,
@@ -18,6 +19,7 @@ type CategoryLink = {
     requiredRole?: UserRole,
     text: string,
     to: string,
+    isHidden?: boolean,
 }
 
 type Category = {
@@ -69,13 +71,13 @@ export default class SettingsNavbar extends React.Component<Props> {
                         text: 'Integrations',
                         className: 'd-none d-md-block',
                     },
-                    // TODO: uncomment when help-center v1 released
-                    // {
-                    //     requiredRole: ADMIN_ROLE,
-                    //     to: 'help-center',
-                    //     text: 'Help Center',
-                    //     className: 'd-none d-md-block',
-                    // },
+                    {
+                        requiredRole: ADMIN_ROLE,
+                        to: 'help-center',
+                        text: 'Help Center',
+                        className: 'd-none d-md-block',
+                        isHidden: isProduction(),
+                    },
                     {
                         requiredRole: AGENT_ROLE,
                         to: 'manage-tags',
@@ -175,6 +177,7 @@ export default class SettingsNavbar extends React.Component<Props> {
             <div>
                 {categories.map(({name, icon, links}, index) => {
                     const displayedLinks = links
+                        .filter((link) => !link.isHidden)
                         .map(({to, text, requiredRole, className}) => {
                             // hide link if user hasn't the required role
                             if (

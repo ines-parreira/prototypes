@@ -1,6 +1,7 @@
 import _isUndefined from 'lodash/isUndefined'
 
 import {devLog} from '../../utils.ts'
+import {isDevelopment} from '../../utils/environment.ts'
 
 const analytics = window.analytics
 
@@ -15,7 +16,7 @@ export const logEvent = (event, props = {}) => {
     if (
         window.USER_IMPERSONATED ||
         _isUndefined(analytics) ||
-        window.DEVELOPMENT
+        isDevelopment()
     ) {
         return
     }

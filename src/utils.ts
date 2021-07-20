@@ -41,6 +41,7 @@ import {UserRole} from './config/types/user'
 import {getHighestRole} from './state/agents/helpers'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
+import {isProduction} from './utils/environment'
 
 type Message = {
     created_datetime: Date
@@ -67,7 +68,7 @@ export const isTabActive = () => activeTab
  * Console log info only on dev environment
  */
 export const devLog = (...args: Array<any>) => {
-    if (window.DEVELOPMENT || window.STAGING) {
+    if (!isProduction()) {
         // eslint-disable-next-line no-console
         console.log(...args)
     }

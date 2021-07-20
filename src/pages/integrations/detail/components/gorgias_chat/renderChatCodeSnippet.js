@@ -18,6 +18,8 @@ Simple HTML template
 
 import {fromJS} from 'immutable'
 
+import {getEnvironment} from '../../../../../utils/environment.ts'
+
 const startComment = '<!--Gorgias Chat Widget Start-->'
 const endComment = '<!--Gorgias Chat Widget End-->'
 
@@ -115,12 +117,7 @@ export function renderChatCodeSnippet({
         },
     }
 
-    let environment = 'development'
-    if (window.STAGING) {
-        environment = 'staging'
-    } else if (window.PRODUCTION) {
-        environment = 'production'
-    }
+    let environment = getEnvironment()
 
     const urlList = urls[environment]
     const endpoint = `https://${urlList.chatUrl}/applications/${chatAppId}`

@@ -20,6 +20,7 @@ import {initDatadogLogger} from './utils/datadog'
 import {Tag} from './models/tag/types'
 import {View} from './models/view/types'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from './constants/integration'
+import {isProduction, isStaging} from './utils/environment'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -75,7 +76,7 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
     return nextState as InitialRootState
 }
 
-if (window.PRODUCTION) {
+if (isStaging() || isProduction()) {
     initDatadogLogger(
         window.GORGIAS_STATE.currentAccount,
         window.GORGIAS_STATE.currentUser,
