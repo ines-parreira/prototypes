@@ -200,6 +200,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.last_received_message_datetime',
         },
         {
+            label: 'Unsnooze date',
+            text: 'ticket unsnooze date',
+            value: 'ticket.snooze_datetime',
+        },
+        {
             label: 'Spam',
             text: 'ticket spam',
             value: 'ticket.spam',
