@@ -215,7 +215,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                             placeholder={`Search ${
                                 config.get('plural') as string
                             }...`}
-                            searchDebounceTime={400}
+                            searchDebounceTime={1000}
                             location={`${
                                 (activeView.get('id') as unknown) as string
                             }${isSearch ? '(s)' : ''}`}

@@ -179,7 +179,7 @@ exports[`ViewTable::Header default view displays 1`] = `
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
     </div>
@@ -366,7 +366,7 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
     </div>
@@ -418,7 +418,7 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
     </div>
@@ -470,7 +470,7 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
     </div>
@@ -522,7 +522,7 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
     </div>
@@ -568,7 +568,7 @@ exports[`ViewTable::Header empty view 1`] = `
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
     </div>
@@ -595,7 +595,7 @@ exports[`ViewTable::Header search view 1`] = `
         onChange={[Function]}
         onFocus={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={400}
+        searchDebounceTime={1000}
         style={Object {}}
       />
       <Link
