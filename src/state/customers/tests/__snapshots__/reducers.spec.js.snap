@@ -229,7 +229,7 @@ Object {
   "customerHistory": Object {
     "events": Array [],
     "hasHistory": false,
-    "tickets": Object {},
+    "tickets": Array [],
     "triedLoading": true,
   },
   "items": Array [],

@@ -187,7 +187,7 @@ export default function reducer(
 
             if (!action.shouldDisplayHistoryOnNextPage) {
                 newState = newState
-                    .setIn(['customerHistory', 'tickets'], fromJS({}))
+                    .setIn(['customerHistory', 'tickets'], fromJS([]))
                     .setIn(['customerHistory', 'hasHistory'], false)
             }
 
