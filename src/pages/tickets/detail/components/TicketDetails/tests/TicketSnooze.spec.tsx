@@ -10,11 +10,12 @@ describe('<TicketSnooze/>', () => {
 
     describe('rendering', () => {
         it('should render an icon with a tooltip', async () => {
-            const {getByText, baseElement} = render(
+            const {container, getByText, baseElement} = render(
                 <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
             )
+            expect(container.firstChild).toMatchSnapshot()
             fireEvent.mouseOver(getByText('snooze'))
-            await waitFor(() => getByText(/Snooze/))
+            await waitFor(() => getByText(/2017/))
             expect(baseElement).toMatchSnapshot()
         })
 

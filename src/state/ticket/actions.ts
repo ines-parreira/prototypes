@@ -403,12 +403,12 @@ export const setSubject = (subject: string) => (
 }
 
 export const snoozeTicket = (
-    datetime: Moment,
+    datetime: Moment | string | null,
     callback: () => void = _noop
 ) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
     const data = {
         snooze_datetime: datetime,
-        status: 'closed',
+        status: datetime ? 'closed' : 'open',
     }
 
     dispatch({
@@ -420,12 +420,14 @@ export const snoozeTicket = (
     callback()
 
     return dispatch(ticketPartialUpdate(data)).then(() => {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'Ticket has been closed and snoozed',
-            })
-        )
+        if (datetime) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Ticket has been closed and snoozed',
+                })
+            )
+        }
     })
 }
 

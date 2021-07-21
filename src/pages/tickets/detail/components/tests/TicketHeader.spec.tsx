@@ -1,18 +1,17 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import {DropdownItem, DropdownToggle} from 'reactstrap'
+import {DropdownItem, DropdownToggle, DropdownMenu} from 'reactstrap'
 
-import {NOTIFICATION_STATUS} from '../../../../../state/notifications/constants.ts'
+import {NotificationStatus} from '../../../../../state/notifications/types'
 import {TicketHeaderContainer} from '../TicketHeader'
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
-global.Date = jest.fn(() => DATE_TO_USE)
-global.Date.toISOString = Date.toISOString
+jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 
 describe('<TicketHeader />', () => {
-    const minProps = {
+    const minProps = ({
         addTags: jest.fn(),
         className: '',
         clearTicket: jest.fn(),
@@ -28,9 +27,9 @@ describe('<TicketHeader />', () => {
         setTeam: jest.fn(),
         setTrashed: jest.fn(),
         snoozeTicket: jest.fn(),
-        ticketPartialUpdate: jest.fn().mockResolvedValue(),
+        ticketPartialUpdate: jest.fn().mockResolvedValue(undefined),
         timezone: 'America/Los_Angeles',
-    }
+    } as unknown) as ComponentProps<typeof TicketHeaderContainer>
 
     const commonTicketProps = {
         subject: 'foo',
@@ -124,9 +123,58 @@ describe('<TicketHeader />', () => {
             })
             expect(minProps.notify).toHaveBeenNthCalledWith(1, {
                 message: 'Ticket has been marked as unread',
-                status: NOTIFICATION_STATUS.SUCCESS,
+                status: NotificationStatus.Success,
             })
             done()
         })
+    })
+
+    it('should display the snooze icon when the snooze picker is opened', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                })}
+            />
+        )
+        component.find(DropdownToggle).simulate('click')
+        component.find(DropdownItem).at(0).simulate('click')
+
+        expect(component.find(DropdownToggle)).toMatchSnapshot()
+    })
+
+    it('should change snooze label and display the clear snooze action when ticket is snoozed', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                    snooze_datetime: '2021-07-08T12:31:51.827563+00:00',
+                })}
+            />
+        )
+
+        component.find(DropdownToggle).simulate('click')
+        expect(component.find(DropdownMenu)).toMatchSnapshot()
+    })
+
+    it('should un-snooze the ticket when clicking clear snooze action', () => {
+        const component = shallow(
+            <TicketHeaderContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    ...commonTicketProps,
+                    snooze_datetime: '2021-07-08T12:31:51.827563+00:00',
+                })}
+            />
+        )
+
+        component.find(DropdownToggle).simulate('click')
+        component.find(DropdownItem).at(1).simulate('click')
+        expect(minProps.snoozeTicket).toHaveBeenNthCalledWith(1, null)
     })
 })

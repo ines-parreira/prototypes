@@ -1,15 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TicketSnooze/> rendering should render an icon with a tooltip 1`] = `
+<div
+  class="wrapper"
+>
+  <i
+    class="icon material-icons icon"
+  >
+    snooze
+  </i>
+  <span
+    class="label"
+  >
+    Snoozed Ticket
+  </span>
+</div>
+`;
+
+exports[`<TicketSnooze/> rendering should render an icon with a tooltip 2`] = `
 <body>
   <div>
-    <div>
+    <div
+      class="wrapper"
+    >
       <i
-        class="icon material-icons"
-        id="ticket-header-snooze-icon"
+        class="icon material-icons icon"
       >
         snooze
       </i>
+      <span
+        class="label"
+      >
+        Snoozed Ticket
+      </span>
     </div>
   </div>
   <div>

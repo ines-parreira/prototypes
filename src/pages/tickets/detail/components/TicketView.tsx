@@ -34,7 +34,7 @@ import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel.js'
 import TicketReplyArea from './ReplyArea/TicketReplyArea.js'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons.js'
 import TicketBody from './TicketBody.js'
-import TicketHeader from './TicketHeader.js'
+import TicketHeader from './TicketHeader'
 import css from './TicketView.less'
 
 type StatusParams = [
@@ -45,7 +45,7 @@ type StatusParams = [
 ]
 
 type OwnProps = {
-    hideTicket: () => boolean
+    hideTicket: () => Promise<void>
     isTicketHidden: boolean
     submit: (...params: StatusParams) => any
     setStatus?: (status: string) => any
