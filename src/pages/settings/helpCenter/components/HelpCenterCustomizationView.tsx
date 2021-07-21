@@ -144,7 +144,10 @@ export const HelpCenterCustomizationView = () => {
                 await saveNavigationLinks(
                     client,
                     linksWithoutSocial,
-                    headerNavigation.links,
+                    headerNavigation.links.filter(
+                        (link) =>
+                            link.translation.label && link.translation.value
+                    ),
                     {
                         group: 'header',
                         helpcenterId: helpcenterId,
@@ -155,7 +158,10 @@ export const HelpCenterCustomizationView = () => {
                 await saveNavigationLinks(
                     client,
                     linksWithoutSocial,
-                    footerNavigation.links,
+                    footerNavigation.links.filter(
+                        (link) =>
+                            link.translation.label && link.translation.value
+                    ),
                     {
                         group: 'footer',
                         helpcenterId: helpcenterId,
