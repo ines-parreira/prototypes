@@ -11,7 +11,7 @@ import {parse} from 'query-string'
 import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
 
-import ReactSortable from '../../../../common/components/dragging/ReactSortable.js'
+import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils'
 import Video from '../../../../common/components/Video/Video'
 

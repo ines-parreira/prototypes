@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ReactSortable from './ReactSortable'
+import ReactSortable from './ReactSortable.ts'
 
 /**
  * A wrapper for draggable elements setting the draggable feature

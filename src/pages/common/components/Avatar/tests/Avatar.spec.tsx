@@ -1,9 +1,10 @@
 import React from 'react'
 import {shallow, mount} from 'enzyme'
 
-import {getAvatar} from '../utils.ts'
-import Avatar from '../Avatar.tsx'
-import {mockImageOnload} from '../../../../../tests/utils'
+import {mockImageOnload} from '../../../../../tests/utils.js'
+
+import {getAvatar} from '../utils'
+import Avatar from '../Avatar'
 
 describe('Avatar component', () => {
     mockImageOnload()

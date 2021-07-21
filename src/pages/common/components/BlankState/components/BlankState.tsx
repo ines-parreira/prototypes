@@ -3,7 +3,7 @@ import React, {ReactNode} from 'react'
 import emptyTicketList from '../../../../../../img/empty-ticket-list.svg'
 
 type Props = {
-    totalClosedTickets: Maybe<number>
+    totalClosedTickets: number | null
     message: ReactNode
 }
 

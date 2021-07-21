@@ -1,9 +1,9 @@
 import {renderHook} from 'react-hooks-testing-library'
-import {fromJS} from 'immutable'
+import {List, Map, fromJS} from 'immutable'
 
-import {useOptions} from '../hooks.ts'
+import {useOptions} from '../hooks'
 
-const getOptionId = (option) => option.get('id')
+const getOptionId = (option: Map<any, any>) => option.get('id') as string
 
 describe('useOptions', () => {
     const options = fromJS([
@@ -11,7 +11,7 @@ describe('useOptions', () => {
             id: 1,
             foo: 'bar',
         },
-    ])
+    ]) as List<any>
 
     it('should return options if no selected option', () => {
         const {result} = renderHook(() => {

@@ -2396,7 +2396,6 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
           watchDrop={true}
         >
           <ReactSortable
-            className=""
             onChange={[Function]}
             options={
               Object {
@@ -2420,9 +2419,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
             }
             tag="div"
           >
-            <div
-              className=""
-            >
+            <div>
               <InfobarWidget
                 editing={
                   Object {
@@ -2728,7 +2725,6 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                 watchDrop={true}
                               >
                                 <ReactSortable
-                                  className=""
                                   onChange={[Function]}
                                   options={
                                     Object {
@@ -2752,9 +2748,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                   }
                                   tag="div"
                                 >
-                                  <div
-                                    className=""
-                                  >
+                                  <div>
                                     <InfobarWidget
                                       editing={
                                         Object {
@@ -3183,7 +3177,6 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                   watchDrop={true}
                                                 >
                                                   <ReactSortable
-                                                    className=""
                                                     onChange={[Function]}
                                                     options={
                                                       Object {
@@ -3207,9 +3200,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                     }
                                                     tag="div"
                                                   >
-                                                    <div
-                                                      className=""
-                                                    >
+                                                    <div>
                                                       <InfobarWidget
                                                         editing={
                                                           Object {
@@ -3727,7 +3718,6 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                 watchDrop={true}
                               >
                                 <ReactSortable
-                                  className=""
                                   onChange={[Function]}
                                   options={
                                     Object {
@@ -3751,9 +3741,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                   }
                                   tag="div"
                                 >
-                                  <div
-                                    className=""
-                                  >
+                                  <div>
                                     <InfobarWidget
                                       editing={
                                         Object {
@@ -4050,7 +4038,6 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                   watchDrop={true}
                                                 >
                                                   <ReactSortable
-                                                    className=""
                                                     onChange={[Function]}
                                                     options={
                                                       Object {
@@ -4074,9 +4061,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                     }
                                                     tag="div"
                                                   >
-                                                    <div
-                                                      className=""
-                                                    >
+                                                    <div>
                                                       <InfobarWidget
                                                         editing={
                                                           Object {

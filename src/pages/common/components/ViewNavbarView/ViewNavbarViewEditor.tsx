@@ -12,7 +12,7 @@ import BooleanField from '../../forms/BooleanField.js'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {submitSetting} from '../../../../state/currentUser/actions'
 
-import ReactSortable from './../../../common/components/dragging/ReactSortable.js'
+import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import {sortViews} from './utils'
 
 import css from './ViewNavbarViewEditor.less'
@@ -114,10 +114,10 @@ class ViewNavbarViewEditor extends Component<Props, State> {
         segmentTracker.logEvent(segmentTracker.EVENTS.NAVBAR_VIEW_TOGGLED)
     }
 
-    _updateOrder = (orders: number[]) => {
+    _updateOrder = (orders: string[]) => {
         const newDisplayOrder: Record<string, number> = {}
 
-        orders.forEach((id: number, index: number) => {
+        orders.forEach((id: string, index: number) => {
             newDisplayOrder[id] = index
         })
 

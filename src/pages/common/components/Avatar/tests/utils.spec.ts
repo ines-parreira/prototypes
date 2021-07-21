@@ -1,5 +1,5 @@
-import {getAvatar, getAvatarFromCache} from '../utils.ts'
-import {mockImageOnload} from '../../../../../tests/utils'
+import {getAvatar, getAvatarFromCache} from '../utils'
+import {mockImageOnload} from '../../../../../tests/utils.js'
 
 describe('Avatar utils', () => {
     const email = 'alex@gorgias.io'
@@ -34,14 +34,16 @@ describe('Avatar utils', () => {
     })
 
     describe('get avatar from cache', () => {
-        it('should return `undefined` because there is no avatar cached for this email`', async () => {
-            expect(getAvatarFromCache('newEmail@example.com')).toBeUndefined()
+        it('should return `undefined` because there is no avatar cached for this email`', () => {
+            expect(
+                getAvatarFromCache('newEmail@example.com', 50)
+            ).toBeUndefined()
         })
 
         it('should return `null` from cache because there is no avatar for this email`', async () => {
             const invalidEmail = '12e12e12e@'
             await getAvatar({email: invalidEmail})
-            expect(getAvatarFromCache(invalidEmail)).toBeNull()
+            expect(getAvatarFromCache(invalidEmail, 50)).toBeNull()
         })
 
         it('should return picture from cache', () => {

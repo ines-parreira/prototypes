@@ -2,12 +2,12 @@ import React from 'react'
 import {render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
-import axios from 'axios'
+import axios, {CancelTokenSource} from 'axios'
 
-import {BlankStateContainer} from '../BlankStateContainer.tsx'
-import {user} from '../../../../../fixtures/users.ts'
-import client from '../../../../../models/api/resources.ts'
-import {TICKETS_CLOSED_PER_AGENT} from '../../../../../config/stats.tsx'
+import {BlankStateContainer} from '../BlankStateContainer'
+import {user} from '../../../../../fixtures/users'
+import client from '../../../../../models/api/resources'
+import {TICKETS_CLOSED_PER_AGENT} from '../../../../../config/stats'
 
 const mockServer = new MockAdapter(client)
 
@@ -44,10 +44,13 @@ describe('<BlankStateContainer />', () => {
     })
 
     it('should cancel fetch on unmount', () => {
-        jest.spyOn(axios.CancelToken, 'source').mockImplementation(() => ({
-            token: undefined,
-            cancel: mockedCancelRequest,
-        }))
+        jest.spyOn(axios.CancelToken, 'source').mockImplementation(
+            () =>
+                (({
+                    token: undefined,
+                    cancel: mockedCancelRequest,
+                } as unknown) as CancelTokenSource)
+        )
         const {unmount} = render(
             <BlankStateContainer currentUser={fromJS(user)} />
         )

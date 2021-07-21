@@ -89,9 +89,7 @@ exports[`<RulesView/> should not open a rule row because no ruleId is passed 1`]
     <table
       class="table table-hover"
     >
-      <tbody
-        class=""
-      >
+      <tbody>
         <tr>
           <td>
             Closed Row
@@ -208,9 +206,7 @@ exports[`<RulesView/> should open a rule row because a ruleId is passed and fetc
     <table
       class="table table-hover"
     >
-      <tbody
-        class=""
-      >
+      <tbody>
         <tr>
           <td>
             Closed Row

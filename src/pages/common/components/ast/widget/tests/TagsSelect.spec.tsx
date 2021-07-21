@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
@@ -7,28 +7,34 @@ import {TagsSelectContainer} from '../TagsSelect'
 describe('ast', () => {
     describe('widgets', () => {
         describe('TagsSelect', () => {
-            const tags = fromJS([
-                {
-                    name: 'billing',
-                },
-                {
-                    name: 'refund',
-                },
-                {
-                    name: 'question',
-                },
-            ])
-            const actions = {
-                create: jest.fn(),
+            const commonProps = {
+                tags: fromJS([
+                    {
+                        name: 'billing',
+                    },
+                    {
+                        name: 'refund',
+                    },
+                    {
+                        name: 'question',
+                    },
+                ]),
+                actions: {create: jest.fn()},
+                onChange: jest.fn(),
             }
+
+            beforeEach(() => {
+                jest.clearAllMocks()
+            })
 
             describe('MultiSelectField', () => {
                 it('should render array as value', () => {
                     const component = shallow(
                         <TagsSelectContainer
-                            tags={tags}
+                            {...((commonProps as unknown) as ComponentProps<
+                                typeof TagsSelectContainer
+                            >)}
                             value={['billing', 'bugs']}
-                            onChange={jest.fn()}
                         />
                     )
                     expect(component).toMatchSnapshot()
@@ -37,75 +43,76 @@ describe('ast', () => {
                 it('should render string as value', () => {
                     const component = shallow(
                         <TagsSelectContainer
-                            tags={tags}
+                            {...((commonProps as unknown) as ComponentProps<
+                                typeof TagsSelectContainer
+                            >)}
                             value={'billing, bugs'}
                             multiple={true}
-                            onChange={jest.fn()}
                         />
                     )
                     expect(component).toMatchSnapshot()
                 })
 
                 it('should handle change (array as value)', () => {
-                    const onChangeSpy = jest.fn()
-                    const component = shallow(
+                    const component = shallow<TagsSelectContainer>(
                         <TagsSelectContainer
-                            tags={tags}
+                            {...((commonProps as unknown) as ComponentProps<
+                                typeof TagsSelectContainer
+                            >)}
                             value={['billing', 'bugs']}
                             multiple={true}
-                            onChange={onChangeSpy}
-                            actions={actions}
                         />
                     ).instance()
 
                     component._onChange(['new', 'value'])
-                    expect(onChangeSpy.mock.calls[0]).toEqual([
+                    expect(commonProps.onChange.mock.calls[0]).toEqual([
                         ['new', 'value'],
                     ])
                 })
 
                 it('should handle change (string as value)', () => {
-                    const onChangeSpy = jest.fn()
-                    const component = shallow(
+                    const component = shallow<TagsSelectContainer>(
                         <TagsSelectContainer
-                            tags={tags}
+                            {...((commonProps as unknown) as ComponentProps<
+                                typeof TagsSelectContainer
+                            >)}
                             value={'billing, bugs'}
                             multiple={true}
-                            onChange={onChangeSpy}
-                            actions={actions}
                         />
                     ).instance()
 
                     component._onChange(['new', 'value'])
-                    expect(onChangeSpy.mock.calls[0]).toEqual(['new,value'])
+                    expect(commonProps.onChange.mock.calls[0]).toEqual([
+                        'new,value',
+                    ])
                 })
             })
 
             it('should render a SelectField', () => {
                 const component = shallow(
                     <TagsSelectContainer
+                        {...((commonProps as unknown) as ComponentProps<
+                            typeof TagsSelectContainer
+                        >)}
                         value={'billing'}
-                        tags={tags}
-                        onChange={jest.fn()}
                     />
                 )
                 expect(component).toMatchSnapshot()
             })
 
             it('should handle change', () => {
-                const onChange = jest.fn()
-                const component = shallow(
+                const component = shallow<TagsSelectContainer>(
                     <TagsSelectContainer
-                        tags={tags}
+                        {...((commonProps as unknown) as ComponentProps<
+                            typeof TagsSelectContainer
+                        >)}
                         value={'billing'}
                         multiple={false}
-                        onChange={onChange}
-                        actions={actions}
                     />
                 ).instance()
 
                 component._onChange(['new'])
-                expect(onChange.mock.calls[0]).toEqual([['new']])
+                expect(commonProps.onChange.mock.calls[0]).toEqual([['new']])
             })
         })
     })

@@ -31,12 +31,12 @@ import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 
 import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
-import TagsSelect from './widget/TagsSelect.js'
+import TagsSelect from './widget/TagsSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import MacroSelect from './widget/MacroSelect'
-import StatusSelect from './widget/StatusSelect.js'
+import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
 
 type Property = {
@@ -538,19 +538,15 @@ export class Widget extends Component<Props, State> {
             case 'status-select':
                 return (
                     <StatusSelect
-                        {...((widget as unknown) as ComponentProps<
-                            typeof StatusSelect
-                        >)}
+                        {...widget}
                         className={className}
-                        onChange={this._handleChange as any}
+                        onChange={this._handleChange}
                     />
                 )
             case 'tags-select':
                 return (
                     <TagsSelect
-                        {...((widget as unknown) as ComponentProps<
-                            typeof TagsSelect
-                        >)}
+                        {...widget}
                         className={className}
                         onChange={this._handleChange}
                         caseInsensitive={caseInsensitive}

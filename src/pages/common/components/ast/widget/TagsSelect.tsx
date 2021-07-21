@@ -1,34 +1,36 @@
-// @flow
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import _isString from 'lodash/isString'
-import {type Map} from 'immutable'
+import {List} from 'immutable'
 
-import MultiSelectField from '../../../forms/MultiSelectField.tsx'
-import SelectField from '../../../forms/SelectField'
-import * as TagsActions from '../../../../../state/tags/actions.ts'
-import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu.tsx'
+import MultiSelectField from '../../../forms/MultiSelectField'
+import SelectField from '../../../forms/SelectField/SelectField'
+import * as TagsActions from '../../../../../state/tags/actions'
+import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
+import {RootState} from '../../../../../state/types'
 
-type Props = {
-    tags: Map<any, any>,
-    value: ?string,
-    onChange: Function,
-    multiple: ?boolean,
-    className?: ?string,
-    actions: Object,
-    caseInsensitive: ?boolean,
+type OwnProps = {
+    value: string[] | string
+    onChange: (value: string[] | string) => any
+    multiple: boolean
+    className?: string
+    caseInsensitive: boolean
 }
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 export class TagsSelectContainer extends Component<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'value' | 'multiple'> = {
         value: '',
         multiple: false,
     }
 
     _onChange = (val: string[]) => {
         const {multiple, value, tags, actions} = this.props
-        const existingTagNames = tags.map((tag) => tag.get('name')).toJS()
+        const existingTagNames = tags
+            .map((tag) => tag!.get('name') as string)
+            .toJS() as string[]
 
         val.forEach((newTag) => {
             if (!existingTagNames.includes(newTag)) {
@@ -51,13 +53,12 @@ export class TagsSelectContainer extends Component<Props> {
         const options = tags
             .map((tag) => {
                 return {
-                    label: tag.get('name'),
-                    value: tag.get('name'),
+                    label: tag!.get('name'),
+                    value: tag!.get('name'),
                 }
             })
             .toJS()
-        // $TsFixMe remove any casting on migration
-        let values: any = value
+        let values: string | string[] = value
 
         if (multiple) {
             // this component is used to select tags for `add tags` and `set tags` actions
@@ -74,7 +75,7 @@ export class TagsSelectContainer extends Component<Props> {
                     plural="tags"
                     singular="tag"
                     style={style}
-                    values={values}
+                    values={values as string[]}
                     caseInsensitive={this.props.caseInsensitive}
                     className={className}
                     dropdownMenu={TagDropdownMenu}
@@ -86,30 +87,25 @@ export class TagsSelectContainer extends Component<Props> {
             <SelectField
                 allowCustomValue
                 options={options}
-                onChange={
-                    // $FlowFixMe
-                    this._onChange
-                }
+                // @ts-ignore to be fixed in https://linear.app/gorgias/issue/COR-1176/eforeach-is-not-a-function
+                onChange={this._onChange}
                 placeholder="Add a tag"
                 singular="tag"
                 style={style}
-                value={values}
+                value={values as string}
                 className={className}
             />
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        tags: state.tags.get('items'),
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
+const connector = connect(
+    (state: RootState) => ({
+        tags: state.tags.get('items') as List<Map<any, any>>,
+    }),
+    (dispatch) => ({
         actions: bindActionCreators(TagsActions, dispatch),
-    }
-}
+    })
+)
 
-export default connect(mapStateToProps, mapDispatchToProps)(TagsSelectContainer)
+export default connector(TagsSelectContainer)

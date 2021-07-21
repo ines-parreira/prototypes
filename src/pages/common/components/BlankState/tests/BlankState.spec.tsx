@@ -1,11 +1,13 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import BlankState from '../components/BlankState.tsx'
+import BlankState from '../components/BlankState'
 
 describe('BlankState component', () => {
-    it('default with undefined props', () => {
-        const component = shallow(<BlankState />)
+    it('default with undefined / null props', () => {
+        const component = shallow(
+            <BlankState message={undefined} totalClosedTickets={null} />
+        )
         expect(component.find('.blank-state-message')).toIncludeText(
             'Enjoy your day!'
         )
@@ -13,7 +15,10 @@ describe('BlankState component', () => {
 
     it('custom message', () => {
         const component = shallow(
-            <BlankState message={<div>Custom message</div>} />
+            <BlankState
+                message={<div>Custom message</div>}
+                totalClosedTickets={null}
+            />
         )
         expect(component).toContainReact(
             <div className="blank-state">
@@ -23,7 +28,9 @@ describe('BlankState component', () => {
     })
 
     it('more than 10 tickets closed', () => {
-        const component = shallow(<BlankState totalClosedTickets={11} />)
+        const component = shallow(
+            <BlankState message={undefined} totalClosedTickets={11} />
+        )
 
         expect(component.find('.blank-state-message')).toIncludeText(
             'No more tickets here!'
@@ -31,13 +38,17 @@ describe('BlankState component', () => {
     })
 
     it('more than 100 tickets closed', () => {
-        const component = shallow(<BlankState totalClosedTickets={101} />)
+        const component = shallow(
+            <BlankState message={undefined} totalClosedTickets={101} />
+        )
 
         expect(component.find('.blank-state-message')).toIncludeText('Done!')
     })
 
     it('more than 500 tickets closed', () => {
-        const component = shallow(<BlankState totalClosedTickets={501} />)
+        const component = shallow(
+            <BlankState message={undefined} totalClosedTickets={501} />
+        )
 
         expect(component.find('.blank-state-message')).toIncludeText(
             'All good!'
