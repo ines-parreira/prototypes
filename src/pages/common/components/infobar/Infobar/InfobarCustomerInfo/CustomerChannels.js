@@ -72,7 +72,7 @@ export class CustomerChannels extends React.Component<Props> {
             let props = null
             let addressComponent = null
             const channelType = channel.get('type')
-            const channelAddress = channel.get('address') || ''
+            let channelAddress = channel.get('address') || ''
 
             if (!channelAddress) {
                 return null
@@ -85,6 +85,9 @@ export class CustomerChannels extends React.Component<Props> {
                     }
                     break
                 case TWITTER_CUSTOMER_CHANNEL_TYPE:
+                    // Display the twitter handle instead of the address
+                    channelAddress = channel.getIn(['customer', 'name']) || ''
+
                     props = {
                         href: `https://twitter.com/${channelAddress}`,
                         target: '_blank',
