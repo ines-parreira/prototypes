@@ -13,7 +13,7 @@ import css from './BillingPlans.less'
 import BillingPlansComparison from './BillingPlansComparison'
 
 type Props = ConnectedProps<typeof connector> &
-    RouteComponentProps<any, any, {openedPlanPopover?: string}>
+    RouteComponentProps<any, any, {openedPlanModal?: string}>
 
 class BillingPlans extends React.Component<Props> {
     constructor(props: Props) {
@@ -54,7 +54,7 @@ class BillingPlans extends React.Component<Props> {
                     }
                 />
                 <BillingPlansComparison
-                    openedPlanPopover={state?.openedPlanPopover}
+                    openedPlanModal={state?.openedPlanModal}
                     onSubscriptionChanged={this.handleSubscriptionChanged}
                 />
                 <Container fluid className="page-container">

@@ -52,7 +52,7 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
                                     className="mt-3 mb-5 d-inline-block"
                                     label={`Upgrade to ${requiredPlanName}`}
                                     state={{
-                                        openedPlanPopover: requiredPlanName,
+                                        openedPlanModal: requiredPlanName,
                                     }}
                                 />
                                 {config.testimonial && (

@@ -1,31 +1,28 @@
-import React, {useState, useRef, ComponentProps} from 'react'
-import {Badge, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
+import React, {ComponentProps, useState} from 'react'
+import {Button} from 'reactstrap'
 import {useSelector} from 'react-redux'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import classNames from 'classnames'
 
-import {getCurrentPlan} from '../../../../state/billing/selectors'
+import {
+    getCurrentPlan,
+    hasLegacyPlan,
+} from '../../../../state/billing/selectors'
 import {RootState} from '../../../../state/types'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
 import {isFeatureEnabled} from '../../../../utils/account'
 
 import BillingPlanCard from './BillingPlanCard'
+import ChangePlanModal from './ChangePlanModal'
+import CurrentPlanBadge from './CurrentPlanBadge'
 import {PlanCardTheme} from './PlanCard'
-import css from './BillingComparisonPlanCard.less'
-
-const PLAN_NAME_TO_BADGE_COLOR: Partial<Record<string, string>> = {
-    Basic: 'primary',
-    Pro: 'info',
-    Advanced: 'success',
-    Custom: 'warning',
-}
 
 const countFeatures = (features: AccountFeatures) =>
     Object.values(features).filter(isFeatureEnabled).length
 
 type Props = {
     isUpdating: boolean
-    defaultIsPlanChangeConfirmationOpen?: boolean
+    defaultIsPlanChangeModalOpen?: boolean
     onPlanChange?: () => void
 } & Omit<
     ComponentProps<typeof BillingPlanCard>,
@@ -37,14 +34,13 @@ export default function BillingComparisonPlanCard({
     isCurrentPlan,
     isUpdating,
     onPlanChange,
-    defaultIsPlanChangeConfirmationOpen = false,
+    defaultIsPlanChangeModalOpen = false,
     ...billingCardProps
 }: Props) {
-    const [
-        isPlanChangeConfirmationOpen,
-        setIsPlanChangeConfirmationOpen,
-    ] = useState(defaultIsPlanChangeConfirmationOpen)
-    const buttonRef = useRef(null)
+    const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
+        defaultIsPlanChangeModalOpen
+    )
+    const isLegacyPlan = useSelector(hasLegacyPlan)
     const currentPlan = useSelector(getCurrentPlan)
     const currentAccount = useSelector(
         (state: RootState) => state.currentAccount
@@ -53,25 +49,77 @@ export default function BillingComparisonPlanCard({
         ['meta', 'has_legacy_features'],
         false
     )
+    const hasLessFeatures =
+        countFeatures(plan.features) <
+        countFeatures(
+            (currentPlan.get(
+                accountHasLegacyFeatures ? 'legacy_features' : 'features',
+                fromJS({})
+            ) as Map<any, any>).toJS()
+        )
     const isDowngrade =
         !isCurrentPlan &&
         !currentPlan.isEmpty() &&
-        countFeatures(plan.features) <
-            countFeatures(
-                (currentPlan.get(
-                    accountHasLegacyFeatures ? 'legacy_features' : 'features'
-                ) as Map<any, any>).toJS()
-            )
+        !isLegacyPlan &&
+        hasLessFeatures
+
     const canChoosePlan = !isCurrentPlan && !isUpdating
     const switchPlanButtonText = isCurrentPlan
         ? 'Current Plan'
         : `${
-              plan.name === currentPlan.get('name')
+              plan.name === currentPlan.get('name') ||
+              (isLegacyPlan && hasLessFeatures)
                   ? 'Switch'
                   : isDowngrade
                   ? 'Downgrade'
                   : 'Upgrade'
           } to ${plan.name} Plan`
+
+    const costMultiplier = 100
+
+    const description = isLegacyPlan ? (
+        <>
+            Note that upcoming product features will not be available in legacy
+            plans. Our new pricing structure includes up to{' '}
+            <b>150 integrations</b> for free starting on Basic. Any questions?{' '}
+            <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
+                <b>Get in touch!</b>
+            </a>
+        </>
+    ) : isDowngrade ? (
+        <>
+            Note that your number of tickets will decrease from{' '}
+            <b>{currentPlan.get('free_tickets')}</b> to{' '}
+            <b>{plan['free_tickets']}</b> and the extra ticket price will change
+            to{' '}
+            <b>
+                {plan['currencySign']}
+                {(plan['cost_per_ticket'] * costMultiplier).toFixed(2)} per
+                extra {costMultiplier} tickets
+            </b>
+            .
+        </>
+    ) : plan.id.includes('pro') ? (
+        <>
+            Our Pro plan was defined for growing businesses like yours! Use{' '}
+            <b>Chat Campaigns</b> & <b>Phone</b> to increase conversion or send{' '}
+            <b>Satisfaction Surveys</b> to monitor support quality. Any
+            questions?{' '}
+            <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
+                <b>Get in touch!</b>
+            </a>
+        </>
+    ) : (
+        <>
+            Our Advanced plan is suited for established stores: organise your
+            helpdesk with <b>View Sections</b>, add <b>more Phone lines</b> and
+            measure profits with <b>Revenue Statistics</b>. Questions?{' '}
+            <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
+                <b>Get in touch!</b>
+            </a>
+        </>
+    )
+
     return (
         <BillingPlanCard
             {...billingCardProps}
@@ -79,24 +127,12 @@ export default function BillingComparisonPlanCard({
             isCurrentPlan={isCurrentPlan}
             theme={isCurrentPlan ? PlanCardTheme.Grey : undefined}
             headerBadge={
-                isCurrentPlan && (
-                    <Badge
-                        className={css.currentPlanBadge}
-                        color={
-                            plan.id === 'enterprise'
-                                ? 'warning'
-                                : PLAN_NAME_TO_BADGE_COLOR[plan.name]
-                        }
-                    >
-                        CURRENT PLAN
-                    </Badge>
-                )
+                isCurrentPlan && <CurrentPlanBadge planName={plan.name} />
             }
             footer={
                 <>
                     <Button
                         aria-label={switchPlanButtonText}
-                        innerRef={buttonRef}
                         className={classNames({
                             'btn-loading': isUpdating,
                         })}
@@ -104,59 +140,40 @@ export default function BillingComparisonPlanCard({
                         disabled={!canChoosePlan}
                         onClick={() => {
                             if (canChoosePlan) {
-                                setIsPlanChangeConfirmationOpen(
-                                    !isPlanChangeConfirmationOpen
-                                )
+                                setIsPlanChangeModalOpen(!isPlanChangeModalOpen)
                             }
                         }}
                     >
                         {switchPlanButtonText}
                     </Button>
-                    {buttonRef.current && (
-                        <Popover
-                            placement="top"
-                            isOpen={isPlanChangeConfirmationOpen}
-                            target={buttonRef.current!}
-                            toggle={() =>
-                                setIsPlanChangeConfirmationOpen(
-                                    !isPlanChangeConfirmationOpen
-                                )
-                            }
-                            trigger="legacy"
-                        >
-                            <PopoverHeader>Are you sure?</PopoverHeader>
-                            <PopoverBody>
-                                <p>
-                                    Are you sure you want to choose the{' '}
-                                    {plan.name} plan?
-                                    {isDowngrade && (
-                                        <>
-                                            <b>
-                                                This plan does not include some
-                                                of the features included in your
-                                                existing plan.
-                                            </b>{' '}
-                                            You might want to keep your existing
-                                            plan to not have these features
-                                            deactivated.
-                                        </>
-                                    )}
-                                </p>
-
-                                <Button
-                                    aria-label="Confirm plan change"
-                                    type="button"
-                                    color="success"
-                                    onClick={() => {
-                                        onPlanChange?.()
-                                        setIsPlanChangeConfirmationOpen(false)
-                                    }}
-                                >
-                                    Confirm
-                                </Button>
-                            </PopoverBody>
-                        </Popover>
-                    )}
+                    <ChangePlanModal
+                        currentPlan={currentPlan}
+                        header={
+                            isLegacyPlan
+                                ? 'Switch to our updated plans'
+                                : isDowngrade
+                                ? 'Are you sure you want to switch plans?'
+                                : "We're happy to see you grow 👏"
+                        }
+                        isOpen={canChoosePlan && isPlanChangeModalOpen}
+                        isUpdating={isUpdating}
+                        onClose={() => {
+                            setIsPlanChangeModalOpen(false)
+                        }}
+                        onConfirm={() => {
+                            onPlanChange?.()
+                            setIsPlanChangeModalOpen(false)
+                        }}
+                        description={description}
+                        renderComparedPlan={({className, renderBody}) => (
+                            <BillingPlanCard
+                                plan={plan}
+                                className={className}
+                                renderBody={renderBody}
+                            />
+                        )}
+                        confirmLabel="Confirm"
+                    />
                 </>
             }
         />

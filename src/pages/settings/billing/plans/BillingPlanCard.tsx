@@ -19,13 +19,13 @@ const PLAN_THEMES: Partial<Record<string, PlanCardTheme>> = {
 
 type Props = {
     plan: PlanWithCurrencySign
-    isCurrentPlan: boolean
+    isCurrentPlan?: boolean
 } & Omit<ComponentProps<typeof PlanCard>, 'planName' | 'features' | 'price'>
 
 export default function BillingPlanCard({
     plan,
     theme,
-    isCurrentPlan,
+    isCurrentPlan = false,
     headerBadge,
     ...planCardProps
 }: Props) {

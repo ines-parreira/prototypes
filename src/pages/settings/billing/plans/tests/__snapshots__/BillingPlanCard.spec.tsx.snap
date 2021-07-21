@@ -45,7 +45,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
            
           <span
             class="billableTickets"
-            id="advanced-monthly-usd-2-billable-ticket-label"
+            id="billable-ticket-label-2"
           >
             billable tickets
           </span>
@@ -378,7 +378,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
            
           <span
             class="billableTickets"
-            id="basic-monthly-usd-2-billable-ticket-label"
+            id="billable-ticket-label-1"
           >
             billable tickets
           </span>
@@ -708,7 +708,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
            
           <span
             class="billableTickets"
-            id="custom-monthly-usd-2-billable-ticket-label"
+            id="billable-ticket-label-4"
           >
             billable tickets
           </span>
@@ -1354,7 +1354,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
            
           <span
             class="billableTickets"
-            id="standard-usd-1-billable-ticket-label"
+            id="billable-ticket-label-5"
           >
             billable tickets
           </span>
@@ -1684,7 +1684,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
            
           <span
             class="billableTickets"
-            id="pro-monthly-usd-2-billable-ticket-label"
+            id="billable-ticket-label-3"
           >
             billable tickets
           </span>
@@ -2037,7 +2037,7 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
            
           <span
             class="billableTickets"
-            id="basic-monthly-usd-2-billable-ticket-label"
+            id="billable-ticket-label-6"
           >
             billable tickets
           </span>

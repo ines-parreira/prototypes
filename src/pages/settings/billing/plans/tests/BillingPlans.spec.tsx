@@ -26,11 +26,11 @@ jest.mock('../../../../history')
 jest.mock(
     '../BillingPlansComparison',
     () => ({
-        openedPlanPopover,
+        openedPlanModal,
         onSubscriptionChanged,
     }: ComponentProps<typeof BillingPlansComparison>) => (
         <div>
-            BillingPlansComparison mock, openedPlanPopover: {openedPlanPopover}
+            BillingPlansComparison mock, openedPlanModal: {openedPlanModal}
             <button
                 value="Subscription changed"
                 data-testid="subscription-changed"
@@ -78,7 +78,7 @@ describe('<BillingPlans/>', () => {
 
     it('it should render the initially opened plan popover', () => {
         const history = createMemoryHistory({initialEntries: ['/']})
-        history.replace('/', {openedPlanPopover: 'Some plan'})
+        history.replace('/', {openedPlanModal: 'Some plan'})
         const {queryByText} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <BillingPlans />

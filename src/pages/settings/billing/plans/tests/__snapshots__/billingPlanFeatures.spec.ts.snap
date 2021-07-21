@@ -131,7 +131,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={3000}
-      id="advanced-monthly-usd-2"
     />,
   },
   Object {
@@ -265,7 +264,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={3000}
-      id="advanced-monthly-usd-2"
     />,
   },
   Object {
@@ -404,7 +402,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={350}
-      id="basic-monthly-usd-2"
     />,
   },
   Object {
@@ -538,7 +535,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={350}
-      id="basic-monthly-usd-2"
     />,
   },
   Object {
@@ -672,7 +668,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={2000}
-      id="custom-monthly-usd-2"
     />,
   },
   Object {
@@ -806,7 +801,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={2000}
-      id="custom-monthly-usd-2"
     />,
   },
   Object {
@@ -1191,7 +1185,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={2000}
-      id="pro-monthly-usd-2"
     />,
   },
   Object {
@@ -1330,7 +1323,6 @@ Array [
     />,
     "label": <BillableTicketsLabel
       freeTickets={2000}
-      id="pro-monthly-usd-2"
     />,
   },
   Object {

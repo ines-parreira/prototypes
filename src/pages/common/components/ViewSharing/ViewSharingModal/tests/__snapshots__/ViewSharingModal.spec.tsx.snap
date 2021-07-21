@@ -338,7 +338,7 @@ exports[`<ViewSharingModal/> render() should render the paywall modal informatio
       label="Upgrade to Advanced"
       state={
         Object {
-          "openedPlanPopover": "Advanced",
+          "openedPlanModal": "Advanced",
         }
       }
     />
