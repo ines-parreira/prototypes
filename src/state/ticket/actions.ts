@@ -760,6 +760,7 @@ export const _goToNextOrPrevTicket = (
                                 pathname: '/app/tickets/search',
                                 query,
                             } as any)
+                            return
                         }
 
                         const customerId = (fromJS(ticket) as Map<

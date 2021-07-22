@@ -635,6 +635,14 @@ Array [
 ]
 `;
 
+exports[`ticket actions goToNextTicket() should fetch next ticket and go to the search because there is no ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
 exports[`ticket actions goToNextTicket() should fetch next ticket and go to this ticket 1`] = `
 Array [
   Object {
@@ -948,6 +956,14 @@ Array [
 `;
 
 exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to the active view because there is no ticket 1`] = `
+Array [
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+]
+`;
+
+exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to the search because there is no ticket 1`] = `
 Array [
   Object {
     "type": "FETCH_TICKET_START",

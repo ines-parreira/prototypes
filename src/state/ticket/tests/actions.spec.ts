@@ -673,6 +673,23 @@ describe('ticket actions', () => {
             })
         })
 
+        it('should fetch next ticket and go to the search because there is no ticket', (done) => {
+            mockServer.onPut('/api/views/0/tickets/1/next').reply(200)
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {search: 'foo'}}),
+            })
+
+            void store.dispatch(actions.goToNextTicket(1)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(history.push).toHaveBeenCalledWith({
+                    pathname: '/app/tickets/search',
+                    query: {q: 'foo'},
+                })
+                done()
+            })
+        })
+
         it('should fetch next ticket and go to this ticket', (done) => {
             const ticket = {id: 2, customerId: 1, messages: []}
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
@@ -803,6 +820,23 @@ describe('ticket actions', () => {
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(history.push).toHaveBeenCalledWith('/app/tickets/1')
+                done()
+            })
+        })
+
+        it('should fetch previous ticket and go to the search because there is no ticket', (done) => {
+            mockServer.onPut('/api/views/0/tickets/2/prev').reply(200)
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({active: {search: 'foo'}}),
+            })
+
+            void store.dispatch(actions.goToPrevTicket(2)).then(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                expect(history.push).toHaveBeenCalledWith({
+                    pathname: '/app/tickets/search',
+                    query: {q: 'foo'},
+                })
                 done()
             })
         })
