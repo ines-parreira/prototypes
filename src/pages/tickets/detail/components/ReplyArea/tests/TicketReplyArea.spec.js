@@ -115,4 +115,13 @@ describe('<TicketReplyArea/>', () => {
             expect(component).toMatchSnapshot()
         })
     })
+
+    it('should not apply macro on enter key down when macro search results are empty', () => {
+        const component = mount(<TicketReplyArea {...minProps} />)
+
+        focusMacroInput(component)
+        component.find('input').simulate('keyDown', {key: 'Enter'})
+
+        expect(minProps.applyMacro).not.toHaveBeenCalled()
+    })
 })

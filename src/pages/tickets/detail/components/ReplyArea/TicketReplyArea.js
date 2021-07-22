@@ -312,7 +312,9 @@ export class TicketReplyArea extends React.Component<Props, State> {
             const macro = macros.find(
                 (macro) => macro.get('id') === this.state.selectedMacroId
             )
-            this._applyMacro(macro)
+            if (macro) {
+                this._applyMacro(macro)
+            }
         }
     }
 
