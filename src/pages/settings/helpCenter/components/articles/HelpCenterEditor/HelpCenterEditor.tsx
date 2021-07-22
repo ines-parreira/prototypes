@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react'
+import {isUndefined} from 'lodash'
+
 import {Editor} from 'react-draft-wysiwyg'
 import {EditorState, convertToRaw, convertFromRaw} from 'draft-js'
 
@@ -11,21 +13,34 @@ import {toolbarConfig} from './components/HelpCenterEditorToolbar.config'
 import css from './HelpCenterEditor.less'
 
 type Props = {
+    articleId?: number
     value?: string
     onChange: (value: string) => void
 }
 
-const HelpCenterEditor = ({value = '', onChange}: Props) => {
+const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
+    const transformValueToEditorState = React.useCallback(
+        (innerValue: string) => {
+            const rawData = markdownToDraft(innerValue)
+            const rawDataWithImagesBlocks = insertAtomicBlocksForImagesEntities(
+                rawData
+            )
+            const contentState = convertFromRaw(rawDataWithImagesBlocks)
+            const newEditorState = EditorState.createWithContent(contentState)
+            setEditorState(newEditorState)
+        },
+        []
+    )
+
     useEffect(() => {
-        const rawData = markdownToDraft(value)
-        const rawDataWithImagesBlocks = insertAtomicBlocksForImagesEntities(
-            rawData
-        )
-        const contentState = convertFromRaw(rawDataWithImagesBlocks)
-        const newEditorState = EditorState.createWithContent(contentState)
-        setEditorState(newEditorState)
-    }, [])
+        if (isUndefined(articleId)) {
+            setEditorState(EditorState.createEmpty())
+        } else {
+            transformValueToEditorState(value)
+        }
+    }, [articleId])
 
     const onEditorChange = (editorState: EditorState) => {
         setEditorState(editorState)
