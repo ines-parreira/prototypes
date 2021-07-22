@@ -1,339 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`] = `
-<div
-  class="plan blueTheme card"
->
-  <div
-    class="planHeader card-header"
-  >
-    <div
-      class="headerText"
-    >
-      <strong>
-        Basic
-      </strong>
-      <span
-        class="headerPrice"
-      >
-        $6000 / mo
-      </span>
-    </div>
-  </div>
-  <div
-    class="cardBody card-body"
-  >
-    <ul
-      class="featureList"
-    >
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add_check
-          </i>
-        </span>
-        <span>
-          <b>
-            350
-          </b>
-           
-          <span
-            class="billableTickets"
-            id="billable-ticket-label-4"
-          >
-            billable tickets
-          </span>
-           
-          included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            25.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            forum
-          </i>
-        </span>
-        <span>
-          Live chat
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            auto_awesome
-          </i>
-        </span>
-        <span>
-          Macros and rules
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            directions_walk
-          </i>
-        </span>
-        <span>
-          Self onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            supervised_user_circle
-          </i>
-        </span>
-        <span>
-          User permissions
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            chat
-          </i>
-        </span>
-        <span>
-          Chat campaigns
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
-          Phone
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            people_outline
-          </i>
-        </span>
-        <span>
-          Team Management
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            view_carousel
-          </i>
-        </span>
-        <span>
-          View sharing
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            attach_money
-          </i>
-        </span>
-        <span>
-          Revenue statistics
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            person_pin
-          </i>
-        </span>
-        <span>
-          Dedicated success manager
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            blur_on
-          </i>
-        </span>
-        <span>
-          Custom services
-        </span>
-      </li>
-    </ul>
-  </div>
-  <div
-    class="cardFooter card-footer"
-  >
-    <button
-      aria-label="Switch to Basic Plan"
-      class="btn btn-link"
-      type="button"
-    >
-      Switch to Basic Plan
-    </button>
-  </div>
-</div>
-`;
-
 exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
 <div
   class="plan greyTheme card"
@@ -386,7 +52,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
            
           <span
             class="billableTickets"
-            id="billable-ticket-label-2"
+            id="basic-monthly-usd-2-billable-ticket-label"
           >
             billable tickets
           </span>
@@ -676,6 +342,340 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
 </div>
 `;
 
+exports[`<BillingComparisonPlanCard /> should render not current plan 1`] = `
+<div
+  class="plan blueTheme card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div
+      class="headerText"
+    >
+      <strong>
+        Basic
+      </strong>
+      <span
+        class="headerPrice"
+      >
+        $6000 / mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add_check
+          </i>
+        </span>
+        <span>
+          <b>
+            350
+          </b>
+           
+          <span
+            class="billableTickets"
+            id="basic-monthly-usd-2-billable-ticket-label"
+          >
+            billable tickets
+          </span>
+           
+          included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add
+          </i>
+        </span>
+        <span>
+          <b>
+            $
+            25.00
+          </b>
+           
+          per 
+          100
+           extra tickets
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            code
+          </i>
+        </span>
+        <span>
+          <b>
+            200
+          </b>
+           integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up_alt
+          </i>
+        </span>
+        <span>
+          Social media integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            forum
+          </i>
+        </span>
+        <span>
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            auto_awesome
+          </i>
+        </span>
+        <span>
+          Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            directions_walk
+          </i>
+        </span>
+        <span>
+          Self onboarding
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            supervised_user_circle
+          </i>
+        </span>
+        <span>
+          User permissions
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            chat
+          </i>
+        </span>
+        <span>
+          Chat campaigns
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          Phone
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            people_outline
+          </i>
+        </span>
+        <span>
+          Team Management
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            view_carousel
+          </i>
+        </span>
+        <span>
+          View sharing
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            attach_money
+          </i>
+        </span>
+        <span>
+          Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            person_pin
+          </i>
+        </span>
+        <span>
+          Dedicated success manager
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            blur_on
+          </i>
+        </span>
+        <span>
+          Custom services
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="cardFooter card-footer"
+  >
+    <button
+      aria-label="Switch to Basic Plan"
+      class="btn btn-link"
+      type="button"
+    >
+      Switch to Basic Plan
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<BillingComparisonPlanCard /> should render spinner when plan is updating 1`] = `
 <div
   class="plan blueTheme card"
@@ -721,7 +721,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
            
           <span
             class="billableTickets"
-            id="billable-ticket-label-6"
+            id="basic-monthly-usd-2-billable-ticket-label"
           >
             billable tickets
           </span>
@@ -1006,6 +1006,101 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
       type="button"
     >
       Switch to Basic Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<BillingComparisonPlanCard /> should render the initial plan change confirmation 1`] = `
+<div
+  class="popover-inner"
+  role="tooltip"
+>
+  <h3
+    class="popover-header"
+  >
+    Are you sure?
+  </h3>
+  <div
+    class="popover-body"
+  >
+    <p>
+      Are you sure you want to choose the
+       
+      Basic
+       plan?
+    </p>
+    <button
+      aria-label="Confirm plan change"
+      class="btn btn-success"
+      type="button"
+    >
+      Confirm
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<BillingComparisonPlanCard /> should render the plan downgrade confirmation 1`] = `
+<div
+  class="popover-inner"
+  role="tooltip"
+>
+  <h3
+    class="popover-header"
+  >
+    Are you sure?
+  </h3>
+  <div
+    class="popover-body"
+  >
+    <p>
+      Are you sure you want to choose the
+       
+      Basic
+       plan?
+      <b>
+        This plan does not include some of the features included in your existing plan.
+      </b>
+       
+      You might want to keep your existing plan to not have these features deactivated.
+    </p>
+    <button
+      aria-label="Confirm plan change"
+      class="btn btn-success"
+      type="button"
+    >
+      Confirm
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<BillingComparisonPlanCard /> should render the plan upgrade confirmation 1`] = `
+<div
+  class="popover-inner"
+  role="tooltip"
+>
+  <h3
+    class="popover-header"
+  >
+    Are you sure?
+  </h3>
+  <div
+    class="popover-body"
+  >
+    <p>
+      Are you sure you want to choose the
+       
+      Pro
+       plan?
+    </p>
+    <button
+      aria-label="Confirm plan change"
+      class="btn btn-success"
+      type="button"
+    >
+      Confirm
     </button>
   </div>
 </div>

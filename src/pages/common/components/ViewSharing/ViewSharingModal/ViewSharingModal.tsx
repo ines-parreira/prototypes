@@ -161,7 +161,7 @@ export function ViewSharingModalContainer({
                         className="mb-3"
                         label={`Upgrade to ${requiredPlanName!}`}
                         state={{
-                            openedPlanModal: requiredPlanName,
+                            openedPlanPopover: requiredPlanName,
                         }}
                     />
                 </ModalBody>

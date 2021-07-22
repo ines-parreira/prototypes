@@ -11,6 +11,7 @@ import {
     makeIsAllowedToChangePlan,
     getPlans,
 } from '../../../../state/billing/selectors'
+import {openChat} from '../../../../utils'
 import {PlanInterval} from '../../../../models/billing/types'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
@@ -24,17 +25,18 @@ import SynchronizedScrollTopContainer from '../../../common/components/Synchroni
 
 import css from './BillingPlansComparison.less'
 import BillingComparisonPlanCard from './BillingComparisonPlanCard'
-import EnterpriseComparisonPlanCard from './EnterpriseComparisonPlanCard'
+import PlanCard, {PlanCardTheme} from './PlanCard'
+import {getEnterprisePlanCardFeatures} from './billingPlanFeatures'
 
 const PLAN_FEATURES_HEIGHT = 516
 
 type Props = {
-    openedPlanModal?: string
+    openedPlanPopover?: string
     onSubscriptionChanged: (prevSubscription: Map<any, any>) => void
 }
 
 export default function BillingPlansComparison({
-    openedPlanModal,
+    openedPlanPopover,
     onSubscriptionChanged,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -171,8 +173,9 @@ export default function BillingPlansComparison({
                                                 planId
                                             )
                                         }}
-                                        defaultIsPlanChangeModalOpen={
-                                            openedPlanModal === plan.get('name')
+                                        defaultIsPlanChangeConfirmationOpen={
+                                            openedPlanPopover ===
+                                            plan.get('name')
                                         }
                                     />,
                                 ]
@@ -180,12 +183,12 @@ export default function BillingPlansComparison({
                             .toList()}
                     </>
                     {!isCustomPlan && (
-                        <EnterpriseComparisonPlanCard
+                        <PlanCard
                             className="mt-4"
-                            isUpdating={isSubscriptionUpdating}
-                            defaultIsPlanChangeModalOpen={
-                                openedPlanModal === 'Enterprise'
-                            }
+                            planName="Enterprise"
+                            theme={PlanCardTheme.Gold}
+                            price="Custom price"
+                            features={getEnterprisePlanCardFeatures()}
                             renderBody={(features) => (
                                 <SynchronizedScrollTopContainer
                                     height={PLAN_FEATURES_HEIGHT}
@@ -193,6 +196,17 @@ export default function BillingPlansComparison({
                                     {features}
                                 </SynchronizedScrollTopContainer>
                             )}
+                            footer={
+                                <Button
+                                    aria-label="Contact us"
+                                    color="link"
+                                    onClick={(event) => {
+                                        openChat((event as unknown) as Event)
+                                    }}
+                                >
+                                    Contact us
+                                </Button>
+                            }
                         />
                     )}
                 </CardDeck>

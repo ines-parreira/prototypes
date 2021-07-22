@@ -1,26 +1,27 @@
 import React from 'react'
-import _uniqueId from 'lodash/uniqueId'
 
 import Tooltip from '../../../common/components/Tooltip'
 
 import css from './BillableTicketsLabel.less'
 
 type Props = {
+    id: string
     freeTickets: number
 }
 
-export default function BillableTicketsLabel({freeTickets}: Props) {
-    const id = _uniqueId('billable-ticket-label-')
-
+export default function BillableTicketsLabel({id, freeTickets}: Props) {
     return (
         <>
             <b>{freeTickets}</b>{' '}
-            <span id={id} className={css.billableTickets}>
+            <span
+                id={`${id}-billable-ticket-label`}
+                className={css.billableTickets}
+            >
                 billable tickets
             </span>{' '}
             included
             <Tooltip
-                target={id}
+                target={`${id}-billable-ticket-label`}
                 placement="top-start"
                 innerClassName={css.tooltip}
             >

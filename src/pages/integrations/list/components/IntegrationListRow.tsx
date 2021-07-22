@@ -68,7 +68,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                             hasInvertedColors
                             size="sm"
                             state={{
-                                openedPlanModal: integrationConfig.get(
+                                openedPlanPopover: integrationConfig.get(
                                     'requiredPlanName'
                                 ),
                             }}

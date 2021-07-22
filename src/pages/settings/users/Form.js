@@ -312,7 +312,7 @@ export default class Form extends Component<Props, State> {
                                     className="mt-3"
                                     label={`Upgrade to ${requiredPlanName}`}
                                     state={{
-                                        openedPlanModal: requiredPlanName,
+                                        openedPlanPopover: requiredPlanName,
                                     }}
                                 />
                             </div>

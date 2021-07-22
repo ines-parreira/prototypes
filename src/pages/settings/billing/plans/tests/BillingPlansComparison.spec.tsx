@@ -200,6 +200,16 @@ describe('<BillingPlansComparison />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should call openChat on contact us button click', () => {
+        const {getByRole} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingPlansComparison {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(getByRole('button', {name: 'Contact us'}))
+        expect(openChatSpy).toHaveBeenLastCalledWith(expect.any(Object))
+    })
+
     it('should display notification when not allowed to change plan on plan change', () => {
         makeIsAllowedToChangePlanSpy.mockImplementation(() => () => false)
         const store = mockStore(defaultState)
@@ -214,7 +224,7 @@ describe('<BillingPlansComparison />', () => {
                 name: `Upgrade to ${defaultPlans['pro-monthly']!.name} Plan`,
             })
         )
-        fireEvent.click(getByRole('button', {name: 'Confirm'}))
+        fireEvent.click(getByRole('button', {name: 'Confirm plan change'}))
 
         expect(notifyMock.mock.calls).toMatchSnapshot()
     })
@@ -232,7 +242,7 @@ describe('<BillingPlansComparison />', () => {
                 name: `Upgrade to ${defaultPlans['pro-monthly']!.name} Plan`,
             })
         )
-        fireEvent.click(getByRole('button', {name: 'Confirm'}))
+        fireEvent.click(getByRole('button', {name: 'Confirm plan change'}))
 
         expect(store.getActions()).toMatchSnapshot()
         expect(updateSubscriptionMock).toHaveBeenLastCalledWith({
@@ -260,7 +270,7 @@ describe('<BillingPlansComparison />', () => {
                 name: `Upgrade to ${defaultPlans['pro-monthly']!.name} Plan`,
             })
         )
-        fireEvent.click(getByRole('button', {name: 'Confirm'}))
+        fireEvent.click(getByRole('button', {name: 'Confirm plan change'}))
 
         expect(container.firstChild).toMatchSnapshot()
     })
