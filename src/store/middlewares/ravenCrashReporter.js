@@ -1,5 +1,7 @@
 import _isUndefined from 'lodash/isUndefined'
 
+import {reportError} from '../../utils/errors.ts'
+
 const Raven = window.Raven
 
 /**
@@ -20,8 +22,6 @@ const crashReporter = () => (next) => (action) => {
 
         return next(action)
     } catch (err) {
-        console.error('Reporting error to Sentry:', err)
-
         // Send the report
         // whole state is too big, can not be sent
         // state: store.getState()
@@ -36,7 +36,7 @@ const crashReporter = () => (next) => (action) => {
                 XRequestID: action.error.response.headers['x-request-id'],
             }
         }
-        Raven.captureException(err, {
+        reportError(err, {
             extra: action,
             tags: customTags,
         })

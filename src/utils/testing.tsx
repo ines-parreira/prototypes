@@ -71,3 +71,21 @@ export const createContextConsumer = <ContextValue extends unknown>(
     }
     return ContextConsumerMock
 }
+
+export const mockProductionEnvironment = () => {
+    window.DEVELOPMENT = false
+    window.STAGING = false
+    window.PRODUCTION = true
+}
+
+export const mockStagingEnvironment = () => {
+    window.DEVELOPMENT = false
+    window.STAGING = true
+    window.PRODUCTION = true
+}
+
+export const mockDevelopmentEnvironment = () => {
+    window.DEVELOPMENT = true
+    window.STAGING = false
+    window.PRODUCTION = false
+}

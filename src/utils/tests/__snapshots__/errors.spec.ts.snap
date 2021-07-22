@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`errors util reportError should only display error on the console in development environment 1`] = `
+Array [
+  Array [
+    [Error: Test error],
+  ],
+  Array [
+    "Error extra:",
+    Object {
+      "foo": "bar",
+    },
+  ],
+]
+`;
+
+exports[`errors util reportError should only report error to Sentry in production environment 1`] = `
+Array [
+  Array [
+    [Error: Test error],
+    Object {
+      "extra": Object {
+        "foo": "bar",
+      },
+    },
+  ],
+]
+`;
+
+exports[`errors util reportError should report error to Sentry and display error on the console in staging environment 1`] = `
+Array [
+  Array [
+    [Error: Test error],
+    Object {
+      "extra": Object {
+        "foo": "bar",
+      },
+    },
+  ],
+]
+`;
+
+exports[`errors util reportError should report error to Sentry and display error on the console in staging environment 2`] = `
+Array [
+  Array [
+    [Error: Test error],
+  ],
+  Array [
+    "Error extra:",
+    Object {
+      "foo": "bar",
+    },
+  ],
+]
+`;

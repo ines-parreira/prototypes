@@ -4,6 +4,7 @@ import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
 
 import {Plugin, PluginMethods} from '../types'
+import {reportError} from '../../../../../utils/errors'
 
 import {
     createPrediction,
@@ -107,8 +108,10 @@ const requestPrediction = (
             resetCurrentPrediction(text, predictionText)
         })
         .catch((err) => {
-            // ignore request cancel
-            if (axios.isCancel(err)) {
+            if (
+                axios.isCancel(err) ||
+                (axios.isAxiosError(err) && !err.response)
+            ) {
                 return
             }
 
@@ -256,7 +259,9 @@ const predictionPlugin = (config: {context: Map<any, any>}): Plugin => {
                 // and not in cache
                 !inCache(blockText)
             ) {
-                void requestPrediction(blockText, config.context, plugin)
+                void requestPrediction(blockText, config.context, plugin).catch(
+                    reportError
+                )
                 return newEditorState
             }
 

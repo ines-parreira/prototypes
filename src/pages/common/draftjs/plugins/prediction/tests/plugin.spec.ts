@@ -6,6 +6,9 @@ import axios from 'axios'
 import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
 import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
+import {reportError} from '../../../../../../utils/errors'
+
+jest.mock('../../../../../../utils/errors')
 
 const axiosMock = new AxiosMock(axios)
 
@@ -312,6 +315,53 @@ describe('prediction plugin', () => {
                 pluginMethods.getEditorState().getCurrentContent(),
                 "I'm sor"
             )
+        })
+
+        it.each<[string, () => void]>([
+            [
+                'network error',
+                () => {
+                    axiosMock.onPost(PREDICTION_URL).networkError()
+                },
+            ],
+            [
+                'timout error',
+                () => {
+                    axiosMock.onPost(PREDICTION_URL).timeout()
+                },
+            ],
+        ])('should not report %s', async (testName, testSetup) => {
+            testSetup()
+            const {
+                predictionPlugin,
+                pluginMethods,
+            } = createEmptyStatePredictionPlugin()
+            const state = DraftTestUtils.typeText(
+                pluginMethods.getEditorState(),
+                'Foo'
+            )
+
+            predictionPlugin.onChange?.(state, pluginMethods)
+            await flushPromises()
+
+            expect(reportError).not.toBeCalled()
+        })
+
+        it('should report prediction post errors', async () => {
+            axiosMock.onPost(PREDICTION_URL).reply(404)
+            const {
+                predictionPlugin,
+                pluginMethods,
+            } = createEmptyStatePredictionPlugin()
+            const state = DraftTestUtils.typeText(
+                pluginMethods.getEditorState(),
+                'Foo'
+            )
+
+            predictionPlugin.onChange?.(state, pluginMethods)
+            await flushPromises()
+
+            expect(reportError).toHaveBeenLastCalledWith(expect.any(Error))
         })
 
         describe('text paste', () => {

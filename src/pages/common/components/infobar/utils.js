@@ -40,11 +40,10 @@ import {
     SENTIMENT_TYPE_LOWER_BOUND,
     SENTIMENT_TYPE_UPPER_BOUND,
 } from '../../../../config.ts'
+import {reportError} from '../../../../utils/errors.ts'
 
 import css from './utils.less'
 import EditableListWidget from './Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget.tsx'
-
-const Raven = window.Raven
 
 /**
  * Check if is an array of objects (and no an array of string for example)
@@ -434,22 +433,13 @@ export function jsonToWidget(
 
         return response
     } catch (err) {
-        const message = 'Conversion of json to widgets failed'
-
-        console.error(message)
-
-        if (Raven) {
-            Raven.captureException(err, {
-                extra: {
-                    description: message,
-                    json: value,
-                    key,
-                },
-            })
-        } else {
-            console.error('Here are some details', value, key)
-        }
-
+        reportError(err, {
+            extra: {
+                description: 'Conversion of json to widgets failed',
+                json: value,
+                key,
+            },
+        })
         return {}
     }
 }
@@ -527,22 +517,12 @@ export function jsonToWidgets(
         // remove null widgets
         return _compact(response)
     } catch (err) {
-        const message = 'Conversion of json to infobar widgets template failed'
-
-        console.error(message)
-
-        if (Raven) {
-            Raven.captureException(err, {
-                extra: {
-                    description: message,
-                    json,
-                    context,
-                },
-            })
-        } else {
-            console.error('Here are some details', json, context)
-        }
-
+        reportError(err, {
+            description:
+                'Conversion of json to infobar widgets template failed',
+            json,
+            context,
+        })
         return defaultResponse
     }
 }

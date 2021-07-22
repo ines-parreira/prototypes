@@ -4,6 +4,7 @@ import {Button, Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
 import {isProduction, isStaging} from '../utils/environment'
+import {reportError} from '../utils/errors'
 
 import css from './ErrorBoundary.less'
 
@@ -39,15 +40,8 @@ export class ErrorBoundary extends PureComponent<Props, State> {
             datadogLogs.logger.error(error.toString(), {
                 extra: errorInfo,
             })
-
-            if (window.Raven) {
-                window.Raven.captureException(error, {
-                    extra: errorInfo,
-                })
-            }
-        } else {
-            console.error(error, errorInfo)
         }
+        reportError(error, {extra: errorInfo})
     }
 
     _onToggle = () => {
