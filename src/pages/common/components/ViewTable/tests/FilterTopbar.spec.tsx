@@ -1,12 +1,16 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, waitFor} from '@testing-library/react'
 
 import {FilterTopbarContainer} from '../FilterTopbar'
 import {view as viewFixture} from '../../../../../fixtures/views'
 import ConfirmButton from '../../ConfirmButton'
 import * as viewsConfig from '../../../../../config/views'
 import * as utils from '../../../../../utils'
+import {
+    SUBMIT_NEW_VIEW_ERROR,
+    SUBMIT_UPDATE_VIEW_ERROR,
+} from '../../../../../state/views/constants.js'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
@@ -18,6 +22,9 @@ const createViewWithFilters = (filters: string) =>
         filters_ast: utils.getAST(filters),
     }) as Map<any, any>
 
+const fetchViewItemsMock = jest.fn()
+const submitViewMock = jest.fn()
+const deleteViewMock = jest.fn()
 const minProps = ({
     agents: fromJS({}),
     teams: fromJS({}),
@@ -33,12 +40,12 @@ const minProps = ({
     updateFieldFilter: jest.fn(),
     type: 'ticket',
     isSearch: false,
-    fetchViewItems: jest.fn(),
+    fetchViewItems: fetchViewItemsMock,
     isUpdate: true,
     updateFieldFilterOperator: jest.fn(),
     resetView: jest.fn(),
-    submitView: jest.fn(),
-    deleteView: jest.fn(),
+    submitView: submitViewMock,
+    deleteView: deleteViewMock,
     activeViewIdSet: jest.fn(),
     viewCreated: jest.fn(),
     viewDeleted: jest.fn(),
@@ -92,15 +99,9 @@ beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
-    ;(minProps.fetchViewItems as jest.MockedFunction<
-        typeof minProps.fetchViewItems
-    >).mockResolvedValue(undefined)
-    ;(minProps.submitView as jest.MockedFunction<
-        typeof minProps.submitView
-    >).mockResolvedValue(viewFixture)
-    ;(minProps.deleteView as jest.MockedFunction<
-        typeof minProps.deleteView
-    >).mockResolvedValue(fromJS({...viewFixture, id: 8}))
+    fetchViewItemsMock.mockResolvedValue(undefined)
+    submitViewMock.mockResolvedValue(viewFixture)
+    deleteViewMock.mockResolvedValue(fromJS({...viewFixture, id: 8}))
 })
 
 afterEach(() => {
@@ -227,5 +228,59 @@ describe('<FilterTopbar/>', () => {
             )
             expect(minProps.fetchViewItems).not.toHaveBeenCalled()
         })
+    })
+
+    it('should not update the view and not set active view if update view request failed', async () => {
+        submitViewMock.mockResolvedValue({
+            type: SUBMIT_UPDATE_VIEW_ERROR,
+            error: {
+                message: 'Request failed with status code 403',
+                name: 'Error',
+            },
+            reason: 'Failed to submit view. Please try again',
+        })
+        const {getByText} = render(
+            <FilterTopbarContainer {...minProps} isDirty />
+        )
+
+        fireEvent.click(getByText('Update view'))
+        fireEvent.click(getByText('Confirm'))
+        await waitFor(() => {
+            expect(
+                (getByText('Update view') as HTMLButtonElement).disabled
+            ).toBe(false)
+        })
+
+        expect(minProps.viewUpdated).not.toHaveBeenCalled()
+        expect(minProps.activeViewIdSet).not.toHaveBeenCalled()
+    })
+
+    it('should not update the view and not set active view if create view request failed', async () => {
+        submitViewMock.mockResolvedValue({
+            type: SUBMIT_NEW_VIEW_ERROR,
+            error: {
+                message: 'Request failed with status code 403',
+                name: 'Error',
+            },
+            reason: 'Failed to submit view. Please try again',
+        })
+        const {getByText} = render(
+            <FilterTopbarContainer
+                {...minProps}
+                activeView={minProps.activeView.delete('id')}
+                isUpdate={false}
+                isDirty
+            />
+        )
+
+        fireEvent.click(getByText('Create view'))
+        await waitFor(() => {
+            expect(
+                (getByText('Create view') as HTMLButtonElement).disabled
+            ).toBe(false)
+        })
+
+        expect(minProps.viewCreated).not.toHaveBeenCalled()
+        expect(minProps.activeViewIdSet).not.toHaveBeenCalled()
     })
 })

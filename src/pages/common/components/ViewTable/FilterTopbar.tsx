@@ -37,6 +37,10 @@ import {
 } from '../../../../state/entities/views/actions'
 import {activeViewIdSet} from '../../../../state/ui/views/actions'
 import history from '../../../history'
+import {
+    SUBMIT_NEW_VIEW_ERROR,
+    SUBMIT_UPDATE_VIEW_ERROR,
+} from '../../../../state/views/constants.js'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
@@ -183,6 +187,13 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
             this.setState({
                 isSubmitting: false,
             })
+            if (
+                [SUBMIT_UPDATE_VIEW_ERROR, SUBMIT_NEW_VIEW_ERROR].includes(
+                    (resp as {type: string}).type
+                )
+            ) {
+                return
+            }
             if (view.get('id') == null) {
                 viewCreated(resp as View)
             } else {
