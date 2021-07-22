@@ -125,7 +125,7 @@ describe('Content', () => {
 
     it('should keep the quotation marks and incomplete tags', () => {
         const component = mount(<Content text='"text" <3' />)
-        expect(component.render().text()).toBe('"text" &lt;3')
+        expect(component.render().text()).toBe('"text" <3')
     })
 
     it('should ignore whitespace only body', () => {
@@ -138,18 +138,5 @@ describe('Content', () => {
             />
         )
         expect(component.render().text()).toBe('text')
-    })
-
-    it('should handle special characters < correctly', () => {
-        const component = mount(
-            <Content
-                text="text"
-                html="
-                <img /> <3 </div>
-                <div> </3 </div>
-                "
-            />
-        )
-        expect(component).toMatchSnapshot()
     })
 })

@@ -7,7 +7,6 @@ import {
     linkifyHtml,
     linkifyString,
     sanitizeHtmlDefault,
-    AllowedHTMLTags,
 } from '../../../../../utils/html'
 import Ellipsis from '../../../../common/components/Ellipsis'
 
@@ -29,19 +28,7 @@ export default class Content extends Component<Props, State> {
     }
 
     _getDisplayContent = (content: string, isHtml: boolean): string | null => {
-        // remove non escaped < character
-        let displayContent = content.replace(
-            /<(\/?)(\w+)/gi,
-            (match, closingSlash?: string, tagName?: string) => {
-                if (
-                    tagName &&
-                    !Object.values<string>(AllowedHTMLTags).includes(tagName)
-                ) {
-                    return `&lt;${closingSlash || ''}${tagName}`
-                }
-                return match
-            }
-        )
+        let displayContent = content
 
         displayContent = proxifyImages(displayContent, '1000x')
 
