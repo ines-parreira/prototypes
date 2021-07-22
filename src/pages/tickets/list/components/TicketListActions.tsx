@@ -83,7 +83,7 @@ export const TicketListActionsContainer = ({
     areFiltersValid,
     currentUser,
     isActiveViewTrashView,
-    searchTagsDebounceDelay = 300,
+    searchTagsDebounceDelay = 1000,
     tickets,
 }: Props) => {
     const [openDropdown, setOpenDropdown] = useState<ActionDropdown | null>(

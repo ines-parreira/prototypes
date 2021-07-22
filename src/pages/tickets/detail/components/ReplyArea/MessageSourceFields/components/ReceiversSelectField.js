@@ -58,7 +58,7 @@ class ReceiversSelectField extends React.Component {
             }
             callback(this._valueFromState(data))
         })
-    }, 200)
+    }, 1000)
 
     render() {
         const {sourceType, disabled, required, valueProp, value} = this.props

@@ -121,7 +121,7 @@ class FilterDropdown extends Component<Props, State> {
                 <Search
                     autoFocus
                     onChange={this.onSearch}
-                    searchDebounceTime={300}
+                    searchDebounceTime={1000}
                 />
             </DropdownItem>,
             <DropdownItem key="divider" divider />,

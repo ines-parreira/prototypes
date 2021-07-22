@@ -334,7 +334,7 @@ export const Infobar = ({
                         bindKey
                         onChange={onSearch}
                         style={{maxWidth: 'none'}}
-                        searchDebounceTime={200}
+                        searchDebounceTime={1000}
                         ref={searchRef}
                     />
                     <Button

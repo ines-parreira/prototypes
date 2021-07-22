@@ -62,7 +62,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
 
     _onInputChange = _debounce((input: string) => {
         void this._onSearch(input)
-    }, 300)
+    }, 1000)
 
     _onChange = (options: Option[]) => {
         this.props.onChange(options)

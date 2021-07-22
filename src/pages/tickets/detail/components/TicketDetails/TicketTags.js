@@ -125,7 +125,7 @@ export class TicketTags extends React.Component {
         })
     }
 
-    _queryResultsOnSearch = _debounce(this._queryResults, 300)
+    _queryResultsOnSearch = _debounce(this._queryResults, 1000)
 
     _handleSearchKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'ArrowDown' && this.tagRef.current) {
