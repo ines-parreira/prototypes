@@ -486,6 +486,98 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         url: 'https://docs.gorgias.com/sms-integration/txtfi',
         image: 'integrations/txtfi.png',
     },
+    {
+        title: 'Daasity',
+        description: 'DTC eCommerce Analytics Made Easy',
+        url: 'https://docs.gorgias.com/business-intelligence/daasity',
+        image: 'integrations/daasity.png',
+    },
+    {
+        title: 'Stonly',
+        description: 'Interactive step-by-step guides & troubleshooting',
+        url:
+            'https://stonly.com/kb/guide/en/how-to-launch-gorgias-chat-from-the-stonly-widget-aV3pDkR0KE/Steps/335165,335168',
+        image: 'integrations/stonly.png',
+    },
+    {
+        title: 'Wonderment',
+        description: 'Order tracking your customers will love',
+        url: 'https://www.wonderment.com/docs/gorgias-integration-setup',
+        image: 'integrations/wonderment.png',
+    },
+    {
+        title: 'AfterShip',
+        description: 'The #1 Shipment Tracking Platform',
+        url:
+            'https://support.aftership.com/en/article/integrate-gorgias-with-aftership-1rfy7rq/?bust=1623045781127',
+        image: 'integrations/aftership.png',
+    },
+    {
+        title: 'Opinew',
+        description: 'Import product reviews to your Shopify Store',
+        url:
+            'https://www.opinew.com/help-center/knowledge-base/how-to-integrate-with-gorgias/',
+        image: 'integrations/opinew.png',
+    },
+    {
+        title: 'EasyCall',
+        description: 'A web call center for modern businesses',
+        url:
+            'https://easycall.crisp.help/en/article/gorgias-easycall-integration-connect-your-call-center-to-your-ecommerce-crm-cjwrqb/',
+        image: 'integrations/easycall.png',
+    },
+    {
+        title: 'AnswerBase',
+        description: "Answers for your customers' biggest questions",
+        url:
+            'https://help.answerbase.com/Article/3590718/How-to-Integrate-Gorgias-with-Answerbase-on-Your-Ecommerce-Site',
+        image: 'integrations/answerbase.png',
+    },
+    {
+        title: 'Shopney',
+        description: 'Easily turn your Shopify store into an App',
+        url:
+            'https://support.shopney.co/en/articles/5096693-how-to-integrate-gorgias-with-your-shopney-mobile-app',
+        image: 'integrations/shopney.png',
+    },
+    {
+        title: 'ReturnLogic',
+        description: 'Return management software for scaling Shopify Brands',
+        url: 'https://docs.gorgias.com/returns-exchanges/return-logic',
+        image: 'integrations/returnlogic.png',
+    },
+    {
+        title: 'Ada',
+        description: 'AI Chatbot automation + ticketing support',
+        url: 'https://www.gorgias.com/apps/ada',
+        image: 'integrations/ada.png',
+    },
+    {
+        title: 'Gatsby',
+        description: 'Turn customers into influencers',
+        url:
+            'http://help.gatsby.ai/en/articles/5389708-connecting-gatsby-with-gorgias',
+        image: 'integrations/gatsby.png',
+    },
+    {
+        title: 'Okendo',
+        description: 'Marketing app for product reviews & UGC',
+        url: 'https://docs.gorgias.com/reward-and-loyalty/okendo',
+        image: 'integrations/okendo.png',
+    },
+    {
+        title: 'ReCart',
+        description: 'Facebook marketing bot platform',
+        url: 'https://docs.gorgias.com/messenger-bot-integrations/octane-ai',
+        image: 'integrations/recart.png',
+    },
+    {
+        title: 'Tone',
+        description: 'Grow revenue with the fastest 2-way SMS experience',
+        url:
+            'http://help.tonemessaging.com/knowledge/tone-x-gorgias-integration-setup',
+        image: 'integrations/tone.jpeg',
+    },
 ]
 
 // Import period for tickets
