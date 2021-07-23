@@ -947,6 +947,7 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
                 options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
             },
             {type: 'channels'},
+            {type: 'agents'},
             {type: 'period'},
         ],
         link: 'agents',
