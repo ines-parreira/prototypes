@@ -11,6 +11,7 @@ import {
 } from './utils'
 import {toolbarConfig} from './components/HelpCenterEditorToolbar.config'
 import css from './HelpCenterEditor.less'
+import './react-draft-wysiwyg.css'
 
 type Props = {
     articleId?: number
