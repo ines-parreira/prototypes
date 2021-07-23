@@ -377,7 +377,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
       className="d-flex"
     >
       <strong
-        className="mt-auto mb-auto ml-auto"
+        className="mt-auto mb-auto mr-auto"
       >
         <MoneyAmount
           amount="0.00"
@@ -621,7 +621,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
       className="d-flex"
     >
       <strong
-        className="mt-auto mb-auto ml-auto"
+        className="mt-auto mb-auto mr-auto"
       >
         <MoneyAmount
           amount="0.00"
@@ -736,7 +736,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
       className="d-flex"
     >
       <strong
-        className="mt-auto mb-auto ml-auto"
+        className="mt-auto mb-auto mr-auto"
       >
         <MoneyAmount
           amount="0.00"

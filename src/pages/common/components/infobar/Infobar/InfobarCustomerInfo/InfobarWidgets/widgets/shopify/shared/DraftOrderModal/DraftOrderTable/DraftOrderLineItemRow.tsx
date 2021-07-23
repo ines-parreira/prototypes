@@ -231,10 +231,7 @@ export class DraftOrderLineItemRow extends PureComponent<Props, State> {
             <td className={css.numberCol}>
                 <div className="d-flex">
                     <strong
-                        className={classnames(
-                            'mt-auto mb-auto',
-                            removable ? 'mr-auto' : 'ml-auto'
-                        )}
+                        className={classnames('mt-auto mb-auto', 'mr-auto')}
                     >
                         <MoneyAmount
                             renderIfZero
