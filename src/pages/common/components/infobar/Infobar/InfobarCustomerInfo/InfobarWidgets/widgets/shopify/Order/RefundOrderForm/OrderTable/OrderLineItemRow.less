@@ -41,6 +41,7 @@
     .quantityContainer {
         display: inline-block;
         position: relative;
+        width: 70px;
         z-index: 4;
     }
 
@@ -48,13 +49,15 @@
         width: 70px;
         padding-right: 2rem;
         z-index: 4;
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
     }
 
     .quantityMax {
         position: absolute;
         top: 0;
         height: 100%;
-        padding: 0.36rem 0.75rem;
+        padding: 0.44rem 0.75rem;
         color: #95a7b7;
         right: 0;
     }
@@ -66,26 +69,25 @@
 
     .quantityBtn {
         height: 50%;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-left: 0 !important;
-        font-size: 0.5rem;
+        font-size: 0.5rem !important;
         z-index: 0;
-
+        margin-left: 0 !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
         &:focus {
             z-index: 5 !important;
         }
     }
 
     .quantityBtnUp {
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
         border-bottom-right-radius: 0;
+        border-top-right-radius: 3px !important;
     }
 
     .quantityBtnDown {
-        border-top: 0;
-        border-top-right-radius: 0;
-        padding-top: 1px;
+        border-top: 0 !important;
+        border-top-right-radius: 0 !important;
     }
 
     .times {
