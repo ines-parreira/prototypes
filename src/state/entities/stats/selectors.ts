@@ -1,8 +1,9 @@
 import {createSelector} from 'reselect'
-import {Map} from 'immutable'
 
 import {Stat, OneDimensionalChart} from '../../../models/stat/types'
-import {stats as statsConfig} from '../../../config/stats'
+import {StatConfig, stats as statsConfig} from '../../../config/stats'
+import {toJS} from '../../../utils'
+
 import {RootState} from '../../types'
 
 import {StatsState} from './types'
@@ -11,14 +12,7 @@ export const getStatDataByName = (statName: string) =>
     createSelector<RootState, Stat | undefined, StatsState>(
         (state) => state.entities.stats,
         (statsState) => {
-            const config = (statsConfig.get(statName) as Map<
-                any,
-                any
-            >).toJS() as {
-                style: string
-                api_resource_name?: string
-                metrics: {api_resource_name: string}[]
-            }
+            const config = toJS<StatConfig>(statsConfig.get(statName))
 
             /**
              * When requesting key-metrics charts we can either ask for each resource independently
@@ -26,7 +20,7 @@ export const getStatDataByName = (statName: string) =>
              * into a single chart.
              */
             if (config.style === 'key-metrics' && !config.api_resource_name) {
-                return config.metrics.reduce(
+                return config.metrics!.reduce(
                     (acc, metric) => {
                         const stat =
                             statsState[

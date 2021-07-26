@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactElement, ReactNode, ReactText} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
@@ -10,7 +10,7 @@ import {formatDuration} from '../pages/stats/common/utils.js'
 import {TagLabel} from '../pages/common/utils/labels'
 import {IntegrationType} from '../models/integration/types'
 import {IntentName} from '../models/intent/types'
-import {humanizeString, lightenDarkenColor} from '../utils'
+import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -187,26 +187,68 @@ const defaultYAxeGridLines = {
     borderDash: [2, 4],
 }
 
+export type StatConfigCellCallbackData = {
+    line: List<any>
+    value: ReactText
+    lineIndex: number
+    metricIndex: number
+    axis: {
+        name: string
+        type: string
+    }
+}
+
+export type StatConfigCellCallbackContext = {
+    tagColors?: Map<any, any> | null
+}
+
+export type StatConfigCallbacks<T extends ReactNode = ReactNode> = {
+    cell: (
+        data: StatConfigCellCallbackData,
+        context: StatConfigCellCallbackContext
+    ) => T
+}
+
+export type StatConfig = {
+    helpText?: string
+    style: string
+    downloadable?: boolean
+    callbacks?: StatConfigCallbacks
+    lines?: Record<string, unknown>
+    options?: (value: any) => Record<string, unknown>
+    metrics?: Record<string, string | number>[]
+    api_resource_name?: string
+}
+
+export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>
+
 // configuration for each stat
-export const stats: Map<any, any> = fromJS({
+export const stats = toImmutable<
+    Map<string, StatMap>,
+    Record<string, StatConfig>
+>({
     [MESSAGES_SENT_PER_MACRO]: {
         helpText: 'Number of messages sent by an agent or a rule per macro',
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: (line: any, val: any) => {
-                if (_isString(val) && val.toLowerCase() === 'without macro') {
+            cell: ({value}) => {
+                if (
+                    _isString(value) &&
+                    value.toLowerCase() === 'without macro'
+                ) {
                     return (
                         <i>
-                            <b>{val}</b>
+                            <b>{value}</b>
                         </i>
                     )
                 }
 
-                //eslint-disable-next-line  @typescript-eslint/no-unsafe-return
-                return val
+                return value
             },
-        },
+        } as StatConfigCallbacks<
+            ReactElement<JSX.IntrinsicElements['i']> | ReactText
+        >,
     },
     [TICKETS_CREATED_PER_CHANNEL]: {
         helpText: 'Number of tickets created per channel',
@@ -319,57 +361,53 @@ export const stats: Map<any, any> = fromJS({
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: (line: any, val: any) => {
-                if (_isString(val) && val.toLowerCase() === 'unassigned') {
+            cell: ({value}) => {
+                if (_isString(value) && value.toLowerCase() === 'unassigned') {
                     return (
                         <i>
-                            <b>{val}</b>
+                            <b>{value}</b>
                         </i>
                     )
                 }
 
-                //eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                return val
+                return value
             },
-        },
+        } as StatConfigCallbacks<JSX.IntrinsicElements['i'] | ReactText>,
     },
     [TICKETS_PER_TAG]: {
         helpText: 'Number of tickets created per tag',
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: (
-                line: List<any>,
-                val: any,
-                {tagColors}: {tagColors: Map<any, any>}
-            ) => {
-                const tagName = line.first()
+            cell: ({line, value}: StatConfigCellCallbackData, {tagColors}) => {
+                const tagName = line.first() as Map<any, any>
 
                 // current cell does not contain a tag name
-                if (tagName !== val) {
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                    return val
+                if (tagName.get('value') !== value) {
+                    return value
                 }
 
-                if ((tagName as string).toLowerCase() === 'untagged') {
+                if (
+                    (tagName.get('value') as string).toLowerCase() ===
+                    'untagged'
+                ) {
                     return (
                         <i>
-                            <b>{val}</b>
+                            <b>{value}</b>
                         </i>
                     )
                 }
 
                 if (!tagColors) {
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                    return val
+                    return value
                 }
                 return (
-                    <TagLabel decoration={tagColors.get(tagName)}>
-                        {tagName}
+                    <TagLabel decoration={tagColors.get(tagName.get('value'))}>
+                        {tagName.get('value')}
                     </TagLabel>
                 )
             },
-        },
+        } as StatConfigCallbacks,
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
         helpText: 'Number of tickets closed per assigned agent, per day',

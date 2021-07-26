@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
-import {Map} from 'immutable'
 
-import {stats as statsConfig} from '../../../config/stats'
+import {StatConfig, stats as statsConfig} from '../../../config/stats'
+import {toJS} from '../../../utils'
 import {RootState} from '../../types'
 
 import {StatsState} from './types'
@@ -14,14 +14,7 @@ export const getFetchingStatusByName = (statName: string) =>
     >(
         (state) => state.ui.stats,
         (stats) => {
-            const config = (statsConfig.get(statName) as Map<
-                any,
-                any
-            >).toJS() as {
-                style: string
-                api_resource_name?: string
-                metrics: {api_resource_name: string}[]
-            }
+            const config = toJS<StatConfig>(statsConfig.get(statName))
 
             /**
              * When requesting key-metrics charts we can either ask for each resource independently
@@ -29,7 +22,7 @@ export const getFetchingStatusByName = (statName: string) =>
              * in case they are fetched separately.
              */
             if (config.style === 'key-metrics' && !config.api_resource_name) {
-                return config.metrics.reduce((acc, metric) => {
+                return config.metrics!.reduce((acc, metric) => {
                     acc[metric.api_resource_name] = !!stats.fetchingMap[
                         `${statName}/${metric.api_resource_name}`
                     ]

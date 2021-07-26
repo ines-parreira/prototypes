@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
 import LineStat from '../LineStat'
 import {
@@ -37,10 +37,7 @@ const barStat = {
         start_datetime: '2017-09-05 00:00:00',
         end_datetime: '2017-09-05 23:59:59',
     }),
-    config: statsConfig.find((config, key) => key === RESOLUTION_TIME) as Map<
-        any,
-        any
-    >,
+    config: statsConfig.find((config, key) => key === RESOLUTION_TIME),
 }
 
 describe('LineStat', () => {

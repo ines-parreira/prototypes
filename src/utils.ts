@@ -512,8 +512,8 @@ export const isImmutable = (value: any): boolean =>
 /**
  * Return a passed object as immutable
  */
-export const toImmutable = <T>(
-    object: Record<string, unknown> | Iterable<any, any> | unknown[]
+export const toImmutable = <T, U = Record<string, unknown>>(
+    object: U | Iterable<any, any> | unknown[]
 ) => (isImmutable(object) ? object : fromJS(object)) as T
 
 /**

@@ -1,5 +1,5 @@
 import {Map, List} from 'immutable'
-import React, {Component, ReactNode} from 'react'
+import React, {Component, ReactText} from 'react'
 import moment from 'moment'
 import _isFunction from 'lodash/isFunction'
 import _truncate from 'lodash/truncate'
@@ -12,6 +12,8 @@ import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
+    StatConfigCallbacks,
+    StatMap,
     TICKET_MAX_SUBJECT_LENGTH,
 } from '../../../../../../config/stats'
 import {comparedPeriodString, formatCurrency} from '../../../utils.js'
@@ -22,7 +24,7 @@ import css from './TableStat.less'
 
 type OwnProps = {
     data: Map<any, any>
-    config: Map<any, any>
+    config: StatMap
     meta: Map<any, any>
     name?: string
     context: {
@@ -35,18 +37,29 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
     _renderCell = (
         line: List<any>,
         metric: Map<any, any>,
-        type: string,
-        index: number
+        lineIndex: number,
+        metricIndex: number
     ) => {
-        const {meta, config, context} = this.props
+        const {meta, config, context, data} = this.props
+        const axis = data.getIn(['axes', 'x', metricIndex]) as Map<any, any>
+        const type = axis.get('type')
+        const callbackData = {
+            line,
+            value: metric.get('value'),
+            lineIndex,
+            metricIndex,
+            axis: axis.toJS(),
+        }
+        const callbackContext = {
+            tagColors: context.tagColors,
+        }
 
-        let callback = config.getIn(['callbacks', 'cell']) as (
-            line: List<any>,
-            val: string | number,
-            context?: OwnProps['context']
-        ) => string | number | ReactNode
+        let callback = config.getIn([
+            'callbacks',
+            'cell',
+        ]) as StatConfigCallbacks['cell']
         if (!_isFunction(callback)) {
-            callback = (line: List<any>, val: string | number) => val
+            callback = ({value}) => value
         }
 
         switch (type) {
@@ -63,19 +76,15 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     previousEndDatetime
                 )
 
-                const id = `difference-${index}`
+                const id = `difference-${lineIndex}`
 
                 return (
                     <span>
                         <span id={id}>
                             <StatPercentageDiff
-                                label={
-                                    callback(
-                                        line,
-                                        metric.get('value'),
-                                        context
-                                    ) as string | number
-                                }
+                                label={(callback as StatConfigCallbacks<
+                                    ReactText
+                                >['cell'])(callbackData, callbackContext)}
                                 percentage={metric.get('value')}
                             />
                         </span>
@@ -97,9 +106,11 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
             }
             case 'percent': {
                 return callback(
-                    line,
-                    `${metric.get('value') as string}%`,
-                    context
+                    {
+                        ...callbackData,
+                        value: `${metric.get('value') as number}%`,
+                    },
+                    callbackContext
                 )
             }
             case 'date': {
@@ -149,7 +160,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                 )
             }
             default:
-                return callback(line, metric.get('value'), context)
+                return callback(callbackData, callbackContext)
         }
     }
 
@@ -205,8 +216,8 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                                                 {this._renderCell(
                                                     line!,
                                                     metric!,
-                                                    type,
-                                                    lineIdx!
+                                                    lineIdx!,
+                                                    metricIdx!
                                                 )}
                                             </span>
                                         </td>

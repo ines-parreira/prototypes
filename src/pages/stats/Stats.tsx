@@ -65,7 +65,7 @@ export class StatsContainer extends React.Component<Props> {
             fetchStatEnded,
             fetchStatStarted,
         } = this.props
-        const statConfig = statsConfig.get(statName) as Map<any, any>
+        const statConfig = statsConfig.get(statName)
         let resourceNames = fromJS([statName]) as List<any>
         if (statConfig.get('style') === 'key-metrics') {
             // key metrics can be fetched separately or all together.
@@ -142,10 +142,7 @@ export class StatsContainer extends React.Component<Props> {
             <Container fluid style={{padding: 0}}>
                 {(viewConfig.get('stats') as List<any>).map(
                     (statName: string, idx?: number) => {
-                        const statConfig = statsConfig.get(statName) as Map<
-                            any,
-                            any
-                        >
+                        const statConfig = statsConfig.get(statName)
                         let padding = '30px'
                         // First key metrics statistics are stuck to the top
                         if (

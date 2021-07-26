@@ -106,7 +106,7 @@ export class StatContainer extends Component<Props, State> {
             return null
         }
         const context = {tagColors}
-        const config = statsConfig.get(name) as Map<any, any>
+        const config = statsConfig.get(name)
         const statStyle = config.get('style')
         const helpText = config.get('helpText')
         // approximate height of a chart
