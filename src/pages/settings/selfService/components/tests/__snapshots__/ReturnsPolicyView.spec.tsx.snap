@@ -143,6 +143,15 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
                 >
                   day(s) ago
                 </div>
+                <div
+                  class="deleteButton"
+                >
+                  <i
+                    class="material-icons red mr-1"
+                  >
+                    clear
+                  </i>
+                </div>
               </div>
               <button
                 class="mr-2 btn btn-primary disabled"

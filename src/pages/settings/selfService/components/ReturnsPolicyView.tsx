@@ -67,6 +67,7 @@ export const ReturnsPolicyView = ({
         condition: '',
     })
 
+    const [showDeleteButton, setShowDeleteButton] = useState(true)
     const [showLessThan, setShowLessThan] = useState(false)
     useEffect(() => {
         const eligibilityFilter:
@@ -87,10 +88,15 @@ export const ReturnsPolicyView = ({
             value: (eligibilityFilter?.value as string) || '1',
             condition: eligibilityFilter?.key || '',
         })
-    }, [configuration])
+        setShowDeleteButton(Boolean(eligibilityFilter?.key || ''))
+    }, [configuration, configuration?.return_order_policy.eligibilities])
 
     useEffect(() => {
-        setShowLessThan(Boolean(eligibilityWindowCondition))
+        setShowLessThan(
+            Boolean(
+                eligibilityWindowCondition !== '' && eligibilityWindowCondition
+            )
+        )
     }, [eligibilityWindowCondition])
 
     useEffect(() => {
@@ -108,6 +114,11 @@ export const ReturnsPolicyView = ({
         setEligibilityWindowCondition(storedEligibility.condition)
     }
 
+    const onDelete = () => {
+        setEligibilityWindowCondition('')
+        setShowDeleteButton(false)
+    }
+
     const onSubmit = (event: FormEvent) => {
         event.preventDefault()
         if (configuration === undefined) {
@@ -121,28 +132,28 @@ export const ReturnsPolicyView = ({
             operator: FilterOperatorEnum.LESS_THAN,
         } as SelfServiceConfigurationFilter
 
-        const orderStatusEligibilityIndex = configuration.return_order_policy?.eligibilities?.findIndex(
-            (eligibility: SelfServiceConfigurationFilter) =>
-                [
-                    FilterKeyEnum.ORDER_CREATED_AT,
-                    FilterKeyEnum.ORDER_DELIVERED_AT,
-                ].includes(eligibility.key as FilterKeyEnum)
+        const updatedEligibilities: SelfServiceConfigurationFilter[] = []
+        let hasUpdatedEligibility = false
+
+        configuration.return_order_policy.eligibilities?.forEach(
+            (eligibility: SelfServiceConfigurationFilter) => {
+                if (
+                    eligibility.key === FilterKeyEnum.ORDER_CREATED_AT ||
+                    eligibility.key === FilterKeyEnum.ORDER_DELIVERED_AT
+                ) {
+                    if (eligibilityWindowCondition) {
+                        updatedEligibilities.push(
+                            updatedEligibilityWindowCondition
+                        )
+                        hasUpdatedEligibility = true
+                    }
+                } else {
+                    updatedEligibilities.push(eligibility)
+                }
+            }
         )
-
-        const updatedEligibilities = configuration.return_order_policy
-            ?.eligibilities
-            ? [...configuration.return_order_policy.eligibilities]
-            : []
-
-        if (
-            orderStatusEligibilityIndex === undefined ||
-            orderStatusEligibilityIndex === -1
-        ) {
+        if (!hasUpdatedEligibility && eligibilityWindowCondition) {
             updatedEligibilities.push(updatedEligibilityWindowCondition)
-        } else if (orderStatusEligibilityIndex >= 0) {
-            updatedEligibilities[
-                orderStatusEligibilityIndex
-            ] = updatedEligibilityWindowCondition
         }
 
         return Promise.resolve(
@@ -265,6 +276,18 @@ export const ReturnsPolicyView = ({
                                                     >
                                                         day(s) ago
                                                     </div>
+                                                    {showDeleteButton ? (
+                                                        <div
+                                                            onClick={onDelete}
+                                                            className={
+                                                                css.deleteButton
+                                                            }
+                                                        >
+                                                            <i className="material-icons red mr-1">
+                                                                clear
+                                                            </i>
+                                                        </div>
+                                                    ) : null}
                                                 </>
                                             ) : null}
                                         </div>

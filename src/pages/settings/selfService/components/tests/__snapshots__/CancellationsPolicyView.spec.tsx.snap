@@ -145,6 +145,15 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                     </div>
                   </div>
                 </div>
+                <div
+                  class="deleteButton"
+                >
+                  <i
+                    class="material-icons red mr-1"
+                  >
+                    clear
+                  </i>
+                </div>
               </div>
               <button
                 class="mr-2 btn btn-primary disabled"
@@ -314,6 +323,15 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                       </button>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="deleteButton"
+                >
+                  <i
+                    class="material-icons red mr-1"
+                  >
+                    clear
+                  </i>
                 </div>
               </div>
               <button

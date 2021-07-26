@@ -59,6 +59,8 @@ export const CancellationsPolicyView = ({
         matchParams: {shopName, integrationType},
     })
 
+    const [showDeleteButton, setShowDeleteButton] = useState(true)
+
     const [
         configCancelOrderStatusEligibility,
         setConfigCancelOrderStatusEligibility,
@@ -78,20 +80,17 @@ export const CancellationsPolicyView = ({
                 )
             }
         )
-
         const eligibilityFilterValue =
             currentOrderStatusEligibilityFilter?.value || []
-        setEligibilityWindowOptionValue(
-            getCancellationOptionFromEligibilityStatuses(
-                eligibilityFilterValue as SelfServiceOrderStatusEnum[]
-            )
+        const optionToSet = getCancellationOptionFromEligibilityStatuses(
+            eligibilityFilterValue as SelfServiceOrderStatusEnum[]
         )
-        setConfigCancelOrderStatusEligibility(
-            getCancellationOptionFromEligibilityStatuses(
-                eligibilityFilterValue as SelfServiceOrderStatusEnum[]
-            )
-        )
-    }, [configuration])
+        const showDeleteStateToSet = Boolean(optionToSet)
+
+        setEligibilityWindowOptionValue(optionToSet)
+        setConfigCancelOrderStatusEligibility(optionToSet)
+        setShowDeleteButton(showDeleteStateToSet)
+    }, [configuration, configuration?.cancel_order_policy.eligibilities])
 
     const [loading, setLoading] = useState(true)
     useEffect(() => {
@@ -100,6 +99,11 @@ export const CancellationsPolicyView = ({
 
     const onCancel = () => {
         setEligibilityWindowOptionValue(configCancelOrderStatusEligibility)
+    }
+
+    const onDelete = () => {
+        setEligibilityWindowOptionValue('')
+        setShowDeleteButton(false)
     }
 
     const onSubmit = (event: FormEvent) => {
@@ -118,25 +122,24 @@ export const CancellationsPolicyView = ({
             operator: FilterOperatorEnum.ONE_OF,
         } as SelfServiceConfigurationFilter
 
-        const orderStatusEligibilityIndex = configuration.cancel_order_policy?.eligibilities?.findIndex(
-            (eligibility: SelfServiceConfigurationFilter) =>
-                eligibility.key === FilterKeyEnum.GORGIAS_ORDER_STATUS
+        const updatedEligibilities: SelfServiceConfigurationFilter[] = []
+        let hasUpdatedEligibility = false
+
+        configuration.cancel_order_policy.eligibilities?.forEach(
+            (eligibility) => {
+                if (eligibility.key === FilterKeyEnum.GORGIAS_ORDER_STATUS) {
+                    if (eligibilityWindowOptionValue) {
+                        updatedEligibilities.push(updatedOrderStatusEligibility)
+                        hasUpdatedEligibility = true
+                    }
+                } else {
+                    updatedEligibilities.push(eligibility)
+                }
+            }
         )
-
-        const updatedEligibilities = configuration.cancel_order_policy
-            ?.eligibilities
-            ? [...configuration.cancel_order_policy.eligibilities]
-            : []
-
-        if (
-            orderStatusEligibilityIndex === undefined ||
-            orderStatusEligibilityIndex === -1
-        ) {
+        // the GORGIAS_ORDER_STATUS was not present in eligibilities
+        if (!hasUpdatedEligibility && eligibilityWindowOptionValue) {
             updatedEligibilities.push(updatedOrderStatusEligibility)
-        } else if (orderStatusEligibilityIndex >= 0) {
-            updatedEligibilities[
-                orderStatusEligibilityIndex
-            ] = updatedOrderStatusEligibility
         }
 
         return Promise.resolve(
@@ -245,6 +248,17 @@ export const CancellationsPolicyView = ({
                                                     )
                                                 }
                                             />
+                                            {showDeleteButton &&
+                                            eligibilityWindowOptionValue ? (
+                                                <div
+                                                    onClick={onDelete}
+                                                    className={css.deleteButton}
+                                                >
+                                                    <i className="material-icons red mr-1">
+                                                        clear
+                                                    </i>
+                                                </div>
+                                            ) : null}
                                         </div>
                                         <Button
                                             type="submit"

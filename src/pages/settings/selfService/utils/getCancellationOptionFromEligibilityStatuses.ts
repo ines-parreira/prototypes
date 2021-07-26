@@ -37,5 +37,5 @@ export const getCancellationOptionFromEligibilityStatuses = (
         return SelfServiceOrderStatusEnum.PENDING_DELIVERY
     }
 
-    return 'Select Status'
+    return ''
 }
