@@ -39,13 +39,13 @@ export const LinkItem = ({
     let labelErrMessage = ''
 
     if (label && value === '') {
-        valueErrMessage = 'URL is required if Title is defined'
+        valueErrMessage = 'Please enter a valid URL'
     } else if (value !== '' && !isUrl(value)) {
         valueErrMessage = 'URL is invalid'
     }
 
     if (value && label === '') {
-        labelErrMessage = 'Title is required if URL is defined'
+        labelErrMessage = 'Please enter a valid title'
     }
 
     return (

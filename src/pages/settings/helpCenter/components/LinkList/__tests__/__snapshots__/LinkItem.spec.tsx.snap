@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LinkItem> matches snapshot 1`] = `
+<div>
+  <div
+    class="link-item"
+    data-testid="link-item-1"
+  >
+    <div
+      class="form-group"
+    >
+      <input
+        aria-invalid="false"
+        class="link-input form-control"
+        type="text"
+        value="Test link"
+      />
+    </div>
+    <div
+      class="form-group"
+    >
+      <input
+        aria-invalid="false"
+        class="link-input form-control"
+        type="text"
+        value="https://test.com"
+      />
+    </div>
+    <i
+      class="material-icons"
+    >
+      close
+    </i>
+  </div>
+</div>
+`;
