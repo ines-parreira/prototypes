@@ -20,7 +20,7 @@ exports[`Stat should render a bar chart 1`] = `
       </span>
     </h5>
     <button
-      class="btn btn-secondary btn-transparent btn btn-secondary"
+      class="csvButton btn btn-secondary"
       type="button"
     >
       <i
@@ -79,7 +79,7 @@ exports[`Stat should render a line chart 1`] = `
       </span>
     </h5>
     <button
-      class="btn btn-secondary btn-transparent btn btn-secondary"
+      class="csvButton btn btn-secondary"
       type="button"
     >
       <i
@@ -118,7 +118,7 @@ exports[`Stat should render a per hour per week table 1`] = `
       </span>
     </h5>
     <button
-      class="btn btn-secondary btn-transparent btn btn-secondary"
+      class="csvButton btn btn-secondary"
       type="button"
     >
       <i
@@ -157,7 +157,7 @@ exports[`Stat should render a table chart 1`] = `
       </span>
     </h5>
     <button
-      class="btn btn-secondary btn-transparent btn btn-secondary"
+      class="csvButton btn btn-secondary"
       type="button"
     >
       <i

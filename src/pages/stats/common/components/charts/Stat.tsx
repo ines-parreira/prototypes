@@ -4,6 +4,7 @@ import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import axios, {AxiosError, Canceler} from 'axios'
+import classnames from 'classnames'
 
 import * as tagsSelectors from '../../../../../state/tags/selectors'
 import {
@@ -28,6 +29,8 @@ import TableStat from './TableStat/TableStat'
 import PerHourPerWeekTableStat from './PerHourPerWeekTableStat/PerHourPerWeekTableStat.js'
 import KeyMetricStat from './KeyMetricStat/KeyMetricStat.js'
 import BarStat from './BarStat.js'
+
+import css from './Stat.less'
 
 type OwnProps = {
     defaultLoaderHeight: string
@@ -135,13 +138,18 @@ export class StatContainer extends Component<Props, State> {
                         {downloadable && !isLoading ? (
                             <Button
                                 onClick={this._downloadStatistic}
-                                className="btn btn-secondary btn-transparent"
+                                className={css.csvButton}
                                 disabled={isDownloading}
                             >
                                 {isDownloading ? (
-                                    <i className="material-icons mr-1">
-                                        refresh
-                                    </i>
+                                    <Loader
+                                        size="14px"
+                                        minHeight="14px"
+                                        className={classnames(
+                                            css.csvLoader,
+                                            'mr-1'
+                                        )}
+                                    />
                                 ) : (
                                     <i className="material-icons mr-1">
                                         file_download
