@@ -94,7 +94,7 @@ type State = {
     title: Maybe<string>
 }
 
-class Navbar extends React.Component<Props, State> {
+export class Navbar extends React.Component<Props, State> {
     static childContextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
@@ -296,6 +296,19 @@ class Navbar extends React.Component<Props, State> {
                                 help
                             </i>
                             Help center
+                        </DropdownItem>
+                        <DropdownItem
+                            tag="a"
+                            href="https://status.gorgias.com/"
+                            target="_blank"
+                        >
+                            <i
+                                className="material-icons mr-2"
+                                title="Service status"
+                            >
+                                query_stats
+                            </i>
+                            Service status
                         </DropdownItem>
                         {isBasicOrPro && (
                             // show office hours link for basic/pro customers because they don't have a dedicated CSM
