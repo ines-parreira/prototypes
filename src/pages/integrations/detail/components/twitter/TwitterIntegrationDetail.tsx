@@ -45,8 +45,8 @@ export default function TwitterIntegrationDetail({
     const [integrationPicture, setIntegrationPicture] = useState('')
     const [integrationAbout, setIntegrationAbout] = useState('')
     const [tweetsRepliesEnabled, setTweetsRepliesEnabled] = useState(true)
-    const [directMessagesEnabled, setDirectMessagesEnabled] = useState(true)
-    const [mentionsEnabled, setMentionsEnabled] = useState(true)
+    // const [directMessagesEnabled, setDirectMessagesEnabled] = useState(true)
+    // const [mentionsEnabled, setMentionsEnabled] = useState(true)
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -60,8 +60,8 @@ export default function TwitterIntegrationDetail({
                         meta: {
                             settings: {
                                 tweets_replies_enabled: tweetsRepliesEnabled,
-                                direct_messages_enabled: directMessagesEnabled,
-                                mentions_enabled: mentionsEnabled,
+                                // direct_messages_enabled: directMessagesEnabled,
+                                // mentions_enabled: mentionsEnabled,
                             },
                         },
                     })
@@ -77,8 +77,8 @@ export default function TwitterIntegrationDetail({
             actions,
             setIsSubmitting,
             tweetsRepliesEnabled,
-            directMessagesEnabled,
-            mentionsEnabled,
+            // directMessagesEnabled,
+            // mentionsEnabled,
         ]
     )
 
@@ -108,22 +108,22 @@ export default function TwitterIntegrationDetail({
             ['meta', 'settings', 'tweets_replies_enabled'],
             false
         )
-        const directMessagesEnabled = integration.getIn(
-            ['meta', 'settings', 'direct_messages_enabled'],
-            false
-        )
-        const mentionsEnabled = integration.getIn(
-            ['meta', 'settings', 'mentions_enabled'],
-            false
-        )
+        // const directMessagesEnabled = integration.getIn(
+        //     ['meta', 'settings', 'direct_messages_enabled'],
+        //     false
+        // )
+        // const mentionsEnabled = integration.getIn(
+        //     ['meta', 'settings', 'mentions_enabled'],
+        //     false
+        // )
 
         setIntegrationName(integrationName)
         setIntegrationDescription(integrationDescription)
         setIntegrationPicture(integrationPicture)
         setIntegrationAbout(integrationAbout)
         setTweetsRepliesEnabled(tweetsRepliesEnabled)
-        setDirectMessagesEnabled(directMessagesEnabled)
-        setMentionsEnabled(mentionsEnabled)
+        // setDirectMessagesEnabled(directMessagesEnabled)
+        // setMentionsEnabled(mentionsEnabled)
 
         setIsInitialized(true)
     }, [
@@ -135,8 +135,8 @@ export default function TwitterIntegrationDetail({
         setIntegrationPicture,
         setIntegrationAbout,
         setTweetsRepliesEnabled,
-        setDirectMessagesEnabled,
-        setMentionsEnabled,
+        // setDirectMessagesEnabled,
+        // setMentionsEnabled,
     ])
 
     return (
@@ -202,20 +202,21 @@ export default function TwitterIntegrationDetail({
                                         value={tweetsRepliesEnabled}
                                         onChange={setTweetsRepliesEnabled}
                                     />
-                                    <BooleanField
-                                        name="direct_messages_enabled"
-                                        type="checkbox"
-                                        label="Enable Twitter direct messages"
-                                        value={directMessagesEnabled}
-                                        onChange={setDirectMessagesEnabled}
-                                    />
-                                    <BooleanField
-                                        name="mentions_enabled"
-                                        type="checkbox"
-                                        label="Enable Twitter mentions"
-                                        value={mentionsEnabled}
-                                        onChange={setMentionsEnabled}
-                                    />
+                                    {/*TODO(@ionut): uncomment these when we release the features*/}
+                                    {/*<BooleanField*/}
+                                    {/*    name="direct_messages_enabled"*/}
+                                    {/*    type="checkbox"*/}
+                                    {/*    label="Enable Twitter direct messages"*/}
+                                    {/*    value={directMessagesEnabled}*/}
+                                    {/*    onChange={setDirectMessagesEnabled}*/}
+                                    {/*/>*/}
+                                    {/*<BooleanField*/}
+                                    {/*    name="mentions_enabled"*/}
+                                    {/*    type="checkbox"*/}
+                                    {/*    label="Enable Twitter mentions"*/}
+                                    {/*    value={mentionsEnabled}*/}
+                                    {/*    onChange={setMentionsEnabled}*/}
+                                    {/*/>*/}
                                 </FormGroup>
                                 <div>
                                     <Button
