@@ -113,6 +113,7 @@ exports[`ast Widget should render TimedeltaSelect field 1`] = `
   className="widget d-inline-block"
 >
   <TimedeltaPicker
+    min={1}
     onChange={[Function]}
     value="1d"
   />

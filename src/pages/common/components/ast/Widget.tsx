@@ -260,6 +260,7 @@ export class Widget extends Component<Props, State> {
             <div className="widget d-inline-block">
                 <TimedeltaPicker
                     value={value}
+                    min={1}
                     onChange={this._handleChange as any}
                 />
             </div>
@@ -277,6 +278,7 @@ export class Widget extends Component<Props, State> {
             <div className="widget d-inline-block">
                 <TimedeltaPicker
                     value={value}
+                    min={1}
                     units={units}
                     onChange={this._handleChange as any}
                 />

@@ -24,6 +24,8 @@ type Props = {
     value: string
     onChange: (value: string) => void
     units?: Array<Unit>
+    min?: number
+    max?: number
 }
 
 type State = {
@@ -40,6 +42,7 @@ const UNITS = [
     {label: 'week(s) ago', value: 'w'},
 ]
 
+const MIN_QUANTITY = 0
 const MAX_QUANTITY = 9999
 
 export default class TimedeltaPicker extends Component<Props, State> {
@@ -120,8 +123,8 @@ export default class TimedeltaPicker extends Component<Props, State> {
                             this._onQuantityChange(event.target.value as any)
                         }
                         style={{width: '62px'}}
-                        min="0"
-                        max={MAX_QUANTITY}
+                        min={this.props.min ?? MIN_QUANTITY}
+                        max={this.props.max ?? MAX_QUANTITY}
                         required
                     />
                     <InputGroupButtonDropdown

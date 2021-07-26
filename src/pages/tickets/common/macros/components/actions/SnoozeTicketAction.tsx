@@ -38,6 +38,7 @@ export default function SnoozeTicketAction(props: Props) {
             <TimedeltaPicker
                 units={units}
                 value={duration}
+                min={1}
                 onChange={onChange}
             />
         </div>

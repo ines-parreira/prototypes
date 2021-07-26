@@ -1,5 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+import {Input} from 'reactstrap'
 
 import TimedeltaPicker from '../TimedeltaPicker.tsx'
 
@@ -73,5 +74,13 @@ describe('TimedeltaPicker component', () => {
 
         res = component._buildValue('')
         expect(res).toEqual({quantity: 1, unit: 'd'})
+    })
+
+    it('should forward minimum and maximum quantity', () => {
+        const spy = jest.fn()
+        const component = shallow(
+            <TimedeltaPicker value="5d" min={5} max={10} onChange={spy} />
+        )
+        expect(component.find(Input)).toMatchSnapshot()
     })
 })

@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TimedeltaPicker component should forward minimum and maximum quantity 1`] = `
+<Input
+  max={10}
+  min={5}
+  onChange={[Function]}
+  required={true}
+  style={
+    Object {
+      "width": "62px",
+    }
+  }
+  type="number"
+  value={5}
+/>
+`;
+
 exports[`TimedeltaPicker component should handle quantity change 1`] = `
 Object {
   "dropdownOpen": false,
@@ -113,7 +129,7 @@ exports[`TimedeltaPicker component should ignore incorrect passed data and use d
   >
     <Input
       max={9999}
-      min="0"
+      min={0}
       onChange={[Function]}
       required={true}
       style={
@@ -189,7 +205,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
   >
     <Input
       max={9999}
-      min="0"
+      min={0}
       onChange={[Function]}
       required={true}
       style={
