@@ -27,6 +27,7 @@ export enum TicketMessageSourceType {
     Phone = 'phone',
     SystemMessage = 'system-message',
     Twilio = 'twilio',
+    YotpoReview = 'yotpo-review',
     TwitterTweet = 'twitter-tweet',
 }
 
@@ -51,6 +52,7 @@ export enum TicketChannel {
     Phone = 'phone',
     Sms = 'sms',
     Twitter = 'twitter',
+    YotpoReview = 'yotpo-review',
 }
 
 export enum TicketVia {
@@ -59,4 +61,5 @@ export enum TicketVia {
     Helpdesk = 'helpdesk',
     Facebook = 'facebook',
     Twilio = 'twilio',
+    Yotpo = 'yotpo',
 }

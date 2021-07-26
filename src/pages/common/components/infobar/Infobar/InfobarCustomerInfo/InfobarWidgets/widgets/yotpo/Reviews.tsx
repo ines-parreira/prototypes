@@ -23,7 +23,7 @@ export default function Reviews() {
     }
 }
 
-function starRatingProps(value: any) {
+export function starRatingProps(value: any) {
     return {
         activeColor: StarRatingColors.activeColor,
         value: parseFloat(value),

@@ -3,9 +3,13 @@ import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 
+import ReactStars from 'react-rating-stars-component'
+
 import {TicketVias} from '../../../../../business/ticket'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+
+import {starRatingProps} from '../../../../common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
 
 import css from './Meta.less'
 
@@ -17,6 +21,7 @@ type Props = {
     meta?: MetaType | null
     source?: Source
     messageCreatedDatetime?: string
+    subject?: string
 }
 
 const From = ({label, children}: {label: string; children?: ReactNode}) => (
@@ -34,6 +39,7 @@ export default function Meta(props: Props) {
         via,
         integrationId,
         messageCreatedDatetime,
+        subject,
     } = props
     const widgets = []
 
@@ -62,6 +68,7 @@ export default function Meta(props: Props) {
         TicketMessageSourceType.InstagramMentionMedia,
         TicketMessageSourceType.FacebookReview,
         TicketMessageSourceType.FacebookReviewComment,
+        TicketMessageSourceType.YotpoReview,
         TicketMessageSourceType.TwitterTweet,
     ]
 
@@ -81,6 +88,7 @@ export default function Meta(props: Props) {
 
     let type
     let link
+    let yotpoReviewScore
     let label = 'go to'
     let replyingToUsername
 
@@ -129,9 +137,11 @@ export default function Meta(props: Props) {
         const isInstagramMentionMedia =
             source.type === TicketMessageSourceType.InstagramMentionMedia
 
+        const isYotpoReview =
+            source.type === TicketMessageSourceType.YotpoReview
         const tweetId = messageId ? messageId : source.extra.conversation_id
         const twitterFromUsername = source.from?.name
-        const twitterToUsername = source.to[0]?.name
+        const twitterToUsername = source.to ? source.to[0]?.name : null
         const isTwitterRootTweet =
             source.type === TicketMessageSourceType.TwitterTweet && !parentId
         const isTwitterReplyTweet =
@@ -144,7 +154,15 @@ export default function Meta(props: Props) {
         if (isFacebookMentionComment) {
             pageFeedId = getId(fullPostId!, 0)
         }
-        if (isFacebookPost) {
+
+        if (!!messageId && isYotpoReview) {
+            type = 'review'
+            link = 'https://reviews.yotpo.com/#/moderation/reviews'
+            if (subject) {
+                link += `?query=${subject}&sort_by=review_creation_date`
+            }
+            yotpoReviewScore = source.extra.score
+        } else if (isFacebookPost) {
             const postId = isFacebookPost ? getId(fullPostId!) : fullPostId
             type = 'post'
             link = `https://facebook.com/${pageId!}/posts/${postId!}`
@@ -230,6 +248,15 @@ export default function Meta(props: Props) {
         }
 
         widgets.push(fromComponent)
+    }
+
+    if (yotpoReviewScore) {
+        const starRatings = starRatingProps(yotpoReviewScore)
+        widgets.push(
+            <span key={yotpoReviewScore}>
+                <ReactStars {...starRatings} />
+            </span>
+        )
     }
 
     let sentViaLabel

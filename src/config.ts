@@ -119,6 +119,7 @@ export const SOURCE_VALUE_PROP = {
     'instagram-mention-media': 'address',
     'instagram-mention-comment': 'address',
     'twitter-tweet': 'address',
+    'yotpo-review': 'address',
 }
 
 //$TsFixMe fallback for js files, replace with TicketStatus enum

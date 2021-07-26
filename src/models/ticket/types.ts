@@ -150,6 +150,8 @@ export type Source = {
         permalink?: string
         conversation_id?: string
         open_graph_story_id?: string
+        score?: number
+        external_product_id?: string
     }
 }
 

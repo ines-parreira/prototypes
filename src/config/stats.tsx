@@ -270,6 +270,10 @@ export const stats: Map<any, any> = fromJS({
                 label: 'Phone',
                 color: '#ffe03f',
             },
+            yotpo: {
+                label: 'Yotpo',
+                color: '#064296',
+            },
             sms: {
                 label: 'Sms',
                 color: '#69c473',

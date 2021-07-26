@@ -37,6 +37,7 @@ import {
     INTERNAL_NOTE_SOURCE,
     FACEBOOK_REVIEW_COMMENT_SOURCE,
     INSTAGRAM_MENTION_COMMENT_SOURCE,
+    YOTPO_REVIEW_SOURCE,
 } from '../../../../../config/ticket.ts'
 
 import MessageSourceFields from './MessageSourceFields/'
@@ -237,6 +238,9 @@ export class ReplyMessageChannelContainer extends React.Component {
         const suggestPhone =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.Phone)
+        const suggestYotpoReview =
+            isTicketExisting &&
+            !!replyOptions.get(TicketMessageSourceType.YotpoReview)
         const suggestForwardByEmail = isTicketExisting
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
 
@@ -406,6 +410,17 @@ export class ReplyMessageChannelContainer extends React.Component {
                                         type={INSTAGRAM_MENTION_COMMENT_SOURCE}
                                     />
                                     Reply via Instagram mention
+                                </DropdownItem>
+                            )}
+                            {suggestYotpoReview && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(YOTPO_REVIEW_SOURCE)
+                                    }}
+                                >
+                                    <SourceIcon type={YOTPO_REVIEW_SOURCE} />
+                                    Reply on Yotpo review
                                 </DropdownItem>
                             )}
                             {suggestTwitterTweet && (

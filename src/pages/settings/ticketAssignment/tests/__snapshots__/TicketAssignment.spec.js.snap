@@ -295,6 +295,10 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
                     "label": "twitter",
                     "value": "twitter",
                   },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
+                  },
                 ]
               }
               plural="channels"
@@ -531,6 +535,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                   Object {
                     "label": "twitter",
                     "value": "twitter",
+                  },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
                   },
                 ]
               }
@@ -769,6 +777,10 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                     "label": "twitter",
                     "value": "twitter",
                   },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
+                  },
                 ]
               }
               plural="channels"
@@ -1005,6 +1017,10 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                   Object {
                     "label": "twitter",
                     "value": "twitter",
+                  },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
                   },
                 ]
               }
@@ -1243,6 +1259,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "label": "twitter",
                     "value": "twitter",
                   },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
+                  },
                 ]
               }
               plural="channels"
@@ -1480,6 +1500,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                     "label": "twitter",
                     "value": "twitter",
                   },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
+                  },
                 ]
               }
               plural="channels"
@@ -1716,6 +1740,10 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                   Object {
                     "label": "twitter",
                     "value": "twitter",
+                  },
+                  Object {
+                    "label": "yotpo-review",
+                    "value": "yotpo-review",
                   },
                 ]
               }

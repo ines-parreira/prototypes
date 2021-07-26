@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {ContentState} from 'draft-js'
 import {createAction} from '@reduxjs/toolkit'
 import _isNull from 'lodash/isNull'
@@ -6,13 +6,15 @@ import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
 import _omit from 'lodash/omit'
-import axios, {CancelToken, AxiosError} from 'axios'
+import axios, {AxiosError, CancelToken} from 'axios'
 
 import * as ticketConstants from '../ticket/constants'
 import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
+
 import {Context, renderTemplate} from '../../pages/common/utils/template'
-import {getActionTemplate, uploadFiles, toJS} from '../../utils'
+import {getActionTemplate, toJS, uploadFiles} from '../../utils'
+
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -26,8 +28,8 @@ import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
 import socketManager from '../../services/socketManager/socketManager'
-import {Attachment, ActionTemplate} from '../../types'
-import type {StoreDispatch, RootState, CurrentUser} from '../types'
+import {ActionTemplate, Attachment} from '../../types'
+import type {CurrentUser, RootState, StoreDispatch} from '../types'
 import {getMomentNow} from '../../utils/date'
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {IntegrationType} from '../../models/integration/types'
@@ -43,18 +45,18 @@ import * as selectors from './selectors'
 import * as constants from './constants'
 import {
     MacroActions,
+    Message,
     NewMessage,
+    ReplyAreaState,
     Ticket,
     UserSearchResult,
-    Message,
-    ReplyAreaState,
 } from './types'
 import {
-    getReplyThreadMessages,
     addEmailExtraContent,
-    hasOnlySignatureText,
     deleteEmailExtraContent,
     EmailExtraArgs,
+    getReplyThreadMessages,
+    hasOnlySignatureText,
 } from './emailExtraUtils'
 
 export const addAttachments = (
@@ -417,7 +419,6 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
                     false
                 )
             }
-
             dispatch(setResponseText(responseTextArgs))
             dispatch(prepareDefault(sourceType))
 
@@ -464,6 +465,11 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
                     })
                 )
             )
+            break
+        }
+        case TicketMessageSourceType.YotpoReview: {
+            dispatch(prepareDefault(sourceType))
+            dispatch(setSourceType(TicketMessageSourceType.YotpoReview))
             break
         }
         default: {
