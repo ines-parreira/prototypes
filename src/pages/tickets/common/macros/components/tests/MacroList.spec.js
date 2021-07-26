@@ -1,8 +1,12 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render, fireEvent} from '@testing-library/react'
 
-import MacroList from '../MacroList'
+import {MacroListContainer} from '../MacroList'
+import {user} from '../../../../../../fixtures/users.ts'
+import {logEvent} from '../../../../../../store/middlewares/segmentTracker'
+
+jest.mock('../../../../../../store/middlewares/segmentTracker.js')
 
 describe('MacroList component', () => {
     const macros = fromJS([
@@ -16,20 +20,33 @@ describe('MacroList component', () => {
     ])
 
     it('should render the macro list', () => {
-        const component = shallow(
-            <MacroList macros={macros} currentMacro={macros.first()} />
+        const {container} = render(
+            <MacroListContainer macros={macros} currentMacro={macros.first()} />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render active and disabled macros', () => {
-        const component = shallow(
-            <MacroList
+        const {container} = render(
+            <MacroListContainer
                 macros={macros}
                 currentMacro={macros.get(1)}
                 disableExternalActions={true}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should send event to segment on send', () => {
+        const {getAllByText} = render(
+            <MacroListContainer
+                macros={macros}
+                currentMacro={macros.get(1)}
+                disableExternalActions={true}
+                currentUser={fromJS(user)}
+            />
+        )
+        fireEvent.click(getAllByText('Pizza Capricciosa')[0])
+        expect(logEvent.mock.calls).toMatchSnapshot()
     })
 })

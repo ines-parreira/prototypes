@@ -56,6 +56,7 @@ export const EVENTS = {
     INTENT_FEEDBACK_USER_SUBMISSION: 'intent-feedback-user-submission',
     INTENT_FEEDBACK_DROPDOWN_OPEN: 'intent-feedback-dropdown-open',
     MODAL_TOGGLED: 'modal-toggled',
+    MACRO_APPLIED_SEARCHBAR: 'macro-applied-searchbar',
     MACROS_QUICK_REPLY_TOOLTIP: 'macros-quick-reply-tooltip',
     MACROS_QUICK_REPLY_GET_DETAILS: 'macros-quick-reply-get-details',
     MACROS_QUICK_REPLY_SENT: 'macros-quick-reply-sent',

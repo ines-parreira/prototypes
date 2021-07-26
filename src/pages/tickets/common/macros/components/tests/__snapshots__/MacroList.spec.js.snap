@@ -1,67 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MacroList component should render active and disabled macros 1`] = `
-<InfiniteScroll
-  className="component"
-  onLoad={[Function]}
-  shouldLoadMore={false}
+<div
+  class="component component"
 >
   <div
-    className="item"
-    key="1"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    class="item"
   >
     Pizza Pepperoni
   </div>
   <div
-    className="item active"
-    key="2"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    class="item active"
   >
     Pizza Capricciosa
   </div>
   <div
-    className="item disabled"
-    key="3"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    class="item disabled"
   >
     Pizza Margherita
   </div>
-</InfiniteScroll>
+  <div
+    class="container loader"
+  >
+    <div
+      class="inner"
+      style="min-height: 0;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
 `;
 
 exports[`MacroList component should render the macro list 1`] = `
-<InfiniteScroll
-  className="component"
-  onLoad={[Function]}
-  shouldLoadMore={false}
+<div
+  class="component component"
 >
   <div
-    className="item active"
-    key="1"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    class="item active"
   >
     Pizza Pepperoni
   </div>
   <div
-    className="item"
-    key="2"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    class="item"
   >
     Pizza Capricciosa
   </div>
   <div
-    className="item"
-    key="3"
-    onClick={[Function]}
-    onMouseEnter={[Function]}
+    class="item"
   >
     Pizza Margherita
   </div>
-</InfiniteScroll>
+  <div
+    class="container loader"
+  >
+    <div
+      class="inner"
+      style="min-height: 0;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MacroList component should send event to segment on send 1`] = `
+Array [
+  Array [
+    "macro-applied-searchbar",
+    Object {
+      "user_id": 2,
+    },
+  ],
+]
 `;

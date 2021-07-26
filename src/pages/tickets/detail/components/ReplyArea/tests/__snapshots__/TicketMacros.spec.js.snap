@@ -35,7 +35,7 @@ exports[`TicketMacros component should display macros list, and selected macro 1
   <div
     className="content"
   >
-    <MacroList
+    <Connect(MacroListContainer)
       className="macroList"
       currentMacro={
         Immutable.Map {

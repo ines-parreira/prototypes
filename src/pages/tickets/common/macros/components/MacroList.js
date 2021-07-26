@@ -4,15 +4,19 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import type {Map} from 'immutable'
+import {connect} from 'react-redux'
 
 import InfiniteScroll from '../../../../common/components/InfiniteScroll'
 import {scrollToReactNode} from '../../../../common/utils/keyboard.ts'
 import {isMacroDisabled} from '../utils'
 import {fetchMacros} from '../../../../../state/macro/actions.ts'
+import {getCurrentUser} from '../../../../../state/currentUser/selectors.ts'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 
 import css from './MacroList.less'
 
 type Props = {
+    currentUser: Map<*, *>,
     macros: Map<*, *>,
     currentMacro: Map<*, *>,
     fetchMacros: typeof fetchMacros,
@@ -25,7 +29,7 @@ type Props = {
     disableExternalActions?: boolean,
 }
 
-export default class MacroList extends React.Component<Props> {
+export class MacroListContainer extends React.Component<Props> {
     _activeItem: ?Node
 
     static defaultProps = {
@@ -60,6 +64,7 @@ export default class MacroList extends React.Component<Props> {
     render() {
         const {
             className,
+            currentUser,
             currentMacro,
             macros,
             page,
@@ -94,7 +99,11 @@ export default class MacroList extends React.Component<Props> {
                                 if (isDisabled) {
                                     return
                                 }
-
+                                segmentTracker.logEvent(
+                                    segmentTracker.EVENTS
+                                        .MACRO_APPLIED_SEARCHBAR,
+                                    {user_id: currentUser.get('id')}
+                                )
                                 onClickItem(macro)
                             }}
                             onMouseEnter={() => onHoverItem(macro)}
@@ -108,3 +117,6 @@ export default class MacroList extends React.Component<Props> {
         )
     }
 }
+export default connect((state) => ({
+    currentUser: getCurrentUser(state),
+}))(MacroListContainer)
