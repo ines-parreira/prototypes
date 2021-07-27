@@ -125,10 +125,10 @@ export const onInit = (
         const draftOrderPayload = initDraftOrderPayload(
             customer,
             order,
-            products as any
+            products as any,
+            false
         )
         const payload = getDuplicateOrderPayload(draftOrderPayload)
-
         return Promise.all([
             dispatch(setPayload(payload)),
             dispatch(calculateDraftOrder(integrationId, payload, onError)),

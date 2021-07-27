@@ -10,6 +10,7 @@ import css from './DraftOrderTable.less'
 
 type Props = {
     shopName: string
+    isShownInEditOrder: boolean
     actionName: ShopifyActionType
     currencyCode: string
     lineItems: List<any>
@@ -28,7 +29,6 @@ export default class DraftOrderTable extends PureComponent<Props> {
     ) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
-
         onChange(newLineItems)
     }
 
@@ -44,10 +44,10 @@ export default class DraftOrderTable extends PureComponent<Props> {
             lineItems,
             products,
             shopName,
+            isShownInEditOrder,
             actionName,
             currencyCode,
         } = this.props
-
         return (
             <Table hover={!!lineItems.size} className={css.table}>
                 <thead>
@@ -57,6 +57,7 @@ export default class DraftOrderTable extends PureComponent<Props> {
                         <th>Item price</th>
                         <th>Qty</th>
                         <th>Item total</th>
+                        {isShownInEditOrder && <th>Remove/Restock</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -84,6 +85,7 @@ export default class DraftOrderTable extends PureComponent<Props> {
                                     key={key}
                                     id={key}
                                     actionName={actionName}
+                                    isShownInEditOrder={isShownInEditOrder}
                                     lineItem={lineItem}
                                     product={products.get(
                                         lineItem.get('product_id') as number

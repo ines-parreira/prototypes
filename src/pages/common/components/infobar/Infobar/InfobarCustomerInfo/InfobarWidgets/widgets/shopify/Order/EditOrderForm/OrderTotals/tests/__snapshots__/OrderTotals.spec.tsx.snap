@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderTotals/> should render loading 1`] = `
+<dl
+  class="row text-right mb-0"
+>
+  <dt
+    class="col-7 mb-2 grey"
+  >
+    Subtotal
+  </dt>
+  <dd
+    class="col-5 mb-2 text-muted"
+  >
+    —
+  </dd>
+  <dt
+    class="col-7 mb-2 grey"
+  >
+    Tax
+  </dt>
+  <dd
+    class="col-5 mb-2 text-muted"
+  >
+    —
+  </dd>
+  <dt
+    class="col-7 mb-2"
+  >
+    Total
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    <strong
+      class="text-muted"
+    >
+      —
+    </strong>
+  </dd>
+  <dt
+    class="col-7 mb-2 grey"
+  >
+    Paid by customer
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    <div
+      class="mb-3 form-check"
+    >
+      —
+      <small
+        class="form-text text-muted"
+      >
+        No changes have been made
+      </small>
+    </div>
+  </dd>
+  <dt
+    class="col-7 mb-2"
+  >
+    Amount to refund
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    <div
+      class="mb-3 form-check"
+    >
+      <strong
+        class="text-muted"
+      >
+        —
+      </strong>
+    </div>
+  </dd>
+</dl>
+`;
+
+exports[`<OrderTotals/> should render not loading 1`] = `
+<dl
+  class="row text-right mb-0"
+>
+  <dt
+    class="col-7 mb-2 grey"
+  >
+    Subtotal
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    —
+  </dd>
+  <dt
+    class="col-7 mb-2 grey"
+  >
+    Tax
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    —
+  </dd>
+  <dt
+    class="col-7 mb-2"
+  >
+    Total
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    <strong
+      class=""
+    >
+      —
+    </strong>
+  </dd>
+  <dt
+    class="col-7 mb-2 grey"
+  >
+    Paid by customer
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    <div
+      class="mb-3 form-check"
+    >
+      —
+      <small
+        class="form-text text-muted"
+      >
+        No changes have been made
+      </small>
+    </div>
+  </dd>
+  <dt
+    class="col-7 mb-2"
+  >
+    Amount to refund
+  </dt>
+  <dd
+    class="col-5 mb-2"
+  >
+    <div
+      class="mb-3 form-check"
+    >
+      <strong
+        class=""
+      >
+        —
+      </strong>
+    </div>
+  </dd>
+</dl>
+`;

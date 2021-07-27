@@ -66,7 +66,6 @@ export class OrderTotalsComponent extends Component<Props> {
             currencyCode,
             actionName,
         } = this.props
-
         const taxLines = calculatedDraftOrder.get('taxLines', []) as List<any>
 
         return (

@@ -18,6 +18,7 @@ import MoneyAmount from '../../MoneyAmount'
 
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
+import EditOrderModal from './EditOrderModal/EditOrderModal'
 import OrderStatus from './OrderStatus'
 
 export default function OrderWidget() {
@@ -38,6 +39,7 @@ class AfterTitle extends Component<AfterTitleProps> {
     static contextTypes = {
         integrationId: PropTypes.number,
         isOrderCancelled: PropTypes.bool.isRequired,
+        isOldOrder: PropTypes.bool.isRequired,
         isOrderRefunded: PropTypes.bool.isRequired,
         isOrderFulfilled: PropTypes.bool.isRequired,
         isOrderPartiallyFulfilled: PropTypes.bool.isRequired,
@@ -47,11 +49,11 @@ class AfterTitle extends Component<AfterTitleProps> {
         const {source}: AfterTitleProps = this.props
         const {
             isOrderCancelled,
+            isOldOrder,
             isOrderRefunded,
             isOrderFulfilled,
             isOrderPartiallyFulfilled,
         } = this.context
-
         const actions: Array<InfobarAction> = [
             {
                 key: 'refund',
@@ -102,6 +104,40 @@ class AfterTitle extends Component<AfterTitleProps> {
                 },
             },
             {
+                key: 'edit',
+                options: [
+                    {
+                        value: ShopifyActionType.EditOrder,
+                        label: 'Edit',
+                        parameters: [
+                            {name: 'edited_order_id', type: 'hidden'},
+                            {name: 'note', type: 'hidden'},
+                            {name: 'notify', type: 'hidden'},
+                        ],
+                    },
+                ],
+                title: 'Edit order',
+                child: (
+                    <>
+                        <i className="material-icons">mode_edit</i> Edit
+                    </>
+                ),
+                modal: EditOrderModal,
+                modalData: {
+                    actionName: ShopifyActionType.EditOrder,
+                    order: source,
+                    customer: fromJS({
+                        id: source.getIn(['customer', 'id']),
+                        admin_graphql_api_id: source.getIn([
+                            'customer',
+                            'admin_graphql_api_id',
+                        ]),
+                        email: source.getIn(['customer', 'email']),
+                        currency: source.get('currency'),
+                    }),
+                },
+            },
+            {
                 key: 'duplicate',
                 options: [
                     {
@@ -142,6 +178,10 @@ class AfterTitle extends Component<AfterTitleProps> {
 
         if (isOrderCancelled || isOrderFulfilled || isOrderPartiallyFulfilled) {
             removed.push('cancel')
+        }
+
+        if (isOrderCancelled || isOldOrder) {
+            removed.push('edit')
         }
 
         if (isOrderRefunded) {
@@ -256,21 +296,25 @@ class Wrapper extends React.Component<WrapperProps> {
         isOrderRefunded: PropTypes.bool.isRequired,
         isOrderFulfilled: PropTypes.bool.isRequired,
         isOrderPartiallyFulfilled: PropTypes.bool.isRequired,
+        isOldOrder: PropTypes.bool.isRequired,
     }
 
     getChildContext() {
         const order = this.props.source || fromJS({})
-
         const isCancelled = !!order.get('cancelled_at')
         const isRefunded = order.get('financial_status') === 'refunded'
         const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
         const isPartiallyFulfilled =
             order.get('fulfillment_status') === 'partial'
 
+        const createdDate = order.get('created_at')
+        const orderAge = new Date().getTime() - new Date(createdDate).getTime()
+        const isOldOrder = Math.round(orderAge / (1000 * 3600 * 24)) >= 60
         return {
             order,
             orderId: order.get('id'),
             isOrderCancelled: isCancelled,
+            isOldOrder: isOldOrder,
             isOrderRefunded: isRefunded,
             isOrderFulfilled: isFulfilled,
             isOrderPartiallyFulfilled: isPartiallyFulfilled,

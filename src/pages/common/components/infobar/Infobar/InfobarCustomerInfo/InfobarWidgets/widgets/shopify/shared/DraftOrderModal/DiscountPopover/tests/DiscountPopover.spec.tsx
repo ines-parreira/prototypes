@@ -95,6 +95,11 @@ describe('<DiscountPopover/>', () => {
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN,
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY,
             ],
+            [
+                ShopifyActionType.EditOrder,
+                EVENTS.SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_OPEN,
+                EVENTS.SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_APPLY,
+            ],
         ])(
             'should call prop `onChange` with fixed amount discount',
             (actionName, openEvent, submitEvent) => {
@@ -137,6 +142,7 @@ describe('<DiscountPopover/>', () => {
                         value: '5.99',
                         value_type: 'fixed_amount',
                         amount: '5.99',
+                        currency_code: 'USD',
                     })
                 )
 
@@ -188,6 +194,7 @@ describe('<DiscountPopover/>', () => {
                     value: '15.00',
                     value_type: 'percentage',
                     amount: '1.50',
+                    currency_code: 'USD',
                 })
             )
         })

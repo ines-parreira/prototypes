@@ -80,6 +80,16 @@ export type ShippingLine = {
     price: string,
 }
 
+export type EditOrderPayload = {
+    calculatedOrderId: string,
+    total_line_items_price: string,
+    current_total_tax: string,
+    current_total_price: string,
+    paid_by_customer: string,
+    amount_to_collect: string,
+    has_changes: boolean,
+}
+
 export type Customer = {
     id: number,
     email: string,

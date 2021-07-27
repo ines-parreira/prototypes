@@ -58,6 +58,8 @@ type Props = {
     title: ReactNode
     actionError?: string
     customerId?: number
+    updateModalStatus?: () => void
+    parentToggleAction?: () => void
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -165,7 +167,6 @@ export class ActionButtonContainer extends Component<Props, State> {
         if (event) {
             event.preventDefault()
         }
-
         const payload = {
             ...this.props.payload,
             ...this.state.parameters,
@@ -178,6 +179,10 @@ export class ActionButtonContainer extends Component<Props, State> {
             payload as any
         )
 
+        if (this.props.updateModalStatus) this.props.updateModalStatus()
+        if (this.props.parentToggleAction) {
+            setTimeout(this.props.parentToggleAction)
+        }
         this._toggleUi()
     }
 
@@ -289,19 +294,31 @@ export class ActionButtonContainer extends Component<Props, State> {
         })
     }
 
+    _onOpenModalPreFunc = (actionName: string | number) => {
+        if (this.props.updateModalStatus) this.props.updateModalStatus()
+        this._updateActionName(actionName)
+    }
+
+    _onCloseModalPreFunc = () => {
+        if (this.props.updateModalStatus) this.props.updateModalStatus()
+        if (this.props.parentToggleAction) {
+            setTimeout(this.props.parentToggleAction)
+        }
+        this._toggleUi()
+    }
+
     _renderModal(Modal: ComponentType<InfobarModalProps>) {
         const {title, modalData} = this.props
         const {isUiOpen} = this.state
-
         return (
             <Modal
                 header={title}
                 isOpen={isUiOpen}
-                onOpen={this._updateActionName}
+                onOpen={this._onOpenModalPreFunc}
                 onChange={this._updateActionParameter}
                 onBulkChange={this._updateActionParameters}
                 onSubmit={this._confirmAction}
-                onClose={this._toggleUi}
+                onClose={this._onCloseModalPreFunc}
                 data={modalData}
             />
         )

@@ -11,7 +11,11 @@ import {ApiListResponsePagination} from '../models/api/types'
 import type {
     PollingConfig,
     Refund,
+    Edit_to_perform,
 } from '../constants/integrations/types/shopify'
+
+import {EditOrderAction} from '../constants/integrations/types/shopify'
+
 import {AuditLogEvent} from '../models/event/types'
 
 type GorgiasApiOptions = {
@@ -237,6 +241,87 @@ export default class GorgiasApi {
             responseData?.data?.draftOrderCalculate?.calculatedDraftOrder
 
         return fromJS(calculatedDraftOrder) as Map<any, any>
+    }
+
+    async calculateEditOrder(
+        integrationId: number,
+        payload: Map<any, any>
+    ): Promise<Map<any, any>> {
+        const url = '/integrations/shopify/order/edit/calculate/'
+        const response = await this._api.post(url, payload.toJS(), {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+        const responseData = response.data as {
+            data: {draftOrderCalculate: {calculatedDraftOrder: any}}
+        }
+
+        const calculatedDraftOrder =
+            responseData?.data?.draftOrderCalculate?.calculatedDraftOrder
+
+        return fromJS(calculatedDraftOrder) as Map<any, any>
+    }
+    async editOrder(
+        integrationId: number,
+        payload: Edit_to_perform
+    ): Promise<Map<any, any>> {
+        const url = '/integrations/shopify/order/edit/calculate/'
+        const response = await this._api.post(url, payload, {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+        let dataKey = ''
+        switch (payload.action) {
+            case EditOrderAction.AddVariant:
+                dataKey = 'orderEditAddVariant'
+                break
+            case EditOrderAction.AddCustomVariant:
+                dataKey = 'orderEditAddCustomItem'
+                break
+            case EditOrderAction.RemoveVariant:
+            case EditOrderAction.ChangeLineItem:
+                dataKey = 'orderEditSetQuantity'
+                break
+            case EditOrderAction.ApplyItemDiscount:
+                dataKey = 'orderEditAddLineItemDiscount'
+                break
+            case EditOrderAction.RemoveItemDiscount:
+                dataKey = 'orderEditRemoveLineItemDiscount'
+                break
+            default:
+                dataKey = ''
+                break
+        }
+        if (!dataKey) return fromJS({}) as Map<any, any>
+
+        const responseData = response.data as {
+            data: {[dataKey: string]: {calculatedOrder: any}}
+        }
+
+        const editedOrder = responseData?.data?.[dataKey]
+        return fromJS(editedOrder) as Map<any, any>
+    }
+
+    async beginEditOrder(
+        integrationId: number,
+        payload: Map<any, any>
+    ): Promise<Map<any, any>> {
+        const url = '/integrations/shopify/order/edit/begin/'
+        const response = await this._api.post(url, payload.toJS(), {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+
+        const responseData = response.data as {
+            data: {orderEditBegin: {calculatedOrder: any}}
+        }
+
+        const beginEditOrder =
+            responseData?.data?.orderEditBegin?.calculatedOrder
+        return fromJS(beginEditOrder) as Map<any, any>
     }
 
     async createDraftOrder(

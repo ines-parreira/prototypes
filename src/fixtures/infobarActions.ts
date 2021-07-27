@@ -4,6 +4,7 @@ import {IntegrationType} from '../models/integration/types'
 import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
 import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers'
 import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers'
+import {initialState as editOrderInitialState} from '../state/infobarActions/shopify/editOrder/reducers'
 import {CreateOrderState} from '../state/infobarActions/shopify/createOrder/types'
 import {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
 import {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'
@@ -13,15 +14,18 @@ export const infobarActionsStateFixture = ({
     cancelOrderState = cancelOrderInitialState,
     createOrderState = createOrderInitialState,
     refundOrderState = refundOrderInitialState,
+    editOrderState = editOrderInitialState,
 }: {
     cancelOrderState?: typeof cancelOrderInitialState
     createOrderState?: typeof createOrderInitialState
     refundOrderState?: typeof refundOrderInitialState
+    editOrderState?: typeof editOrderInitialState
 } = {}): InfobarActionsState => ({
     [IntegrationType.ShopifyIntegrationType]: {
         cancelOrder: cancelOrderState,
         createOrder: createOrderState,
         refundOrder: refundOrderState,
+        editOrder: editOrderState,
     },
 })
 

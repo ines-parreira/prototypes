@@ -138,6 +138,15 @@ export enum InventoryManagement {
     Shopify = 'shopify',
 }
 
+export enum EditOrderAction {
+    AddVariant = 'addVariant',
+    AddCustomVariant = 'addCustomVariant',
+    RemoveVariant = 'removeVariant',
+    ChangeLineItem = 'changeLineItem',
+    ApplyItemDiscount = 'applyItemDiscount',
+    RemoveItemDiscount = 'removeItemDiscount',
+}
+
 export type TaxLine = {
     title: string
     rate: number
@@ -150,6 +159,7 @@ export type AppliedDiscount = {
     value: string
     value_type: DiscountType
     amount: string
+    currency_code?: string
 }
 
 export type Discount = {
@@ -210,6 +220,16 @@ export type ShippingLine = {
     custom: boolean
     handle: string
     price: string
+}
+
+export type EditOrderPayload = {
+    calculatedOrderId: string
+    total_line_items_price: string
+    current_total_tax: string
+    current_total_price: string
+    paid_by_customer: string
+    amount_to_collect: string
+    has_changes: boolean
 }
 
 export type Customer = {
@@ -415,6 +435,30 @@ export type Refund = {
     order_adjustments: OrderAdjustment[]
 }
 
+export type Edit_to_perform = {
+    action: string
+    calculated_order_id: string
+    variant_id?: string
+    line_item_id?: string
+    quantity?: number
+    title?: string
+    taxable?: string
+    restock?: boolean
+    requires_shipping?: string
+    discount_item_id?: string
+    price?: {
+        amount: string
+        currency_code: string
+    }
+    discount?: {
+        description: string
+        fixed_value: {
+            amount: string
+            currency_code: string
+        }
+        percent_value: string
+    }
+}
 export type RefundOrderPayload = {
     restock: boolean
     notify: boolean

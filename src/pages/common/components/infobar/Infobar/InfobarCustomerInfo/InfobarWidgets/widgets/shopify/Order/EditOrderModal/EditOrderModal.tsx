@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useMemo} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Button, ModalFooter} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
@@ -11,17 +11,17 @@ import {
     Product,
     Variant,
 } from '../../../../../../../../../../../constants/integrations/types/shopify'
-import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {getEditOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/editOrder/selectors'
 import {
     addCustomRow,
     addRow,
     onCancel,
-    onCreateDraftOrder,
-    onEmailInvoice,
     onInit,
+    onNoteChange,
+    onNotifyChange,
     onPayloadChange,
     onReset,
-} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+} from '../../../../../../../../../../../state/infobarActions/shopify/editOrder/action'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../../../state/types'
@@ -30,21 +30,19 @@ import {
     IntegrationDataItem,
 } from '../../../../../../../../../../../models/integration/types'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
-import {DatetimeLabel} from '../../../../../../../../../utils/labels'
-import {CustomerContext} from '../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
 import {ShopifyActionType} from '../../types'
 
-import AddCustomItemPopover from './AddCustomItemPopover/AddCustomItemPopover'
-import EmailInvoicePopover from './EmailInvoicePopover/EmailInvoicePopover'
-import DraftOrderFooter from './OrderFooter/OrderFooter'
-import DraftOrderTable from './DraftOrderTable/DraftOrderTable'
-import css from './DraftOrderModal.less'
+import AddCustomItemPopover from '../../shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
+import EditOrderForm from '../EditOrderForm/EditOrderForm'
+import DraftOrderTable from '../../shared/DraftOrderModal//DraftOrderTable/DraftOrderTable'
+
+import css from './EditOrderModal.less'
 
 type OwnProps = {
-    draftOrder?: Map<any, any>
+    editOrder?: Map<any, any>
     data?: {
         actionName: ShopifyActionType | null
         order?: Map<any, any> | null
@@ -53,12 +51,11 @@ type OwnProps = {
     defaultCurrency?: string
 }
 
-export function DraftOrderModalContainer(
+export function EditOrderModalContainer(
     {
         addCustomRow,
         addRow,
         defaultCurrency = 'USD',
-        draftOrder = fromJS({}),
         data = {actionName: null, order: null},
         header,
         integrations,
@@ -67,14 +64,15 @@ export function DraftOrderModalContainer(
         loadingMessage,
         payload,
         products,
+        calculatedEditOrder,
         onInit,
         onOpen,
         onClose,
         onChange,
         onCancel,
         onPayloadChange,
-        onEmailInvoice,
-        onCreateDraftOrder,
+        onNotifyChange,
+        onNoteChange,
         onBulkChange,
         onSubmit,
         onReset,
@@ -83,7 +81,6 @@ export function DraftOrderModalContainer(
         ConnectedProps<typeof connector>,
     {integrationId}: {integrationId: number}
 ) {
-    const {customerId} = useContext(CustomerContext)
     const currentIntegration = useMemo(
         () =>
             integrations.find(
@@ -94,11 +91,11 @@ export function DraftOrderModalContainer(
     )
     const hasScope = useMemo(
         () =>
-            !!(currentIntegration?.getIn([
+            (currentIntegration?.getIn([
                 'meta',
                 'oauth',
                 'scope',
-            ]) as string).includes('write_draft_orders'),
+            ]) as string).includes('write_order_edits'),
         [currentIntegration]
     )
     const currencyCode = useMemo(
@@ -122,33 +119,22 @@ export function DraftOrderModalContainer(
         },
         [data, integrationId, onClose]
     )
-    const handleInvoiceSubmit = useCallback(
-        (invoicePayload: Map<any, any>) => {
-            if (customerId) {
-                void onEmailInvoice(
-                    integrationId,
-                    customerId,
-                    data.order ? data.order.get('id') : null,
-                    invoicePayload,
-                    () => {
-                        onClose()
-                        handleReset()
-                    }
-                )
-            }
-        },
-        [integrationId, customerId, data, onClose]
-    )
+
     const handlePaymentSubmit = useCallback(
-        (isPending = false) => async () => {
-            const result = await onCreateDraftOrder(
-                integrationId,
-                data.order ? data.order.get('id') : null
-            )
+        () => () => {
             onBulkChange(
                 [
-                    {name: 'draft_order_id', value: result?.get('id') || ''},
-                    {name: 'payment_pending', value: isPending},
+                    {name: 'note', value: payload && payload.get('note')},
+                    {
+                        name: 'notify',
+                        value: (payload && payload.get('notify')) || false,
+                    },
+                    {
+                        name: 'edited_order_id',
+                        value:
+                            calculatedEditOrder &&
+                            calculatedEditOrder.get('calculatedOrderId'),
+                    },
                 ],
                 () => {
                     onSubmit()
@@ -156,7 +142,7 @@ export function DraftOrderModalContainer(
                 }
             )
         },
-        [integrationId, data, onBulkChange, onSubmit]
+        [integrationId, onBulkChange, onSubmit, calculatedEditOrder, payload]
     )
     const handleReset = useCallback(() => {
         onReset()
@@ -194,7 +180,6 @@ export function DraftOrderModalContainer(
         currencyCode,
         onChange,
     ])
-
     if (!hasScope) {
         return (
             <Modal
@@ -211,7 +196,7 @@ export function DraftOrderModalContainer(
                     <Link
                         to={`/app/settings/integrations/shopify/${integrationId}`}
                     >
-                        settings page of your Shopify integration
+                        settings page of your Shopify integration&nbsp;
                     </Link>
                     and click on "Update app permissions".
                 </Alert>
@@ -242,7 +227,8 @@ export function DraftOrderModalContainer(
                             variant
                         )
                     }}
-                    searchOnFocus={!data.order && isEmpty}
+                    autoFocus={false}
+                    searchOnFocus={true}
                 />
                 <AddCustomItemPopover
                     id="add-custom-item"
@@ -262,7 +248,7 @@ export function DraftOrderModalContainer(
                             'shop_name',
                         ])}
                         actionName={data.actionName!}
-                        isShownInEditOrder={false}
+                        isShownInEditOrder={true}
                         currencyCode={currencyCode}
                         lineItems={lineItems}
                         products={products}
@@ -273,53 +259,22 @@ export function DraftOrderModalContainer(
                             )
                         }}
                     />
-                    <DraftOrderFooter
-                        editable
-                        actionName={data.actionName!}
-                        currencyCode={currencyCode}
-                    />
-                    {draftOrder.get('status') === 'invoice_sent' ? (
-                        <div className={css.emailInvoiceContainer}>
-                            <h4 className="mr-auto">Invoice sent</h4>
-                            <span className="mr-4">
-                                Sent on{' '}
-                                <DatetimeLabel
-                                    dateTime={draftOrder.get('invoice_sent_at')}
-                                    labelFormat="L LT"
-                                    hasTooltip={false}
-                                />
-                            </span>
-                            <EmailInvoicePopover
-                                id="email-invoice"
-                                actionName={data.actionName!}
-                                color="link"
-                                customerEmail={payload.getIn([
-                                    'customer',
-                                    'email',
-                                ])}
-                                disabled={loading || isEmpty}
-                                onSubmit={handleInvoiceSubmit}
-                            >
-                                Email new invoice
-                            </EmailInvoicePopover>
-                        </div>
+                    {calculatedEditOrder ? (
+                        <EditOrderForm
+                            currencyCode={currencyCode}
+                            loading={loading}
+                            calculatedEditOrder={calculatedEditOrder}
+                            changeNote={(note: string) => {
+                                void onNoteChange(payload.set('note', note))
+                            }}
+                            notifyCustomer={(notify: boolean) => {
+                                void onNotifyChange(
+                                    payload.set('notify', notify)
+                                )
+                            }}
+                        />
                     ) : (
-                        <div className={css.emailInvoiceContainer}>
-                            <h4 className="mr-auto">Email invoice</h4>
-                            <EmailInvoicePopover
-                                id="email-invoice"
-                                actionName={data.actionName!}
-                                color="primary"
-                                customerEmail={payload.getIn([
-                                    'customer',
-                                    'email',
-                                ])}
-                                disabled={loading || isEmpty}
-                                onSubmit={handleInvoiceSubmit}
-                            >
-                                Email invoice
-                            </EmailInvoicePopover>
-                        </div>
+                        <Loader />
                     )}
                 </div>
             ) : (
@@ -345,28 +300,24 @@ export function DraftOrderModalContainer(
                 )}
                 <Button
                     color="primary"
-                    disabled={loading || isEmpty}
+                    disabled={
+                        loading ||
+                        isEmpty ||
+                        (calculatedEditOrder &&
+                            !calculatedEditOrder.get('has_changes'))
+                    }
                     tabIndex={0}
                     className={classnames(css.focusable, 'ml-auto')}
                     onClick={handlePaymentSubmit()}
                 >
-                    Create order as paid
-                </Button>
-                <Button
-                    color="primary"
-                    disabled={loading || isEmpty}
-                    tabIndex={0}
-                    className={css.focusable}
-                    onClick={handlePaymentSubmit(true)}
-                >
-                    Create order as pending
+                    Edit order
                 </Button>
             </ModalFooter>
         </Modal>
     )
 }
 
-DraftOrderModalContainer.contextTypes = {
+EditOrderModalContainer.contextTypes = {
     integrationId: PropTypes.number.isRequired,
 }
 
@@ -375,24 +326,27 @@ const connector = connect(
         integrations: getIntegrationsByTypes([
             IntegrationType.ShopifyIntegrationType,
         ])(state),
-        loading: getCreateOrderState(state).get('loading'),
-        loadingMessage: getCreateOrderState(state).get('loadingMessage'),
-        payload: getCreateOrderState(state).get('payload') as Map<
+        loading: getEditOrderState(state).get('loading'),
+        loadingMessage: getEditOrderState(state).get('loadingMessage'),
+        payload: getEditOrderState(state).get('payload') as Map<
             any,
             any
         > | null,
-        products: getCreateOrderState(state).get('products'),
+        calculatedEditOrder: getEditOrderState(state).get(
+            'calculatedEditOrder'
+        ) as Map<any, any> | null,
+        products: getEditOrderState(state).get('products'),
     }),
     {
         addCustomRow,
         addRow,
         onCancel,
-        onEmailInvoice,
         onInit,
         onPayloadChange,
-        onCreateDraftOrder,
+        onNotifyChange,
         onReset,
+        onNoteChange,
     }
 )
 
-export default connector(DraftOrderModalContainer)
+export default connector(EditOrderModalContainer)

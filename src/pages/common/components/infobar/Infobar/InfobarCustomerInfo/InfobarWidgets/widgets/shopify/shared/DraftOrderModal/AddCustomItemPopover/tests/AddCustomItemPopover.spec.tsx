@@ -104,6 +104,7 @@ describe('<AddCustomItemPopover/>', () => {
                         taxable: true,
                         requires_shipping: false,
                         product_exists: false,
+                        newly_added: true,
                     })
                 )
 

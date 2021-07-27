@@ -8,7 +8,8 @@ import {refreshAppliedDiscounts} from './discount'
 export function initDraftOrderPayload(
     customer: Map<any, any>,
     order: Map<any, any> = fromJS({}),
-    products = new window.Map()
+    products = new window.Map(),
+    isEditOrder = false
 ): Map<any, any> {
     const draftOrder = fromJS({
         line_items: (order.get('line_items', []) as List<any>).map(
@@ -26,6 +27,17 @@ export function initDraftOrderPayload(
                       ) as Maybe<Map<any, any>>)
                     : null
 
+                let quantity = lineItem.get('quantity') || 1
+
+                if (isEditOrder) {
+                    const lineItemQuantity = lineItem.get('quantity') || 1
+                    const fulFillableQuantity =
+                        lineItem.get('fulfillable_quantity') || 0
+                    quantity =
+                        lineItemQuantity -
+                        (lineItemQuantity - fulFillableQuantity)
+                }
+
                 return fromJS({
                     product_id:
                         !!product && !!variant ? product.get('id') : null,
@@ -33,7 +45,13 @@ export function initDraftOrderPayload(
                     variant_admin_graphql_api_id: !!variant
                         ? variant.get('admin_graphql_api_id')
                         : null,
-                    quantity: lineItem.get('quantity') || 1,
+                    lineItem_admin_graphql_api_id: lineItem.get('id')
+                        ? 'gid://shopify/CalculatedLineItem/'.concat(
+                              lineItem.get('id')
+                          )
+                        : null,
+                    initial_quantity: quantity,
+                    quantity: quantity,
                     price: !!variant
                         ? variant.get('price')
                         : lineItem.get('price'),
@@ -86,7 +104,6 @@ export function addVariant(
             lineItem.get('product_id') === product.id &&
             lineItem.get('variant_id') === variant.id
     )
-
     return lineItemIndex === -1
         ? draftOrder.update('line_items', (lineItems: List<any>) =>
               lineItems.push(
@@ -104,6 +121,7 @@ export function addVariant(
                       requires_shipping: variant.requires_shipping,
                       product_exists: true,
                       properties: [],
+                      newly_added: true,
                   })
               )
           )

@@ -18,6 +18,7 @@ type Props = {
 
 type State = {
     actionDropdownIsOpen: boolean
+    hasModalOpen: boolean
 }
 
 // The maximum number of actions we can display before adding the dropdown
@@ -26,11 +27,24 @@ const NB_ACTIONS_DISPLAYED = 3
 export default class ActionButtonsGroup extends React.Component<Props, State> {
     state = {
         actionDropdownIsOpen: false,
+        hasModalOpen: false,
+    }
+
+    toggleAction = () => {
+        this.setState({
+            actionDropdownIsOpen:
+                this.state.hasModalOpen || !this.state.actionDropdownIsOpen,
+        })
+    }
+
+    updateModalStatus = () => {
+        this.setState({
+            hasModalOpen: !this.state.hasModalOpen,
+        })
     }
 
     render() {
         const {actions, payload} = this.props
-
         const {actionDropdownIsOpen} = this.state
 
         if (!actions.length) {
@@ -39,7 +53,6 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
 
         const buttons = actions.slice(0, NB_ACTIONS_DISPLAYED)
         const dropdownOptions = actions.slice(NB_ACTIONS_DISPLAYED)
-
         return (
             <ButtonGroup className="action-buttons">
                 {buttons.map((action) => {
@@ -61,11 +74,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                     <ButtonDropdown
                         className="action-dropdown"
                         isOpen={actionDropdownIsOpen}
-                        toggle={() =>
-                            this.setState({
-                                actionDropdownIsOpen: !actionDropdownIsOpen,
-                            })
-                        }
+                        toggle={this.toggleAction}
                     >
                         <DropdownToggle
                             caret
@@ -87,6 +96,10 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                         title={action.title}
                                         modal={action.modal}
                                         modalData={action.modalData}
+                                        updateModalStatus={
+                                            this.updateModalStatus
+                                        }
+                                        parentToggleAction={this.toggleAction}
                                     >
                                         {action.child}
                                     </ActionButton>

@@ -8,6 +8,7 @@ import {
     Address,
     LineItem,
     DraftOrder,
+    EditOrderPayload,
     AppliedDiscount,
     DraftOrderInvoice,
     TaxLine,
@@ -1037,6 +1038,16 @@ export const shopifyShippingLineFixture = ({price = '12.00'} = {}) => ({
     handle: 'shopify-Standard%20Shipping-10.00',
     price,
     title: 'Standard Shipping',
+})
+
+export const shopifyEditOrderPayloadFixture = (): EditOrderPayload => ({
+    calculatedOrderId: '123456789',
+    total_line_items_price: '80',
+    current_total_tax: '20',
+    current_total_price: '100',
+    paid_by_customer: '50',
+    amount_to_collect: '100',
+    has_changes: true,
 })
 
 export const shopifyCustomLineItemFixture = () =>

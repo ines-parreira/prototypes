@@ -94,6 +94,7 @@ export const EVENTS = {
     SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED:
         'shopify/create-order/line-item/quantity/changed',
     SHOPIFY_CREATE_ORDER_NOTES_CHANGED: 'shopify/create-order/notes/changed',
+    SHOPIFY_EDIT_ORDER_NOTES_CHANGED: 'shopify/edit-order/notes/changed',
     SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY:
         'shopify/create-order/shipping-popover/apply',
     SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE:
@@ -152,6 +153,30 @@ export const EVENTS = {
         'shopify/duplicate-order/taxes-popover/close',
     SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN:
         'shopify/duplicate-order/taxes-popover/open',
+    SHOPIFY_EDIT_ORDER_CANCEL: 'shopify/edit-order/cancel',
+    SHOPIFY_EDIT_ORDER_CUSTOM_ITEM_POPOVER_CANCEL:
+        'shopify/edit-order/custom-item-popover/cancel',
+    SHOPIFY_EDIT_ORDER_CUSTOM_ITEM_POPOVER_OPEN:
+        'shopify/edit-order/custom-item-popover/open',
+    SHOPIFY_EDIT_ORDER_CUSTOM_ITEM_POPOVER_SAVE:
+        'shopify/edit-order/custom-item-popover/save',
+    SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_APPLY:
+        'shopify/edit-order/discount-popover/apply',
+    SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_CLOSE:
+        'shopify/edit-order/discount-popover/close',
+    SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_OPEN:
+        'shopify/edit-order/discount-popover/open',
+    SHOPIFY_EDIT_ORDER_DISCOUNT_POPOVER_REMOVE:
+        'shopify/edit-order/discount-popover/remove',
+    SHOPIFY_EDIT_ORDER_EMAIL_INVOICE_POPOVER_CANCEL:
+        'shopify/edit-order/email-invoice-popover/cancel',
+    SHOPIFY_EDIT_ORDER_EMAIL_INVOICE_POPOVER_OPEN:
+        'shopify/edit-order/email-invoice-popover/open',
+    SHOPIFY_EDIT_ORDER_EMAIL_INVOICE_POPOVER_SEND:
+        'shopify/edit-order/email-invoice-popover/send',
+    SHOPIFY_EDIT_ORDER_LINE_ITEM_ADDED: 'shopify/edit-order/line-item/added',
+    SHOPIFY_EDIT_ORDER_LINE_ITEM_QUANTITY_CHANGED:
+        'shopify/edit-order/line-item/quantity/changed',
     SHOPIFY_EDIT_ORDER_TAG_EDIT_STARTED: 'shopify/edit-order-tag/edit-started',
     SHOPIFY_EDIT_CUSTOMER_TAG_SELECT: 'shopify/edit-customer-tag/select',
     SHOPIFY_REFUND_ORDER_CANCEL: 'shopify/refund-order/cancel',

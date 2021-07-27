@@ -360,6 +360,7 @@ export const integrationsStateWithShopify = fromJS({
                         'read_all_orders',
                         'read_orders',
                         'write_orders',
+                        'write_order_edits',
                         'read_customers',
                         'write_customers',
                         'read_themes',

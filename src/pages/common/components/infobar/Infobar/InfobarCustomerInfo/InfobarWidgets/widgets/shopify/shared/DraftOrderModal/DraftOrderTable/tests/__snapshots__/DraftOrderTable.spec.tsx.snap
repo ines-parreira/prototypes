@@ -31,6 +31,7 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
       actionName="shopifyDuplicateOrder"
       currencyCode="USD"
       id="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
+      isShownInEditOrder={false}
       key="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
       lineItem={
         Immutable.Map {
@@ -93,6 +94,7 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
       actionName="shopifyDuplicateOrder"
       currencyCode="USD"
       id="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
+      isShownInEditOrder={false}
       key="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
       lineItem={
         Immutable.Map {
@@ -227,6 +229,7 @@ exports[`<DraftOrderTable/> render() should render without products 1`] = `
       actionName="shopifyDuplicateOrder"
       currencyCode="USD"
       id="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
+      isShownInEditOrder={false}
       key="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
       lineItem={
         Immutable.Map {
@@ -253,6 +256,7 @@ exports[`<DraftOrderTable/> render() should render without products 1`] = `
       actionName="shopifyDuplicateOrder"
       currencyCode="USD"
       id="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
+      isShownInEditOrder={false}
       key="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
       lineItem={
         Immutable.Map {

@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EditOrderForm/> should render 1`] = `
+<div
+  class="container-fluid"
+>
+  <div
+    class="row"
+  >
+    <div
+      class="col-12 order-2 col-lg-6 order-lg-1"
+    >
+      <div
+        class="mb-4"
+      >
+        <h4>
+          Reason for edit
+        </h4>
+        <textarea
+          class="form-control"
+          placeholder="Add a reason..."
+          rows="1"
+        />
+        <small
+          class="form-text text-muted"
+        >
+          Only you and other staff can see this reason
+        </small>
+      </div>
+      <div
+        class="mb-3 form-check"
+      >
+        <label
+          class="form-check-label"
+          for="notify-customer"
+        >
+          <input
+            class="form-check-input"
+            id="notify-customer"
+            type="checkbox"
+          />
+          <span
+            class="ml-1"
+          >
+            Send invoice to customer
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="mb-xs-4 col-12 order-1 col-lg-6 order-lg-2"
+    >
+      <dl
+        class="row text-right mb-0"
+      >
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Subtotal
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          —
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Tax
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          —
+        </dd>
+        <dt
+          class="col-7 mb-2"
+        >
+          Total
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <strong
+            class=""
+          >
+            —
+          </strong>
+        </dd>
+        <dt
+          class="col-7 mb-2 grey"
+        >
+          Paid by customer
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <div
+            class="mb-3 form-check"
+          >
+            —
+            <small
+              class="form-text text-muted"
+            >
+              No changes have been made
+            </small>
+          </div>
+        </dd>
+        <dt
+          class="col-7 mb-2"
+        >
+          Amount to refund
+        </dt>
+        <dd
+          class="col-5 mb-2"
+        >
+          <div
+            class="mb-3 form-check"
+          >
+            <strong
+              class=""
+            >
+              —
+            </strong>
+          </div>
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
+`;

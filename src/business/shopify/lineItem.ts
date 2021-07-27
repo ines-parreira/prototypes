@@ -65,7 +65,6 @@ export function initLineItemAppliedDiscount(
             ? formatPrice(value, currency)
             : formatPercentage(value)
     const appliedAmount = formatPrice(amount, currency)
-
     return fromJS({
         title,
         description,

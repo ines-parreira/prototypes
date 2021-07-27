@@ -171,6 +171,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
             },
           ]
         }
+        parentToggleAction={[Function]}
         payload={Object {}}
         tag={[Function]}
         tagOptions={
@@ -183,6 +184,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
             Option 1
           </div>
         }
+        updateModalStatus={[Function]}
       >
         <div>
           Option 1

@@ -145,6 +145,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                 taxable,
                 requires_shipping: requiresShipping,
                 product_exists: false,
+                newly_added: true,
             })
         )
 

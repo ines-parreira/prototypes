@@ -33,6 +33,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow(
                 <DraftOrderTable
                     shopName="storegorgias3"
+                    isShownInEditOrder={false}
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
@@ -48,6 +49,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow(
                 <DraftOrderTable
                     shopName="storegorgias3"
+                    isShownInEditOrder={false}
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
@@ -63,6 +65,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow(
                 <DraftOrderTable
                     shopName="storegorgias3"
+                    isShownInEditOrder={false}
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={fromJS([])}
@@ -80,6 +83,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow<DraftOrderTable>(
                 <DraftOrderTable
                     shopName="storegorgias3"
+                    isShownInEditOrder={false}
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
@@ -107,6 +111,7 @@ describe('<DraftOrderTable/>', () => {
             const component = shallow<DraftOrderTable>(
                 <DraftOrderTable
                     shopName="storegorgias3"
+                    isShownInEditOrder={false}
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
