@@ -46,6 +46,7 @@ export type EditableUserProfile = {
     language: string
     name: string
     timezone: string
+    meta?: {profile_picture_url?: string}
 }
 
 export enum UserSettingType {

@@ -6,7 +6,6 @@ exports[`Avatar component should not render image in invisible container 1`] = `
   name=""
   size={50}
   style={Object {}}
-  url=""
 >
   <div
     className="component"
@@ -112,7 +111,6 @@ exports[`Avatar component should render image in visible container 1`] = `
   name=""
   size={50}
   style={Object {}}
-  url=""
 >
   <div
     className="component hasImage"

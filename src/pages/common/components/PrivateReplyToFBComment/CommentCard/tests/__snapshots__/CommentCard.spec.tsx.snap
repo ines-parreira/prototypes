@@ -18,7 +18,6 @@ exports[`<CommentCard/> render should render the comment card 1`] = `
           name="some_sender_name"
           size={36}
           style={Object {}}
-          url=""
         />
       </div>
       <div
@@ -96,7 +95,6 @@ exports[`<CommentCard/> render should render the comment card 2`] = `
           name="some_sender_name"
           size={36}
           style={Object {}}
-          url=""
         />
       </div>
       <div

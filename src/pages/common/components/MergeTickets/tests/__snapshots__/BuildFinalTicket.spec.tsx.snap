@@ -66,7 +66,6 @@ exports[`BuildFinalTicket component should display all fields because everything
               name="John Smith"
               size={26}
               style={Object {}}
-              url=""
             />
             John Smith
           </span>,
@@ -80,7 +79,6 @@ exports[`BuildFinalTicket component should display all fields because everything
               name="Jack Ryan"
               size={26}
               style={Object {}}
-              url=""
             />
             Jack Ryan
           </span>,
@@ -111,7 +109,6 @@ exports[`BuildFinalTicket component should display the assignee field because th
               name="John Smith"
               size={26}
               style={Object {}}
-              url=""
             />
             John Smith
           </span>,
@@ -125,7 +122,6 @@ exports[`BuildFinalTicket component should display the assignee field because th
               name="Jack Ryan"
               size={26}
               style={Object {}}
-              url=""
             />
             Jack Ryan
           </span>,

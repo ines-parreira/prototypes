@@ -12,7 +12,6 @@ exports[`Container should render container 1`] = `
       name="John Doe"
       size={36}
       style={Object {}}
-      url=""
     />
   </div>
   <div
@@ -124,7 +123,6 @@ exports[`Container should render container with an avatar because the hidden mes
       name="John Doe"
       size={36}
       style={Object {}}
-      url=""
     />
   </div>
   <div

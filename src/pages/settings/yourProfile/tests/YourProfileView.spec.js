@@ -102,6 +102,30 @@ describe('YourProfileView', () => {
             component._saveProfilePicture()
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
         })
+
+        it('should remove profile picture', () => {
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
+            const component = shallow(
+                <YourProfileView
+                    updateCurrentUser={updateCurrentUserSpy}
+                    currentUser={fromJS({
+                        ...user,
+                        meta: {
+                            profile_picture_url:
+                                'https://config.gorgias.io/staging/pic.jpg',
+                        },
+                    })}
+                    submitSetting={jest.fn()}
+                    preferences={fromJS({data: {}})}
+                />
+            ).instance()
+
+            component.setState({
+                profilePictureUrl: undefined,
+            })
+            component._saveProfilePicture()
+            expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
+        })
     })
 
     describe('_savePreferences', () => {

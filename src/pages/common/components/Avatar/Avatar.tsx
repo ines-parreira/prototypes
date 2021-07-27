@@ -9,7 +9,7 @@ type Props = {
     email: string
     name: string | null
     size: number
-    url: string
+    url?: string
     className?: string
     style: CSSProperties
     badgeColor?: string
@@ -23,11 +23,7 @@ export default class Avatar extends Component<Props, State> {
     component: Maybe<HTMLDivElement>
     isMounted: boolean
 
-    static defaultProps: Pick<
-        Props,
-        'url' | 'email' | 'name' | 'size' | 'style'
-    > = {
-        url: '',
+    static defaultProps: Pick<Props, 'email' | 'name' | 'size' | 'style'> = {
         email: '',
         name: '',
         size: 50,
@@ -78,7 +74,7 @@ export default class Avatar extends Component<Props, State> {
             return
         }
 
-        if (typeof this.state.imageUrl !== 'undefined') {
+        if (typeof this.props.url !== 'undefined') {
             this.setState(this._getDefaultState(this.props))
             return
         }

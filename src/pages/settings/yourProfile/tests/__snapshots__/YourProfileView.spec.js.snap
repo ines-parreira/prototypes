@@ -51,6 +51,18 @@ Array [
 ]
 `;
 
+exports[`YourProfileView _saveProfilePicture should remove profile picture 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "profile_picture_url": undefined,
+      },
+    },
+  ],
+]
+`;
+
 exports[`YourProfileView _saveProfilePicture should save profile picture 1`] = `
 Array [
   Array [
@@ -2607,7 +2619,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           </FormGroup>
         </Col>
         <Col
-          md="3"
+          md={3}
           tag="div"
           widths={
             Array [
@@ -2618,7 +2630,8 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               "xl",
             ]
           }
-          xs="12"
+          xl={2}
+          xs={12}
         >
           <FormGroup
             tag="div"
@@ -2644,23 +2657,23 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 name="Alex Plugaru"
                 size="100"
                 style={Object {}}
-                url=""
               />
             </div>
-            <br />
+            <FormText
+              className="mt-2 mb-2"
+              color="muted"
+              tag="small"
+            >
+              The picture must be square and weight less than 500kB.
+            </FormText>
             <Connect(FileFieldContainer)
+              className="mb-2"
               maxSize={500000}
               noPreview={true}
               onChange={[Function]}
               returnFiles={false}
               uploadType="profile_picture"
             />
-            <FormText
-              color="muted"
-              tag="small"
-            >
-              The image must be square and weight less than 500kB.
-            </FormText>
           </FormGroup>
         </Col>
       </Row>

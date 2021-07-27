@@ -268,7 +268,6 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
         name="foo"
         size={50}
         style={Object {}}
-        url=""
       />
       <Link
         className="displayName"
@@ -347,7 +346,6 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         name="foo"
         size={50}
         style={Object {}}
-        url=""
       />
       <Link
         className="displayName"
@@ -452,7 +450,6 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
         name="foo"
         size={50}
         style={Object {}}
-        url=""
       />
       <Link
         className="displayName"
@@ -505,7 +502,6 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
         name="foo"
         size={50}
         style={Object {}}
-        url=""
       />
       <Link
         className="displayName"
@@ -550,7 +546,6 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
         name="foo"
         size={50}
         style={Object {}}
-        url=""
       />
       <Link
         className="displayName"
@@ -643,7 +638,6 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
           name="foo"
           size={50}
           style={Object {}}
-          url=""
         >
           <div
             className="component mr-3 rounded"

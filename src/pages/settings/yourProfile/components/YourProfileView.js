@@ -276,7 +276,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     </FormText>
                                 </FormGroup>
                             </Col>
-                            <Col md="3" xs="12">
+                            <Col xl={2} md={3} xs={12}>
                                 <FormGroup>
                                     <Label className="control-label">
                                         Profile picture
@@ -290,9 +290,16 @@ export default class YourProfileView extends React.Component<Props, State> {
                                         />
                                     </div>
 
-                                    <br />
+                                    <FormText
+                                        color="muted"
+                                        className="mt-2 mb-2"
+                                    >
+                                        The picture must be square and weight
+                                        less than 500kB.
+                                    </FormText>
 
                                     <FileField
+                                        key={this.state.profilePictureUrl}
                                         returnFiles={false}
                                         noPreview={true}
                                         onChange={(picture_url) =>
@@ -305,12 +312,26 @@ export default class YourProfileView extends React.Component<Props, State> {
                                         }
                                         uploadType="profile_picture"
                                         maxSize={500 * 1000}
+                                        className="mb-2"
                                     />
 
-                                    <FormText color="muted">
-                                        The image must be square and weight less
-                                        than 500kB.
-                                    </FormText>
+                                    {this.state.profilePictureUrl && (
+                                        <a
+                                            href="#"
+                                            className="text-danger"
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                this.setState(
+                                                    {
+                                                        profilePictureUrl: undefined,
+                                                    },
+                                                    this._saveProfilePicture
+                                                )
+                                            }}
+                                        >
+                                            Remove Picture
+                                        </a>
+                                    )}
                                 </FormGroup>
                             </Col>
                         </Row>
