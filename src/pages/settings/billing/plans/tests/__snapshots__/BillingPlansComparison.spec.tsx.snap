@@ -112,7 +112,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="standard-usd-1-billable-ticket-label"
+                    id="billable-ticket-label-41"
                   >
                     billable tickets
                   </span>
@@ -453,7 +453,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="basic-monthly-billable-ticket-label"
+                    id="billable-ticket-label-42"
                   >
                     billable tickets
                   </span>
@@ -734,11 +734,11 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         class="cardFooter card-footer"
       >
         <button
-          aria-label="Downgrade to Basic Plan"
+          aria-label="Switch to Basic Plan"
           class="btn btn-link"
           type="button"
         >
-          Downgrade to Basic Plan
+          Switch to Basic Plan
         </button>
       </div>
     </div>
@@ -793,7 +793,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="pro-monthly-billable-ticket-label"
+                    id="billable-ticket-label-43"
                   >
                     billable tickets
                   </span>
@@ -1136,7 +1136,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="advanced-monthly-billable-ticket-label"
+                    id="billable-ticket-label-44"
                   >
                     billable tickets
                   </span>
@@ -1836,7 +1836,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="basic-monthly-billable-ticket-label"
+                    id="billable-ticket-label-4"
                   >
                     billable tickets
                   </span>
@@ -2176,7 +2176,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="pro-monthly-billable-ticket-label"
+                    id="billable-ticket-label-5"
                   >
                     billable tickets
                   </span>
@@ -2519,7 +2519,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                    
                   <span
                     class="billableTickets"
-                    id="advanced-monthly-billable-ticket-label"
+                    id="billable-ticket-label-6"
                   >
                     billable tickets
                   </span>
@@ -3226,7 +3226,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                    
                   <span
                     class="billableTickets"
-                    id="basic-monthly-billable-ticket-label"
+                    id="billable-ticket-label-102"
                   >
                     billable tickets
                   </span>
@@ -3567,7 +3567,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                    
                   <span
                     class="billableTickets"
-                    id="pro-monthly-billable-ticket-label"
+                    id="billable-ticket-label-103"
                   >
                     billable tickets
                   </span>
@@ -3911,7 +3911,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                    
                   <span
                     class="billableTickets"
-                    id="advanced-monthly-billable-ticket-label"
+                    id="billable-ticket-label-106"
                   >
                     billable tickets
                   </span>
@@ -4520,7 +4520,8 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
       >
         <button
           aria-label="Contact us"
-          class="btn btn-link"
+          class="btn-loading btn btn-link disabled"
+          disabled=""
           type="button"
         >
           Contact us

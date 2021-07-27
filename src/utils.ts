@@ -887,12 +887,12 @@ export const hasUnicodeChars = (needle: string): boolean => {
 }
 
 /**
- * Open the smooch chat (if present)
+ * Open the gorgias chat (if present)
  */
 export const openChat = (e: Event) => {
-    if (window.Smooch) {
+    if (window.GorgiasChat) {
         e.preventDefault()
-        window.Smooch.open()
+        window.GorgiasChat.open()
     }
 }
 

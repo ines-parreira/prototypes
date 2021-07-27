@@ -172,12 +172,7 @@ export const getPlanCardFeaturesForPlan = (
     return ([
         {
             icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
-            label: (
-                <BillableTicketsLabel
-                    id={plan.id}
-                    freeTickets={plan.free_tickets}
-                />
-            ),
+            label: <BillableTicketsLabel freeTickets={plan.free_tickets} />,
         },
         {
             icon: <PlanFeatureMaterialIcon icon="playlist_add" />,
