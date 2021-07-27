@@ -58,6 +58,10 @@ import {
     getReplyThreadMessages,
     hasOnlySignatureText,
 } from './emailExtraUtils'
+import {
+    TicketMessageActionValidationError,
+    TicketMessageInvalidSendDataError,
+} from './errors'
 
 export const addAttachments = (
     ticket: Map<any, any>,
@@ -780,7 +784,7 @@ export function prepareTicketMessage(
                         reason: 'Message was not sent. Sent data is invalid.',
                         messageId,
                     })
-                    return reject()
+                    return reject(new TicketMessageInvalidSendDataError())
                 }
 
                 messageToSend = dataToSend.newMessage
@@ -816,7 +820,11 @@ export function prepareTicketMessage(
                                     message: messageToSend,
                                     messageId,
                                 })
-                                return reject()
+                                return reject(
+                                    new TicketMessageActionValidationError(
+                                        validator.error
+                                    )
+                                )
                             }
                         }
                     }

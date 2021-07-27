@@ -31,6 +31,15 @@ import {ticket} from '../../../fixtures/ticket'
 import * as emailExtraUtils from '../emailExtraUtils'
 import {convertFromHTML} from '../../../utils/editor'
 import {ReplyAreaState} from '../types'
+import {
+    MacroActionType,
+    MacroActionName,
+    MacroAction,
+} from '../../../models/macroAction/types'
+import {
+    TicketMessageActionValidationError,
+    TicketMessageInvalidSendDataError,
+} from '../errors'
 
 import {getReplyAreaStateSnapshot} from './testUtils'
 
@@ -1136,6 +1145,65 @@ describe('actions', () => {
                             ).toMatchSnapshot()
                         })
                 )
+            })
+
+            it('should reject with TicketMessageActionValidationError on action validation error', async () => {
+                store = mockStore({
+                    ticket: typeSafeEmailTicket,
+                    newMessage: initialState,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo',
+                    }),
+                    integrations: fromJS(integrationsState),
+                })
+
+                const macroAction: MacroAction = {
+                    title: 'foo action',
+                    name: MacroActionName.ShopifyCancelLastOrder,
+                    type: MacroActionType.User,
+                    arguments: {
+                        body_text: 'Foo',
+                    },
+                }
+
+                await expect(
+                    store.dispatch(
+                        actions.prepareTicketMessage(
+                            null,
+                            fromJS([macroAction]),
+                            null
+                        )
+                    )
+                ).rejects.toBeInstanceOf(TicketMessageActionValidationError)
+            })
+
+            it('should reject with TicketMessageInvalidSendDataError on send data validation error', async () => {
+                store = mockStore({
+                    ticket: typeSafeEmailTicket,
+                    newMessage: initialState
+                        .setIn(
+                            ['newMessage', 'channel'],
+                            TicketMessageSourceType.Facebook
+                        )
+                        .setIn(
+                            ['newMessage', 'source', 'type'],
+                            TicketMessageSourceType.FacebookComment
+                        )
+                        .setIn(['newMessage', 'body_text'], '')
+                        .setIn(['newMessage', 'attachments'], [{}]),
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo',
+                    }),
+                    integrations: fromJS(integrationsState),
+                })
+
+                await expect(
+                    store.dispatch(
+                        actions.prepareTicketMessage(null, null, null)
+                    )
+                ).rejects.toBeInstanceOf(TicketMessageInvalidSendDataError)
             })
         })
 

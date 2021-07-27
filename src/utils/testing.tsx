@@ -89,3 +89,5 @@ export const mockDevelopmentEnvironment = () => {
     window.STAGING = false
     window.PRODUCTION = false
 }
+
+export const flushPromises = () => new Promise(setImmediate)

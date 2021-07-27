@@ -7,14 +7,13 @@ import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
 import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
 import {reportError} from '../../../../../../utils/errors'
+import {flushPromises} from '../../../../../../utils/testing'
 
 jest.mock('../../../../../../utils/errors')
 
 const axiosMock = new AxiosMock(axios)
 
 const defaultContext: Map<any, any> = fromJS({})
-
-const flushPromises = () => new Promise(setImmediate)
 
 const PREDICTION_URL = '/prediction'
 const FEEDBACK_URL = '/feedback'

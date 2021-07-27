@@ -29,6 +29,10 @@ import {
     submitTicket,
 } from '../../../state/newMessage/actions.ts'
 import {
+    TicketMessageActionValidationError,
+    TicketMessageInvalidSendDataError,
+} from '../../../state/newMessage/errors.ts'
+import {
     isReady,
     getNewMessageSource,
     getReceiversProperties,
@@ -163,30 +167,44 @@ export const TicketDetailContainer = ({
         action: ?List<Map<any, any>>,
         resetMessage: boolean
     ) => {
-        const {
-            messageId,
-            messageToSend,
-            replyAreaState,
-        } = await prepareTicketMessage(
-            status,
-            ticket.getIn(['state', 'appliedMacro', 'actions']),
-            action,
-            resetMessage
-        )
+        try {
+            const {
+                messageId,
+                messageToSend,
+                replyAreaState,
+            } = await prepareTicketMessage(
+                status,
+                ticket.getIn(['state', 'appliedMacro', 'actions']),
+                action,
+                resetMessage
+            )
 
-        if (messageToSend.source.type === 'email') {
-            pendingMessageManager.sendMessage({
+            if (messageToSend.source.type === 'email') {
+                pendingMessageManager.sendMessage({
+                    messageId,
+                    messageToSend,
+                    action,
+                    resetMessage,
+                    ticketId: ticketIdParam,
+                    replyAreaState,
+                })
+                return
+            }
+            pendingMessageManager.skipExistingTimer()
+            return sendTicketMessage(
                 messageId,
                 messageToSend,
                 action,
-                resetMessage,
-                ticketId: ticketIdParam,
-                replyAreaState,
-            })
-            return
+                resetMessage
+            )
+        } catch (error) {
+            if (
+                !(error instanceof TicketMessageInvalidSendDataError) &&
+                !(error instanceof TicketMessageActionValidationError)
+            ) {
+                throw error
+            }
         }
-        pendingMessageManager.skipExistingTimer()
-        return sendTicketMessage(messageId, messageToSend, action, resetMessage)
     }
 
     const submit = (

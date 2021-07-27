@@ -5,10 +5,14 @@ import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import {createMemoryHistory} from 'history'
 
-import {renderWithRouter} from '../../../../utils/testing'
+import {flushPromises, renderWithRouter} from '../../../../utils/testing'
 import {initialState as currentUser} from '../../../../state/currentUser/reducers'
 import pendingMessageManager from '../../../../services/pendingMessageManager/pendingMessageManager'
 import {TicketDetailContainer} from '../TicketDetailContainer.js'
+import {
+    TicketMessageActionValidationError,
+    TicketMessageInvalidSendDataError,
+} from '../../../../state/newMessage/errors'
 
 jest.useFakeTimers()
 
@@ -33,6 +37,7 @@ jest.mock(
 )
 
 describe('TicketDetailContainer component', () => {
+    const prepareTicketMessageMock = jest.fn()
     const minProps = ({
         activeCustomer: fromJS({}),
         activeView: fromJS({}),
@@ -54,7 +59,7 @@ describe('TicketDetailContainer component', () => {
             },
         }),
         newMessageSource: fromJS({}),
-        prepareTicketMessage: jest.fn(),
+        prepareTicketMessage: prepareTicketMessageMock,
         sendTicketMessage: jest.fn(),
         setCustomer: jest.fn().mockResolvedValue(undefined),
         setReceivers: jest.fn(),
@@ -884,5 +889,36 @@ describe('TicketDetailContainer component', () => {
                 expect.any(Promise)
             )
         })
+    })
+
+    it.each<[string, Error]>([
+        [
+            'TicketMessageInvalidSendDataError',
+            new TicketMessageInvalidSendDataError(),
+        ],
+        [
+            'TicketMessageActionValidationError',
+            new TicketMessageActionValidationError('Test error'),
+        ],
+    ])('should not throw %s', async (testName, error) => {
+        prepareTicketMessageMock.mockRejectedValue(error)
+        const {getByTestId} = renderWithRouter(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={fromJS({
+                    id: 1,
+                    messages: [],
+                })}
+                newMessage={newMessageState}
+                canSendMessage
+            />,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        userEvent.click(getByTestId('TicketView-close'))
+        await flushPromises()
     })
 })
