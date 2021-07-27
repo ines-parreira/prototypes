@@ -2,13 +2,18 @@ import moment from 'moment'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
+import {account} from '../../../fixtures/account.ts'
+import {user} from '../../../fixtures/users.ts'
+
+import {ViewType} from '../../../models/view/constants.ts'
+import {AccountSettingType} from '../../currentAccount/types.ts'
+import {initialState as currentAccountInitialState} from '../../currentAccount/reducers.ts'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
+import {SYSTEM_VIEW_CATEGORY, ViewVisibility} from '../../../constants/view.ts'
+import {getExpirationTimeForCount} from '../../../config/views.tsx'
 import {initialState} from '../reducers.ts'
 import * as selectors from '../selectors.ts'
-import {user} from '../../../fixtures/users.ts'
-import {ViewType} from '../../../models/view/constants.ts'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
-import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
-import {getExpirationTimeForCount} from '../../../config/views.tsx'
+import {UserSettingType} from '../../../config/types/user'
 
 jest.addMatchers(immutableMatchers)
 
@@ -245,15 +250,12 @@ describe('selectors', () => {
                 type: 'customer-list',
             }
             const viewSetting1 = {
-                hide: false,
                 display_order: 1,
             }
             const viewSetting2 = {
-                hide: true,
                 display_order: 2,
             }
             const viewSetting3 = {
-                hide: false,
                 display_order: 3,
             }
             const state = {
@@ -263,23 +265,38 @@ describe('selectors', () => {
                 currentUser: currentUserInitialState.mergeDeep(user).set(
                     'settings',
                     fromJS([
+                        ...user.settings,
                         {
                             id: 1,
-                            type: 'ticket-views',
+                            type: UserSettingType.ViewsOrdering,
                             data: {
-                                [view1.id]: viewSetting1,
-                                [view2.id]: viewSetting2,
-                            },
-                        },
-                        {
-                            id: 2,
-                            type: 'customer-views',
-                            data: {
-                                [view3.id]: viewSetting3,
+                                views: {
+                                    [view1.id]: viewSetting1,
+                                    [view2.id]: viewSetting2,
+                                },
                             },
                         },
                     ])
                 ),
+                currentAccount: currentAccountInitialState
+                    .mergeDeep(account)
+                    .set(
+                        'settings',
+                        fromJS([
+                            ...account.settings,
+                            {
+                                type: AccountSettingType.ViewsOrdering,
+                                id: 1,
+                                data: {
+                                    views: {
+                                        [view1.id]: viewSetting1,
+                                        [view2.id]: viewSetting2,
+                                        [view3.id]: viewSetting3,
+                                    },
+                                },
+                            },
+                        ])
+                    ),
             }
             const selector = selectors.makeGetViewsByType()
             expect(selector(state, 'ticket-list')).toEqualImmutable(
@@ -287,10 +304,12 @@ describe('selectors', () => {
                     {
                         ...view1,
                         ...viewSetting1,
+                        hide: false,
                     },
                     {
                         ...view2,
                         ...viewSetting2,
+                        hide: false,
                     },
                 ])
             )
@@ -299,6 +318,106 @@ describe('selectors', () => {
                     {
                         ...view3,
                         ...viewSetting3,
+                        hide: false,
+                    },
+                ])
+            )
+        })
+
+        it('should sort views in the expected order', () => {
+            const view1 = {
+                id: 1,
+                type: 'ticket-list',
+                visibility: ViewVisibility.PRIVATE,
+            }
+            const view2 = {
+                id: 2,
+                type: 'ticket-list',
+                visibility: ViewVisibility.PUBLIC,
+            }
+            const view3 = {
+                id: 3,
+                type: 'ticket-list',
+                visibility: ViewVisibility.PUBLIC,
+            }
+            const view4 = {
+                id: 4,
+                type: 'ticket-list',
+                visibility: ViewVisibility.PRIVATE,
+            }
+            const viewSetting1 = {
+                display_order: 1,
+            }
+            const viewSetting2 = {
+                display_order: 0,
+            }
+            const viewSetting3 = {
+                display_order: 1,
+            }
+            const viewSetting4 = {
+                display_order: 0,
+            }
+            const state = {
+                views: initialState.mergeDeep({
+                    items: [view1, view2, view3, view4],
+                }),
+                currentUser: currentUserInitialState.mergeDeep(user).set(
+                    'settings',
+                    fromJS([
+                        ...user.settings,
+                        {
+                            id: 1,
+                            type: UserSettingType.ViewsOrdering,
+                            data: {
+                                views: {
+                                    [view4.id]: viewSetting4,
+                                    [view1.id]: viewSetting1,
+                                },
+                            },
+                        },
+                    ])
+                ),
+                currentAccount: currentAccountInitialState
+                    .mergeDeep(account)
+                    .set(
+                        'settings',
+                        fromJS([
+                            ...account.settings,
+                            {
+                                type: AccountSettingType.ViewsOrdering,
+                                id: 1,
+                                data: {
+                                    views: {
+                                        [view2.id]: viewSetting2,
+                                        [view3.id]: viewSetting3,
+                                    },
+                                },
+                            },
+                        ])
+                    ),
+            }
+            const selector = selectors.makeGetViewsByType()
+            expect(selector(state, 'ticket-list')).toEqualImmutable(
+                fromJS([
+                    {
+                        ...view2,
+                        ...viewSetting2,
+                        hide: false,
+                    },
+                    {
+                        ...view3,
+                        ...viewSetting3,
+                        hide: false,
+                    },
+                    {
+                        ...view4,
+                        ...viewSetting4,
+                        hide: false,
+                    },
+                    {
+                        ...view1,
+                        ...viewSetting1,
+                        hide: false,
                     },
                 ])
             )

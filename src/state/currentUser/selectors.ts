@@ -40,22 +40,21 @@ const _getSettingsByType = (
             (setting: Map<any, any>) => setting.get('type') === type
         ) as Map<any, any>) || fromJS({type, data: {}})
 
-    // add vies and update settings according to views configuration
+    // add views and update settings according to views configuration
     views.forEach((view: Map<any, any>) => {
         const viewId: number = view.get('id')
         const viewSetting: Map<any, any> = formattedSettings.getIn(
-            ['data', viewId.toString()],
+            ['data', 'views', viewId.toString()],
             fromJS({})
         )
 
-        const hide = (viewSetting.get('hide') as boolean) || false
         const displayOrder: number = viewSetting.get(
             'display_order',
             view.get('display_order', 0)
         )
 
         formattedSettings = formattedSettings
-            .setIn(['data', viewId.toString(), 'hide'], hide)
+            .setIn(['data', viewId.toString(), 'hide'], false) // TODO: should be removed down the line once Immutable is removed
             .setIn(['data', viewId.toString(), 'display_order'], displayOrder)
     })
 

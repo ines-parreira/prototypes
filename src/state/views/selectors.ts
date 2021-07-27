@@ -4,13 +4,15 @@ import moment from 'moment'
 
 import {createImmutableSelector} from '../../utils'
 import * as viewsConfig from '../../config/views'
-import {ViewType} from '../../models/view/types'
+import {UserSettingType} from '../../config/types/user'
+import {ViewType, ViewVisibility} from '../../models/view/types'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
 } from '../currentUser/selectors'
-
+import {getSettingsByType as getAccountSettingsByType} from '../currentAccount/selectors'
 import {RootState} from '../types'
+import {AccountSettingType} from '../currentAccount/types'
 
 import {sortViews} from './utils'
 import {ViewsState} from './types'
@@ -187,31 +189,53 @@ export const makeIsLoading = (state: RootState) => (name: string) =>
 const _getViewsByType = (
     views: List<any>,
     currentUserSettings: Map<any, any>,
+    accountSettings: Map<any, any>,
     type: ViewType
 ) => {
-    return (
-        views
-            // keep only views of asked type
-            .filter((view: Map<any, any>) => view.get('type') === type)
-            // update views according to current user settings
-            .map((view: Map<any, any>) => {
-                const viewId = view.get('id') as number
-                const viewSetting = currentUserSettings.getIn(
-                    ['data', viewId.toString()],
-                    fromJS({})
-                ) as Map<any, any>
-
-                const hide = viewSetting.get('hide', false) as boolean
-                const displayOrder = viewSetting.get(
-                    'display_order',
-                    view.get('display_order', 0)
-                ) as number
-
-                return view.set('hide', hide).set('display_order', displayOrder)
-            })
-            // sort views by display order
-            .sort(sortViews) as List<any>
+    const filteredViews = views.filter(
+        (view: Map<any, any>) => view.get('type') === type
     )
+    const publicViews = filteredViews
+        .filter(
+            (view: Map<any, any>) =>
+                view.get('visibility') !== ViewVisibility.Private
+        )
+        .map((view: Map<any, any>) => {
+            const viewId = view.get('id') as number
+
+            const displayOrder = accountSettings.getIn(
+                ['data', 'views', viewId.toString(), 'display_order'],
+                view.get('display_order', 0)
+            ) as number
+
+            // TODO: hide property should be removed down the line once Immutable is removed
+            return view.set('hide', false).set('display_order', displayOrder)
+        })
+        .sort(sortViews) as List<any>
+
+    const privateViews = filteredViews
+        .filter(
+            (view: Map<any, any>) =>
+                view.get('visibility') === ViewVisibility.Private
+        )
+        .map((view: Map<any, any>) => {
+            const viewId = view.get('id') as number
+            const viewSetting = currentUserSettings.getIn(
+                ['data', viewId.toString()],
+                fromJS({})
+            ) as Map<any, any>
+
+            const displayOrder = viewSetting.get(
+                'display_order',
+                view.get('display_order', 0)
+            ) as number
+
+            // TODO: hide property should be removed down the line once Immutable is removed
+            return view.set('hide', false).set('display_order', displayOrder)
+        })
+        .sort(sortViews) as List<any>
+
+    return publicViews.concat(privateViews) as List<any>
 }
 
 export const makeGetViewsByType = () => {
@@ -221,22 +245,32 @@ export const makeGetViewsByType = () => {
         List<any>,
         List<any>,
         Map<any, any>,
+        Map<any, any>,
         ViewType
     >(
         getViews,
-        (state: RootState, type?: string) =>
-            getSettingsByType(state, (type || '').replace('list', 'views')),
+        (state: RootState) =>
+            getSettingsByType(state, UserSettingType.ViewsOrdering),
+        (state: RootState) =>
+            getAccountSettingsByType(AccountSettingType.ViewsOrdering)(state),
         (state: RootState, type: ViewType) => type,
         _getViewsByType
     )
 }
 
-export const getViewsByType = (type: ViewType) =>
-    createImmutableSelector<RootState, List<any>, List<any>, Map<any, any>>(
+const getViewsByType = (type: ViewType) =>
+    createImmutableSelector<
+        RootState,
+        List<any>,
+        List<any>,
+        Map<any, any>,
+        Map<any, any>
+    >(
         getViews,
-        getCurrentUserSettingsByType(type.replace('list', 'views')),
-        (views, currentUserSettings) =>
-            _getViewsByType(views, currentUserSettings, type)
+        getCurrentUserSettingsByType(UserSettingType.ViewsOrdering),
+        getAccountSettingsByType(AccountSettingType.ViewsOrdering),
+        (views, currentUserSettings, accountSettings) =>
+            _getViewsByType(views, currentUserSettings, accountSettings, type)
     )
 
 export const getViewIdToDisplay = (type: ViewType, urlViewId: Maybe<string>) =>
