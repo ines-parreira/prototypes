@@ -1,4 +1,16 @@
-import {slugify} from '../helpCenter.utils'
+import {getNewTranslation, slugify} from '../helpCenter.utils'
+
+describe('getNewTranslation()', () => {
+    it('have the expected properties', () => {
+        expect(getNewTranslation('en-US')).toEqual({
+            title: '',
+            content: '',
+            excerpt: '',
+            slug: '',
+            locale: 'en-US',
+        })
+    })
+})
 
 describe('slugify()', () => {
     describe('called with empty string', () => {

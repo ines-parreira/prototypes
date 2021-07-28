@@ -2,7 +2,7 @@ import React, {useEffect, useState, useCallback, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container, Button} from 'reactstrap'
-import keyBy from 'lodash/keyBy'
+import _keyBy from 'lodash/keyBy'
 
 import {HelpCenterLocale} from '../../../../models/helpCenter/types'
 
@@ -27,7 +27,7 @@ import css from './HelpCenterStartView.less'
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
-const localesByCode = keyBy<HelpCenterLocale>(
+const localesByCode = _keyBy<HelpCenterLocale>(
     getLocalesResponseFixture as HelpCenterLocale[],
     'code'
 )

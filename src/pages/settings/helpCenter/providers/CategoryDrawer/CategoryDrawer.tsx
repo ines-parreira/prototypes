@@ -7,6 +7,7 @@ import {
     CategoryTranslation,
     CreateCategoryDto,
 } from '../../../../../models/helpCenter/types'
+
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
 import {NotificationStatus} from '../../../../../state/notifications/types'
@@ -16,6 +17,7 @@ import {useModalManager} from '../../../../../hooks/useModalManager'
 
 import {HelpCenterCategory} from '../../components/articles/HelpCenterCategory'
 import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
+import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 
 import {MODALS} from '../../constants'
 
@@ -29,6 +31,8 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
     const [isLoading, setLoading] = React.useState<boolean>(true)
     const [category, setCategory] = React.useState<Category | null>(null)
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
+    const actions = useCategoriesActions()
+
     const params = getParams() as Category & {isCreate?: boolean}
 
     React.useEffect(() => {
@@ -69,64 +73,48 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
         payload: Partial<CategoryTranslation>,
         locale: LocaleCode
     ) => {
-        if (client) {
-            try {
-                await client?.updateCategoryTranslation(
-                    {
-                        help_center_id: helpCenter.id,
-                        category_id: params.id,
-                        locale: locale,
-                    },
-                    payload
-                )
+        try {
+            await actions.updateCategoryTranslation(params.id, locale, payload)
 
-                void dispatch(
-                    notify({
-                        message: 'Successfully updated the category',
-                        status: NotificationStatus.Success,
-                    })
-                )
-            } catch (err) {
-                console.error(err)
-                void dispatch(
-                    notify({
-                        message: 'Something went wrong',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            } finally {
-                closeModal()
-            }
+            void dispatch(
+                notify({
+                    message: 'Successfully updated the category',
+                    status: NotificationStatus.Success,
+                })
+            )
+        } catch (err) {
+            console.error(err)
+            void dispatch(
+                notify({
+                    message: 'Something went wrong',
+                    status: NotificationStatus.Error,
+                })
+            )
+        } finally {
+            closeModal()
         }
     }
 
     const handleOnCreate = async (payload: CreateCategoryDto) => {
-        if (client) {
-            try {
-                await client?.createCategory(
-                    {
-                        help_center_id: helpCenter.id,
-                    },
-                    payload
-                )
+        try {
+            await actions.createCategory(payload)
 
-                void dispatch(
-                    notify({
-                        message: 'Successfully created the category',
-                        status: NotificationStatus.Success,
-                    })
-                )
-            } catch (err) {
-                console.error(err)
-                void dispatch(
-                    notify({
-                        message: 'Something went wrong',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            } finally {
-                closeModal()
-            }
+            void dispatch(
+                notify({
+                    message: 'Successfully created the category',
+                    status: NotificationStatus.Success,
+                })
+            )
+        } catch (err) {
+            console.error(err)
+            void dispatch(
+                notify({
+                    message: 'Something went wrong',
+                    status: NotificationStatus.Error,
+                })
+            )
+        } finally {
+            closeModal()
         }
     }
 

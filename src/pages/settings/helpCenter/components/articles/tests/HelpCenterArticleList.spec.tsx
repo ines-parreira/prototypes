@@ -4,6 +4,9 @@ import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 
 import HelpCenterArticleList from '../HelpCenterArticleList'
+
+import {createArticleFromDto} from '../../../../../../models/helpCenter/utils'
+
 import {getArticlesResponseFixture} from '../../../fixtures/getArticlesResponse.fixture'
 
 const mockedOnClick = jest.fn()
@@ -12,7 +15,7 @@ const mockedOnClickSettings = jest.fn()
 describe('<HelpCenterArticleList/>', () => {
     const props = {
         label: 'Article list',
-        list: getArticlesResponseFixture.data,
+        list: getArticlesResponseFixture.data.map(createArticleFromDto),
         onClick: mockedOnClick,
         onClickSettings: mockedOnClickSettings,
     }

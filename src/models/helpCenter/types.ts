@@ -1,30 +1,20 @@
 import {Components} from '../../../../../rest_api/help_center_api/client.generated'
 
-export type CreateHelpCenterInput = Components.Schemas.CreateHelpcenterDto
-export type UpdateHelpCenterInput = Components.Schemas.UpdateHelpcenterDto
-export type HelpCenter = Components.Schemas.HelpCenterEntity & {
-    supported_locales?: LocaleCode[]
-}
-
-export type HelpCenterArticlesListPage = Components.Schemas.ArticlesListPageDto
-export type CreateArticleInput = Components.Schemas.CreateArticleDto
-export type HelpCenterArticle = Components.Schemas.ArticleWithLocalTranslation & {
-    position?: number
-}
-
-export type HelpCenterArticleTranslation = Components.Schemas.ArticleTranslationEntity
-export type CreateHelpCenterTranslationInput = Components.Schemas.CreateArticleTranslationDto
-export type UpdateHelpCenterArticleTranslationInput = Components.Schemas.UpdateArticleTranslationDto
-export type CategoryTranslation = Components.Schemas.LocalCategoryTranslation
-export type CreateCategoryDto = Components.Schemas.CreateCategoryDto
-
-export type HelpCenterLocaleCode = HelpCenter['default_locale']
+// GENERAL
 
 export type LocaleCode = Components.Schemas.LocaleEntity['code']
 
-export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto
-export type NavigationLinkMeta = Components.Schemas.NavigationLinkMeta
-export type NavigationSocialLinks = Components.Schemas.NavigationLinkMeta['network']
+// HELP CENTER
+
+export type CreateHelpcenterDto = Components.Schemas.CreateHelpcenterDto
+export type HelpCenter = Components.Schemas.HelpCenterEntity & {
+    supported_locales?: LocaleCode[]
+}
+export type HelpCenterArticlesListPage = Components.Schemas.ArticlesListPageDto
+export type HelpCenterArticleTranslation = Components.Schemas.ArticleTranslationEntity
+
+export type HelpCenterLocaleCode = HelpCenter['default_locale']
+export type HelpCenterLocale = Components.Schemas.LocaleEntity
 
 export type HelpCenterPreferences = {
     id: number
@@ -38,7 +28,45 @@ export type HelpCenterPreferences = {
     default_locale: HelpCenterLocale
 }
 
-export type HelpCenterLocale = Components.Schemas.LocaleEntity
+// CATEGORIES
+
+export type CreateCategoryDto = Components.Schemas.CreateCategoryDto
+export type CategoryTranslation = Components.Schemas.LocalCategoryTranslation
+export type CreateCategoryResponse = Components.Schemas.CategoryWithLocalTranslation
+export type UpdateCategoryTranslationResponse = Components.Schemas.CategoryTranslationEntity
+
+export type Category = {
+    created_datetime: string
+    updated_datetime: string
+    deleted_datetime?: string | null
+    id: number
+    position: number
+    help_center_id: number
+    articles: HelpCenterArticle[]
+    translation?: CategoryTranslation
+}
+
+// ARTICLES
+
+export type CreateArticleDto = Components.Schemas.CreateArticleDto
+export type CreateArticleTranslationDto = Components.Schemas.CreateArticleTranslationDto
+
+export type ArticleWithLocalTranslation = Components.Schemas.ArticleWithLocalTranslation
+export type ArticleTranslation = Components.Schemas.LocalArticleTranslation
+export type HelpCenterArticle = Omit<
+    Components.Schemas.ArticleWithLocalTranslation,
+    'translation'
+> & {
+    position: number
+    translation: ArticleTranslation
+}
+
+// NAVIGATION
+
+export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto
+export type NavigationLinkDto = Components.Schemas.NavigationLinkWithLocalTranslation
+export type NavigationLinkMeta = Components.Schemas.NavigationLinkMeta
+export type NavigationSocialLinks = Components.Schemas.NavigationLinkMeta['network']
 
 export type NavigationTranslation = {
     created_datetime: string
@@ -74,7 +102,6 @@ export type LinkTranslation = Pick<
 export type LocalNavigationLink = BaseNavigationLink & {
     position: number
 }
-
 export type LocalSocialNavigationLink = Omit<
     LocalNavigationLink,
     'translation'
@@ -82,16 +109,3 @@ export type LocalSocialNavigationLink = Omit<
     meta: Components.Schemas.NavigationLinkMeta
     translation: Omit<LinkTranslation, 'locale'>
 }
-
-export type Category = {
-    created_datetime: string
-    updated_datetime: string
-    deleted_datetime: string | null
-    id: number
-    position: number
-    help_center_id: number
-    articles: HelpCenterArticle[]
-    translation?: CategoryTranslation
-}
-
-export type NavigationLinkDto = Components.Schemas.NavigationLinkWithLocalTranslation

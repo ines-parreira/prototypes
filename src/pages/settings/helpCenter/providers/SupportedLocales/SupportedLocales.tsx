@@ -1,5 +1,5 @@
 import React from 'react'
-import keyBy from 'lodash/keyBy'
+import _keyBy from 'lodash/keyBy'
 
 import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
 
@@ -27,7 +27,7 @@ export const SupportedLocalesProvider = ({children}: Props): JSX.Element => {
             }
             if (isReady && client) {
                 const response = await client.listLocales()
-                setLocales(keyBy(response.data, 'code'))
+                setLocales(_keyBy(response.data, 'code'))
                 setLoading(false)
             }
         }

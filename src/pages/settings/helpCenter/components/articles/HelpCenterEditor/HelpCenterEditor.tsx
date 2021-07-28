@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {isUndefined} from 'lodash'
+import _isUndefined from 'lodash/isUndefined'
 
 import {Editor} from 'react-draft-wysiwyg'
 import {EditorState, convertToRaw, convertFromRaw} from 'draft-js'
@@ -36,7 +36,7 @@ const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
     )
 
     useEffect(() => {
-        if (isUndefined(articleId)) {
+        if (_isUndefined(articleId)) {
             setEditorState(EditorState.createEmpty())
         } else {
             transformValueToEditorState(value)

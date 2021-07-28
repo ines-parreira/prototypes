@@ -1,5 +1,5 @@
 import {
-    CreateHelpCenterTranslationInput,
+    CreateArticleTranslationDto,
     HelpCenterLocaleCode,
     HelpCenterArticleTranslation,
 } from '../../../../models/helpCenter/types'
@@ -10,7 +10,7 @@ export const articleRequiredFields: Partial<
 
 export const getNewTranslation = (
     locale: HelpCenterLocaleCode
-): CreateHelpCenterTranslationInput => ({
+): CreateArticleTranslationDto => ({
     title: '',
     content: '',
     excerpt: '',

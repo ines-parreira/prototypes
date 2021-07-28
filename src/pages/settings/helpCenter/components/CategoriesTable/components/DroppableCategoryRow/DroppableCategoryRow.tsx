@@ -3,10 +3,7 @@ import classNames from 'classnames'
 
 import {Badge, Spinner} from 'reactstrap'
 
-import {
-    HelpCenterArticle,
-    Category,
-} from '../../../../../../../models/helpCenter/types'
+import {Category} from '../../../../../../../models/helpCenter/types'
 
 import {useModalManager} from '../../../../../../../hooks/useModalManager'
 
@@ -16,10 +13,9 @@ import TableBodyRow from '../../../../../../common/components/table/TableBodyRow
 
 import {useReorderDnD, Callbacks} from '../../../../hooks/useReorderDnD'
 import {useSupportedLocales} from '../../../../providers/SupportedLocales'
-import {HELP_CENTER_LANGUAGE_DEFAULT, MODALS} from '../../../../constants'
+import {MODALS} from '../../../../constants'
 
-import {useHelpcenterApi} from '../../../../hooks/useHelpcenterApi'
-import {useHelpCenterIdParam} from '../../../../hooks/useHelpCenterIdParam'
+import {useArticles} from '../../../../hooks/useArticles'
 
 import {TableActions} from '../../../TableActions'
 
@@ -48,13 +44,12 @@ export const DroppableCategoryRow = ({
     const categoryModal = useModalManager(MODALS.CATEGORY)
     const articleModal = useModalManager(MODALS.ARTICLE)
 
-    const helpCenterId = useHelpCenterIdParam()
     const [isOpen, setOpen] = React.useState(false)
-    // const [locales, setLocales] = React.useState<LocaleCode[]>([])
-    const [isLoading, setLoading] = React.useState(true)
-    const [articles, setArticles] = React.useState<HelpCenterArticle[]>([])
+    const {articles, isLoading} = useArticles(
+        category?.translation?.locale,
+        category.id
+    )
 
-    const {isReady, client} = useHelpcenterApi()
     const localesByCode = useSupportedLocales()
 
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
@@ -68,54 +63,6 @@ export const DroppableCategoryRow = ({
     )
 
     React.useEffect(() => {
-        async function init() {
-            if (isReady && client) {
-                // TODO: uncomment this when we will support more locales
-                // const translations = await client
-                //     .listCategoryTranslations({
-                //         help_center_id: 1,
-                //         category_id: category.id,
-                //     })
-                //     .then((response) => response.data.data)
-                //     .then((response) =>
-                //         response.map((translation) => translation.locale)
-                //     )
-
-                // TODO: Extract this as custom hook
-                const articlesResponse = await client
-                    .listCategoryArticles({
-                        help_center_id: helpCenterId,
-                        category_id: category.id,
-                        locale: category?.translation
-                            ? category?.translation.locale
-                            : HELP_CENTER_LANGUAGE_DEFAULT,
-                    })
-                    .then((response) => response.data.data)
-
-                const positionsResponse = await client
-                    .getCategoryArticlesPositions({
-                        help_center_id: helpCenterId,
-                        category_id: category.id,
-                    })
-                    .then((response) => response.data)
-
-                const articles = articlesResponse.map((article) => ({
-                    ...article,
-                    position: positionsResponse.findIndex(
-                        (index) => index === article.id
-                    ),
-                }))
-
-                setArticles(articles)
-                // setLocales(translations)
-                setLoading(false)
-            }
-        }
-
-        void init()
-    }, [isReady, category.id])
-
-    React.useEffect(() => {
         if (isDragging) {
             setOpen(false)
         }
@@ -123,6 +70,10 @@ export const DroppableCategoryRow = ({
 
     const opacity = isDragging ? 0 : 1
     const count = React.useMemo(() => articles.length, [articles])
+    const shouldCollapseRow = isOpen && articles.length > 0
+    const bodyInnerClass = classNames({
+        [css['no-click']]: articles.length === 0,
+    })
 
     const handleOnActionClick = (ev: React.MouseEvent, name: string) => {
         if (name === 'categorySettings') {
@@ -158,7 +109,7 @@ export const DroppableCategoryRow = ({
                 style={{opacity}}
                 onClick={onRowClick}
             >
-                <BodyCell>
+                <BodyCell innerClassName={bodyInnerClass}>
                     <div
                         ref={dragRef as React.RefObject<HTMLDivElement>}
                         className={classNames(
@@ -171,6 +122,7 @@ export const DroppableCategoryRow = ({
                 </BodyCell>
                 <BodyCell
                     className={css['category-cell']}
+                    innerClassName={bodyInnerClass}
                     onClick={() => setOpen(!isOpen)}
                 >
                     {count > 0 && renderArticleList ? (
@@ -187,7 +139,7 @@ export const DroppableCategoryRow = ({
                     )}
                     {countElement}
                 </BodyCell>
-                <BodyCell>
+                <BodyCell innerClassName={bodyInnerClass}>
                     {
                         // isLoading ? (
                         //     <Spinner size="sm" color="secondary" />
@@ -210,7 +162,10 @@ export const DroppableCategoryRow = ({
                         // )
                     }
                 </BodyCell>
-                <BodyCell width={120} innerClassName={css.actions}>
+                <BodyCell
+                    width={120}
+                    innerClassName={classNames(css.actions, bodyInnerClass)}
+                >
                     <TableActions
                         actions={[
                             {
@@ -228,7 +183,7 @@ export const DroppableCategoryRow = ({
                     />
                 </BodyCell>
             </TableBodyRow>
-            {isOpen && renderArticleList && (
+            {shouldCollapseRow && renderArticleList && (
                 <TableBodyRow>
                     <BodyCell colSpan={4} className={css['parent-cell']}>
                         {renderArticleList({...category, articles})}

@@ -1,5 +1,5 @@
 import React from 'react'
-import {chain} from 'lodash'
+import {chain as _chain} from 'lodash'
 
 import {Category} from '../../../../../models/helpCenter/types'
 
@@ -23,29 +23,28 @@ export const CategoriesTable = ({
     onReorderFinish,
 }: Props): JSX.Element => {
     const [records, setRecords] = React.useState(
-        chain(categories)
-            .sortBy(['position'])
-            .forEach((category: Category, index) => {
-                category.position = index
-            })
-            .value()
+        _chain(categories).sortBy(['position']).value()
     )
+
+    React.useEffect(() => {
+        setRecords(_chain(categories).sortBy(['position']).value())
+    }, [categories])
 
     const handleOnDropCategory = (dragIndex: number, hoverIndex: number) => {
         const dragRecord = records.find(
             (category) => category.position === dragIndex
         )
-        const nextRecords = [...records]
+        let nextRecords = [...records]
 
         if (dragRecord) {
             nextRecords.splice(dragIndex, 1)
             nextRecords.splice(hoverIndex, 0, dragRecord)
 
-            chain(nextRecords)
-                .map((category: Category, index: number) => {
-                    category.position = index
-                    return category
-                })
+            nextRecords = _chain(nextRecords)
+                .map((category: Category, index: number) => ({
+                    ...category,
+                    position: index,
+                }))
                 .sortBy('position')
                 .value()
 

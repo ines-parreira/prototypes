@@ -4,31 +4,17 @@ import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
-import {chain} from 'lodash'
 
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
-import {RootState} from '../../../../state/types'
 import {notify} from '../../../../state/notifications/actions'
 import {
-    helpCenterArticleCreated,
-    helpCenterArticleDeleted,
-    helpCenterArticlesFetched,
-    helpCenterArticleUpdated,
-} from '../../../../state/entities/helpCenterArticles/actions'
-import {
-    CreateArticleInput,
     HelpCenterArticle,
     HelpCenterArticleTranslation,
     HelpCenterLocaleCode,
-    UpdateHelpCenterArticleTranslationInput,
     HelpCenterLocale,
 } from '../../../../models/helpCenter/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {
-    getHelpCenterClient,
-    HelpCenterClient,
-} from '../../../../../../../rest_api/help_center_api/index'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
 
@@ -45,6 +31,9 @@ import {CategoriesViews} from '../providers/CategoriesView'
 import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 import {CategoryDrawer} from '../providers/CategoryDrawer'
 import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
+import {useArticlesActions} from '../hooks/useArticlesActions'
+import {useArticles} from '../hooks/useArticles'
+import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 
 import {ArticlesTable} from './ArticlesTable'
 import CreateFirst from './articles/CreateFirst'
@@ -67,17 +56,7 @@ enum HelpCenterModalContent {
     ARTICLE_ADVANCED = 'article-advanced',
 }
 
-let helpCenterClient: HelpCenterClient
-
-export const HelpCenterArticlesView = ({
-    articles,
-    helpCenterArticleCreated,
-    helpCenterArticlesFetched,
-    helpCenterArticleUpdated,
-    helpCenterArticleDeleted,
-    notify,
-    match,
-}: Props) => {
+export const HelpCenterArticlesView = ({notify, match}: Props) => {
     const helpCenterId = parseInt(
         (match.params as {helpcenterId: string}).helpcenterId
     )
@@ -98,10 +77,13 @@ export const HelpCenterArticlesView = ({
     ] = useState<HelpCenterArticleTranslation[] | null>(null)
     const [localeOptions] = useState(getLocalesResponseFixture)
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
 
+    const {isReady, client} = useHelpcenterApi()
     const helpCenter = useCurrentHelpCenter(helpCenterId).data
+    const articlesActions = useArticlesActions()
+    const {articles, isLoading} = useArticles(helpCenter?.default_locale)
+
     const categoryModal = useModalManager(MODALS.CATEGORY)
     const articleModal = useModalManager(MODALS.ARTICLE)
 
@@ -110,35 +92,6 @@ export const HelpCenterArticlesView = ({
     useEffect(() => {
         articleModal.on(MODALS.ARTICLE, Event.afterOpen, createArticle)
     }, [])
-
-    useEffect(() => {
-        async function init() {
-            setIsLoading(true)
-            try {
-                helpCenterClient = await getHelpCenterClient()
-                if (helpCenter) {
-                    const {
-                        data: {data: articles},
-                    } = await helpCenterClient.listArticles({
-                        help_center_id: helpCenter.id,
-                        locale: helpCenter.default_locale,
-                        has_category: false,
-                    })
-                    helpCenterArticlesFetched(articles)
-                }
-            } catch (err) {
-                void notify({
-                    message: 'Failed to retrieve the article list',
-                    status: NotificationStatus.Error,
-                })
-                console.error(err)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
-        void init()
-    }, [helpCenter])
 
     // Make sure to exit fullscreen mode when modal view changes
     useEffect(() => {
@@ -153,35 +106,42 @@ export const HelpCenterArticlesView = ({
             if (
                 !selectedArticle?.id ||
                 !helpCenter?.id ||
-                selectedArticleTranslations
+                selectedArticleTranslations ||
+                !isReady
             ) {
                 return
             }
 
-            try {
-                setIsArticleLoading(true)
-                const {
-                    data: {data: translations},
-                } = await helpCenterClient.listArticleTranslations({
-                    help_center_id: helpCenter.id,
-                    article_id: selectedArticle.id,
-                })
-                const translation = translations.find(
-                    ({locale}) => locale === helpCenter.default_locale
-                )
-                setSelectedArticleTranslations(translations)
-                setSelectedArticle({
-                    ...selectedArticle,
-                    translation,
-                })
-                setSavedTranslation(translation || null)
-            } catch (err) {
-                void notify({
-                    message: 'Failed to fetch article translations',
-                    status: NotificationStatus.Error,
-                })
-            } finally {
-                setIsArticleLoading(false)
+            if (client) {
+                try {
+                    setIsArticleLoading(true)
+                    const {
+                        data: {data: translations},
+                    } = await client.listArticleTranslations({
+                        help_center_id: helpCenter.id,
+                        article_id: selectedArticle.id,
+                    })
+                    const translation = translations.find(
+                        ({locale}) => locale === helpCenter.default_locale
+                    )
+
+                    if (translation) {
+                        setSelectedArticleTranslations(translations)
+                        setSelectedArticle({
+                            ...selectedArticle,
+                            translation,
+                        })
+                        setSavedTranslation(translation || null)
+                    }
+                } catch (err) {
+                    void notify({
+                        message: 'Failed to fetch article translations',
+                        status: NotificationStatus.Error,
+                    })
+                    console.error(err)
+                } finally {
+                    setIsArticleLoading(false)
+                }
             }
         }
 
@@ -192,25 +152,6 @@ export const HelpCenterArticlesView = ({
         articleModal.closeModal()
         setEditModal(null)
     }
-
-    const articleList = useMemo(
-        () =>
-            Object.values(articles).sort(
-                (
-                    {created_datetime: createdDate1},
-                    {created_datetime: createdDate2}
-                ) => {
-                    if (
-                        new Date(createdDate1).getTime() >
-                        new Date(createdDate2).getTime()
-                    ) {
-                        return -1
-                    }
-                    return 1
-                }
-            ),
-        [articles]
-    )
 
     const canSaveArticle: boolean = useMemo(() => {
         const currentTranslation = selectedArticle?.translation
@@ -393,7 +334,7 @@ export const HelpCenterArticlesView = ({
             if (article?.translation && helpCenter?.subdomain) {
                 try {
                     copy(
-                        `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/${article.translation.slug}`
+                        `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/${article.translation.slug}-${article.id}`
                     )
                     void notify({
                         message: 'Successfully copied the link',
@@ -419,58 +360,8 @@ export const HelpCenterArticlesView = ({
                 return
             }
 
-            const payload: CreateArticleInput = {
-                translation: {
-                    locale: article.translation?.locale,
-                    content: article.translation.content || '',
-                    excerpt: article.translation.excerpt,
-                    slug: `${article.translation.slug}-1`,
-                    title: `${
-                        article.translation
-                            ? article.translation?.title
-                            : 'Untitled'
-                    } (1)`,
-                },
-            }
-
-            if ((article?.category_id as number) >= 0) {
-                payload['category_id'] = article.category_id
-            }
-
             try {
-                const translations = await helpCenterClient
-                    .listArticleTranslations({
-                        help_center_id: helpCenterId,
-                        article_id: article.id,
-                    })
-                    .then((response) => response.data.data)
-
-                const duplicateArticle = await helpCenterClient
-                    .createArticle(
-                        {
-                            help_center_id: helpCenterId,
-                        },
-                        payload
-                    )
-                    .then((response) => response.data)
-
-                await Promise.all(
-                    translations.map((translation) =>
-                        helpCenterClient.updateArticleTranslation(
-                            {
-                                help_center_id: helpCenterId,
-                                article_id: duplicateArticle.id,
-                                locale: translation.locale,
-                            },
-                            {
-                                title: `${translation.title} (1)`,
-                                excerpt: translation.excerpt,
-                                content: translation.content,
-                                slug: `${translation.slug}-1`,
-                            }
-                        )
-                    )
-                )
+                await articlesActions.cloneArticle(article)
                 void notify({
                     message: 'Duplicated the article with success',
                     status: NotificationStatus.Success,
@@ -480,6 +371,7 @@ export const HelpCenterArticlesView = ({
                     message: 'Failed to duplicate the article',
                     status: NotificationStatus.Error,
                 })
+                console.error(err)
             }
         }
     }
@@ -512,30 +404,8 @@ export const HelpCenterArticlesView = ({
 
         // Update Article
         if (selectedArticle.id) {
-            const updateArticleInput: UpdateHelpCenterArticleTranslationInput = {
-                title: selectedArticle.translation.title,
-                content: selectedArticle.translation.content,
-                excerpt: selectedArticle.translation.excerpt,
-                slug: selectedArticle.translation.slug,
-            }
             try {
-                const {
-                    data: updatedTranslation,
-                } = await helpCenterClient.updateArticleTranslation(
-                    {
-                        help_center_id: helpCenter.id,
-                        article_id: selectedArticle.id,
-                        locale: selectedArticle.translation.locale,
-                    },
-                    updateArticleInput
-                )
-                const updatedArticle = {
-                    ...selectedArticle,
-                    translation: updatedTranslation,
-                }
-                setSelectedArticle(updatedArticle)
-                setSavedTranslation(updatedTranslation || null)
-                helpCenterArticleUpdated(updatedArticle)
+                await articlesActions.updateArticleTranslation(selectedArticle)
                 void notify({
                     message: 'Article successfully saved',
                     status: NotificationStatus.Success,
@@ -545,39 +415,27 @@ export const HelpCenterArticlesView = ({
                     message: 'Failed to save the article',
                     status: NotificationStatus.Error,
                 })
+                console.error(err)
+            } finally {
+                setSelectedArticle(null)
+                setEditModal(null)
             }
         }
         // Create Article
         else {
             const articleModalParams = articleModal.getParams()
 
-            const createArticleInput: CreateArticleInput = {
-                translation: {
-                    title: selectedArticle.translation.title,
-                    content: selectedArticle.translation.content,
-                    excerpt: selectedArticle.translation.excerpt,
-                    slug: selectedArticle.translation.slug,
-                    locale: selectedArticle.translation.locale,
-                },
-            }
-
-            if (articleModalParams && articleModalParams?.categoryId >= 0) {
-                createArticleInput['category_id'] =
-                    articleModalParams.categoryId
-            }
-
             try {
-                const {
-                    data: createdArticle,
-                } = await helpCenterClient.createArticle(
-                    {
-                        help_center_id: helpCenter.id,
-                    },
-                    createArticleInput
-                )
-                setSelectedArticle(createdArticle)
-                setSavedTranslation(createdArticle.translation || null)
-                helpCenterArticleCreated(createdArticle)
+                if (articleModalParams && articleModalParams?.categoryId >= 0) {
+                    await articlesActions.createArticleInCategory(
+                        selectedArticle.translation,
+                        articleModalParams.categoryId
+                    )
+                } else {
+                    await articlesActions.createArticle(
+                        selectedArticle.translation
+                    )
+                }
                 void notify({
                     message: 'Article successfully created',
                     status: NotificationStatus.Success,
@@ -587,6 +445,10 @@ export const HelpCenterArticlesView = ({
                     message: 'Failed to create the article',
                     status: NotificationStatus.Error,
                 })
+                console.error(err)
+            } finally {
+                setSelectedArticle(null)
+                setEditModal(null)
             }
         }
     }
@@ -597,18 +459,16 @@ export const HelpCenterArticlesView = ({
         }
 
         try {
-            await helpCenterClient.deleteArticle({
-                help_center_id: helpCenter.id,
-                id: selectedArticle.id,
-            })
-            setSelectedArticle(null)
-            setEditModal(null)
-            helpCenterArticleDeleted(selectedArticle.id)
+            await articlesActions.deleteArticle(selectedArticle.id)
         } catch (err) {
             void notify({
                 message: 'Failed to delete the article',
                 status: NotificationStatus.Error,
             })
+            console.error(err)
+        } finally {
+            setSelectedArticle(null)
+            setEditModal(null)
         }
     }
 
@@ -616,28 +476,13 @@ export const HelpCenterArticlesView = ({
         categoryId: number,
         articles: HelpCenterArticle[]
     ): void => {
-        if (helpCenterClient && helpCenter) {
-            const sortedArticles = chain(articles)
-                .sortBy(['position'])
-                .map((article) => article.id)
-                .value()
-
-            if (categoryId >= 0) {
-                void helpCenterClient.setArticlesPositionsInCategory(
-                    {
-                        help_center_id: helpCenter.id,
-                        category_id: categoryId,
-                    },
-                    sortedArticles
-                )
-            } else {
-                void helpCenterClient.setUncategorizedArticlesPositions(
-                    {
-                        help_center_id: helpCenter.id,
-                    },
-                    sortedArticles
-                )
-            }
+        if (categoryId >= 0) {
+            void articlesActions.updateArticlePositionInCategory(
+                articles,
+                categoryId
+            )
+        } else {
+            void articlesActions.updateUncategorizedArticlePosition(articles)
         }
     }
 
@@ -699,10 +544,10 @@ export const HelpCenterArticlesView = ({
                         />
                     )}
 
-                    {articleList.length > 0 && (
+                    {articles.length > 0 && (
                         <HelpCenterArticleList
                             label="uncategorised articles"
-                            list={articleList}
+                            list={articles}
                             onClick={selectArticle}
                             onReorderFinish={handleOnReorder}
                             onClickSettings={editArticleSettings}
@@ -726,17 +571,8 @@ export const HelpCenterArticlesView = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        articles: state.entities.helpCenterArticles,
-    }),
-    {
-        helpCenterArticleCreated,
-        helpCenterArticlesFetched,
-        helpCenterArticleUpdated,
-        helpCenterArticleDeleted,
-        notify,
-    }
-)
+const connector = connect(null, {
+    notify,
+})
 
 export default withRouter(connector(HelpCenterArticlesView))

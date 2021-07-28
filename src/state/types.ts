@@ -17,6 +17,7 @@ import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
 import {Message} from './newMessage/types'
 import rootReducer from './reducers'
+import {HelpCenterState} from './helpCenter'
 import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 import {Rule, RulePriority, RuleOperation} from './rules/types'
 import {Tag} from './tags/types'
@@ -37,6 +38,7 @@ export type StoreState = {
     customers: Map<any, any>
     entities: EntitiesState
     facebookAds: Map<any, any>
+    helpCenter: HelpCenterState
     HTTPIntegrationEvents: Map<any, any>
     infobar: Map<any, any>
     infobarActions: InfobarActionsState

@@ -19,7 +19,7 @@ import {HELP_CENTER_BASE_PATH, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
 import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
 import {
     HelpCenterLocale,
-    CreateHelpCenterInput,
+    CreateHelpcenterDto,
     LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
@@ -35,7 +35,7 @@ import LanguageSelect from './newView/LanguageSelect'
 
 type Props = ConnectedProps<typeof connector>
 
-const initialFormState: CreateHelpCenterInput = {
+const initialFormState: CreateHelpcenterDto = {
     name: '',
     default_locale: HELP_CENTER_LANGUAGE_DEFAULT as LocaleCode,
 }
@@ -45,7 +45,7 @@ let helpCenterClient: HelpCenterClient
 export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
     const history = useHistory()
     const location = useLocation()
-    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterInput>(
+    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpcenterDto>(
         initialFormState
     )
     const [isLoading, setIsLoading] = useState(false)
@@ -111,8 +111,8 @@ export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
             }
 
             return (
-                newHelpCenter[currentKey as keyof CreateHelpCenterInput] !==
-                initialFormState[currentKey as keyof CreateHelpCenterInput]
+                newHelpCenter[currentKey as keyof CreateHelpcenterDto] !==
+                initialFormState[currentKey as keyof CreateHelpcenterDto]
             )
         },
         false
@@ -121,7 +121,7 @@ export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
     const canSubmit = Object.keys(newHelpCenter).reduce(
         (canSubmitAcc, currentKey) =>
             canSubmitAcc &&
-            Boolean(newHelpCenter[currentKey as keyof CreateHelpCenterInput]),
+            Boolean(newHelpCenter[currentKey as keyof CreateHelpcenterDto]),
         true
     )
 

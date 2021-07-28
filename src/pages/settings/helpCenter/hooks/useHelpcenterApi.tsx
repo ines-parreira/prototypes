@@ -5,14 +5,14 @@ import {
     HelpCenterClient,
 } from '../../../../../../../rest_api/help_center_api/index'
 
-type useHelpcenterApiInterface = {
+type UseHelpCenterApiInterface = {
     isReady: boolean
     client: HelpCenterClient | undefined
 }
 
 let client: HelpCenterClient
 
-export const useHelpcenterApi = (): useHelpcenterApiInterface => {
+export const useHelpcenterApi = (): UseHelpCenterApiInterface => {
     const [isReady, setReady] = React.useState(client !== undefined)
 
     React.useEffect(() => {

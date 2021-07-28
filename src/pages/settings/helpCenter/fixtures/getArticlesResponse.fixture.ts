@@ -4,7 +4,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
     data: [
         {
             id: 1,
-            category_id: undefined,
+            category_id: null,
             help_center_id: 1,
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',

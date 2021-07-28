@@ -1,5 +1,6 @@
 import React from 'react'
-import {chain} from 'lodash'
+import {chain as _chain} from 'lodash'
+import _sortBy from 'lodash/sortBy'
 import classNames from 'classnames'
 
 import {HelpCenterArticle} from '../../../../../models/helpCenter/types'
@@ -32,16 +33,11 @@ export const ArticlesTable = ({
     onClickSettings,
     onReorderFinish,
 }: Props): JSX.Element => {
-    const [records, setRecords] = React.useState(
-        chain(list)
-            .sortBy(['position'])
-            .map((article: HelpCenterArticle, index) => {
-                const draft = {...article}
-                draft.position = index
-                return draft
-            })
-            .value()
-    )
+    const [records, setRecords] = React.useState(_sortBy(list, ['position']))
+
+    React.useEffect(() => {
+        setRecords(_sortBy(list, ['position']))
+    }, [list])
 
     const handleOnClickRow = (article: HelpCenterArticle) => {
         onClick(article)
@@ -60,17 +56,17 @@ export const ArticlesTable = ({
         const dragRecord = records.find(
             (article) => article.position === dragIndex
         )
-        const nextRecords = [...records]
+        let nextRecords = [...records]
 
         if (dragRecord) {
             nextRecords.splice(dragIndex, 1)
             nextRecords.splice(hoverIndex, 0, dragRecord)
 
-            chain(nextRecords)
-                .map((article: HelpCenterArticle, index: number) => {
-                    article.position = index
-                    return article
-                })
+            nextRecords = _chain(nextRecords)
+                .map((article: HelpCenterArticle, index: number) => ({
+                    ...article,
+                    position: index,
+                }))
                 .sortBy('position')
                 .value()
 

@@ -1,5 +1,6 @@
 import React from 'react'
-import {chain, defaults} from 'lodash'
+import {chain as _chain} from 'lodash'
+import _defaults from 'lodash/defaults'
 import produce, {Draft} from 'immer'
 
 import {
@@ -24,7 +25,7 @@ function decorateLocaleLinks(
     section: NavigationLinkSections,
     links: NavigationLinkDto[]
 ): LocalNavigationLink[] {
-    return chain(links)
+    return _chain(links)
         .filter((link) => link.group === section)
         .orderBy(['position'])
         .map((link, index) => ({
@@ -107,7 +108,7 @@ export const useNavigationLinks = (
     }, [response, section])
 
     const innerOptions = React.useMemo(
-        () => defaults(options, DEFAULT_OPTIONS),
+        () => _defaults(options, DEFAULT_OPTIONS),
         [options]
     )
 
@@ -172,7 +173,7 @@ export const useSocialNavigationLinks = (
     }, [response, section])
 
     const innerOptions = React.useMemo(
-        () => defaults(options, DEFAULT_OPTIONS),
+        () => _defaults(options, DEFAULT_OPTIONS),
         [options]
     )
 

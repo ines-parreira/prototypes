@@ -1,6 +1,6 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
-import keyBy from 'lodash/keyBy'
+import _keyBy from 'lodash/keyBy'
 
 import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
 
@@ -15,7 +15,7 @@ describe('<HelpCenterTable/>', () => {
     const props = {
         isLoading: false,
         list: getHelpcentersResponseFixture,
-        locales: keyBy<HelpCenterLocale>(
+        locales: _keyBy<HelpCenterLocale>(
             getLocalesResponseFixture as HelpCenterLocale[],
             'code'
         ),
