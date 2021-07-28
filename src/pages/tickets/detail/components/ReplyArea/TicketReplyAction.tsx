@@ -1,46 +1,58 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import React, {Component} from 'react'
+import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import InputField from '../../../../common/forms/InputField'
-import BooleanField from '../../../../common/forms/BooleanField'
-import SelectField from '../../../../common/forms/SelectField'
-
-import {getActionTemplate} from './../../../../../utils.ts'
-
-import {FORM_CONTENT_TYPE} from './../../../../../config.ts'
+import {FORM_CONTENT_TYPE} from '../../../../../config'
 import {
     getIconUrl,
     getIconFromUrl,
-} from './../../../../../state/integrations/helpers.ts'
+} from '../../../../../state/integrations/helpers'
+import {updateActionArgsOnApplied} from '../../../../../state/ticket/actions'
+import {getActionTemplate} from '../../../../../utils'
+import InputField from '../../../../common/forms/InputField.js'
+import BooleanField from '../../../../common/forms/BooleanField.js'
+import SelectField from '../../../../common/forms/SelectField/SelectField'
 
 import css from './TicketReplyAction.less'
 
-export default class TicketReplyAction extends React.Component {
-    setListDictValue(arg, value, category) {
-        const index = this.props.action
-            .getIn(['arguments', category])
-            .indexOf(arg)
+type Props = {
+    action: Map<any, any>
+    index: number
+    remove: (actionIndex: number, ticketId: number) => void
+    ticketId: number
+    update: typeof updateActionArgsOnApplied
+}
 
-        const newValue = this.props.action
-            .get('arguments', fromJS({}))
-            .setIn([category, index, 'value'], value)
+export default class TicketReplyAction extends Component<Props> {
+    setListDictValue(
+        arg: Map<any, any>,
+        value: number | string | boolean,
+        category: string
+    ) {
+        const index = (this.props.action.getIn(['arguments', category]) as List<
+            any
+        >).indexOf(arg)
+
+        const newValue = (this.props.action.get('arguments', fromJS({})) as Map<
+            any,
+            any
+        >).setIn([category, index, 'value'], value)
 
         if (~index) {
             this.props.update(this.props.index, newValue, this.props.ticketId)
         }
     }
 
-    setValue(key, value) {
-        const newValue = this.props.action
-            .get('arguments', fromJS({}))
-            .set(key, value)
+    setValue(key: string, value: number | string | boolean) {
+        const newValue = (this.props.action.get('arguments', fromJS({})) as Map<
+            any,
+            any
+        >).set(key, value)
 
         this.props.update(this.props.index, newValue, this.props.ticketId)
     }
 
-    renderListDictArgs = (title, args, category) => {
+    renderListDictArgs = (title: string, args: List<any>, category: string) => {
         if (args.isEmpty()) {
             return null
         }
@@ -53,7 +65,7 @@ export default class TicketReplyAction extends React.Component {
                     </div>
                 )}
                 {args
-                    .map((arg, key) => (
+                    .map((arg: Map<any, any>, key) => (
                         <div key={key} className={css.argInput}>
                             <div className="mr-3">{arg.get('key')}</div>
                             <InputField
@@ -72,20 +84,23 @@ export default class TicketReplyAction extends React.Component {
         )
     }
 
-    renderArgs = (args) => {
+    renderArgs = (args: Map<any, any>) => {
         const template = getActionTemplate(this.props.action.get('name'))
         const sortedArgs = args.sortBy(
-            (v, k) => template.arguments[k].display_order
+            (v, k: string) => template!.arguments![k].display_order
         )
 
         return (
             <div>
                 {sortedArgs
-                    .map((value, key) => {
-                        const label = template.arguments[key].label
-                        const inputConfig = template.arguments[key].input
+                    .map((value: number | string | boolean, key: string) => {
+                        const label = template!.arguments![key].label
+                        const inputConfig = template!.arguments![key].input
 
-                        let Tag = InputField
+                        let Tag:
+                            | typeof InputField
+                            | typeof BooleanField
+                            | typeof SelectField = InputField
 
                         if (inputConfig && inputConfig.type === 'checkbox') {
                             Tag = BooleanField
@@ -101,11 +116,11 @@ export default class TicketReplyAction extends React.Component {
                                 <Tag
                                     {...inputConfig}
                                     value={value}
-                                    onChange={(value) =>
-                                        this.setValue(key, value, null)
-                                    }
+                                    onChange={(
+                                        value: number | string | boolean
+                                    ) => this.setValue(key, value)}
                                     required={
-                                        template.arguments[key].required ||
+                                        template!.arguments![key].required ||
                                         false
                                     }
                                     label={label || key}
@@ -125,7 +140,7 @@ export default class TicketReplyAction extends React.Component {
         let type = action.get('name')
         const template = getActionTemplate(type)
 
-        if (template.integrationType) {
+        if (template && template.integrationType) {
             type = template.integrationType
         }
 
@@ -134,21 +149,32 @@ export default class TicketReplyAction extends React.Component {
         let argsComponent = null
 
         if (type === 'http') {
-            const headersArgs = action
-                .getIn(['arguments', 'headers'], fromJS([]))
-                .filter((curAction) => curAction.get('editable'))
+            const headersArgs = (action.getIn(
+                ['arguments', 'headers'],
+                fromJS([])
+            ) as List<any>).filter(
+                (curAction: Map<any, any>) =>
+                    curAction.get('editable') as boolean
+            ) as List<any>
 
-            const paramsArgs = action
-                .getIn(['arguments', 'params'], fromJS([]))
-                .filter((curAction) => curAction.get('editable'))
+            const paramsArgs = (action.getIn(
+                ['arguments', 'params'],
+                fromJS([])
+            ) as List<any>).filter(
+                (curAction: Map<any, any>) =>
+                    curAction.get('editable') as boolean
+            ) as List<any>
 
             const formData =
                 action.getIn(['arguments', 'content_type']) ===
                 FORM_CONTENT_TYPE
-                    ? action
-                          .getIn(['arguments', 'form'], fromJS([]))
-                          .filter((curAction) => curAction.get('editable'))
-                    : fromJS([])
+                    ? ((action.getIn(['arguments', 'form'], fromJS([])) as List<
+                          any
+                      >).filter(
+                          (curAction: Map<any, any>) =>
+                              curAction.get('editable') as boolean
+                      ) as List<any>)
+                    : (fromJS([]) as List<any>)
 
             const shouldDisplayArgs =
                 headersArgs.size + paramsArgs.size + formData.size
@@ -171,7 +197,7 @@ export default class TicketReplyAction extends React.Component {
                 )
             }
         } else {
-            const args = action.get('arguments')
+            const args = action.get('arguments') as Map<any, any>
 
             if (args && !args.isEmpty()) {
                 argsComponent = (
@@ -182,14 +208,14 @@ export default class TicketReplyAction extends React.Component {
             }
         }
 
-        const notes = getActionTemplate(action.get('name')).notes
+        const notes = getActionTemplate(action.get('name'))!.notes
 
         return (
             <div className={css.component}>
                 <div className={css.title}>
                     {!!type && (
                         <img
-                            alt={`${action.get('title')} icon`}
+                            alt={`${action.get('title') as string} icon`}
                             className={css.actionLogo}
                             role="presentation"
                             src={icon}
@@ -220,12 +246,4 @@ export default class TicketReplyAction extends React.Component {
             </div>
         )
     }
-}
-
-TicketReplyAction.propTypes = {
-    action: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    update: PropTypes.func.isRequired,
-    remove: PropTypes.func.isRequired,
-    ticketId: PropTypes.number,
 }

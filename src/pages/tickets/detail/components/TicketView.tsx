@@ -30,9 +30,9 @@ import appCss from '../../../App.less'
 
 import HistoryButton from './HistoryButton.js'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
-import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel.js'
-import TicketReplyArea from './ReplyArea/TicketReplyArea.js'
-import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons.js'
+import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
+import TicketReplyArea from './ReplyArea/TicketReplyArea'
+import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
 import TicketBody from './TicketBody.js'
 import TicketHeader from './TicketHeader'
 import css from './TicketView.less'
@@ -368,7 +368,6 @@ export const TicketViewContainer = ({
                         <>
                             <TicketReplyArea
                                 currentUser={currentUser}
-                                customers={customers}
                                 ticket={ticket}
                             />
 

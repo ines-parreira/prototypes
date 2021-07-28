@@ -1,6 +1,12 @@
 import React, {MouseEvent, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
-import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    ButtonProps,
+    Popover,
+    PopoverHeader,
+    PopoverBody,
+} from 'reactstrap'
 import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 import {Placement} from 'popper.js'
@@ -26,7 +32,7 @@ type Props = {
     title?: string
     type?: 'button' | 'submit'
     skip?: boolean
-}
+} & Pick<ButtonProps, KnownKeys<ButtonProps>>
 
 const ConfirmButton = ({
     buttonClassName,

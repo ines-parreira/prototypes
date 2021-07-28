@@ -1,5 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 
+import {NotificationStatus} from '../state/notifications/types'
+
 import {TicketMessageSourceType} from './types/ticket'
 import {MacroClearingResult, MacroActionName} from './types/macro'
 
@@ -40,7 +42,7 @@ export function clearMacroBeforeApply(
             macro: removeAttachmentsFromActions(macro),
             notification: {
                 message: notificationMessage,
-                status: 'warning',
+                status: NotificationStatus.Warning,
             },
         }
     }

@@ -65,7 +65,7 @@ import {
 
 export const addAttachments = (
     ticket: Map<any, any>,
-    atts: FileList | Attachment[]
+    atts: FileList | Attachment[] | File[]
 ) => (
     dispatch: StoreDispatch,
     getState: () => RootState

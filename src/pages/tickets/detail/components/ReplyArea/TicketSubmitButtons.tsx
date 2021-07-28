@@ -1,22 +1,21 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import _sample from 'lodash/sample'
 import classnames from 'classnames'
+import {List, Map} from 'immutable'
 
-import shortcutManager from '../../../../../services/shortcutManager/index.ts'
-import keymap from '../../../../../config/shortcuts.ts'
-
-import {isAccountActive} from '../../../../../state/currentAccount/selectors.ts'
-import {submitSetting} from '../../../../../state/currentUser/actions.ts'
+import {RootState} from '../../../../../state/types'
+import shortcutManager from '../../../../../services/shortcutManager'
+import keymap from '../../../../../config/shortcuts'
+import {isAccountActive} from '../../../../../state/currentAccount/selectors'
+import {submitSetting} from '../../../../../state/currentUser/actions'
 import {
     getPreferences,
     isHidingTips,
-} from '../../../../../state/currentUser/selectors.ts'
-import {isReady} from '../../../../../state/newMessage/selectors.ts'
-
-import Tooltip from '../../../../common/components/Tooltip.tsx'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
+} from '../../../../../state/currentUser/selectors'
+import {isReady} from '../../../../../state/newMessage/selectors'
+import Tooltip from '../../../../common/components/Tooltip'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import css from './TicketSubmitButtons.less'
 
@@ -51,23 +50,25 @@ const TIPS = [
 ]
 /* eslint-enable */
 
-export class TicketSubmitButtonsContainer extends React.Component {
-    static propTypes = {
-        canSendMessage: PropTypes.bool.isRequired,
-        currentUserPreferences: PropTypes.object.isRequired,
-        isHidingTips: PropTypes.bool.isRequired,
-        newMessage: PropTypes.object.isRequired,
-        submit: PropTypes.func.isRequired,
-        submitSetting: PropTypes.func.isRequired,
-        ticket: PropTypes.object.isRequired,
-    }
+type Props = {
+    submit: (
+        status?: string,
+        next?: any,
+        action?: List<Map<any, any>>,
+        resetMessage?: boolean
+    ) => void
+    ticket: Map<any, any>
+} & ConnectedProps<typeof connector>
+
+export class TicketSubmitButtonsContainer extends Component<Props> {
+    tip: JSX.Element | string | undefined
 
     componentWillMount() {
         // pick a tip from list of tips on mount
         this.tip = _sample(TIPS)
     }
 
-    submit = (status, next) => {
+    submit = (status?: string, next?: any) => {
         const isSending = this.props.newMessage.getIn([
             '_internal',
             'loading',
@@ -81,13 +82,13 @@ export class TicketSubmitButtonsContainer extends React.Component {
         this.props.submit(status, next)
     }
 
-    _hideTips = () => {
+    hideTips = () => {
         const {currentUserPreferences, submitSetting} = this.props
         const newPreferences = currentUserPreferences.setIn(
             ['data', 'hide_tips'],
             true
         )
-        return submitSetting(newPreferences.toJS())
+        return submitSetting(newPreferences.toJS(), false)
     }
 
     render() {
@@ -118,7 +119,7 @@ export class TicketSubmitButtonsContainer extends React.Component {
                         className="mr-2"
                         color="success"
                         disabled={disabled}
-                        tabIndex="5"
+                        tabIndex={5}
                         skip={hasTitle || isUpdating}
                         confirm={() => this.submit()}
                         content={titleConfirmation}
@@ -143,7 +144,7 @@ export class TicketSubmitButtonsContainer extends React.Component {
                         type="submit"
                         color="secondary"
                         disabled={disabled}
-                        tabIndex="6"
+                        tabIndex={6}
                         skip={hasTitle || isUpdating}
                         confirm={() => this.submit('closed', true)}
                         content={titleConfirmation}
@@ -171,7 +172,7 @@ export class TicketSubmitButtonsContainer extends React.Component {
                         <i
                             id="hide-helpers-button"
                             className="material-icons md-1 cursor-pointer ml-1"
-                            onClick={this._hideTips}
+                            onClick={this.hideTips}
                         >
                             close
                         </i>
@@ -185,16 +186,16 @@ export class TicketSubmitButtonsContainer extends React.Component {
     }
 }
 
-export default connect(
-    (state) => {
-        return {
-            canSendMessage: isAccountActive(state) && isReady(state),
-            currentUserPreferences: getPreferences(state),
-            newMessage: state.newMessage,
-            isHidingTips: isHidingTips(state),
-        }
-    },
+const connector = connect(
+    (state: RootState) => ({
+        canSendMessage: isAccountActive(state) && isReady(state),
+        currentUserPreferences: getPreferences(state),
+        isHidingTips: isHidingTips(state),
+        newMessage: state.newMessage,
+    }),
     {
         submitSetting,
     }
-)(TicketSubmitButtonsContainer)
+)
+
+export default connector(TicketSubmitButtonsContainer)

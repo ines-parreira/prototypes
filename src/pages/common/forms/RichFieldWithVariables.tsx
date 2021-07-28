@@ -42,7 +42,7 @@ export default class RichFieldWithVariables extends Component<Props> {
         // transform inserted variable in badge
         // we do it on insertion so we do not have focus/cursor position errors
         editorState = attachEntitiesToVariables(editorState, true)
-        this.richArea._setEditorState(editorState)
+        this.richArea.setEditorState(editorState)
     }
 
     render() {

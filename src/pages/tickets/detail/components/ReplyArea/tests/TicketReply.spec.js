@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
 import {TicketMessageSourceTypes} from '../../../../../../business/ticket.ts'
-import {TicketReplyContainer} from '../TicketReply'
+import {TicketReplyContainer} from '../TicketReply.tsx'
 
 jest.unmock('../../../../../../business/ticket.ts')
 

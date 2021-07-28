@@ -75,7 +75,7 @@ describe('RichField', () => {
         const editorState = EditorState.createWithContent(
             ContentState.createFromText('{{current_user.name}}')
         )
-        component.instance()._setEditorState(editorState)
+        component.instance().setEditorState(editorState)
 
         expect(component).toMatchSnapshot()
     })

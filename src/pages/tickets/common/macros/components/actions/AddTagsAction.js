@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 
-import TicketTags from '../../../../detail/components/TicketDetails/TicketTags'
+import TicketTags from '../../../../detail/components/TicketDetails/TicketTags.tsx'
 
 export default class AddTagsAction extends React.Component {
     splitIncomingTags = () =>

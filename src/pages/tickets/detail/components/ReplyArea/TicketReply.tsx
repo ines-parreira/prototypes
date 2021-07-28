@@ -1,18 +1,18 @@
-// @flow
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
-import type {List, Map} from 'immutable'
-import React from 'react'
-import {connect} from 'react-redux'
+import {fromJS, List, Map} from 'immutable'
 
-import {canReply} from '../../../../../business/ticket.ts'
+import {RootState} from '../../../../../state/types'
+import {canReply} from '../../../../../business/ticket'
 import {
     deleteActionOnApplied,
     updateActionArgsOnApplied,
-} from '../../../../../state/ticket/actions.ts'
-import type {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
-import {deleteAttachment} from '../../../../../state/newMessage/actions.ts'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
-import {getActionTemplate} from '../../../../../utils.ts'
+} from '../../../../../state/ticket/actions'
+import {deleteAttachment} from '../../../../../state/newMessage/actions'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {getActionTemplate} from '../../../../../utils'
+import RichField from '../../../../common/forms/RichField/RichField'
 
 import TicketAttachments from './TicketAttachments'
 import css from './TicketReply.less'
@@ -20,22 +20,17 @@ import TicketReplyAction from './TicketReplyAction'
 import TicketReplyEditor from './TicketReplyEditor'
 
 type Props = {
-    deleteAttachment?: (number) => void,
-    className?: string,
-    ticket: Map<*, *>,
-    newMessageType: TicketMessageSourceType,
-    newMessageAttachments: List<*>,
-    appliedMacro: ?Map<*, *>,
-    isNewMessagePublic: boolean,
-    richAreaRef: () => void,
-    deleteActionOnApplied: typeof deleteActionOnApplied,
-    updateActionArgsOnApplied: typeof updateActionArgsOnApplied,
-    macros: Map<any, any>,
-    applyMacro: (macro: Map<any, any>) => void,
-    shouldDisplayQuickReply: boolean,
-}
-export class TicketReplyContainer extends React.Component<Props> {
-    _renderAttachments = () => {
+    appliedMacro?: Map<any, any>
+    applyMacro: (macro: Map<any, any>) => void
+    className?: string
+    macros: Map<any, any>
+    richAreaRef: (ref: RichField | null) => void
+    shouldDisplayQuickReply: boolean
+    ticket: Map<any, any>
+} & ConnectedProps<typeof connector>
+
+export class TicketReplyContainer extends Component<Props> {
+    renderAttachments = () => {
         const {newMessageAttachments, deleteAttachment} = this.props
 
         return (
@@ -48,7 +43,7 @@ export class TicketReplyContainer extends React.Component<Props> {
         )
     }
 
-    _renderActions = () => {
+    renderActions = () => {
         const {
             ticket,
             appliedMacro,
@@ -57,11 +52,18 @@ export class TicketReplyContainer extends React.Component<Props> {
         } = this.props
 
         const backendActions = appliedMacro
-            ? appliedMacro.get('actions').filter((action) => {
-                  const actionTemplate = getActionTemplate(action.get('name'))
-                  return actionTemplate && actionTemplate.execution === 'back'
-              })
-            : []
+            ? ((appliedMacro.get('actions') as List<any>).filter(
+                  (action: Map<any, any>) => {
+                      const actionTemplate = getActionTemplate(
+                          action.get('name')
+                      )
+                      return (
+                          !!actionTemplate &&
+                          actionTemplate.execution === 'back'
+                      )
+                  }
+              ) as List<any>)
+            : (fromJS([]) as List<any>)
 
         if (!appliedMacro || !backendActions) {
             return null
@@ -69,10 +71,12 @@ export class TicketReplyContainer extends React.Component<Props> {
 
         return (
             <div>
-                {backendActions.map((action, key) => (
+                {backendActions.map((action: Map<any, any>, key) => (
                     <TicketReplyAction
                         key={key}
-                        index={appliedMacro.get('actions').indexOf(action)}
+                        index={(appliedMacro.get('actions') as List<
+                            any
+                        >).indexOf(action)}
                         action={action}
                         update={updateActionArgsOnApplied}
                         remove={deleteActionOnApplied}
@@ -120,21 +124,21 @@ export class TicketReplyContainer extends React.Component<Props> {
                         shouldDisplayQuickReply={shouldDisplayQuickReply}
                     />
                 )}
-                {this._renderAttachments()}
-                {this._renderActions()}
+                {this.renderAttachments()}
+                {this.renderActions()}
             </div>
         )
     }
 }
 
 const connector = connect(
-    (state) => {
+    (state: RootState) => {
         return {
             isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            newMessageType: newMessageSelectors.getNewMessageType(state),
             newMessageAttachments: newMessageSelectors.getNewMessageAttachments(
                 state
             ),
+            newMessageType: newMessageSelectors.getNewMessageType(state),
         }
     },
     {

@@ -1,32 +1,30 @@
-//@flow
-import React from 'react'
+import React, {Component, MouseEvent} from 'react'
 import classnames from 'classnames'
 import Lightbox from 'react-images'
 import type {List} from 'immutable'
 
-import {fileIconFromContentType} from '../../../common/utils'
-import shortcutManager from '../../../../../services/shortcutManager/index.ts'
+import {fileIconFromContentType} from '../../../common/utils.js'
+import shortcutManager from '../../../../../services/shortcutManager/index'
 
-import {proxifyURL} from '../../../../../utils.ts'
+import {proxifyURL} from '../../../../../utils'
 
 import css from './TicketAttachments.less'
 
-// TODO (@pwlmaciejewski): Once we upgrade Immutable to v4 it should be a RecordOf<MessageAttachment>
-type Attachment = any
+type Attachment = Map<any, any>
 
 type Props = {
-    attachments: List<Attachment>,
-    removable: boolean,
-    deleteAttachment?: (number) => void,
-    className?: string,
+    attachments: List<Attachment>
+    removable: boolean
+    deleteAttachment?: (number: number) => void
+    className?: string
 }
 
 type State = {
-    isLightboxOpen: boolean,
-    currentImage: number,
+    isLightboxOpen: boolean
+    currentImage: number
 }
 
-export default class TicketAttachments extends React.Component<Props, State> {
+export default class TicketAttachments extends Component<Props, State> {
     static defaultProps = {
         removable: false,
     }
@@ -46,7 +44,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
         )
     }
 
-    removeAttachment = (idx: number, e: SyntheticEvent<*>) => {
+    removeAttachment = (idx: number, e: MouseEvent<HTMLElement>) => {
         this.props.deleteAttachment && this.props.deleteAttachment(idx)
 
         // prevent opening the thumb when clicking the delete button
@@ -69,29 +67,32 @@ export default class TicketAttachments extends React.Component<Props, State> {
         return null
     }
 
-    isImage = (attachment: Attachment) => {
-        return attachment.get('content_type').startsWith('image/')
+    isImage = (attachment?: Attachment) => {
+        return (
+            !!attachment &&
+            (attachment.get('content_type') as string).startsWith('image/')
+        )
     }
 
     setImagePreview = (attachment: Attachment) => {
         if (!this.isImage(attachment)) {
-            return null
+            return undefined
         }
 
         try {
             return {
                 backgroundImage: `url(${proxifyURL(
-                    attachment.get('url'),
+                    attachment.get('url') as string,
                     '120x80'
                 )})`,
             }
         } catch (error) {
-            return null
+            return undefined
         }
     }
 
     openLightbox = (
-        e: SyntheticEvent<*>,
+        e: MouseEvent<HTMLAnchorElement>,
         attachment: Attachment,
         images: List<Attachment>
     ) => {
@@ -104,7 +105,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
         this.setState({
             isLightboxOpen: true,
             currentImage: images.findIndex(
-                (curImage) => curImage.get('url') === attachment.get('url')
+                (curImage) => curImage!.get('url') === attachment.get('url')
             ),
         })
 
@@ -132,12 +133,12 @@ export default class TicketAttachments extends React.Component<Props, State> {
             return null
         }
 
-        const images = attachments.filter(this.isImage)
+        const images = attachments.filter(this.isImage) as List<any>
         const failedAttachments = attachments.filter(
-            (attachment) => attachment.get('public') === false
+            (attachment) => attachment!.get('public') === false
         )
         const publicAttachments = attachments.filter(
-            (attachment) => attachment.get('public') !== false
+            (attachment) => attachment!.get('public') !== false
         )
 
         return (
@@ -149,39 +150,41 @@ export default class TicketAttachments extends React.Component<Props, State> {
                         message which we couldn't download.
                     </div>
                 )}
-                {publicAttachments.map((attachment: Attachment, idx) => {
-                    return (
-                        <a
-                            href={attachment.get('url') || '#'}
-                            target="_blank"
-                            className={classnames(css.item, {
-                                [css.hasPreview]: this.isImage(attachment),
-                            })}
-                            key={idx}
-                            style={this.setImagePreview(attachment)}
-                            onClick={(e) =>
-                                this.openLightbox(e, attachment, images)
-                            }
-                            rel="noopener noreferrer"
-                        >
-                            <div className={css.itemMeta}>
-                                <div className={css.metaName}>
-                                    {attachment.get('name')}
+                {(publicAttachments as List<any>).map(
+                    (attachment: Attachment, idx) => {
+                        return (
+                            <a
+                                href={attachment.get('url') || '#'}
+                                target="_blank"
+                                className={classnames(css.item, {
+                                    [css.hasPreview]: this.isImage(attachment),
+                                })}
+                                key={idx}
+                                style={this.setImagePreview(attachment)}
+                                onClick={(e) =>
+                                    this.openLightbox(e, attachment, images)
+                                }
+                                rel="noopener noreferrer"
+                            >
+                                <div className={css.itemMeta}>
+                                    <div className={css.metaName}>
+                                        {attachment.get('name')}
+                                    </div>
+
+                                    {this.renderAttachmentIcon(
+                                        attachment.get('content_type')
+                                    )}
+
+                                    {this.renderRemoveIcon(idx as number)}
                                 </div>
-
-                                {this.renderAttachmentIcon(
-                                    attachment.get('content_type')
-                                )}
-
-                                {this.renderRemoveIcon(idx)}
-                            </div>
-                        </a>
-                    )
-                })}
+                            </a>
+                        )
+                    }
+                )}
 
                 <Lightbox
                     images={images
-                        .map((image) => {
+                        .map((image: Map<any, any>) => {
                             return {
                                 src: proxifyURL(image.get('url')),
                                 caption: image.get('name'),

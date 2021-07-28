@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketTags component should display current tags 1`] = `
+<div
+  class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+    style="color: rgb(128, 136, 214);"
+  >
+    <span>
+      angry
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+    style="color: rgb(128, 136, 214);"
+  >
+    <span>
+      refund
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
+  <span
+    class="badge-tag tagLabel badge badge-secondary"
+    style="color: rgb(128, 136, 214);"
+  >
+    <span>
+      return
+      <i
+        class="remove material-icons cursor-pointer ml-1"
+      >
+        close
+      </i>
+    </span>
+  </span>
+  <div
+    class="addTags dropdown"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="btn btn-secondary btn-sm"
+      type="button"
+    >
+      <i
+        class="material-icons md-1 align-middle"
+      >
+        add
+      </i>
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdown-menu"
+      role="menu"
+      style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+      tabindex="-1"
+    >
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
+      >
+        ADD TAG:
+      </h6>
+      <h6
+        class="dropdown-item-input dropdown-header"
+        tabindex="-1"
+      />
+      <div
+        class="dropdown-divider"
+        tabindex="-1"
+      />
+    </div>
+  </div>
+</div>
+`;

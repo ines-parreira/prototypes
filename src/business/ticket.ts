@@ -1,3 +1,5 @@
+import {NotificationStatus} from '../state/notifications/types'
+
 import {humanize} from './format'
 import {Notification} from './types/notification'
 import {TicketMessageSourceType} from './types/ticket'
@@ -11,7 +13,7 @@ export function canReply(
     if (!!explicitReason) {
         return {
             message: explicitReason,
-            status: 'warning',
+            status: NotificationStatus.Warning,
         }
     }
 
@@ -26,7 +28,7 @@ export function canReply(
                     messageType
                 )}, you can either send a text message, or an image attachment, ` +
                 'but not both at the same time. If you want to write a message, remove the attachment first.',
-            status: 'warning',
+            status: NotificationStatus.Warning,
         }
     }
 
@@ -55,7 +57,7 @@ export function canAddAttachments(
                     messageType
                 )}, you can either send a text message, or an image attachment, ` +
                 'but not both at the same time.',
-            status: 'warning',
+            status: NotificationStatus.Warning,
         }
     }
 
@@ -79,14 +81,14 @@ export function canAddAttachments(
                 message: `When using ${humanize(
                     messageType
                 )}, you can only send attachments one by one.`,
-                status: 'warning',
+                status: NotificationStatus.Warning,
             }
         } else if (maxAttachmentsCount === 0) {
             return {
                 message: `When using ${humanize(
                     messageType
                 )}, you can not send attachments.`,
-                status: 'warning',
+                status: NotificationStatus.Warning,
             }
         }
     }

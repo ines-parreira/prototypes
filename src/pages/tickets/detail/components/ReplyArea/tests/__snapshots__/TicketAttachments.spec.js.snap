@@ -222,7 +222,6 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     key="1"
     onClick={[Function]}
     rel="noopener noreferrer"
-    style={null}
     target="_blank"
   >
     <div

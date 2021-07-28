@@ -92,7 +92,7 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
     spellCheck={true}
-    tabIndex="4"
+    tabIndex={4}
     type="text"
     value={
       Object {
@@ -171,7 +171,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     placeholder="Click here to reply, or press r."
     readOnly={false}
     spellCheck={true}
-    tabIndex="4"
+    tabIndex={4}
     type="text"
     value={
       Object {
@@ -275,7 +275,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     placeholder="Click here to reply, or press r."
     readOnly={false}
     spellCheck={true}
-    tabIndex="4"
+    tabIndex={4}
     type="text"
     value={
       Object {
@@ -374,7 +374,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     placeholder="Click here to reply, or press r."
     readOnly={false}
     spellCheck={true}
-    tabIndex="4"
+    tabIndex={4}
     type="text"
     value={
       Object {

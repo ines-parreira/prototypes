@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {TicketSubmitButtonsContainer} from '../TicketSubmitButtons'
+import {TicketSubmitButtonsContainer} from '../TicketSubmitButtons.tsx'
 
 jest.mock('lodash/sample', () => (array) => array[0])
 

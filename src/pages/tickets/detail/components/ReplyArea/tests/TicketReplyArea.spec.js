@@ -3,9 +3,9 @@ import React from 'react'
 import {shallow, mount, type ReactWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import TicketReply from '../TicketReply'
-import {TicketReplyArea} from '../TicketReplyArea'
-import TicketMacros from '../TicketMacros'
+import TicketReply from '../TicketReply.tsx'
+import {TicketReplyArea} from '../TicketReplyArea.tsx'
+import TicketMacros from '../TicketMacros.tsx'
 
 jest.mock('../TicketReply', () => {
     const React = require('react')

@@ -1971,7 +1971,9 @@ Array [
     "actionIndex": 0,
     "ticketId": 1,
     "type": "UPDATE_ACTION_ARGS_ON_APPLIED",
-    "value": "hello",
+    "value": Immutable.Map {
+      "name": "hello",
+    },
   },
 ]
 `;

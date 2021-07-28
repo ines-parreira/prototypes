@@ -53,7 +53,7 @@ import {getActiveView} from '../../../state/views/selectors.ts'
 import Loader from '../../common/components/Loader/Loader.tsx'
 
 import TicketView from './components/TicketView.tsx'
-import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
+import {updateMessageText} from './components/ReplyArea/TicketReplyEditor.tsx'
 
 type Props = {
     activeCustomer: Map<any, any>,

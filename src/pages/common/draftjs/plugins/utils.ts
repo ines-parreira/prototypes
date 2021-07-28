@@ -7,10 +7,12 @@ import {
     EditorChangeType,
 } from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
-import _noop from 'lodash/noop'
 import _get from 'lodash/get'
 import {AxiosError} from 'axios'
 
+import {ConnectedAction} from '../../../../state/types'
+import {notify as notifyAction} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 import {uploadFiles} from '../../../../utils'
 import {
     getFileTooLargeError,
@@ -93,7 +95,7 @@ export const addImage = (
 export const insertInlineImages = (
     files: Array<File>,
     {getEditorState, setEditorState, getProps}: PluginMethods,
-    notify: (notification: {status: string; message: string}) => void = _noop
+    notify: ConnectedAction<typeof notifyAction>
 ) => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
@@ -104,8 +106,8 @@ export const insertInlineImages = (
     const currentSize = files.reduce((sum, file) => sum + (file.size || 0), 0)
 
     if (currentSize >= maxSize) {
-        notify({
-            status: 'error',
+        void notify({
+            status: NotificationStatus.Error,
             message: getFileTooLargeError(maxSize),
         })
         return Promise.resolve()
@@ -164,9 +166,8 @@ export const insertInlineImages = (
 
                         setEditorState(newEditorState)
 
-                        // notify
-                        notify({
-                            status: 'error',
+                        void notify({
+                            status: NotificationStatus.Error,
                             message: (err as {error: string}).error,
                         })
 

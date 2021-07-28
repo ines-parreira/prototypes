@@ -1,99 +1,81 @@
-// @flow
+import React, {Component} from 'react'
 import {ContentState, EditorState} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
-import React, {type Node} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket.ts'
-import {getOtherAgents} from '../../../../../state/agents/selectors.ts'
-import type {agentsType} from '../../../../../state/agents/types'
+import {RootState} from '../../../../../state/types'
+import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
+import {getOtherAgents} from '../../../../../state/agents/selectors'
 import {
     addAttachments,
     setResponseText,
-} from '../../../../../state/newMessage/actions.ts'
+} from '../../../../../state/newMessage/actions'
 import {
     getNewMessageType,
     getNewMessageAttachments,
-} from '../../../../../state/newMessage/selectors.ts'
-import {notify} from '../../../../../state/notifications/actions.ts'
-import type {attachmentType} from '../../../../../types'
+} from '../../../../../state/newMessage/selectors'
+import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,
-} from '../../../../../utils/file.ts'
-import RichField from '../../../../common/forms/RichField'
-import {getContext} from '../../../../../state/prediction/selectors.ts'
-import {
-    TicketMessageSourceTypes,
-    canAddAttachments,
-} from '../../../../../business/ticket.ts'
+} from '../../../../../utils/file'
+import RichField from '../../../../common/forms/RichField/RichField'
+import {getContext} from '../../../../../state/prediction/selectors'
+import {canAddAttachments} from '../../../../../business/ticket'
+import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 
-import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply.tsx'
+import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
 
 import css from './TicketReplyEditor.less'
 
+type Props = {
+    applyMacro: (macro: Map<any, any>) => void
+    macros: Map<any, any>
+    richAreaRef: (ref: RichField | null) => void
+    shouldDisplayQuickReply: boolean
+    ticket: Map<any, any>
+} & ConnectedProps<typeof connector>
+
 // debounce the updating of the redux because it's slow otherwise when we type
-export const updateMessageText = _debounce((props, editorState) => {
-    if (!props.newMessage.getIn(['state', 'cacheAdded'])) {
-        return
-    }
+export const updateMessageText = _debounce(
+    ({newMessage, setResponseText}: Props, editorState: EditorState) => {
+        if (!newMessage.getIn(['state', 'cacheAdded'])) {
+            return
+        }
 
-    props.setResponseText(
-        Map({
-            contentState: editorState.getCurrentContent(),
-            selectionState: editorState.getSelection(),
-            forceUpdate: false,
-            forceFocus: false,
-        })
-    )
-}, 100)
-
-type richAreaType = {
-    state: {
-        editorState: EditorState,
+        setResponseText(
+            Map({
+                contentState: editorState.getCurrentContent(),
+                selectionState: editorState.getSelection(),
+                forceUpdate: false,
+                forceFocus: false,
+            })
+        )
     },
-    focusEditor: () => void,
-    _setEditorState: (T: EditorState) => void,
-}
-type filesType = Array<attachmentType>
+    100
+)
+
 type validationRegexType = string | RegExp
 
-type Props = {
-    agents: agentsType,
-    newMessage: Map<*, *>,
-    newMessageType: TicketMessageSourceType,
-    ticket: Map<*, *>,
-    predictionContext: Map<*, *>,
-    attachments: List<*>,
-    macros: Map<any, any>,
-    applyMacro: (macro: Map<any, any>) => void,
-    shouldDisplayQuickReply: boolean,
-
-    addAttachments: typeof addAttachments,
-    notify: ({}) => void,
-    setResponseText: typeof setResponseText,
-
-    richAreaRef: (T: richAreaType) => void,
-}
-
 type State = {
-    editorState: EditorState,
+    editorState: EditorState
 }
 
-export class TicketReplyEditorContainer extends React.Component<Props, State> {
-    richArea: richAreaType
+export class TicketReplyEditorContainer extends Component<Props, State> {
+    richArea: Maybe<RichField>
 
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'richAreaRef' | 'attachments'> = {
         richAreaRef: _noop,
         attachments: fromJS([]),
     }
 
     componentWillMount() {
         // set the initial state of the editor - there might be drafts
-        this._updateEditorState(this._getEditorStateFromReducer(this.props))
+        const editorState = this.getEditorStateFromReducer(this.props)
+        editorState && this.updateEditorState(editorState)
     }
 
     componentWillUnmount() {
@@ -117,15 +99,16 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
             nextForceUpdate && prevForceUpdate !== nextForceUpdate
 
         if (shouldUpdate) {
-            this._updateEditorState(this._getEditorStateFromReducer(nextProps))
+            const editorState = this.getEditorStateFromReducer(nextProps)
+            editorState && this.updateEditorState(editorState)
         }
     }
 
-    _getEditorStateFromReducer = (props: Props) => {
-        const state = props.newMessage.get('state')
-        const contentState = state.get('contentState')
+    getEditorStateFromReducer = (props: Props) => {
+        const state = props.newMessage.get('state') as EditorState
+        const contentState = state.get('contentState') as ContentState
 
-        let editorState = this._getEditorState()
+        let editorState = this.getEditorState()
 
         if (!editorState) {
             return editorState
@@ -141,14 +124,15 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
             // empty editor state (triggered after message is sent, textarea needs to be emptied)
             editorState = EditorState.push(
                 editorState,
-                ContentState.createFromText('')
+                ContentState.createFromText(''),
+                'insert-characters'
             )
         }
 
         return editorState
     }
 
-    _canAddAttachments = (fileList: filesType = []) => {
+    canAddAttachments = (fileList: File[] | FileList) => {
         // FileList does not have map
         const files = Array.from(fileList)
         const {attachments, newMessage, newMessageType} = this.props
@@ -159,7 +143,7 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
             attachments.size + files.length
         )
         if (notification) {
-            this.props.notify({
+            void this.props.notify({
                 status: notification.status,
                 message: notification.message,
             })
@@ -167,14 +151,14 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
         }
 
         // check total attachments size.
-        const currentSize = this._getFilesSize(files)
+        const currentSize = this.getFilesSize(files)
         const maxSize = getMaxAttachmentSize(
-            this._getEditorState(),
+            this.getEditorState(),
             attachments.toJS()
         )
         if (currentSize >= maxSize) {
-            this.props.notify({
-                status: 'error',
+            void this.props.notify({
+                status: NotificationStatus.Error,
                 message: getFileTooLargeError(maxSize),
             })
             return false
@@ -183,29 +167,23 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
         return true
     }
 
-    _handleFiles = (
-        files: filesType,
-        validationRegex: ?validationRegexType = null
+    handleFiles = (
+        files: File[] | FileList,
+        validationRegex?: validationRegexType
     ) => {
         const {newMessageType} = this.props
-        if (!this._canAddAttachments(files)) {
+        if (!this.canAddAttachments(files)) {
             return
         }
 
-        let regex = null
+        const regex = validationRegex && new RegExp(validationRegex)
         let cancel = false
 
-        let filesArray = Array.from(files)
-
-        if (validationRegex) {
-            regex = new RegExp(validationRegex)
-        }
-
-        filesArray.forEach((file) => {
-            if (regex && !file.type.match(regex) && !cancel) {
-                this.props.notify({
-                    type: 'error',
-                    status: 'warning',
+        Array.from(files).forEach((file) => {
+            if (regex && !regex.exec(file.type) && !cancel) {
+                void this.props.notify({
+                    type: NotificationStatus.Error,
+                    status: NotificationStatus.Warning,
                     message: `When answering to ${newMessageType} messages, the only attachments allowed are ${' '}
                     images (except svg).`,
                 })
@@ -213,9 +191,9 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
             }
 
             if (file.type.endsWith('svg+xml')) {
-                this.props.notify({
-                    type: 'error',
-                    status: 'warning',
+                void this.props.notify({
+                    type: NotificationStatus.Error,
+                    status: NotificationStatus.Warning,
                     message: 'Uploading SVGs is not allowed.',
                 })
                 cancel = true
@@ -229,7 +207,7 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
         this.props.addAttachments(this.props.ticket, files)
     }
 
-    _getEditorState = () => {
+    getEditorState = () => {
         if (!this.richArea) {
             return
         }
@@ -237,23 +215,26 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
         return this.richArea.state.editorState
     }
 
-    _updateEditorState = (editorState: EditorState) => {
+    updateEditorState = (editorState: EditorState) => {
         if (!this.richArea) {
             return
         }
-        this.richArea._setEditorState(editorState)
+        this.richArea.setEditorState(editorState)
     }
 
-    _onEditorChange = (editorState: EditorState) => {
+    onEditorChange = (editorState: EditorState) => {
         // update the reducer when the editor state is changed
         updateMessageText(this.props, editorState)
     }
 
-    _getFilesSize = (files: Array<attachmentType>) => {
-        return files.reduce((sum, file) => sum + (file.size || 0), 0)
+    getFilesSize = (files: File[] | FileList) => {
+        return Array.from(files).reduce(
+            (sum, file) => sum + (file.size || 0),
+            0
+        )
     }
 
-    _getButtons = (): Node[] => {
+    getButtons = () => {
         const {attachments, newMessage, newMessageType} = this.props
         if (
             canAddAttachments(
@@ -288,11 +269,12 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
                     type="file"
                     multiple
                     onChange={(event) => {
-                        return this._handleFiles(event.target.files)
+                        event.target.files &&
+                            this.handleFiles(event.target.files)
                     }}
                     onClick={(event) => {
                         // empty input on click
-                        return (event.target.value = null)
+                        return ((event.target as HTMLInputElement).value = '')
                     }}
                 />
             </div>,
@@ -314,7 +296,7 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
 
         const isNewMessageRichType = isRichType(newMessageType)
         const isNewMessageFacebookMessengerType =
-            newMessageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER
+            newMessageType === TicketMessageSourceType.FacebookMessenger
         const canAddMention = canLeaveInternalNote(newMessageType)
 
         const mentionProps = {
@@ -335,23 +317,20 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
             displayedActions.push('IMAGE')
         }
 
-        let canInsertInlineImages =
+        const canInsertInlineImages =
             newMessageType === 'email' || isNewMessageFacebookMessengerType
 
-        let predictionProps = {
+        const predictionProps = {
             predictionContext: this.props.predictionContext,
         }
 
         return (
             <div className={css.component}>
                 <RichField
-                    ref={
-                        // $FlowFixMe
-                        (richArea: richAreaType) => {
-                            this.richArea = richArea
-                            richAreaRef(richArea)
-                        }
-                    }
+                    ref={(richArea) => {
+                        this.richArea = richArea
+                        richAreaRef(richArea)
+                    }}
                     defaultContentState={newMessage.getIn([
                         'state',
                         'contentState',
@@ -360,9 +339,9 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
                         text: newMessage.getIn(['newMessage', 'body_text']),
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
-                    onChange={this._onEditorChange}
-                    attachFiles={(files) => this._handleFiles(files)}
-                    tabIndex="4"
+                    onChange={this.onEditorChange}
+                    attachFiles={(files) => this.handleFiles(files)}
+                    tabIndex={4}
                     readOnly={newMessage.getIn([
                         '_internal',
                         'loading',
@@ -373,13 +352,13 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
                     notify={notify}
                     canInsertInlineImages={canInsertInlineImages}
                     attachments={attachments}
-                    buttons={this._getButtons()}
+                    buttons={this.getButtons()}
                     displayedActions={displayedActions}
                     quickReply={
                         shouldDisplayQuickReply ? (
                             <MacrosQuickReply
                                 applyMacro={applyMacro}
-                                macros={macros.slice(0, 3)}
+                                macros={macros.slice(0, 3) as Map<any, any>}
                             />
                         ) : undefined
                     }
@@ -394,14 +373,13 @@ export class TicketReplyEditorContainer extends React.Component<Props, State> {
 }
 
 const connector = connect(
-    (state) => ({
-        newMessageType: getNewMessageType(state),
+    (state: RootState) => ({
+        agents: getOtherAgents(state),
         attachments: getNewMessageAttachments(state),
         newMessage: state.newMessage,
-        agents: getOtherAgents(state),
+        newMessageType: getNewMessageType(state),
         predictionContext: getContext(state),
     }),
-
     {
         addAttachments,
         notify,

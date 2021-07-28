@@ -5,7 +5,7 @@ import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
 
-import {TicketReplyEditorContainer} from '../TicketReplyEditor'
+import {TicketReplyEditorContainer} from '../TicketReplyEditor.tsx'
 import {
     convertFromHTML,
     convertToHTML,
@@ -166,7 +166,7 @@ describe('TicketReplyEditor component', () => {
         const editorState = EditorState.createWithContent(
             ContentState.createFromText('Pizza Pepperoni')
         )
-        component.instance()._onEditorChange(editorState)
+        component.instance().onEditorChange(editorState)
         // simulate leaving ticket
         component.unmount()
         // simulate blank newMessage
@@ -291,7 +291,7 @@ describe('TicketReplyEditor component', () => {
         const editorState = EditorState.createWithContent(
             convertFromHTML(htmlString)
         )
-        component.instance()._onEditorChange(editorState)
+        component.instance().onEditorChange(editorState)
 
         // needed for lifecycle
         setTimeout(() => {

@@ -383,7 +383,9 @@ describe('ticket actions', () => {
     })
 
     it('updateActionArgsOnApplied()', () => {
-        store.dispatch(actions.updateActionArgsOnApplied(0, 'hello', 1))
+        store.dispatch(
+            actions.updateActionArgsOnApplied(0, fromJS({name: 'hello'}), 1)
+        )
         return expect(store.getActions()).toMatchSnapshot()
     })
 

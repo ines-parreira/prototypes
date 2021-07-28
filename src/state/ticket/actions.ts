@@ -462,7 +462,7 @@ export const deleteActionOnApplied = (
 
 export const updateActionArgsOnApplied = (
     actionIndex: number,
-    value: string,
+    value: Map<any, any>,
     ticketId: number
 ) => ({
     type: types.UPDATE_ACTION_ARGS_ON_APPLIED,

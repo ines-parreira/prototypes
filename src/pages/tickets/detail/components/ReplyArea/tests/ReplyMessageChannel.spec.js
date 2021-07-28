@@ -16,7 +16,7 @@ import {
     INSTAGRAM_MEDIA_SOURCE,
     TWITTER_TWEET_SOURCE,
 } from '../../../../../../config/ticket.ts'
-import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
+import {ReplyMessageChannelContainer} from '../ReplyMessageChannel.tsx'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket.ts'
 
 const baseReply = {

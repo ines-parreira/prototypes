@@ -1,7 +1,6 @@
 import _noop from 'lodash/noop'
 
 import {insertInlineImages, isImage} from '../utils'
-
 import {PluginMethods, ImagePluginConfig} from '../types'
 
 const _handlePastedFiles = (config: ImagePluginConfig) => (
@@ -23,7 +22,7 @@ const _handlePastedFiles = (config: ImagePluginConfig) => (
 
 const pasteImagePlugin = (
     config: ImagePluginConfig = {
-        notify: _noop,
+        notify: () => Promise.resolve(),
         getAttachFiles: () => _noop,
         getCanDropFiles: () => false,
         getCanInsertInlineImages: () => false,

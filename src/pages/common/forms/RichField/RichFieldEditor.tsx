@@ -15,6 +15,8 @@ import React, {
     ComponentProps,
 } from 'react'
 
+import {ConnectedAction} from '../../../../state/types'
+import {notify} from '../../../../state/notifications/actions'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks/index.js'
@@ -62,15 +64,15 @@ export type Props = {
     onFocus: (event: MouseEvent<HTMLDivElement>) => void
     onBlur: () => void
     placeholder: string
-    notify: (notification: {status: string; message: string}) => void
-    attachFiles: (T: Array<Blob>) => void
+    notify: ConnectedAction<typeof notify>
+    attachFiles: (T: File[]) => void
     canDropFiles: boolean
     canInsertInlineImages: boolean
     mentionSuggestions?: suggestionsType
     canAddMention?: canAddMentionType
     buttons?: ReactNode[]
     displayedActions?: ActionName[]
-    attachments?: File[]
+    attachments?: List<any>
     editorKey?: string
     tabIndex?: number
     readOnly?: boolean
@@ -90,7 +92,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     static defaultProps = {
         emailExtraEnabled: false,
         type: 'text',
-        notify: _noop,
+        notify: () => Promise.resolve(),
         attachFiles: _noop,
         canDropFiles: false,
         canInsertInlineImages: true,

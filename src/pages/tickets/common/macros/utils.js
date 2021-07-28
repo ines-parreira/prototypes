@@ -21,7 +21,7 @@ export const isMacroDisabled = (
 }
 
 export const getDefaultSelectedMacroId = (
-    macros: Map<*, *>,
+    macros: Map<any, any>,
     selectedMacroId: ?number,
     isCreatingMacro?: boolean
 ) => {
@@ -41,7 +41,7 @@ export const getDefaultSelectedMacroId = (
 }
 
 export const getCurrentMacro = (
-    macros: Map<*, *>,
+    macros: Map<any, any>,
     selectedMacroId: ?number,
     isCreatingMacro?: boolean
 ) => {

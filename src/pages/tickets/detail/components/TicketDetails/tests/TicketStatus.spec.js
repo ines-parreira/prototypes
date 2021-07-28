@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import TicketStatus from '../TicketStatus'
+import TicketStatus from '../TicketStatus.tsx'
 
 describe('TicketStatus component', () => {
     it('closed ticket', () => {

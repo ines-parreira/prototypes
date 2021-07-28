@@ -6,7 +6,7 @@ import {StyleSheetTestUtils} from 'aphrodite'
 
 import {fromJS} from 'immutable'
 
-import TicketAttachments from '../TicketAttachments'
+import TicketAttachments from '../TicketAttachments.tsx'
 import {proxifyURL} from '../../../../../../utils.ts'
 
 describe('TicketAttachments component', () => {
@@ -56,7 +56,7 @@ describe('TicketAttachments component', () => {
         })
 
         it('should not set a preview on the second attachment', () => {
-            expect(component.children().at(1)).toHaveProp('style', null)
+            expect(component.children().at(1)).toHaveProp('style', undefined)
         })
 
         it('should not show the remove button', () => {

@@ -1,6 +1,9 @@
 import {EditorState, ContentState, ContentBlock} from 'draft-js'
 import {ReactNode, ComponentType, KeyboardEvent} from 'react'
 
+import {notify} from '../../../../state/notifications/actions'
+import {ConnectedAction} from '../../../../state/types'
+
 export type PluginMethods = {
     getEditorState: () => EditorState
     setEditorState: (editorState: EditorState) => void
@@ -8,7 +11,7 @@ export type PluginMethods = {
 }
 
 export type ImagePluginConfig = {
-    notify: (notification: {status: string; message: string}) => void
+    notify: ConnectedAction<typeof notify>
     getAttachFiles: () => (T: Array<File>) => void
     getCanDropFiles: () => boolean
     getCanInsertInlineImages: () => boolean

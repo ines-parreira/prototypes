@@ -28,7 +28,19 @@ export type ActionTemplate = {
     title: string
     notes?: string[]
     integrationType?: string
-    arguments?: unknown
+    arguments?: {
+        [key: string]: {
+            default: boolean
+            display_order: number
+            editable: boolean
+            input: {
+                type: string
+            }
+            label: string
+            type: string
+            required: boolean
+        }
+    }
     validators?: Array<{
         validate: (value: Customer) => unknown | boolean
         error: string

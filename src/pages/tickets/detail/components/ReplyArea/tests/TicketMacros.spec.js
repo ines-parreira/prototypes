@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import {TicketMacrosContainer} from '../TicketMacros'
+import {TicketMacrosContainer} from '../TicketMacros.tsx'
 
 describe('TicketMacros component', () => {
     let defaultProps

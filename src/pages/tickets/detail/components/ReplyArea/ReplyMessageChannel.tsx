@@ -1,8 +1,7 @@
+import React, {Component} from 'react'
 import classnames from 'classnames'
 import md5 from 'md5'
-import PropTypes from 'prop-types'
-import React from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {
     DropdownItem,
     DropdownMenu,
@@ -10,37 +9,19 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {getChannelsByType} from '../../../../../state/integrations/selectors.ts'
-import {prepare} from '../../../../../state/newMessage/actions.ts'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
-import {getMessages} from '../../../../../state/ticket/selectors.ts'
-import {guessReceiversFromTicket} from '../../../../../state/ticket/utils.ts'
-import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts.tsx'
-import SourceIcon from '../../../../common/components/SourceIcon.tsx'
-import {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
-import {
-    API_SOURCE,
-    CHAT_SOURCE,
-    EMAIL_FORWARD_SOURCE,
-    EMAIL_SOURCE,
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MESSAGE_SOURCE,
-    FACEBOOK_MESSENGER_SOURCE,
-    FACEBOOK_POST_SOURCE,
-    FACEBOOK_MENTION_POST_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-    INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_AD_MEDIA_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE,
-    INSTAGRAM_MEDIA_SOURCE,
-    INSTAGRAM_DM_SOURCE,
-    INTERNAL_NOTE_SOURCE,
-    FACEBOOK_REVIEW_COMMENT_SOURCE,
-    INSTAGRAM_MENTION_COMMENT_SOURCE,
-    YOTPO_REVIEW_SOURCE,
-} from '../../../../../config/ticket.ts'
+import {RootState} from '../../../../../state/types'
+import {KeymapActions} from '../../../../../services/shortcutManager/shortcutManager'
+import {getChannelsByType} from '../../../../../state/integrations/selectors'
+import {prepare} from '../../../../../state/newMessage/actions'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import {getMessages} from '../../../../../state/ticket/selectors'
+import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
+import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
+import SourceIcon from '../../../../common/components/SourceIcon'
+import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 
-import MessageSourceFields from './MessageSourceFields/'
+import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField.js'
+import MessageSourceFields from './MessageSourceFields/MessageSourceFields.js'
 
 import css from './ReplyMessageChannel.less'
 
@@ -49,106 +30,101 @@ const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Phone,
 ]
 
-export class ReplyMessageChannelContainer extends React.Component {
-    static propTypes = {
-        accountChannels: PropTypes.object.isRequired,
-        channel: PropTypes.string.isRequired,
-        hasRecipients: PropTypes.bool.isRequired,
-        isForward: PropTypes.bool.isRequired,
-        isNewMessagePublic: PropTypes.bool.isRequired,
-        messages: PropTypes.object.isRequired,
-        sourceType: PropTypes.string.isRequired,
-        ticket: PropTypes.object.isRequired,
-        prepareNewMessage: PropTypes.func.isRequired,
-        className: PropTypes.string,
-    }
+type OwnProps = {
+    className?: string
+}
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export class ReplyMessageChannelContainer extends Component<Props> {
     state = {
         isReceiversAreaOpen: false,
     }
 
-    channelPickerRef: ?HTMLDivElement
-    messageChannelRef: ?HTMLDivElement
+    channelPickerRef: Maybe<HTMLDivElement>
+    messageChannelRef: Maybe<HTMLDivElement>
+    multiSelectAsyncFieldRef?: any //$TsFixMe: type this once MultiSelectAsyncField is also migrated to TS
 
     componentDidMount() {
-        window.addEventListener('click', this._updateMessageSourceFieldsOpening)
+        window.addEventListener('click', this.updateMessageSourceFieldsOpening)
     }
 
     componentWillUnmount() {
         window.removeEventListener(
             'click',
-            this._updateMessageSourceFieldsOpening
+            this.updateMessageSourceFieldsOpening
         )
     }
 
-    _keymap = {
+    keymap: KeymapActions = {
         FORWARD_REPLY: {
-            action: (e) => {
+            action: (e: Event) => {
                 e.preventDefault()
-                this.props.prepareNewMessage('email-forward')
+                this.props.prepareNewMessage(
+                    TicketMessageSourceType.EmailForward
+                )
 
-                if (this._messageSourceFields) {
-                    this._messageSourceFields.focusInput()
+                if (this.multiSelectAsyncFieldRef) {
+                    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                    this.multiSelectAsyncFieldRef.focusInput()
                 }
             },
+            key: 'f',
         },
         INTERNAL_NOTE_REPLY: {
             action: (e) => {
                 e.preventDefault()
-                this.props.prepareNewMessage('internal-note')
+                this.props.prepareNewMessage(
+                    TicketMessageSourceType.InternalNote
+                )
             },
+            key: 'i',
         },
     }
 
-    _canChangeReceivers = () => {
+    canChangeReceivers = () => {
         return changeReceiversAllowedSourceTypes.includes(this.props.sourceType)
     }
 
     /**
      * Update the open status of the receivers dropdown (collapsed or open to edit its values)
-     * @param e
-     * @private
      */
-    _updateMessageSourceFieldsOpening = (e) => {
+    updateMessageSourceFieldsOpening = (e: Event) => {
         const {hasRecipients} = this.props
 
-        // list of components on which the click does not change opening
-        const ignoredComponentsRefs = ['channelPickerRef']
-
         // open recipients area only for emails
-        if (this._canChangeReceivers()) {
+        if (this.canChangeReceivers()) {
             if (hasRecipients) {
                 if (!e) {
                     return
                 }
 
                 // ignore click if clicked on ignored components (such as the channel picker dropdown)
-                const shouldBeIgnored = ignoredComponentsRefs.some((id) => {
-                    return (
-                        !this[id] || (this[id] && this[id].contains(e.target))
-                    )
-                })
+                const shouldBeIgnored =
+                    !this.channelPickerRef ||
+                    (this.channelPickerRef &&
+                        this.channelPickerRef.contains(e.target as Node))
 
                 if (!shouldBeIgnored) {
                     const hasClickedInComponent =
                         this.messageChannelRef &&
-                        this.messageChannelRef.contains(e.target)
+                        this.messageChannelRef.contains(e.target as Node)
 
-                    this._toggleReceiversArea(hasClickedInComponent)
+                    this.toggleReceiversArea(!!hasClickedInComponent)
                 }
             } else {
-                this._toggleReceiversArea(true)
+                this.toggleReceiversArea(true)
             }
         } else {
-            this._toggleReceiversArea(false)
+            this.toggleReceiversArea(false)
         }
     }
 
-    _toggleReceiversArea = (state = !this.state.isReceiversAreaOpen) => {
+    toggleReceiversArea = (state = !this.state.isReceiversAreaOpen) => {
         this.setState({isReceiversAreaOpen: state})
     }
 
-    _renderReceiversArea = () => {
+    renderReceiversArea = () => {
         const {
             ticket,
             messages,
@@ -169,22 +145,22 @@ export class ReplyMessageChannelContainer extends React.Component {
         // the re-set of the receivers of the new message.
         const parentId = messages.isEmpty()
             ? 'new'
-            : `${ticket.get('id', '')} - ${messages
-                  .last()
-                  .get('id', '')} - ${md5(messages.last().get('source'))}`
+            : `${ticket.get('id', '') as string} - ${
+                  messages.last().get('id', '') as string
+              } - ${md5(messages.last().get('source') as string)}`
 
         const disabledSources = [
-            API_SOURCE,
-            CHAT_SOURCE,
-            FACEBOOK_MESSAGE_SOURCE,
-            FACEBOOK_MESSENGER_SOURCE,
-            FACEBOOK_POST_SOURCE,
-            FACEBOOK_MENTION_POST_SOURCE,
-            INSTAGRAM_AD_COMMENT_SOURCE,
-            INSTAGRAM_AD_MEDIA_SOURCE,
-            INSTAGRAM_COMMENT_SOURCE,
-            INSTAGRAM_MEDIA_SOURCE,
-            INSTAGRAM_DM_SOURCE, // TODO(check if we need this)
+            TicketMessageSourceType.Api,
+            TicketMessageSourceType.Chat,
+            TicketMessageSourceType.FacebookMessage,
+            TicketMessageSourceType.FacebookMessenger,
+            TicketMessageSourceType.FacebookPost,
+            TicketMessageSourceType.FacebookMentionPost,
+            TicketMessageSourceType.InstagramAdComment,
+            TicketMessageSourceType.InstagramAdMedia,
+            TicketMessageSourceType.InstagramComment,
+            TicketMessageSourceType.InstagramMedia,
+            TicketMessageSourceType.InstagramDirectMessage, // TODO(check if we need this)
         ]
 
         const isInputEnabled =
@@ -200,9 +176,11 @@ export class ReplyMessageChannelContainer extends React.Component {
                 )}
                 enabled={isInputEnabled}
                 parentId={parentId.toString()}
-                canOpen={this._canChangeReceivers()}
+                canOpen={this.canChangeReceivers()}
                 isOpen={this.state.isReceiversAreaOpen}
-                inputRef={(ref) => (this._messageSourceFields = ref)}
+                inputRef={(ref: typeof MultiSelectAsyncField) =>
+                    (this.multiSelectAsyncFieldRef = ref)
+                }
             />
         )
     }
@@ -211,7 +189,7 @@ export class ReplyMessageChannelContainer extends React.Component {
         const {prepareNewMessage, isForward, className, ticket} = this.props
 
         const isTicketExisting = !!ticket.get('id')
-        const replyOptions = ticket.get('reply_options')
+        const replyOptions = ticket.get('reply_options') as Map<any, any>
 
         const suggestEmail = !isTicketExisting || !!replyOptions.get('email')
         const suggestInternalNote = !!replyOptions.get('internal-note')
@@ -242,7 +220,9 @@ export class ReplyMessageChannelContainer extends React.Component {
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.YotpoReview)
         const suggestForwardByEmail = isTicketExisting
-        const iconLabel = isForward ? 'email-forward' : this.props.sourceType
+        const iconLabel = isForward
+            ? TicketMessageSourceType.EmailForward
+            : this.props.sourceType
 
         return (
             <div
@@ -267,10 +247,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 <DropdownItem
                                     type="button"
                                     onClick={() => {
-                                        prepareNewMessage(EMAIL_SOURCE)
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.Email
+                                        )
                                     }}
                                 >
-                                    <SourceIcon type={EMAIL_SOURCE} />
+                                    <SourceIcon
+                                        type={TicketMessageSourceType.Email}
+                                    />
                                     Reply via email
                                 </DropdownItem>
                             )}
@@ -278,10 +262,16 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 <DropdownItem
                                     type="button"
                                     onClick={() => {
-                                        prepareNewMessage(EMAIL_FORWARD_SOURCE)
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.EmailForward
+                                        )
                                     }}
                                 >
-                                    <SourceIcon type={EMAIL_FORWARD_SOURCE} />
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.EmailForward
+                                        }
+                                    />
                                     Forward by email
                                 </DropdownItem>
                             )}
@@ -289,10 +279,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 <DropdownItem
                                     type="button"
                                     onClick={() => {
-                                        prepareNewMessage(CHAT_SOURCE)
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.Chat
+                                        )
                                     }}
                                 >
-                                    <SourceIcon type={CHAT_SOURCE} />
+                                    <SourceIcon
+                                        type={TicketMessageSourceType.Chat}
+                                    />
                                     Reply via chat
                                 </DropdownItem>
                             )}
@@ -301,12 +295,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            FACEBOOK_COMMENT_SOURCE
+                                            TicketMessageSourceType.FacebookComment
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={FACEBOOK_COMMENT_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.FacebookComment
+                                        }
                                     />
                                     Reply via Facebook comment
                                 </DropdownItem>
@@ -316,12 +312,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            FACEBOOK_MENTION_COMMENT_SOURCE
+                                            TicketMessageSourceType.FacebookMentionComment
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={FACEBOOK_MENTION_COMMENT_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.FacebookMentionComment
+                                        }
                                     />
                                     Reply via Facebook mention comment
                                 </DropdownItem>
@@ -331,12 +329,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            FACEBOOK_REVIEW_COMMENT_SOURCE
+                                            TicketMessageSourceType.FacebookReviewComment
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={FACEBOOK_REVIEW_COMMENT_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.FacebookReviewComment
+                                        }
                                     />
                                     Reply via Facebook recommendations
                                 </DropdownItem>
@@ -346,12 +346,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            FACEBOOK_MESSENGER_SOURCE
+                                            TicketMessageSourceType.FacebookMessenger
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={FACEBOOK_MESSENGER_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.FacebookMessenger
+                                        }
                                     />
                                     Reply via Messenger
                                 </DropdownItem>
@@ -360,10 +362,16 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 <DropdownItem
                                     type="button"
                                     onClick={() => {
-                                        prepareNewMessage(INSTAGRAM_DM_SOURCE)
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.InstagramDirectMessage
+                                        )
                                     }}
                                 >
-                                    <SourceIcon type={INSTAGRAM_DM_SOURCE} />
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.InstagramDirectMessage
+                                        }
+                                    />
                                     Reply via Instagram direct message
                                 </DropdownItem>
                             )}
@@ -372,12 +380,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            INSTAGRAM_COMMENT_SOURCE
+                                            TicketMessageSourceType.InstagramComment
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={INSTAGRAM_COMMENT_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.InstagramComment
+                                        }
                                     />
                                     Reply via Instagram
                                 </DropdownItem>
@@ -387,12 +397,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            INSTAGRAM_AD_COMMENT_SOURCE
+                                            TicketMessageSourceType.InstagramAdComment
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={INSTAGRAM_AD_COMMENT_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.InstagramAdComment
+                                        }
                                     />
                                     Reply via Instagram
                                 </DropdownItem>
@@ -402,12 +414,14 @@ export class ReplyMessageChannelContainer extends React.Component {
                                     type="button"
                                     onClick={() => {
                                         prepareNewMessage(
-                                            INSTAGRAM_MENTION_COMMENT_SOURCE
+                                            TicketMessageSourceType.InstagramMentionComment
                                         )
                                     }}
                                 >
                                     <SourceIcon
-                                        type={INSTAGRAM_MENTION_COMMENT_SOURCE}
+                                        type={
+                                            TicketMessageSourceType.InstagramMentionComment
+                                        }
                                     />
                                     Reply via Instagram mention
                                 </DropdownItem>
@@ -416,10 +430,16 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 <DropdownItem
                                     type="button"
                                     onClick={() => {
-                                        prepareNewMessage(YOTPO_REVIEW_SOURCE)
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.YotpoReview
+                                        )
                                     }}
                                 >
-                                    <SourceIcon type={YOTPO_REVIEW_SOURCE} />
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.YotpoReview
+                                        }
+                                    />
                                     Reply on Yotpo review
                                 </DropdownItem>
                             )}
@@ -444,10 +464,16 @@ export class ReplyMessageChannelContainer extends React.Component {
                                 <DropdownItem
                                     type="button"
                                     onClick={() => {
-                                        prepareNewMessage(INTERNAL_NOTE_SOURCE)
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.InternalNote
+                                        )
                                     }}
                                 >
-                                    <SourceIcon type={INTERNAL_NOTE_SOURCE} />
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.InternalNote
+                                        }
+                                    />
                                     Leave an internal note
                                 </DropdownItem>
                             )}
@@ -470,11 +496,11 @@ export class ReplyMessageChannelContainer extends React.Component {
                     </UncontrolledDropdown>
                 </div>
 
-                {this._renderReceiversArea()}
+                {this.renderReceiversArea()}
 
                 <KeyboardShortcuts
                     name="TicketDetailContainer"
-                    keymap={this._keymap}
+                    keymap={this.keymap}
                 />
             </div>
         )
@@ -482,8 +508,7 @@ export class ReplyMessageChannelContainer extends React.Component {
 }
 
 const connector = connect(
-    (state) => {
-        const ticket = state.ticket
+    (state: RootState) => {
         const sourceType = newMessageSelectors.getNewMessageType(state)
         return {
             accountChannels: getChannelsByType(sourceType)(state),
@@ -493,7 +518,7 @@ const connector = connect(
             isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
             messages: getMessages(state),
             sourceType,
-            ticket,
+            ticket: state.ticket,
         }
     },
     {

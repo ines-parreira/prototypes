@@ -60,7 +60,7 @@ export default class RichField extends InputField<Props, State> {
     }
 
     // Warning: used by parents that want to set a new editor state
-    _setEditorState = (editorState: EditorState) => {
+    setEditorState = (editorState: EditorState) => {
         this._onChange(editorState)
     }
 

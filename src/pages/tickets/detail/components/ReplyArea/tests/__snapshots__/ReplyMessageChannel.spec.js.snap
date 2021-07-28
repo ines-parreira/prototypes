@@ -81,9 +81,11 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -173,9 +175,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -254,9 +258,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -346,9 +352,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -438,9 +446,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -530,9 +540,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -622,9 +634,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -714,9 +728,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -806,9 +822,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -898,9 +916,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -990,9 +1010,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -1082,9 +1104,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -1174,9 +1198,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -1233,9 +1259,11 @@ exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -1310,9 +1338,11 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }
@@ -1380,9 +1410,11 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
       Object {
         "FORWARD_REPLY": Object {
           "action": [Function],
+          "key": "f",
         },
         "INTERNAL_NOTE_REPLY": Object {
           "action": [Function],
+          "key": "i",
         },
       }
     }

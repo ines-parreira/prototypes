@@ -1,4 +1,6 @@
+import {NotificationStatus} from '../../state/notifications/types'
+
 export type Notification = {
     message: string
-    status: 'warning'
+    status?: NotificationStatus.Warning
 }
