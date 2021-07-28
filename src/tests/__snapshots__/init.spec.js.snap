@@ -83,10 +83,6 @@ Object {
         "public": true,
         "name": "Advanced",
         "trial_period_days": 7,
-        "extra_features": Immutable.List [
-          "satisfaction-surveys",
-          "revenue",
-        ],
         "order": 3,
         "currency": "usd",
         "free_tickets": 6000,
@@ -123,7 +119,7 @@ Object {
     ],
   },
   "currentAccount": Immutable.Map {
-    "settings": Immutable.List [],
+    "created_datetime": "2020-10-20T14:57:22.614970+00:00",
     "current_subscription": Immutable.Map {
       "plan": "pro-yearly-usd-2",
       "start_datetime": "2020-10-20T14:57:24+00:00",
@@ -131,18 +127,13 @@ Object {
       "trial_end_datetime": "2020-10-27T14:57:24+00:00",
       "trial_start_datetime": "2020-10-20T14:57:24+00:00",
     },
+    "deactivated_datetime": null,
     "domain": "acme",
     "meta": Immutable.Map {
       "company_domain": "acme.com",
       "company_name": "Acme Corp",
     },
-    "deactivated_datetime": null,
-    "extra_features": Immutable.List [
-      "satisfaction-surveys",
-      "revenue",
-    ],
-    "user_id": 1,
-    "created_datetime": "2020-10-20T14:57:22.614970+00:00",
+    "settings": Immutable.List [],
     "status": Immutable.Map {
       "notification": Immutable.Map {
         "message": "Your free trial is ending soon. Please add a payment method to continue using Gorgias.",
@@ -150,6 +141,7 @@ Object {
       },
       "status": "active",
     },
+    "user_id": 1,
   },
   "currentUser": Immutable.Map {
     "lastname": "Plugaru",

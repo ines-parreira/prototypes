@@ -32,7 +32,6 @@ export const initialState = {
                 amount: 75000,
                 cost_per_ticket: 0.14,
                 currency: 'usd',
-                extra_features: ['satisfaction-surveys', 'revenue'],
                 free_tickets: 6000,
                 integrations: 100,
                 interval: 'month',
@@ -81,7 +80,6 @@ export const initialState = {
         },
         deactivated_datetime: null,
         domain: 'acme',
-        extra_features: ['satisfaction-surveys', 'revenue'],
         meta: {
             company_domain: 'acme.com',
             company_name: 'Acme Corp',
