@@ -26,8 +26,22 @@ export class TagsSelectContainer extends Component<Props> {
         multiple: false,
     }
 
-    _onChange = (val: string[]) => {
-        const {multiple, value, tags, actions} = this.props
+    _onChange = (newTag: string) => {
+        const {onChange, tags, actions} = this.props
+
+        const existingTagNames = tags
+            .map((tag) => tag!.get('name') as string)
+            .toJS() as string[]
+        if (!existingTagNames.includes(newTag)) {
+            actions.create({name: newTag})
+        }
+
+        onChange(newTag)
+    }
+
+    _onMultiChange = (val: string[]) => {
+        const {value, tags, actions, onChange} = this.props
+
         const existingTagNames = tags
             .map((tag) => tag!.get('name') as string)
             .toJS() as string[]
@@ -38,11 +52,7 @@ export class TagsSelectContainer extends Component<Props> {
             }
         })
 
-        if (multiple && _isString(value)) {
-            this.props.onChange(val.join(','))
-        } else {
-            this.props.onChange(val)
-        }
+        onChange(_isString(value) ? val.join(',') : val)
     }
 
     render() {
@@ -70,7 +80,7 @@ export class TagsSelectContainer extends Component<Props> {
             return (
                 <MultiSelectField
                     allowCustomValues
-                    onChange={this._onChange}
+                    onChange={this._onMultiChange}
                     options={options}
                     plural="tags"
                     singular="tag"
@@ -87,8 +97,7 @@ export class TagsSelectContainer extends Component<Props> {
             <SelectField
                 allowCustomValue
                 options={options}
-                // @ts-ignore to be fixed in https://linear.app/gorgias/issue/COR-1176/eforeach-is-not-a-function
-                onChange={this._onChange}
+                onChange={(value) => this._onChange(value.toString())}
                 placeholder="Add a tag"
                 singular="tag"
                 style={style}

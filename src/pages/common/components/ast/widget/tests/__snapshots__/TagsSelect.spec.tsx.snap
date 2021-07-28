@@ -1,116 +1,127 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ast widgets TagsSelect MultiSelectField should render array as value 1`] = `
-<SelectField
-  allowCustomValue={true}
-  fixedWidth={false}
-  fullWidth={false}
-  id={null}
-  onChange={[Function]}
-  onSearchChange={[Function]}
-  options={
-    Array [
-      Object {
-        "label": "billing",
-        "value": "billing",
-      },
-      Object {
-        "label": "refund",
-        "value": "refund",
-      },
-      Object {
-        "label": "question",
-        "value": "question",
-      },
-    ]
-  }
-  placeholder="Add a tag"
-  required={false}
-  singular="tag"
-  style={
-    Object {
-      "display": "inline-block",
-    }
-  }
-  value={
-    Array [
-      "billing",
-      "bugs",
-    ]
-  }
-/>
+exports[`<TagsSelect /> should create a new tag 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "name": "new",
+    },
+    "type": "CREATE_TAG_START",
+  },
+]
 `;
 
-exports[`ast widgets TagsSelect MultiSelectField should render string as value 1`] = `
-<MultiSelectField
-  allowCustomValues={true}
-  dropdownMenu={[Function]}
-  onChange={[Function]}
-  options={
-    Array [
-      Object {
-        "label": "billing",
-        "value": "billing",
-      },
-      Object {
-        "label": "refund",
-        "value": "refund",
-      },
-      Object {
-        "label": "question",
-        "value": "question",
-      },
-    ]
-  }
-  plural="tags"
-  singular="tag"
-  style={
-    Object {
-      "display": "inline-block",
+exports[`<TagsSelect /> should render a single value 1`] = `
+<div>
+  SelectField Mock
+  {
+  "allowCustomValue": true,
+  "options": [
+    {
+      "label": "billing",
+      "value": "billing"
+    },
+    {
+      "label": "refund",
+      "value": "refund"
+    },
+    {
+      "label": "question",
+      "value": "question"
     }
-  }
-  tagColor="#0275d8"
-  values={
-    Array [
-      "billing",
-      " bugs",
-    ]
-  }
-/>
+  ],
+  "placeholder": "Add a tag",
+  "singular": "tag",
+  "style": {
+    "display": "inline-block"
+  },
+  "value": "billing"
+}
+  <input
+    data-testid="on-change-input"
+  />
+</div>
 `;
 
-exports[`ast widgets TagsSelect should render a SelectField 1`] = `
-<SelectField
-  allowCustomValue={true}
-  fixedWidth={false}
-  fullWidth={false}
-  id={null}
-  onChange={[Function]}
-  onSearchChange={[Function]}
-  options={
-    Array [
-      Object {
-        "label": "billing",
-        "value": "billing",
-      },
-      Object {
-        "label": "refund",
-        "value": "refund",
-      },
-      Object {
-        "label": "question",
-        "value": "question",
-      },
-    ]
-  }
-  placeholder="Add a tag"
-  required={false}
-  singular="tag"
-  style={
-    Object {
-      "display": "inline-block",
+exports[`<TagsSelect /> when multiple is set to true should create new tags 1`] = `
+Array [
+  Object {
+    "tag": Object {
+      "name": "new",
+    },
+    "type": "CREATE_TAG_START",
+  },
+]
+`;
+
+exports[`<TagsSelect /> when multiple is set to true should render array as value 1`] = `
+<div>
+  MultiSelectField Mock
+  {
+  "allowCustomValues": true,
+  "options": [
+    {
+      "label": "billing",
+      "value": "billing"
+    },
+    {
+      "label": "refund",
+      "value": "refund"
+    },
+    {
+      "label": "question",
+      "value": "question"
     }
-  }
-  value="billing"
-/>
+  ],
+  "plural": "tags",
+  "singular": "tag",
+  "style": {
+    "display": "inline-block"
+  },
+  "values": [
+    "billing",
+    "bugs"
+  ],
+  "caseInsensitive": false
+}
+  <input
+    data-testid="on-change-input"
+  />
+</div>
+`;
+
+exports[`<TagsSelect /> when multiple is set to true should render string as value 1`] = `
+<div>
+  MultiSelectField Mock
+  {
+  "allowCustomValues": true,
+  "options": [
+    {
+      "label": "billing",
+      "value": "billing"
+    },
+    {
+      "label": "refund",
+      "value": "refund"
+    },
+    {
+      "label": "question",
+      "value": "question"
+    }
+  ],
+  "plural": "tags",
+  "singular": "tag",
+  "style": {
+    "display": "inline-block"
+  },
+  "values": [
+    "billing",
+    "bugs"
+  ],
+  "caseInsensitive": false
+}
+  <input
+    data-testid="on-change-input"
+  />
+</div>
 `;
