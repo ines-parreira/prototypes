@@ -35,11 +35,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             newValue: false,
             finalValue: true,
         },
-        {
-            selector: '#id-import_spam',
-            newValue: true,
-            finalValue: false,
-        },
     ])(
         'should enable the submit button only if form values changed [gmail]',
         (selector) => {
@@ -52,7 +47,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                         type: GMAIL_INTEGRATION_TYPE,
                         meta: {
                             address: 'myintegration@gorgias.io',
-                            import_spam: false,
                             signature: {
                                 text: '',
                                 html: '<div><br></div>',
@@ -104,11 +98,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             newValue: 'Some New Name',
             finalValue: INTEGRATION_NAME,
         },
-        {
-            selector: '#id-import_spam',
-            newValue: true,
-            finalValue: false,
-        },
     ])(
         'should enable the submit button only if form values changed [email]',
         (selector) => {
@@ -121,7 +110,6 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                         type: EMAIL_INTEGRATION_TYPE,
                         meta: {
                             address: 'myintegration@gorgias.io',
-                            import_spam: false,
                             signature: {
                                 text: '',
                                 html: '<div><br></div>',

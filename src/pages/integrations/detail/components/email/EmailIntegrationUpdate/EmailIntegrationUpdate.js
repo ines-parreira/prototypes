@@ -64,7 +64,6 @@ type State = {
     dirty: boolean,
     errors: Object,
     name: string,
-    import_spam: boolean,
     use_gmail_categories: boolean,
     enable_gmail_sending: boolean,
     signature_text: string,
@@ -82,7 +81,6 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         dirty: false,
         errors: {},
         name: '',
-        import_spam: false,
         use_gmail_categories: false,
         enable_gmail_sending: true,
         signature_text: '',
@@ -124,7 +122,6 @@ export class EmailIntegrationUpdateContainer extends React.Component<
     _getIntegrationValues = (integration: Map<*, *>): Object => {
         return {
             name: integration.get('name', ''),
-            import_spam: integration.getIn(['meta', 'import_spam']) || false,
             enable_gmail_sending:
                 integration.get('type') === GMAIL_INTEGRATION_TYPE
                     ? integration.getIn(['meta', 'enable_gmail_sending'], true)
@@ -145,10 +142,6 @@ export class EmailIntegrationUpdateContainer extends React.Component<
             .set('name', this.state.name)
             .setIn(['meta', 'signature', 'text'], this.state.signature_text)
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
-
-        if (integration.get('type') !== OUTLOOK_INTEGRATION_TYPE) {
-            form = form.setIn(['meta', 'import_spam'], this.state.import_spam)
-        }
 
         if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
             form = form
@@ -448,11 +441,9 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
-        const isOutlook = integration.get('type') === OUTLOOK_INTEGRATION_TYPE
 
         const {
             errors,
-            import_spam,
             name,
             use_gmail_categories,
             enable_gmail_sending,
@@ -552,23 +543,6 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                                 onChange={(value) =>
                                     this.setState({
                                         enable_gmail_sending: value,
-                                    })
-                                }
-                            />
-                        </FormGroup>
-                    )}
-                    {!isOutlook && (
-                        <FormGroup>
-                            <BooleanField
-                                name="import_spam"
-                                type="checkbox"
-                                label="Import spam emails"
-                                help="Imported spam emails will be placed in the Spam ticket view and will not be
-                                    counted in statistics. Spam tickets are automatically deleted after 30 days."
-                                value={import_spam}
-                                onChange={(value) =>
-                                    this.setState({
-                                        import_spam: value,
                                     })
                                 }
                             />
