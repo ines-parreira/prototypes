@@ -1,4 +1,4 @@
-import React, {useState, ComponentProps} from 'react'
+import React, {useState, ComponentProps, MouseEvent} from 'react'
 import {Button} from 'reactstrap'
 import {useSelector} from 'react-redux'
 import classNames from 'classnames'
@@ -88,8 +88,8 @@ export default function EnterpriseComparisonPlanCard({
                         onClose={() => {
                             setIsPlanChangeModalOpen(false)
                         }}
-                        onConfirm={(event) => {
-                            openChat((event as unknown) as Event)
+                        onConfirm={(event: MouseEvent) => {
+                            openChat(event)
                             setIsPlanChangeModalOpen(false)
                         }}
                         renderComparedPlan={({className, renderBody}) => (

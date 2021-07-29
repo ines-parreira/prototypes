@@ -143,7 +143,7 @@ export const hasLegacyPlan = createSelector<
     (plan, account) => {
         return (
             !!account.getIn(['meta', 'has_legacy_features']) ||
-            (!plan.isEmpty() && !plan.get('public') && !plan.get('custom'))
+            (!plan.isEmpty() && !plan.get('public'))
         )
     }
 )

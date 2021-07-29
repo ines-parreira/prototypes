@@ -1,4 +1,4 @@
-import React, {ComponentProps, useState} from 'react'
+import React, {useState, ComponentProps, MouseEvent} from 'react'
 import {Button} from 'reactstrap'
 import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -11,6 +11,8 @@ import {
 import {RootState} from '../../../../state/types'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
 import {isFeatureEnabled} from '../../../../utils/account'
+
+import {openChat} from '../../../../utils'
 
 import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
@@ -45,6 +47,8 @@ export default function BillingComparisonPlanCard({
     const currentAccount = useSelector(
         (state: RootState) => state.currentAccount
     )
+    const isLegacyCustomPlan =
+        currentPlan.get('custom') && !currentPlan.get('public')
     const accountHasLegacyFeatures = currentAccount.getIn(
         ['meta', 'has_legacy_features'],
         false
@@ -139,51 +143,65 @@ export default function BillingComparisonPlanCard({
                 isCurrentPlan && <CurrentPlanBadge planName={plan.name} />
             }
             footer={
-                <>
+                isLegacyCustomPlan ? (
                     <Button
-                        aria-label={switchPlanButtonText}
-                        className={classNames({
-                            'btn-loading': isUpdating,
-                        })}
+                        aria-label="Contact us"
                         color="link"
-                        disabled={!canChoosePlan}
-                        onClick={() => {
-                            if (canChoosePlan) {
-                                setIsPlanChangeModalOpen(!isPlanChangeModalOpen)
-                            }
+                        onClick={(event: MouseEvent) => {
+                            openChat(event)
                         }}
                     >
-                        {switchPlanButtonText}
+                        Contact us
                     </Button>
-                    <ChangePlanModal
-                        currentPlan={currentPlan}
-                        header={
-                            isLegacyPlan
-                                ? 'Switch to our updated plans'
-                                : isDowngrade
-                                ? 'Are you sure you want to switch plans?'
-                                : "We're happy to see you grow 👏"
-                        }
-                        isOpen={canChoosePlan && isPlanChangeModalOpen}
-                        isUpdating={isUpdating}
-                        onClose={() => {
-                            setIsPlanChangeModalOpen(false)
-                        }}
-                        onConfirm={() => {
-                            onPlanChange?.()
-                            setIsPlanChangeModalOpen(false)
-                        }}
-                        description={description}
-                        renderComparedPlan={({className, renderBody}) => (
-                            <BillingPlanCard
-                                plan={plan}
-                                className={className}
-                                renderBody={renderBody}
-                            />
-                        )}
-                        confirmLabel="Confirm"
-                    />
-                </>
+                ) : (
+                    <>
+                        <Button
+                            aria-label={switchPlanButtonText}
+                            className={classNames({
+                                'btn-loading': isUpdating,
+                            })}
+                            color="link"
+                            disabled={!canChoosePlan}
+                            onClick={() => {
+                                if (canChoosePlan) {
+                                    setIsPlanChangeModalOpen(
+                                        !isPlanChangeModalOpen
+                                    )
+                                }
+                            }}
+                        >
+                            {switchPlanButtonText}
+                        </Button>
+                        <ChangePlanModal
+                            currentPlan={currentPlan}
+                            header={
+                                isLegacyPlan
+                                    ? 'Switch to our updated plans'
+                                    : isDowngrade
+                                    ? 'Are you sure you want to switch plans?'
+                                    : "We're happy to see you grow 👏"
+                            }
+                            isOpen={canChoosePlan && isPlanChangeModalOpen}
+                            isUpdating={isUpdating}
+                            onClose={() => {
+                                setIsPlanChangeModalOpen(false)
+                            }}
+                            onConfirm={() => {
+                                onPlanChange?.()
+                                setIsPlanChangeModalOpen(false)
+                            }}
+                            description={description}
+                            renderComparedPlan={({className, renderBody}) => (
+                                <BillingPlanCard
+                                    plan={plan}
+                                    className={className}
+                                    renderBody={renderBody}
+                                />
+                            )}
+                            confirmLabel="Confirm"
+                        />
+                    </>
+                )
             }
         />
     )

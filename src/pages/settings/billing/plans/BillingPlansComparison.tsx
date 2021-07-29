@@ -49,12 +49,15 @@ export default function BillingPlansComparison({
     const isCustomPlan = currentPlan.get('custom', false)
     const availablePlans = isCustomPlan
         ? (plans.filter(
-              (plan: Map<any, any>) => plan.get('id') === currentPlan.get('id')
+              (plan: Map<any, any>) =>
+                  (plan.get('public') as boolean) &&
+                  plan.get('id') === currentPlan.get('id')
           ) as Map<any, any>)
         : (plans.filter(
               (plan: Map<any, any>) =>
                   (plan.get('interval') as string) === selectedInterval &&
-                  (plan.get('public') as boolean)
+                  (plan.get('public') as boolean) &&
+                  !(plan.get('custom') as boolean)
           ) as Map<any, any>)
 
     const handleIntervalToggle = () => {

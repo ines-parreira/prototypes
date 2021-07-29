@@ -184,7 +184,11 @@ export class BillingUsage extends Component {
     }
 
     render() {
-        const {currentSubscription, accountHasLegacyPlan} = this.props
+        const {
+            currentSubscription,
+            accountHasLegacyPlan,
+            currentPlan,
+        } = this.props
 
         if (this.state.isLoading) {
             return <Loader />
@@ -192,7 +196,11 @@ export class BillingUsage extends Component {
 
         return (
             <div className="mb-5">
-                {accountHasLegacyPlan && <LegacyPlanBanner />}
+                {accountHasLegacyPlan && (
+                    <LegacyPlanBanner
+                        isCustomPlan={currentPlan.get('custom')}
+                    />
+                )}
                 <h4>
                     <i className="material-icons">insert_chart</i> Usage & Plans
                 </h4>

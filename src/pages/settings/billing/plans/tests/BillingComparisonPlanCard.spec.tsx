@@ -7,9 +7,12 @@ import {Provider} from 'react-redux'
 
 import {Plan, PlanInterval} from '../../../../../models/billing/types'
 import {
-    advancedPlan,
     basicPlan,
     proPlan,
+    customPlan,
+    legacyPlan,
+    customLegacyPlan,
+    advancedPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {account} from '../../../../../fixtures/account'
@@ -71,6 +74,48 @@ describe('<BillingComparisonPlanCard />', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard {...minProps} isCurrentPlan />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render current legacy plan', () => {
+        getCurrentPlanSpy.mockImplementation(
+            () => fromJS(legacyPlan) as Map<any, any>
+        )
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    currentAccount: fromJS({
+                        ...account,
+                        meta: {has_legacy_features: true},
+                    }),
+                })}
+            >
+                <BillingComparisonPlanCard
+                    {...minProps}
+                    isCurrentPlan
+                    plan={{...legacyPlan, currencySign: '$'}}
+                />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it.each([
+        ['custom', customPlan],
+        ['customLegacyPlan', customLegacyPlan],
+    ])('should render %s plan', (testName, plan) => {
+        getCurrentPlanSpy.mockImplementation(
+            () => fromJS(plan) as Map<any, any>
+        )
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingComparisonPlanCard
+                    {...minProps}
+                    isCurrentPlan
+                    plan={{...plan, currencySign: '$'}}
+                />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

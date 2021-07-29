@@ -342,7 +342,9 @@ export class CreditCard extends Component<Props, State> {
 
                 <Container fluid className="page-container">
                     {accountHasLegacyPlan && (
-                        <LegacyPlanBanner subscriptionEnd />
+                        <LegacyPlanBanner
+                            isCustomPlan={currentPlan.get('custom')}
+                        />
                     )}
                     <Row>
                         {currentSubscription.get('status') !== 'active' &&

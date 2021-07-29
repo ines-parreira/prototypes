@@ -4,13 +4,13 @@ import {render} from '@testing-library/react'
 import {LegacyPlanBanner} from '../LegacyPlanBanner'
 
 describe('<LegacyPlanBanner />', () => {
-    it('should render a banner', () => {
-        const {container} = render(<LegacyPlanBanner />)
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render a banner without subscription end date', () => {
-        const {container} = render(<LegacyPlanBanner />)
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    it.each([false, true])(
+        'should render the legacy plan banner',
+        (isCustomPlan) => {
+            const {container} = render(
+                <LegacyPlanBanner isCustomPlan={isCustomPlan} />
+            )
+            expect(container).toMatchSnapshot()
+        }
+    )
 })

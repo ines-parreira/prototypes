@@ -45,7 +45,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
            
           <span
             class="billableTickets"
-            id="billable-ticket-label-4"
+            id="billable-ticket-label-10"
           >
             billable tickets
           </span>
@@ -329,6 +329,348 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
       type="button"
     >
       Switch to Basic Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
+<div
+  class="plan greyTheme card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div>
+      <span
+        class="currentPlanBadge badge badge-secondary"
+      >
+        CURRENT PLAN
+      </span>
+    </div>
+    <div
+      class="headerText"
+    >
+      <strong>
+        Standard
+      </strong>
+      <span
+        class="headerPrice"
+      >
+        $3000 / mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add_check
+          </i>
+        </span>
+        <span>
+          <b>
+            350
+          </b>
+           
+          <span
+            class="billableTickets"
+            id="billable-ticket-label-4"
+          >
+            billable tickets
+          </span>
+           
+          included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add
+          </i>
+        </span>
+        <span>
+          <b>
+            $
+            25.00
+          </b>
+           
+          per 
+          100
+           extra tickets
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            code
+          </i>
+        </span>
+        <span>
+          <b>
+            200
+          </b>
+           integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up_alt
+          </i>
+        </span>
+        <span>
+          Social media integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            forum
+          </i>
+        </span>
+        <span>
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            auto_awesome
+          </i>
+        </span>
+        <span>
+          Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            directions_bike
+          </i>
+        </span>
+        <span>
+          Lite onboarding
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            supervised_user_circle
+          </i>
+        </span>
+        <span>
+          User permissions
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            chat
+          </i>
+        </span>
+        <span>
+          Chat campaigns
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          Phone
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            people_outline
+          </i>
+        </span>
+        <span>
+          Team Management
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            view_carousel
+          </i>
+        </span>
+        <span>
+          View sharing
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            attach_money
+          </i>
+        </span>
+        <span>
+          Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            person_pin
+          </i>
+        </span>
+        <span>
+          Dedicated success manager
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            blur_on
+          </i>
+        </span>
+        <span>
+          Custom services
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="cardFooter card-footer"
+  >
+    <button
+      aria-label="Current Plan"
+      class="btn btn-link disabled"
+      disabled=""
+      type="button"
+    >
+      Current Plan
     </button>
   </div>
 </div>
@@ -676,6 +1018,695 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
 </div>
 `;
 
+exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
+<div
+  class="plan greyTheme card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div>
+      <span
+        class="currentPlanBadge badge badge-warning"
+      >
+        CURRENT PLAN
+      </span>
+    </div>
+    <div
+      class="headerText"
+    >
+      <strong>
+        Custom
+      </strong>
+      <span
+        class="headerPrice"
+      >
+        $54000 / mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add_check
+          </i>
+        </span>
+        <span>
+          <b>
+            2000
+          </b>
+           
+          <span
+            class="billableTickets"
+            id="billable-ticket-label-6"
+          >
+            billable tickets
+          </span>
+           
+          included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add
+          </i>
+        </span>
+        <span>
+          <b>
+            $
+            23.00
+          </b>
+           
+          per 
+          100
+           extra tickets
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            code
+          </i>
+        </span>
+        <span>
+          <b>
+            200
+          </b>
+           integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up_alt
+          </i>
+        </span>
+        <span>
+          Social media integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            forum
+          </i>
+        </span>
+        <span>
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            auto_awesome
+          </i>
+        </span>
+        <span>
+          Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            directions_bike
+          </i>
+        </span>
+        <span>
+          Lite onboarding
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            supervised_user_circle
+          </i>
+        </span>
+        <span>
+          User permissions
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            chat
+          </i>
+        </span>
+        <span>
+          Chat campaigns
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            50
+          </b>
+           Phone numbers
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            people_outline
+          </i>
+        </span>
+        <span>
+          Team Management
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            view_carousel
+          </i>
+        </span>
+        <span>
+          View sharing
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            attach_money
+          </i>
+        </span>
+        <span>
+          Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            person_pin
+          </i>
+        </span>
+        <span>
+          Dedicated success manager
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            blur_on
+          </i>
+        </span>
+        <span>
+          Custom services
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="cardFooter card-footer"
+  >
+    <button
+      aria-label="Current Plan"
+      class="btn btn-link disabled"
+      disabled=""
+      type="button"
+    >
+      Current Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] = `
+<div
+  class="plan greyTheme card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div>
+      <span
+        class="currentPlanBadge badge badge-warning"
+      >
+        CURRENT PLAN
+      </span>
+    </div>
+    <div
+      class="headerText"
+    >
+      <strong>
+        Custom
+      </strong>
+      <span
+        class="headerPrice"
+      >
+        $54000 / mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add_check
+          </i>
+        </span>
+        <span>
+          <b>
+            2000
+          </b>
+           
+          <span
+            class="billableTickets"
+            id="billable-ticket-label-8"
+          >
+            billable tickets
+          </span>
+           
+          included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add
+          </i>
+        </span>
+        <span>
+          <b>
+            $
+            23.00
+          </b>
+           
+          per 
+          100
+           extra tickets
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            code
+          </i>
+        </span>
+        <span>
+          <b>
+            200
+          </b>
+           integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up_alt
+          </i>
+        </span>
+        <span>
+          Social media integrations
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            forum
+          </i>
+        </span>
+        <span>
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            auto_awesome
+          </i>
+        </span>
+        <span>
+          Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            directions_bike
+          </i>
+        </span>
+        <span>
+          Lite onboarding
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            supervised_user_circle
+          </i>
+        </span>
+        <span>
+          User permissions
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            chat
+          </i>
+        </span>
+        <span>
+          Chat campaigns
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            50
+          </b>
+           Phone numbers
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            people_outline
+          </i>
+        </span>
+        <span>
+          Team Management
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            view_carousel
+          </i>
+        </span>
+        <span>
+          View sharing
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            attach_money
+          </i>
+        </span>
+        <span>
+          Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            person_pin
+          </i>
+        </span>
+        <span>
+          Dedicated success manager
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            blur_on
+          </i>
+        </span>
+        <span>
+          Custom services
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="cardFooter card-footer"
+  >
+    <button
+      aria-label="Contact us"
+      class="btn btn-link"
+      type="button"
+    >
+      Contact us
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<BillingComparisonPlanCard /> should render spinner when plan is updating 1`] = `
 <div
   class="plan blueTheme card"
@@ -721,7 +1752,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
            
           <span
             class="billableTickets"
-            id="billable-ticket-label-6"
+            id="billable-ticket-label-12"
           >
             billable tickets
           </span>

@@ -1,5 +1,7 @@
 import crypto from 'crypto'
 
+import {SyntheticEvent} from 'react'
+
 import axios from 'axios'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
@@ -889,7 +891,7 @@ export const hasUnicodeChars = (needle: string): boolean => {
 /**
  * Open the gorgias chat (if present)
  */
-export const openChat = (e: Event) => {
+export const openChat = (e: SyntheticEvent) => {
     if (window.GorgiasChat) {
         e.preventDefault()
         window.GorgiasChat.open()
