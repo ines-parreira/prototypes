@@ -142,16 +142,30 @@ const sendFeedback = async (
 
     currentPrediction.numberAcceptedCharacters += acceptedPredictionChars
 
-    await axios.post(window.PHRASE_FEEDBACK_URL, {
-        query_text: currentPrediction.inputText,
-        query_context: context.toJS(),
-        result_prediction_text: currentPrediction.predictionText,
-        result_prediction_accepted:
-            predictionText.length === acceptedPredictionChars,
-        result_number_accepted_characters:
-            currentPrediction.numberAcceptedCharacters,
-        diverged_phrase: null,
-    })
+    try {
+        await axios.post(window.PHRASE_FEEDBACK_URL, {
+            query_text: currentPrediction.inputText,
+            query_context: context.toJS(),
+            result_prediction_text: currentPrediction.predictionText,
+            result_prediction_accepted:
+                predictionText.length === acceptedPredictionChars,
+            result_number_accepted_characters:
+                currentPrediction.numberAcceptedCharacters,
+            diverged_phrase: null,
+        })
+    } catch (error) {
+        if (
+            axios.isCancel(error) ||
+            (axios.isAxiosError(error) && !error.response)
+        ) {
+            return
+        }
+        reportError(error, {
+            extra: {
+                description: 'Failed to send prediction feedback',
+            },
+        })
+    }
 
     resetCurrentPrediction()
 }

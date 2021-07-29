@@ -45,6 +45,8 @@ const getFeedbackCalls = () =>
 beforeEach(() => {
     clearCache()
     setPredictionKey('')
+    jest.resetAllMocks()
+    jest.restoreAllMocks()
 })
 
 describe('prediction plugin', () => {
@@ -477,6 +479,54 @@ describe('prediction plugin', () => {
                     result_prediction_text: 'Marie,',
                     result_prediction_accepted: true,
                 })
+            })
+
+            it.each([
+                [
+                    'report error on failed feedback',
+                    () => axiosMock.onPost(FEEDBACK_URL).reply(404),
+                    () =>
+                        expect(reportError).toHaveBeenLastCalledWith(
+                            expect.any(Error),
+                            {
+                                extra: {
+                                    description:
+                                        'Failed to send prediction feedback',
+                                },
+                            }
+                        ),
+                ],
+                [
+                    'not report error on network error',
+                    () => axiosMock.onPost(FEEDBACK_URL).networkError(),
+                    () => expect(reportError).not.toHaveBeenCalled(),
+                ],
+                [
+                    'not report error on timeout',
+                    () => axiosMock.onPost(FEEDBACK_URL).timeout(),
+                    () => expect(reportError).not.toHaveBeenCalled(),
+                ],
+            ])('should %s', async (value, apiMock, expectResult) => {
+                apiMock()
+                const {
+                    predictionPlugin,
+                    pluginMethods,
+                } = createEmptyStatePredictionPlugin()
+
+                await typeAndPredict(
+                    'Hi ',
+                    'Marie,',
+                    predictionPlugin,
+                    pluginMethods
+                )
+                await typeAndPredict(
+                    'Marie,',
+                    '',
+                    predictionPlugin,
+                    pluginMethods
+                )
+
+                expectResult()
             })
         })
     })
