@@ -84,12 +84,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
             >
               my chat integration
             </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              Quick replies
-            </BreadcrumbItem>
           </Breadcrumb>
         }
       >
@@ -151,17 +145,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                     my chat integration
                   </li>
                 </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
-                >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Quick replies
-                  </li>
-                </BreadcrumbItem>
               </ol>
             </nav>
           </Breadcrumb>
@@ -190,90 +173,102 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
             <nav
               className="navbar navbar"
             >
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".0"
                 to="/app/settings/integrations/smooch_inside/7/migration"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/migration"
                 >
                   Migration
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".1"
                 to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/appearance"
                 >
                   Appearance
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".2"
                 to="/app/settings/integrations/smooch_inside/7/installation"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/installation"
                 >
                   Installation
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".3"
                 to="/app/settings/integrations/smooch_inside/7/preferences"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/preferences"
                 >
                   Preferences
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".4"
                 to="/app/settings/integrations/smooch_inside/7/campaigns"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/campaigns"
                 >
                   Campaigns
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".5"
                 to="/app/settings/integrations/smooch_inside/7/quick_replies"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/quick_replies"
                 >
                   Quick replies
                 </a>
-              </Link>
+              </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>
@@ -1021,12 +1016,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
             >
               my chat integration
             </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              Quick replies
-            </BreadcrumbItem>
           </Breadcrumb>
         }
       >
@@ -1088,17 +1077,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                     my chat integration
                   </li>
                 </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
-                >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Quick replies
-                  </li>
-                </BreadcrumbItem>
               </ol>
             </nav>
           </Breadcrumb>
@@ -1135,90 +1113,102 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
             <nav
               className="navbar navbar"
             >
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".0"
                 to="/app/settings/integrations/smooch_inside/7/migration"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/migration"
                 >
                   Migration
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".1"
                 to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/appearance"
                 >
                   Appearance
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".2"
                 to="/app/settings/integrations/smooch_inside/7/installation"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/installation"
                 >
                   Installation
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".3"
                 to="/app/settings/integrations/smooch_inside/7/preferences"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/preferences"
                 >
                   Preferences
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".4"
                 to="/app/settings/integrations/smooch_inside/7/campaigns"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/campaigns"
                 >
                   Campaigns
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".5"
                 to="/app/settings/integrations/smooch_inside/7/quick_replies"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/7/quick_replies"
                 >
                   Quick replies
                 </a>
-              </Link>
+              </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>

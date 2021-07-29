@@ -128,7 +128,6 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Campaigns</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 >

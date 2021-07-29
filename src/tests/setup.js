@@ -139,8 +139,10 @@ jest.mock('../utils/date.ts', () => ({
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    //eslint-disable-next-line jsx-a11y/anchor-has-content
+    /* eslint-disable jsx-a11y/anchor-has-content */
     Link: (props) => <a {...props} />,
+    NavLink: (props) => <a {...props} />,
+    /* eslint-enable */
 }))
 
 Object.defineProperty(window, 'requestAnimationFrame', {

@@ -337,12 +337,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
         >
           hellosmoochintegration
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Appearance
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -691,12 +685,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
         >
           hellosmoochintegration
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Appearance
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -1044,12 +1032,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           tag="li"
         >
           hellosmoochintegration
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Appearance
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -1421,12 +1403,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         >
           hellosmoochintegration
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Appearance
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -1778,12 +1754,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           tag="li"
         >
           hellosmoochintegration
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Appearance
         </BreadcrumbItem>
       </Breadcrumb>
     }

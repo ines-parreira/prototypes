@@ -14,20 +14,22 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations/http"
           >
             HTTP
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -58,40 +60,28 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations/http"
           >
             HTTP
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           active={false}
           tag="li"
         >
-          <Link
-            to="/app/settings/integrations/http/1"
-          >
-            Backend integration
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={false}
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/http/1/events"
-          >
-            Logs
-          </Link>
+          Backend integration
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -104,16 +94,18 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
     }
   />
   <SecondaryNavbar>
-    <Link
+    <NavLink
+      exact={true}
       to="/app/settings/integrations/http/1"
     >
       Settings
-    </Link>
-    <Link
+    </NavLink>
+    <NavLink
+      exact={true}
       to="/app/settings/integrations/http/1/events"
     >
       Logs
-    </Link>
+    </NavLink>
   </SecondaryNavbar>
   <span>
     children
@@ -135,51 +127,45 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations/http"
           >
             HTTP
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           active={false}
           tag="li"
         >
-          <Link
-            to="/app/settings/integrations/http/1"
-          >
-            Backend integration
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Logs
+          Backend integration
         </BreadcrumbItem>
       </Breadcrumb>
     }
   />
   <SecondaryNavbar>
-    <Link
+    <NavLink
+      exact={true}
       to="/app/settings/integrations/http/1"
     >
       Settings
-    </Link>
-    <Link
+    </NavLink>
+    <NavLink
+      exact={true}
       to="/app/settings/integrations/http/1/events"
     >
       Logs
-    </Link>
+    </NavLink>
   </SecondaryNavbar>
   <span>
     children
@@ -201,20 +187,22 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          <Link
+          <NavLink
+            exact={true}
             to="/app/settings/integrations/http"
           >
             HTTP
-          </Link>
+          </NavLink>
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -226,16 +214,18 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
     }
   />
   <SecondaryNavbar>
-    <Link
+    <NavLink
+      exact={true}
       to="/app/settings/integrations/http/1"
     >
       Settings
-    </Link>
-    <Link
+    </NavLink>
+    <NavLink
+      exact={true}
       to="/app/settings/integrations/http/1/events"
     >
       Logs
-    </Link>
+    </NavLink>
   </SecondaryNavbar>
   <span>
     children

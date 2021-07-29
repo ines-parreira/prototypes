@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
@@ -17,8 +17,12 @@ export default function PhoneIntegrationNavigation({
 
     return (
         <SecondaryNavbar>
-            <Link to={`${baseURL}/preferences`}>Preferences</Link>
-            <Link to={`${baseURL}/voicemail`}>Voicemail</Link>
+            <NavLink to={`${baseURL}/preferences`} exact>
+                Preferences
+            </NavLink>
+            <NavLink to={`${baseURL}/voicemail`} exact>
+                Voicemail
+            </NavLink>
         </SecondaryNavbar>
     )
 }

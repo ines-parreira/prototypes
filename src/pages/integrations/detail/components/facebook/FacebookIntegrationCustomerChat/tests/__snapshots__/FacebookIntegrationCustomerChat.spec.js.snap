@@ -88,12 +88,6 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
             <BreadcrumbItem
               tag="li"
             />
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              Customer chat
-            </BreadcrumbItem>
           </Breadcrumb>
         }
       >
@@ -153,17 +147,6 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                     className="breadcrumb-item"
                   />
                 </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
-                >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Customer chat
-                  </li>
-                </BreadcrumbItem>
               </ol>
             </nav>
           </Breadcrumb>
@@ -193,48 +176,54 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
             <nav
               className="navbar navbar"
             >
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".$/app/settings/integrations/facebook/2/overview"
                 to="/app/settings/integrations/facebook/2/overview"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/facebook/2/overview"
                 >
                   Overview
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".$/app/settings/integrations/facebook/2/customer_chat"
                 to="/app/settings/integrations/facebook/2/customer_chat"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/facebook/2/customer_chat"
                 >
                   Customer chat
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".$/app/settings/integrations/facebook/2/preferences"
                 to="/app/settings/integrations/facebook/2/preferences"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/facebook/2/preferences"
                 >
                   Preferences
                 </a>
-              </Link>
+              </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>

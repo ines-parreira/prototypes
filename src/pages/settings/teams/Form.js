@@ -16,7 +16,7 @@ import {
     PopoverBody,
     Row,
 } from 'reactstrap'
-import {Link, withRouter} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
 import * as actions from '../../../state/teams/actions.ts'
@@ -136,7 +136,9 @@ export default class Form extends Component<Props, State> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/teams">Teams</Link>
+                                <NavLink to="/app/settings/teams" exact>
+                                    Teams
+                                </NavLink>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 {isUpdate
@@ -149,14 +151,18 @@ export default class Form extends Component<Props, State> {
 
                 {isUpdate && (
                     <SecondaryNavbar>
-                        <Link
+                        <NavLink
                             to={`/app/settings/teams/${team.get('id')}/members`}
+                            exact
                         >
                             Team members
-                        </Link>
-                        <Link to={`/app/settings/teams/${team.get('id')}`}>
+                        </NavLink>
+                        <NavLink
+                            to={`/app/settings/teams/${team.get('id')}`}
+                            exact
+                        >
                             Settings
-                        </Link>
+                        </NavLink>
                     </SecondaryNavbar>
                 )}
                 <Container fluid className="page-container">

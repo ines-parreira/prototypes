@@ -137,9 +137,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                Quick replies
-                            </BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

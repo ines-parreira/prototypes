@@ -187,7 +187,6 @@ export default function PhoneIntegrationPreferences({
                                 ])}
                             </small>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Preferences</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

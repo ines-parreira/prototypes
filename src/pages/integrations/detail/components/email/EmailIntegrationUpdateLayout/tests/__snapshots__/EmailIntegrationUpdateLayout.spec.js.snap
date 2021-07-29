@@ -51,15 +51,15 @@ exports[`EmailIntegrationUpdateLayout should render the layout for an email inte
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/email/1"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/email/1/dns"
       >
         Domain Verification

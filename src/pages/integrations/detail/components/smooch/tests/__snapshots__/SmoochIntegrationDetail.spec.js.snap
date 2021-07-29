@@ -34,12 +34,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
         >
           My smooch app
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -279,12 +273,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
         >
           My smooch app
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -522,12 +510,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
           tag="li"
         >
           My smooch app
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }

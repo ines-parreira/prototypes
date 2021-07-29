@@ -1,9 +1,31 @@
+@import '~css/new/colors';
+
 :local {
     .navbar {
-        margin-top: -20px;
-        margin-bottom: 20px;
-        height: 50px;
-        background-color: #f7f8fc;
+        background-color: @neutral1;
+        border-bottom: 1px solid @neutral4;
+        height: 52px;
         justify-content: normal;
+        margin-bottom: 20px;
+        margin-top: -20px;
+        padding: 0 16px;
+    }
+
+    .link {
+        color: @neutral8;
+        font-weight: 500;
+        line-height: 20px;
+        margin: 0 16px;
+        padding: 16px 0;
+
+        &:hover {
+            color: @neutral10;
+        }
+    }
+
+    .active {
+        border-bottom: 2px solid @blue;
+        color: @neutral10;
+        padding: 16px 0 14px 0;
     }
 }

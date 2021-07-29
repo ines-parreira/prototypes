@@ -275,7 +275,6 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Preferences</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

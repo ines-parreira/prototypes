@@ -279,7 +279,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Preferences</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

@@ -138,12 +138,6 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Preferences
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -454,12 +448,6 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Preferences
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {type Map} from 'immutable'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
 
@@ -17,8 +17,12 @@ export default class SmoochIntegrationNavigation extends React.Component<Props> 
 
         return (
             <SecondaryNavbar>
-                <Link to={`${baseURL}/overview`}>Overview</Link>
-                <Link to={`${baseURL}/preferences`}>Preferences</Link>
+                <NavLink to={`${baseURL}/overview`} exact>
+                    Overview
+                </NavLink>
+                <NavLink to={`${baseURL}/preferences`} exact>
+                    Preferences
+                </NavLink>
             </SecondaryNavbar>
         )
     }

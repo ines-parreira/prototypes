@@ -37,12 +37,6 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the product
         >
           my chat integration
         </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Self-service
-        </li>
       </ol>
     </nav>
   </div>
@@ -50,43 +44,43 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the product
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/gorgias_chat/7/installation"
     >
       Installation
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/gorgias_chat/7/self_service"
     >
       Self-service

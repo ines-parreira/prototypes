@@ -234,7 +234,6 @@ export function PhoneIntegrationVoicemail({
                                 ])}
                             </small>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Voicemail</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

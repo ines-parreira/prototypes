@@ -138,12 +138,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Preferences
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -457,12 +451,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Preferences
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />

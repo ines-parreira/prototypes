@@ -100,12 +100,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
               >
                 integration 1
               </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                Instagram Ads
-              </BreadcrumbItem>
             </Breadcrumb>
           }
         >
@@ -167,17 +161,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                       integration 1
                     </li>
                   </BreadcrumbItem>
-                  <BreadcrumbItem
-                    active={true}
-                    tag="li"
-                  >
-                    <li
-                      aria-current="page"
-                      className="active breadcrumb-item"
-                    >
-                      Instagram Ads
-                    </li>
-                  </BreadcrumbItem>
                 </ol>
               </nav>
             </Breadcrumb>
@@ -202,48 +185,54 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
               <nav
                 className="navbar navbar"
               >
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/overview"
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/preferences"
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
-                </Link>
+                </NavLink>
               </nav>
             </Navbar>
           </SecondaryNavbar>
@@ -439,12 +428,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
               >
                 integration 1
               </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                Instagram Ads
-              </BreadcrumbItem>
             </Breadcrumb>
           }
         >
@@ -506,17 +489,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       integration 1
                     </li>
                   </BreadcrumbItem>
-                  <BreadcrumbItem
-                    active={true}
-                    tag="li"
-                  >
-                    <li
-                      aria-current="page"
-                      className="active breadcrumb-item"
-                    >
-                      Instagram Ads
-                    </li>
-                  </BreadcrumbItem>
                 </ol>
               </nav>
             </Breadcrumb>
@@ -541,48 +513,54 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
               <nav
                 className="navbar navbar"
               >
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/overview"
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/preferences"
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
-                </Link>
+                </NavLink>
               </nav>
             </Navbar>
           </SecondaryNavbar>
@@ -1403,12 +1381,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
               >
                 integration 1
               </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                Instagram Ads
-              </BreadcrumbItem>
             </Breadcrumb>
           }
         >
@@ -1470,17 +1442,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                       integration 1
                     </li>
                   </BreadcrumbItem>
-                  <BreadcrumbItem
-                    active={true}
-                    tag="li"
-                  >
-                    <li
-                      aria-current="page"
-                      className="active breadcrumb-item"
-                    >
-                      Instagram Ads
-                    </li>
-                  </BreadcrumbItem>
                 </ol>
               </nav>
             </Breadcrumb>
@@ -1505,48 +1466,54 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
               <nav
                 className="navbar navbar"
               >
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/overview"
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/preferences"
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
-                </Link>
+                </NavLink>
               </nav>
             </Navbar>
           </SecondaryNavbar>
@@ -1865,12 +1832,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
               >
                 integration 1
               </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                Instagram Ads
-              </BreadcrumbItem>
             </Breadcrumb>
           }
         >
@@ -1932,17 +1893,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       integration 1
                     </li>
                   </BreadcrumbItem>
-                  <BreadcrumbItem
-                    active={true}
-                    tag="li"
-                  >
-                    <li
-                      aria-current="page"
-                      className="active breadcrumb-item"
-                    >
-                      Instagram Ads
-                    </li>
-                  </BreadcrumbItem>
                 </ol>
               </nav>
             </Breadcrumb>
@@ -1967,48 +1917,54 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
               <nav
                 className="navbar navbar"
               >
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/overview"
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/preferences"
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
-                </Link>
+                </NavLink>
               </nav>
             </Navbar>
           </SecondaryNavbar>
@@ -2442,12 +2398,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
               >
                 integration 1
               </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                Instagram Ads
-              </BreadcrumbItem>
             </Breadcrumb>
           }
         >
@@ -2509,17 +2459,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                       integration 1
                     </li>
                   </BreadcrumbItem>
-                  <BreadcrumbItem
-                    active={true}
-                    tag="li"
-                  >
-                    <li
-                      aria-current="page"
-                      className="active breadcrumb-item"
-                    >
-                      Instagram Ads
-                    </li>
-                  </BreadcrumbItem>
                 </ol>
               </nav>
             </Breadcrumb>
@@ -2544,48 +2483,54 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
               <nav
                 className="navbar navbar"
               >
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/overview"
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
-                </Link>
-                <Link
-                  activeClassName="disabled"
-                  className="nav-link"
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   key=".$/app/settings/integrations/facebook/1/preferences"
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="disabled"
-                    className="nav-link"
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
                     to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
-                </Link>
+                </NavLink>
               </nav>
             </Navbar>
           </SecondaryNavbar>

@@ -5,15 +5,15 @@ exports[`<PhoneIntegrationNavigation/> render() should render 1`] = `
   class="navbar navbar"
 >
   <a
-    activeclassname="disabled"
-    class="nav-link"
+    activeclassname="active"
+    class="link"
     to="/app/settings/integrations/phone/1/preferences"
   >
     Preferences
   </a>
   <a
-    activeclassname="disabled"
-    class="nav-link"
+    activeclassname="active"
+    class="link"
     to="/app/settings/integrations/phone/1/voicemail"
   >
     Voicemail

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Map} from 'immutable'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import PageHeader from '../../../../../common/components/PageHeader'
@@ -20,14 +20,14 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
+                            <NavLink to="/app/settings/integrations">
                                 Integrations
-                            </Link>
+                            </NavLink>
                         </BreadcrumbItem>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/email">
+                            <NavLink to="/app/settings/integrations/email">
                                 Email
-                            </Link>
+                            </NavLink>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {integration.get('name')}{' '}
@@ -39,14 +39,18 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                 }
             />
             <SecondaryNavbar>
-                <Link to={`/app/settings/integrations/email/${integrationId}`}>
+                <NavLink
+                    to={`/app/settings/integrations/email/${integrationId}`}
+                    exact
+                >
                     Preferences
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                     to={`/app/settings/integrations/email/${integrationId}/dns`}
+                    exact
                 >
                     Domain Verification
-                </Link>
+                </NavLink>
             </SecondaryNavbar>
             {children}
         </div>

@@ -90,12 +90,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
             >
               mychat
             </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              Installation
-            </BreadcrumbItem>
           </Breadcrumb>
         }
       >
@@ -157,17 +151,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                     mychat
                   </li>
                 </BreadcrumbItem>
-                <BreadcrumbItem
-                  active={true}
-                  tag="li"
-                >
-                  <li
-                    aria-current="page"
-                    className="active breadcrumb-item"
-                  >
-                    Installation
-                  </li>
-                </BreadcrumbItem>
               </ol>
             </nav>
           </Breadcrumb>
@@ -197,90 +180,102 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
             <nav
               className="navbar navbar"
             >
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".0"
                 to="/app/settings/integrations/smooch_inside/2/migration"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/2/migration"
                 >
                   Migration
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".1"
                 to="/app/settings/integrations/smooch_inside/2/appearance"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/2/appearance"
                 >
                   Appearance
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".2"
                 to="/app/settings/integrations/smooch_inside/2/installation"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/2/installation"
                 >
                   Installation
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".3"
                 to="/app/settings/integrations/smooch_inside/2/preferences"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/2/preferences"
                 >
                   Preferences
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".4"
                 to="/app/settings/integrations/smooch_inside/2/campaigns"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/2/campaigns"
                 >
                   Campaigns
                 </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
+              </NavLink>
+              <NavLink
+                activeClassName="active"
+                className="link"
+                exact={true}
                 key=".5"
                 to="/app/settings/integrations/smooch_inside/2/quick_replies"
               >
                 <a
-                  activeClassName="disabled"
-                  className="nav-link"
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
                   to="/app/settings/integrations/smooch_inside/2/quick_replies"
                 >
                   Quick replies
                 </a>
-              </Link>
+              </NavLink>
             </nav>
           </Navbar>
         </SecondaryNavbar>

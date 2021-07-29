@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {type Map} from 'immutable'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
@@ -18,12 +18,24 @@ export default class GorgiasChatIntegrationNavigation extends React.Component<Pr
 
         return (
             <SecondaryNavbar>
-                <Link to={`${baseURL}/appearance`}>Appearance</Link>
-                <Link to={`${baseURL}/installation`}>Installation</Link>
-                <Link to={`${baseURL}/preferences`}>Preferences</Link>
-                <Link to={`${baseURL}/quick_replies`}>Quick replies</Link>
-                <Link to={`${baseURL}/campaigns`}>Campaigns</Link>
-                <Link to={`${baseURL}/self_service`}>Self-service</Link>
+                <NavLink to={`${baseURL}/appearance`} exact>
+                    Appearance
+                </NavLink>
+                <NavLink to={`${baseURL}/installation`} exact>
+                    Installation
+                </NavLink>
+                <NavLink to={`${baseURL}/preferences`} exact>
+                    Preferences
+                </NavLink>
+                <NavLink to={`${baseURL}/quick_replies`} exact>
+                    Quick replies
+                </NavLink>
+                <NavLink to={`${baseURL}/campaigns`} exact>
+                    Campaigns
+                </NavLink>
+                <NavLink to={`${baseURL}/self_service`} exact>
+                    Self-service
+                </NavLink>
             </SecondaryNavbar>
         )
     }

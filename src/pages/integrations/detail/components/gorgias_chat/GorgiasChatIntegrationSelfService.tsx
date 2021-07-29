@@ -39,7 +39,6 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                         <BreadcrumbItem>
                             {integration.get('name')}
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Self-service</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

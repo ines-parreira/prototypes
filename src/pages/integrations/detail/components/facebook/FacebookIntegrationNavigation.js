@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {type Map} from 'immutable'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
 
@@ -33,9 +33,9 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
         return (
             <SecondaryNavbar>
                 {links.map(([to, text]) => (
-                    <Link key={to} to={to}>
+                    <NavLink key={to} to={to} exact>
                         {text}
-                    </Link>
+                    </NavLink>
                 ))}
             </SecondaryNavbar>
         )

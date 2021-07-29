@@ -289,11 +289,6 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
                                     ? integration.get('name')
                                     : 'New chat integration'}
                             </BreadcrumbItem>
-                            {isUpdate && (
-                                <BreadcrumbItem active>
-                                    Appearance
-                                </BreadcrumbItem>
-                            )}
                         </Breadcrumb>
                     }
                 />

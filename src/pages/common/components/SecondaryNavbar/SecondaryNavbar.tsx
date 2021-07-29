@@ -10,8 +10,8 @@ type NavbarProps = {
 export default class SecondaryNavbar extends Component<NavbarProps> {
     render() {
         const linkProps = {
-            className: 'nav-link',
-            activeClassName: 'disabled',
+            className: css.link,
+            activeClassName: css.active,
         }
 
         const childrenWithProps = React.Children.map(

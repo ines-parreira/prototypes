@@ -638,12 +638,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           >
             hellochatintegration
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Appearance
-          </li>
         </ol>
       </nav>
     </div>
@@ -651,43 +645,43 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/self_service"
       >
         Self-service
@@ -1219,12 +1213,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           >
             hellochatintegration
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Appearance
-          </li>
         </ol>
       </nav>
     </div>
@@ -1232,43 +1220,43 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/self_service"
       >
         Self-service
@@ -1799,12 +1787,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
           >
             hellochatintegration
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Appearance
-          </li>
         </ol>
       </nav>
     </div>
@@ -1812,43 +1794,43 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/self_service"
       >
         Self-service
@@ -2387,12 +2369,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           >
             hellochatintegration
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Appearance
-          </li>
         </ol>
       </nav>
     </div>
@@ -2400,43 +2376,43 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/self_service"
       >
         Self-service
@@ -2967,12 +2943,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           >
             hellochatintegration
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Appearance
-          </li>
         </ol>
       </nav>
     </div>
@@ -2980,43 +2950,43 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/2/self_service"
       >
         Self-service

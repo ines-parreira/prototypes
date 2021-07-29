@@ -44,12 +44,6 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
             (415) 111-2222
           </small>
         </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Voicemail
-        </li>
       </ol>
     </nav>
   </div>
@@ -57,15 +51,15 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/phone/1/preferences"
     >
       Preferences
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/phone/1/voicemail"
     >
       Voicemail
@@ -236,12 +230,6 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
             (415) 111-2222
           </small>
         </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Voicemail
-        </li>
       </ol>
     </nav>
   </div>
@@ -249,15 +237,15 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/phone/1/preferences"
     >
       Preferences
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/phone/1/voicemail"
     >
       Voicemail
@@ -428,12 +416,6 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
             (415) 111-2222
           </small>
         </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Voicemail
-        </li>
       </ol>
     </nav>
   </div>
@@ -441,15 +423,15 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/phone/1/preferences"
     >
       Preferences
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/phone/1/voicemail"
     >
       Voicemail

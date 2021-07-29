@@ -102,7 +102,6 @@ export class ChatIntegrationMigration extends React.Component<Props, State> {
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>{integrationName}</BreadcrumbItem>
-                            <BreadcrumbItem active>Migration</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

@@ -23,62 +23,70 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
       <nav
         className="navbar navbar"
       >
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/overview"
           to="/app/settings/integrations/facebook/1/overview"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/overview"
           >
             Overview
           </a>
-        </Link>
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/customer_chat"
           to="/app/settings/integrations/facebook/1/customer_chat"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/customer_chat"
           >
             Customer chat
           </a>
-        </Link>
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/preferences"
           to="/app/settings/integrations/facebook/1/preferences"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/preferences"
           >
             Preferences
           </a>
-        </Link>
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/ads"
           to="/app/settings/integrations/facebook/1/ads"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/ads"
           >
             Instagram ads
           </a>
-        </Link>
+        </NavLink>
       </nav>
     </Navbar>
   </SecondaryNavbar>
@@ -103,48 +111,54 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
       <nav
         className="navbar navbar"
       >
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/overview"
           to="/app/settings/integrations/facebook/1/overview"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/overview"
           >
             Overview
           </a>
-        </Link>
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/customer_chat"
           to="/app/settings/integrations/facebook/1/customer_chat"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/customer_chat"
           >
             Customer chat
           </a>
-        </Link>
-        <Link
-          activeClassName="disabled"
-          className="nav-link"
+        </NavLink>
+        <NavLink
+          activeClassName="active"
+          className="link"
+          exact={true}
           key=".$/app/settings/integrations/facebook/1/preferences"
           to="/app/settings/integrations/facebook/1/preferences"
         >
           <a
-            activeClassName="disabled"
-            className="nav-link"
+            activeClassName="active"
+            className="link"
+            exact={true}
             to="/app/settings/integrations/facebook/1/preferences"
           >
             Preferences
           </a>
-        </Link>
+        </NavLink>
       </nav>
     </Navbar>
   </SecondaryNavbar>

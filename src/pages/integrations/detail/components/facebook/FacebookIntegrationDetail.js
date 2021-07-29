@@ -278,7 +278,6 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Overview</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

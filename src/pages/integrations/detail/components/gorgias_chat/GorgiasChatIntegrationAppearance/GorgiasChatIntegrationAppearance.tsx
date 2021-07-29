@@ -350,9 +350,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 ? integration.get('name')
                                 : 'New chat integration'}
                         </BreadcrumbItem>
-                        {isUpdate && (
-                            <BreadcrumbItem active>Appearance</BreadcrumbItem>
-                        )}
                     </Breadcrumb>
                 }
             />

@@ -62,9 +62,6 @@ class FacebookIntegrationCustomerChat extends React.Component<Props, State> {
                             <BreadcrumbItem>
                                 {integration.getIn(['meta', 'name'])}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                Customer chat
-                            </BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

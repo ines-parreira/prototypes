@@ -9,7 +9,7 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-import {Link, withRouter} from 'react-router-dom'
+import {NavLink, withRouter} from 'react-router-dom'
 import {fromJS, type List, type Map, Set} from 'immutable'
 import classnames from 'classnames'
 
@@ -213,7 +213,9 @@ export default class MembersList extends Component<Props, State> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/teams">Teams</Link>
+                                <NavLink to="/app/settings/teams" exact>
+                                    Teams
+                                </NavLink>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Members of {team.get('name')}
@@ -238,10 +240,12 @@ export default class MembersList extends Component<Props, State> {
                 </PageHeader>
 
                 <SecondaryNavbar>
-                    <Link to={`/app/settings/teams/${teamId}/members`}>
+                    <NavLink to={`/app/settings/teams/${teamId}/members`} exact>
                         Team members
-                    </Link>
-                    <Link to={`/app/settings/teams/${teamId}`}>Settings</Link>
+                    </NavLink>
+                    <NavLink to={`/app/settings/teams/${teamId}`} exact>
+                        Settings
+                    </NavLink>
                 </SecondaryNavbar>
                 {members.size > 0 ? (
                     <Container fluid className="page-container">

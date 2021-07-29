@@ -38,12 +38,6 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
           >
             My new chat
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Campaigns
-          </li>
         </ol>
       </nav>
       <div>
@@ -59,43 +53,43 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/migration"
       >
         Migration
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/quick_replies"
       >
         Quick replies
@@ -153,12 +147,6 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
           >
             My new chat
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Campaigns
-          </li>
         </ol>
       </nav>
       <div>
@@ -174,43 +162,43 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/migration"
       >
         Migration
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/118/quick_replies"
       >
         Quick replies

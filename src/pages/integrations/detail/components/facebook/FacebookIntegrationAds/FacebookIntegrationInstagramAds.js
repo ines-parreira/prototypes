@@ -84,9 +84,6 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                Instagram Ads
-                            </BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

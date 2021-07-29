@@ -90,7 +90,6 @@ function GorgiasChatIntegrationInstall({
                         <BreadcrumbItem>
                             {integration.get('name')}
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>Installation</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

@@ -50,12 +50,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Preferences
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -211,12 +205,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Preferences
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />

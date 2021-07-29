@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
@@ -12,12 +12,20 @@ export const HelpCenterNavigation = ({helpcenterId}: Props) => {
 
     return (
         <SecondaryNavbar>
-            <Link to={`${baseURL}/articles`}>Articles</Link>
-            {/* <Link to={`${baseURL}/contact-us`}>Contact Us</Link> */}
-            {/* <Link to={`${baseURL}/appearance`}>Appearance</Link> */}
-            <Link to={`${baseURL}/preferences`}>Preferences</Link>
-            <Link to={`${baseURL}/customization`}>Customization</Link>
-            <Link to={`${baseURL}/installation`}>Installation</Link>
+            <NavLink to={`${baseURL}/articles`} exact>
+                Articles
+            </NavLink>
+            {/* <NavLink to={`${baseURL}/contact-us`}>Contact Us</NavLink> */}
+            {/* <NavLink to={`${baseURL}/appearance`}>Appearance</NavLink> */}
+            <NavLink to={`${baseURL}/preferences`} exact>
+                Preferences
+            </NavLink>
+            <NavLink to={`${baseURL}/customization`} exact>
+                Customization
+            </NavLink>
+            <NavLink to={`${baseURL}/installation`} exact>
+                Installation
+            </NavLink>
         </SecondaryNavbar>
     )
 }

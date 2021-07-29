@@ -38,12 +38,6 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
           >
             hellosmoochintegration
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Migration
-          </li>
         </ol>
       </nav>
     </div>
@@ -51,43 +45,43 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/1/migration"
       >
         Migration
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/1/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/1/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/smooch_inside/1/quick_replies"
       >
         Quick replies

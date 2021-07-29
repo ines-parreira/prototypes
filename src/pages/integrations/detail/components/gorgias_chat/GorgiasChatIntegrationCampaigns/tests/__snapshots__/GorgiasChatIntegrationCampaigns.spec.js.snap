@@ -38,12 +38,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
           >
             My new chat
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Campaigns
-          </li>
         </ol>
       </nav>
       <div>
@@ -59,43 +53,43 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/self_service"
       >
         Self-service
@@ -153,12 +147,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
           >
             My new chat
           </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Campaigns
-          </li>
         </ol>
       </nav>
       <div>
@@ -174,43 +162,43 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/118/self_service"
       >
         Self-service

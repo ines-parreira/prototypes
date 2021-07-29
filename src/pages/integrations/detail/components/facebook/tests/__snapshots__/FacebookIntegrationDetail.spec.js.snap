@@ -50,12 +50,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -372,12 +366,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -711,12 +699,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -1105,12 +1087,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -1497,12 +1473,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -1891,12 +1861,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -2291,12 +2255,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -2689,12 +2647,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -3089,12 +3041,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -3488,12 +3434,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -3881,12 +3821,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -4276,12 +4210,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -4669,12 +4597,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -5064,12 +4986,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -5481,12 +5397,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -5879,12 +5789,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -6279,12 +6183,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -6678,12 +6576,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -7072,12 +6964,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -7468,12 +7354,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -7862,12 +7742,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -8258,12 +8132,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -8652,12 +8520,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -9048,12 +8910,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -9442,12 +9298,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -9838,12 +9688,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -10232,12 +10076,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -10628,12 +10466,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -11022,12 +10854,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -11418,12 +11244,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -11812,12 +11632,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           My facebook page
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
         </BreadcrumbItem>
       </Breadcrumb>
     }
@@ -12208,12 +12022,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -12603,12 +12411,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         >
           My facebook page
         </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />
@@ -12996,12 +12798,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <BreadcrumbItem
           tag="li"
         />
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Overview
-        </BreadcrumbItem>
       </Breadcrumb>
     }
   />

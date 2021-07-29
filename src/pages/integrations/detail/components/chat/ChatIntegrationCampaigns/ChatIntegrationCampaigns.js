@@ -129,7 +129,6 @@ export default class ChatIntegrationCampaigns extends React.Component<Props> {
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Campaigns</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 >

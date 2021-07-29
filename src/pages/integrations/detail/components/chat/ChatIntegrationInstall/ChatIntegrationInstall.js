@@ -61,7 +61,6 @@ class ChatIntegrationInstall extends React.Component<Props, State> {
                             <BreadcrumbItem>
                                 {integration.get('name')}
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Installation</BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />

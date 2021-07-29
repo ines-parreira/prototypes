@@ -60,43 +60,43 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/self_service"
       >
         Self-service
@@ -750,43 +750,43 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/self_service"
       >
         Self-service
@@ -1544,43 +1544,43 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
       class="navbar navbar"
     >
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="disabled"
-        class="nav-link"
+        activeclassname="active"
+        class="link"
         to="/app/settings/integrations/gorgias_chat/1/self_service"
       >
         Self-service

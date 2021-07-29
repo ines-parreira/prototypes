@@ -70,17 +70,7 @@ exports[`<IntegrationDetailContainer /> http should render the list of events p
         </li>
         <li
           class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/http/1"
-          />
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Logs
-        </li>
+        />
       </ol>
     </nav>
   </div>
@@ -88,15 +78,15 @@ exports[`<IntegrationDetailContainer /> http should render the list of events p
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/http/1"
     >
       Settings
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/http/1/events"
     >
       Logs
@@ -142,20 +132,7 @@ exports[`<IntegrationDetailContainer /> http should render the page of an event
         </li>
         <li
           class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/http/1"
-          />
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/http/1/events"
-          >
-            Logs
-          </a>
-        </li>
+        />
         <li
           aria-current="page"
           class="active breadcrumb-item"
@@ -170,15 +147,15 @@ exports[`<IntegrationDetailContainer /> http should render the page of an event
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/http/1"
     >
       Settings
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/http/1/events"
     >
       Logs
@@ -394,15 +371,15 @@ exports[`<IntegrationDetailContainer /> should render the page of a specific int
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/email/1"
     >
       Preferences
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/email/1/dns"
     >
       Domain Verification
@@ -469,15 +446,15 @@ exports[`<IntegrationDetailContainer /> should render the page of a specific int
     class="navbar navbar"
   >
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/http/1"
     >
       Settings
     </a>
     <a
-      activeclassname="disabled"
-      class="nav-link"
+      activeclassname="active"
+      class="link"
       to="/app/settings/integrations/http/1/events"
     >
       Logs
