@@ -125,8 +125,8 @@ describe('<HelpCenterCategory>', () => {
     //     )
     // })
 
-    it('disables the Save button if Title or Slug are missing', () => {
-        const {getByTestId} = render(<Example isOpen />)
+    it('disables the Save button if Title, Slug or Description are missing', () => {
+        const {getByLabelText, getByTestId} = render(<Example isOpen />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
         expect(button.disabled).toBeTruthy()
@@ -134,6 +134,20 @@ describe('<HelpCenterCategory>', () => {
         fireEvent.change(getByTestId('title-input'), {
             target: {
                 value: 'About us',
+            },
+        })
+        expect(button.disabled).toBeTruthy()
+
+        fireEvent.change(getByLabelText('Description'), {
+            target: {
+                value: '   ',
+            },
+        })
+        expect(button.disabled).toBeTruthy()
+
+        fireEvent.change(getByLabelText('Description'), {
+            target: {
+                value: 'some description',
             },
         })
         expect(button.disabled).toBeFalsy()

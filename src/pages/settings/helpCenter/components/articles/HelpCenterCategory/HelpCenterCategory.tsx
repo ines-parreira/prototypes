@@ -188,7 +188,7 @@ export const HelpCenterCategory = ({
                     </InputGroup>
                     <FormText>This is your category’s link.</FormText>
                 </FormGroup>
-                <FormGroup className={css.textfield}>
+                <FormGroup className={classNames(css.textfield, css.required)}>
                     <Label for="description">Description</Label>
                     <Input
                         name="description"
@@ -212,7 +212,11 @@ export const HelpCenterCategory = ({
                 <Button
                     data-testid="button-save"
                     color="primary"
-                    disabled={Boolean(title === '' || slug === '')}
+                    disabled={Boolean(
+                        title.trim() === '' ||
+                            slug.trim() === '' ||
+                            description.trim() === ''
+                    )}
                     onClick={handleOnSave}
                 >
                     Save

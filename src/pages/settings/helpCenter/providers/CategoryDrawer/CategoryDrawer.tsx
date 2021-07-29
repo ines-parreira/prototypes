@@ -82,6 +82,8 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
                     status: NotificationStatus.Success,
                 })
             )
+
+            closeModal()
         } catch (err) {
             console.error(err)
             void dispatch(
@@ -90,8 +92,6 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
                     status: NotificationStatus.Error,
                 })
             )
-        } finally {
-            closeModal()
         }
     }
 
@@ -105,6 +105,8 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
                     status: NotificationStatus.Success,
                 })
             )
+
+            closeModal()
         } catch (err) {
             console.error(err)
             void dispatch(
@@ -113,8 +115,6 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
                     status: NotificationStatus.Error,
                 })
             )
-        } finally {
-            closeModal()
         }
     }
 
