@@ -15,7 +15,7 @@ import {
 import {
     guessFieldValueFromRawData,
     prepareWidgetToDisplay,
-} from '../../../utils'
+} from '../../../utils.tsx'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'
 import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'

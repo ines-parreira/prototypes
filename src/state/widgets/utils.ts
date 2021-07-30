@@ -42,7 +42,7 @@ export function itemsWithoutContext(
 export function getSourcePathFromContext(
     context: WidgetContextType,
     type = ''
-): string | Array<string> {
+) {
     const config = DEFAULT_SOURCE_PATHS[context]
 
     const defaultSourcePath = config.custom
@@ -52,7 +52,7 @@ export function getSourcePathFromContext(
     }
 
     if (!type) {
-        return (_values(config) as unknown) as string[]
+        return _values(config)
     }
 
     return config[type as keyof typeof config] || defaultSourcePath
@@ -61,7 +61,7 @@ export function getSourcePathFromContext(
 /**
  * Return context and type of widget for passed source path (path on wrapper)
  */
-export function getContextFromSourcePath(sourcePath: Array<string>) {
+export function getContextFromSourcePath(sourcePath: Array<string> | string) {
     const config = DEFAULT_SOURCE_PATHS
 
     let result = {

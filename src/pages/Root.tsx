@@ -1,4 +1,3 @@
-//@flow
 import React, {Component} from 'react'
 import {hot} from 'react-hot-loader'
 import {Provider} from 'react-redux'
@@ -7,14 +6,15 @@ import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
+import {Store} from 'redux'
 
-import type {stateType} from '../state/types'
+import {RootState} from '../state/types'
 
-import history from './history.ts'
+import history from './history'
 import Routes from './routes'
 
 type Props = {
-    store: stateType,
+    store: Store<RootState>
 }
 
 if (process.env.NODE_ENV !== 'production') {

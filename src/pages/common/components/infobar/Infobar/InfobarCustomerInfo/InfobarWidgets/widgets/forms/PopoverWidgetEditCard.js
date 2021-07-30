@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Form, FormGroup, Button} from 'reactstrap'
 
-import {isSimpleTemplateWidget} from '../../../../../utils'
+import {isSimpleTemplateWidget} from '../../../../../utils.tsx'
 
 import BooleanField from '../../../../../../../forms/BooleanField'
 import InputField from '../../../../../../../forms/InputField'

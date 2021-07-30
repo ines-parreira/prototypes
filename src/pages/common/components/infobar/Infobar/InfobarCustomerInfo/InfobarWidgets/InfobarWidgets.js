@@ -7,7 +7,7 @@ import _isEqual from 'lodash/isEqual'
 
 import DragWrapper from '../../../../dragging/WidgetsDragWrapper'
 import {compare} from '../../../../../../../utils.ts'
-import {canDisplayWidget} from '../../../utils'
+import {canDisplayWidget} from '../../../utils.tsx'
 import {getSourcePathFromContext} from '../../../../../../../state/widgets/utils.ts'
 import * as integrationsSelectors from '../../../../../../../state/integrations/selectors.ts'
 

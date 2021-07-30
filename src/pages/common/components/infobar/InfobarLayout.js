@@ -7,7 +7,7 @@ import {tryLocalStorage} from '../../../../services/common/utils.ts'
 import * as layoutSelectors from '../../../../state/layout/selectors.ts'
 import {ErrorBoundary} from '../../../ErrorBoundary.tsx'
 
-import {getInfobarMinWidth, getInfobarWidth} from './utils'
+import {getInfobarMinWidth, getInfobarWidth} from './utils.tsx'
 import css from './Infobar.less'
 
 @connect((state) => ({

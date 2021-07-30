@@ -26,7 +26,7 @@ import InfobarLayout from '../InfobarLayout.js'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
 import Search from '../../Search'
 
-import {areSourcesReady} from '../utils.js'
+import {areSourcesReady} from '../utils'
 import css from '../Infobar.less'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'

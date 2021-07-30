@@ -15,7 +15,7 @@ import {
 } from '../../../../../../../../../utils'
 import {getTrackingUrl} from '../../../../../../../../../utils/delivery'
 import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils.js'
+import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils'
 
 export default function Order() {
     return {

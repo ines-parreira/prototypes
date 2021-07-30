@@ -8,7 +8,7 @@ import {
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
-import {isBoolean} from '../../../../../../common/components/infobar/utils'
+import {isBoolean} from '../../../../../../common/components/infobar/utils.tsx'
 
 const INTEGRATION_NAME = 'My Integration'
 const commonProps = {

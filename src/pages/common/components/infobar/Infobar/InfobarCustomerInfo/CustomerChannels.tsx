@@ -1,37 +1,33 @@
-// @flow
-import React, {type Node} from 'react'
-import {fromJS, type List, type Map} from 'immutable'
+import React, {Component, ReactNode} from 'react'
+import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {connect} from 'react-redux'
-
-import {
-    CHAT_CUSTOMER_CHANNEL_TYPE,
-    EMAIL_CUSTOMER_CHANNEL_TYPE,
-    FACEBOOK_CUSTOMER_CHANNEL_TYPE,
-    INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
-    PHONE_CUSTOMER_CHANNEL_TYPE,
-    TWITTER_CUSTOMER_CHANNEL_TYPE,
-    INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE,
-} from '../../../../../../constants/user.ts'
-import SourceIcon from '../../../SourceIcon.tsx'
-import Tooltip from '../../../Tooltip.tsx'
+import SourceIcon from '../../../SourceIcon'
+import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
 import {getDisplayCustomerLastSeenOnChat, getLocalTime} from '../../utils'
-import {getCurrentUser} from '../../../../../../state/currentUser/selectors.ts'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../../../../business/types/ticket'
+import {RootState} from '../../../../../../state/types'
+import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
 
-import CustomerInfoWrapper from './CustomerInfoWrapper.tsx'
+import CustomerInfoWrapper from './CustomerInfoWrapper'
 
 type Props = {
-    currentUser: Map<*, *>,
-    channels: List<Map<*, *>>,
-    customerLocationInfo: Map<any, any>,
-    customerLastSeenOnChat: number,
-    children: Node,
-}
+    channels: List<any>
+    customerLocationInfo: Map<any, any>
+    customerLastSeenOnChat: number | null
+    children: ReactNode
+} & ConnectedProps<typeof connector>
 
-export class CustomerChannels extends React.Component<Props> {
-    static defaultProps = {
+export class CustomerChannels extends Component<Props> {
+    static defaultProps: Pick<
+        Props,
+        'customerLocationInfo' | 'customerLastSeenOnChat'
+    > = {
         customerLocationInfo: fromJS({}),
         customerLastSeenOnChat: null,
     }
@@ -47,44 +43,46 @@ export class CustomerChannels extends React.Component<Props> {
 
         const userSettingTimezone = currentUser.get('timezone')
 
-        let filteredChannels = channels
-            .filter((channel) => {
+        const filteredChannels = channels
+            .filter((channel: Map<any, any>) => {
                 // hide chats and facebook
                 return ![
-                    CHAT_CUSTOMER_CHANNEL_TYPE,
-                    FACEBOOK_CUSTOMER_CHANNEL_TYPE,
-                    INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
-                    INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE,
+                    TicketMessageSourceType.Chat,
+                    TicketMessageSourceType.Facebook,
+                    TicketMessageSourceType.Instagram,
+                    TicketMessageSourceType.InstagramDirectMessage,
                 ].includes(channel.get('type'))
             })
-            .sortBy((channel) => channel.get('address', '').toLowerCase()) // order addresses alphabetically
-            .sortBy((channel) => -channel.get('preferred')) // put preferred addresses on top
-            .sortBy((channel) => channel.get('type')) // group by channel type
+            .sortBy((channel: Map<any, any>) =>
+                (channel.get('address', '') as string).toLowerCase()
+            ) // order addresses alphabetically
+            .sortBy((channel: Map<any, any>) => -channel.get('preferred')) // put preferred addresses on top: ;
+            .sortBy((channel: Map<any, any>) => channel.get('type') as string) // group by channel type
 
-        const country = customerLocationInfo.get('country_name')
-        const city = customerLocationInfo.get('city')
+        const country = customerLocationInfo.get('country_name') as string
+        const city = customerLocationInfo.get('city') as string
         const timezoneOffset = customerLocationInfo.getIn([
             'time_zone',
             'offset',
         ])
 
-        const list = filteredChannels.map((channel, idx) => {
+        const list = filteredChannels.map((channel: Map<any, any>, idx) => {
             let props = null
             let addressComponent = null
             const channelType = channel.get('type')
-            let channelAddress = channel.get('address') || ''
+            let channelAddress = (channel.get('address') as string) || ''
 
             if (!channelAddress) {
                 return null
             }
 
             switch (channelType) {
-                case EMAIL_CUSTOMER_CHANNEL_TYPE:
+                case TicketChannel.Email:
                     props = {
                         href: `mailto:${channelAddress}`,
                     }
                     break
-                case TWITTER_CUSTOMER_CHANNEL_TYPE:
+                case TicketChannel.Twitter:
                     // Display the twitter handle instead of the address
                     channelAddress = channel.getIn(['customer', 'name']) || ''
 
@@ -93,7 +91,7 @@ export class CustomerChannels extends React.Component<Props> {
                         target: '_blank',
                     }
                     break
-                case PHONE_CUSTOMER_CHANNEL_TYPE:
+                case TicketChannel.Phone:
                     // remove dots and spaces so that some extensions recognize the address as a tel number
                     props = {
                         href: `tel:${channelAddress
@@ -105,7 +103,7 @@ export class CustomerChannels extends React.Component<Props> {
                     props = null
             }
 
-            const componentId = `address-copied-${channel.get('id')}`
+            const componentId = `address-copied-${channel.get('id') as number}`
 
             if (props) {
                 addressComponent = (
@@ -130,12 +128,12 @@ export class CustomerChannels extends React.Component<Props> {
                         )}
                         data-clipboard-target={`#${componentId}`}
                     >
-                        <i id={`copy-icon-${idx}`} className="material-icons">
+                        <i id={`copy-icon-${idx!}`} className="material-icons">
                             content_copy
                         </i>
                         <Tooltip
                             placement="top"
-                            target={`copy-icon-${idx}`}
+                            target={`copy-icon-${idx!}`}
                             delay={{
                                 show: 1000,
                                 hide: 0,
@@ -208,6 +206,8 @@ export class CustomerChannels extends React.Component<Props> {
     }
 }
 
-export default connect((state) => ({
+const connector = connect((state: RootState) => ({
     currentUser: getCurrentUser(state),
-}))(CustomerChannels)
+}))
+
+export default connector(CustomerChannels)

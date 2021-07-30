@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
-import * as utils from '../utils'
+import * as utils from '../utils.tsx'
 
 jest.mock('../../../utils/labels', () => ({
     DatetimeLabel: () => <div>DatetimeLabel</div>,

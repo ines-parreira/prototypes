@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody} from 'reactstrap'
 
-import {displayLabel} from '../../../../utils'
+import {displayLabel} from '../../../../utils.tsx'
 
 import PopoverWidgetEditField from './forms/PopoverWidgetEditField'
 

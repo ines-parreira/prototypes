@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {getInfobarMinWidth, getInfobarWidth} from '../../infobar/utils.js'
+import {getInfobarMinWidth, getInfobarWidth} from '../../infobar/utils'
 
 import css from './PhoneInfobarWrapper.less'
 

@@ -5,7 +5,7 @@ import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
-import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils.js'
+import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 
 import SourceIcon from '../SourceIcon'

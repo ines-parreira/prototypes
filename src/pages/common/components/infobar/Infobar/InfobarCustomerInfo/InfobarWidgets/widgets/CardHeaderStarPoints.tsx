@@ -1,10 +1,9 @@
-// @flow
-import React, {type Node} from 'react'
+import React from 'react'
 
 import css from './CardHeaderStarPoints.less'
 
 type Props = {
-    children: Node,
+    children: string
 }
 
 export function CardHeaderStarPoints({children}: Props) {

@@ -1,77 +1,73 @@
-//@flow
-import React, {type ComponentType} from 'react'
-import {
-    Route,
-    Switch,
-    Redirect,
-    type RouteComponentProps,
-} from 'react-router-dom'
+import React, {ComponentType} from 'react'
+import {Route, Switch, Redirect, RouteComponentProps} from 'react-router-dom'
 
-import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
-import {AccountFeature} from '../state/currentAccount/types.ts'
+import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
+import {AccountFeature} from '../state/currentAccount/types'
 
-import App from './App.tsx'
-import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer.tsx'
-import IntegrationListContainer from './integrations/list/IntegrationListContainer.tsx'
-import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
-import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
-import TicketSourceContainer from './tickets/detail/TicketSourceContainer.tsx'
-import TicketNavbar from './tickets/navbar/TicketNavbar.tsx'
-import TicketListContainer from './tickets/list/TicketListContainer.tsx'
-import RuleContainer from './settings/rules/list/RuleContainer.ts'
-import SelfServiceContainer from './settings/selfService/SelfServiceContainer.ts'
-import CustomerListContainer from './customers/list/CustomerListContainer'
-import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer.tsx'
-import CustomerDetailContainer from './customers/detail/CustomerDetailContainer.tsx'
-import CustomerSourceContainer from './customers/detail/CustomerSourceContainer.tsx'
-import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
-import StatsPage from './stats/StatsPage.tsx'
+import App from './App'
+import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
+import IntegrationListContainer from './integrations/list/IntegrationListContainer'
+import TicketDetailContainer from './tickets/detail/TicketDetailContainer.js'
+import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer.js'
+import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
+import TicketNavbar from './tickets/navbar/TicketNavbar'
+import TicketListContainer from './tickets/list/TicketListContainer'
+import RuleContainer from './settings/rules/list/RuleContainer'
+import SelfServiceContainer from './settings/selfService/SelfServiceContainer'
+import CustomerListContainer from './customers/list/CustomerListContainer.js'
+import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
+import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
+import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
+import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer.js'
+import StatsPage from './stats/StatsPage'
 
-import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
-import ChangePassword from './settings/yourProfile/ChangePassword'
-import APIView from './settings/api/APIView'
+import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
+import ChangePassword from './settings/yourProfile/ChangePassword.js'
+import APIView from './settings/api/APIView.js'
 
-import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
-import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
-import NoMatch from './common/components/NoMatch.tsx'
-import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer.tsx'
-import withUserRoleRequired from './common/components/UserRoleRequired.tsx'
-import BillingContainer from './settings/billing/BillingContainer'
-import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
-import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
-import BillingPlansContainer from './settings/billing/plans/BillingPlans.tsx'
-import ManageTagsContainer from './settings/tags/ManageTags'
-import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail.tsx'
-import ImportDataContainer from './settings/importData/ImportDataContainer.tsx'
-import ImportZendeskCreate from './settings/importData/zendesk/ImportZendeskCreate.tsx'
-import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
-import MacrosSettingsContent from './settings/macros/MacrosSettingsContent.tsx'
-import MacrosSettingsForm from './settings/macros/MacrosSettingsForm.tsx'
-import * as Team from './settings/users'
-import * as Teams from './settings/teams'
-import List from './settings/teams/members/List'
+import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer.js'
+import StatsNavbarContainer from './stats/common/StatsNavbarContainer.js'
+import NoMatch from './common/components/NoMatch'
+import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
+import withUserRoleRequired from './common/components/UserRoleRequired'
+import BillingContainer from './settings/billing/BillingContainer.js'
+import CreditCardContainer from './settings/billing/credit-cards/CreditCard.js'
+import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm.js'
+import BillingPlansContainer from './settings/billing/plans/BillingPlans'
+import ManageTagsContainer from './settings/tags/ManageTags.js'
+import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
+import ImportDataContainer from './settings/importData/ImportDataContainer'
+import ImportZendeskCreate from './settings/importData/zendesk/ImportZendeskCreate'
+import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView.js'
+import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
+import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
+import TeamList from './settings/users/List.js'
+import TeamForm from './settings/users/Form.js'
+import TeamsList from './settings/teams/List.js'
+import TeamsForm from './settings/teams/Form.js'
+import List from './settings/teams/members/List.js'
 
-import UserAuditList from './settings/audit/UserAuditList'
-import BusinessHours from './settings/businessHours'
-import TicketAssignment from './settings/ticketAssignment'
+import UserAuditList from './settings/audit/UserAuditList.js'
+import BusinessHours from './settings/businessHours/index.js'
+import TicketAssignment from './settings/ticketAssignment/index.js'
 
-import withPaywall from './common/utils/withPaywall.tsx'
-import OnboardingContent from './onboarding/OnboardingContent.tsx'
-import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView.tsx'
-import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView.tsx'
-import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView.tsx'
-import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView.tsx'
-import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView.tsx'
-import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter.tsx'
+import withPaywall from './common/utils/withPaywall'
+import OnboardingContent from './onboarding/OnboardingContent'
+import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView'
+import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
+import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
+import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
+import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
+import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 
 const appRender = (props: {
-    navbar: ComponentType<any>,
-    content: ComponentType<any>,
-    infobar?: ComponentType<any>,
-    containerPadding?: boolean,
-    infobarOnMobile?: boolean,
-    noContainerWidthLimit?: boolean,
-    isEditingWidgets?: boolean,
+    navbar: ComponentType<Record<string, unknown>>
+    content: ComponentType<Record<string, unknown>>
+    infobar?: ComponentType<Record<string, unknown>>
+    containerPadding?: boolean
+    infobarOnMobile?: boolean
+    noContainerWidthLimit?: boolean
+    isEditingWidgets?: boolean
 }) => (routeProps: RouteComponentProps) => {
     return <App {...routeProps} {...props} />
 }
@@ -93,7 +89,7 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: TicketListInfobarContainer as any,
                 })}
             />
             <Route path={`${path}/customers`} render={CustomersRoutes} />
@@ -293,7 +289,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: TicketListInfobarContainer as any,
                 })}
             />
             <Route
@@ -302,7 +298,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: TicketListInfobarContainer as any,
                 })}
             />
             <Route
@@ -311,7 +307,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: TicketListInfobarContainer as any,
                 })}
             />
             <Route
@@ -320,7 +316,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer,
+                    infobar: TicketListInfobarContainer as any,
                 })}
             />
         </Switch>
@@ -632,7 +628,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(Teams.List, ADMIN_ROLE)
+                        withUserRoleRequired(TeamsList, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -642,7 +638,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(Teams.Form, ADMIN_ROLE)
+                        withUserRoleRequired(TeamsForm, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -652,7 +648,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(Teams.Form, ADMIN_ROLE)
+                        withUserRoleRequired(TeamsForm, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -678,7 +674,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(Team.List, ADMIN_ROLE),
+                    content: withUserRoleRequired(TeamList, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -686,7 +682,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/add`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(Team.Form, ADMIN_ROLE),
+                    content: withUserRoleRequired(TeamForm, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -694,7 +690,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(Team.Form, ADMIN_ROLE),
+                    content: withUserRoleRequired(TeamForm, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />

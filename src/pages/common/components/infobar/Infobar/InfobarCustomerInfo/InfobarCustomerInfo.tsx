@@ -14,9 +14,9 @@ import {IntegrationType} from '../../../../../../models/integration/types'
 
 import Avatar from '../../../Avatar/Avatar'
 import css from '../../Infobar.less'
-import {areSourcesReady, canDrop, jsonToWidgets} from '../../utils.js'
+import {areSourcesReady, canDrop, jsonToWidgets} from '../../utils'
 
-import CustomerChannels from './CustomerChannels.js'
+import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets.js'
 import AddIntegrationSuggestion from './AddIntegrationSuggestion'

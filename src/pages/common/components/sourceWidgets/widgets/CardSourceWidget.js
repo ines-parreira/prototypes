@@ -6,7 +6,7 @@ import _last from 'lodash/last'
 import {Card, CardBody} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
-import {stripLastListsFromPath} from '../../infobar/utils'
+import {stripLastListsFromPath} from '../../infobar/utils.tsx'
 
 import SourceWidget from '../SourceWidget'
 

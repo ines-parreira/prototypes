@@ -1,6 +1,5 @@
-// @flow
-import React from 'react'
-import {fromJS, type Map} from 'immutable'
+import React, {ReactNode} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import {Badge} from 'reactstrap'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
@@ -23,41 +22,37 @@ import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
 import _max from 'lodash/max'
-
 import momentTimezone from 'moment-timezone'
-import moment from 'moment'
-
+import moment, {MomentInput} from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
-import {DatetimeLabel} from '../../utils/labels.tsx'
-import * as utils from '../../../../utils.ts'
+import {DatetimeLabel} from '../../utils/labels'
+import * as utils from '../../../../utils'
 import {
     getContextFromSourcePath,
     getSourcePathFromContext,
-} from '../../../../state/widgets/utils.ts'
-
+} from '../../../../state/widgets/utils'
+import {WidgetContextType} from '../../../../state/widgets/types'
 import {
     SENTIMENT_TYPE_LOWER_BOUND,
     SENTIMENT_TYPE_UPPER_BOUND,
-} from '../../../../config.ts'
-import {reportError} from '../../../../utils/errors.ts'
+} from '../../../../config'
+import {reportError} from '../../../../utils/errors'
 
 import css from './utils.less'
-import EditableListWidget from './Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget.tsx'
+import EditableListWidget from './Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 
 /**
  * Check if is an array of objects (and no an array of string for example)
- * @param value
- * @returns {*|boolean}
  */
-export function isArrayOfObjects(value: any) {
+export function isArrayOfObjects(
+    value: any
+): value is Record<string, unknown>[] {
     return _isArray(value) && !!value.length && _isObject(value[0])
 }
 
 /**
  * Check if is a real object (since arrays are objects, we just want objects (no arrays) here)
- * @param value
- * @returns {boolean}
  */
 export function isObject(value: any) {
     return !!value && _isObject(value) && !_isArray(value)
@@ -65,8 +60,6 @@ export function isObject(value: any) {
 
 /**
  * Check if a widget is a simple field (not a card or a list)
- * @param widget
- * @returns {boolean}
  */
 export function isSimpleTemplateWidget(widget: Map<any, any>) {
     return !['card', 'list'].includes(widget.get('type'))
@@ -75,11 +68,11 @@ export function isSimpleTemplateWidget(widget: Map<any, any>) {
 /**
  * Check if a widget does not contain any simple widget (ie. only complex widgets such as cards or lists)
  * If it contains at least a card, or a list, etc. it returns false
- * @param widget
- * @returns {boolean}
  */
 export function hasNoSimpleWidget(widget: Map<any, any>) {
-    return !widget.get('widgets', fromJS([])).some(isSimpleTemplateWidget)
+    return !(widget.get('widgets', fromJS([])) as List<any>).some(
+        isSimpleTemplateWidget
+    )
 }
 
 export function isUppercase(string: string) {
@@ -88,17 +81,13 @@ export function isUppercase(string: string) {
 
 /**
  * Return true if passed customer data is valid (Immutable Map, etc.)
- * @param data
- * @returns {boolean}
  */
-export const isCustomerDataValid = (data: any) => {
+export const isCustomerDataValid = (data: any): data is Map<any, any> => {
     return !!data && utils.isImmutable(data)
 }
 
 /**
  * Return true if passed customer data is valid and not empty
- * @param data
- * @returns {boolean}
  */
 export const isCustomerDataPresent = (data: any) => {
     return isCustomerDataValid(data) && !data.isEmpty()
@@ -107,24 +96,20 @@ export const isCustomerDataPresent = (data: any) => {
 /**
  * Remove last "[]" from the passed path
  * Ex: ticket.orders[] to ticket.orders
- * @param path
- * @returns {*}
  */
-export function stripLastListsFromPath(path?: any[] = []) {
+export function stripLastListsFromPath(path: string | string[] = []) {
     let newPath = path
 
     while (_last(newPath) === '[]') {
         newPath = _initial(newPath)
     }
 
-    return newPath
+    return newPath as string
 }
 
 /**
  * Return true if passed absolute path is a root source
  * Ex : ticket.customer.data
- * @param group (= absolute path OR 'root')
- * @returns {*}
  */
 export function isRootSource(group: string) {
     return group === 'root'
@@ -132,8 +117,6 @@ export function isRootSource(group: string) {
 
 /**
  * Guess if a passed string is a date
- * @param string
- * @returns {boolean|*}
  */
 export function isDate(string: string) {
     const formats = [
@@ -155,8 +138,6 @@ export function isDate(string: string) {
 
 /**
  * Guess if a passed string is a boolean
- * @param string
- * @returns {boolean}
  */
 export function isBoolean(string: any) {
     if (_isBoolean(string)) {
@@ -172,29 +153,23 @@ export function isBoolean(string: any) {
 
 /**
  * Return true if sources exist and are not empty
- * @param sources
- * @param context
- * @param everySources
- * @returns {*|boolean}
  */
 export function areSourcesReady(
     sources: Map<any, any>,
-    context: string,
-    everySources?: boolean = false
+    context: WidgetContextType,
+    everySources = false
 ): boolean {
     // for every source
-    const currentSource = sources.get(context)
+    const currentSource = sources.get(context) as Map<any, any>
 
     // get the paths we have to search in
-    const sourcePaths = getSourcePathFromContext(context)
+    const sourcePaths = getSourcePathFromContext(context) as string[][]
 
     if (!sourcePaths || !currentSource) {
         return false
     }
 
-    const condition = everySources ? 'every' : 'some'
-
-    return sourcePaths[condition]((sourcePath) => {
+    const condition = (sourcePath: string[]) => {
         // we remove the first property of the source origin path since we are searching directly in the source
         // ex : we transform ticket.customer.data into ['customer', 'data']
         const immutableSourcePath = sourcePath.slice(1)
@@ -202,29 +177,30 @@ export function areSourcesReady(
         const sourceData = currentSource.getIn(immutableSourcePath, fromJS({}))
 
         return isCustomerDataPresent(sourceData)
-    })
+    }
+
+    return everySources
+        ? sourcePaths.every(condition)
+        : sourcePaths.some(condition)
 }
 
 /**
  * Return true if can display the passed widget according to passed source
  * Passed widget should be a wrapper
- * @param widget
- * @param source
- * @returns {boolean}
  */
 export function canDisplayWidget(widget: Map<any, any>, source: Map<any, any>) {
     if (widget.get('type') !== 'wrapper') {
         return false
     }
 
-    const splitPath = widget.get('path', '')
+    const splitPath = widget.get('path', '') as string
 
     if (!splitPath.length) {
         return false
     }
 
     // ex : ticket, customer, etc.
-    const initialSourceName = splitPath[0]
+    const initialSourceName = splitPath[0] as WidgetContextType
 
     const ready = areSourcesReady(
         fromJS({
@@ -239,35 +215,39 @@ export function canDisplayWidget(widget: Map<any, any>, source: Map<any, any>) {
 export function isWidgetEmpty(
     widget: Map<any, any>,
     source: Map<any, any>,
-    path?: string[] = []
-) {
+    path: string[] = []
+): boolean {
     switch (widget.get('type')) {
         case 'wrapper': {
             const subPath = widget.get('path')
-            return widget
-                .get('widgets', [])
-                .every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
+            return (widget.get('widgets', []) as List<
+                any
+            >).every((subWidget: Map<any, any>) =>
+                isWidgetEmpty(subWidget, source, subPath)
+            )
         }
         case 'card': {
             const subPath = widget.get('path')
                 ? [...path, widget.get('path')]
                 : path
-            return widget
-                .get('widgets', [])
-                .every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
+            return (widget.get('widgets', []) as List<
+                any
+            >).every((subWidget: Map<any, any>) =>
+                isWidgetEmpty(subWidget, source, subPath)
+            )
         }
         case 'list': {
             const subPath = widget.get('path')
                 ? [...path, widget.get('path')]
                 : path
-            const data = source.getIn(subPath, [])
+            const data = source.getIn(subPath, []) as List<any>
 
             return data.every((value, index) =>
-                widget
-                    .get('widgets', [])
-                    .every((subWidget) =>
-                        isWidgetEmpty(subWidget, source, [...subPath, index])
-                    )
+                (widget.get('widgets', []) as List<
+                    any
+                >).every((subWidget: Map<any, any>) =>
+                    isWidgetEmpty(subWidget, source, [...subPath, index])
+                )
             )
         }
         default: {
@@ -286,12 +266,12 @@ export function makeWrapper({
     widgetType,
     integrationId,
 }: {
-    order: number,
-    context: string,
-    child: Map<any, any>,
-    sourcePath: string,
-    widgetType: ?string,
-    integrationId: ?number,
+    order: number
+    context: string
+    child: Map<any, any> | Record<string, unknown>
+    sourcePath: string[] | string
+    widgetType: string | null
+    integrationId: number | null
 }) {
     let type = getContextFromSourcePath(sourcePath).type
 
@@ -302,12 +282,14 @@ export function makeWrapper({
     let wrapperWidget = fromJS({
         type: 'wrapper',
         widgets: [child],
-    })
+    }) as Map<any, any>
 
     // we don't want to display a card around data in wrapper (unnecessary nesting)
     // if there is only a card in the wrapper and no simple widget in this card (ie. only cards or lists) we move those
     // children into the wrapper directly instead of letting them in the card
-    const firstWidget = wrapperWidget.get('widgets', fromJS([])).first()
+    const firstWidget = (wrapperWidget.get('widgets', fromJS([])) as List<
+        any
+    >).first() as Map<any, any>
     if (hasNoSimpleWidget(firstWidget)) {
         wrapperWidget = wrapperWidget.set(
             'widgets',
@@ -322,28 +304,20 @@ export function makeWrapper({
         template: wrapperWidget,
         sourcePath,
         integration_id: integrationId,
-    })
+    }) as Map<any, any>
 }
 
 /**
  * Translate json to template configuration for widgets
- * @param value
- * @param key
- * @param isChildOfList
- * @returns {*}
  */
-export function jsonToWidget(
-    value: any,
-    key?: string = '',
-    isChildOfList?: boolean = false
-) {
+export function jsonToWidget(value: any, key = '', isChildOfList = false) {
     try {
         // if array of objects
         if (isArrayOfObjects(value)) {
             const response: {
-                path?: string,
-                type: string,
-                widgets: Object[],
+                path?: string
+                type: string
+                widgets: Record<string, unknown>[]
             } = {
                 type: 'list',
                 widgets: [jsonToWidget(value[0], key, true)],
@@ -363,7 +337,7 @@ export function jsonToWidget(
                 k.startsWith('_')
             )
 
-            let enhancedValues = {}
+            let enhancedValues: Record<string, unknown> = {}
 
             // order keys in alphabetical order
             _sortBy(Object.keys(filteredValue), _toLower).forEach((v) => {
@@ -379,14 +353,14 @@ export function jsonToWidget(
                 ..._pickBy(enhancedValues, isArrayOfObjects),
             }
 
-            const widgets = []
+            const widgets: Record<string, unknown>[] = []
             _forIn(enhancedValues, (v, k) => widgets.push(jsonToWidget(v, k)))
 
             const response: {
-                type: string,
-                title: string,
-                widgets: Object[],
-                path?: string,
+                type: string
+                title: string
+                widgets: Record<string, unknown>[]
+                path?: string
             } = {
                 type: 'card',
                 title: utils.humanizeString(key),
@@ -418,9 +392,9 @@ export function jsonToWidget(
         }
 
         const response: {
-            type: string,
-            title: string,
-            path?: string,
+            type: string
+            title: string
+            path?: string
         } = {
             type,
             title: isUppercase(key) ? key : utils.humanizeString(key),
@@ -446,25 +420,25 @@ export function jsonToWidget(
 
 /**
  * Transform a json to template configuration and adapt it for infobar display
- * @param json
- * @param context
- * @returns {*}
  */
 export function jsonToWidgets(
-    json: Object,
-    context?: string = 'ticket'
-): any[] {
-    const defaultResponse = []
+    json: Record<string, unknown>,
+    context = WidgetContextType.Ticket
+) {
+    const defaultResponse: Map<any, any>[] = []
 
     try {
-        const sourcePaths = getSourcePathFromContext(context)
+        const sourcePaths = getSourcePathFromContext(context) as string[][]
         const integrationsPath = sourcePaths.find((path) => {
             return _includes(path, 'integrations')
         })
 
-        const integrationsData = _get(json, integrationsPath, {})
+        const integrationsData = _get(json, integrationsPath!, {}) as Record<
+            string,
+            unknown
+        >
 
-        let typeByPath = fromJS({})
+        let typeByPath = fromJS({}) as Map<any, any>
 
         // Add all `sourcePaths` matching integrations data
         // Transform:
@@ -472,23 +446,25 @@ export function jsonToWidgets(
         // To:
         //  [['customer', 'data'], ['customer', 'integrations', '1'], ['customer', 'integrations', '2']]
         _forEach(integrationsData, (integrationData, integrationId) => {
-            const newPath = integrationsPath.slice()
+            const newPath = integrationsPath!.slice()
             newPath.push(integrationId.toString())
             typeByPath = typeByPath.set(
                 newPath,
                 fromJS({
-                    type: integrationData['__integration_type__'],
+                    type: (integrationData as Record<string, unknown>)[
+                        '__integration_type__'
+                    ],
                     integrationId,
                 })
             )
             sourcePaths.push(newPath)
         })
 
-        const idx = sourcePaths.indexOf(integrationsPath)
+        const idx = sourcePaths.indexOf(integrationsPath!)
         sourcePaths.splice(idx, 1)
 
         const response = sourcePaths.map((sourcePath, i) => {
-            let source = _get(json, sourcePath, {})
+            let source = _get(json, sourcePath, {}) as Record<string, unknown>
 
             // remove private keys from source before we transform it into a template
             source = _omitBy(source, (v, k: string) => k.startsWith('_'))
@@ -518,10 +494,12 @@ export function jsonToWidgets(
         return _compact(response)
     } catch (err) {
         reportError(err, {
-            description:
-                'Conversion of json to infobar widgets template failed',
-            json,
-            context,
+            extra: {
+                description:
+                    'Conversion of json to infobar widgets template failed',
+                json,
+                context,
+            },
         })
         return defaultResponse
     }
@@ -529,29 +507,30 @@ export function jsonToWidgets(
 
 /**
  * Return true if you can drop something at source path to a card in target path
- * @param group (= absolute path OR 'root')
- * @param targetAbsolutePath
- * @returns {boolean}
  */
-export function canDrop(group?: string = '', targetAbsolutePath?: string = '') {
+export function canDrop(
+    group = '',
+    targetAbsolutePath: string | string[] = ''
+) {
     // root source
     if (isRootSource(group)) {
         return !targetAbsolutePath
     }
 
-    return group === (targetAbsolutePath: any).join('.')
+    return (
+        group ===
+        (typeof targetAbsolutePath === 'string'
+            ? targetAbsolutePath
+            : targetAbsolutePath.join('.'))
+    )
 }
 
 /**
  * Format some data from widget before it is display
- * @param template
- * @param source
- * @param parent
- * @returns {{updatedWidget: *, data: *, type: *, path: *}}
  */
 export function prepareWidgetToDisplay(
-    template?: Map<any, any> = fromJS({}),
-    source?: Map<any, any> = fromJS({}),
+    template: Map<any, any> = fromJS({}),
+    source: Map<any, any> = fromJS({}),
     parent: Map<any, any>
 ) {
     // build absolute path of widget
@@ -604,15 +583,12 @@ export const StarRatingColors = Object.freeze({
 
 /**
  * Return a field value based on raw incoming data and a field type
- * @param data
- * @param type
- * @returns {string}
  */
 export function guessFieldValueFromRawData(data: any, type: string) {
-    let fieldValue = ''
+    let fieldValue: unknown = ''
 
     if (_isUndefined(data) || _isNull(data)) {
-        return fieldValue
+        return fieldValue as string
     }
 
     if (_isString(data)) {
@@ -762,7 +738,7 @@ export function guessFieldValueFromRawData(data: any, type: string) {
         }
         case 'percent': {
             if (!isNaN(data)) {
-                fieldValue = data.toString() + '%'
+                fieldValue = (data as number).toString() + '%'
             }
 
             break
@@ -775,8 +751,6 @@ export function guessFieldValueFromRawData(data: any, type: string) {
 
 /**
  * Display a widget field label (before the value)
- * @param label
- * @returns {*}
  */
 export const displayLabel = (label: any) => {
     const defaultLabel = '-'
@@ -793,13 +767,11 @@ export const displayLabel = (label: any) => {
         return defaultLabel
     }
 
-    return label
+    return label as ReactNode
 }
 
 /**
  * Return the local time in string format, based on the UTC offset value
- * @param timezoneOffset {string} // '+0100' (e.g: for Paris)
- * @returns {string}
  */
 export function getLocalTime(timezoneOffset: string) {
     const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
@@ -810,15 +782,11 @@ export function getLocalTime(timezoneOffset: string) {
 
 /**
  * Return the prettified last seen on chat string, based on the UTC timestamp received from the chat
- * @param customerLastSeenOnChatUtcDateTimeStamp {string}
- * @param timezone {string}
- * @param referenceDay {datetime || null}
- * @returns {string}
  */
 export function getDisplayCustomerLastSeenOnChat(
     customerLastSeenOnChatUtcDateTimeStamp: number,
     timezone: string,
-    referenceDay?: any = null
+    referenceDay: MomentInput = null
 ) {
     const now = momentTimezone.utc()
     const customerLastSeenOnChatUtcDateTime = momentTimezone.utc(

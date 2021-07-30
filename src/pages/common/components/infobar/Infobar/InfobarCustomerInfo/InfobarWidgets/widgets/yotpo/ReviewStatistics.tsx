@@ -4,7 +4,7 @@ import type {Map} from 'immutable'
 import {toJS} from '../../../../../../../../../utils'
 
 import {CardHeaderYotpoReviewStatistics} from './custom/CardHeaderYotpoReviewStatistics.js'
-import {CardContentYotpoReviewTopics} from './custom/CardContentYotpoReviewTopics.js'
+import {CardContentYotpoReviewTopics} from './custom/CardContentYotpoReviewTopics'
 
 export default function ReviewStatistics() {
     return {

@@ -7,7 +7,7 @@ import {Map} from 'immutable'
 
 import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
-import {jsonToWidgets} from '../../pages/common/components/infobar/utils.js'
+import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import * as integrationsSelectors from '../integrations/selectors'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'

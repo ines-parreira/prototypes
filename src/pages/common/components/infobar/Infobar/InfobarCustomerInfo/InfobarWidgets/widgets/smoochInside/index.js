@@ -1,4 +1,4 @@
-import Root from './Root'
+import Root from './Root.tsx'
 
 const smoochInside = (args) => {
     const path = args.template.get('absolutePath', []).join('.')

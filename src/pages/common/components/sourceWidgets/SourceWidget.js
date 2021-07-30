@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 
-import {prepareWidgetToDisplay, displayLabel} from '../infobar/utils'
+import {prepareWidgetToDisplay, displayLabel} from '../infobar/utils.tsx'
 
 import ListSourceWidget from './widgets/ListSourceWidget'
 import CardSourceWidget from './widgets/CardSourceWidget'

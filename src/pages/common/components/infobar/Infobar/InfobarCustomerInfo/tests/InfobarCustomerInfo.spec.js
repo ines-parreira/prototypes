@@ -16,7 +16,7 @@ import InfobarCustomerInfo, {
     InfobarCustomerInfoContainer,
 } from '../InfobarCustomerInfo.tsx'
 
-jest.mock('../CustomerChannels.js', () => () => <div>CustomerChannels</div>)
+jest.mock('../CustomerChannels.tsx', () => () => <div>CustomerChannels</div>)
 jest.mock('../InfobarWidgets/InfobarWidgets.js', () => () => (
     <div>InfobarWidgets</div>
 ))

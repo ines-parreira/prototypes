@@ -88,7 +88,7 @@ export const getHashOfObj = (obj: any): string => md5(JSON.stringify(obj))
 /**
  * Guess if a passed string is a url
  */
-export function isUrl(string: string): boolean {
+export function isUrl(string: string): string is string {
     if (!_isString(string)) {
         return false
     }
@@ -99,7 +99,7 @@ export function isUrl(string: string): boolean {
 /**
  * Guess if a passed string is an email
  */
-export function isEmail(string: string): boolean {
+export function isEmail(string: string): string is string {
     if (!_isString(string)) {
         return false
     }

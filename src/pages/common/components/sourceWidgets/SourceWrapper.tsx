@@ -8,7 +8,7 @@ import {IntegrationType} from '../../../../models/integration/types'
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
-import {areSourcesReady, jsonToWidgets} from '../infobar/utils.js'
+import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 
 import SourceWidgets from './SourceWidgets.js'
 

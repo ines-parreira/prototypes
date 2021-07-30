@@ -8,7 +8,7 @@ import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderBadge} from '../CardHeaderBadge'
-import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel.js'
+import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
 
 import {CardHeaderValue} from '../CardHeaderValue'
 

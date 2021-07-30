@@ -1,22 +1,19 @@
-// @flow
-import React from 'react'
-
+import React, {ReactNode} from 'react'
 import {Badge} from 'reactstrap'
 
 import css from './CardContentYotpoReviewTopics.less'
 
 type Props = {
-    children: Node,
+    children: Record<string, ReactNode>
 }
 
 export function CardContentYotpoReviewTopics({children}: Props) {
-    let topics = []
+    const topics: ReactNode[] = []
 
     if (children) {
         Object.keys(children).forEach((key) => {
             topics.push(
                 <Badge key={key} className={css.topic}>
-                    {/* $FlowFixMe */}
                     {children[key]}
                 </Badge>
             )

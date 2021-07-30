@@ -6,7 +6,7 @@ import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from '../../../../../../../constants/user.ts'
-import {CustomerChannels as CustomerChannelsComponent} from '../CustomerChannels'
+import {CustomerChannels as CustomerChannelsComponent} from '../CustomerChannels.tsx'
 
 describe('CustomerChannels component', () => {
     beforeEach(() => {

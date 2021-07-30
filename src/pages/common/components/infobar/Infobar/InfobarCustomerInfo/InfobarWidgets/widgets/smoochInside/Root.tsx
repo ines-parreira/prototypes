@@ -1,11 +1,10 @@
-// @flow
-import React, {type Node} from 'react'
-import {type Map} from 'immutable'
+import React, {ReactNode} from 'react'
+import {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/infobar/chat.svg'
-import {CardHeaderTitle} from '../CardHeaderTitle.tsx'
-import {CardHeaderIcon} from '../CardHeaderIcon.tsx'
-import {renderTemplate} from '../../../../../../../utils/template.ts'
+import {CardHeaderTitle} from '../CardHeaderTitle'
+import {CardHeaderIcon} from '../CardHeaderIcon'
+import {renderTemplate} from '../../../../../../../utils/template'
 
 export default function Root() {
     return {
@@ -14,9 +13,9 @@ export default function Root() {
 }
 
 type Props = {
-    children: Node,
-    source: Map<string, *>,
-    template: Map<string, *>,
+    children: ReactNode
+    source: Map<any, any>
+    template: Map<any, any>
 }
 
 export function TitleWrapper({children, source, template}: Props) {

@@ -10,7 +10,7 @@ import {DatetimeLabel} from '../../../../../../../utils/labels'
 
 import {CardHeaderBadge} from '../CardHeaderBadge'
 
-import {StarRatingColors} from '../../../../../utils.js'
+import {StarRatingColors} from '../../../../../utils'
 
 import css from './Reviews.less'
 

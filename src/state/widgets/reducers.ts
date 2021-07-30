@@ -8,7 +8,7 @@ import {
     stripLastListsFromPath,
     jsonToWidget,
     makeWrapper,
-} from '../../pages/common/components/infobar/utils.js'
+} from '../../pages/common/components/infobar/utils'
 import {GorgiasAction} from '../types'
 
 import {
@@ -171,7 +171,7 @@ export default function reducer(
                 .setIn(['_internal', 'drag', 'group'], '')
 
             // key (so the path) is calculated from the difference between the source and the target paths
-            const strippedKey: string = stripLastListsFromPath(key as any)
+            const strippedKey = stripLastListsFromPath(key)
 
             // prepare data to be transformed into widget
             const isSimpleField = !_isObject(sourceData)
@@ -202,18 +202,16 @@ export default function reducer(
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
                 const context = state.get('currentContext', '')
-                //$TsFixMe remove casting once components/infobar/utils is migrated
                 const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(
-                    sourceFlattenAbsolutePath as any
-                ) as string
-                //$TsFixMe remove casting once components/infobar/utils is migrated
+                    sourceFlattenAbsolutePath
+                )
                 widget = makeWrapper({
                     order: widgetsItems.length,
                     context,
                     child: widget,
                     sourcePath: strippedSourceFlattenAbsolutePath.split('.'),
                     widgetType,
-                } as any) as Map<any, any>
+                } as any)
 
                 if (integrationId) {
                     widget = widget.set('integration_id', integrationId)

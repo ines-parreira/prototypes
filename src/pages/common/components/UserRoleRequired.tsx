@@ -12,7 +12,7 @@ import NotAllowed from './NotAllowed'
 const withUserRoleRequired = (
     Component: ComponentType<Record<string, unknown>>,
     requiredRole: UserRole,
-    redirectTo: string
+    redirectTo?: string
 ) => {
     const UserRoleRequired = (
         props: ComponentProps<typeof Component> &
