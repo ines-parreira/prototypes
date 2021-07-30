@@ -28,7 +28,7 @@ export function saveSocialLinks(
         if (socialLink.translation.updated_datetime === 'now') {
             const group = 'footer'
             const meta: NavigationLinkMeta = {
-                network: socialLink.meta.network,
+                network: socialLink.meta?.network,
             }
 
             if (socialLink.id >= 0) {

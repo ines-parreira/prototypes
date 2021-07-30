@@ -141,7 +141,6 @@ describe('useCategoriesActions', () => {
                         created_datetime: '',
                         updated_datetime: '',
                         category_id: 1,
-                        locale_fallback: 'en-US',
                         locale: 'en-US',
                         title: '',
                         slug: '',

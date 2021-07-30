@@ -28,19 +28,24 @@ function decorateLocaleLinks(
     return _chain(links)
         .filter((link) => link.group === section)
         .orderBy(['position'])
-        .map((link, index) => ({
-            id: link.id,
-            group: link.group,
-            position: index,
-            translation: {
-                locale: link.translation.locale,
-                value: link.translation.value,
-                label: link.translation.label,
-                updated_datetime: link.translation.updated_datetime,
-                created_datetime: link.translation.created_datetime,
-                navigation_link_id: link.translation.navigation_link_id,
-            },
-        }))
+        .map((link, index) => {
+            if (link.translation) {
+                return {
+                    id: link.id,
+                    group: link.group,
+                    position: index,
+                    translation: {
+                        locale: link.translation.locale,
+                        value: link.translation.value,
+                        label: link.translation.label,
+                        updated_datetime: link.translation.updated_datetime,
+                        created_datetime: link.translation.created_datetime,
+                        navigation_link_id: link.translation.navigation_link_id,
+                    },
+                }
+            }
+            throw Error('Missing translation')
+        })
         .value()
 }
 

@@ -31,7 +31,6 @@ describe('Help Center model utils', () => {
                 deleted_datetime: translation.deleted_datetime || null,
                 category_id: translation.category_id,
                 locale: translation.locale,
-                locale_fallback: translation.locale,
                 title: translation.title,
                 description: translation.description,
                 slug: translation.slug,
@@ -51,7 +50,6 @@ describe('Help Center model utils', () => {
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
                 title: 'Orders',
-                locale_fallback: 'en-US',
                 description:
                     'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',
                 slug: 'orders',

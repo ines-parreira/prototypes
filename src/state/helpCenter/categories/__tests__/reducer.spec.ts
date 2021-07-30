@@ -25,7 +25,6 @@ const categoriesResponse: Category[] = getCategoriesResponseEnglish.data.map(
         translation: {
             ...category.translation,
             locale: 'en-US',
-            locale_fallback: 'en-US',
         },
     })
 )
@@ -36,7 +35,6 @@ const categoryResponse: Category = {
     translation: {
         ...getSingleCategoryEnglish.translation,
         locale: 'en-US',
-        locale_fallback: 'en-US',
     },
 }
 

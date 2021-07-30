@@ -96,7 +96,7 @@ export const HelpCenterCustomizationView = () => {
                     return false
                 })
 
-                if (currentRemoteLink) {
+                if (currentRemoteLink?.translation) {
                     return {
                         id: currentRemoteLink.id,
                         position: socialLink.position,

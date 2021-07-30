@@ -22,8 +22,6 @@ export function createCategoryTranslationFromDto(
         deleted_datetime: translation.deleted_datetime || null,
         category_id: translation.category_id,
         locale: translation.locale,
-        // ? for some reason on Components.Schemas.CategoryTranslationEntity we don' have a fallback
-        locale_fallback: translation.locale,
         title: translation.title,
         description: translation.description,
         slug: translation.slug,

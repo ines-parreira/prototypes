@@ -106,6 +106,6 @@ export type LocalSocialNavigationLink = Omit<
     LocalNavigationLink,
     'translation'
 > & {
-    meta: Components.Schemas.NavigationLinkMeta
+    meta: Components.Schemas.NavigationLinkMeta | undefined
     translation: Omit<LinkTranslation, 'locale'>
 }
