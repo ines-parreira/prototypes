@@ -7,37 +7,6 @@ exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
   handleUsers={false}
   setTeam={[Function]}
   setUser={[Function]}
-  suffix="macro-modal"
-  teams={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "Team 1",
-        "decoration": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "Team 2",
-        "decoration": Immutable.Map {},
-      },
-    ]
-  }
-  users={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "User 1",
-        "email": "email1@foo.com",
-        "meta": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "User 2",
-        "email": "email2@foo.com",
-        "meta": Immutable.Map {},
-      },
-    ]
-  }
 />
 `;
 
@@ -55,37 +24,6 @@ exports[`<SetAssigneeAction/> render() should render team dropdown with current 
   handleUsers={false}
   setTeam={[Function]}
   setUser={[Function]}
-  suffix="macro-modal"
-  teams={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "Team 1",
-        "decoration": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "Team 2",
-        "decoration": Immutable.Map {},
-      },
-    ]
-  }
-  users={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "User 1",
-        "email": "email1@foo.com",
-        "meta": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "User 2",
-        "email": "email2@foo.com",
-        "meta": Immutable.Map {},
-      },
-    ]
-  }
 />
 `;
 
@@ -96,37 +34,6 @@ exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
   handleUsers={true}
   setTeam={[Function]}
   setUser={[Function]}
-  suffix="macro-modal"
-  teams={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "Team 1",
-        "decoration": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "Team 2",
-        "decoration": Immutable.Map {},
-      },
-    ]
-  }
-  users={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "User 1",
-        "email": "email1@foo.com",
-        "meta": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "User 2",
-        "email": "email2@foo.com",
-        "meta": Immutable.Map {},
-      },
-    ]
-  }
 />
 `;
 
@@ -136,45 +43,13 @@ exports[`<SetAssigneeAction/> render() should render user dropdown with current 
   currentAssigneeUser={
     Immutable.Map {
       "id": 1,
-      "name": "User 1",
-      "email": "email1@foo.com",
-      "meta": Immutable.Map {},
+      "name": "Team 1",
+      "decoration": Immutable.Map {},
     }
   }
   handleTeams={false}
   handleUsers={true}
   setTeam={[Function]}
   setUser={[Function]}
-  suffix="macro-modal"
-  teams={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "Team 1",
-        "decoration": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "Team 2",
-        "decoration": Immutable.Map {},
-      },
-    ]
-  }
-  users={
-    Immutable.List [
-      Immutable.Map {
-        "id": 1,
-        "name": "User 1",
-        "email": "email1@foo.com",
-        "meta": Immutable.Map {},
-      },
-      Immutable.Map {
-        "id": 2,
-        "name": "User 2",
-        "email": "email2@foo.com",
-        "meta": Immutable.Map {},
-      },
-    ]
-  }
 />
 `;

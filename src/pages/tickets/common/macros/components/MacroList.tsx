@@ -1,36 +1,33 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import {List, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
-import type {Map} from 'immutable'
-import {connect} from 'react-redux'
-
-import InfiniteScroll from '../../../../common/components/InfiniteScroll'
-import {scrollToReactNode} from '../../../../common/utils/keyboard.ts'
+import InfiniteScroll from '../../../../common/components/InfiniteScroll/InfiniteScroll'
+import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
-import {fetchMacros} from '../../../../../state/macro/actions.ts'
-import {getCurrentUser} from '../../../../../state/currentUser/selectors.ts'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
+import {fetchMacros} from '../../../../../state/macro/actions'
+import {getCurrentUser} from '../../../../../state/currentUser/selectors'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import {RootState} from '../../../../../state/types'
 
 import css from './MacroList.less'
 
 type Props = {
-    currentUser: Map<*, *>,
-    macros: Map<*, *>,
-    currentMacro: Map<*, *>,
-    fetchMacros: typeof fetchMacros,
-    onClickItem: (T: Map<*, *>) => void,
-    onHoverItem: (T: Map<*, *>) => void,
-    search: string,
-    page: number,
-    totalPages: number,
-    className: string,
-    disableExternalActions?: boolean,
-}
+    macros: List<any>
+    currentMacro: Map<any, any>
+    onClickItem: (item: Map<any, any>) => void
+    onHoverItem: (item: Map<any, any>) => void
+    search: string
+    page: number
+    totalPages: number
+    className: string
+    disableExternalActions?: boolean
+} & ConnectedProps<typeof connector>
 
-export class MacroListContainer extends React.Component<Props> {
-    _activeItem: ?Node
+export class MacroListContainer extends Component<Props> {
+    _activeItem: HTMLElement | null = null
 
     static defaultProps = {
         onClickItem: _noop,
@@ -54,7 +51,7 @@ export class MacroListContainer extends React.Component<Props> {
         })
     }
 
-    _setActiveItem = (isActive: boolean, node: ?Node) => {
+    _setActiveItem = (isActive: boolean, node: HTMLElement | null) => {
         if (!isActive || !node) {
             return
         }
@@ -77,10 +74,10 @@ export class MacroListContainer extends React.Component<Props> {
         return (
             <InfiniteScroll
                 className={classnames(css.component, className)}
-                onLoad={this._loadMacros}
+                onLoad={this._loadMacros as any}
                 shouldLoadMore={page < totalPages}
             >
-                {macros.map((macro) => {
+                {macros.map((macro: Map<any, any>) => {
                     const isDisabled = isMacroDisabled(
                         macro,
                         disableExternalActions
@@ -117,6 +114,12 @@ export class MacroListContainer extends React.Component<Props> {
         )
     }
 }
-export default connect((state) => ({
-    currentUser: getCurrentUser(state),
-}))(MacroListContainer)
+
+const connector = connect(
+    (state: RootState) => ({
+        currentUser: getCurrentUser(state),
+    }),
+    {fetchMacros}
+)
+
+export default connector(MacroListContainer)

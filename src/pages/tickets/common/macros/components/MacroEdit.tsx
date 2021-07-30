@@ -26,7 +26,7 @@ import {MacroActionName} from '../../../../../models/macroAction/types'
 import SetStatusAction from './actions/SetStatusAction.js'
 import SetSubjectAction from './actions/SetSubjectAction.js'
 import SetResponseTextAction from './actions/SetResponseTextAction.js'
-import SetAssigneeAction from './actions/SetAssigneeAction.js'
+import SetAssigneeAction from './actions/SetAssigneeAction'
 import AddTagsAction from './actions/AddTagsAction.js'
 import HttpAction from './actions/HttpAction.js'
 import AddAttachmentsAction from './actions/AddAttachmentsAction.js'
@@ -244,7 +244,6 @@ export class MacroEdit extends Component<
                                             <SetAssigneeAction
                                                 index={index}
                                                 action={action}
-                                                agents={this.props.agents}
                                                 updateActionArgs={
                                                     this._updateActionArguments
                                                 }
@@ -260,7 +259,6 @@ export class MacroEdit extends Component<
                                             <SetAssigneeAction
                                                 index={index}
                                                 action={action}
-                                                agents={this.props.agents}
                                                 updateActionArgs={
                                                     this._updateActionArguments
                                                 }

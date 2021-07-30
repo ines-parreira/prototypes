@@ -10,7 +10,7 @@ import {
     HTTP_METHOD_GET,
 } from '../../../../../../config.ts'
 
-import ParametersEditor from '../ParametersEditor'
+import ParametersEditor from '../ParametersEditor.tsx'
 
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'

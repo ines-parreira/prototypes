@@ -18,7 +18,7 @@ import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
-} from '../../../common/macros/utils.js'
+} from '../../../common/macros/utils'
 import {getPreferences} from '../../../../../state/currentUser/selectors'
 import {
     fetchMacros,
@@ -46,11 +46,11 @@ type Props = {
 type State = {
     hasShownMacros: boolean
     isInitialMacrosLoading: boolean
-    macros: Map<any, any>
+    macros: List<any>
     macroSearchQuery: string
     macrosVisible: boolean
     page: number
-    selectedMacroId?: number
+    selectedMacroId?: Maybe<number>
     shouldFocusEditor: boolean
     totalPages: number
 }

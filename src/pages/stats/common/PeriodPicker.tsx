@@ -27,7 +27,7 @@ type Props = {
         endDatetime: string
     }) => void
     startDatetime: Moment
-    userTimezone: Maybe<string>
+    userTimezone?: string | null
 }
 
 export const PeriodPickerContainer = ({

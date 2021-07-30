@@ -1,2 +1,2 @@
-import Legend from './Legend'
+import Legend from './Legend.tsx'
 export default Legend

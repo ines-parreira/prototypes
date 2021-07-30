@@ -1,32 +1,33 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {Input} from 'reactstrap'
+import {List, Map} from 'immutable'
 
-import shortcutManager from '../../../../../services/shortcutManager/index.ts'
-import {moveIndex} from '../../../../common/utils/keyboard.ts'
+import shortcutManager from '../../../../../services/shortcutManager'
+import {moveIndex, MoveIndexDirection} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
-
-import {fetchMacros} from '../../../../../state/macro/actions.ts'
 
 import css from './MacroModalList.less'
 
 import MacroList from './MacroList'
 
 type Props = {
-    macros: Object,
-    currentMacro: Object,
-    disableExternalActions?: boolean,
-    handleClickItem: Function,
-    fetchMacros: typeof fetchMacros,
-    page: number,
-    totalPages: number,
-    search: string,
-    onSearch: (T: {target: {value: string}}) => void,
+    macros: List<any>
+    currentMacro: Map<any, any>
+    disableExternalActions?: boolean
+    handleClickItem: (id: number) => void
+    page: number
+    totalPages: number
+    search: string
+    onSearch: (T: {
+        target: {
+            value: string
+        }
+    }) => void
 }
 
-export default class MacroModalList extends React.Component<Props> {
+export default class MacroModalList extends Component<Props> {
     _macroCursor = 0
 
     componentDidMount() {
@@ -40,7 +41,7 @@ export default class MacroModalList extends React.Component<Props> {
             GO_PREV_MACRO: {
                 action: (e) => {
                     e.preventDefault()
-                    this._moveCursor('previous')
+                    this._moveCursor(MoveIndexDirection.Prev)
                 },
             },
         })
@@ -57,22 +58,25 @@ export default class MacroModalList extends React.Component<Props> {
         )
     }
 
-    _getMacroCursor(currentMacro: Object, macros: Object) {
+    _getMacroCursor(currentMacro: Map<any, any>, macros: List<any>) {
         return macros.findIndex(
-            (macro) => macro.get('id') === currentMacro.get('id')
+            (macro: Map<any, any>) => macro.get('id') === currentMacro.get('id')
         )
     }
 
-    _moveCursor = (direction: string = 'next') => {
+    _moveCursor = (direction = MoveIndexDirection.Next) => {
         if (this.props.macros.isEmpty()) {
             return
         }
 
         const macros = this.props.macros
         this._macroCursor = moveIndex(this._macroCursor, macros.size, {
-            direction: direction === 'next' ? 'next' : 'previous',
+            direction:
+                direction === MoveIndexDirection.Next
+                    ? MoveIndexDirection.Next
+                    : MoveIndexDirection.Prev,
         })
-        const macro = macros.get(this._macroCursor)
+        const macro = macros.get(this._macroCursor) as Map<any, any>
         // skip disabled macros
         if (isMacroDisabled(macro, this.props.disableExternalActions)) {
             this._moveCursor(direction)
@@ -82,7 +86,7 @@ export default class MacroModalList extends React.Component<Props> {
         this._selectCursorMacro(macro.get('id'))
     }
 
-    _selectCursorMacro = _debounce((macroId) => {
+    _selectCursorMacro = _debounce((macroId: number) => {
         this.props.handleClickItem(macroId)
     })
 
@@ -92,7 +96,6 @@ export default class MacroModalList extends React.Component<Props> {
             macros,
             page,
             totalPages,
-            fetchMacros,
             disableExternalActions,
             handleClickItem,
             search,
@@ -115,11 +118,12 @@ export default class MacroModalList extends React.Component<Props> {
                     macros={macros}
                     page={page}
                     totalPages={totalPages}
-                    fetchMacros={fetchMacros}
                     search={search}
                     currentMacro={currentMacro}
                     disableExternalActions={disableExternalActions}
-                    onClickItem={(macro) => handleClickItem(macro.get('id'))}
+                    onClickItem={(macro: Map<any, any>) =>
+                        handleClickItem(macro.get('id'))
+                    }
                 />
             </div>
         )

@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import Legend from '../Legend'
+import Legend from '../Legend.tsx'
 
 describe('Legend', () => {
     it('should not render a legend (no labels, invalid labels)', () => {

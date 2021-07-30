@@ -1,66 +1,56 @@
-// @flow
-import React from 'react'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import type {Map, List} from 'immutable'
-
-import withCancellableRequest from '../../../common/utils/withCancellableRequest.tsx'
-import * as ViewsActions from '../../../../state/views/actions.ts'
-import * as viewsSelectors from '../../../../state/views/selectors.ts'
-import * as MacroActions from '../../../../state/macro/actions.ts'
-import * as TicketsActions from '../../../../state/tickets/actions.ts'
-import {getAgents} from '../../../../state/agents/selectors.ts'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../../common/utils/withCancellableRequest'
+import * as viewsSelectors from '../../../../state/views/selectors'
+import * as MacroActions from '../../../../state/macro/actions'
+import {getAgents} from '../../../../state/agents/selectors'
+import {RootState} from '../../../../state/types'
 
 import MacroModal from './components/MacroModal'
-
 import {getDefaultSelectedMacroId, getCurrentMacro} from './utils'
 
 type Props = {
-    activeView: Map<*, *>,
-    agents: Map<*, *>,
-    actions: {
-        macro: typeof MacroActions,
-        tickets: typeof TicketsActions,
-        views: typeof ViewsActions,
-    },
-    closeModal: () => void,
-    isCreatingMacro: boolean,
-    toggleCreateMacro?: (T?: boolean) => Promise<*>,
+    activeView: Map<any, any>
+    closeModal: () => void
+    isCreatingMacro?: boolean
+    toggleCreateMacro?: (toggle?: boolean) => Promise<void>
     // macro to select when modal opens, selects first macro of list otherwise
-    selectedMacro: Map<*, *>,
-    selectedItemsIds: List<*>,
-    fetchMacrosCancellable: (
-        filters?: MacroActions.fetchMacrosParamsTypes,
-        orderBy?: string,
-        orderDir?: string
-    ) => Promise<?MacroActions.MacrosSearchResult>,
-
-    disableExternalActions?: boolean,
-    selectionMode?: boolean,
-    allViewItemsSelected: boolean,
-    getViewCount: (id: number) => number,
-}
+    selectedMacro: Map<any, any>
+    selectedItemsIds: List<any>
+    disableExternalActions?: boolean
+    selectionMode?: boolean
+} & ConnectedProps<typeof connector> &
+    CancellableRequestInjectedProps<
+        'fetchMacrosCancellable',
+        'cancelFetchMacrosCancellable',
+        typeof MacroActions.fetchMacros
+    >
 
 type State = {
-    search: string,
-    page: number,
-    totalPages: number,
-    macros: Map<*, *>,
-    selectedMacroId: ?number,
-    firstLoad: boolean,
+    search: string
+    page: number
+    totalPages: number
+    macros: List<any>
+    selectedMacroId: Maybe<number>
+    firstLoad: boolean
 }
 
-class MacroContainer extends React.Component<Props, State> {
-    static defaultProps = {
+export class MacroContainer extends Component<Props, State> {
+    static defaultProps: Pick<
+        Props,
+        'activeView' | 'selectedMacro' | 'selectedItemsIds'
+    > = {
         activeView: fromJS({}),
         selectedMacro: fromJS({}),
-        selectedItemsIds: fromJS({}),
+        selectedItemsIds: fromJS([]),
     }
 
-    state = {
+    state: State = {
         search: '',
         page: 1,
         totalPages: 1,
@@ -70,7 +60,7 @@ class MacroContainer extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this._loadMacros().then(() => {
+        void this._loadMacros().then(() => {
             if (!this.props.selectedMacro.isEmpty()) {
                 const currentMacro = getCurrentMacro(
                     this.state.macros,
@@ -120,27 +110,27 @@ class MacroContainer extends React.Component<Props, State> {
                             totalPages: res.totalPages,
                             firstLoad: false,
                         },
-                        resolve
+                        resolve as any
                     )
                 })
             })
     }
 
-    _handleClickItem = (macroId) => {
+    _handleClickItem = (macroId: number) => {
         this.props.toggleCreateMacro && this.props.toggleCreateMacro(false)
         this.setState({selectedMacroId: macroId})
     }
 
-    _updateMacros = (macros) => {
+    _updateMacros = (macros: List<any>) => {
         this.setState({macros})
     }
 
     _debounceLoadMacros = _debounce(this._loadMacros, 350)
 
-    _onSearch = (search: string = '', forceSearch: boolean = false) => {
+    _onSearch = (search = '', forceSearch = false) => {
         this.setState({search})
         if (forceSearch || !search.trim().length || search.trim().length > 1) {
-            this._debounceLoadMacros({search, page: 1})
+            void this._debounceLoadMacros({search, page: 1})
         }
     }
 
@@ -148,7 +138,6 @@ class MacroContainer extends React.Component<Props, State> {
         const {
             activeView,
             agents,
-            actions,
             disableExternalActions,
             selectionMode,
             selectedItemsIds,
@@ -156,7 +145,6 @@ class MacroContainer extends React.Component<Props, State> {
             isCreatingMacro,
             toggleCreateMacro,
             allViewItemsSelected,
-            getViewCount,
         } = this.props
 
         const currentMacro = getCurrentMacro(
@@ -176,7 +164,6 @@ class MacroContainer extends React.Component<Props, State> {
                 totalPages={this.state.totalPages}
                 currentMacro={currentMacro}
                 agents={agents}
-                actions={actions}
                 disableExternalActions={disableExternalActions || false}
                 selectionMode={selectionMode || false}
                 selectedItemsIds={selectedItemsIds}
@@ -187,33 +174,21 @@ class MacroContainer extends React.Component<Props, State> {
                 isCreatingMacro={isCreatingMacro}
                 toggleCreateMacro={toggleCreateMacro}
                 allViewItemsSelected={allViewItemsSelected}
-                getViewCount={getViewCount}
             />
         )
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        agents: getAgents(state),
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
-            state
-        ),
-        getViewCount: viewsSelectors.makeGetViewCount(state),
-    }
-}
+const connector = connect((state: RootState) => ({
+    agents: getAgents(state),
+    allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
+}))
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            views: bindActionCreators(ViewsActions, dispatch),
-            tickets: bindActionCreators(TicketsActions, dispatch),
-            macro: bindActionCreators(MacroActions, dispatch),
-        },
-    }
-}
-
-export default withCancellableRequest(
+export default withCancellableRequest<
+    'fetchMacrosCancellable',
+    'cancelFetchMacrosCancellable',
+    typeof MacroActions.fetchMacros
+>(
     'fetchMacrosCancellable',
     MacroActions.fetchMacros
-)(connect(mapStateToProps, mapDispatchToProps)(MacroContainer))
+)(connector(MacroContainer))

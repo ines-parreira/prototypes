@@ -23,7 +23,7 @@ type Props = {
     appliedMacro?: Map<any, any>
     applyMacro: (macro: Map<any, any>) => void
     className?: string
-    macros: Map<any, any>
+    macros: List<any>
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>

@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render, fireEvent} from '@testing-library/react'
 
-import {MacroListContainer} from '../MacroList'
+import {MacroListContainer} from '../MacroList.tsx'
 import {user} from '../../../../../../fixtures/users.ts'
 import {logEvent} from '../../../../../../store/middlewares/segmentTracker'
 

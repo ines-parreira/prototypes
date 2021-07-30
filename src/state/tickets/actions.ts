@@ -7,6 +7,7 @@ import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {NotificationStatus} from '../notifications/types'
+import {JobType} from '../../models/job/types'
 
 import * as types from './constants.js'
 
@@ -19,7 +20,7 @@ export const updateCursor = (cursor: string) => (dispatch: StoreDispatch) => {
 
 export function createJob(
     ids: List<any>,
-    jobType: string,
+    jobType: JobType,
     jobPartialParams: Record<string, unknown>
 ) {
     return (dispatch: StoreDispatch) => {

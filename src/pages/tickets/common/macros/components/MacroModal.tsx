@@ -1,65 +1,65 @@
-// @flow
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {Component, FormEvent} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import classnames from 'classnames'
 import {Button, Container, Row, Col} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
 
-import type {Map, List} from 'immutable'
-
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import Modal from '../../../../common/components/Modal.tsx'
-import {DEFAULT_ACTIONS} from '../../../../../config.ts'
-import {APPLY_MACRO_JOB_TYPE} from '../../../../../constants/job.ts'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
-import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
-import shortcutManager from '../../../../../services/shortcutManager/index.ts'
-
-import * as macroActions from '../../../../../state/macro/actions.ts'
-import * as ticketsActions from '../../../../../state/tickets/actions.ts'
-import * as viewsActions from '../../../../../state/views/actions.ts'
+import Loader from '../../../../common/components/Loader/Loader'
+import Modal from '../../../../common/components/Modal'
+import {DEFAULT_ACTIONS} from '../../../../../config'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import shortcutManager from '../../../../../services/shortcutManager/index'
+import {
+    createMacro,
+    updateMacro,
+    deleteMacro,
+} from '../../../../../state/macro/actions'
+import {createJob as createTicketJob} from '../../../../../state/tickets/actions'
+import {
+    createJob as createViewJob,
+    updateSelectedItemsIds,
+} from '../../../../../state/views/actions'
+import {JobParams, JobType} from '../../../../../models/job/types'
+import {RootState} from '../../../../../state/types'
+import {makeGetViewCount} from '../../../../../state/views/selectors'
 
 import css from './MacroModal.less'
 import MacroNoResults from './MacroNoResults'
-import MacroPreview from './MacroPreview'
-import MacroEdit from './MacroEdit.tsx'
+import MacroPreview from './MacroPreview.js'
+import MacroEdit from './MacroEdit'
 import MacroModalList from './MacroModalList'
 
 type Props = {
-    macros: Map<*, *>,
-    agents: {},
-    actions: {
-        macro: typeof macroActions,
-        tickets: typeof ticketsActions,
-        views: typeof viewsActions,
-    },
-    handleClickItem: (T: number) => void,
-    disableExternalActions: boolean,
-    selectionMode: boolean,
-    page: number,
-    totalPages: number,
-    isCreatingMacro: boolean,
-    closeModal: () => void,
-    updateMacros: (T: Map<*, *>) => void,
-    fetchMacros: typeof macroActions.fetchMacros,
-    activeView: Map<*, *>,
-    currentMacro: Map<*, *>,
-    toggleCreateMacro?: (T?: boolean) => Promise<*>,
-    onSearch: (search: string, forceSearch?: boolean) => void,
-    search: string,
-    firstLoad: boolean,
-    selectedItemsIds: List<*>,
-    allViewItemsSelected: boolean,
-    getViewCount: (id: number) => number,
-}
+    macros: List<any>
+    agents: List<any>
+    handleClickItem: (id: number) => void
+    disableExternalActions: boolean
+    selectionMode: boolean
+    page: number
+    totalPages: number
+    isCreatingMacro?: boolean
+    closeModal: () => void
+    updateMacros: (macros: List<any>) => void
+    activeView: Map<any, any>
+    currentMacro: Map<any, any>
+    toggleCreateMacro?: (toggle?: boolean) => Promise<void>
+    onSearch: (search: string, forceSearch?: boolean) => void
+    search: string
+    firstLoad: boolean
+    selectedItemsIds: List<any>
+    allViewItemsSelected: boolean
+    fetchMacros: (opts?: {search?: string; page?: number}) => Promise<unknown>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    actions: Map<*, *>,
-    name: string,
+    actions: List<any>
+    name: string
 }
 
-export default class MacroModal extends React.Component<Props, State> {
-    static defaultProps = {
+export class MacroModalContainer extends Component<Props, State> {
+    static defaultProps: Pick<Props, 'activeView'> = {
         activeView: fromJS({}),
     }
 
@@ -116,17 +116,26 @@ export default class MacroModal extends React.Component<Props, State> {
         shortcutManager.unpause()
     }
 
-    _launchApplyMacroJob = (jobPartialParams: Object) => {
-        const actionsToUse = this.props.allViewItemsSelected
-            ? this.props.actions.views
-            : this.props.actions.tickets
-        const jobSelection = this.props.allViewItemsSelected
-            ? this.props.activeView
-            : this.props.selectedItemsIds
-        actionsToUse
-            .createJob(jobSelection, APPLY_MACRO_JOB_TYPE, jobPartialParams)
+    _launchApplyMacroJob = (jobPartialParams: Partial<JobParams>) => {
+        const {
+            activeView,
+            allViewItemsSelected,
+            createTicketJob,
+            createViewJob,
+            selectedItemsIds,
+            updateSelectedItemsIds,
+        } = this.props
+        const job = allViewItemsSelected
+            ? createViewJob(activeView, JobType.ApplyMacro, jobPartialParams)
+            : createTicketJob(
+                  selectedItemsIds,
+                  JobType.ApplyMacro,
+                  jobPartialParams
+              )
+
+        void job
             .then(() => {
-                this.props.actions.views.updateSelectedItemsIds(fromJS([]))
+                updateSelectedItemsIds(fromJS([]))
             })
             .catch()
     }
@@ -160,84 +169,89 @@ export default class MacroModal extends React.Component<Props, State> {
             })
     }
 
-    _createMacro = (e: Event) => {
+    _createMacro = (e: FormEvent) => {
+        const {createMacro} = this.props
         e.preventDefault()
         e.stopPropagation()
         const newMacro = this.props.currentMacro
             .set('actions', this.state.actions)
             .set('name', this.state.name)
-        return this.props.actions.macro.createMacro(newMacro).then((resp) => {
-            if (resp.status !== 'error') {
+        return createMacro(newMacro).then((resp) => {
+            if ((resp as Record<string, unknown>).status !== 'error') {
                 this.props.onSearch(newMacro.get('name'), true)
                 this.props.handleClickItem(resp.id)
             }
         })
     }
 
-    _updateMacro = (e: Event) => {
+    _updateMacro = (e: FormEvent) => {
+        const {fetchMacros, updateMacro} = this.props
         e.preventDefault()
         e.stopPropagation()
         const updatedMacro = this.props.currentMacro
             .set('actions', this.state.actions)
             .set('name', this.state.name)
-        return this.props.actions.macro
-            .updateMacro(updatedMacro)
-            .then((res) => {
-                const macros = this.props.macros
-                macros.some((macro, index) => {
-                    if (macro.get('id') === res.id) {
-                        const newMacro = fromJS(res)
-                        if (macro.get('name') !== newMacro.get('name')) {
-                            // if the name changed, reload macro list
-                            this.props.fetchMacros({search: this.props.search})
-                        } else {
-                            this.props.updateMacros(macros.set(index, newMacro))
-                        }
-                        return true
+        return updateMacro(updatedMacro).then((res) => {
+            const macros = this.props.macros
+            macros.some(((macro: Map<any, any>, index: number) => {
+                if (macro.get('id') === res.id) {
+                    const newMacro = fromJS(res) as Map<any, any>
+                    if (macro.get('name') !== newMacro.get('name')) {
+                        // if the name changed, reload macro list
+                        void fetchMacros({search: this.props.search})
+                    } else {
+                        this.props.updateMacros(macros.set(index, newMacro))
                     }
-                })
-            })
+                    return true
+                }
+            }) as any)
+        })
     }
 
-    _duplicateMacro = (e: Event) => {
+    _duplicateMacro = (e: FormEvent) => {
+        const {createMacro} = this.props
         e.preventDefault()
         e.stopPropagation()
 
         const {currentMacro} = this.props
         const duplicateMacro = currentMacro
             .delete('id')
-            .set('name', 'Copy of ' + (currentMacro.get('name', '') || ''))
+            .set('name', `Copy of ${currentMacro.get('name', '') as string}`)
 
-        return this.props.actions.macro
-            .createMacro(duplicateMacro)
-            .then((res) => {
-                // once the macro is created - search it in the list
-                this.props.onSearch(res.name || '', true)
-            })
-    }
-
-    _deleteMacro = () => {
-        const macroId = this.props.currentMacro.get('id', '')
-        return this.props.actions.macro.deleteMacro(macroId).then(() => {
-            this.props.fetchMacros({search: this.props.search})
+        return createMacro(duplicateMacro).then((res) => {
+            // once the macro is created - search it in the list
+            this.props.onSearch(res.name || '', true)
         })
     }
 
-    _setActions = (actions: Map<*, *>) => {
+    _deleteMacro = () => {
+        const {fetchMacros, deleteMacro} = this.props
+        const macroId = this.props.currentMacro.get('id', '')
+        return deleteMacro(macroId).then(() => {
+            void fetchMacros({search: this.props.search})
+        })
+    }
+
+    _setActions = (actions: List<any>) => {
         // filter actions that exist in configuration
-        const filteredActions = actions.filter((action) =>
+        const filteredActions = actions.filter((action: Map<any, any>) =>
             DEFAULT_ACTIONS.includes(action.get('name'))
         )
 
         // keep only one action by type
         const uniqActions = fromJS(
-            _uniqWith(filteredActions.toJS(), (first, second) => {
-                if (this.multipleActionsNames.includes(first.name)) {
-                    return false
-                }
+            _uniqWith(
+                filteredActions.toJS(),
+                (first: Record<string, unknown>, second) => {
+                    if (
+                        this.multipleActionsNames.includes(first.name as string)
+                    ) {
+                        return false
+                    }
 
-                return first.name === second.name
-            })
+                    return first.name === second.name
+                }
+            )
         )
 
         this.setState({actions: uniqActions})
@@ -343,10 +357,12 @@ export default class MacroModal extends React.Component<Props, State> {
                                                         confirm={
                                                             this._deleteMacro
                                                         }
-                                                        content={`Do you really want to delete the macro ${this.props.currentMacro.get(
-                                                            'name',
-                                                            ''
-                                                        )}?`}
+                                                        content={`Do you really want to delete the macro ${
+                                                            this.props.currentMacro.get(
+                                                                'name',
+                                                                ''
+                                                            ) as string
+                                                        }?`}
                                                     >
                                                         <i className="material-icons md-2 text-danger mr-2">
                                                             delete
@@ -422,12 +438,13 @@ export default class MacroModal extends React.Component<Props, State> {
                                 macros={macros}
                                 page={page}
                                 totalPages={totalPages}
-                                fetchMacros={this.props.fetchMacros}
                                 disableExternalActions={disableExternalActions}
                                 handleClickItem={handleClickItem}
-                                onSearch={(e: {target: {value: string}}) =>
-                                    onSearch(e.target.value)
-                                }
+                                onSearch={(e: {
+                                    target: {
+                                        value: string
+                                    }
+                                }) => onSearch(e.target.value)}
                                 search={this.props.search}
                             />
                         </Col>
@@ -458,3 +475,19 @@ export default class MacroModal extends React.Component<Props, State> {
         )
     }
 }
+
+const connector = connect(
+    (state: RootState) => ({
+        getViewCount: makeGetViewCount(state),
+    }),
+    {
+        createTicketJob,
+        createViewJob,
+        updateSelectedItemsIds,
+        createMacro,
+        updateMacro,
+        deleteMacro,
+    }
+)
+
+export default connector(MacroModalContainer)

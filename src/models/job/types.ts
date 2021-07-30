@@ -25,11 +25,13 @@ type JobInfo = {
     progress_count: number
 }
 
-type JobParams = {
+export type JobParams = {
     ticket_ids?: number[]
     updates?: {
         status: JobParamsStatus
     }
+    macro_id?: number
+    apply_and_close?: boolean
 }
 
 export type Job = {

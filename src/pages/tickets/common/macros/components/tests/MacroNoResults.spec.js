@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import MacroNoResults from '../MacroNoResults'
+import MacroNoResults from '../MacroNoResults.tsx'
 
 describe('MacroNoResults component', () => {
     it('should display no macros available without search query', () => {

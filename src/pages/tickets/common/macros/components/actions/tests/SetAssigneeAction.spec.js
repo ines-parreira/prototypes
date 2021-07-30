@@ -2,26 +2,16 @@ import {shallow} from 'enzyme'
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import SetAssigneeAction from '../SetAssigneeAction'
+import SetAssigneeAction from '../SetAssigneeAction.tsx'
 
 describe('<SetAssigneeAction/>', () => {
     describe('render()', () => {
         const updateActionArgs = jest.fn()
-        const teams = fromJS([
-            {id: 1, name: 'Team 1', decoration: {}},
-            {id: 2, name: 'Team 2', decoration: {}},
-        ])
-        const users = fromJS([
-            {id: 1, name: 'User 1', email: 'email1@foo.com', meta: {}},
-            {id: 2, name: 'User 2', email: 'email2@foo.com', meta: {}},
-        ])
 
         it('should render user dropdown', () => {
             const component = shallow(
                 <SetAssigneeAction
                     action={fromJS({})}
-                    teams={teams}
-                    agents={users}
                     handleUsers
                     updateActionArgs={updateActionArgs}
                 />
@@ -34,8 +24,6 @@ describe('<SetAssigneeAction/>', () => {
             const component = shallow(
                 <SetAssigneeAction
                     action={fromJS({})}
-                    teams={teams}
-                    agents={users}
                     handleTeams
                     updateActionArgs={updateActionArgs}
                 />
@@ -49,11 +37,13 @@ describe('<SetAssigneeAction/>', () => {
                 <SetAssigneeAction
                     action={fromJS({
                         arguments: {
-                            assignee_user: users.get(0),
+                            assignee_user: fromJS({
+                                id: 1,
+                                name: 'Team 1',
+                                decoration: {},
+                            }),
                         },
                     })}
-                    teams={teams}
-                    agents={users}
                     handleUsers
                     updateActionArgs={updateActionArgs}
                 />
@@ -67,11 +57,13 @@ describe('<SetAssigneeAction/>', () => {
                 <SetAssigneeAction
                     action={fromJS({
                         arguments: {
-                            assignee_team: teams.get(0),
+                            assignee_team: fromJS({
+                                id: 1,
+                                name: 'Team 1',
+                                decoration: {},
+                            }),
                         },
                     })}
-                    teams={teams}
-                    agents={users}
                     handleTeams
                     updateActionArgs={updateActionArgs}
                 />

@@ -44,7 +44,6 @@ exports[`TicketMacros component should display macros list, and selected macro 1
           "actions": Immutable.List [],
         }
       }
-      fetchMacros={[Function]}
       macros={
         Immutable.List [
           Immutable.Map {

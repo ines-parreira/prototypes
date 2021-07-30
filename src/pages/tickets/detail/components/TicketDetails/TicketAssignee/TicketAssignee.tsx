@@ -25,10 +25,10 @@ type Props = {
     direction: string
     setUser: (
         ...args: ArgumentsOf<typeof setAgent>
-    ) => ReturnType<ReturnType<typeof setAgent>>
+    ) => ReturnType<ReturnType<typeof setAgent>> | void
     setTeam: (
         ...args: ArgumentsOf<typeof setTeam>
-    ) => ReturnType<ReturnType<typeof setTeam>>
+    ) => ReturnType<ReturnType<typeof setTeam>> | void
     profilePictureUrl?: string
     className?: string
     transparent?: boolean

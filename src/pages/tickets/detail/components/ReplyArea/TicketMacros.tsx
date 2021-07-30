@@ -1,6 +1,6 @@
 import React, {Component, MouseEvent} from 'react'
 import ReactDOM from 'react-dom'
-import {fromJS, Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {
@@ -22,9 +22,9 @@ import {
 import Preview from '../../../common/macros/Preview.js'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
-import MacroList from '../../../common/macros/components/MacroList.js'
-import MacroNoResults from '../../../common/macros/components/MacroNoResults.js'
-import MacroContainer from '../../../common/macros/MacroContainer.js'
+import MacroList from '../../../common/macros/components/MacroList'
+import MacroNoResults from '../../../common/macros/components/MacroNoResults'
+import MacroContainer from '../../../common/macros/MacroContainer'
 
 import {notify} from './../../../../../state/notifications/actions'
 
@@ -37,7 +37,7 @@ type OwnProps = {
     currentTicket: Map<any, any>
     fetchMacros: (params: fetchMacrosParamsTypes) => void
     isInitialMacrosLoading: boolean
-    macros: Map<any, Map<any, any>>
+    macros: List<any>
     onClearMacro: () => void
     page: number
     selectMacro: (macro: Map<any, any>) => void
@@ -138,7 +138,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
             macros,
             newMessageType,
             className,
-            fetchMacros,
             onClearMacro,
             page,
             totalPages,
@@ -166,7 +165,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
                         macros={macros}
                         page={page}
                         totalPages={totalPages}
-                        fetchMacros={fetchMacros}
                         search={this.props.searchQuery}
                         onClickItem={this.props.applyMacro}
                         onHoverItem={selectMacro}

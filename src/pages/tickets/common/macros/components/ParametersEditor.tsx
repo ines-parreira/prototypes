@@ -1,23 +1,22 @@
-// @flow
-import React from 'react'
-import {Map, type List} from 'immutable'
+import React, {Component} from 'react'
+import {Map, List} from 'immutable'
 import classnames from 'classnames'
 import {Row, Col, Button} from 'reactstrap'
 
-import Tooltip from '../../../../common/components/Tooltip.tsx'
-import InputField from '../../../../common/forms/InputField'
-import {MAX_HEADER_LENGTH} from '../../../../../config.ts'
-import {hasUnicodeChars} from '../../../../../utils.ts'
+import Tooltip from '../../../../common/components/Tooltip'
+import InputField from '../../../../common/forms/InputField.js'
+import {MAX_HEADER_LENGTH} from '../../../../../config'
+import {hasUnicodeChars} from '../../../../../utils'
 
 import css from './ParametersEditor.less'
 
 type Props = {
-    list: List<any>,
-    name: string,
-    updateDict: (list: List<any>) => void,
+    list: List<any>
+    name: string
+    updateDict: (list: List<any>) => void
 }
 
-export default class ParametersEditor extends React.Component<Props> {
+export default class ParametersEditor extends Component<Props> {
     addRow = () => {
         this.props.updateDict(
             this.props.list.push(
@@ -39,7 +38,7 @@ export default class ParametersEditor extends React.Component<Props> {
         this.props.updateDict(this.props.list.setIn([index, key], value))
     }
 
-    validateHeaderName = (value: string): ?string => {
+    validateHeaderName = (value: string): string | undefined => {
         if (this.props.name === 'headers' && hasUnicodeChars(value)) {
             return "Header's name can't contain unicode characters."
         }
@@ -50,7 +49,7 @@ export default class ParametersEditor extends React.Component<Props> {
 
         return (
             <div>
-                {list.map((dict, index) => {
+                {list.map((dict: Map<any, any>, index) => {
                     const requiredClassName = classnames('btn btn-sm mr-2', {
                         'btn-secondary': !dict.get('required'),
                         'btn-primary': dict.get('required'),
@@ -83,7 +82,7 @@ export default class ParametersEditor extends React.Component<Props> {
                                     form="macro_form"
                                     maxLength={MAX_HEADER_LENGTH}
                                     onChange={(value) =>
-                                        this.changeValue('key', index, value)
+                                        this.changeValue('key', index!, value)
                                     }
                                 />
                             </Col>
@@ -96,19 +95,19 @@ export default class ParametersEditor extends React.Component<Props> {
                                     maxLength={MAX_HEADER_LENGTH}
                                     required={this.props.name === 'headers'}
                                     onChange={(value) =>
-                                        this.changeValue('value', index, value)
+                                        this.changeValue('value', index!, value)
                                     }
                                 />
                             </Col>
                             <Col className="d-flex col-sm-auto">
                                 <button
                                     type="button"
-                                    id={`parameter-required-${name}-${index}`}
+                                    id={`parameter-required-${name}-${index!}`}
                                     className={requiredClassName}
                                     onClick={() =>
                                         this.changeValue(
                                             'required',
-                                            index,
+                                            index!,
                                             !dict.get('required')
                                         )
                                     }
@@ -121,18 +120,18 @@ export default class ParametersEditor extends React.Component<Props> {
                                 </button>
                                 <Tooltip
                                     placement="top"
-                                    target={`parameter-required-${name}-${index}`}
+                                    target={`parameter-required-${name}-${index!}`}
                                 >
                                     {requiredTitle}
                                 </Tooltip>
                                 <button
                                     type="button"
-                                    id={`parameter-editable-${name}-${index}`}
+                                    id={`parameter-editable-${name}-${index!}`}
                                     className={editableClassName}
                                     onClick={() =>
                                         this.changeValue(
                                             'editable',
-                                            index,
+                                            index!,
                                             !dict.get('editable')
                                         )
                                     }
@@ -141,15 +140,15 @@ export default class ParametersEditor extends React.Component<Props> {
                                 </button>
                                 <Tooltip
                                     placement="top"
-                                    target={`parameter-editable-${name}-${index}`}
+                                    target={`parameter-editable-${name}-${index!}`}
                                 >
                                     {editableTitle}
                                 </Tooltip>
                                 <Button
                                     type="button"
                                     size="sm"
-                                    id={`parameter-editable-${name}-${index}`}
-                                    onClick={() => this.deleteRow(index)}
+                                    id={`parameter-editable-${name}-${index!}`}
+                                    onClick={() => this.deleteRow(index!)}
                                 >
                                     <i className="material-icons md-2 text-danger">
                                         delete

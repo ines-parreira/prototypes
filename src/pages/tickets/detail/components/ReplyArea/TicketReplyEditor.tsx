@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {ContentState, EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import {connect, ConnectedProps} from 'react-redux'
@@ -33,7 +33,7 @@ import css from './TicketReplyEditor.less'
 
 type Props = {
     applyMacro: (macro: Map<any, any>) => void
-    macros: Map<any, any>
+    macros: List<any>
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>

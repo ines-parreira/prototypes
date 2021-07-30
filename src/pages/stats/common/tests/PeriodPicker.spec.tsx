@@ -1,17 +1,21 @@
-// @flow
 import {mount} from 'enzyme'
-import React, {type ElementProps} from 'react'
-import DateRangePicker from 'react-bootstrap-daterangepicker'
+import React from 'react'
+import DateRangePicker, {
+    Props as MockDateRangePickerProps,
+} from 'react-bootstrap-daterangepicker'
 import moment from 'moment-timezone'
 
-import {PeriodPickerContainer} from '../PeriodPicker.tsx'
+import {PeriodPickerContainer} from '../PeriodPicker'
 
 jest.mock(
     'react-bootstrap-daterangepicker',
-    () => ({onApply}: ElementProps<typeof DateRangePicker>) => (
+    () => ({onApply}: MockDateRangePickerProps) => (
         <div
             onChange={(e) => {
-                onApply(e, e.target.value)
+                onApply!(
+                    e as any,
+                    ((e.target as unknown) as Record<string, any>).value
+                )
             }}
         />
     )

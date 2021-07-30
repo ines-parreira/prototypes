@@ -4,7 +4,7 @@ import {Line} from 'react-chartjs-2'
 import moment from 'moment'
 import {Map, List} from 'immutable'
 
-import Legend from '../Legend/Legend.js'
+import Legend from '../Legend/Legend'
 import {
     colors as colorsConfig,
     chartMaxHeight,

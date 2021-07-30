@@ -1,5 +1,5 @@
 import axios, {CancelToken, AxiosError} from 'axios'
-import {fromJS, Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _get from 'lodash/get'
 
 import {Macro} from '../../models/macro/types'
@@ -14,7 +14,7 @@ import {getErrorReason} from './utils'
 export type fetchMacrosParamsTypes = {
     search?: string
     page?: number
-    currentMacros?: Map<any, any>
+    currentMacros?: List<any>
     currentPage?: number
     ticketId?: number
     messageId?: number
@@ -23,7 +23,7 @@ export type fetchMacrosParamsTypes = {
 }
 
 export type MacrosSearchResult = {
-    macros: Map<any, any>
+    macros: List<any>
     page: number
     totalPages: number
 }
@@ -73,7 +73,7 @@ export const fetchMacros = (
             (resp) => {
                 const page = _get(resp, ['meta', 'page'])
                 const totalPages = _get(resp, ['meta', 'nb_pages'])
-                let macros = fromJS(resp.data || []) as Map<any, any>
+                let macros = fromJS(resp.data || []) as List<any>
 
                 dispatch({
                     type: constants.UPSERT_MACROS,
@@ -86,10 +86,7 @@ export const fetchMacros = (
                     filters.currentPage != null &&
                     filters.currentPage + 1 === page
                 ) {
-                    macros = filters.currentMacros.concat(macros) as Map<
-                        any,
-                        any
-                    >
+                    macros = filters.currentMacros.concat(macros) as List<any>
                 }
 
                 return {

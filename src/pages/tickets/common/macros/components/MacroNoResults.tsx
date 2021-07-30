@@ -1,10 +1,9 @@
-// @flow
 import React from 'react'
 import {Button} from 'reactstrap'
 
 type Props = {
-    searchQuery: string,
-    newAction: () => void,
+    searchQuery: string
+    newAction: () => void
 }
 
 const MacroNoResults = ({searchQuery, newAction}: Props) => {

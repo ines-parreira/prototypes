@@ -1,38 +1,32 @@
-// @flow
+import React, {Component} from 'react'
+import {fromJS, Map} from 'immutable'
 
-import React from 'react'
-import {fromJS, Map, List} from 'immutable'
-
-import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee'
+import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 
 import css from './SetAssigneeAction.less'
 
 type Props = {
-    action: Map<*, *>,
-    teams?: Map<*, *>,
-    agents?: List<*>,
-    index: number,
-    handleTeams?: boolean,
-    handleUsers?: boolean,
-    updateActionArgs: (index: number, args: Map<*, *>) => void,
+    action: Map<any, any>
+    index: number
+    handleTeams?: boolean
+    handleUsers?: boolean
+    updateActionArgs: (index: number, args: Map<any, any>) => void
 }
 
-export default class SetAssigneeAction extends React.Component<Props> {
-    static defaultProps = {
-        teams: fromJS([]),
-        agents: fromJS([]),
+export default class SetAssigneeAction extends Component<Props> {
+    static defaultProps: Pick<Props, 'handleTeams' | 'handleUsers'> = {
         handleTeams: false,
         handleUsers: false,
     }
 
-    setUserAssignee(user: Object) {
+    setUserAssignee(user: Maybe<Record<string, unknown>>) {
         this.props.updateActionArgs(
             this.props.index,
             fromJS({assignee_user: user})
         )
     }
 
-    setTeamAssignee(team: Object) {
+    setTeamAssignee(team: Maybe<Record<string, unknown>>) {
         this.props.updateActionArgs(
             this.props.index,
             fromJS({assignee_team: team})
@@ -40,7 +34,7 @@ export default class SetAssigneeAction extends React.Component<Props> {
     }
 
     render() {
-        const {action, agents, teams, handleTeams, handleUsers} = this.props
+        const {action, handleTeams, handleUsers} = this.props
         return (
             <TicketAssignee
                 className={css.assignee}
@@ -54,11 +48,8 @@ export default class SetAssigneeAction extends React.Component<Props> {
                 ])}
                 handleTeams={handleTeams}
                 handleUsers={handleUsers}
-                users={agents}
-                teams={teams}
                 setUser={(user) => this.setUserAssignee(user)}
                 setTeam={(team) => this.setTeamAssignee(team)}
-                suffix="macro-modal"
             />
         )
     }

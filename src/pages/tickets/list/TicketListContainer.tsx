@@ -16,7 +16,7 @@ import {
 import {compactInteger} from '../../../utils'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
 import ViewTable from '../../common/components/ViewTable/ViewTable'
-import MacroContainer from '../common/macros/MacroContainer.js'
+import MacroContainer from '../common/macros/MacroContainer'
 
 import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
