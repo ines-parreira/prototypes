@@ -327,7 +327,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Omnisend',
         description:
             'Create customer segments based on customer support data from Gorgias',
-        url: 'https://docs.gorgias.io/ecommerce-integrations/omnisend',
+        url: 'https://docs.gorgias.com/ecommerce-integrations/omnisend',
         image: 'integrations/omnisend.png',
     },
     {
