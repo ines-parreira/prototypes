@@ -6,7 +6,6 @@ import axios from 'axios'
 import createPredictionPlugin, {clearCache, setPredictionKey} from '../index'
 import * as DraftTestUtils from '../../../tests/draftTestUtils'
 import {Plugin, PluginMethods} from '../../types'
-import {reportError} from '../../../../../../utils/errors'
 import {flushPromises} from '../../../../../../utils/testing'
 
 jest.mock('../../../../../../utils/errors')
@@ -318,53 +317,6 @@ describe('prediction plugin', () => {
             )
         })
 
-        it.each<[string, () => void]>([
-            [
-                'network error',
-                () => {
-                    axiosMock.onPost(PREDICTION_URL).networkError()
-                },
-            ],
-            [
-                'timout error',
-                () => {
-                    axiosMock.onPost(PREDICTION_URL).timeout()
-                },
-            ],
-        ])('should not report %s', async (testName, testSetup) => {
-            testSetup()
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
-            const state = DraftTestUtils.typeText(
-                pluginMethods.getEditorState(),
-                'Foo'
-            )
-
-            predictionPlugin.onChange?.(state, pluginMethods)
-            await flushPromises()
-
-            expect(reportError).not.toBeCalled()
-        })
-
-        it('should report prediction post errors', async () => {
-            axiosMock.onPost(PREDICTION_URL).reply(404)
-            const {
-                predictionPlugin,
-                pluginMethods,
-            } = createEmptyStatePredictionPlugin()
-            const state = DraftTestUtils.typeText(
-                pluginMethods.getEditorState(),
-                'Foo'
-            )
-
-            predictionPlugin.onChange?.(state, pluginMethods)
-            await flushPromises()
-
-            expect(reportError).toHaveBeenLastCalledWith(expect.any(Error))
-        })
-
         describe('text paste', () => {
             it('should support pasting multi-char text that matches the prediction', async () => {
                 const {
@@ -479,54 +431,6 @@ describe('prediction plugin', () => {
                     result_prediction_text: 'Marie,',
                     result_prediction_accepted: true,
                 })
-            })
-
-            it.each([
-                [
-                    'report error on failed feedback',
-                    () => axiosMock.onPost(FEEDBACK_URL).reply(404),
-                    () =>
-                        expect(reportError).toHaveBeenLastCalledWith(
-                            expect.any(Error),
-                            {
-                                extra: {
-                                    description:
-                                        'Failed to send prediction feedback',
-                                },
-                            }
-                        ),
-                ],
-                [
-                    'not report error on network error',
-                    () => axiosMock.onPost(FEEDBACK_URL).networkError(),
-                    () => expect(reportError).not.toHaveBeenCalled(),
-                ],
-                [
-                    'not report error on timeout',
-                    () => axiosMock.onPost(FEEDBACK_URL).timeout(),
-                    () => expect(reportError).not.toHaveBeenCalled(),
-                ],
-            ])('should %s', async (value, apiMock, expectResult) => {
-                apiMock()
-                const {
-                    predictionPlugin,
-                    pluginMethods,
-                } = createEmptyStatePredictionPlugin()
-
-                await typeAndPredict(
-                    'Hi ',
-                    'Marie,',
-                    predictionPlugin,
-                    pluginMethods
-                )
-                await typeAndPredict(
-                    'Marie,',
-                    '',
-                    predictionPlugin,
-                    pluginMethods
-                )
-
-                expectResult()
             })
         })
     })

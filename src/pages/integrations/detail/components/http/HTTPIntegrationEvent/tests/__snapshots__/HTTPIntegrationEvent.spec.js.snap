@@ -830,7 +830,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         <HTTPIntegrationEventItem
           name="Sent"
         >
-          <Connect(DatetimeLabel)
+          <Connect(DatetimeLabelContainer)
             dateTime="nowTimestamp"
           />
         </HTTPIntegrationEventItem>

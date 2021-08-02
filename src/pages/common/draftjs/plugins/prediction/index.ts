@@ -4,7 +4,6 @@ import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
 
 import {Plugin, PluginMethods} from '../types'
-import {reportError} from '../../../../../utils/errors'
 
 import {
     createPrediction,
@@ -108,10 +107,7 @@ const requestPrediction = (
             resetCurrentPrediction(text, predictionText)
         })
         .catch((err) => {
-            if (
-                axios.isCancel(err) ||
-                (axios.isAxiosError(err) && !err.response)
-            ) {
+            if (axios.isCancel(err)) {
                 return
             }
 
@@ -142,30 +138,16 @@ const sendFeedback = async (
 
     currentPrediction.numberAcceptedCharacters += acceptedPredictionChars
 
-    try {
-        await axios.post(window.PHRASE_FEEDBACK_URL, {
-            query_text: currentPrediction.inputText,
-            query_context: context.toJS(),
-            result_prediction_text: currentPrediction.predictionText,
-            result_prediction_accepted:
-                predictionText.length === acceptedPredictionChars,
-            result_number_accepted_characters:
-                currentPrediction.numberAcceptedCharacters,
-            diverged_phrase: null,
-        })
-    } catch (error) {
-        if (
-            axios.isCancel(error) ||
-            (axios.isAxiosError(error) && !error.response)
-        ) {
-            return
-        }
-        reportError(error, {
-            extra: {
-                description: 'Failed to send prediction feedback',
-            },
-        })
-    }
+    await axios.post(window.PHRASE_FEEDBACK_URL, {
+        query_text: currentPrediction.inputText,
+        query_context: context.toJS(),
+        result_prediction_text: currentPrediction.predictionText,
+        result_prediction_accepted:
+            predictionText.length === acceptedPredictionChars,
+        result_number_accepted_characters:
+            currentPrediction.numberAcceptedCharacters,
+        diverged_phrase: null,
+    })
 
     resetCurrentPrediction()
 }
@@ -273,9 +255,7 @@ const predictionPlugin = (config: {context: Map<any, any>}): Plugin => {
                 // and not in cache
                 !inCache(blockText)
             ) {
-                void requestPrediction(blockText, config.context, plugin).catch(
-                    reportError
-                )
+                void requestPrediction(blockText, config.context, plugin)
                 return newEditorState
             }
 
