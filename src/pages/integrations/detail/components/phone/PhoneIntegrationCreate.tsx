@@ -30,6 +30,8 @@ import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
+import {VoiceMailType} from './PhoneIntegrationVoicemail'
+
 interface StateOptions {
     [key: string]: Option[]
 }
@@ -46,6 +48,8 @@ const stateOptions: StateOptions = rawStateOptions
 const caAreaCodeOptions: AreaCodeOptions = rawCaAreaCodeOptions
 const usAreaCodeOptions: AreaCodeOptionsByState = rawUsAreaCodeOptions
 const tollFreeAreaCodeOptions: AreaCodeOptions = rawTollFreeAreaCodeOptions
+const DEFAULT_TEXT_TO_SPEECH_CONTENT =
+    "Hello, unfortunately we aren't able to take your call right now. Please call us back later. Thank you!"
 
 type Props = {
     actions: {
@@ -121,10 +125,10 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 record_outbound_calls: true,
                             },
                             voicemail: {
-                                voicemail_type: null,
+                                voicemail_type: VoiceMailType.TextToSpeech,
                                 voice_recording_file_path: null,
-                                text_to_speech_content: null,
-                                allow_to_leave_voicemail: false,
+                                text_to_speech_content: DEFAULT_TEXT_TO_SPEECH_CONTENT,
+                                allow_to_leave_voicemail: true,
                             },
                         },
                     })
