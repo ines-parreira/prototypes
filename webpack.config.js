@@ -9,14 +9,22 @@ const pkg = require('./package.json')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
-const GORGIAS_ASSETS_URL = __PRODUCTION__ ? 'https://gorgias-assets.gorgias.io' : ''
+const GORGIAS_ASSETS_URL = __PRODUCTION__
+    ? 'https://gorgias-assets.gorgias.io'
+    : ''
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
 const srcDir = path.join(__dirname, 'g/static/private')
 const buildDir = path.join(__dirname, 'g/static/public/web-app')
-const jsBundleFile = __PRODUCTION__ ? `helpdesk.app.${HASH}.js` : 'helpdesk.app.js'
-const styleBundleFile = __PRODUCTION__ ? `helpdesk.app.${HASH}.css` : 'helpdesk.app.css'
-const vendorsBundleFile = __PRODUCTION__ ? `helpdesk.vendors.${HASH}.js` : 'helpdesk.vendors.js'
+const jsBundleFile = __PRODUCTION__
+    ? `helpdesk.app.${HASH}.js`
+    : 'helpdesk.app.js'
+const styleBundleFile = __PRODUCTION__
+    ? `helpdesk.app.${HASH}.css`
+    : 'helpdesk.app.css'
+const vendorsBundleFile = __PRODUCTION__
+    ? `helpdesk.vendors.${HASH}.js`
+    : 'helpdesk.vendors.js'
 
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
@@ -49,7 +57,9 @@ const optimization = {
 }
 const cssLoaderOptions = {
     sourceMap: true,
-    localIdentName: __PRODUCTION__ ? '[hash:base64]' : '[name]--[local]--[hash:base64:5]',
+    localIdentName: __PRODUCTION__
+        ? '[hash:base64]'
+        : '[name]--[local]--[hash:base64:5]',
 }
 const urlLoader = {
     loader: 'url-loader',
@@ -65,16 +75,21 @@ const imageExtRegex = /\.(jpe?g|png|gif)$/i
 const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 
 const cssOnlyPackages = ['bootstrap']
-const vendors = Object.keys(pkg.dependencies).filter((m) => !cssOnlyPackages.includes(m))
+const vendors = Object.keys(pkg.dependencies).filter(
+    (m) => !cssOnlyPackages.includes(m)
+)
 
 const outputOptions = __PRODUCTION__ ? {} : {publicPath: BUNDLE_PUBLIC_PATH}
-const aliasOptions = __PRODUCTION__ ? {} : {'react-dom': '@hot-loader/react-dom'}
+const aliasOptions = __PRODUCTION__
+    ? {}
+    : {'react-dom': '@hot-loader/react-dom'}
 
 module.exports = (env = {}) => {
     if (env.dll) {
         return {
             mode,
             optimization,
+            devtool,
             entry: {
                 vendors,
             },
@@ -84,7 +99,10 @@ module.exports = (env = {}) => {
                 library: 'vendors',
             },
             plugins: [
-                new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr/),
+                new webpack.ContextReplacementPlugin(
+                    /moment[\/\\]locale$/,
+                    /fr/
+                ),
                 new webpack.ContextReplacementPlugin(/escodegen/, /^$/),
                 new webpack.DllPlugin({
                     name: '[name]',
