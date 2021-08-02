@@ -1,7 +1,7 @@
 // @flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Col, Container, Row} from 'reactstrap'
+import {Badge, Col, Container, Row} from 'reactstrap'
 
 import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
@@ -96,9 +96,12 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
         const responseHeaders = response.get('headers')
         const requestParams = request.get('params') || null
         const requestBody = request.get('body')
+        const requestMethod = request.get('method')
         let responseBody = response.get('body') || null
         let requestJSONBody = null
         let requestFormBody = null
+        let requestJSONParams = null
+        let requestFormParams = null
 
         try {
             requestJSONBody = JSON.stringify(
@@ -108,6 +111,18 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
             )
         } catch (err) {
             requestFormBody = requestBody
+        }
+
+        try {
+            if (requestParams) {
+                requestJSONParams = JSON.stringify(
+                    JSON.parse(requestParams),
+                    undefined,
+                    4
+                )
+            }
+        } catch (err) {
+            requestFormParams = requestParams
         }
 
         if (responseBody) {
@@ -139,10 +154,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
                     <Col md="12" lg="6" className={`${css.request} mb-4`}>
                         <Container fluid>
                             <h2 className="mb-4">Request</h2>
-                            <HTTPItem
-                                name="Method"
-                                value={request.get('method')}
-                            />
+                            <HTTPItem name="Method" value={requestMethod} />
                             <HTTPItem name="URL" value={request.get('url')} />
                             <HTTPItem name="Sent">
                                 <DatetimeLabel
@@ -152,8 +164,31 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
                             <HTTPItem name="Headers" value={requestHeaders}>
                                 <HTTPParams params={requestHeaders} />
                             </HTTPItem>
-                            <HTTPItem name="Params" value={requestParams}>
-                                <HTTPParams params={requestParams} />
+                            <HTTPItem
+                                name="Params"
+                                value={requestFormParams || requestJSONParams}
+                            >
+                                {requestFormParams ? (
+                                    <HTTPParams params={requestFormParams} />
+                                ) : null}
+                                {requestJSONParams ? (
+                                    <>
+                                        {requestMethod.toLowerCase() ===
+                                        'get' ? (
+                                            <Badge color="warning">
+                                                JSON Params are not compatible
+                                                with the GET HTTP Method.
+                                            </Badge>
+                                        ) : null}
+                                        <InputField
+                                            type="textarea"
+                                            value={requestJSONParams}
+                                            rows={countLines(requestJSONParams)}
+                                            style={{maxHeight: '200px'}}
+                                            readOnly
+                                        />
+                                    </>
+                                ) : null}
                             </HTTPItem>
                             <HTTPItem
                                 name="Body"

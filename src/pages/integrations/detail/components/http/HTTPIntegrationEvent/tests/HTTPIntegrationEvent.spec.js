@@ -77,6 +77,23 @@ const httpEventWithoutRequest = fromJS({
     },
 })
 
+const HTTPEventWithJSONParamsAndGETMethod = fromJS({
+    created_datetime: getMomentNow(),
+    status: 200,
+    request: {
+        method: 'GET',
+        url: 'https://developers.gorgias.com',
+        status: 200,
+        headers: {headersKey1: 'headersValue1'},
+        params: `"{\"paramKey1\": \"paramValue1\"}"`,
+        body: JSON.stringify({bodyKey1: 'bodyValue1'}),
+    },
+    response: {
+        headers: {headersKey1: 'headersValue1'},
+        body: JSON.stringify({bodyKey1: 'bodyValue1'}),
+    },
+})
+
 describe('<HTTPIntegrationEvent />', () => {
     describe('component', () => {
         it('should fetch an event when the component will mount', (done) => {
@@ -185,6 +202,17 @@ describe('<HTTPIntegrationEvent />', () => {
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithErrorInResponse}
+                />
+            )
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render the data of the HTTP request with GET method and JSON Params, with a warning', () => {
+            const component = shallow(
+                <HTTPIntegrationEventContainer
+                    eventId="2"
+                    integationId="1"
+                    event={HTTPEventWithJSONParamsAndGETMethod}
                 />
             )
             expect(component).toMatchSnapshot()

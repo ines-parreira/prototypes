@@ -13,7 +13,7 @@ export type HTTPIntegrationEvent = {
         method: HttpMethod
         url: string
     }
-    reponse: {
+    response: {
         body: string
         headers: {
             'Access-Control-Allow-Credentials'?: string

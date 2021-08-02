@@ -100,11 +100,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
         <HTTPIntegrationEventItem
           name="Params"
           value={null}
-        >
-          <HTTPIntegrationEventParams
-            params={null}
-          />
-        </HTTPIntegrationEventItem>
+        />
         <HTTPIntegrationEventItem
           name="Body"
           value={null}
@@ -568,11 +564,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         <HTTPIntegrationEventItem
           name="Params"
           value={null}
-        >
-          <HTTPIntegrationEventParams
-            params={null}
-          />
-        </HTTPIntegrationEventItem>
+        />
         <HTTPIntegrationEventItem
           name="Body"
           value={null}
@@ -721,11 +713,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         <HTTPIntegrationEventItem
           name="Params"
           value={null}
-        >
-          <HTTPIntegrationEventParams
-            params={null}
-          />
-        </HTTPIntegrationEventItem>
+        />
         <HTTPIntegrationEventItem
           name="Body"
           value={null}
@@ -782,6 +770,165 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
           <pre>
             There was an error while making this request. Foo bar. There is an error.
           </pre>
+        </HTTPIntegrationEventItem>
+      </Container>
+    </Col>
+  </Row>
+</Container>
+`;
+
+exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP request with GET method and JSON Params, with a warning 1`] = `
+<Container
+  className="page-container"
+  fluid={true}
+  tag="div"
+>
+  <Row
+    tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
+  >
+    <Col
+      className="request mb-4"
+      lg="6"
+      md="12"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Container
+        fluid={true}
+        tag="div"
+      >
+        <h2
+          className="mb-4"
+        >
+          Request
+        </h2>
+        <HTTPIntegrationEventItem
+          name="Method"
+          value="GET"
+        />
+        <HTTPIntegrationEventItem
+          name="URL"
+          value="https://developers.gorgias.com"
+        />
+        <HTTPIntegrationEventItem
+          name="Sent"
+        >
+          <Connect(DatetimeLabel)
+            dateTime="nowTimestamp"
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Headers"
+          value={
+            Immutable.Map {
+              "headersKey1": "headersValue1",
+            }
+          }
+        >
+          <HTTPIntegrationEventParams
+            params={
+              Immutable.Map {
+                "headersKey1": "headersValue1",
+              }
+            }
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Params"
+          value="\\"{\\"paramKey1\\": \\"paramValue1\\"}\\""
+        >
+          <HTTPIntegrationEventParams
+            params="\\"{\\"paramKey1\\": \\"paramValue1\\"}\\""
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Body"
+          value="{
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
+        >
+          <InputField
+            readOnly={true}
+            rows={3}
+            type="textarea"
+            value="{
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
+          />
+        </HTTPIntegrationEventItem>
+      </Container>
+    </Col>
+    <Col
+      className="response"
+      lg="6"
+      md="12"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Container
+        fluid={true}
+        tag="div"
+      >
+        <h2
+          className="mb-4"
+        >
+          Response
+        </h2>
+        <HTTPIntegrationEventItem
+          name="Status code"
+        >
+          <HTTPStatusLabel />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Headers"
+        >
+          <HTTPIntegrationEventParams
+            params={
+              Immutable.Map {
+                "headersKey1": "headersValue1",
+              }
+            }
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Body"
+          value="{
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
+        >
+          <InputField
+            readOnly={true}
+            rows={3}
+            type="textarea"
+            value="{
+    \\"bodyKey1\\": \\"bodyValue1\\"
+}"
+          />
         </HTTPIntegrationEventItem>
       </Container>
     </Col>
