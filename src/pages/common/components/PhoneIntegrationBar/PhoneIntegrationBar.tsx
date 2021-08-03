@@ -113,18 +113,37 @@ function instantiateDevice(
         warnings: true,
     })
 
+    const maxReconnectionAttempts = 10
+    let reconnectionAttempts = 0
+
     device.on('error', console.error)
+
+    device.on('ready', () => {
+        reconnectionAttempts = 0
+    })
 
     device.on('offline', () => {
         setConnection(null)
 
-        getToken()
-            .then((token) => {
-                if (token) {
-                    device.setup(token)
-                }
-            })
-            .catch(console.error)
+        if (reconnectionAttempts > maxReconnectionAttempts) {
+            console.error(
+                `Impossible to reconnect to Twilio after ${maxReconnectionAttempts} attempts`
+            )
+            return
+        }
+
+        const timeout = 1000 * reconnectionAttempts
+        reconnectionAttempts++
+
+        setTimeout(() => {
+            getToken()
+                .then((token) => {
+                    if (token) {
+                        device.setup(token)
+                    }
+                })
+                .catch(console.error)
+        }, timeout)
     })
 
     device.on('connect', () => {
