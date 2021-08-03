@@ -80,7 +80,7 @@ export class MacroContainer extends Component<Props, State> {
         })
     }
 
-    _loadMacros = ({search = '', page = 1} = {}) => {
+    _loadMacros = ({search = '', page = 1} = {}): Promise<void> => {
         return this.props
             .fetchMacrosCancellable(
                 {
@@ -110,7 +110,7 @@ export class MacroContainer extends Component<Props, State> {
                             totalPages: res.totalPages,
                             firstLoad: false,
                         },
-                        resolve as any
+                        resolve
                     )
                 })
             })

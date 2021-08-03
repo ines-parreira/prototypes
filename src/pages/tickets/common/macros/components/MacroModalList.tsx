@@ -7,6 +7,7 @@ import {List, Map} from 'immutable'
 import shortcutManager from '../../../../../services/shortcutManager'
 import {moveIndex, MoveIndexDirection} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
+import {fetchMacrosParamsTypes} from '../../../../../state/macro/actions'
 
 import css from './MacroModalList.less'
 
@@ -17,6 +18,7 @@ type Props = {
     currentMacro: Map<any, any>
     disableExternalActions?: boolean
     handleClickItem: (id: number) => void
+    fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
     page: number
     totalPages: number
     search: string
@@ -100,6 +102,7 @@ export default class MacroModalList extends Component<Props> {
             handleClickItem,
             search,
             onSearch,
+            fetchMacros,
         } = this.props
 
         return (
@@ -118,6 +121,7 @@ export default class MacroModalList extends Component<Props> {
                     macros={macros}
                     page={page}
                     totalPages={totalPages}
+                    fetchMacros={fetchMacros}
                     search={search}
                     currentMacro={currentMacro}
                     disableExternalActions={disableExternalActions}

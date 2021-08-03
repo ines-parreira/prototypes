@@ -35,7 +35,7 @@ type OwnProps = {
     className?: string
     currentMacro: Map<any, any>
     currentTicket: Map<any, any>
-    fetchMacros: (params: fetchMacrosParamsTypes) => void
+    fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
     isInitialMacrosLoading: boolean
     macros: List<any>
     onClearMacro: () => void
@@ -116,7 +116,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
     closeMacroModal = () => {
         this.setState({isModalOpen: false})
         // reload macros, in case they changed in the modal
-        this.props.fetchMacros({search: this.props.searchQuery})
+        void this.props.fetchMacros({search: this.props.searchQuery})
     }
 
     toggleCreateMacro = (isCreatingMacro = false): Promise<void> => {
@@ -129,7 +129,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
         this.toggleMacroDeleteConfirmOpen()
         const macroId = this.props.currentMacro.get('id', '')
         return this.props.deleteMacro(macroId).then(() => {
-            this.props.fetchMacros({search: this.props.searchQuery})
+            void this.props.fetchMacros({search: this.props.searchQuery})
         })
     }
 
@@ -144,6 +144,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
             currentMacro,
             selectMacro,
             isInitialMacrosLoading,
+            fetchMacros,
         } = this.props
 
         let content = null
@@ -168,6 +169,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
                         search={this.props.searchQuery}
                         onClickItem={this.props.applyMacro}
                         onHoverItem={selectMacro}
+                        fetchMacros={fetchMacros}
                     />
                     <div
                         className={css.previewContainer}

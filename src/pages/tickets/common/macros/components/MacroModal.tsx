@@ -50,7 +50,7 @@ type Props = {
     firstLoad: boolean
     selectedItemsIds: List<any>
     allViewItemsSelected: boolean
-    fetchMacros: (opts?: {search?: string; page?: number}) => Promise<unknown>
+    fetchMacros: (opts?: {search?: string; page?: number}) => Promise<void>
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -438,6 +438,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                 macros={macros}
                                 page={page}
                                 totalPages={totalPages}
+                                fetchMacros={this.props.fetchMacros}
                                 disableExternalActions={disableExternalActions}
                                 handleClickItem={handleClickItem}
                                 onSearch={(e: {

@@ -7,7 +7,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import InfiniteScroll from '../../../../common/components/InfiniteScroll/InfiniteScroll'
 import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
-import {fetchMacros} from '../../../../../state/macro/actions'
+import {fetchMacrosParamsTypes} from '../../../../../state/macro/actions'
 import {getCurrentUser} from '../../../../../state/currentUser/selectors'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
 import {RootState} from '../../../../../state/types'
@@ -24,6 +24,7 @@ type Props = {
     totalPages: number
     className: string
     disableExternalActions?: boolean
+    fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
 } & ConnectedProps<typeof connector>
 
 export class MacroListContainer extends Component<Props> {
@@ -115,11 +116,8 @@ export class MacroListContainer extends Component<Props> {
     }
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        currentUser: getCurrentUser(state),
-    }),
-    {fetchMacros}
-)
+const connector = connect((state: RootState) => ({
+    currentUser: getCurrentUser(state),
+}))
 
 export default connector(MacroListContainer)

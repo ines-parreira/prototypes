@@ -178,7 +178,7 @@ export class TicketReplyArea extends Component<Props, State> {
     loadMacros = async ({
         search = '',
         page = 1,
-    }: fetchMacrosParamsTypes = {}) => {
+    }: fetchMacrosParamsTypes = {}): Promise<void> => {
         const ticketId = this.props.currentTicket.get('id')
         const commonFilters = {
             currentMacros: this.state.macros,
@@ -224,7 +224,7 @@ export class TicketReplyArea extends Component<Props, State> {
                     page: res.page,
                     totalPages: res.totalPages,
                 },
-                resolve as any
+                resolve
             )
         })
     }
