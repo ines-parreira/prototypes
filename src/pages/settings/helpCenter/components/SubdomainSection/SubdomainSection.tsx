@@ -78,7 +78,7 @@ export const SubdomainSection = ({
                         id="error-policy"
                     >
                         <i className="material-icons">error_outline</i>
-                        Subdomain is invalid
+                        Subdomain is invalid or contains forbidden keywords
                     </span>
                     <Tooltip target="error-policy" placement="bottom-start">
                         <ul data-testid="error-policy" className={css.policy}>
