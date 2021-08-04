@@ -37,6 +37,7 @@ type Props = {
     onCreate?: (payload: CreateCategoryDto) => void
     onSave?: (payload: Partial<CategoryTranslation>, locale: LocaleCode) => void
     onClose: () => void
+    onDelete?: (categoryId: number) => void
 }
 
 export const HelpCenterCategory = ({
@@ -48,6 +49,7 @@ export const HelpCenterCategory = ({
     onSave,
     onCreate,
     onClose,
+    onDelete,
 }: Props): JSX.Element => {
     const [title, setTitle] = React.useState(category?.translation?.title || '')
     const [slug, setSlug] = React.useState(category?.translation?.slug || '')
@@ -221,6 +223,15 @@ export const HelpCenterCategory = ({
                 >
                     Save
                 </Button>
+                {category?.id && onDelete && (
+                    <Button
+                        className={css['delete-btn']}
+                        onClick={() => onDelete(category.id)}
+                    >
+                        <i className="material-icons mr-2">delete</i>
+                        Delete
+                    </Button>
+                )}
             </Drawer.Footer>
         </>
     )

@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterArticlesView/> should render the component 1`] = `
+<div>
+  <div
+    class="full-width wrapper"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <div>
+        <button
+          class="mr-2 btn btn-secondary"
+          type="button"
+        >
+          Create Category
+        </button>
+        <button
+          class="btn btn-success"
+          type="button"
+        >
+          Create Article
+        </button>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/articles"
+      >
+        Articles
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/customization"
+      >
+        Customization
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div />
+  </div>
+</div>
+`;

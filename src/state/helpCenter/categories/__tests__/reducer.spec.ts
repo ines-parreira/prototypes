@@ -100,7 +100,7 @@ describe('Help Center/Categories reducer', () => {
                         [categoryResponse.id]: categoryResponse,
                     },
                 },
-                deleteCategory(categoryResponse)
+                deleteCategory(categoryResponse.id)
             )
 
             expect(nextState).toEqual({

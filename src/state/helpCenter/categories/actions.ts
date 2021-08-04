@@ -12,7 +12,7 @@ export const updateCategory = createAction<Category>(
     CategoryActions.UPDATE_CATEGORY
 )
 
-export const deleteCategory = createAction<Category>(
+export const deleteCategory = createAction<number>(
     CategoryActions.DELETE_CATEGORY
 )
 

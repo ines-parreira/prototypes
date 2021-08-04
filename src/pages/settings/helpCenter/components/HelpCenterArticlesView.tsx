@@ -84,8 +84,8 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
     const articlesActions = useArticlesActions()
     const {articles, isLoading} = useArticles(helpCenter?.default_locale)
 
-    const categoryModal = useModalManager(MODALS.CATEGORY)
-    const articleModal = useModalManager(MODALS.ARTICLE)
+    const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
+    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const screenSize = useScreenSize()
 

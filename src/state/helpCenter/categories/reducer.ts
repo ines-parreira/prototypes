@@ -41,7 +41,7 @@ export default createReducer<HelpCenterCategoriesState>(
 
             //   Delete category by id
             .addCase(deleteCategory, (state, {payload}) => {
-                delete state.categoriesById[payload.id]
+                delete state.categoriesById[payload]
             })
 
             .addCase(updateCategoriesOrder, (state, {payload}) => {

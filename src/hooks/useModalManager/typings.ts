@@ -73,3 +73,9 @@ export type useModalManagerApi = {
     getParams: (name?: string) => ModalParams | null
     on: (name: string, event: Event, cb: CallbackFunction) => void
 }
+
+export type HookConfig = {
+    // ? Flag for automatically destroying the Manager instance once
+    // ? the component using useModalManager() is unmounted
+    autoDestroy: boolean
+}

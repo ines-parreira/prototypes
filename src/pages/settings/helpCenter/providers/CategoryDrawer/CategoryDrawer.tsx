@@ -30,7 +30,9 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
     const {isReady, client} = useHelpcenterApi()
     const [isLoading, setLoading] = React.useState<boolean>(true)
     const [category, setCategory] = React.useState<Category | null>(null)
-    const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
+    const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY, {
+        autoDestroy: false,
+    })
     const actions = useCategoriesActions()
 
     const params = getParams() as Category & {isCreate?: boolean}
@@ -118,6 +120,28 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
         }
     }
 
+    const handleOnDelete = async (categoryId: number) => {
+        try {
+            await actions.deleteCategory(categoryId)
+
+            void dispatch(
+                notify({
+                    message: 'Successfully deleted the category',
+                    status: NotificationStatus.Success,
+                })
+            )
+            closeModal()
+        } catch (err) {
+            console.error(err)
+            void dispatch(
+                notify({
+                    message: 'Something went wrong',
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
+    }
+
     return (
         <HelpCenterCategory
             isLoading={isLoading}
@@ -128,6 +152,7 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
             onSave={handleOnSave}
             onCreate={handleOnCreate}
             onClose={() => closeModal()}
+            onDelete={handleOnDelete}
         />
     )
 }

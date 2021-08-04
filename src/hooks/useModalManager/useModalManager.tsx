@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useMemo} from 'react'
+import _defaultsDeep from 'lodash/defaultsDeep'
 
 import {ModalManager} from './Manager'
 
@@ -7,6 +8,7 @@ import {
     useModalManagerApi,
     Event,
     CallbackFunction,
+    HookConfig,
 } from './typings'
 
 const createUndefinedModalError = (methodName: string) =>
@@ -26,10 +28,16 @@ const createUndefinedModalError = (methodName: string) =>
  */
 export const useModalManager = (
     manager: ModalManager,
-    name?: string
+    name?: string,
+    config?: HookConfig
 ): useModalManagerApi => {
     const _name = name
     const [, update] = useState(0)
+    const innerConfig: HookConfig = useMemo(
+        // ? We need to cast the return because the signature of "_defaultsDeep" returns "any"
+        () => _defaultsDeep(config, {autoDestroy: true}) as HookConfig,
+        [config]
+    )
 
     useEffect(() => {
         //  In oder to trigger an update inside React lifecycle
@@ -47,7 +55,10 @@ export const useModalManager = (
                 // `removeModal` removes the subscribers as well
                 // but better to do it manually.
                 manager.removeSubscriber(name, subscriberTicker)
-                manager.removeModal(name)
+
+                if (innerConfig.autoDestroy) {
+                    manager.removeModal(name)
+                }
             }
         }
     }, [name])

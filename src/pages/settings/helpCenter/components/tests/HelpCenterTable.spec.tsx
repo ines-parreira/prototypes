@@ -9,7 +9,6 @@ import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterRespons
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
 describe('<HelpCenterTable/>', () => {
-    // const mockedToggle = jest.fn()
     const mockedOnClick = jest.fn()
 
     const props = {
@@ -19,7 +18,6 @@ describe('<HelpCenterTable/>', () => {
             getLocalesResponseFixture as HelpCenterLocale[],
             'code'
         ),
-        // toggle: mockedToggle,
         onClick: mockedOnClick,
     }
 
@@ -45,11 +43,4 @@ describe('<HelpCenterTable/>', () => {
         fireEvent.click(tableRow)
         expect(mockedOnClick).toHaveBeenCalledWith(2)
     })
-
-    // it('should call the toggle callback when clicking on the toggle button', () => {
-    //     const {queryAllByRole} = render(<HelpCenterTable {...props} />)
-    //     const toggleButton = queryAllByRole('checkbox')
-    //     fireEvent.click(toggleButton[0])
-    //     expect(mockedToggle).toHaveBeenCalledWith(1, false)
-    // })
 })

@@ -13,6 +13,7 @@ import {
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import {
+    deleteCategory,
     saveCategories,
     updateCategoriesOrder,
     updateCategoryTranslation,
@@ -103,6 +104,19 @@ export const useCategoriesActions = () => {
             dispatch(updateCategoriesOrder(positions))
 
             return positions
+        },
+
+        async deleteCategory(categoryId: number) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            const response = await client.deleteCategory({
+                help_center_id: helpCenterId,
+                id: categoryId,
+            })
+
+            dispatch(deleteCategory(categoryId))
+
+            return response
         },
     }
 }

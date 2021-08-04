@@ -41,8 +41,8 @@ export const DroppableCategoryRow = ({
     onMoveEntity,
     onDropEntity,
 }: Props): JSX.Element => {
-    const categoryModal = useModalManager(MODALS.CATEGORY)
-    const articleModal = useModalManager(MODALS.ARTICLE)
+    const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
+    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const [isOpen, setOpen] = React.useState(false)
     const {articles, isLoading} = useArticles(

@@ -1,14 +1,8 @@
 import React from 'react'
-import {
-    fireEvent,
-    render,
-    // waitForElementToBeRemoved,
-} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 
 import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../fixtures/getHelpcenterResponse.fixture'
-// import {getSingleCategoryEnglish as category} from '../../../../fixtures/getCategoriesResponse.fixtures'
 import {HelpCenterCategory} from '../HelpCenterCategory'
-// import {HELP_CENTER_DOMAIN} from '../../../../constants'
 type Props = {
     isOpen?: boolean
     getCategory?: () => Promise<unknown>
@@ -32,14 +26,6 @@ const Example = ({isOpen = false}: Props) => {
         </>
     )
 }
-
-// function renderAndWait(props: Props) {
-//     const payload = render(<Example {...props} />)
-
-//     await waitForElementToBeRemoved(() => payload.getByTestId('spinner-loader'))
-
-//     return payload
-// }
 
 describe('<HelpCenterCategory>', () => {
     it('renders in a hidden state by default', () => {
