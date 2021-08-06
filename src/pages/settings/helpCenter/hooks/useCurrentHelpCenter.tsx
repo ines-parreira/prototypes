@@ -37,7 +37,7 @@ export const useCurrentHelpCenter = (
             if (isReady && client) {
                 try {
                     const response = await client.getHelpCenter({
-                        id: helpcenterId,
+                        help_center_id: helpcenterId,
                     })
 
                     dispatch(helpCentersFetched([response.data]))

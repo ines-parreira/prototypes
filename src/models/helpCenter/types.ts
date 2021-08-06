@@ -109,3 +109,5 @@ export type LocalSocialNavigationLink = Omit<
     meta: Components.Schemas.NavigationLinkMeta | undefined
     translation: Omit<LinkTranslation, 'locale'>
 }
+
+export type CustomDomain = Components.Schemas.CustomDomain

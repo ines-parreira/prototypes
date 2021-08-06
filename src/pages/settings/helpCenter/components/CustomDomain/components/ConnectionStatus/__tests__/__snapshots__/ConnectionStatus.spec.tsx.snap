@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConnectionStatus /> matches snapshot while loading 1`] = `
+<div>
+  <div
+    class="container"
+    data-testid="connection-status"
+  >
+    <span
+      data-testid="icon-loading"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="inner"
+          style="min-height: 16px;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 16px;"
+          />
+        </div>
+      </div>
+    </span>
+    <span>
+      Connecting
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<ConnectionStatus /> matches snapshot with status active 1`] = `
+<div>
+  <div
+    class="container"
+    data-testid="connection-status"
+  >
+    <span
+      class="connected material-icons"
+      data-testid="icon-wifi"
+    >
+      wifi
+    </span>
+    <span>
+      Connected
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<ConnectionStatus /> matches snapshot with status unknown 1`] = `
+<div>
+  <div
+    class="container"
+    data-testid="connection-status"
+  >
+    <span
+      class="disconnected material-icons"
+      data-testid="icon-wifi_off"
+    >
+      wifi_off
+    </span>
+    <span>
+      Error connecting
+    </span>
+  </div>
+</div>
+`;

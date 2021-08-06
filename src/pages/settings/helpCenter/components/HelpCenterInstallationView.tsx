@@ -23,6 +23,8 @@ import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {HELP_CENTER_DOMAIN} from '../constants'
 
 import {SubdomainSection} from './SubdomainSection'
+import {CustomDomain} from './CustomDomain'
+
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 
@@ -83,7 +85,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         if (isReady && client) {
             void client
                 .deleteHelpCenter({
-                    id: helpCenterId,
+                    help_center_id: helpCenterId,
                 })
                 .then(() => {
                     dispatch(helpCenterDeleted(helpCenterId))
@@ -105,7 +107,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
             void client
                 .updateHelpCenter(
                     {
-                        id: helpCenterId,
+                        help_center_id: helpCenterId,
                     },
                     {
                         subdomain: subDomainValue,
@@ -162,6 +164,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     placeholder="brand-name"
                     onChange={handleOnChangeSubDomain}
                 />
+                <CustomDomain />
                 <FormGroup className="mt-5">
                     <Button
                         color="primary"

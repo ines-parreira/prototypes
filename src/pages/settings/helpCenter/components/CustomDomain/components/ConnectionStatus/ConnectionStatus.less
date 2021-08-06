@@ -1,0 +1,25 @@
+@import (reference) '~css/new/colors.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+
+        height: 33px;
+        margin-top: -10px; // This is needed to align the status with the input
+
+        .connected {
+            font-size: 18px;
+            color: @green;
+        }
+
+        .disconnected {
+            font-size: 18px;
+            color: @red;
+        }
+
+        span + span {
+            margin-left: 8px;
+        }
+    }
+}
