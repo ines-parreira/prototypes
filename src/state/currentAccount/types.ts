@@ -32,6 +32,12 @@ export enum AccountFeature {
     ViewSharing = 'view_sharing',
 }
 
+export type ViewsOrderingAccountSetting = {
+    id: number
+    type: AccountSettingType.ViewsOrdering
+    data: AccountViewsOrderingSettingData
+}
+
 export type AccountSetting =
     | {
           id: number
@@ -65,11 +71,7 @@ export type AccountSetting =
               survey_interval: number
           }
       }
-    | {
-          id: number
-          type: AccountSettingType.ViewsOrdering
-          data: AccountViewsOrderingSettingData
-      }
+    | ViewsOrderingAccountSetting
 
 export type AccountViewsOrderingSettingData = {
     views: Record<string, {display_order: number}>

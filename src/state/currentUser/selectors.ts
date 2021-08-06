@@ -127,7 +127,7 @@ export const getTimezone = createSelector<
     (state) => (state.get('timezone') as Maybe<string>) || null
 )
 
-export const getUserSetting = (type: UserSettingType) =>
+const createUserSettingSelector = (type: UserSettingType) =>
     createSelector<RootState, Maybe<UserSetting>, CurrentUserState>(
         getCurrentUserState,
         (state) =>
@@ -135,3 +135,7 @@ export const getUserSetting = (type: UserSettingType) =>
                 (item) => item.type === type
             )
     )
+
+export const getViewsOrderingUserSetting = createUserSettingSelector(
+    UserSettingType.ViewsOrdering
+)

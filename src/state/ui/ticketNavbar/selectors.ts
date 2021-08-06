@@ -1,25 +1,22 @@
 import {createSelector} from 'reselect'
 
 import {View, ViewType, ViewVisibility} from '../../../models/view/types'
-import {getUserSetting} from '../../currentUser/selectors'
+import {getViewsOrderingUserSetting} from '../../currentUser/selectors'
 import {RootState} from '../../types'
 import {TicketNavbarElement} from '../../../pages/tickets/navbar/TicketNavbarContent'
 import {SectionsState} from '../../entities/sections/types'
-import {
-    UserSettingType,
-    UserViewsOrderingSettingData,
-} from '../../../config/types/user'
+import {UserViewsOrderingSettingData} from '../../../config/types/user'
 import {TicketNavbarElementType} from '../../../pages/tickets/navbar/TicketNavbar'
 import {ViewsState} from '../../entities/views/types'
-import {getSettingsByType as getAccountSettingsByType} from '../../currentAccount/selectors'
-import {
-    AccountSetting,
-    AccountSettingType,
-    AccountViewsOrderingSettingData,
-} from '../../currentAccount/types'
+import {AccountViewsOrderingSettingData} from '../../currentAccount/types'
+import {getViewsOrderingSetting} from '../../currentAccount/selectors'
 
-export const getTicketNavbarElements = (visibility: ViewVisibility) =>
-    createSelector<
+const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
+    const emptyViewsOrdering = {
+        views: {},
+        view_sections: {},
+    }
+    return createSelector<
         RootState,
         TicketNavbarElement[],
         ViewsState,
@@ -31,15 +28,11 @@ export const getTicketNavbarElements = (visibility: ViewVisibility) =>
         (state: RootState) => state.entities.sections,
         (state: RootState) =>
             (visibility === ViewVisibility.Private
-                ? (getUserSetting(UserSettingType.ViewsOrdering)(state)
+                ? (getViewsOrderingUserSetting(state)
                       ?.data as UserViewsOrderingSettingData)
-                : ((getAccountSettingsByType(AccountSettingType.ViewsOrdering)(
-                      state
-                  ).toJS() as AccountSetting)
-                      ?.data as AccountViewsOrderingSettingData)) || {
-                views: {},
-                view_sections: {},
-            },
+                : (getViewsOrderingSetting(state).data as
+                      | AccountViewsOrderingSettingData
+                      | undefined)) || emptyViewsOrdering,
         (state: RootState) =>
             visibility === ViewVisibility.Private
                 ? state.ui.ticketNavbar.optimisticUserSettings
@@ -112,3 +105,12 @@ export const getTicketNavbarElements = (visibility: ViewVisibility) =>
                 )
         }
     )
+}
+
+export const getPrivateTicketNavbarElements = createTicketNavbarElementsSelector(
+    ViewVisibility.Private
+)
+
+export const getPublicTicketNavbarElements = createTicketNavbarElementsSelector(
+    ViewVisibility.Public
+)

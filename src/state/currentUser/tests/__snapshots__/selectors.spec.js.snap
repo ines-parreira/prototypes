@@ -1,13 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`current user selectors getUserSetting should return the setting by type 1`] = `
+exports[`current user selectors getViewsOrderingUserSetting should return the setting by type 1`] = `
 Object {
   "data": Object {
-    "available": true,
-    "hide_tips": true,
-    "show_macros": true,
+    "foo": "bar",
   },
   "id": 3,
-  "type": "preferences",
+  "type": "views-ordering",
 }
 `;

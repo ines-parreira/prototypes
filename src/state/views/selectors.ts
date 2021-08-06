@@ -10,9 +10,8 @@ import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
 } from '../currentUser/selectors'
-import {getSettingsByType as getAccountSettingsByType} from '../currentAccount/selectors'
 import {RootState} from '../types'
-import {AccountSettingType} from '../currentAccount/types'
+import {DEPRECATED_getViewsOrderingSetting} from '../currentAccount/selectors'
 
 import {sortViews} from './utils'
 import {ViewsState} from './types'
@@ -251,8 +250,7 @@ export const makeGetViewsByType = () => {
         getViews,
         (state: RootState) =>
             getSettingsByType(state, UserSettingType.ViewsOrdering),
-        (state: RootState) =>
-            getAccountSettingsByType(AccountSettingType.ViewsOrdering)(state),
+        (state: RootState) => DEPRECATED_getViewsOrderingSetting(state),
         (state: RootState, type: ViewType) => type,
         _getViewsByType
     )
@@ -268,7 +266,7 @@ const getViewsByType = (type: ViewType) =>
     >(
         getViews,
         getCurrentUserSettingsByType(UserSettingType.ViewsOrdering),
-        getAccountSettingsByType(AccountSettingType.ViewsOrdering),
+        DEPRECATED_getViewsOrderingSetting,
         (views, currentUserSettings, accountSettings) =>
             _getViewsByType(views, currentUserSettings, accountSettings, type)
     )

@@ -96,11 +96,23 @@ describe('current user selectors', () => {
         })
     })
 
-    describe('getUserSetting', () => {
+    describe('getViewsOrderingUserSetting', () => {
         it('should return the setting by type', () => {
-            const res = selectors.getUserSetting(UserSettingType.Preferences)(
-                state
-            )
+            const res = selectors.getViewsOrderingUserSetting({
+                ...state,
+                currentUser: initialState.set(
+                    'settings',
+                    fromJS([
+                        {
+                            data: {
+                                foo: 'bar',
+                            },
+                            id: 3,
+                            type: UserSettingType.ViewsOrdering,
+                        },
+                    ])
+                ),
+            })
             expect(res).toMatchSnapshot()
         })
     })

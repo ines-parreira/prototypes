@@ -5,8 +5,12 @@ import {RootState} from '../types'
 import {toJS} from '../../utils'
 import {isFeatureEnabled} from '../../utils/account'
 
-import * as constants from './constants.js'
-import {AccountFeature, CurrentAccountState} from './types'
+import {
+    AccountFeature,
+    AccountSettingType,
+    CurrentAccountState,
+    ViewsOrderingAccountSetting,
+} from './types'
 
 // types
 
@@ -107,7 +111,7 @@ export const paymentIsActive = (state: RootState) => {
     return hasCreditCard(state)
 }
 
-export const getSettingsByType = (type: string) => {
+const createSettingByTypeSelector = (type: string) => {
     return createSelector<RootState, Map<any, any>, CurrentAccountState>(
         getCurrentAccountState,
         (account) => {
@@ -122,12 +126,24 @@ export const getSettingsByType = (type: string) => {
     )
 }
 
-export const getSurveysSettings = getSettingsByType(
-    constants.SETTING_TYPE_SATISFACTION_SURVEYS
+export const getSurveysSettings = createSettingByTypeSelector(
+    AccountSettingType.SatisfactionSurveys
 )
-export const getBusinessHoursSettings = getSettingsByType(
-    constants.SETTING_TYPE_BUSINESS_HOURS
+export const getBusinessHoursSettings = createSettingByTypeSelector(
+    AccountSettingType.BusinessHours
 )
-export const getTicketAssignmentSettings = getSettingsByType(
-    constants.SETTING_TYPE_TICKET_ASSIGNMENT
+export const getTicketAssignmentSettings = createSettingByTypeSelector(
+    AccountSettingType.TicketAssignment
+)
+export const DEPRECATED_getViewsOrderingSetting = createSettingByTypeSelector(
+    AccountSettingType.ViewsOrdering
+)
+export const getViewsOrderingSetting = createSelector<
+    RootState,
+    ViewsOrderingAccountSetting | Record<string, unknown>,
+    Map<any, any>
+>(
+    DEPRECATED_getViewsOrderingSetting,
+    (setting) =>
+        setting.toJS() as ViewsOrderingAccountSetting | Record<string, unknown>
 )

@@ -19,7 +19,7 @@ import {
 } from '../../../models/section/resources'
 import {SectionDraft, Section} from '../../../models/section/types'
 import {fetchViews, updateView} from '../../../models/view/resources'
-import {ViewVisibility, View} from '../../../models/view/types'
+import {View} from '../../../models/view/types'
 import shortcutManager from '../../../services/shortcutManager/shortcutManager'
 import {
     sectionUpdated,
@@ -28,7 +28,10 @@ import {
     sectionDeleted,
 } from '../../../state/entities/sections/actions'
 import {viewsFetched, viewUpdated} from '../../../state/entities/views/actions'
-import {getTicketNavbarElements} from '../../../state/ui/ticketNavbar/selectors'
+import {
+    getPrivateTicketNavbarElements,
+    getPublicTicketNavbarElements,
+} from '../../../state/ui/ticketNavbar/selectors'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
 import {RootState} from '../../../state/types'
@@ -47,13 +50,13 @@ import {
     updateUserSetting,
 } from '../../../models/user/resources'
 import {submitSettingSuccess} from '../../../state/currentUser/actions'
-import {getUserSetting} from '../../../state/currentUser/selectors'
+import {getViewsOrderingUserSetting} from '../../../state/currentUser/selectors'
 import {
     AccountSetting,
     AccountSettingType,
     AccountViewsOrderingSettingData,
 } from '../../../state/currentAccount/types'
-import {getSettingsByType} from '../../../state/currentAccount/selectors'
+import {getViewsOrderingSetting} from '../../../state/currentAccount/selectors'
 import {
     createAccountSetting,
     updateAccountSetting,
@@ -455,12 +458,10 @@ const connector = connect(
         activeViewId: state.ui.views.activeViewId,
         currentUser: state.currentUser,
         sections: state.entities.sections,
-        privateElements: getTicketNavbarElements(ViewVisibility.Private)(state),
-        sharedElements: getTicketNavbarElements(ViewVisibility.Public)(state),
-        userSetting: getUserSetting(UserSettingType.ViewsOrdering)(state),
-        accountSetting: getSettingsByType(AccountSettingType.ViewsOrdering)(
-            state
-        ).toJS() as AccountSetting,
+        privateElements: getPrivateTicketNavbarElements(state),
+        sharedElements: getPublicTicketNavbarElements(state),
+        userSetting: getViewsOrderingUserSetting(state),
+        accountSetting: getViewsOrderingSetting(state),
     }),
     {
         activeViewIdSet,

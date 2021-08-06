@@ -5,7 +5,10 @@ import {account} from '../../../../fixtures/account'
 import {user} from '../../../../fixtures/users'
 import {ViewType, ViewVisibility} from '../../../../models/view/types'
 import {RootState} from '../../../types'
-import {getTicketNavbarElements} from '../selectors'
+import {
+    getPrivateTicketNavbarElements,
+    getPublicTicketNavbarElements,
+} from '../selectors'
 import {AccountSettingType} from '../../../currentAccount/types'
 import {initialState} from '../reducer'
 
@@ -117,19 +120,25 @@ describe('selectors', () => {
         },
     } as any
 
-    describe('getTicketNavbarElements', () => {
-        it.each([ViewVisibility.Private, ViewVisibility.Shared])(
-            'should return the elements',
-            (visibility) => {
-                expect(
-                    getTicketNavbarElements(visibility)(state)
-                ).toMatchSnapshot()
-            }
-        )
+    describe('getPrivateTicketNavbarElements', () => {
+        it('should return the elements', () => {
+            expect(getPrivateTicketNavbarElements(state)).toMatchSnapshot()
+        })
 
         it('should properly display a section view without section', () => {
             expect(
-                getTicketNavbarElements(ViewVisibility.Private)({
+                getPrivateTicketNavbarElements({
+                    ...state,
+                    entities: {...state.entities, sections: {}},
+                })
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('getPublicTicketNavbarElements', () => {
+        it('should properly display a section view without section', () => {
+            expect(
+                getPublicTicketNavbarElements({
                     ...state,
                     entities: {...state.entities, sections: {}},
                 })
