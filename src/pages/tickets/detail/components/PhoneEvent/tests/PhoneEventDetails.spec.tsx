@@ -68,6 +68,51 @@ describe('<PhoneEventDetails/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render completed call event details with call recording', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.CompletedPhoneCall,
+                data: {
+                    call: {
+                        call_duration: '6',
+                    },
+                    customer: {
+                        id: 6,
+                        name: null,
+                        phone_number: '+16624424075',
+                    },
+                    recording: {
+                        file: {
+                            url:
+                                'https://uploads.gorgi.us/development/some-file.mp3',
+                            name: 'phone-123ABC.mp3',
+                            size: 17763,
+                            content_type: 'audio/mpeg',
+                        },
+                        original: {
+                            sid: '123ABC',
+                            url:
+                                'https://api.twilio.com/2010-04-01/Accounts/123/Recordings/ABC',
+                            track: 'both',
+                            status: 'completed',
+                            call_sid: 'CAb8068b6d8cdc2112e42957f61d90f737',
+                            duration: '5',
+                            error_code: '0',
+                            start_time: 'Tue, 27 Jul 2021 11:15:46 +0000',
+                            account_sid: 'ABCCBA',
+                        },
+                        created_datetime: '2021-07-27T11:15:57.749720',
+                    },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it.each([
             PhoneIntegrationEvent.OutgoingPhoneCall,
             PhoneIntegrationEvent.IncomingPhoneCall,

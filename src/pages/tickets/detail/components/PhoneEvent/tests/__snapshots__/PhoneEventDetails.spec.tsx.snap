@@ -26,6 +26,41 @@ exports[`<PhoneEventDetails/> render() should render completed call event detail
 </div>
 `;
 
+exports[`<PhoneEventDetails/> render() should render completed call event details with call recording 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+    <div>
+      <b>
+        Duration:
+      </b>
+       
+      0min 6s
+    </div>
+    <div>
+      <b>
+        Recording: 
+      </b>
+      <audio
+        controls=""
+        src="https://uploads.gorgi.us/development/some-file.mp3"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEventDetails/> render() should render details for the rest of events 1`] = `
 <div
   class="eventDetails"
