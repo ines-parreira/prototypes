@@ -265,8 +265,8 @@ export const integrationsState = {
                 country: 'US',
                 emoji: '🤠',
                 preferences: {
-                    record_inbound_calls: true,
-                    record_outbound_calls: true,
+                    record_inbound_calls: false,
+                    record_outbound_calls: false,
                     voicemail_outside_business_hours: true,
                 },
                 state: 'CA',

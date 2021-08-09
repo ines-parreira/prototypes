@@ -120,9 +120,9 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             state,
                             area_code: parsedAreaCode,
                             preferences: {
-                                record_inbound_calls: true,
+                                record_inbound_calls: false,
                                 voicemail_outside_business_hours: true,
-                                record_outbound_calls: true,
+                                record_outbound_calls: false,
                             },
                             voicemail: {
                                 voicemail_type: VoiceMailType.TextToSpeech,
