@@ -47,6 +47,7 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
         deactivated_datetime: i % 2 === 0 ? null : '2021-01-26T00:30:00Z',
         report_issue_policy: {
             enabled: false,
+            cases: [],
         },
         track_order_policy: {
             enabled: false,
@@ -139,6 +140,7 @@ describe('<SelfServiceView/>', () => {
                     "deactivated_datetime": "2021-01-26T00:30:00Z",
                     "id": 1,
                     "report_issue_policy": Object {
+                      "cases": Array [],
                       "enabled": false,
                     },
                     "return_order_policy": Object {
@@ -183,6 +185,7 @@ describe('<SelfServiceView/>', () => {
                     "deactivated_datetime": null,
                     "id": 2,
                     "report_issue_policy": Object {
+                      "cases": Array [],
                       "enabled": false,
                     },
                     "return_order_policy": Object {

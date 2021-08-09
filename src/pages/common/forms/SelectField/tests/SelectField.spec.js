@@ -339,6 +339,37 @@ describe('SelectField', () => {
             })
         })
 
+        it('Enter/Tab (disabled value)', () => {
+            const optionsWithDisabledValue = [
+                {
+                    value: 'disabled',
+                    label: 'disabled',
+                    isDisabled: true,
+                },
+
+                ...props.options,
+            ]
+            const onChangeSpy = jest.fn()
+            const wrapper = mount(
+                <SelectField
+                    {...minProps}
+                    {...props}
+                    options={optionsWithDisabledValue}
+                    value={undefined}
+                    onChange={onChangeSpy}
+                    allowCustomValue
+                />
+            )
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
+            expect(onChangeSpy.mock.calls.length).toEqual(0)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
+            expect(onChangeSpy.mock.calls.length).toEqual(1)
+        })
+
         it('should stop propagation of events', () => {
             const keys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
             keys.forEach((key) => {
@@ -353,6 +384,85 @@ describe('SelectField', () => {
 
                 expect(stopPropagationSpy.mock.calls.length).toEqual(1)
             })
+        })
+    })
+
+    describe('select with headers and dividers', () => {
+        const options = [
+            {label: 'Group 1', isHeader: true},
+            {label: 'Foo', value: 'foo'},
+            {label: 'Bar', value: 'bar'},
+            {isDivider: true},
+            {label: 'Group 2', isHeader: true},
+            {label: 'Baz', value: 'baz'},
+            {isDivider: true},
+            {label: 'Group 3', isHeader: true},
+            {label: 'Lorem ipsum', value: 'loremipsum'},
+            {isDivider: true},
+        ]
+
+        it('should filter corresponding headers and dividers when search applied', () => {
+            const wrapper = mount(
+                <SelectField {...minProps} options={options} />
+            )
+            expect(wrapper.state()).toMatchSnapshot()
+
+            wrapper.instance()._onSearchChange({
+                currentTarget: {value: 'ba'},
+            })
+            wrapper.update()
+
+            expect(wrapper.state()).toMatchSnapshot()
+        })
+
+        it('ArrowUp/ArrowDown should skip dividers and headers', () => {
+            const wrapper = mount(
+                <SelectField {...minProps} options={options} />
+            )
+
+            const component = wrapper.instance()
+
+            component._toggleDropdown()
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(2)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(5)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(2)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+            expect(wrapper.state().selectedOptionIndex).toEqual(1)
+        })
+
+        it('Enter/Tab should not be applied for headers and dividers', () => {
+            const onChangeSpy = jest.fn()
+            const wrapper = mount(
+                <SelectField
+                    {...minProps}
+                    options={options}
+                    onChange={onChangeSpy}
+                />
+            )
+
+            const component = wrapper.instance()
+
+            component._toggleDropdown()
+
+            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
+            expect(onChangeSpy.mock.calls.length).toEqual(0)
+
+            wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+            wrapper.find('input').simulate('keyDown', {key: 'Enter'})
+            expect(onChangeSpy.mock.calls.length).toEqual(1)
         })
     })
 })

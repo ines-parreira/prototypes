@@ -10,21 +10,22 @@ type Props = HTMLProps<HTMLTableDataCellElement> & {
     width?: number | string
 }
 
-export default function BodyCell({
-    children,
-    className,
-    width,
-    innerClassName,
-    ...otherProps
-}: Props) {
-    return (
-        <td {...otherProps} className={className}>
-            <div
-                className={classNames(css.cellContent, innerClassName)}
-                style={{width}}
-            >
-                {children}
-            </div>
-        </td>
-    )
-}
+const BodyCell = React.forwardRef<HTMLTableDataCellElement, Props>(
+    (
+        {children, className, width, innerClassName, ...otherProps}: Props,
+        ref
+    ) => {
+        return (
+            <td {...otherProps} ref={ref} className={className}>
+                <div
+                    className={classNames(css.cellContent, innerClassName)}
+                    style={{width}}
+                >
+                    {children}
+                </div>
+            </td>
+        )
+    }
+)
+
+export default BodyCell

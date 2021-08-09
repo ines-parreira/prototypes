@@ -31,20 +31,20 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       key="1"
       onClick={[Function]}
     >
-      <BodyCell
+      <ForwardRef
         className="macroTitle"
       >
         Waive Fee
-      </BodyCell>
-      <BodyCell>
+      </ForwardRef>
+      <ForwardRef>
         1
-      </BodyCell>
-      <BodyCell
+      </ForwardRef>
+      <ForwardRef
         className="dateCell"
       >
         2017-08-01
-      </BodyCell>
-      <BodyCell
+      </ForwardRef>
+      <ForwardRef
         className="smallest actions"
       >
         <Button
@@ -76,7 +76,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             delete
           </i>
         </Button>
-      </BodyCell>
+      </ForwardRef>
     </ForwardRef(TableBodyRow)>
     <Popover
       isOpen={false}
@@ -117,20 +117,20 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       key="2"
       onClick={[Function]}
     >
-      <BodyCell
+      <ForwardRef
         className="macroTitle"
       >
         Do Not Waive Fee
-      </BodyCell>
-      <BodyCell>
+      </ForwardRef>
+      <ForwardRef>
         3
-      </BodyCell>
-      <BodyCell
+      </ForwardRef>
+      <ForwardRef
         className="dateCell"
       >
         2017-08-01
-      </BodyCell>
-      <BodyCell
+      </ForwardRef>
+      <ForwardRef
         className="smallest actions"
       >
         <Button
@@ -162,7 +162,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             delete
           </i>
         </Button>
-      </BodyCell>
+      </ForwardRef>
     </ForwardRef(TableBodyRow)>
     <Popover
       isOpen={false}

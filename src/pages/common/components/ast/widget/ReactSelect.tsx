@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import 'react-select/dist/react-select.css'
 import SelectField from '../../../forms/SelectField/SelectField'
 import {
-    Option as SelectOption,
+    SelectableOption as SelectOption,
     Value as SelectValue,
 } from '../../../forms/SelectField/types'
 import Errors from '../Errors'

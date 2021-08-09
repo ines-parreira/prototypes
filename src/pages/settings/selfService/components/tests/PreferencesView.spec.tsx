@@ -49,6 +49,7 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
         // report_issue && cancel_order policies enabled for mystore2 and mystore4
         report_issue_policy: {
             enabled: i % 2 !== 0,
+            cases: [],
         },
         track_order_policy: {
             enabled: i % 2 === 0,
@@ -148,6 +149,7 @@ describe('<SelfServicePreferencesView/>', () => {
                     "deactivated_datetime": null,
                     "id": 3,
                     "report_issue_policy": Object {
+                      "cases": Array [],
                       "enabled": false,
                     },
                     "return_order_policy": Object {

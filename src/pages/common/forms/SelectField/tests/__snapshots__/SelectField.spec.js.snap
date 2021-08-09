@@ -1,5 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SelectField select with headers and dividers should filter corresponding headers and dividers when search applied 1`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "isHeader": true,
+      "label": "Group 1",
+    },
+    Object {
+      "label": "Foo",
+      "value": "foo",
+    },
+    Object {
+      "label": "Bar",
+      "value": "bar",
+    },
+    Object {
+      "isDivider": true,
+    },
+    Object {
+      "isHeader": true,
+      "label": "Group 2",
+    },
+    Object {
+      "label": "Baz",
+      "value": "baz",
+    },
+    Object {
+      "isDivider": true,
+    },
+    Object {
+      "isHeader": true,
+      "label": "Group 3",
+    },
+    Object {
+      "label": "Lorem ipsum",
+      "value": "loremipsum",
+    },
+  ],
+  "input": "",
+  "isFocused": false,
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
+exports[`SelectField select with headers and dividers should filter corresponding headers and dividers when search applied 2`] = `
+Object {
+  "filteredOptions": Array [
+    Object {
+      "isHeader": true,
+      "label": "Group 1",
+    },
+    Object {
+      "label": "Bar",
+      "value": "bar",
+    },
+    Object {
+      "isDivider": true,
+    },
+    Object {
+      "isHeader": true,
+      "label": "Group 2",
+    },
+    Object {
+      "label": "Baz",
+      "value": "baz",
+    },
+  ],
+  "input": "ba",
+  "isFocused": false,
+  "optionsOpen": false,
+  "selectedOptionIndex": 0,
+}
+`;
+
 exports[`SelectField should handle key down event Enter/Tab (existing value) 1`] = `
 Object {
   "filteredOptions": Array [
@@ -163,7 +238,6 @@ exports[`SelectField should render a select input with custom props 1`] = `
     >
       <DropdownItem
         className="option option--focused"
-        key="2"
         onClick={[Function]}
         onMouseEnter={[Function]}
         tag="button"
@@ -319,7 +393,6 @@ exports[`SelectField should set the minWidth of the input according to the lengt
     >
       <DropdownItem
         className="option option--focused"
-        key="2"
         onClick={[Function]}
         onMouseEnter={[Function]}
         tag="button"

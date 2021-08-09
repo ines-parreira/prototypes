@@ -56,6 +56,8 @@ import OnboardingContent from './onboarding/OnboardingContent'
 import SelfServicePreferencesContainer from './settings/selfService/components/PreferencesView'
 import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
 import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
+import SelfServiceReportIssuePolicyContainer from './settings/selfService/components/ReportIssuePolicyView/index'
+import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/components/ReportIssueCaseEditor/index'
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
@@ -571,6 +573,28 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceReturnsPolicyContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/report-issue`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceReportIssuePolicyContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceReportIssueCaseEditorContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

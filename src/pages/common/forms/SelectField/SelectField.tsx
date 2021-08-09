@@ -5,12 +5,14 @@ import React, {
     SyntheticEvent,
     MouseEvent,
     KeyboardEvent,
+    Fragment,
 } from 'react'
 import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
+    UncontrolledTooltip,
 } from 'reactstrap'
 import classnames from 'classnames'
 import _max from 'lodash/max'
@@ -19,7 +21,7 @@ import _noop from 'lodash/noop'
 import _isEqual from 'lodash/isEqual'
 
 import css from './SelectField.less'
-import {Option, Value} from './types'
+import {SelectableOption, Option, Value} from './types'
 
 const APPROXIMATE_CHAR_WIDTH = 8
 const ARROW_ICON_WIDTH = 10
@@ -37,7 +39,9 @@ type Props = {
     required: boolean
     onChange: (value: Value) => void
     onSearchChange: (search: string) => void
+    onDropdownToggle?: (isOpen: boolean) => void
     className?: string
+    dropdownMenuClassName?: string
     fixedWidth: boolean
     focusedPlaceholder?: string
     fullWidth?: boolean
@@ -108,7 +112,12 @@ export default class SelectField extends Component<Props, State> {
         input: string,
         value?: Value
     ): Option[] => {
-        return options.filter((option) => {
+        // Filter options by search query
+        let filteredOptions = options.filter((option) => {
+            if ('isHeader' in option || 'isDivider' in option) {
+                return true
+            }
+
             const searchableText = option.text ? option.text : option.label
 
             return (
@@ -120,6 +129,37 @@ export default class SelectField extends Component<Props, State> {
                             .includes(input.toLowerCase())))
             )
         })
+
+        // Remove empty groups caused by search query
+        filteredOptions = filteredOptions.filter((option, index) => {
+            if ('isHeader' in option) {
+                const nextOption = filteredOptions[index + 1]
+
+                if (!nextOption || 'isDivider' in nextOption) {
+                    return false
+                }
+            }
+
+            if ('isDivider' in option) {
+                const previousOption = filteredOptions[index - 1]
+
+                if ('isHeader' in previousOption) {
+                    return false
+                }
+            }
+
+            return true
+        })
+
+        // if last option is divider, remove it as well
+        if (
+            filteredOptions.length > 0 &&
+            'isDivider' in filteredOptions[filteredOptions.length - 1]
+        ) {
+            filteredOptions.splice(filteredOptions.length - 1, 1)
+        }
+
+        return filteredOptions
     }
 
     _onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -148,12 +188,21 @@ export default class SelectField extends Component<Props, State> {
         const {input, filteredOptions, selectedOptionIndex} = this.state
         const key = event.key
         const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
-        const minSelectedOptionIndex = allowCustomValue ? -1 : 0
+        let minSelectedOptionIndex = allowCustomValue ? -1 : 0
+
+        if (
+            minSelectedOptionIndex === 0 &&
+            filteredOptions.length > 0 &&
+            'isHeader' in filteredOptions[minSelectedOptionIndex]
+        ) {
+            minSelectedOptionIndex += 1
+        }
 
         if (killedEventsKeys.includes(key)) {
             this._stopPropagation(event)
         }
 
+        let possibleIndex
         switch (key) {
             case 'Escape':
                 this._toggleDropdown()
@@ -165,8 +214,17 @@ export default class SelectField extends Component<Props, State> {
                     selectedOptionIndex >= 0 &&
                     filteredOptions.length > selectedOptionIndex
                 ) {
-                    // add selected option
-                    onChange(filteredOptions[selectedOptionIndex].value)
+                    const selectedOption = filteredOptions[selectedOptionIndex]
+
+                    if (
+                        'isHeader' in selectedOption ||
+                        'isDivider' in selectedOption ||
+                        selectedOption.isDisabled
+                    ) {
+                        break
+                    }
+
+                    onChange(selectedOption.value)
                 } else if (allowCustomValue && input) {
                     onChange(input)
                 }
@@ -175,18 +233,30 @@ export default class SelectField extends Component<Props, State> {
                 break
             // move option selection down
             case 'ArrowUp':
+                possibleIndex = selectedOptionIndex - 1
+
+                if ('isHeader' in (filteredOptions[possibleIndex] || {})) {
+                    possibleIndex -= 2
+                }
+
                 this.setState({
                     selectedOptionIndex: _max([
-                        selectedOptionIndex - 1,
+                        possibleIndex,
                         minSelectedOptionIndex,
                     ])!,
                 })
                 break
             // move option selection up
             case 'ArrowDown':
+                possibleIndex = selectedOptionIndex + 1
+
+                if ('isDivider' in (filteredOptions[possibleIndex] || {})) {
+                    possibleIndex += 2
+                }
+
                 this.setState({
                     selectedOptionIndex: _min([
-                        selectedOptionIndex + 1,
+                        possibleIndex,
                         filteredOptions.length - 1,
                     ])!,
                 })
@@ -197,6 +267,7 @@ export default class SelectField extends Component<Props, State> {
 
     _toggleDropdown = () => {
         const {optionsOpen} = this.state
+        const {onDropdownToggle} = this.props
 
         if (!optionsOpen) {
             this._focusInput()
@@ -205,6 +276,10 @@ export default class SelectField extends Component<Props, State> {
         }
 
         this.setState({optionsOpen: !optionsOpen})
+
+        if (onDropdownToggle) {
+            onDropdownToggle(!optionsOpen)
+        }
     }
 
     _onOptionClick = (event: MouseEvent, value: Value) => {
@@ -249,6 +324,7 @@ export default class SelectField extends Component<Props, State> {
             fixedWidth,
             focusedPlaceholder,
             fullWidth,
+            dropdownMenuClassName,
         } = this.props
         const {
             filteredOptions,
@@ -258,8 +334,8 @@ export default class SelectField extends Component<Props, State> {
             isFocused,
         } = this.state
         const selectedOption = options.find((option) =>
-            _isEqual(option.value, value)
-        )
+            'value' in option ? _isEqual(option.value, value) : false
+        ) as SelectableOption | undefined
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
 
@@ -275,6 +351,10 @@ export default class SelectField extends Component<Props, State> {
         const selectMinWidth = fixedWidth
             ? _max(
                   options.map((option: Option) => {
+                      if ('isHeader' in option || 'isDivider' in option) {
+                          return 0
+                      }
+
                       if (typeof option.label === 'string') {
                           return option.label.length
                       }
@@ -347,9 +427,13 @@ export default class SelectField extends Component<Props, State> {
                         </div>
                     </DropdownToggle>
                     <DropdownMenu
-                        className={classnames(css.options, {
-                            [css.optionsFullWidth]: fullWidth,
-                        })}
+                        className={classnames(
+                            css.options,
+                            dropdownMenuClassName,
+                            {
+                                [css.optionsFullWidth]: fullWidth,
+                            }
+                        )}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (
                             <DropdownItem header>No result</DropdownItem>
@@ -379,41 +463,101 @@ export default class SelectField extends Component<Props, State> {
                                     </DropdownItem>
                                 ),
                                 ...filteredOptions.map((item, index) => {
+                                    if ('isHeader' in item) {
+                                        return (
+                                            <DropdownItem
+                                                header
+                                                key={`header_${index}`}
+                                            >
+                                                {item.label}
+                                            </DropdownItem>
+                                        )
+                                    }
+
+                                    if ('isDivider' in item) {
+                                        return (
+                                            <DropdownItem
+                                                divider
+                                                key={`divider_${index}`}
+                                            />
+                                        )
+                                    }
+
+                                    const wrapperId = `dropdown_item_${item.value}`
+                                    const WrapperComponent = item.tooltipText
+                                        ? 'div'
+                                        : Fragment
+                                    const wrapperProps = item.tooltipText
+                                        ? {
+                                              id: wrapperId,
+                                              // disabled element don't fire events
+                                              // so we attach event listeners to wrapper
+                                              onMouseEnter: () => {
+                                                  if (item.isDisabled) {
+                                                      this.setState({
+                                                          selectedOptionIndex: index,
+                                                      })
+                                                  }
+                                              },
+                                          }
+                                        : {}
+
                                     return (
-                                        <DropdownItem
+                                        <WrapperComponent
                                             key={item.value}
-                                            type="button"
-                                            className={classnames(css.option, {
-                                                [css.optionDeprecated]:
-                                                    item?.isDeprecated,
-                                                [`${css['option--focused']}`]:
-                                                    index ===
-                                                    selectedOptionIndex,
-                                            })}
-                                            onMouseEnter={() => {
-                                                this.setState({
-                                                    selectedOptionIndex: index,
-                                                })
-                                            }}
-                                            onClick={(event) => {
-                                                this._onOptionClick(
-                                                    event,
-                                                    item.value
-                                                )
-                                            }}
+                                            {...wrapperProps}
                                         >
-                                            {item?.isDeprecated && (
-                                                <span className="material-icons mr-1">
-                                                    warning
-                                                </span>
+                                            <DropdownItem
+                                                type="button"
+                                                className={classnames(
+                                                    css.option,
+                                                    {
+                                                        [css.optionDeprecated]:
+                                                            item?.isDeprecated,
+                                                        [`${css['option--focused']}`]:
+                                                            index ===
+                                                            selectedOptionIndex,
+                                                        [css[
+                                                            'option--disabled'
+                                                        ]]: item.isDisabled,
+                                                    }
+                                                )}
+                                                onMouseEnter={() => {
+                                                    this.setState({
+                                                        selectedOptionIndex: index,
+                                                    })
+                                                }}
+                                                onClick={(event) => {
+                                                    this._onOptionClick(
+                                                        event,
+                                                        item.value
+                                                    )
+                                                }}
+                                                disabled={item.isDisabled}
+                                            >
+                                                {item?.isDeprecated && (
+                                                    <span className="material-icons mr-1">
+                                                        warning
+                                                    </span>
+                                                )}
+                                                <span>{item.label}</span>
+                                                {item?.isDeprecated && (
+                                                    <span className="ml-1">
+                                                        (deprecated)
+                                                    </span>
+                                                )}
+                                            </DropdownItem>
+                                            {item.tooltipText && (
+                                                <UncontrolledTooltip
+                                                    placement="right"
+                                                    fade={false}
+                                                    target={wrapperId}
+                                                    boundariesElement="body"
+                                                >
+                                                    {item.tooltipText}
+                                                </UncontrolledTooltip>
                                             )}
-                                            <span>{item.label}</span>
-                                            {item?.isDeprecated && (
-                                                <span className="ml-1">
-                                                    (deprecated)
-                                                </span>
-                                            )}
-                                        </DropdownItem>
+                                        </WrapperComponent>
                                     )
                                 }),
                             ]

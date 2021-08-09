@@ -34,6 +34,7 @@ describe('self service configurations actions', () => {
             deactivated_datetime: null,
             report_issue_policy: {
                 enabled: true,
+                cases: [],
             },
             track_order_policy: {
                 enabled: true,

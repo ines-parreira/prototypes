@@ -77,6 +77,24 @@ export const PolicyRow = ({
                             </span>
                         </div>
                     </Link>
+                ) : policyKey === PolicyEnum.REPORT_ISSUE_POLICY ? (
+                    // TODO: uncomment when automation add-on is released
+                    // <Link
+                    //     to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
+                    // >
+                    //     <div className={css.policyRowInfo}>
+                    //         <span className={css.policyName}>{policyName}</span>
+                    //         <span className={css.policyDescription}>
+                    //             {policyDescription}
+                    //         </span>
+                    //     </div>
+                    // </Link>
+                    <div className={css.policyRowInfo}>
+                        <span className={css.policyName}>{policyName}</span>
+                        <span className={css.policyDescription}>
+                            {policyDescription}
+                        </span>
+                    </div>
                 ) : (
                     <div className={css.policyRowInfo}>
                         <span className={css.policyName}>{policyName}</span>
@@ -102,6 +120,12 @@ export const PolicyRow = ({
                         href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/returns`}
                     />
                 )}
+                {/* TODO: uncomment when automation add-on is released */}
+                {/*policyKey === PolicyEnum.REPORT_ISSUE_POLICY && (
+                    <ForwardIcon
+                        href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
+                    />
+                )*/}
             </td>
         </tr>
     )

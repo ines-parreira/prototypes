@@ -1,6 +1,6 @@
-import {ShopType} from '../state/self_service/types'
+import {ShopType, SelfServiceConfiguration} from '../state/self_service/types'
 
-export const selfServiceConfiguration1 = {
+export const selfServiceConfiguration1: SelfServiceConfiguration = {
     id: 1,
     type: 'shopify' as ShopType,
     shop_name: 'mystore',
@@ -9,6 +9,7 @@ export const selfServiceConfiguration1 = {
     deactivated_datetime: null,
     report_issue_policy: {
         enabled: true,
+        cases: [],
     },
     track_order_policy: {
         enabled: true,
@@ -21,7 +22,7 @@ export const selfServiceConfiguration1 = {
     },
 }
 
-export const selfServiceConfiguration2 = {
+export const selfServiceConfiguration2: SelfServiceConfiguration = {
     id: 2,
     type: 'shopify' as ShopType,
     shop_name: 'otherstore',
@@ -30,6 +31,7 @@ export const selfServiceConfiguration2 = {
     deactivated_datetime: '2021-02-20T08:30:46.097905+00:00',
     report_issue_policy: {
         enabled: true,
+        cases: [],
     },
     track_order_policy: {
         enabled: true,

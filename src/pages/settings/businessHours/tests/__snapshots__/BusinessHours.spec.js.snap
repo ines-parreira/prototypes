@@ -483,7 +483,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                             >
                                               <DropdownItem
                                                 className="option option--focused"
-                                                key="1,2,3,4,5,6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -507,7 +506,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="1,2,3,4,5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -531,7 +529,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -555,7 +552,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="1"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -577,7 +573,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="3"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -599,7 +594,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="4"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -621,7 +615,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -643,7 +636,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="6"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -665,7 +657,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -916,7 +907,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                             >
                                               <DropdownItem
                                                 className="option option--focused"
-                                                key="1,2,3,4,5,6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -940,7 +930,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="1,2,3,4,5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -964,7 +953,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="6,7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -988,7 +976,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="1"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -1010,7 +997,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="2"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -1032,7 +1018,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="3"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -1054,7 +1039,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="5"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -1076,7 +1060,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="6"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"
@@ -1098,7 +1081,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               </DropdownItem>
                                               <DropdownItem
                                                 className="option"
-                                                key="7"
                                                 onClick={[Function]}
                                                 onMouseEnter={[Function]}
                                                 tag="button"

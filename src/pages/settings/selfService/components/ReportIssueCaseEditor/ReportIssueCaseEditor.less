@@ -1,0 +1,49 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local {
+    .buttonsWrapper {
+        margin-top: 2rem;
+        display: flex;
+    }
+
+    .submitButtonWrapper {
+        margin-right: 5px;
+
+        > button:disabled {
+            pointer-events: none;
+        }
+    }
+
+    .deleteButton {
+        margin-left: auto;
+    }
+
+    .deleteButtonIcon {
+        color: @red;
+    }
+
+    .fieldset {
+        margin-top: 32px;
+    }
+
+    .legend {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        color: @neutral10;
+    }
+
+    .tooltipIcon {
+        margin-left: 4px;
+        color: @neutral6;
+    }
+
+    .form {
+        padding-bottom: 12px;
+
+        @media @desktops {
+            min-width: 480px;
+        }
+    }
+}
