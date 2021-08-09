@@ -23,6 +23,7 @@ exports[`Header should correctly display intents 1`] = `
       />
     </div>
     <Meta
+      externalId={null}
       integrationId={null}
       messageCreatedDatetime=""
       meta={null}
@@ -145,6 +146,7 @@ exports[`Header should display header 1`] = `
       />
     </div>
     <Meta
+      externalId={null}
       integrationId={null}
       messageCreatedDatetime=""
       meta={null}

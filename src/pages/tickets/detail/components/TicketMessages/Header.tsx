@@ -41,6 +41,7 @@ export default function Header(props: Props) {
     let metaContent = (
         <Meta
             messageId={message.message_id}
+            externalId={message.external_id}
             meta={message.meta}
             via={message.via}
             source={message.source}

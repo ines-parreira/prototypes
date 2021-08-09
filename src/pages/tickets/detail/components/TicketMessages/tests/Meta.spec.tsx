@@ -313,13 +313,14 @@ describe('ticket message meta', () => {
                 to: [{name: toUsername, address: '12345'}],
                 extra: {
                     parent_id: '1399880580741935107',
-                    conversation_id: tweetId,
+                    conversation_id: '1399880580741935107',
                 },
                 type: TicketMessageSourceType.TwitterTweet,
             }
 
             const component = shallow(
                 <Meta
+                    externalId={tweetId}
                     via={TicketChannel.Twitter}
                     integrationId={118}
                     source={source}

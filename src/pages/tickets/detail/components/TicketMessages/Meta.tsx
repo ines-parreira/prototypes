@@ -15,6 +15,7 @@ import css from './Meta.less'
 
 type Props = {
     messageId?: string
+    externalId?: string | null
     via: string
     integrationId?: number | null
     ruleId?: string | null
@@ -36,6 +37,7 @@ export default function Meta(props: Props) {
         meta,
         source,
         messageId,
+        externalId,
         via,
         integrationId,
         messageCreatedDatetime,
@@ -139,7 +141,7 @@ export default function Meta(props: Props) {
 
         const isYotpoReview =
             source.type === TicketMessageSourceType.YotpoReview
-        const tweetId = messageId ? messageId : source.extra.conversation_id
+        const tweetId = externalId ? externalId : source.extra.conversation_id
         const twitterFromUsername = source.from?.name
         const twitterToUsername = source.to ? source.to[0]?.name : null
         const isTwitterRootTweet =
