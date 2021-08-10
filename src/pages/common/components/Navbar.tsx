@@ -25,6 +25,7 @@ import {RootState} from '../../../state/types'
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {reportError} from '../../../utils/errors'
 
 import Avatar from './Avatar/Avatar'
 
@@ -129,11 +130,20 @@ export class Navbar extends React.Component<Props, State> {
                 return
             }
 
-            void window.noticeable
-                .render('widget', window.noticeableWidgetId)
-                .then(() => {
-                    this.setState({noticeableWidgetRendered: true})
-                })
+            try {
+                void window.noticeable
+                    .render('widget', window.noticeableWidgetId)
+                    .then(() => {
+                        this.setState({noticeableWidgetRendered: true})
+                        window.Raven?.captureBreadcrumb({
+                            category: 'noticeable',
+                            message: 'widget rendered',
+                        })
+                    })
+            } catch (error) {
+                // https://linear.app/gorgias/issue/COR-1272/typeerror-windownoticeablerenderthen-is-not-a-function
+                reportError(error)
+            }
 
             window.noticeable.on(
                 'widget:publication:unread_count:changed',
@@ -148,6 +158,10 @@ export class Navbar extends React.Component<Props, State> {
                                 ? 'hidden'
                                 : 'visible'
                     }
+                    window.Raven?.captureBreadcrumb({
+                        category: 'noticeable',
+                        message: 'widget unread_count changed',
+                    })
                 }
             )
         } else if (this.state.noticeableWidgetRendered) {
@@ -155,6 +169,10 @@ export class Navbar extends React.Component<Props, State> {
                 .destroy('widget', window.noticeableWidgetId)
                 .then(() => {
                     this.setState({noticeableWidgetRendered: false})
+                    window.Raven?.captureBreadcrumb({
+                        category: 'noticeable',
+                        message: 'widget destroyed',
+                    })
                 })
         }
     }
