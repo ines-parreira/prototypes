@@ -5,6 +5,7 @@ import {fromJS, Map} from 'immutable'
 import {TableStat} from '../TableStat/TableStat'
 import {
     stats as statsConfig,
+    StatValueType,
     TICKETS_PER_TAG,
 } from '../../../../../../config/stats'
 
@@ -13,65 +14,108 @@ const tableStatData = fromJS({
         axes: {
             x: [
                 {
+                    name: 'Agent',
+                    type: StatValueType.User,
+                },
+                {
                     name: 'Tags',
-                    type: 'string',
+                    type: StatValueType.String,
                 },
                 {
                     name: 'New tickets #',
-                    type: 'number',
+                    type: StatValueType.Number,
                 },
                 {
                     name: 'Percent',
-                    type: 'percent',
+                    type: StatValueType.Percent,
                 },
                 {
                     name: 'Agent Score',
-                    type: 'satisfaction-score',
+                    type: StatValueType.SatisfactionScore,
                 },
                 {
                     name: 'Survey Score',
-                    type: 'satisfaction-score',
+                    type: StatValueType.SatisfactionScore,
                 },
                 {
                     name: 'Delta',
-                    type: 'delta',
+                    type: StatValueType.Delta,
                 },
                 {
                     name: 'Sales',
-                    type: 'currency',
+                    type: StatValueType.Currency,
                     currency: 'AUD',
                 },
+                {name: 'Online time', type: StatValueType.OnlineTime},
+                {name: 'Ticket details', type: StatValueType.TicketDetails},
             ],
         },
         lines: [
             [
                 {
-                    type: 'string',
+                    type: StatValueType.User,
+                    value: {id: 1, name: 'Foo'},
+                },
+                {
+                    type: StatValueType.String,
                     value: 'refund',
                 },
                 {
-                    type: 'number',
+                    type: StatValueType.Number,
                     value: 42,
                 },
                 {
-                    type: 'percent',
+                    type: StatValueType.Percent,
                     value: 12,
                 },
                 {
-                    type: 'satisfaction-score',
+                    type: StatValueType.SatisfactionScore,
                     value: 93,
                 },
                 {
-                    type: 'satisfaction-score',
+                    type: StatValueType.SatisfactionScore,
                     value: 3,
                 },
                 {
-                    type: 'delta',
+                    type: StatValueType.Delta,
                     value: -1,
                 },
                 {
-                    type: 'currency',
+                    type: StatValueType.Currency,
                     value: 3.5,
+                },
+                {
+                    type: StatValueType.Duration,
+                    value: 16043,
+                    extra: {
+                        timezone: 'US/Pacific',
+                        isOnline: true,
+                        firstSession: '2021-08-02T09:55:28.902155',
+                        lastSession: null,
+                    },
+                },
+                {
+                    type: StatValueType.Object,
+                    value: 51,
+                    details: {
+                        aircall: 10,
+                        api: 10,
+                        chat: 10,
+                        email: 11,
+                        facebook: 10,
+                        'facebook-mention': 5,
+                        'facebook-messenger': 5,
+                        'facebook-recommendations': 5,
+                        'instagram-ad-comment': 10,
+                        'instagram-comment': 5,
+                        'instagram-mention': 10,
+                        'instagram-direct-message': 5,
+                        'internal-note': 10,
+                        phone: 10,
+                        sms: 10,
+                        twitter: 10,
+                        'yotpo-review': 10,
+                    },
                 },
             ],
         ],

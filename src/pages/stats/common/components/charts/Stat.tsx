@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, ComponentType} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
@@ -10,6 +10,7 @@ import * as tagsSelectors from '../../../../../state/tags/selectors'
 import {
     TICKETS_PER_TAG,
     stats as statsConfig,
+    StatConfig,
 } from '../../../../../config/stats'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
@@ -102,18 +103,28 @@ export class StatContainer extends Component<Props, State> {
         } = this.props
         const {isDownloading} = this.state
 
-        if (isFetching == null) {
+        if (
+            isFetching == null &&
+            statsConfig.getIn([name, 'style']) !== 'element'
+        ) {
             return null
         }
         const context = {tagColors}
         const config = statsConfig.get(name)
         const statStyle = config.get('style')
+        const StatComponent = config.get('component') as
+            | ComponentType
+            | undefined
         const helpText = config.get('helpText')
         // approximate height of a chart
         const downloadable = config.get('downloadable') || false
         // Loading states of key metrics statistics are displayed inside their components.
         const isLoading = statStyle !== 'key-metrics' && isFetching === true
-        const data = fromJS(stat?.data.data)
+        const data = config.get('formatData')
+            ? (config.get('formatData') as StatConfig['formatData'])!(
+                  fromJS(stat?.data.data)
+              )
+            : fromJS(stat?.data.data)
         const meta = fromJS(stat?.meta)
         const legend =
             !stat || !stat.data
@@ -161,7 +172,9 @@ export class StatContainer extends Component<Props, State> {
                     </div>
                 ) : null}
                 <div>
-                    {isLoading || stat == null ? (
+                    {statStyle === 'element' && StatComponent ? (
+                        <StatComponent />
+                    ) : isLoading || stat == null ? (
                         <Loader
                             minHeight={
                                 statStyle === 'key-metrics'

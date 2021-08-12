@@ -19,7 +19,7 @@ describe('<StatsFilters />', () => {
     const minProps = ({
         agents: agentsFixtures.map(({id, name}) => ({id, label: name})),
         channels: [],
-        config: views.get('overview'),
+        config: views.get('support-performance-overview'),
         currentAccount: fromJS({}),
         filters: fromJS({
             period: {

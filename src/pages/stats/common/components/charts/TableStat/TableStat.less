@@ -15,11 +15,19 @@
                 letter-spacing: 0.6px;
                 text-transform: uppercase;
             }
+
+            .axisHelperIcon {
+                font-size: 13px;
+            }
         }
 
         .satisfaction-survey-link {
             width: 50%;
             word-break: break-word;
+        }
+
+        .ticket-details {
+            width: 30%;
         }
 
         tbody tr {
@@ -33,12 +41,70 @@
             td:first-child {
                 font-weight: 500;
             }
+
+            .lineCell {
+                vertical-align: middle;
+            }
         }
 
         .cell-wrapper {
             min-height: 30px;
             display: flex;
             align-items: center;
+        }
+
+        .emptyDuration {
+            color: @neutral6;
+        }
+
+        .userName {
+            font-weight: 600;
+        }
+
+        .statusDot {
+            background-color: @orange;
+            border-radius: 4px;
+            display: inline-block;
+            height: 8px;
+            margin-right: 8px;
+            width: 8px;
+
+            &.isOnline {
+                background-color: @green;
+            }
+        }
+
+        .ticketDetailsWrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .ticketDetailsSeparator {
+            background-color: @neutral4;
+            margin: 0 16px;
+            width: 1px;
+            align-self: stretch;
+        }
+
+        .ticketDetailsList {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .ticketDetail {
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticketDetailIcon {
+            color: @neutral4!important;
+            font-size: 16px;
+            margin-right: 9px;
+        }
+
+        .ticketDetailsEmpty {
+            color: @neutral6;
         }
     }
 }

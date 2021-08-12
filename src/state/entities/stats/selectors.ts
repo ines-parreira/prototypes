@@ -24,7 +24,7 @@ export const getStatDataByName = (statName: string) =>
                     (acc, metric) => {
                         const stat =
                             statsState[
-                                `${statName}/${metric.api_resource_name}`
+                                `${statName}/${metric.api_resource_name!}`
                             ]
 
                         if (!stat) {
@@ -34,7 +34,7 @@ export const getStatDataByName = (statName: string) =>
                             (stat.data as OneDimensionalChart).data
                         )
 
-                        if (Object.keys(acc.meta).length === 0) {
+                        if (Object.keys(acc.meta).length === 0 && stat.meta) {
                             acc.meta = stat.meta
                         }
                         return acc

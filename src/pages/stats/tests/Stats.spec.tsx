@@ -107,7 +107,10 @@ describe('<Stats/>', () => {
                 componentWrapper.setProps({
                     match: {
                         params: {
-                            view: statsViewsConfig.getIn(['agents', 'link']),
+                            view: statsViewsConfig.getIn([
+                                'support-performance-agents',
+                                'link',
+                            ]),
                         },
                     },
                 })

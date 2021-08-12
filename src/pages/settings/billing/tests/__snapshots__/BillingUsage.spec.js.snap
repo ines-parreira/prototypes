@@ -101,6 +101,9 @@ exports[`<BillingUsage/> should display price 1`] = `
         "magento_integration": Immutable.Map {
           "enabled": true,
         },
+        "overview_live_statistics": Immutable.Map {
+          "enabled": true,
+        },
         "instagram_comment": Immutable.Map {
           "enabled": true,
         },
@@ -117,6 +120,9 @@ exports[`<BillingUsage/> should display price 1`] = `
           "enabled": true,
         },
         "auto_assignment": Immutable.Map {
+          "enabled": true,
+        },
+        "users_live_statistics": Immutable.Map {
           "enabled": true,
         },
       },
@@ -669,6 +675,9 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         "magento_integration": Immutable.Map {
           "enabled": true,
         },
+        "overview_live_statistics": Immutable.Map {
+          "enabled": true,
+        },
         "instagram_comment": Immutable.Map {
           "enabled": true,
         },
@@ -685,6 +694,9 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
           "enabled": true,
         },
         "auto_assignment": Immutable.Map {
+          "enabled": true,
+        },
+        "users_live_statistics": Immutable.Map {
           "enabled": true,
         },
       },

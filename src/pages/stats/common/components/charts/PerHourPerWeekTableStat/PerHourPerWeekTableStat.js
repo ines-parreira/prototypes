@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'reactstrap'
 
-import {getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors.ts'
+import {DEPRECATED_getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors.ts'
 import {getTimezone} from '../../../../../../state/currentUser/selectors.ts'
 import Legend from '../../Legend'
 
@@ -274,7 +274,7 @@ export function PerHourPerWeekTableStatContainer(props: Props) {
 
 export default connect((state) => {
     return {
-        businessHoursSettings: getBusinessHoursSettings(state),
+        businessHoursSettings: DEPRECATED_getBusinessHoursSettings(state),
         currentUserTimezone: getTimezone(state),
     }
 }, {})(PerHourPerWeekTableStatContainer)

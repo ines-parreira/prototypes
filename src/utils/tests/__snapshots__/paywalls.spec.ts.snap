@@ -12,6 +12,8 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature magento_integration 1`] = `"Pro"`;
 
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature overview_live_statistics 1`] = `"Pro"`;
+
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature phone_integration 1`] = `"Pro"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature revenue_statistics 1`] = `"Advanced"`;
@@ -21,6 +23,8 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature teams 1`] = `"Advanced"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature user_roles 1`] = `"Pro"`;
+
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature users_live_statistics 1`] = `"Advanced"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature view_sharing 1`] = `"Advanced"`;
 

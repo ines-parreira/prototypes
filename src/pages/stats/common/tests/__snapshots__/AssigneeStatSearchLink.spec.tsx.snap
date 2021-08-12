@@ -16,6 +16,16 @@ exports[`AssigneeStatSearchLink should prepare a link when "Unassigned" is passe
     {
       "left": "ticket.assignee_user.id",
       "operator": "isEmpty"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
     }
   ],
   "children": "click here!"
@@ -35,6 +45,16 @@ exports[`AssigneeStatSearchLink should prepare a link when an agent exists under
       "left": "ticket.assignee_user.id",
       "operator": "eq",
       "right": 1
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
     }
   ],
   "children": "click here!"
@@ -54,6 +74,16 @@ exports[`AssigneeStatSearchLink should should prepare a link with channel filter
       "left": "ticket.assignee_user.id",
       "operator": "eq",
       "right": 1
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
     },
     {
       "left": "ticket.channel",
@@ -80,6 +110,16 @@ exports[`AssigneeStatSearchLink should should prepare a link with channel filter
       "right": 1
     },
     {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
       "left": "ticket.channel",
       "operator": "containsAny",
       "right": "[\\"email\\",\\"chat\\"]"
@@ -104,6 +144,16 @@ exports[`AssigneeStatSearchLink should should prepare a link with integration fi
       "right": 1
     },
     {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
       "left": "ticket.messages.integration_id",
       "operator": "eq",
       "right": "1"
@@ -126,6 +176,16 @@ exports[`AssigneeStatSearchLink should should prepare a link with integration fi
       "left": "ticket.assignee_user.id",
       "operator": "eq",
       "right": 1
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
     },
     {
       "left": "ticket.messages.integration_id",

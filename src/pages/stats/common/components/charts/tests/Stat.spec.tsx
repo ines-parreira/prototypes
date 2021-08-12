@@ -10,6 +10,7 @@ import {
     LATEST_SATISFACTION_SURVEYS,
     REVENUE_OVERVIEW,
     TICKET_CREATED_PER_HOUR_PER_WEEKDAY,
+    CURRENT_DATE,
 } from '../../../../../../config/stats'
 import client from '../../../../../../models/api/resources'
 import {Stat} from '../../../../../../models/stat/types'
@@ -31,6 +32,8 @@ jest.mock('../KeyMetricStat/KeyMetricStat.js', () => () => (
 jest.mock('../PerHourPerWeekTableStat/PerHourPerWeekTableStat.js', () => () => (
     <div>PerHourPerWeekTableStat</div>
 ))
+
+jest.mock('../../StatCurrentDate', () => () => <div>StatCurrentDate</div>)
 
 const minProps = {
     name: 'stat_name',
@@ -91,6 +94,14 @@ describe('Stat', () => {
                 name={TICKET_CREATED_PER_HOUR_PER_WEEKDAY}
             />
         )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a non chart element', () => {
+        const {container} = render(
+            <StatContainer {...minProps} name={CURRENT_DATE} />
+        )
+
         expect(container.firstChild).toMatchSnapshot()
     })
 

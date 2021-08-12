@@ -1,10 +1,11 @@
 import {Map, List} from 'immutable'
 import React, {Component, ReactText} from 'react'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import _isFunction from 'lodash/isFunction'
 import _truncate from 'lodash/truncate'
 import {Table} from 'reactstrap'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import classnames from 'classnames'
 
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
@@ -14,11 +15,19 @@ import {
     SATISFACTION_SURVEY_MIN_SCORE,
     StatConfigCallbacks,
     StatMap,
+    StatValueType,
     TICKET_MAX_SUBJECT_LENGTH,
 } from '../../../../../../config/stats'
-import {comparedPeriodString, formatCurrency} from '../../../utils.js'
+import {
+    comparedPeriodString,
+    formatCurrency,
+    formatDuration,
+} from '../../../utils.js'
 import DistributionVariantStat from '../DistributionVariantStat.js'
 import StatPercentageDiff from '../../StatPercentageDiff'
+import StatsHelpIcon from '../../StatsHelpIcon'
+import SourceIcon from '../../../../../common/components/SourceIcon'
+import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 
 import css from './TableStat.less'
 
@@ -63,7 +72,128 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
         }
 
         switch (type) {
-            case 'delta': {
+            case StatValueType.TicketDetails: {
+                const details = (metric.get('details') as Map<
+                    any,
+                    any
+                >)?.toJS() as Record<TicketMessageSourceType, string>
+                return metric.get('value') ? (
+                    <div className={css.ticketDetailsWrapper}>
+                        <div>{callback(callbackData, callbackContext)}</div>
+                        <div className={css.ticketDetailsSeparator} />
+                        <div className={css.ticketDetailsList}>
+                            {(Object.keys(
+                                details
+                            ) as TicketMessageSourceType[]).map((key) => {
+                                return details[key] ? (
+                                    <div key={key} className={css.ticketDetail}>
+                                        <SourceIcon
+                                            type={key}
+                                            className={css.ticketDetailIcon}
+                                        />
+                                        {details[key]}
+                                    </div>
+                                ) : null
+                            })}
+                        </div>
+                    </div>
+                ) : (
+                    <div className={css.ticketDetailsEmpty}>
+                        No open tickets assigned to this agent
+                    </div>
+                )
+            }
+            case StatValueType.OnlineTime: {
+                const tooltipId = `${(axis.get('name') as string).replace(
+                    ' ',
+                    '-'
+                )}-${lineIndex}-tooltip`
+                const value = Math.floor(metric.get('value', 2) / 60) * 60
+
+                return (
+                    <div>
+                        <div
+                            className={classnames(css.statusDot, {
+                                [css.isOnline]: metric.getIn([
+                                    'extra',
+                                    'isOnline',
+                                ]),
+                            })}
+                            id={tooltipId}
+                        />
+                        {(metric.getIn(['extra', 'firstSession']) ||
+                            metric.getIn(['extra', 'lastSession'])) && (
+                            <Tooltip target={tooltipId}>
+                                {metric.getIn(['extra', 'timezone']) && (
+                                    <>
+                                        <b>Timezone </b>
+                                        {metric.getIn(['extra', 'timezone'])}
+                                        <br />
+                                    </>
+                                )}
+                                {metric.getIn(['extra', 'lastSession']) ? (
+                                    <>
+                                        Session ended at{' '}
+                                        {moment(
+                                            metric.getIn([
+                                                'extra',
+                                                'lastSession',
+                                            ])
+                                        ).format('hh:mm a')}
+                                    </>
+                                ) : metric.getIn(['extra', 'firstSession']) ? (
+                                    <>
+                                        Session started at{' '}
+                                        {moment(
+                                            metric.getIn([
+                                                'extra',
+                                                'firstSession',
+                                            ])
+                                        ).format('hh:mm a')}
+                                    </>
+                                ) : null}
+                            </Tooltip>
+                        )}
+                        <span
+                            className={!value ? css.emptyDuration : undefined}
+                        >
+                            {callback(
+                                {
+                                    ...callbackData,
+                                    value: value
+                                        ? formatDuration(value)
+                                        : 'No information',
+                                },
+                                context
+                            )}
+                        </span>
+                    </div>
+                )
+            }
+            case StatValueType.User: {
+                return (
+                    <div>
+                        <div className={css.userName}>
+                            {metric.getIn(['value', 'name'])
+                                ? callback(
+                                      {
+                                          ...callbackData,
+                                          value: metric.getIn([
+                                              'value',
+                                              'name',
+                                          ]),
+                                      },
+                                      context
+                                  )
+                                : callback(
+                                      {...callbackData, value: 'Unassigned'},
+                                      context
+                                  )}
+                        </div>
+                    </div>
+                )
+            }
+            case StatValueType.Delta: {
                 const previousStartDatetime = moment(
                     meta.get('previous_start_datetime')
                 )
@@ -94,7 +224,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     </span>
                 )
             }
-            case 'satisfaction-score': {
+            case StatValueType.SatisfactionScore: {
                 return (
                     <DistributionVariantStat
                         minValue={SATISFACTION_SURVEY_MIN_SCORE}
@@ -104,7 +234,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     />
                 )
             }
-            case 'percent': {
+            case StatValueType.Percent: {
                 return callback(
                     {
                         ...callbackData,
@@ -113,16 +243,16 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     callbackContext
                 )
             }
-            case 'date': {
+            case StatValueType.Date: {
                 return <DatetimeLabel dateTime={metric.get('value')} />
             }
-            case 'currency': {
+            case StatValueType.Currency: {
                 return formatCurrency(
                     metric.get('value'),
                     metric.get('currency')
                 ) as string
             }
-            case 'customer-link': {
+            case StatValueType.CustomerLink: {
                 return (
                     <Link
                         to={`/app/customer/${
@@ -133,7 +263,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     </Link>
                 )
             }
-            case 'satisfaction-survey-link': {
+            case StatValueType.SatisfactionSurveyLink: {
                 return (
                     <Link
                         to={`/app/ticket/${
@@ -146,7 +276,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     </Link>
                 )
             }
-            case 'ticket-link': {
+            case StatValueType.TicketLink: {
                 return (
                     <Link
                         to={`/app/ticket/${metric.get('ticket_id') as string}`}
@@ -166,7 +296,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
 
     // Render the table
     render() {
-        const {data} = this.props
+        const {data, config} = this.props
 
         return (data.get('lines') as List<any>).isEmpty() ? (
             <div className="text-muted">There is no data for this period.</div>
@@ -176,6 +306,9 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                     <tr>
                         {(data.getIn(['axes', 'x']) as List<Map<any, any>>).map(
                             (axe, index) => {
+                                const axisId = `${(axe!.get(
+                                    'name'
+                                ) as string).replace(' ', '-')}-tooltip`
                                 return (
                                     <th
                                         key={index}
@@ -187,6 +320,30 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                                             {(axe!.get(
                                                 'name'
                                             ) as string).toUpperCase()}
+
+                                            {config.getIn([
+                                                'axisHelpers',
+                                                axe!.get('name'),
+                                            ]) && (
+                                                <span
+                                                    className={
+                                                        css.axisHelperIcon
+                                                    }
+                                                >
+                                                    <StatsHelpIcon
+                                                        id={axisId}
+                                                    />
+                                                    <Tooltip
+                                                        placement="top"
+                                                        target={axisId}
+                                                    >
+                                                        {config.getIn([
+                                                            'axisHelpers',
+                                                            axe!.get('name'),
+                                                        ])}
+                                                    </Tooltip>
+                                                </span>
+                                            )}
                                         </span>
                                     </th>
                                 )
@@ -208,7 +365,10 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                                     return (
                                         <td
                                             key={metricIdx}
-                                            className={css[`${type}`]}
+                                            className={classnames(
+                                                css.lineCell,
+                                                css[`${type}`]
+                                            )}
                                         >
                                             <span
                                                 className={css['cell-wrapper']}

@@ -24,6 +24,15 @@ Immutable.Map {
 }
 `;
 
+exports[`selectors stats getViewfilters() should return a default period if missing from the filters 1`] = `
+Immutable.Map {
+  "period": Immutable.Map {
+    "start_datetime": "2019-09-03T00:00:00-07:00",
+    "end_datetime": "2019-09-03T23:59:59-07:00",
+  },
+}
+`;
+
 exports[`selectors stats getViewfilters() should return filters for the given view 1`] = `
 Immutable.Map {
   "tags": Immutable.List [

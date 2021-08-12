@@ -109,4 +109,16 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         },
         preview: `${assetsURL}/static/private/img/paywalls/screens/chat-campaigns.png`,
     },
+    [AccountFeature.OverviewLiveStatistics]: {
+        header: 'Track support in real time',
+        description:
+            'Get a live bird’s-eye view of your support team, including agent status, open tickets, and customers waiting longest for support to recognize and mitigate issues before they happen.',
+        preview: `${assetsURL}/static/private/img/paywalls/screens/live-overview-statistic.png`,
+    },
+    [AccountFeature.UsersLiveStatistics]: {
+        header: 'Track support in real time',
+        description:
+            'Track your agents in real-time. See how long they have been online, how many tickets have been assigned to them and the work they have accomplished over a given day.',
+        preview: `${assetsURL}/static/private/img/paywalls/screens/live-agents-statistic.png`,
+    },
 }

@@ -1,4 +1,5 @@
 export enum StatType {
+    User = 'user',
     Number = 'number',
     String = 'string',
     Percent = 'percent',

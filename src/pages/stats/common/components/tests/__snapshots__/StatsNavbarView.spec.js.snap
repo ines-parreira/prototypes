@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StatsNavbarView should render 1`] = `
-<div>
-  <div
-    className="item"
+<Fragment>
+  <NavbarBlock
+    title="Live"
   >
     <div
       className="menu"
@@ -13,7 +13,33 @@ exports[`StatsNavbarView should render 1`] = `
         className="item"
         exact={true}
         key="Overview"
-        to="/app/stats/overview"
+        to="/app/stats/live-overview"
+      >
+        Overview
+      </NavLink>
+      <NavLink
+        activeClassName="active"
+        className="item"
+        exact={true}
+        key="Agents"
+        to="/app/stats/live-agents"
+      >
+        Agents
+      </NavLink>
+    </div>
+  </NavbarBlock>
+  <NavbarBlock
+    title="Support Performance"
+  >
+    <div
+      className="menu"
+    >
+      <NavLink
+        activeClassName="active"
+        className="item"
+        exact={true}
+        key="Overview"
+        to="/app/stats/support-performance-overview"
       >
         Overview
       </NavLink>
@@ -49,7 +75,7 @@ exports[`StatsNavbarView should render 1`] = `
         className="item"
         exact={true}
         key="Agents"
-        to="/app/stats/agents"
+        to="/app/stats/support-performance-agents"
       >
         Agents
       </NavLink>
@@ -81,6 +107,6 @@ exports[`StatsNavbarView should render 1`] = `
         Revenue
       </NavLink>
     </div>
-  </div>
-</div>
+  </NavbarBlock>
+</Fragment>
 `;

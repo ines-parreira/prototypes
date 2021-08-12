@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`current account selectors getBusinessHoursRangesByUserTimezone() should return the business hours range 1`] = `
+Array [
+  Array [
+    "2019-09-03T15:00:00.000Z",
+    "2019-09-03T19:00:00.000Z",
+  ],
+  Array [
+    "2019-09-03T20:00:00.000Z",
+    "2019-09-04T00:30:00.000Z",
+  ],
+]
+`;

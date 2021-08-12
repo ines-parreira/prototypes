@@ -79,6 +79,20 @@ exports[`StatsPage should render "Satisfaction" statistics 1`] = `
 </div>
 `;
 
+exports[`StatsPage should render paywall when on live agents page and the live agents feature is not available 1`] = `
+<div>
+  Paywall for feature: 
+  users_live_statistics
+</div>
+`;
+
+exports[`StatsPage should render paywall when on live overview page and the live overview feature is not available 1`] = `
+<div>
+  Paywall for feature: 
+  overview_live_statistics
+</div>
+`;
+
 exports[`StatsPage should render paywall when on revenue page and the revenue statistics feature is not available 1`] = `
 <div>
   Paywall for feature: 

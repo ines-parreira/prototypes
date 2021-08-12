@@ -10,8 +10,18 @@ exports[`TableStat should render a table chart 1`] = `
   <thead>
     <tr>
       <th
-        className="string"
+        className="user"
         key="0"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          AGENT
+        </span>
+      </th>
+      <th
+        className="string"
+        key="1"
       >
         <span
           className="cell-wrapper"
@@ -21,7 +31,7 @@ exports[`TableStat should render a table chart 1`] = `
       </th>
       <th
         className="number"
-        key="1"
+        key="2"
       >
         <span
           className="cell-wrapper"
@@ -31,7 +41,7 @@ exports[`TableStat should render a table chart 1`] = `
       </th>
       <th
         className="percent"
-        key="2"
+        key="3"
       >
         <span
           className="cell-wrapper"
@@ -41,7 +51,7 @@ exports[`TableStat should render a table chart 1`] = `
       </th>
       <th
         className="satisfaction-score"
-        key="3"
+        key="4"
       >
         <span
           className="cell-wrapper"
@@ -51,7 +61,7 @@ exports[`TableStat should render a table chart 1`] = `
       </th>
       <th
         className="satisfaction-score"
-        key="4"
+        key="5"
       >
         <span
           className="cell-wrapper"
@@ -61,7 +71,7 @@ exports[`TableStat should render a table chart 1`] = `
       </th>
       <th
         className="delta"
-        key="5"
+        key="6"
       >
         <span
           className="cell-wrapper"
@@ -71,12 +81,32 @@ exports[`TableStat should render a table chart 1`] = `
       </th>
       <th
         className="currency"
-        key="6"
+        key="7"
       >
         <span
           className="cell-wrapper"
         >
           SALES
+        </span>
+      </th>
+      <th
+        className="online-time"
+        key="8"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          ONLINE TIME
+        </span>
+      </th>
+      <th
+        className="ticket-details"
+        key="9"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          TICKET DETAILS
         </span>
       </th>
     </tr>
@@ -86,8 +116,24 @@ exports[`TableStat should render a table chart 1`] = `
       key="0"
     >
       <td
-        className="string"
+        className="lineCell user"
         key="0"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <div>
+            <div
+              className="userName"
+            >
+              Foo
+            </div>
+          </div>
+        </span>
+      </td>
+      <td
+        className="lineCell string"
+        key="1"
       >
         <span
           className="cell-wrapper"
@@ -96,8 +142,8 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </td>
       <td
-        className="number"
-        key="1"
+        className="lineCell number"
+        key="2"
       >
         <span
           className="cell-wrapper"
@@ -106,8 +152,8 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </td>
       <td
-        className="percent"
-        key="2"
+        className="lineCell percent"
+        key="3"
       >
         <span
           className="cell-wrapper"
@@ -116,8 +162,8 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </td>
       <td
-        className="satisfaction-score"
-        key="3"
+        className="lineCell satisfaction-score"
+        key="4"
       >
         <span
           className="cell-wrapper"
@@ -131,8 +177,8 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </td>
       <td
-        className="satisfaction-score"
-        key="4"
+        className="lineCell satisfaction-score"
+        key="5"
       >
         <span
           className="cell-wrapper"
@@ -146,8 +192,8 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </td>
       <td
-        className="delta"
-        key="5"
+        className="lineCell delta"
+        key="6"
       >
         <span
           className="cell-wrapper"
@@ -171,13 +217,236 @@ exports[`TableStat should render a table chart 1`] = `
         </span>
       </td>
       <td
-        className="currency"
-        key="6"
+        className="lineCell currency"
+        key="7"
       >
         <span
           className="cell-wrapper"
         >
           3.5
+        </span>
+      </td>
+      <td
+        className="lineCell online-time"
+        key="8"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <div>
+            <div
+              className="statusDot isOnline"
+              id="Online-time-0-tooltip"
+            />
+            <Tooltip
+              target="Online-time-0-tooltip"
+            >
+              <b>
+                Timezone 
+              </b>
+              US/Pacific
+              <br />
+              Session started at
+               
+              09:55 am
+            </Tooltip>
+            <span>
+              4h 27m 
+            </span>
+          </div>
+        </span>
+      </td>
+      <td
+        className="lineCell ticket-details"
+        key="9"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <div
+            className="ticketDetailsWrapper"
+          >
+            <div>
+              51
+            </div>
+            <div
+              className="ticketDetailsSeparator"
+            />
+            <div
+              className="ticketDetailsList"
+            >
+              <div
+                className="ticketDetail"
+                key="internal-note"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="internal-note"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="facebook-mention"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="facebook-mention"
+                />
+                5
+              </div>
+              <div
+                className="ticketDetail"
+                key="instagram-comment"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="instagram-comment"
+                />
+                5
+              </div>
+              <div
+                className="ticketDetail"
+                key="facebook"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="facebook"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="yotpo-review"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="yotpo-review"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="aircall"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="aircall"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="facebook-messenger"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="facebook-messenger"
+                />
+                5
+              </div>
+              <div
+                className="ticketDetail"
+                key="phone"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="phone"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="instagram-mention"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="instagram-mention"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="instagram-ad-comment"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="instagram-ad-comment"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="twitter"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="twitter"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="facebook-recommendations"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="facebook-recommendations"
+                />
+                5
+              </div>
+              <div
+                className="ticketDetail"
+                key="chat"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="chat"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="sms"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="sms"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="api"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="api"
+                />
+                10
+              </div>
+              <div
+                className="ticketDetail"
+                key="email"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="email"
+                />
+                11
+              </div>
+              <div
+                className="ticketDetail"
+                key="instagram-direct-message"
+              >
+                <SourceIcon
+                  className="ticketDetailIcon"
+                  type="instagram-direct-message"
+                />
+                5
+              </div>
+            </div>
+          </div>
         </span>
       </td>
     </tr>

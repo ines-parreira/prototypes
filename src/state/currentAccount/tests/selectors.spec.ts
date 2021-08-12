@@ -7,6 +7,22 @@ import * as accountFixtures from '../../../fixtures/account'
 import {AccountFeature, AccountSettingType} from '../types'
 import {RootState} from '../../types'
 
+jest.mock('moment-timezone', () => {
+    const moment: ((
+        date?: string,
+        format?: string
+    ) => Record<string, unknown>) & {
+        utc: (value: string) => unknown
+    } = jest.requireActual('moment-timezone')
+    const fn = () => moment('2019-09-03')
+    fn.utc = (value: string) =>
+        moment.utc(
+            `2019-09-03T${value.length === 5 ? value : `0${value}`}:00.000Z`
+        )
+
+    return fn
+})
+
 jest.addMatchers(immutableMatchers)
 
 const setStateWith = (
@@ -216,8 +232,8 @@ describe('current account selectors', () => {
             fromJS({type: AccountSettingType.SatisfactionSurveys}),
         ],
         [
-            'getBusinessHoursSettings',
-            selectors.getBusinessHoursSettings,
+            'DEPRECATED_getBusinessHoursSettings',
+            selectors.DEPRECATED_getBusinessHoursSettings,
             fromJS({type: AccountSettingType.BusinessHours}),
         ],
         [
@@ -251,6 +267,32 @@ describe('current account selectors', () => {
 
         it('should return an empty map when state is empty', () => {
             expect(selector({} as RootState)).toEqualImmutable(fromJS({}))
+        })
+    })
+
+    describe('getBusinessHoursSettings', () => {
+        it('should return the setting', () => {
+            expect(
+                selectors.getBusinessHoursSettings(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: AccountSettingType.BusinessHours}])
+                    )
+                )
+            ).toEqual({type: AccountSettingType.BusinessHours})
+        })
+
+        it('should return undefined when there is no setting', () => {
+            expect(
+                selectors.getBusinessHoursSettings(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        fromJS([{type: 'unknown'}])
+                    )
+                )
+            ).toBe(undefined)
         })
     })
 
@@ -292,6 +334,55 @@ describe('current account selectors', () => {
                     })
                 )
             ).toBe(false)
+        })
+    })
+
+    describe('getBusinessHoursRangesByUserTimezone()', () => {
+        it('should return the business hours range', () => {
+            expect(
+                selectors.getBusinessHoursRangesByUserTimezone(
+                    setStateWith(
+                        {
+                            ...defaultState,
+                            currentUser: fromJS({
+                                timezone: 'EU/Paris',
+                            }),
+                        },
+                        ['settings'],
+                        fromJS([
+                            {
+                                data: {
+                                    business_hours: [
+                                        {
+                                            days: '0,1,2,3,4,5,6',
+                                            from_time: '9:00',
+                                            to_time: '11:00',
+                                        },
+                                        {
+                                            days: '0,1,2,3,4,5,6',
+                                            from_time: '14:00',
+                                            to_time: '16:00',
+                                        },
+                                        {
+                                            days: '0,1,2,3,4,5,6',
+                                            from_time: '8:00',
+                                            to_time: '12:00',
+                                        },
+                                        {
+                                            days: '0,1,2,3,4,5,6',
+                                            from_time: '13:00',
+                                            to_time: '17:30',
+                                        },
+                                    ],
+                                    timezone: 'US/Pacific',
+                                },
+                                id: 2,
+                                type: 'business-hours',
+                            },
+                        ])
+                    )
+                )
+            ).toMatchSnapshot()
         })
     })
 })

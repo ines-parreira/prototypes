@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StatCurrentDate /> should display the current date with business hours 1`] = `
+<div
+  class="wrapper"
+>
+  <span
+    class="date"
+  >
+    Today, 
+    September 3rd
+  </span>
+  <span
+    class="businessHours"
+  >
+    Business hours 
+    08:00 am - 12:00 pm, 01:00 pm - 05:30 pm
+     
+    US/Pacific
+  </span>
+</div>
+`;
+
+exports[`<StatCurrentDate /> should display the current date without business hours 1`] = `
+<div
+  class="wrapper"
+>
+  <span
+    class="date"
+  >
+    Today, 
+    September 3rd
+  </span>
+</div>
+`;

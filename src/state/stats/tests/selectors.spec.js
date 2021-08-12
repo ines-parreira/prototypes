@@ -8,6 +8,12 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../constants/integration.ts'
 
+jest.mock('moment-timezone', () => () => {
+    const moment = jest.requireActual('moment-timezone')
+
+    return moment('2019-09-03')
+})
+
 describe('selectors', () => {
     describe('stats', () => {
         let state = null
@@ -38,9 +44,11 @@ describe('selectors', () => {
         describe('getViewfilters()', () => {
             it('should return no filter for the given view because there is no filter', () => {
                 state.stats = state.stats.set('filters', null)
-                expect(selectors.getViewFilters('overview')(state)).toEqual(
-                    null
-                )
+                expect(
+                    selectors.getViewFilters('support-performance-overview')(
+                        state
+                    )
+                ).toEqual(null)
             })
 
             it('should return filters for the given view', () => {
@@ -56,7 +64,9 @@ describe('selectors', () => {
                 })
                 state.stats = state.stats.set('filters', filters)
                 expect(
-                    selectors.getViewFilters('overview')(state)
+                    selectors.getViewFilters('support-performance-overview')(
+                        state
+                    )
                 ).toMatchSnapshot()
                 expect(
                     selectors.getViewFilters('satisfaction')(state)
@@ -120,6 +130,13 @@ describe('selectors', () => {
 
                 expect(
                     selectors.getViewFilters('revenue')(state)
+                ).toMatchSnapshot()
+            })
+
+            it('should return a default period if missing from the filters', () => {
+                state.stats = state.stats.set('filters', fromJS({}))
+                expect(
+                    selectors.getViewFilters('live-agents')(state)
                 ).toMatchSnapshot()
             })
         })

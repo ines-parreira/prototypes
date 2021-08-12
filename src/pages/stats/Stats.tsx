@@ -51,9 +51,12 @@ export class StatsContainer extends React.Component<Props> {
             filters,
         } = this.props
         const viewConfig = statViewsConfig.get(params.view) as Map<any, any>
-        ;(viewConfig.get('stats') as List<any>).forEach((statName: string) =>
-            this._fetchStat(statName, filters!)
-        )
+        ;(viewConfig.get('stats') as List<any>)
+            .filter(
+                (statName: string) =>
+                    statsConfig.getIn([statName, 'style']) !== 'element'
+            )
+            .forEach((statName: string) => this._fetchStat(statName, filters!))
     }
 
     handleFetchStatsDebounced = _debounce(this.handleFetchStats, 1000)
@@ -72,10 +75,13 @@ export class StatsContainer extends React.Component<Props> {
             const resourceName = statConfig.get('api_resource_name')
             resourceNames = resourceName
                 ? fromJS([resourceName])
-                : (statConfig.get('metrics') as List<any>).map(
-                      (metric: Map<any, any>) =>
-                          metric.get('api_resource_name') as string
-                  )
+                : (statConfig.get('metrics') as List<any>)
+                      .map(
+                          (metric: Map<any, any>) =>
+                              metric.get('api_resource_name') as string
+                      )
+                      .toSet()
+                      .toList()
         }
 
         resourceNames.map(async (resourceName: string) => {
@@ -150,6 +156,11 @@ export class StatsContainer extends React.Component<Props> {
                             statConfig.get('style') === 'key-metrics'
                         ) {
                             padding = '0 0 30px'
+                        } else if (
+                            idx !== 0 &&
+                            statConfig.get('style') === 'element'
+                        ) {
+                            padding = '0 30px'
                         }
 
                         return (

@@ -25,11 +25,16 @@ jest.mock('../StatSearchLink', () => (props: LinkProps) => (
 
 describe('AssigneeStatSearchLink', () => {
     const history = createMemoryHistory({initialEntries: ['/']})
-    history.replace('/stats/agents', {view: 'agents'})
+    history.replace('/stats/support-performance-agents')
 
     const defaultState: Partial<RootState> = {
         stats: fromJS({
-            filters: {},
+            filters: {
+                period: {
+                    start_datetime: '2021-05-29T00:00:00+02:00',
+                    end_datetime: '2021-06-04T23:59:59+02:00',
+                },
+            },
         }),
         agents: fromJS({all: agentsFixtures}),
         integrations: fromJS(integrationsState),
@@ -87,6 +92,10 @@ describe('AssigneeStatSearchLink', () => {
                 stats: fromJS({
                     filters: {
                         channels: [TicketChannels.EMAIL],
+                        period: {
+                            start_datetime: '2021-05-29T00:00:00+02:00',
+                            end_datetime: '2021-06-04T23:59:59+02:00',
+                        },
                     },
                 }),
             },
@@ -98,6 +107,10 @@ describe('AssigneeStatSearchLink', () => {
                 stats: fromJS({
                     filters: {
                         channels: [TicketChannels.EMAIL, TicketChannels.CHAT],
+                        period: {
+                            start_datetime: '2021-05-29T00:00:00+02:00',
+                            end_datetime: '2021-06-04T23:59:59+02:00',
+                        },
                     },
                 }),
             },
@@ -109,6 +122,10 @@ describe('AssigneeStatSearchLink', () => {
                 stats: fromJS({
                     filters: {
                         integrations: [1],
+                        period: {
+                            start_datetime: '2021-05-29T00:00:00+02:00',
+                            end_datetime: '2021-06-04T23:59:59+02:00',
+                        },
                     },
                 }),
             },
@@ -120,6 +137,10 @@ describe('AssigneeStatSearchLink', () => {
                 stats: fromJS({
                     filters: {
                         integrations: [1, 5],
+                        period: {
+                            start_datetime: '2021-05-29T00:00:00+02:00',
+                            end_datetime: '2021-06-04T23:59:59+02:00',
+                        },
                     },
                 }),
             },

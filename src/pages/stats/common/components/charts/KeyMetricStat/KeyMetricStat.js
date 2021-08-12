@@ -75,6 +75,15 @@ export default class KeyMetricStat extends Component<Props> {
             return '-'
         }
 
+        if (config.get('formatData')) {
+            return this._defaultWrapper(
+                config.get('formatData')(metric),
+                metric,
+                valueTooltipId,
+                // $FlowFixMe
+                tooltipDelta
+            )
+        }
         const value = metric.get('value')
 
         if (_isObject(value)) {
@@ -143,12 +152,12 @@ export default class KeyMetricStat extends Component<Props> {
 
         return (
             <div className={css.metrics}>
-                {config.get('metrics').map((metricConfig) => {
+                {config.get('metrics').map((metricConfig, index) => {
                     const metricName =
                         metricConfig.get('api_resource_name') ||
                         metricConfig.get('name')
-                    const metricTooltipId = `title-${metricName}`
-                    const valueTooltipId = `value-${metricName}`
+                    const metricTooltipId = `title-${metricName}-${index}`
+                    const valueTooltipId = `value-${metricName}-${index}`
                     let previousStartDatetime = null
                     let previousEndDatetime = null
                     let tooltipDelta = null
@@ -158,10 +167,11 @@ export default class KeyMetricStat extends Component<Props> {
                             ? loading
                             : loading.get(metricConfig.get('api_resource_name'))
                     const metric = data
-                        ? data.find(
-                              (metric) =>
-                                  metric.get('name') ===
-                                  metricConfig.get('name')
+                        ? data.find((metric, j) =>
+                              metric.get('name')
+                                  ? metric.get('name') ===
+                                    metricConfig.get('name')
+                                  : j === index
                           )
                         : null
                     const metricMeta = this.props.meta
@@ -180,7 +190,10 @@ export default class KeyMetricStat extends Component<Props> {
                     }
 
                     return (
-                        <div className={css.metric} key={metricName}>
+                        <div
+                            className={css.metric}
+                            key={`${metricName}-${index}`}
+                        >
                             <div className={css.label}>
                                 {metricConfig.get('label')}
                                 <span>
@@ -192,7 +205,12 @@ export default class KeyMetricStat extends Component<Props> {
                                         placement="top"
                                         target={metricTooltipId}
                                     >
-                                        {metricConfig.get('tooltip')}
+                                        {typeof metricConfig.get('tooltip') ===
+                                        'string'
+                                            ? metricConfig.get('tooltip')
+                                            : metricConfig.get('tooltip')(
+                                                  metric
+                                              )}
                                     </Tooltip>
                                 </span>
                             </div>

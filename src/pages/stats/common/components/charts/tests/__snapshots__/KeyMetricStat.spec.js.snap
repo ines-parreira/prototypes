@@ -6,7 +6,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
 >
   <div
     className="metric"
-    key="tickets_created"
+    key="tickets_created-0"
   >
     <div
       className="label"
@@ -15,11 +15,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-tickets_created"
+          id="title-tickets_created-0"
         />
         <Tooltip
           placement="top"
-          target="title-tickets_created"
+          target="title-tickets_created-0"
         >
           Number of tickets created during the selected period
         </Tooltip>
@@ -36,7 +36,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
         </div>
         <span
           className="diff"
-          id="value-tickets_created"
+          id="value-tickets_created-0"
         >
           <StatPercentageDiff
             label={52}
@@ -45,7 +45,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           />
           <Tooltip
             placement="top"
-            target="value-tickets_created"
+            target="value-tickets_created-0"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -55,7 +55,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
   </div>
   <div
     className="metric"
-    key="tickets_converted"
+    key="tickets_converted-1"
   >
     <div
       className="label"
@@ -64,11 +64,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-tickets_converted"
+          id="title-tickets_converted-1"
         />
         <Tooltip
           placement="top"
-          target="title-tickets_converted"
+          target="title-tickets_converted-1"
         >
           Number of tickets converted during the selected period
         </Tooltip>
@@ -85,7 +85,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
         </div>
         <span
           className="diff"
-          id="value-tickets_converted"
+          id="value-tickets_converted-1"
         >
           <StatPercentageDiff
             label={43}
@@ -94,7 +94,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           />
           <Tooltip
             placement="top"
-            target="value-tickets_converted"
+            target="value-tickets_converted-1"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -104,7 +104,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
   </div>
   <div
     className="metric"
-    key="conversion_ratio"
+    key="conversion_ratio-2"
   >
     <div
       className="label"
@@ -113,11 +113,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-conversion_ratio"
+          id="title-conversion_ratio-2"
         />
         <Tooltip
           placement="top"
-          target="title-conversion_ratio"
+          target="title-conversion_ratio-2"
         >
           Ratio between created vs converted tickets
         </Tooltip>
@@ -134,7 +134,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
         </div>
         <span
           className="diff"
-          id="value-conversion_ratio"
+          id="value-conversion_ratio-2"
         >
           <StatPercentageDiff
             label={10}
@@ -143,7 +143,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           />
           <Tooltip
             placement="top"
-            target="value-conversion_ratio"
+            target="value-conversion_ratio-2"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -153,7 +153,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
   </div>
   <div
     className="metric"
-    key="total_sales_from_support"
+    key="total_sales_from_support-3"
   >
     <div
       className="label"
@@ -162,11 +162,11 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total_sales_from_support"
+          id="title-total_sales_from_support-3"
         />
         <Tooltip
           placement="top"
-          target="title-total_sales_from_support"
+          target="title-total_sales_from_support-3"
         >
           Sum of the order amount for each converted ticket
         </Tooltip>
@@ -183,7 +183,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
         </div>
         <span
           className="diff"
-          id="value-total_sales_from_support"
+          id="value-total_sales_from_support-3"
         >
           <StatPercentageDiff
             label={21}
@@ -192,7 +192,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           />
           <Tooltip
             placement="top"
-            target="value-total_sales_from_support"
+            target="value-total_sales_from_support-3"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -209,7 +209,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
 >
   <div
     className="metric"
-    key="total-tickets-created"
+    key="total-tickets-created-0"
   >
     <div
       className="label"
@@ -218,11 +218,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total-tickets-created"
+          id="title-total-tickets-created-0"
         />
         <Tooltip
           placement="top"
-          target="title-total-tickets-created"
+          target="title-total-tickets-created-0"
         >
           Number of tickets created
         </Tooltip>
@@ -236,7 +236,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="total-tickets-replied"
+    key="total-tickets-replied-1"
   >
     <div
       className="label"
@@ -245,11 +245,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total-tickets-replied"
+          id="title-total-tickets-replied-1"
         />
         <Tooltip
           placement="top"
-          target="title-total-tickets-replied"
+          target="title-total-tickets-replied-1"
         >
           Number of tickets replied by agents
         </Tooltip>
@@ -263,7 +263,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="total-tickets-closed"
+    key="total-tickets-closed-2"
   >
     <div
       className="label"
@@ -272,11 +272,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total-tickets-closed"
+          id="title-total-tickets-closed-2"
         />
         <Tooltip
           placement="top"
-          target="title-total-tickets-closed"
+          target="title-total-tickets-closed-2"
         >
           Number of tickets closed (if a ticket was closed multiple times, we only count the last time). This metric can evolve over time if tickets are reopened and closed on the following days.
         </Tooltip>
@@ -290,7 +290,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="total-messages-sent"
+    key="total-messages-sent-3"
   >
     <div
       className="label"
@@ -299,11 +299,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total-messages-sent"
+          id="title-total-messages-sent-3"
         />
         <Tooltip
           placement="top"
-          target="title-total-messages-sent"
+          target="title-total-messages-sent-3"
         >
           Number of messages sent by agents and rules
         </Tooltip>
@@ -320,7 +320,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
         </div>
         <span
           className="diff"
-          id="value-total-messages-sent"
+          id="value-total-messages-sent-3"
         >
           <StatPercentageDiff
             label={0}
@@ -328,7 +328,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           />
           <Tooltip
             placement="top"
-            target="value-total-messages-sent"
+            target="value-total-messages-sent-3"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -338,7 +338,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="total-messages-received"
+    key="total-messages-received-4"
   >
     <div
       className="label"
@@ -347,11 +347,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total-messages-received"
+          id="title-total-messages-received-4"
         />
         <Tooltip
           placement="top"
-          target="title-total-messages-received"
+          target="title-total-messages-received-4"
         >
           Number of messages received from customers
         </Tooltip>
@@ -365,7 +365,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="median-first-response-time"
+    key="median-first-response-time-5"
   >
     <div
       className="label"
@@ -374,11 +374,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-median-first-response-time"
+          id="title-median-first-response-time-5"
         />
         <Tooltip
           placement="top"
-          target="title-median-first-response-time"
+          target="title-median-first-response-time-5"
         >
           Median time between the first message from a customer and the first response from an agent (messages sent by rules don't count)
         </Tooltip>
@@ -392,7 +392,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="median-resolution-time"
+    key="median-resolution-time-6"
   >
     <div
       className="label"
@@ -401,11 +401,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-median-resolution-time"
+          id="title-median-resolution-time-6"
         />
         <Tooltip
           placement="top"
-          target="title-median-resolution-time"
+          target="title-median-resolution-time-6"
         >
           Median time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule
         </Tooltip>
@@ -422,7 +422,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
         </div>
         <span
           className="diff"
-          id="value-median-resolution-time"
+          id="value-median-resolution-time-6"
         >
           <StatPercentageDiff
             label={100}
@@ -431,7 +431,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           />
           <Tooltip
             placement="top"
-            target="value-median-resolution-time"
+            target="value-median-resolution-time-6"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -441,7 +441,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
   </div>
   <div
     className="metric"
-    key="total-one-touch-tickets"
+    key="total-one-touch-tickets-7"
   >
     <div
       className="label"
@@ -450,11 +450,11 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total-one-touch-tickets"
+          id="title-total-one-touch-tickets-7"
         />
         <Tooltip
           placement="top"
-          target="title-total-one-touch-tickets"
+          target="title-total-one-touch-tickets-7"
         >
           Percentage of tickets closed with only one response from an agent or a rule
         </Tooltip>
@@ -475,7 +475,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
 >
   <div
     className="metric"
-    key="total_sent"
+    key="total_sent-0"
   >
     <div
       className="label"
@@ -484,11 +484,11 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-total_sent"
+          id="title-total_sent-0"
         />
         <Tooltip
           placement="top"
-          target="title-total_sent"
+          target="title-total_sent-0"
         >
           Total number of customer satisfaction surveys sent
         </Tooltip>
@@ -502,7 +502,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
   </div>
   <div
     className="metric"
-    key="response_rate"
+    key="response_rate-1"
   >
     <div
       className="label"
@@ -511,11 +511,11 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-response_rate"
+          id="title-response_rate-1"
         />
         <Tooltip
           placement="top"
-          target="title-response_rate"
+          target="title-response_rate-1"
         >
           Total number of responses for surveys sent
         </Tooltip>
@@ -529,7 +529,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
   </div>
   <div
     className="metric"
-    key="average_rating"
+    key="average_rating-2"
   >
     <div
       className="label"
@@ -538,11 +538,11 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-average_rating"
+          id="title-average_rating-2"
         />
         <Tooltip
           placement="top"
-          target="title-average_rating"
+          target="title-average_rating-2"
         >
           Average score given by the customers
         </Tooltip>
@@ -555,7 +555,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
         differenceComponent={
           <span
             className="diff"
-            id="value-average_rating"
+            id="value-average_rating-2"
           >
             <StatPercentageDiff
               label={10}
@@ -563,7 +563,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
             />
             <Tooltip
               placement="top"
-              target="value-average_rating"
+              target="value-average_rating-2"
             >
               Compared to : Sep 05, 2017 - Sep 06, 2017
             </Tooltip>
@@ -585,7 +585,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
   </div>
   <div
     className="metric"
-    key="response_distribution"
+    key="response_distribution-3"
   >
     <div
       className="label"
@@ -594,11 +594,11 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
       <span>
         <StatsHelpIcon
           className="info-icon"
-          id="title-response_distribution"
+          id="title-response_distribution-3"
         />
         <Tooltip
           placement="top"
-          target="title-response_distribution"
+          target="title-response_distribution-3"
         >
           Percentage of responses, grouped by the given score
         </Tooltip>

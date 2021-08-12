@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode, ReactText} from 'react'
+import React, {ComponentType, ReactElement, ReactNode, ReactText} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
@@ -13,6 +13,9 @@ import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
 import AssigneeStatSearchLink from '../pages/stats/common/AssigneeStatSearchLink'
 import * as segmentTracker from '../store/middlewares/segmentTracker.js'
+import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
+
+import css from './stats.less'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -38,6 +41,10 @@ export const REVENUE_PER_TICKET = 'revenue-per-ticket'
 export const INTENTS_OVERVIEW = 'intents-overview'
 export const INTENTS_BREAKDOWN_PER_DAY = 'intents-breakdown-per-day'
 export const INTENTS_OCCURRENCE = 'intents-occurrence'
+export const CURRENT_DATE = 'current-date'
+export const USERS_PERFORMANCE_OVERVIEW = 'users-performance-overview'
+export const LIVE_OVERVIEW_METRICS = 'live-overview-metrics'
+export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -189,6 +196,24 @@ const defaultYAxeGridLines = {
     borderDash: [2, 4],
 }
 
+export enum StatValueType {
+    User = 'user',
+    Delta = 'delta',
+    SatisfactionScore = 'satisfaction-score',
+    Percent = 'percent',
+    Date = 'date',
+    Currency = 'currency',
+    CustomerLink = 'customer-link',
+    SatisfactionSurveyLink = 'satisfaction-survey-link',
+    TicketLink = 'ticket-link',
+    OnlineTime = 'online-time',
+    Number = 'number',
+    String = 'string',
+    TicketDetails = 'ticket-details',
+    Duration = 'duration',
+    Object = 'object',
+}
+
 export type StatConfigCellCallbackData = {
     line: List<any>
     value: ReactText
@@ -196,7 +221,7 @@ export type StatConfigCellCallbackData = {
     metricIndex: number
     axis: {
         name: string
-        type: string
+        type: StatValueType
     }
 }
 
@@ -218,8 +243,23 @@ export type StatConfig = {
     callbacks?: StatConfigCallbacks
     lines?: Record<string, unknown>
     options?: (value: any) => Record<string, unknown>
-    metrics?: Record<string, string | number>[]
+    metrics?: {
+        api_resource_name?: string
+        label: string
+        tooltip?: string | ((data?: Map<any, any>) => ReactNode)
+        name?: string
+        formatData?: (data: Map<any, any>) => string | number | null
+        type?: string
+        fill?: string
+        minValue?: number
+        maxValue?: number
+        variant?: string
+    }[]
     api_resource_name?: string
+    formatData?: (stat?: Map<any, any>) => Map<any, any> | undefined
+    axisHelpers?: Record<string, string>
+    component?: ComponentType
+    hasBusinessHoursHighlight?: boolean
 }
 
 export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>
@@ -229,6 +269,217 @@ export const stats = toImmutable<
     Map<string, StatMap>,
     Record<string, StatConfig>
 >({
+    [LIVE_OVERVIEW_METRICS]: {
+        style: 'key-metrics',
+        metrics: [
+            {
+                api_resource_name: 'users-statuses',
+                label: 'Agents online',
+                formatData: (data: Map<any, any>) => {
+                    return (data.get('lines') as List<any>)
+                        .filter(
+                            (value: List<any>) =>
+                                value.getIn([1, 'value']) as boolean
+                        )
+                        .count()
+                },
+                tooltip: (data?: Map<any, any>) => {
+                    if (!data || !data.get('lines')) {
+                        return null
+                    }
+                    const formattedData = (data.get('lines') as List<any>)
+                        .filter(
+                            (value: List<any>) =>
+                                value.getIn([1, 'value']) as boolean
+                        )
+                        .toJS() as [
+                        {
+                            type: 'user'
+                            value: {id: number; name: string}
+                        },
+                        {type: 'bool'; value: boolean}
+                    ][]
+                    const dataLength = formattedData.length
+
+                    return (
+                        <div className={css.tooltipWrapper}>
+                            {formattedData.slice(0, 25).map((value, index) => {
+                                return (
+                                    <div
+                                        key={`${value[0].value.name}-${index}`}
+                                    >
+                                        {value[0].value.name}
+                                    </div>
+                                )
+                            })}
+                            {dataLength > 25 && (
+                                <div className={css.moreAgents}>
+                                    +{dataLength - 25} more
+                                </div>
+                            )}
+                        </div>
+                    )
+                },
+            },
+            {
+                api_resource_name: 'users-statuses',
+                label: 'Agents offline',
+                formatData: (data: Map<any, any>) => {
+                    return (data.get('lines') as List<any>)
+                        .filter(
+                            (value: List<any>) => !value.getIn([1, 'value'])
+                        )
+                        .count()
+                },
+                tooltip: (data?: Map<any, any>) => {
+                    if (!data || !data.get('lines')) {
+                        return null
+                    }
+                    const formattedData = (data.get('lines') as List<any>)
+                        .filter(
+                            (value: List<any>) => !value.getIn([1, 'value'])
+                        )
+                        .toJS() as [
+                        {
+                            type: 'user'
+                            value: {id: number; name: string}
+                        },
+                        {type: 'bool'; value: boolean}
+                    ][]
+                    const dataLength = formattedData.length
+
+                    return (
+                        <div className={css.tooltipWrapper}>
+                            {formattedData.slice(0, 25).map((value, index) => {
+                                return (
+                                    <div
+                                        key={`${value[0].value.name}-${index}`}
+                                    >
+                                        {value[0].value.name}
+                                    </div>
+                                )
+                            })}
+                            {dataLength > 25 && (
+                                <div className={css.moreAgents}>
+                                    +{dataLength - 25} more
+                                </div>
+                            )}
+                        </div>
+                    )
+                },
+            },
+            {
+                api_resource_name: 'open-tickets-assignment-statuses',
+                label: 'Assigned open tickets',
+                tooltip: 'Total number of open tickets assigned to an agent',
+                formatData: (data: Map<any, any>) => {
+                    return data.getIn([0, 'value']) as number
+                },
+            },
+            {
+                api_resource_name: 'open-tickets-assignment-statuses',
+                label: 'Unassigned open tickets',
+                tooltip:
+                    'Total number of open tickets that are not assigned to an agent',
+                formatData: (data: Map<any, any>) => {
+                    return data.getIn([1, 'value']) as number
+                },
+            },
+        ],
+    },
+    [SUPPORT_VOLUME_PER_HOUR]: {
+        helpText:
+            'Number of tickets created, replied by agents and closed today per hour',
+        style: 'line',
+        hasBusinessHoursHighlight: true,
+        lines: {
+            created: {
+                label: 'Ticket created',
+                backgroundColor: '#8892f2',
+                borderColor: '#8892f2',
+                borderWidth: 2,
+                fill: false,
+                pointHoverBackgroundColor: '#8892f2',
+                pointHoverBorderColor: '#8892f2',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                lineTension: 0.5,
+            },
+            replied: {
+                label: 'Ticket replied',
+                backgroundColor: '#ffb584',
+                borderColor: '#ffb584',
+                borderWidth: 2,
+                fill: false,
+                pointHoverBackgroundColor: '#ffb584',
+                pointHoverBorderColor: '#ffb584',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                lineTension: 0.5,
+            },
+            closed: {
+                label: 'Ticket closed',
+                backgroundColor: '#a5e5ab',
+                borderColor: '#a5e5ab',
+                borderWidth: 2,
+                fill: false,
+                pointHoverBackgroundColor: '#a5e5ab',
+                pointHoverBorderColor: '#a5e5ab',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                lineTension: 0.5,
+            },
+        },
+        options: (legend: Map<any, any>) => ({
+            layout: {
+                padding: {
+                    right: 15,
+                },
+            },
+            tooltips: {
+                intersect: true,
+                position: 'nearest',
+            },
+            scales: {
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: false,
+                        gridLines: {
+                            borderColor: '#d2d7de',
+                            borderDash: [2],
+                        },
+                        ticks: _merge({}, defaultTicks, {
+                            callback: (val: any, index: number) =>
+                                index % 2 === 0
+                                    ? moment.unix(val).format('h a')
+                                    : '',
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: {
+                            borderColor: '#d2d7de',
+                            borderDash: [2],
+                        },
+                    },
+                ],
+            },
+        }),
+    },
     [MESSAGES_SENT_PER_MACRO]: {
         helpText: 'Number of messages sent by an agent or a rule per macro',
         style: 'table',
@@ -357,6 +608,127 @@ export const stats = toImmutable<
                 ],
             },
         }),
+    },
+    [CURRENT_DATE]: {
+        style: 'element',
+        component: StatCurrentDate,
+    },
+    [USERS_PERFORMANCE_OVERVIEW]: {
+        style: 'table',
+        downloadable: false,
+        axisHelpers: {
+            'Online time':
+                'Current agent online status and total amount of online time today calculated in your local timezone.',
+            'Tickets closed': 'Number of tickets closed per assigned agents',
+        },
+        formatData: (data?: Map<any, any>) => {
+            if (!data) {
+                return data
+            }
+            const openTicketsIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex((x: Map<any, any>) => x.get('name') === 'Open tickets')
+            const ticketsDetailsIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex(
+                (x: Map<any, any>) =>
+                    x.get('name') === 'Open tickets per channel'
+            )
+            const onlineTimeIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex((x: Map<any, any>) => x.get('name') === 'Online time')
+            const agentTimezoneIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex(
+                (x: Map<any, any>) => x.get('name') === 'Agent timezone'
+            )
+            const onlineIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex((x: Map<any, any>) => x.get('name') === 'Online')
+            const firstSessionIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex(
+                (x: Map<any, any>) => x.get('name') === 'First Session'
+            )
+            const lastSessionIndex = (data.getIn(['axes', 'x']) as List<
+                any
+            >).findIndex((x: Map<any, any>) => x.get('name') === 'Last Session')
+
+            return data
+                .setIn(
+                    ['axes', 'x', onlineTimeIndex, 'type'],
+                    StatValueType.OnlineTime
+                )
+                .setIn(
+                    ['axes', 'x', openTicketsIndex, 'type'],
+                    StatValueType.TicketDetails
+                )
+                .deleteIn(['axes', 'x', ticketsDetailsIndex])
+                .deleteIn(['axes', 'x', lastSessionIndex])
+                .deleteIn(['axes', 'x', firstSessionIndex])
+                .deleteIn(['axes', 'x', onlineIndex])
+                .deleteIn(['axes', 'x', agentTimezoneIndex])
+                .update('lines', (lines: List<any>) =>
+                    lines.map((line: List<any>) =>
+                        line.reduce(
+                            (
+                                acc?: List<any> | undefined,
+                                value?: Map<any, any>,
+                                index?: number
+                            ) => {
+                                if (!acc || !value) {
+                                    return acc!
+                                }
+
+                                return index === openTicketsIndex
+                                    ? acc.push(
+                                          value.set(
+                                              'details',
+                                              line.getIn([
+                                                  ticketsDetailsIndex,
+                                                  'value',
+                                              ])
+                                          )
+                                      )
+                                    : index === onlineTimeIndex
+                                    ? acc.push(
+                                          value.set(
+                                              'extra',
+                                              fromJS({
+                                                  timezone: line.getIn([
+                                                      agentTimezoneIndex,
+                                                      'value',
+                                                  ]),
+                                                  isOnline: line.getIn([
+                                                      onlineIndex,
+                                                      'value',
+                                                  ]),
+                                                  firstSession: line.getIn([
+                                                      firstSessionIndex,
+                                                      'value',
+                                                  ]),
+                                                  lastSession: line.getIn([
+                                                      lastSessionIndex,
+                                                      'value',
+                                                  ]),
+                                              })
+                                          )
+                                      )
+                                    : [
+                                          ticketsDetailsIndex,
+                                          agentTimezoneIndex,
+                                          onlineIndex,
+                                          firstSessionIndex,
+                                          lastSessionIndex,
+                                      ].includes(index!)
+                                    ? acc
+                                    : acc.push(value)
+                            },
+                            fromJS([])
+                        )
+                    )
+                )
+        },
     },
     [TICKETS_CLOSED_PER_AGENT]: {
         helpText: 'Number of tickets closed per assigned agent',
@@ -911,8 +1283,29 @@ const formatDurationTooltipCb = (
  * filters: filters available on the view applied on statistics
  * stats: statistics displayed on the view
  */
-export const views: Map<any, any> = fromJS({
-    overview: {
+export const liveViews: Map<any, any> = fromJS({
+    'live-overview': {
+        name: 'Overview',
+        description:
+            'Get a live overview of the current activity of your support team, including agent status, open tickets, and volume of tickets you are handling throughout the day.',
+        url: 'https://docs.gorgias.com/statistics/statistics#data_sets',
+        filters: [{type: 'channels'}, {type: 'agents'}],
+        link: 'live-overview',
+        stats: [LIVE_OVERVIEW_METRICS, CURRENT_DATE, SUPPORT_VOLUME_PER_HOUR],
+    },
+    'live-agents': {
+        name: 'Agents',
+        description:
+            'Live Agents will show you the work agents have accomplished over the day.',
+        url: 'https://docs.gorgias.com/statistics/statistics#data_sets',
+        filters: [{type: 'channels'}, {type: 'agents'}],
+        link: 'live-agents',
+        stats: [CURRENT_DATE, USERS_PERFORMANCE_OVERVIEW],
+    },
+})
+
+export const supportPerformanceViews: Map<any, any> = fromJS({
+    'support-performance-overview': {
         name: 'Overview',
         description: `Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
@@ -929,7 +1322,7 @@ providing excellent customer support.`,
             {type: 'period'},
         ],
         // default view available at `app/stats/`
-        link: 'overview',
+        link: 'support-performance-overview',
         stats: [
             OVERVIEW,
             SUPPORT_VOLUME,
@@ -1004,7 +1397,7 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
             INTENTS_OCCURRENCE,
         ],
     },
-    agents: {
+    'support-performance-agents': {
         name: 'Agents',
         description: `Agents statistics will show you how many tickets were closed by each agent during this period.`,
         url: 'https://docs.gorgias.com/statistics/statistics#agents',
@@ -1017,7 +1410,7 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
             {type: 'agents'},
             {type: 'period'},
         ],
-        link: 'agents',
+        link: 'support-performance-agents',
         stats: [TICKETS_CLOSED_PER_AGENT_PER_DAY, TICKETS_CLOSED_PER_AGENT],
     },
     macros: {
@@ -1092,3 +1485,5 @@ helping customers through the purchasing journey.`,
         ],
     },
 })
+
+export const views = liveViews.merge(supportPerformanceViews)

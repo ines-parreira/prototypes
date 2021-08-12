@@ -1,14 +1,14 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import LineStat from '../LineStat'
+import {LineStatContainer} from '../LineStat'
 import {
     stats as statsConfig,
     RESOLUTION_TIME,
 } from '../../../../../../config/stats'
 
-const barStat = {
+const minProps = ({
     name: 'stat_name',
     label: 'Stat label',
     legend: fromJS({
@@ -38,11 +38,12 @@ const barStat = {
         end_datetime: '2017-09-05 23:59:59',
     }),
     config: statsConfig.find((config, key) => key === RESOLUTION_TIME),
-}
+    businessRanges: undefined,
+} as unknown) as ComponentProps<typeof LineStatContainer>
 
 describe('LineStat', () => {
     it('should render a line chart', () => {
-        const {container} = render(<LineStat {...barStat} />)
+        const {container} = render(<LineStatContainer {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

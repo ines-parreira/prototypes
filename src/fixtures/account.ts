@@ -49,6 +49,8 @@ export const account: Account = {
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.InstagramComment]: {enabled: true},
         [AccountFeature.InstagramDirectMessage]: {enabled: true},
+        [AccountFeature.UsersLiveStatistics]: {enabled: true},
+        [AccountFeature.OverviewLiveStatistics]: {enabled: true},
         [AccountFeature.PhoneIntegration]: {enabled: true, limit: 3},
         [AccountFeature.MagentoIntegration]: {enabled: true},
         [AccountFeature.YotpoIntegration]: {enabled: true},

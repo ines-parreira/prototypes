@@ -22,6 +22,8 @@ export enum AccountFeature {
     FacebookComment = 'facebook_comment',
     InstagramComment = 'instagram_comment',
     InstagramDirectMessage = 'instagram_dm',
+    UsersLiveStatistics = 'users_live_statistics',
+    OverviewLiveStatistics = 'overview_live_statistics',
     MagentoIntegration = 'magento_integration',
     PhoneIntegration = 'phone_integration',
     YotpoIntegration = 'yotpo_integration',
@@ -39,18 +41,7 @@ export type ViewsOrderingAccountSetting = {
 }
 
 export type AccountSetting =
-    | {
-          id: number
-          type: AccountSettingType.BusinessHours
-          data: {
-              timezone: string
-              business_hours: {
-                  days: string
-                  from_time: string
-                  to_time: string
-              }[]
-          }
-      }
+    | AccountSettingBusinessHours
     | {
           id: number
           type: AccountSettingType.TicketAssignment
@@ -72,6 +63,19 @@ export type AccountSetting =
           }
       }
     | ViewsOrderingAccountSetting
+
+export type AccountSettingBusinessHours = {
+    id: number
+    type: AccountSettingType.BusinessHours
+    data: {
+        timezone: string
+        business_hours: {
+            days: string
+            from_time: string
+            to_time: string
+        }[]
+    }
+}
 
 export type AccountViewsOrderingSettingData = {
     views: Record<string, {display_order: number}>

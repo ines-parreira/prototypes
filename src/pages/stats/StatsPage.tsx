@@ -27,8 +27,16 @@ export default function StatsPage() {
     const isOnSatisfactionSurveyPage =
         view === views.getIn(['satisfaction', 'link'])
     const isOnRevenuePage = view === views.getIn(['revenue', 'link'])
+    const isOnLiveOverviewPage = view === views.getIn(['live-overview', 'link'])
+    const isOnLiveAgentsPage = view === views.getIn(['live-agents', 'link'])
     const userTimezone = useSelector(getTimezone)
     const globalFilters = useSelector(getFilters)
+    const hasLiveAgentsFeature = useSelector(
+        currentAccountHasFeature(AccountFeature.UsersLiveStatistics)
+    )
+    const hasLiveOverviewFeature = useSelector(
+        currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
+    )
     const hasSatisfactionSurveysFeature = useSelector(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -79,6 +87,14 @@ export default function StatsPage() {
         if (storeIntegrations == null || storeIntegrations.size === 0) {
             return <RevenueStatsRestrictedFeature />
         }
+    }
+
+    if (!hasLiveOverviewFeature && isOnLiveOverviewPage) {
+        return <Paywall feature={AccountFeature.OverviewLiveStatistics} />
+    }
+
+    if (!hasLiveAgentsFeature && isOnLiveAgentsPage) {
+        return <Paywall feature={AccountFeature.UsersLiveStatistics} />
     }
 
     return (

@@ -331,7 +331,7 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
             <Route
                 exact
                 path={`${path}/`}
-                render={() => <Redirect to={`${path}/overview`} />}
+                render={() => <Redirect to={`${path}/live-overview`} />}
             />
             <Route
                 path={`${path}/:view`}

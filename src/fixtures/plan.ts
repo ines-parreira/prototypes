@@ -31,6 +31,8 @@ const planFixture: Plan = {
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.InstagramComment]: {enabled: true},
         [AccountFeature.InstagramDirectMessage]: {enabled: true},
+        [AccountFeature.OverviewLiveStatistics]: {enabled: false},
+        [AccountFeature.UsersLiveStatistics]: {enabled: false},
         [AccountFeature.PhoneIntegration]: {enabled: true, limit: 50},
         [AccountFeature.MagentoIntegration]: {enabled: true},
         [AccountFeature.YotpoIntegration]: {enabled: true},

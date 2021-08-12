@@ -10,6 +10,10 @@ export const getCheapestPlanNameForFeature = (
     const plan = Object.values(plans)
         .filter((plan) => plan.interval === PlanInterval.Month)
         .sort((planA, planB) => planA.amount - planB.amount)
-        .find((plan) => isFeatureEnabled(plan.features[featureName]))
+        .find(
+            (plan) =>
+                plan.features[featureName] &&
+                isFeatureEnabled(plan.features[featureName])
+        )
     return plan ? plan.name : null
 }

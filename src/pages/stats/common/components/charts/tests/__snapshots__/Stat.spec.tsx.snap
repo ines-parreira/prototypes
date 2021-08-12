@@ -98,6 +98,26 @@ exports[`Stat should render a line chart 1`] = `
 </div>
 `;
 
+exports[`Stat should render a non chart element 1`] = `
+<div>
+  <div
+    class="mb-3 d-flex justify-content-between align-items-baseline"
+  >
+    <h5
+      class="mb-0 d-flex"
+      style="font-size: 17px;"
+    >
+      Stat label
+    </h5>
+  </div>
+  <div>
+    <div>
+      StatCurrentDate
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Stat should render a per hour per week table 1`] = `
 <div>
   <div

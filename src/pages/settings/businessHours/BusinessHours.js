@@ -197,7 +197,7 @@ export class BusinessHoursContainer extends React.Component<Props, State> {
 export default connect(
     (state) => {
         return {
-            businessHoursSettings: currentAccountSelectors.getBusinessHoursSettings(
+            businessHoursSettings: currentAccountSelectors.DEPRECATED_getBusinessHoursSettings(
                 state
             ),
         }

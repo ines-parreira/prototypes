@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {account} from '../../../fixtures/account'
 import StatsPage from '../StatsPage'
 import {renderWithRouter, RenderWithRouterParams} from '../../../utils/testing'
 import {AccountFeature} from '../../../state/currentAccount/types'
@@ -44,10 +45,7 @@ describe('StatsPage', () => {
     const defaultState: Partial<RootState> = {
         integrations: fromJS(integrationsStateWithShopify),
         currentAccount: fromJS({
-            features: fromJS({
-                [AccountFeature.SatisfactionSurveys]: {enabled: true},
-                [AccountFeature.RevenueStatistics]: {enabled: true},
-            }),
+            features: fromJS(account.features),
         }),
         currentUser: fromJS({
             ...user,
@@ -209,6 +207,7 @@ describe('StatsPage', () => {
                 ...defaultState,
                 currentAccount: fromJS({
                     features: fromJS({
+                        ...account.features,
                         [AccountFeature.SatisfactionSurveys]: {enabled: false},
                         [AccountFeature.RevenueStatistics]: {enabled: true},
                     }),
@@ -225,6 +224,7 @@ describe('StatsPage', () => {
                 ...defaultState,
                 currentAccount: fromJS({
                     features: fromJS({
+                        ...account.features,
                         [AccountFeature.SatisfactionSurveys]: {enabled: true},
                         [AccountFeature.RevenueStatistics]: {enabled: false},
                     }),
@@ -233,6 +233,40 @@ describe('StatsPage', () => {
             {
                 path: '/:view',
                 route: `/revenue`,
+            },
+        ],
+        [
+            'on live overview page and the live overview feature is not available',
+            {
+                ...defaultState,
+                currentAccount: fromJS({
+                    features: fromJS({
+                        ...account.features,
+                        [AccountFeature.OverviewLiveStatistics]: {
+                            enabled: false,
+                        },
+                    }),
+                }),
+            },
+            {
+                path: '/:view',
+                route: `/live-overview`,
+            },
+        ],
+        [
+            'on live agents page and the live agents feature is not available',
+            {
+                ...defaultState,
+                currentAccount: fromJS({
+                    features: fromJS({
+                        ...account.features,
+                        [AccountFeature.UsersLiveStatistics]: {enabled: false},
+                    }),
+                }),
+            },
+            {
+                path: '/:view',
+                route: `/live-agents`,
             },
         ],
     ])('should render paywall when %s', (testName, state, routerParams) => {
