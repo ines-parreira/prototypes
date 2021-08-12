@@ -14,6 +14,8 @@ import tags from './tags/reducer'
 import {TagsState} from './tags/types'
 import helpCenters from './helpCenters/reducer'
 import {HelpCentersState} from './helpCenters/types'
+import selfServiceConfigurations from './selfServiceConfigurations/reducer'
+import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -23,6 +25,7 @@ const entitiesReducers = combineReducers<{
     views: ViewsState
     viewsCount: ViewsCountState
     helpCenters: HelpCentersState
+    selfServiceConfigurations: SelfServiceConfigurationsState
 }>({
     macros,
     sections,
@@ -31,6 +34,7 @@ const entitiesReducers = combineReducers<{
     views,
     viewsCount,
     helpCenters,
+    selfServiceConfigurations,
 })
 
 export default entitiesReducers

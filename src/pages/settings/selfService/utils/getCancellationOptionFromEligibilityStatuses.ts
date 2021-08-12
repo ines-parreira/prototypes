@@ -1,4 +1,4 @@
-import {SelfServiceOrderStatusEnum} from '../../../../state/self_service/types'
+import {SelfServiceOrderStatusEnum} from '../../../../models/selfServiceConfiguration/types'
 
 export const getCancellationOptionFromEligibilityStatuses = (
     eligibilityStatuses: SelfServiceOrderStatusEnum[]

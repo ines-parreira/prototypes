@@ -1,44 +1,67 @@
 import {Link} from 'react-router-dom'
-import React from 'react'
+import React, {useState} from 'react'
 import {Map} from 'immutable'
 
 import ToggleButton from '../../../common/components/ToggleButton'
+import {getIconFromType} from '../../../../state/integrations/helpers'
+import {generateConfiguration} from '../utils/generateConfiguration'
+import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
 import {
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../state/self_service/types'
-import * as SelfServiceActions from '../../../../state/self_service/actions'
-import {getIconFromType} from '../../../../state/integrations/helpers'
+} from '../../../../models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
 
-import {generateConfiguration} from '../utils/generateConfiguration'
-import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
+import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
 import css from './IntegrationRow.less'
 
 interface Props {
     integration: Map<any, any>
     configuration?: SelfServiceConfiguration
-    actions: typeof SelfServiceActions
 }
 
-export const IntegrationRow = ({
-    integration,
-    configuration,
-    actions,
-}: Props) => {
+export const IntegrationRow = ({integration, configuration}: Props) => {
+    const dispatch = useAppDispatch()
+    const [loading, setLoading] = useState(false)
+
     const shopName: string = integration.getIn(['meta', 'shop_name'])
     const integrationType: ShopType = integration.get('type')
 
-    const _onChange = (value: boolean) => {
-        const deactivated_datetime = value ? null : new Date().toISOString()
+    const _onChange = async (value: boolean) => {
+        setLoading(true)
 
+        const deactivated_datetime = value ? null : new Date().toISOString()
         const baseConfiguration =
             configuration || generateConfiguration(0, integrationType, shopName)
 
-        actions.updateSelfServiceConfigurations({
-            ...baseConfiguration,
-            deactivated_datetime,
-        })
+        try {
+            const res = await updateSelfServiceConfiguration({
+                ...baseConfiguration,
+                deactivated_datetime,
+            })
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Self-service configuration successfully updated.',
+                })
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Could not update Self-service configuration, please try again later.',
+                })
+            )
+        } finally {
+            setLoading(false)
+        }
 
         return null
     }
@@ -66,7 +89,11 @@ export const IntegrationRow = ({
                 </Link>
             </td>
             <td className="smallest align-middle">
-                <ToggleButton value={enabled} onChange={_onChange} />
+                <ToggleButton
+                    value={enabled}
+                    onChange={_onChange}
+                    loading={loading}
+                />
             </td>
             <td className="smallest align-middle">
                 <ForwardIcon

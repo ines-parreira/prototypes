@@ -6,8 +6,6 @@ import React, {
     useMemo,
 } from 'react'
 import classNames from 'classnames'
-import {useSelector} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -27,15 +25,17 @@ import InputField from '../../../../common/forms/InputField'
 import {
     ReportIssueRulesLogic,
     SelfServiceReportIssueCase,
-} from '../../../../../state/self_service/types'
-
+} from '../../../../../models/selfServiceConfiguration/types'
 import {useConfigurationData} from '../hooks'
-import {getSelfServiceConfigurations} from '../../../../../state/self_service/selectors'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../models/integration/types'
 import {SelectableOption} from '../../../../common/forms/SelectField/types'
-import * as SelfServiceActions from '../../../../../state/self_service/actions'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
+
+import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
+
+import {selfServiceConfigurationUpdated} from '../../../../../state/entities/selfServiceConfigurations/actions'
+import {notify} from '../../../../../state/notifications/actions'
+
+import {NotificationStatus} from '../../../../../state/notifications/types'
 
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
 
@@ -75,20 +75,8 @@ const ReportIssueCaseEditor: ComponentType = () => {
     const [errors, setErrors] = useState<ErrorFormState>({})
     const [isDirty, setIsDirty] = useState(false)
 
-    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
-    const shopifyIntegrations = useSelector(
-        getIntegrationsByTypes(IntegrationType.ShopifyIntegrationType)
-    )
     const dispatch = useAppDispatch()
-    const actions = useMemo(() => {
-        return bindActionCreators(SelfServiceActions, dispatch)
-    }, [dispatch])
-    const {isLoadingConfig, configuration} = useConfigurationData({
-        selfServiceConfigurations,
-        actions,
-        shopifyIntegrations,
-        matchParams: {shopName, integrationType},
-    })
+    const {isLoadingConfig, configuration} = useConfigurationData()
 
     const reasons = useMemo(() => {
         return reasonOptions.map((option) => option.value as string)
@@ -189,9 +177,23 @@ const ReportIssueCaseEditor: ComponentType = () => {
             }
         )
 
-        await dispatch(
-            SelfServiceActions.updateSelfServiceConfigurations(newConfiguration)
-        )
+        try {
+            const res = await updateSelfServiceConfiguration(newConfiguration)
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void (await dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Policy successfully updated.',
+                })
+            ))
+        } catch (error) {
+            void (await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Could not update policy, please try again later.',
+                })
+            ))
+        }
 
         if (caseIndex === 'new') {
             const newCaseIndex =
@@ -221,9 +223,23 @@ const ReportIssueCaseEditor: ComponentType = () => {
             }
         )
 
-        await dispatch(
-            SelfServiceActions.updateSelfServiceConfigurations(newConfiguration)
-        )
+        try {
+            const res = await updateSelfServiceConfiguration(newConfiguration)
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void (await dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Policy successfully updated.',
+                })
+            ))
+        } catch (error) {
+            void (await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Could not update policy, please try again later.',
+                })
+            ))
+        }
 
         history.goBack()
     }

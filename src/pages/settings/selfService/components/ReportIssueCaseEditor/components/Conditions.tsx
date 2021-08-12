@@ -15,7 +15,7 @@ import {
     JsonLogicRuleOverVariable,
     JsonLogicOrBlock,
     ReportIssueRulesLogic,
-} from '../../../../../../state/self_service/types'
+} from '../../../../../../models/selfServiceConfiguration/types'
 
 import {parseJsonLogicRule} from './utils'
 

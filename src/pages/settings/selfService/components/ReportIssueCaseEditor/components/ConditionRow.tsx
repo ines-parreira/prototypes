@@ -15,7 +15,7 @@ import {
     JsonLogicOperator,
     ReportIssueVariable,
     JsonLogicRuleOverVariable,
-} from '../../../../../../state/self_service/types'
+} from '../../../../../../models/selfServiceConfiguration/types'
 
 import {
     FINANCIAL_STATUSES_OPTIONS,

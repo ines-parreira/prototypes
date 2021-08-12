@@ -1,4 +1,7 @@
-import {ShopType, SelfServiceConfiguration} from '../state/self_service/types'
+import {
+    ShopType,
+    SelfServiceConfiguration,
+} from '../models/selfServiceConfiguration/types'
 
 export const selfServiceConfiguration1: SelfServiceConfiguration = {
     id: 1,

@@ -1,7 +1,5 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
+import {Link, useParams} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,46 +10,36 @@ import {
     Input,
     Row,
 } from 'reactstrap'
-
 import classNames from 'classnames'
 
-import {RootState} from '../../../../state/types'
-import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
-import {getSelfServiceConfigurations} from '../../../../state/self_service/selectors'
-import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
-import * as SelfServiceActions from '../../../../state/self_service/actions'
 import PageHeader from '../../../common/components/PageHeader'
 import SelectField from '../../../common/forms/SelectField/SelectField'
+import Loader from '../../../common/components/Loader/Loader'
+
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
     ReturnsDropdownOptionsList,
     SelfServiceConfigurationFilter,
-} from '../../../../state/self_service/types'
-import Loader from '../../../common/components/Loader/Loader'
+} from '../../../../models/selfServiceConfiguration/types'
+import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
+import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import css from './ReturnsPolicyView.less'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+
 import {useConfigurationData} from './hooks'
+import css from './ReturnsPolicyView.less'
 
-export const ReturnsPolicyView = ({
-    actions,
-    shopifyIntegrations,
-    selfServiceConfigurations,
-    match: {
-        params: {shopName, integrationType},
-    },
-}: RouteComponentProps<{
-    shopName: string
-    integrationType: string
-}> &
-    ConnectedProps<typeof connector>) => {
-    const {isLoadingConfig, configuration} = useConfigurationData({
-        selfServiceConfigurations,
-        actions,
-        shopifyIntegrations,
-        matchParams: {shopName, integrationType},
-    })
+export const ReturnsPolicyView = () => {
+    const dispatch = useAppDispatch()
+    const {shopName, integrationType} = useParams<{
+        shopName: string
+        integrationType: string
+    }>()
+
+    const {isLoadingConfig, configuration} = useConfigurationData()
 
     const [
         eligibilityWindowCondition,
@@ -119,7 +107,7 @@ export const ReturnsPolicyView = ({
         setShowDeleteButton(false)
     }
 
-    const onSubmit = (event: FormEvent) => {
+    const onSubmit = async (event: FormEvent) => {
         event.preventDefault()
         if (configuration === undefined) {
             return
@@ -156,17 +144,31 @@ export const ReturnsPolicyView = ({
             updatedEligibilities.push(updatedEligibilityWindowCondition)
         }
 
-        return Promise.resolve(
-            actions.updateSelfServiceConfigurations({
+        try {
+            const res = await updateSelfServiceConfiguration({
                 ...configuration,
                 return_order_policy: {
                     ...configuration.return_order_policy,
                     eligibilities: updatedEligibilities,
                 },
             })
-        ).then(() => {
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Policy successfully updated.',
+                })
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Could not update policy, please try again later.',
+                })
+            )
+        } finally {
             setLoading(false)
-        })
+        }
     }
 
     return (
@@ -327,21 +329,4 @@ export const ReturnsPolicyView = ({
     )
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        shopifyIntegrations: getIntegrationsByTypes(
-            IntegrationType.ShopifyIntegrationType
-        )(state),
-        selfServiceConfigurations: getSelfServiceConfigurations(state),
-    }
-}
-const connector = connect(
-    mapStateToProps,
-    (dispatch: GorgiasThunkDispatch<any, any, any>) => {
-        return {
-            actions: bindActionCreators(SelfServiceActions, dispatch),
-        }
-    }
-)
-
-export default withRouter(connector(ReturnsPolicyView))
+export default ReturnsPolicyView

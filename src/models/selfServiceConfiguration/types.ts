@@ -1,8 +1,3 @@
-export type SelfServiceState = {
-    self_service_configurations: SelfServiceConfiguration[]
-    loading: boolean
-}
-
 export type SelfServiceConfigurationFilter = {
     key: string
     value: string | string[]
@@ -81,7 +76,6 @@ export type PolicyKey =
 export type ApiListResponse<T> = {
     data: T
 }
-
 export type ShopType = 'shopify'
 
 export enum PolicyEnum {

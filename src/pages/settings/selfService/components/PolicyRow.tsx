@@ -1,17 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import ToggleButton from '../../../common/components/ToggleButton'
 import {generateConfiguration} from '../utils/generateConfiguration'
+import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
 import {
     PolicyEnum,
     PolicyKey,
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../state/self_service/types'
-import * as SelfServiceActions from '../../../../state/self_service/actions'
-import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
+} from '../../../../models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
+
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
 import css from './PreferencesView.less'
 
@@ -21,7 +26,6 @@ interface Props {
     policyName: string
     policyDescription: string
     configuration: SelfServiceConfiguration
-    actions: typeof SelfServiceActions
 }
 
 export const PolicyRow = ({
@@ -30,11 +34,16 @@ export const PolicyRow = ({
     policyName,
     policyDescription,
     configuration,
-    actions,
 }: Props) => {
+    const dispatch = useAppDispatch()
+    const [loading, setLoading] = useState(false)
+
     const integrationType: ShopType = integration.get('type')
     const shopName: string = integration.getIn(['meta', 'shop_name'])
-    const _onChange = (value: boolean) => {
+
+    const _onChange = async (value: boolean) => {
+        setLoading(true)
+
         const baseConfiguration =
             configuration || generateConfiguration(0, integrationType, shopName)
 
@@ -45,7 +54,26 @@ export const PolicyRow = ({
                 enabled: value,
             },
         }
-        actions.updateSelfServiceConfigurations(newConfiguration)
+
+        try {
+            const res = await updateSelfServiceConfiguration(newConfiguration)
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Policy successfully updated.',
+                })
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Could not update policy, please try again later.',
+                })
+            )
+        } finally {
+            setLoading(false)
+        }
 
         return null
     }
@@ -106,7 +134,11 @@ export const PolicyRow = ({
             </td>
 
             <td className="smallest align-middle">
-                <ToggleButton value={enabled} onChange={_onChange} />
+                <ToggleButton
+                    value={enabled}
+                    onChange={_onChange}
+                    loading={loading}
+                />
             </td>
 
             <td className="smallest align-middle">

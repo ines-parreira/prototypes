@@ -3,7 +3,7 @@ import {
     ShopType,
     ReportIssueVariable,
     ShipmentStatuses,
-} from '../../../../state/self_service/types'
+} from '../../../../models/selfServiceConfiguration/types'
 
 export const generateConfiguration = (
     id: number,

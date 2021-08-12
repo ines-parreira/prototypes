@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selfServiceConfiguration resources fetchSelfServiceConfigurations should resolve with a SelfServiceConfiguration list on success 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-02-07T06:07:46.097905+00:00",
+      "deactivated_datetime": null,
+      "id": 1,
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "mystore",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-02-07T09:07:46.097905+00:00",
+    },
+    Object {
+      "cancel_order_policy": Object {
+        "enabled": true,
+      },
+      "created_datetime": "2021-02-20T08:15:46.097905+00:00",
+      "deactivated_datetime": "2021-02-20T08:30:46.097905+00:00",
+      "id": 2,
+      "report_issue_policy": Object {
+        "cases": Array [],
+        "enabled": true,
+      },
+      "return_order_policy": Object {
+        "enabled": true,
+      },
+      "shop_name": "otherstore",
+      "track_order_policy": Object {
+        "enabled": true,
+      },
+      "type": "shopify",
+      "updated_datetime": "2021-02-20T08:20:46.097905+00:00",
+    },
+  ],
+}
+`;
+
+exports[`selfServiceConfiguration resources updateSelfServiceConfiguration should resolve with the updated selfServiceConfiguration on success 1`] = `
+Object {
+  "cancel_order_policy": Object {
+    "enabled": true,
+  },
+  "created_datetime": "2021-02-20T08:15:46.097905+00:00",
+  "deactivated_datetime": "2021-02-20T08:30:46.097905+00:00",
+  "id": 2,
+  "report_issue_policy": Object {
+    "cases": Array [],
+    "enabled": true,
+  },
+  "return_order_policy": Object {
+    "enabled": true,
+  },
+  "shop_name": "otherstore",
+  "track_order_policy": Object {
+    "enabled": true,
+  },
+  "type": "shopify",
+  "updated_datetime": "2021-02-20T08:20:46.097905+00:00",
+}
+`;
+
+exports[`selfServiceConfiguration resources updateSelfServiceConfiguration should resolve with the updated selfServiceConfiguration on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "data": "{\\"id\\":2,\\"type\\":\\"shopify\\",\\"shop_name\\":\\"otherstore\\",\\"created_datetime\\":\\"2021-02-20T08:15:46.097905+00:00\\",\\"updated_datetime\\":\\"2021-02-20T08:20:46.097905+00:00\\",\\"deactivated_datetime\\":\\"2021-02-20T08:30:46.097905+00:00\\",\\"report_issue_policy\\":{\\"enabled\\":true,\\"cases\\":[]},\\"track_order_policy\\":{\\"enabled\\":true},\\"return_order_policy\\":{\\"enabled\\":true},\\"cancel_order_policy\\":{\\"enabled\\":true}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/self_service_configurations/2",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

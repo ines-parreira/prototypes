@@ -2,24 +2,27 @@ import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
 
 import ToggleButton from '../../../common/components/ToggleButton'
-import {SelfServiceConfiguration} from '../../../../state/self_service/types'
-import * as SelfServiceActions from '../../../../state/self_service/actions'
 
 import {generateConfiguration} from '../utils/generateConfiguration'
+import {SelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/types'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
+import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
 interface Props {
     integration: Map<any, any>
     configuration?: SelfServiceConfiguration
     isLoadingConfigurations: boolean
-    actions: typeof SelfServiceActions
 }
 
 export const MigratedIntegrationRow = ({
     integration,
     configuration,
     isLoadingConfigurations,
-    actions,
 }: Props) => {
+    const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -30,7 +33,7 @@ export const MigratedIntegrationRow = ({
         setLoading(false)
     }, [configuration])
 
-    const _onChange = (value: boolean) => {
+    const _onChange = async (value: boolean) => {
         setLoading(true)
 
         const deactivated_datetime = value ? null : new Date().toISOString()
@@ -43,16 +46,29 @@ export const MigratedIntegrationRow = ({
                 integration.getIn(['meta', 'shop_name'])
             )
 
-        const promise = actions.updateSelfServiceConfigurations({
-            ...baseConfiguration,
-            deactivated_datetime,
-        }) as any // FIXME: better typing
-
-        // eslint-disable-next-line
-        promise.finally(() => {
-            // prevent infinite loading state of the toggle if the ssp-api is down
+        try {
+            const res = await updateSelfServiceConfiguration({
+                ...baseConfiguration,
+                deactivated_datetime,
+            })
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Self-service configuration successfully updated.',
+                })
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Could not update Self-service configuration, please try again later.',
+                })
+            )
+        } finally {
             setLoading(false)
-        })
+        }
 
         return null
     }

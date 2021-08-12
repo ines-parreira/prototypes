@@ -2,7 +2,7 @@ import {
     JsonLogicOperator,
     ReportIssueVariable,
     JsonLogicRuleOverVariable,
-} from '../../../../../../state/self_service/types'
+} from '../../../../../../models/selfServiceConfiguration/types'
 
 type ParsedJsonLogicOverVariable = {variable: ReportIssueVariable} & (
     | {

@@ -2,7 +2,7 @@ import {generateConfiguration} from '../generateConfiguration'
 import {
     ReportIssueVariable,
     ShipmentStatuses,
-} from '../../../../../state/self_service/types'
+} from '../../../../../models/selfServiceConfiguration/types'
 
 describe('generateConfiguration()', () => {
     it('should generate a base self_service_configuration entity', () => {

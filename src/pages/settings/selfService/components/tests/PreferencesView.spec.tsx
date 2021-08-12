@@ -1,9 +1,25 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import {useParams} from 'react-router-dom'
 
 import {PreferencesView} from '../PreferencesView'
-import {ShopType} from '../../../../../state/self_service/types'
+import {
+    SelfServiceConfiguration,
+    ShopType,
+} from '../../../../../models/selfServiceConfiguration/types'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
+import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const updateSelfServiceConfigurationMock = updateSelfServiceConfiguration as jest.MockedFunction<
+    typeof updateSelfServiceConfiguration
+>
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 jest.mock('../../../../common/components/ToggleButton', () => {
     return ({
@@ -23,8 +39,8 @@ jest.mock('../../../../common/components/ToggleButton', () => {
         )
     }
 })
-
-type Props = ComponentProps<typeof PreferencesView>
+jest.mock('../../../../../models/selfServiceConfiguration/resources')
+jest.mock('react-router')
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -64,22 +80,41 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 }
 
 describe('<SelfServicePreferencesView/>', () => {
-    const mockUpdateSelfServiceConfigurations = jest.fn(() => Promise.resolve())
-    const mockFetchSelfServiceConfiguration = jest.fn(() => Promise.resolve())
-
     const shopifyIntegrations = createShopifyIntegrationFixtures(4)
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
-    const defaultProps = ({
-        shopifyIntegrations: fromJS([]),
-        selfServiceConfigurations: [],
-        actions: {
-            fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve()),
-            fetchSelfServiceConfiguration: mockFetchSelfServiceConfiguration,
-            updateSelfServiceConfigurations: mockUpdateSelfServiceConfigurations,
+    const defaultState = {
+        entities: {
+            macros: {},
+            sections: {},
+            stats: {},
+            tags: {},
+            views: {},
+            viewsCount: {},
+            helpCenters: {},
+            helpCenterArticles: {},
+            selfServiceConfigurations: {},
         },
-        match: {params: {}},
-    } as any) as Props
+        ui: {
+            stats: {
+                fetchingMap: {},
+            },
+            ticketNavbar: {
+                optimisticAccountSettings: {
+                    views: {},
+                    view_sections: {},
+                },
+                optimisticUserSettings: {
+                    views: {},
+                    view_sections: {},
+                },
+            },
+            views: {
+                activeViewId: 0,
+            },
+        },
+        integrations: fromJS({}),
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -87,23 +122,35 @@ describe('<SelfServicePreferencesView/>', () => {
 
     describe('render()', () => {
         it('should render the 4 policy rows, 2 active and 2 inactive', () => {
-            const matchProp = {
-                params: {
-                    shopName: shopifyIntegrations[0]['meta']['shop_name'],
-                    integrationType: 'shopify',
-                },
-                isExact: true,
-                path: 'foo/',
-                url: 'foo/',
-            }
+            useParamsMock.mockReturnValue({
+                shopName: shopifyIntegrations[0]['meta']['shop_name'],
+                integrationType: 'shopify',
+            })
 
             const {container} = render(
-                <PreferencesView
-                    {...defaultProps}
-                    shopifyIntegrations={fromJS(shopifyIntegrations)}
-                    selfServiceConfigurations={selfServiceConfigurations}
-                    match={matchProp}
-                />
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations: selfServiceConfigurations.reduce(
+                                (
+                                    configurations: SelfServiceConfigurationsState,
+                                    configuration: SelfServiceConfiguration
+                                ) => ({
+                                    ...configurations,
+                                    [configuration.id]: configuration,
+                                }),
+                                {} as Partial<SelfServiceConfiguration>
+                            ),
+                        },
+                    })}
+                >
+                    <PreferencesView />
+                </Provider>
             )
             expect(container).toMatchSnapshot()
         })
@@ -116,29 +163,41 @@ describe('<SelfServicePreferencesView/>', () => {
                 selfServiceConfigurations[2]['return_order_policy']['enabled']
             ).toBeTruthy()
 
-            const matchProp = {
-                params: {
-                    shopName: shopifyIntegrations[2]['meta']['shop_name'],
-                    integrationType: 'shopify',
-                },
-                isExact: true,
-                path: 'foo/',
-                url: 'foo/',
-            }
+            useParamsMock.mockReturnValue({
+                shopName: shopifyIntegrations[2]['meta']['shop_name'],
+                integrationType: 'shopify',
+            })
 
             const {container, getAllByTestId} = render(
-                <PreferencesView
-                    {...defaultProps}
-                    shopifyIntegrations={fromJS(shopifyIntegrations)}
-                    selfServiceConfigurations={selfServiceConfigurations}
-                    match={matchProp}
-                />
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations: selfServiceConfigurations.reduce(
+                                (
+                                    configurations: SelfServiceConfigurationsState,
+                                    configuration: SelfServiceConfiguration
+                                ) => ({
+                                    ...configurations,
+                                    [configuration.id]: configuration,
+                                }),
+                                {} as Partial<SelfServiceConfiguration>
+                            ),
+                        },
+                    })}
+                >
+                    <PreferencesView />
+                </Provider>
             )
 
             expect(container).toMatchSnapshot()
 
             fireEvent.click(getAllByTestId('toggle-button')[2]) // selecting the return order policy toggle button
-            expect(mockUpdateSelfServiceConfigurations.mock.calls[0])
+            expect(updateSelfServiceConfigurationMock.mock.calls[0])
                 .toMatchInlineSnapshot(`
                 Array [
                   Object {

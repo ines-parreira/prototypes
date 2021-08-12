@@ -24,7 +24,6 @@ import {Tag} from './tags/types'
 import {Customer} from './customers/types'
 import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType} from './widgets/types'
-import {SelfServiceState} from './self_service/types'
 import {TwilioState} from './twilio/types'
 import {Notification} from './notifications/types'
 
@@ -48,7 +47,6 @@ export type StoreState = {
     newMessage: Map<any, any>
     notifications: Notification[]
     rules: Map<any, any>
-    selfService: SelfServiceState
     schemas: Map<any, any>
     stats: Map<any, any>
     tags: Map<any, any>

@@ -1,50 +1,29 @@
-import React, {ReactElement, useState, useMemo, useEffect} from 'react'
-import {useSelector} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {useRouteMatch} from 'react-router-dom'
+import React, {ReactElement, useState, useEffect} from 'react'
 import produce from 'immer'
 import _uniqueId from 'lodash/uniqueId'
 import _omit from 'lodash/omit'
-
-import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 
 import TableWrapper from '../../../../../common/components/table/TableWrapper'
 import TableBody from '../../../../../common/components/table/TableBody'
 import HeaderCell from '../../../../../common/components/table/cells/HeaderCell'
 import TableHead from '../../../../../common/components/table/TableHead'
 import {Callbacks} from '../../../../../settings/helpCenter/hooks/useReorderDnD'
-
 import {useConfigurationData} from '../../hooks'
-import {getSelfServiceConfigurations} from '../../../../../../state/self_service/selectors'
-import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../../models/integration/types'
-import * as SelfServiceActions from '../../../../../../state/self_service/actions'
-import {SelfServiceReportIssueCase as ReportIssueCaseType} from '../../../../../../state/self_service/types'
+import {SelfServiceReportIssueCase as ReportIssueCaseType} from '../../../../../../models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
+import {selfServiceConfigurationUpdated} from '../../../../../../state/entities/selfServiceConfigurations/actions'
+import {notify} from '../../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
+import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 
 import ReportIssueCase from './ReportIssueCase'
 
 type ReportIssueCaseWithIdType = ReportIssueCaseType & {id: string}
 
 const ReportIssueCasesList = (): ReactElement | null => {
-    const [cases, setCases] = useState<ReportIssueCaseWithIdType[]>([])
-
-    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
-    const shopifyIntegrations = useSelector(
-        getIntegrationsByTypes(IntegrationType.ShopifyIntegrationType)
-    )
     const dispatch = useAppDispatch()
-    const actions = useMemo(() => {
-        return bindActionCreators(SelfServiceActions, dispatch)
-    }, [dispatch])
-    const {
-        params: {shopName, integrationType},
-    } = useRouteMatch<{shopName: string; integrationType: string}>()
-    const {isLoadingConfig, configuration} = useConfigurationData({
-        selfServiceConfigurations,
-        actions,
-        shopifyIntegrations,
-        matchParams: {shopName, integrationType},
-    })
+    const [cases, setCases] = useState<ReportIssueCaseWithIdType[]>([])
+    const {isLoadingConfig, configuration} = useConfigurationData()
 
     useEffect(() => {
         if (configuration) {
@@ -74,7 +53,7 @@ const ReportIssueCasesList = (): ReactElement | null => {
         setCases(newCases)
     }
 
-    const handleDropEntity: Callbacks['onDrop'] = () => {
+    const handleDropEntity: Callbacks['onDrop'] = async () => {
         if (!configuration) {
             return
         }
@@ -93,7 +72,23 @@ const ReportIssueCasesList = (): ReactElement | null => {
             }
         )
 
-        actions.updateSelfServiceConfigurations(newConfiguration)
+        try {
+            const res = await updateSelfServiceConfiguration(newConfiguration)
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void (await dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Policy successfully updated.',
+                })
+            ))
+        } catch (error) {
+            void (await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Could not update policy, please try again later.',
+                })
+            ))
+        }
     }
 
     if (isLoadingConfig) {

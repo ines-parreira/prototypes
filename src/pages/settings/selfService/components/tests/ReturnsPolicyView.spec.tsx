@@ -1,12 +1,24 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {render} from '@testing-library/react'
-
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {useParams} from 'react-router-dom'
 
 import {ReturnsPolicyView} from '../ReturnsPolicyView'
-import {ShopType} from '../../../../../state/self_service/types'
+import {
+    SelfServiceConfiguration,
+    ShopType,
+} from '../../../../../models/selfServiceConfiguration/types'
+import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
+import {RootState, StoreDispatch} from '../../../../../state/types'
 
-type Props = ComponentProps<typeof ReturnsPolicyView>
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
+
+jest.mock('../../../../../models/selfServiceConfiguration/resources')
+jest.mock('react-router')
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -53,42 +65,55 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 }
 
 describe('<ReturnsPolicyView />', () => {
-    const mockUpdateSelfServiceConfigurations = jest.fn(() => Promise.resolve())
-    const mockFetchSelfServiceConfiguration = jest.fn(() => Promise.resolve())
-
     const shopifyIntegrations = createShopifyIntegrationFixtures(4)
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
-    const defaultProps = ({
-        shopifyIntegrations: fromJS([]),
-        selfServiceConfigurations: [],
-        actions: {
-            fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve()),
-            fetchSelfServiceConfiguration: mockFetchSelfServiceConfiguration,
-            updateSelfServiceConfigurations: mockUpdateSelfServiceConfigurations,
+    const defaultState = {
+        entities: {
+            macros: {},
+            sections: {},
+            stats: {},
+            tags: {},
+            views: {},
+            viewsCount: {},
+            helpCenters: {},
+            helpCenterArticles: {},
+            selfServiceConfigurations: {},
         },
-        match: {params: {}},
-    } as any) as Props
+        integrations: fromJS({}),
+    }
 
     describe('render()', () => {
         it('should render the select field', () => {
-            const matchProp = {
-                params: {
-                    shopName: 'myStore1',
-                    integrationType: 'shopify',
-                },
-                isExact: true,
-                path: 'foo/',
-                url: 'foo/',
-            }
+            useParamsMock.mockReturnValue({
+                shopName: 'myStore1',
+                integrationType: 'shopify',
+            })
 
             const {container} = render(
-                <ReturnsPolicyView
-                    {...defaultProps}
-                    shopifyIntegrations={fromJS(shopifyIntegrations)}
-                    selfServiceConfigurations={selfServiceConfigurations}
-                    match={matchProp}
-                />
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations: selfServiceConfigurations.reduce(
+                                (
+                                    configurations: SelfServiceConfigurationsState,
+                                    configuration: SelfServiceConfiguration
+                                ) => ({
+                                    ...configurations,
+                                    [configuration.id]: configuration,
+                                }),
+                                {} as Partial<SelfServiceConfiguration>
+                            ),
+                        },
+                    })}
+                >
+                    <ReturnsPolicyView />
+                </Provider>
             )
             expect(container).toMatchSnapshot()
         })

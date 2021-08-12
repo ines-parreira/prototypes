@@ -1,21 +1,28 @@
 import {useEffect, useState} from 'react'
+import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
+import {useParams} from 'react-router-dom'
 
-import {SelfServiceConfiguration} from '../../../../state/self_service/types'
-import * as SelfServiceActions from '../../../../state/self_service/actions'
+import {SelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/types'
+import {fetchSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
+import {IntegrationType} from '../../../../models/integration/types'
+import {getSelfServiceConfigurations} from '../../../../state/entities/selfServiceConfigurations/selectors'
+import {selfServiceConfigurationFetched} from '../../../../state/entities/selfServiceConfigurations/actions'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
-export const useConfigurationData = (params: {
-    shopifyIntegrations: Immutable.List<any>
-    selfServiceConfigurations: SelfServiceConfiguration[]
-    actions: typeof SelfServiceActions
-    matchParams: {shopName: string; integrationType: string}
-}) => {
-    const {
-        selfServiceConfigurations,
-        shopifyIntegrations,
-        actions,
-        matchParams: {shopName, integrationType},
-    } = params
+export const useConfigurationData = () => {
+    const dispatch = useAppDispatch()
+    const {shopName, integrationType} = useParams<{
+        shopName: string
+        integrationType: string
+    }>()
+    const shopifyIntegrations = useSelector(
+        getIntegrationsByTypes(IntegrationType.ShopifyIntegrationType)
+    )
+    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
 
     const [isLoadingConfig, setIsLoadingConfig] = useState(true)
 
@@ -25,12 +32,27 @@ export const useConfigurationData = (params: {
                 configuration.shop_name ===
                 integration.getIn(['meta', 'shop_name'])
         )
+
         if (foundConfigurationIndex === -1) {
-            ;((actions.fetchSelfServiceConfiguration(
-                integration.get('id')
-            ) as any) as Promise<any>).finally(() => {
-                setIsLoadingConfig(false)
-            })
+            void (async () => {
+                try {
+                    const res = await fetchSelfServiceConfiguration(
+                        integration.get('id')
+                    )
+                    void dispatch(selfServiceConfigurationFetched(res))
+                    setIsLoadingConfig(false)
+                } catch (error) {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message:
+                                'Could not fetch the Self-service configuration, please try again later.',
+                        })
+                    )
+                } finally {
+                    setIsLoadingConfig(false)
+                }
+            })()
         } else {
             setIsLoadingConfig(false)
         }

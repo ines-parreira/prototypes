@@ -1,34 +1,25 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
+import {useSelector} from 'react-redux'
 import {Alert, Col, Container, Row, Table} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import PageHeader from '../../../common/components/PageHeader'
 import Tooltip from '../../../common/components/Tooltip'
-import {RootState} from '../../../../state/types'
-
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
-
 import {getIconFromUrl} from '../../../../state/integrations/helpers'
+import {getSelfServiceConfigurations} from '../../../../state/entities/selfServiceConfigurations/selectors'
+import {SelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/types'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
+import {selfServiceConfigurationsFetched} from '../../../../state/entities/selfServiceConfigurations/actions'
+import {fetchSelfServiceConfigurations} from '../../../../models/selfServiceConfiguration/resources'
+import Loader from '../../../common/components/Loader/Loader'
 
-import * as SelfServiceActions from '../../../../state/self_service/actions'
-
-import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
-
-import {
-    getLoading,
-    getSelfServiceConfigurations,
-} from '../../../../state/self_service/selectors'
-
-import {SelfServiceConfiguration} from '../../../../state/self_service/types'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
 import {IntegrationRow} from './IntegrationRow'
 import css from './SelfServiceView.less'
-
-type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
 const selfServiceMock = getIconFromUrl('integrations/self_service.png')
 
@@ -44,14 +35,32 @@ const _findConfiguration = (
     })
 }
 
-export const SelfServiceView = ({
-    shopifyIntegrations,
-    selfServiceConfigurations,
-    actions,
-    isLoadingConfigurations,
-}: Props) => {
+export const SelfServiceView = () => {
+    const dispatch = useAppDispatch()
+    const shopifyIntegrations = useSelector(
+        getIntegrationsByTypes(IntegrationType.ShopifyIntegrationType)
+    )
+    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
-        actions.fetchSelfServiceConfigurations()
+        void (async () => {
+            setLoading(true)
+            try {
+                const res = await fetchSelfServiceConfigurations()
+                void dispatch(selfServiceConfigurationsFetched(res.data))
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Could not fetch Self-service configurations, please try again later.',
+                    })
+                )
+            } finally {
+                setLoading(false)
+            }
+        })()
     }, [])
 
     return (
@@ -97,6 +106,8 @@ export const SelfServiceView = ({
                                     make sure to add a Shopify integration to
                                     access the Self-service features.
                                 </Alert>
+                            ) : loading ? (
+                                <Loader />
                             ) : (
                                 <>
                                     <p>
@@ -107,33 +118,29 @@ export const SelfServiceView = ({
                                         className={`table-hover table-integrations ${css.selfServiceIntegrationsTable}`}
                                     >
                                         <tbody>
-                                            {!isLoadingConfigurations &&
-                                                shopifyIntegrations
-                                                    .valueSeq()
-                                                    .map(
-                                                        (
-                                                            integration: Map<
-                                                                any,
-                                                                any
-                                                            >
-                                                        ) => (
-                                                            <IntegrationRow
-                                                                key={integration.get(
-                                                                    'id'
-                                                                )}
-                                                                integration={
-                                                                    integration
-                                                                }
-                                                                configuration={_findConfiguration(
-                                                                    selfServiceConfigurations,
-                                                                    integration
-                                                                )}
-                                                                actions={
-                                                                    actions
-                                                                }
-                                                            />
-                                                        )
-                                                    )}
+                                            {shopifyIntegrations
+                                                .valueSeq()
+                                                .map(
+                                                    (
+                                                        integration: Map<
+                                                            any,
+                                                            any
+                                                        >
+                                                    ) => (
+                                                        <IntegrationRow
+                                                            key={integration.get(
+                                                                'id'
+                                                            )}
+                                                            integration={
+                                                                integration
+                                                            }
+                                                            configuration={_findConfiguration(
+                                                                selfServiceConfigurations,
+                                                                integration
+                                                            )}
+                                                        />
+                                                    )
+                                                )}
                                         </tbody>
                                     </Table>
                                 </>
@@ -154,21 +161,4 @@ export const SelfServiceView = ({
     )
 }
 
-const connector = connect(
-    (state: RootState) => {
-        return {
-            shopifyIntegrations: getIntegrationsByTypes(
-                IntegrationType.ShopifyIntegrationType
-            )(state),
-            selfServiceConfigurations: getSelfServiceConfigurations(state),
-            isLoadingConfigurations: getLoading(state),
-        }
-    },
-    (dispatch: GorgiasThunkDispatch<any, any, any>) => {
-        return {
-            actions: bindActionCreators(SelfServiceActions, dispatch),
-        }
-    }
-)
-
-export default withRouter(connector(SelfServiceView))
+export default SelfServiceView

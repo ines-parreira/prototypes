@@ -8,7 +8,7 @@ import {
     FulfillementStatuses,
     FinancialStatuses,
     OrderStatuses,
-} from '../../../../../state/self_service/types'
+} from '../../../../../models/selfServiceConfiguration/types'
 
 export const REASONS_DROPDOWN_OPTIONS: Option[] = [
     {

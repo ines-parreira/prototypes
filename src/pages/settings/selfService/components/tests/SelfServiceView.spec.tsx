@@ -1,9 +1,29 @@
-import React, {ComponentProps} from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import React from 'react'
+import {render, fireEvent, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import {SelfServiceView} from '../SelfServiceView'
-import {ShopType} from '../../../../../state/self_service/types'
+import {
+    SelfServiceConfiguration,
+    ShopType,
+} from '../../../../../models/selfServiceConfiguration/types'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import {
+    fetchSelfServiceConfigurations,
+    updateSelfServiceConfiguration,
+} from '../../../../../models/selfServiceConfiguration/resources'
+import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const fetchSelfServiceConfigurationsMock = fetchSelfServiceConfigurations as jest.MockedFunction<
+    typeof fetchSelfServiceConfigurations
+>
+const updateSelfServiceConfigurationMock = updateSelfServiceConfiguration as jest.MockedFunction<
+    typeof updateSelfServiceConfiguration
+>
 
 jest.mock('../../../../common/components/ToggleButton', () => {
     return ({
@@ -23,8 +43,7 @@ jest.mock('../../../../common/components/ToggleButton', () => {
         )
     }
 })
-
-type Props = ComponentProps<typeof SelfServiceView>
+jest.mock('../../../../../models/selfServiceConfiguration/resources')
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -62,15 +81,41 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 }
 
 describe('<SelfServiceView/>', () => {
-    let mockUpdateSelfServiceConfigurations = jest.fn(() => Promise.resolve())
-
-    let defaultProps = ({
-        shopifyIntegrations: fromJS([]),
-        actions: {
-            fetchSelfServiceConfigurations: jest.fn(),
-            updateSelfServiceConfigurations: mockUpdateSelfServiceConfigurations,
+    const defaultState = {
+        entities: {
+            macros: {},
+            sections: {},
+            stats: {},
+            tags: {},
+            views: {},
+            viewsCount: {},
+            helpCenters: {},
+            helpCenterArticles: {},
+            selfServiceConfigurations: {},
         },
-    } as any) as Props
+        ui: {
+            stats: {
+                fetchingMap: {},
+            },
+            ticketNavbar: {
+                optimisticAccountSettings: {
+                    views: {},
+                    view_sections: {},
+                },
+                optimisticUserSettings: {
+                    views: {},
+                    view_sections: {},
+                },
+            },
+            views: {
+                activeViewId: 0,
+            },
+            selfServiceConfigurations: {
+                loading: false,
+            },
+        },
+        integrations: fromJS({}),
+    }
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -78,19 +123,25 @@ describe('<SelfServiceView/>', () => {
         jest.spyOn(Date.prototype, 'toISOString').mockImplementation(
             () => '2021-01-26T00:30:00Z'
         )
-        mockUpdateSelfServiceConfigurations = jest.fn(() => Promise.resolve())
-        defaultProps = ({
-            shopifyIntegrations: fromJS([]),
-            actions: {
-                fetchSelfServiceConfigurations: jest.fn(),
-                updateSelfServiceConfigurations: mockUpdateSelfServiceConfigurations,
-            },
-        } as any) as Props
     })
 
     describe('render()', () => {
         it('should render the default message when there is no active shopify integration', () => {
-            const {container} = render(<SelfServiceView {...defaultProps} />)
+            fetchSelfServiceConfigurationsMock.mockImplementationOnce(() => {
+                return Promise.resolve({
+                    data: [],
+                })
+            })
+
+            const {container} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                    })}
+                >
+                    <SelfServiceView />
+                </Provider>
+            )
             expect(container).toMatchSnapshot()
         })
 
@@ -99,15 +150,42 @@ describe('<SelfServiceView/>', () => {
             const selfServiceConfigurations = createSelfServiceConfigurationFixtures(
                 3
             )
-            const {container} = render(
-                <SelfServiceView
-                    {...defaultProps}
-                    shopifyIntegrations={fromJS(shopifyIntegrations)}
-                    selfServiceConfigurations={selfServiceConfigurations}
-                />
-            )
 
-            expect(container).toMatchSnapshot()
+            fetchSelfServiceConfigurationsMock.mockImplementationOnce(() => {
+                return Promise.resolve({
+                    data: selfServiceConfigurations,
+                })
+            })
+
+            act(() => {
+                const {container} = render(
+                    <Provider
+                        store={mockStore({
+                            ...defaultState,
+                            integrations: fromJS({
+                                integrations: shopifyIntegrations,
+                            }),
+                            entities: {
+                                ...defaultState.entities,
+                                selfServiceConfigurations: selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                            },
+                        })}
+                    >
+                        <SelfServiceView />
+                    </Provider>
+                )
+
+                expect(container).toMatchSnapshot()
+            })
         })
     })
 
@@ -118,43 +196,63 @@ describe('<SelfServiceView/>', () => {
                 4
             )
 
-            const {container, getAllByTestId} = render(
-                <SelfServiceView
-                    {...defaultProps}
-                    shopifyIntegrations={fromJS(shopifyIntegrations)}
-                    selfServiceConfigurations={selfServiceConfigurations}
-                />
-            )
+            act(() => {
+                const {container, getAllByTestId} = render(
+                    <Provider
+                        store={mockStore({
+                            ...defaultState,
+                            integrations: fromJS({
+                                integrations: shopifyIntegrations,
+                            }),
+                            entities: {
+                                ...defaultState.entities,
+                                selfServiceConfigurations: selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                            },
+                        })}
+                    >
+                        <SelfServiceView />
+                    </Provider>
+                )
 
-            expect(container).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
 
-            fireEvent.click(getAllByTestId('toggle-button')[0]) // selecting the 1st store (id = 1)
-            expect(mockUpdateSelfServiceConfigurations.mock.calls[0])
-                .toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "cancel_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "created_datetime": "2021-01-26T00:29:00Z",
-                    "deactivated_datetime": "2021-01-26T00:30:00Z",
-                    "id": 1,
-                    "report_issue_policy": Object {
-                      "cases": Array [],
-                      "enabled": false,
-                    },
-                    "return_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "shop_name": "mystore1",
-                    "track_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "type": "shopify",
-                    "updated_datetime": "2021-01-26T00:29:30Z",
-                  },
-                ]
-            `)
+                fireEvent.click(getAllByTestId('toggle-button')[0]) // selecting the 1st store (id = 1)
+                expect(updateSelfServiceConfigurationMock.mock.calls[0])
+                    .toMatchInlineSnapshot(`
+                    Array [
+                      Object {
+                        "cancel_order_policy": Object {
+                          "enabled": false,
+                        },
+                        "created_datetime": "2021-01-26T00:29:00Z",
+                        "deactivated_datetime": "2021-01-26T00:30:00Z",
+                        "id": 1,
+                        "report_issue_policy": Object {
+                          "cases": Array [],
+                          "enabled": false,
+                        },
+                        "return_order_policy": Object {
+                          "enabled": false,
+                        },
+                        "shop_name": "mystore1",
+                        "track_order_policy": Object {
+                          "enabled": false,
+                        },
+                        "type": "shopify",
+                        "updated_datetime": "2021-01-26T00:29:30Z",
+                      },
+                    ]
+                `)
+            })
         })
 
         it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 will get activated', () => {
@@ -163,43 +261,63 @@ describe('<SelfServiceView/>', () => {
                 4
             )
 
-            const {container, getAllByTestId} = render(
-                <SelfServiceView
-                    {...defaultProps}
-                    shopifyIntegrations={fromJS(shopifyIntegrations)}
-                    selfServiceConfigurations={selfServiceConfigurations}
-                />
-            )
+            act(() => {
+                const {container, getAllByTestId} = render(
+                    <Provider
+                        store={mockStore({
+                            ...defaultState,
+                            integrations: fromJS({
+                                integrations: shopifyIntegrations,
+                            }),
+                            entities: {
+                                ...defaultState.entities,
+                                selfServiceConfigurations: selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                            },
+                        })}
+                    >
+                        <SelfServiceView />
+                    </Provider>
+                )
 
-            expect(container).toMatchSnapshot()
+                expect(container).toMatchSnapshot()
 
-            fireEvent.click(getAllByTestId('toggle-button')[1]) // selecting the 2nd store (id = 2)
-            expect(mockUpdateSelfServiceConfigurations.mock.calls[0])
-                .toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "cancel_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "created_datetime": "2021-01-26T00:29:00Z",
-                    "deactivated_datetime": null,
-                    "id": 2,
-                    "report_issue_policy": Object {
-                      "cases": Array [],
-                      "enabled": false,
-                    },
-                    "return_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "shop_name": "mystore2",
-                    "track_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "type": "shopify",
-                    "updated_datetime": "2021-01-26T00:29:30Z",
-                  },
-                ]
-            `)
+                fireEvent.click(getAllByTestId('toggle-button')[1]) // selecting the 2nd store (id = 2)
+                expect(updateSelfServiceConfigurationMock.mock.calls[0])
+                    .toMatchInlineSnapshot(`
+                    Array [
+                      Object {
+                        "cancel_order_policy": Object {
+                          "enabled": false,
+                        },
+                        "created_datetime": "2021-01-26T00:29:00Z",
+                        "deactivated_datetime": null,
+                        "id": 2,
+                        "report_issue_policy": Object {
+                          "cases": Array [],
+                          "enabled": false,
+                        },
+                        "return_order_policy": Object {
+                          "enabled": false,
+                        },
+                        "shop_name": "mystore2",
+                        "track_order_policy": Object {
+                          "enabled": false,
+                        },
+                        "type": "shopify",
+                        "updated_datetime": "2021-01-26T00:29:30Z",
+                      },
+                    ]
+                `)
+            })
         })
     })
 })

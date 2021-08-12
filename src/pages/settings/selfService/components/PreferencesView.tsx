@@ -8,49 +8,23 @@ import {
     Row,
     Table,
 } from 'reactstrap'
-import {withRouter, Link, RouteComponentProps} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
-
-import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 
 import Tooltip from '../../../common/components/Tooltip'
 import PageHeader from '../../../common/components/PageHeader'
-import {RootState} from '../../../../state/types'
-import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
-import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
-import * as SelfServiceActions from '../../../../state/self_service/actions'
-import {PolicyEnum} from '../../../../state/self_service/types'
-import {
-    getLoading,
-    getSelfServiceConfigurations,
-} from '../../../../state/self_service/selectors'
-
 import Loader from '../../../common/components/Loader/Loader'
+import {PolicyEnum} from '../../../../models/selfServiceConfiguration/types'
 
 import {PolicyRow} from './PolicyRow'
 import {useConfigurationData} from './hooks'
 import css from './PreferencesView.less'
 
-export const PreferencesView = ({
-    shopifyIntegrations,
-    selfServiceConfigurations,
-    actions,
-    match: {
-        params: {shopName, integrationType},
-    },
-}: RouteComponentProps<{shopName: string; integrationType: string}> &
-    ConnectedProps<typeof connector>) => {
+export const PreferencesView = () => {
     const {
         isLoadingConfig: loading,
         integration,
         configuration,
-    } = useConfigurationData({
-        selfServiceConfigurations,
-        actions,
-        shopifyIntegrations,
-        matchParams: {shopName, integrationType},
-    })
+    } = useConfigurationData()
 
     return (
         <div className="full-width">
@@ -136,7 +110,6 @@ export const PreferencesView = ({
                                                         orders directly from the
                                                         chat portal"
                                                 configuration={configuration}
-                                                actions={actions}
                                             />
                                             <PolicyRow
                                                 policyKey={
@@ -147,7 +120,6 @@ export const PreferencesView = ({
                                                 policyDescription="Let customers report an
                                                         issue with an order"
                                                 configuration={configuration}
-                                                actions={actions}
                                             />
                                             <PolicyRow
                                                 policyKey={
@@ -158,7 +130,6 @@ export const PreferencesView = ({
                                                 policyDescription="Let customers request returns directly
                                                         from the chat portal"
                                                 configuration={configuration}
-                                                actions={actions}
                                             />
                                             <PolicyRow
                                                 policyKey={
@@ -169,7 +140,6 @@ export const PreferencesView = ({
                                                 policyDescription="Let customers request order cancellations
                                                         directly from the chat portal"
                                                 configuration={configuration}
-                                                actions={actions}
                                             />
                                         </tbody>
                                     </Table>
@@ -183,22 +153,4 @@ export const PreferencesView = ({
     )
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        shopifyIntegrations: getIntegrationsByTypes(
-            IntegrationType.ShopifyIntegrationType
-        )(state),
-        selfServiceConfigurations: getSelfServiceConfigurations(state),
-        isLoadingConfigurations: getLoading(state),
-    }
-}
-const connector = connect(
-    mapStateToProps,
-    (dispatch: GorgiasThunkDispatch<any, any, any>) => {
-        return {
-            actions: bindActionCreators(SelfServiceActions, dispatch),
-        }
-    }
-)
-
-export default withRouter(connector(PreferencesView))
+export default PreferencesView
