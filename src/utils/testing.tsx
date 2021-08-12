@@ -2,9 +2,12 @@ import React, {ReactElement, Context, ComponentType, useContext} from 'react'
 import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {shallow} from 'enzyme'
-import {render, RenderOptions} from '@testing-library/react'
+import {act, render, RenderOptions} from '@testing-library/react'
 import {Router, Route} from 'react-router-dom'
 import {createMemoryHistory, History} from 'history'
+import _last from 'lodash/last'
+
+import shortcutManager from '../services/shortcutManager/shortcutManager'
 
 const middlewares = [thunk]
 
@@ -91,3 +94,27 @@ export const mockDevelopmentEnvironment = () => {
 }
 
 export const flushPromises = () => new Promise(setImmediate)
+
+export const makeExecuteKeyboardAction = (
+    shortcutManagerMock: jest.Mocked<typeof shortcutManager>,
+    shortcutEventMock?: jest.Mocked<Event>
+) => {
+    const eventMock =
+        shortcutEventMock ||
+        (({
+            preventDefault: jest.fn(),
+        } as unknown) as jest.Mocked<Event>)
+
+    return (shortcutName: string) => {
+        const lastCall = _last(shortcutManagerMock.bind.mock.calls)
+        if (!lastCall) {
+            return
+        }
+        const [, actions] = lastCall
+        act(() => {
+            ;(actions![shortcutName].action as (event: Event) => void)(
+                eventMock
+            )
+        })
+    }
+}

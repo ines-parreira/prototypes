@@ -1,7 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {
-    act,
     fireEvent,
     render,
     RenderResult,
@@ -19,6 +18,7 @@ import {JobType} from '../../../../../models/job/types'
 import shortcutManager from '../../../../../services/shortcutManager/shortcutManager'
 import history from '../../../../history'
 import {ticket} from '../../../../../fixtures/ticket'
+import {makeExecuteKeyboardAction} from '../../../../../utils/testing'
 
 jest.mock('../../../../../services/shortcutManager/shortcutManager')
 jest.mock('../../../../../state/views/actions')
@@ -72,14 +72,10 @@ describe('TicketListActions component', () => {
         }
     }
 
-    const hitShortcut = (shortcutName: string) => {
-        const [[, actions]] = shortcutManagerMock.bind.mock.calls
-        act(() => {
-            ;(actions![shortcutName].action as (event: Event) => void)(
-                shortcutEventMock
-            )
-        })
-    }
+    const hitShortcut = makeExecuteKeyboardAction(
+        shortcutManagerMock,
+        shortcutEventMock
+    )
 
     beforeEach(() => {
         jest.resetAllMocks()

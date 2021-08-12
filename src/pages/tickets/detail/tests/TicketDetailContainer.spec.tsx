@@ -4,8 +4,13 @@ import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
 import {createMemoryHistory} from 'history'
+import _noop from 'lodash/noop'
 
-import {flushPromises, renderWithRouter} from '../../../../utils/testing'
+import {
+    flushPromises,
+    makeExecuteKeyboardAction,
+    renderWithRouter,
+} from '../../../../utils/testing'
 import {initialState as currentUser} from '../../../../state/currentUser/reducers'
 import pendingMessageManager from '../../../../services/pendingMessageManager/pendingMessageManager'
 import {TicketDetailContainer} from '../TicketDetailContainer.js'
@@ -13,9 +18,11 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from '../../../../state/newMessage/errors'
+import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 
 jest.useFakeTimers()
 
+jest.mock('../../../../services/shortcutManager/shortcutManager')
 jest.mock(
     '../components/TicketView',
     () => ({submit}: {submit: (param: string) => void}) => (
@@ -35,6 +42,10 @@ jest.mock(
         skipExistingTimer: jest.fn(),
     })
 )
+
+const shortcutManagerMock = shortcutManager as jest.Mocked<
+    typeof shortcutManager
+>
 
 describe('TicketDetailContainer component', () => {
     const prepareTicketMessageMock = jest.fn()
@@ -921,4 +932,42 @@ describe('TicketDetailContainer component', () => {
         userEvent.click(getByTestId('TicketView-close'))
         await flushPromises()
     })
+
+    it.each<[string, string, () => jest.Mock]>([
+        [
+            'next',
+            'GO_FORWARD',
+            () => {
+                return (minProps.goToNextTicket as jest.Mock).mockReturnValue(
+                    new Promise(_noop)
+                )
+            },
+        ],
+        [
+            'prev',
+            'GO_BACK',
+            () => {
+                return (minProps.goToPrevTicket as jest.Mock).mockReturnValue(
+                    new Promise(_noop)
+                )
+            },
+        ],
+    ])(
+        'should debounce %s ticket calls while call is already pending',
+        (testName, actionName, testSetup) => {
+            const execKeyboardAction = makeExecuteKeyboardAction(
+                shortcutManagerMock
+            )
+            const callMock = testSetup()
+            renderWithRouter(<TicketDetailContainer {...minProps} />, {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            })
+
+            execKeyboardAction(actionName)
+            execKeyboardAction(actionName)
+
+            expect(callMock).toHaveBeenCalledTimes(1)
+        }
+    )
 })

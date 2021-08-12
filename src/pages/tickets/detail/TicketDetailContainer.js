@@ -6,7 +6,7 @@ import {useParams} from 'react-router-dom'
 import {fromJS, type List, type Map} from 'immutable'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import {usePrevious} from 'react-use'
+import {useAsyncFn, usePrevious} from 'react-use'
 import DocumentTitle from 'react-document-title'
 
 import useSearch from '../../../hooks/useSearch.ts'
@@ -153,13 +153,19 @@ export const TicketDetailContainer = ({
         }
     }, [])
 
-    const goToPrevOrNextTicket = (direction: 'prev' | 'next') => {
-        const ticketNumber = parseInt(ticketIdParam)
-        clearTicket()
-        direction === 'prev'
-            ? goToPrevTicket(ticketNumber)
-            : goToNextTicket(ticketNumber)
-    }
+    const [
+        {loading: isGoToPrevOrNextTicketPending},
+        goToPrevOrNextTicket,
+    ] = useAsyncFn(
+        (direction: 'prev' | 'next') => {
+            const ticketNumber = parseInt(ticketIdParam)
+            clearTicket()
+            return direction === 'prev'
+                ? goToPrevTicket(ticketNumber)
+                : goToNextTicket(ticketNumber)
+        },
+        [ticketIdParam]
+    )
 
     const submitNewMessage = async (
         status: ?string,
@@ -270,12 +276,16 @@ export const TicketDetailContainer = ({
         shortcutManager.bind('TicketDetailContainer', {
             GO_BACK: {
                 action: () => {
-                    goToPrevOrNextTicket('prev')
+                    if (!isGoToPrevOrNextTicketPending) {
+                        goToPrevOrNextTicket('prev')
+                    }
                 },
             },
             GO_FORWARD: {
                 action: () => {
-                    goToPrevOrNextTicket('next')
+                    if (!isGoToPrevOrNextTicketPending) {
+                        goToPrevOrNextTicket('next')
+                    }
                 },
             },
             SUBMIT_TICKET: {
@@ -302,7 +312,7 @@ export const TicketDetailContainer = ({
         return () => {
             shortcutManager.unbind('TicketDetailContainer')
         }
-    }, [goToPrevOrNextTicket, submit])
+    })
 
     // Fetch the ticket's customer history (tickets + events).
     useEffect(() => {
