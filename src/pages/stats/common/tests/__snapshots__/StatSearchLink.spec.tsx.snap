@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatSearchLink should render the component and construct the link for the new view 1`] = `
+<div>
+  Link Mock
+  {
+  "className": "searchLink",
+  "to": {
+    "pathname": "/app/tickets/new/public",
+    "state": {
+      "viewName": "Assigned to: Acme Support",
+      "filters": "eq(ticket.assignee_user.id, 8)"
+    }
+  },
+  "children": "click here!"
+}
+</div>
+`;

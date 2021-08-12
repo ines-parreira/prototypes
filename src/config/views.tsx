@@ -6,7 +6,7 @@ import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 import {BASE_VIEW_ID} from '../constants/view'
 import {OrderDirection} from '../models/api/types'
 import {ViewField, ViewType, ViewVisibility} from '../models/view/types'
-import {getAST, getLanguageDisplayName, stripHTML} from '../utils'
+import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from '../utils'
 import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
@@ -344,8 +344,12 @@ export const views = fromJS([
                 }
             }
         },
-        newView: (visibility?: ViewVisibility) => {
-            return baseView().merge({
+        newView: (
+            visibility?: ViewVisibility,
+            viewName?: string,
+            filters?: string
+        ) => {
+            let view = baseView().merge({
                 fields: [
                     ViewField.Details,
                     ViewField.Channel,
@@ -362,6 +366,17 @@ export const views = fromJS([
                         ? ViewVisibility.Private
                         : ViewVisibility.Public,
             })
+
+            if (filters) {
+                view = view.merge({
+                    filters,
+                    filters_ast: getAST(filters),
+                })
+            }
+            if (viewName) {
+                view = view.set('name', viewName)
+            }
+            return view
         },
         searchView: (query: string, filters?: string) => {
             const searchView = baseView().merge({
@@ -503,3 +518,16 @@ export const getConfigByType = (type: string) => {
  */
 export const getExpirationTimeForCount = (count: number) =>
     count && count >= 100 ? Math.ceil((count / 100) * 60) : 30
+
+export const getTicketViewField = (fieldName: ViewField): Map<any, any> => {
+    const viewConfig = getConfigByType(ViewType.TicketList)
+    const field = (viewConfig.get('fields') as List<Map<any, any>>).find(
+        (field) => field!.get('name') === fieldName
+    )
+    return field
+}
+
+export const getTicketViewFieldPath = (field: Map<any, any>): string => {
+    const viewConfig = getConfigByType(ViewType.TicketList)
+    return `${viewConfig.get('singular') as string}.${fieldPath(field)}`
+}

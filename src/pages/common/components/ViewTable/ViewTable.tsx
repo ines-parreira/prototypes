@@ -39,7 +39,11 @@ type OwnProps = {
 }
 
 type Props = OwnProps &
-    RouteComponentProps<{visibility: ViewVisibility}, any, unknown> &
+    RouteComponentProps<
+        {visibility: ViewVisibility},
+        any,
+        {viewName?: string; filters?: string}
+    > &
     ViewSearchUrlSyncInjectedProps &
     ConnectedProps<typeof connector> &
     CancellableRequestInjectedProps<
@@ -77,8 +81,14 @@ export class ViewTableContainer extends Component<Props> {
         } else if (isCreationUrl(location.pathname, 'tickets')) {
             updateView(
                 (config.get('newView') as (
-                    params?: ViewVisibility
-                ) => Map<any, any>)(params.visibility)
+                    params?: ViewVisibility,
+                    viewName?: string,
+                    filters?: string
+                ) => Map<any, any>)(
+                    params.visibility,
+                    location.state?.viewName,
+                    location.state?.filters
+                )
             )
             void fetchViewItemsCancellable(null, null, null)
         } else if (activeView.isEmpty() || urlViewId) {

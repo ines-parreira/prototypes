@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Config: views getTicketViewField should return the field corresponding to the passed field name 1`] = `
+Immutable.Map {
+  "name": "assignee",
+  "title": "Assignee user",
+  "path": "assignee_user.id",
+  "filter": Immutable.Map {
+    "type": "agent",
+  },
+}
+`;
+
+exports[`Config: views getTicketViewFieldPath should return the path corresponding to the passed field 1`] = `"ticket.channel"`;

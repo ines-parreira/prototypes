@@ -94,7 +94,9 @@ describe('<ViewTable />', () => {
                     isSearch={true}
                     urlSearchView={searchView}
                     location={
-                        {search: stringify({cursor}), pathname: ''} as Location
+                        {search: stringify({cursor}), pathname: ''} as Location<
+                            any
+                        >
                     }
                 />
             )
@@ -171,6 +173,44 @@ describe('<ViewTable />', () => {
             )
 
             expect(minProps.updateView).toHaveBeenCalledWith('foo')
+            expect(minProps.fetchViewItemsCancellable).toHaveBeenCalledTimes(1)
+        })
+
+        it('should set the new active view based on passed view name and filter state and fetch the view items when the url is a creation one', () => {
+            const state = {
+                viewName: 'Assigned to: Acme Support',
+                filters: 'eq(ticket.assignee_user.id, 8)',
+            }
+            render(
+                <ViewTableContainer
+                    {...minProps}
+                    config={fromJS({
+                        newView: (
+                            visibility: ViewVisibility,
+                            viewName: string,
+                            filters: string
+                        ) => ({
+                            visibility,
+                            viewName,
+                            filters,
+                        }),
+                    })}
+                    location={
+                        {
+                            pathname: `/app/tickets/new/${ViewVisibility.Private}`,
+                            state,
+                        } as Location<any>
+                    }
+                    match={
+                        {params: {visibility: ViewVisibility.Private}} as any
+                    }
+                />
+            )
+
+            expect(minProps.updateView).toHaveBeenCalledWith({
+                visibility: ViewVisibility.Private,
+                ...state,
+            })
             expect(minProps.fetchViewItemsCancellable).toHaveBeenCalledTimes(1)
         })
     })

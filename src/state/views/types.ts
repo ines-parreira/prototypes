@@ -10,7 +10,7 @@ export type ViewsState = Map<any, any>
 export type ViewFilter = {
     operator: string
     left: string
-    right?: string
+    right?: string | number
 }
 
 export type ViewImmutable = Map<any, any>

@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssigneeStatSearchLink should not prepare a link if no agent exists under the passed name 1`] = `
+<div>
+  click here!
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should prepare a link when "Unassigned" is passed as agent name 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Unassigned",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "isEmpty"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should prepare a link when an agent exists under the passed name 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should should prepare a link with channel filters when a single channel is selected 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should should prepare a link with channel filters when multiple channels are selected 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "containsAny",
+      "right": "[\\"email\\",\\"chat\\"]"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should should prepare a link with integration filters when a single integration is selected 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should should prepare a link with integration filters when multiple integrations are selected 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "containsAny",
+      "right": "[1,5]"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeStatSearchLink should should prepare a link with period filters in UTC format 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;

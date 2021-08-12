@@ -6,7 +6,7 @@ import * as viewsConfig from '../views'
 import * as ticketFixtures from '../../fixtures/ticket'
 import {customer} from '../../fixtures/customer'
 import {getAST} from '../../utils'
-import {ViewType, View} from '../../models/view/types'
+import {ViewType, View, ViewField} from '../../models/view/types'
 
 global.console.error = jest.fn()
 
@@ -208,5 +208,23 @@ describe('Config: views', () => {
                 )
             }
         )
+    })
+
+    describe('getTicketViewField', () => {
+        it('should return the field corresponding to the passed field name', () => {
+            expect(
+                viewsConfig.getTicketViewField(ViewField.Assignee)
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('getTicketViewFieldPath', () => {
+        it('should return the path corresponding to the passed field', () => {
+            expect(
+                viewsConfig.getTicketViewFieldPath(
+                    viewsConfig.getTicketViewField(ViewField.Channel)
+                )
+            ).toMatchSnapshot()
+        })
     })
 })

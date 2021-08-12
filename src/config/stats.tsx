@@ -11,6 +11,8 @@ import {TagLabel} from '../pages/common/utils/labels'
 import {IntegrationType} from '../models/integration/types'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
+import AssigneeStatSearchLink from '../pages/stats/common/AssigneeStatSearchLink'
+import * as segmentTracker from '../store/middlewares/segmentTracker.js'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -361,7 +363,7 @@ export const stats = toImmutable<
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: ({value}) => {
+            cell: ({value, axis, line}) => {
                 if (_isString(value) && value.toLowerCase() === 'unassigned') {
                     return (
                         <i>
@@ -369,10 +371,33 @@ export const stats = toImmutable<
                         </i>
                     )
                 }
+                if (axis.name.toLowerCase() === 'total') {
+                    return (
+                        <span
+                            onClick={() => {
+                                segmentTracker.logEvent(
+                                    segmentTracker.EVENTS
+                                        .STAT_VIEW_LINK_CLICKED,
+                                    {
+                                        stat: 'tickets-closed-per-agent-total',
+                                    }
+                                )
+                            }}
+                        >
+                            <AssigneeStatSearchLink
+                                agentName={(line.get(0) as Map<any, any>).get(
+                                    'value'
+                                )}
+                            >
+                                {value}
+                            </AssigneeStatSearchLink>
+                        </span>
+                    )
+                }
 
                 return value
             },
-        } as StatConfigCallbacks<JSX.IntrinsicElements['i'] | ReactText>,
+        } as StatConfigCallbacks,
     },
     [TICKETS_PER_TAG]: {
         helpText: 'Number of tickets created per tag',
