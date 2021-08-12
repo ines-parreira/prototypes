@@ -410,15 +410,14 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                     message: 'Article successfully saved',
                     status: NotificationStatus.Success,
                 })
+                setSelectedArticle(null)
+                setEditModal(null)
             } catch (err) {
                 void notify({
                     message: 'Failed to save the article',
                     status: NotificationStatus.Error,
                 })
                 console.error(err)
-            } finally {
-                setSelectedArticle(null)
-                setEditModal(null)
             }
         }
         // Create Article
@@ -440,15 +439,14 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                     message: 'Article successfully created',
                     status: NotificationStatus.Success,
                 })
+                setSelectedArticle(null)
+                setEditModal(null)
             } catch (err) {
                 void notify({
                     message: 'Failed to create the article',
                     status: NotificationStatus.Error,
                 })
                 console.error(err)
-            } finally {
-                setSelectedArticle(null)
-                setEditModal(null)
             }
         }
     }
