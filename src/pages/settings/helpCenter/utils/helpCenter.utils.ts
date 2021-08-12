@@ -18,9 +18,15 @@ export const getNewTranslation = (
     locale,
 })
 
-export function slugify(title: string): string {
-    if (title) {
-        return encodeURI(title.replace(/ /g, '-').toLowerCase())
+export function slugify(value: string): string {
+    if (value) {
+        return encodeURI(
+            value
+                .replace(/[/;:.',*?!]/g, '')
+                .trim()
+                .replace(/ /g, '-')
+                .toLowerCase()
+        )
     }
 
     return ''

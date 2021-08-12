@@ -27,10 +27,18 @@ describe('slugify()', () => {
         expect(slugify('title one')).toEqual('title-one')
     })
 
+    describe('it removes unauthorized characters and trailing whitespace', () => {
+        expect(
+            slugify(
+                "Title *one*; title two, title 'three' / four. Title five ?!  "
+            )
+        ).toEqual('title-one-title-two-title-three--four-title-five')
+    })
+
     // * read more: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI#description
     describe('it does not encode reserved characters', () => {
-        expect(slugify(`; , / ? : @ & = + $ - _ . ! ~ * ' ( ) #`)).toEqual(
-            `;-,-/-?-:-@-&-=-+-$---_-.-!-~-*-'-(-)-#`
+        expect(slugify(`@ & = + $ - _ ~ ( ) #`)).toEqual(
+            `@-&-=-+-$---_-~-(-)-#`
         )
     })
 

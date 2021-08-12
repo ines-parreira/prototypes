@@ -26,7 +26,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
             onChange({
                 ...translation,
                 [editKey]: newValue,
-                slug: newValue.replace(/ /g, '-').toLowerCase(),
+                slug: slugify(newValue),
             })
             return
         }
