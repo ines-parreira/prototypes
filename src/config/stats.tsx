@@ -455,7 +455,7 @@ export const stats = toImmutable<
                         ticks: _merge({}, defaultTicks, {
                             callback: (val: any, index: number) =>
                                 index % 2 === 0
-                                    ? moment.unix(val).format('h a')
+                                    ? moment.utc(moment.unix(val)).format('h a')
                                     : '',
                         }),
                     },
