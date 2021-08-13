@@ -39,11 +39,13 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
         plans &&
         !!Object.values(plans).find(
             (plan) =>
-                plan.name === currentPlan.get('name') &&
-                plan.features[feature]?.enabled
+                plan.name.split(' ')[0] ===
+                    (currentPlan.get('name') as string | undefined)?.split(
+                        ' '
+                    )[0] && plan.features[feature]?.enabled
         )
     const requiredPlanName = shouldKeepPlan
-        ? (currentPlan.get('name') as string)
+        ? (currentPlan.get('name') as string)?.split(' ')[0]
         : getCheapestPlanNameForFeature(feature, plans || {})
     const config = paywallConfigs[feature]
     return (
