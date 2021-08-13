@@ -8,6 +8,10 @@ import {paywallConfigs as defaultPaywallConfigs} from '../../../../config/paywal
 import UpgradeButton from '../UpgradeButton'
 import {AccountFeature} from '../../../../state/currentAccount/types'
 import {RootState} from '../../../../state/types'
+import {
+    hasLegacyPlan,
+    getCurrentPlan,
+} from '../../../../state/billing/selectors'
 import {BillingState} from '../../../../state/billing/types'
 import {Plan} from '../../../../models/billing/types'
 import {toJS} from '../../../../utils'
@@ -25,10 +29,22 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
     const billingState = useSelector<RootState, BillingState>(
         (state) => state.billing
     )
+    const isLegacyPlan = useSelector(hasLegacyPlan)
+    const currentPlan = useSelector(getCurrentPlan)
     const plans: Record<string, Plan> | undefined = toJS(
         billingState.get('plans')
     )
-    const requiredPlanName = getCheapestPlanNameForFeature(feature, plans || {})
+    const shouldKeepPlan =
+        isLegacyPlan &&
+        plans &&
+        !!Object.values(plans).find(
+            (plan) =>
+                plan.name === currentPlan.get('name') &&
+                plan.features[feature]?.enabled
+        )
+    const requiredPlanName = shouldKeepPlan
+        ? (currentPlan.get('name') as string)
+        : getCheapestPlanNameForFeature(feature, plans || {})
     const config = paywallConfigs[feature]
     return (
         <div className="full-width">
@@ -50,7 +66,11 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
                                 </p>
                                 <UpgradeButton
                                     className="mt-3 mb-5 d-inline-block"
-                                    label={`Upgrade to ${requiredPlanName}`}
+                                    label={
+                                        shouldKeepPlan
+                                            ? `Upgrade to new ${requiredPlanName} Plan`
+                                            : `Upgrade to ${requiredPlanName}`
+                                    }
                                     state={{
                                         openedPlanModal: requiredPlanName,
                                     }}

@@ -1,5 +1,104 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Paywall /> should ask to upgrade legacy plan into new plan 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-container pl-lg-5 page container-fluid"
+  >
+    <div
+      class="paywallContainer"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-12 col-lg-4 col-xl-5"
+        >
+          <h1
+            class="header"
+          >
+            Paywall header
+          </h1>
+          <p
+            class="infoText"
+          >
+            Paywall description
+          </p>
+          <div
+            class="mt-3 mb-5 d-inline-block"
+          >
+            <a
+              class="d-flex align-items-center upgradeLink"
+              to="[object Object]"
+            >
+              <button
+                class="upgradeButton btn btn-outline-warning"
+                type="button"
+              >
+                <span
+                  class="mr-2 upgradeLabel"
+                >
+                  Upgrade to new Advanced Plan
+                </span>
+                <img
+                  alt="upgrade-icon"
+                  class="upgradeIcon"
+                  src="test-file-stub"
+                />
+              </button>
+            </a>
+          </div>
+          <p
+            class="testimonialText"
+          >
+            Testimonial text
+          </p>
+          <div
+            class="d-flex mt-4"
+          >
+            <img
+              alt="avatar"
+              class="mr-3 avatar"
+              src="/static/private/img/paywalls/avatars/johndoe.jpg"
+            />
+            <div>
+              <p
+                class="testimonialDetails"
+              >
+                <strong>
+                  John Doe
+                </strong>
+              </p>
+              <p
+                class="testimonialDetails"
+              >
+                Customer Experience Manager
+                 
+                at
+                 
+                <a
+                  class="companyLink"
+                  href="https://acme.com/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Acme Inc.
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mt-5 mt-lg-0 pl-lg-5 preview col-12 col-lg-8 col-xl-7"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<Paywall /> should render lightbox for the feature with a preview 1`] = `
 <div
   class="full-width"
