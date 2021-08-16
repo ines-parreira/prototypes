@@ -250,8 +250,8 @@ export function getInstagramDMSettingsInlineComponent(
     ) {
         return (
             <Alert color="warning" className="ml-1 py-1 mt-3">
-                Reconnect your integration to check your eligibility for the
-                Instagram Messaging API
+                Reconnect your integration to grant us the permissions to access
+                the Messenger API for Instagram on your behalf
             </Alert>
         )
     } else if (
@@ -259,39 +259,26 @@ export function getInstagramDMSettingsInlineComponent(
     ) {
         return (
             <Alert color="warning" className="ml-1 py-1 mt-3">
-                We cannot access the Instagram Messaging API on your behalf.
-                There are two reasons this may be the case:
-                <ul>
-                    <li>
-                        Due to{' '}
-                        <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_do_i_know_if_i_have_access_to_instagram_direct_messages"
-                        >
-                            follower requirements
-                        </a>{' '}
-                        <u>you are not yet eligible</u> for Instagram Direct
-                        messages.
-                    </li>
-                    <li>
-                        You have not enabled the{' '}
-                        <i>
-                            <b>Allow Access to Messages</b>
-                        </i>{' '}
-                        setting in your Instagram App (see step 1 in{' '}
-                        <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_to_activate_the_instagram_direct_message_channel_in_gorgias"
-                        >
-                            this help doc
-                        </a>
-                        ).
-                    </li>
-                </ul>
-                Please reconnect your integration once you went through the
-                above step or if you think your eligibility has changed.
+                To activate Instagram Messaging, please click the green{' '}
+                <b>Reconnect</b> button. If this message persists, please check
+                that you have enabled the{' '}
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_do_i_check_if_i_have_enabled_the_allow_access_to_messages_setting_in_instagram"
+                >
+                    Allow Access to Messages setting
+                </a>{' '}
+                in your Instagram app and then reconnect your integration. If
+                this messages still persists, please reach out to{' '}
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="mailto:support@gorgias.com"
+                >
+                    our support team
+                </a>{' '}
+                or contact us via chat.
             </Alert>
         )
     }
