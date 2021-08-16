@@ -44,7 +44,9 @@ exports[`TicketStatus component open ticket 1`] = `
     >
       check
     </i>
-    Close
+    <span>
+      Close
+    </span>
   </Button>
   <Tooltip
     placement="bottom"

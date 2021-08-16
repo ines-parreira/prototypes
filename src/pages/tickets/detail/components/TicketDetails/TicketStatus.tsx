@@ -38,7 +38,7 @@ const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
                 >
                     check
                 </i>
-                {toClose && 'Close'}
+                {toClose && <span>Close</span>}
             </Button>
             <Tooltip placement="bottom" target="change-status-button">
                 {toClose ? 'Close (press C)' : 'Reopen (press O)'}
