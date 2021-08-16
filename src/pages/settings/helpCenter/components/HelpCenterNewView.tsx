@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {useState, useEffect, FormEvent} from 'react'
+import React, {useState, FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {
@@ -15,20 +15,15 @@ import {
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
-import {HELP_CENTER_BASE_PATH, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
-import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
-import {
-    HelpCenterLocale,
-    CreateHelpcenterDto,
-    LocaleCode,
-} from '../../../../models/helpCenter/types'
+
+import {CreateHelpcenterDto} from '../../../../models/helpCenter/types'
 import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-import {notify} from '../../../../state/notifications/actions'
-import {
-    getHelpCenterClient,
-    HelpCenterClient,
-} from '../../../../../../../rest_api/help_center_api/index'
+import {notify as notifyAction} from '../../../../state/notifications/actions'
+
+import {useLocales} from '../hooks/useLocales'
+import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {HELP_CENTER_BASE_PATH, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
 
 import css from './HelpCenterNewView.less'
 import LanguageSelect from './newView/LanguageSelect'
@@ -37,64 +32,46 @@ type Props = ConnectedProps<typeof connector>
 
 const initialFormState: CreateHelpcenterDto = {
     name: '',
-    default_locale: HELP_CENTER_LANGUAGE_DEFAULT as LocaleCode,
+    default_locale: HELP_CENTER_LANGUAGE_DEFAULT,
 }
 
-let helpCenterClient: HelpCenterClient
-
-export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
+export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
     const history = useHistory()
     const location = useLocation()
+    const localeOptions = useLocales()
+    const {client} = useHelpcenterApi()
     const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpcenterDto>(
         initialFormState
     )
     const [isLoading, setIsLoading] = useState(false)
-    const [localeOptions, setLocaleOptions] = useState<HelpCenterLocale[]>([])
-
-    useEffect(() => {
-        async function init() {
-            setIsLoading(true)
-            try {
-                helpCenterClient = await getHelpCenterClient()
-                // Retrieve the default locale options from the API
-                setLocaleOptions(
-                    getLocalesResponseFixture as HelpCenterLocale[]
-                )
-            } catch (err) {
-                notify({
-                    message:
-                        "Failed to retrieve the help center's locales list",
-                    status: NotificationStatus.Error,
-                })
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
-        void init()
-    }, [])
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+
+        if (!client) {
+            return
+        }
         setIsLoading(true)
         try {
-            const {
-                data: createdHelpCenter,
-            } = await helpCenterClient.createHelpCenter(null, newHelpCenter)
+            const {data: createdHelpCenter} = await client.createHelpCenter(
+                null,
+                newHelpCenter
+            )
             helpCenterCreated(createdHelpCenter)
             resetForm()
 
             history.push(location.pathname.split('/new')[0])
 
-            notify({
+            void notify({
                 message: 'Help center successfully created',
                 status: NotificationStatus.Success,
             })
         } catch (err) {
-            notify({
+            void notify({
                 message: 'Failed to create the help center',
                 status: NotificationStatus.Error,
             })
+            console.error(err)
         } finally {
             setIsLoading(false)
         }
@@ -139,7 +116,9 @@ export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
             />
             <Container fluid className="page-container">
                 {isLoading ? (
-                    <Loader />
+                    <span data-testid="loading">
+                        <Loader />
+                    </span>
                 ) : (
                     <Form className="mb-4" onSubmit={handleSubmit}>
                         <Row>
@@ -201,7 +180,7 @@ export const HelpCenterNewView = ({helpCenterCreated}: Props) => {
 
 const connector = connect(null, {
     helpCenterCreated,
-    notify,
+    notify: notifyAction,
 })
 
 export default connector(HelpCenterNewView)

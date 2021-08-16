@@ -1,12 +1,13 @@
 import React from 'react'
 import produce from 'immer'
+import _keyBy from 'lodash/keyBy'
 import {Button} from 'reactstrap'
 
-import Modal from '../../../../common/components/Modal'
+import {HelpCenterLocale} from '../../../../../../../models/helpCenter/types'
 
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+import Modal from '../../../../../../common/components/Modal'
 
-import {useLanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
+import {useLanguagePreferencesSettings} from '../../../../providers/LanguagePreferencesSettings'
 
 import {DynamicBadgeList, BadgeItemProps} from '../BadgeList'
 
@@ -25,14 +26,20 @@ function ensureDefaultLanguageIsFirst(locale: string[], defaultLocale: string) {
     return locale
 }
 
-export const AvailableLanguagesTags = () => {
+type Props = {
+    availableLocales: HelpCenterLocale[]
+}
+
+export const AvailableLanguagesTags = ({availableLocales}: Props) => {
     const {preferences, updatePreference} = useLanguagePreferencesSettings()
     const [
         pendingLocale,
         setPendingLocale,
     ] = React.useState<BadgeItemProps | null>()
-
-    const supportedLocales = useSupportedLocales()
+    const supportedLocales = React.useMemo(
+        () => _keyBy(availableLocales, 'code'),
+        [availableLocales]
+    )
 
     const availableList = Object.values(supportedLocales).map(
         transformToSelectOption
@@ -41,19 +48,18 @@ export const AvailableLanguagesTags = () => {
     const selectedLocales = ensureDefaultLanguageIsFirst(
         preferences.availableLanguages,
         preferences.defaultLanguage
-    ).map((locale) =>
-        transformToSelectedLocale(
-            supportedLocales[locale],
-            preferences.defaultLanguage
-        )
     )
+        .filter((locale) => supportedLocales[locale])
+        .map((locale) =>
+            transformToSelectedLocale(
+                supportedLocales[locale],
+                preferences.defaultLanguage
+            )
+        )
 
     const handleOnAddLocale = (_: React.MouseEvent, locale: BadgeItemProps) => {
         updatePreference({
-            availableLanguages: [
-                ...preferences.availableLanguages,
-                locale.id as string,
-            ],
+            availableLanguages: [...preferences.availableLanguages, locale.id],
         })
     }
 

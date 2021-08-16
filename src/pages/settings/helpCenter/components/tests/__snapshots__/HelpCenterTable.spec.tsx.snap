@@ -263,6 +263,17 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
             >
               <div
                 class="language-bullet-item"
+                data-testid="locale-bullet-en-US"
+              >
+                <span
+                  class="flag-emoji"
+                  data-testid="flag-en-US"
+                >
+                  🇺🇸
+                </span>
+              </div>
+              <div
+                class="language-bullet-item"
                 data-testid="locale-bullet-de-DE"
               >
                 <span
@@ -315,6 +326,17 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
             <div
               class="language-bullet-list"
             >
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-en-US"
+              >
+                <span
+                  class="flag-emoji"
+                  data-testid="flag-en-US"
+                >
+                  🇺🇸
+                </span>
+              </div>
               <div
                 class="language-bullet-item"
                 data-testid="locale-bullet-fr-FR"

@@ -2,12 +2,14 @@ import React from 'react'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
-import Tooltip from '../../../../../pages/common/components/Tooltip'
+import {LocaleCode} from '../../../../../../../models/helpCenter/types'
+
+import Tooltip from '../../../../../../common/components/Tooltip'
 
 import css from './BadgeItem.less'
 
 export type BadgeItemProps = {
-    id: string | number
+    id: LocaleCode
     label: string | React.ReactNode
     isClosable?: boolean
     help?: string | React.ReactNode

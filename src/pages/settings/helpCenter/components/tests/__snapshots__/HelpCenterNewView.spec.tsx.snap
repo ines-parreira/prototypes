@@ -79,7 +79,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
             >
               <label
                 class="control-label"
-                for="id-input-2"
+                for="id-input-1"
               >
                 Default language
               </label>
@@ -88,8 +88,8 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
               >
                 <select
                   class="form-control"
-                  id="id-input-2"
-                  options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                  id="id-input-1"
+                  options="[object Object],[object Object],[object Object],[object Object]"
                 >
                   <option
                     value="en-US"
@@ -110,41 +110,6 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                     value="cs-CZ"
                   >
                     🇨🇿 Czech - Czech Republic
-                  </option>
-                  <option
-                    value="da-DK"
-                  >
-                    🇩🇰 Danish - Denmark
-                  </option>
-                  <option
-                    value="nl-NL"
-                  >
-                    🇳🇱 Dutch - Netherlands
-                  </option>
-                  <option
-                    value="de-DE"
-                  >
-                    🇩🇪 German - Germany
-                  </option>
-                  <option
-                    value="it-IT"
-                  >
-                    🇮🇹 Italian - Italy
-                  </option>
-                  <option
-                    value="no-NO"
-                  >
-                    🇳🇴 Norwegian - Norway
-                  </option>
-                  <option
-                    value="es-ES"
-                  >
-                    🇪🇸 Spanish - Spain
-                  </option>
-                  <option
-                    value="sv-SE"
-                  >
-                    🇸🇪 Swedish - Sweden
                   </option>
                 </select>
               </div>

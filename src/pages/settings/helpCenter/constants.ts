@@ -1,8 +1,11 @@
-import {LocalSocialNavigationLink} from '../../../models/helpCenter/types'
+import {
+    LocaleCode,
+    LocalSocialNavigationLink,
+} from '../../../models/helpCenter/types'
 
 export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 
-export const HELP_CENTER_LANGUAGE_DEFAULT = 'en-US'
+export const HELP_CENTER_LANGUAGE_DEFAULT: LocaleCode = 'en-US'
 
 export const HELP_CENTER_DOMAIN = window.location.hostname.includes(
     '.gorgias.xyz'

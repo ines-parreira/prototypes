@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent} from '@testing-library/react'
+import {act, fireEvent, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
@@ -7,16 +7,42 @@ import HelpCenterNewView from '../HelpCenterNewView'
 import {renderWithRouter} from '../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 
+import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
+
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-const mockedCreateHelpCenter = jest.fn(() => Promise.resolve())
+jest.mock('../../hooks/useHelpcenterApi', () => {
+    return {
+        useHelpcenterApi: () => ({
+            isReady: true,
+            client: {
+                createHelpCenter: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({})),
+            },
+        }),
+    }
+})
 
-const mockedHelpCenterClient = {
-    createHelpCenter: mockedCreateHelpCenter,
-}
-
-jest.mock('../../../../../../../../rest_api/help_center_api/index', () => ({
-    getHelpCenterClient: () => Promise.resolve(mockedHelpCenterClient),
+jest.mock('../../hooks/useLocales', () => ({
+    useLocales: () => [
+        {
+            name: 'English - USA',
+            code: 'en-US',
+        },
+        {
+            name: 'French - France',
+            code: 'fr-FR',
+        },
+        {
+            name: 'French - Canada',
+            code: 'fr-CA',
+        },
+        {
+            name: 'Czech - Czech Republic',
+            code: 'cs-CZ',
+        },
+    ],
 }))
 
 describe('<HelpCenterNewView/>', () => {
@@ -24,7 +50,7 @@ describe('<HelpCenterNewView/>', () => {
     const props = {}
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
     })
 
     it('should render the component', async () => {
@@ -97,7 +123,7 @@ describe('<HelpCenterNewView/>', () => {
             expect(submitButton.className).not.toMatch(/disabled/i)
         })
         it('should call helpcenter API on submit a new helpcenter', async () => {
-            const {findByRole} = renderWithRouter(
+            const {findByRole, getByTestId} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
                     <HelpCenterNewView {...props} />
                 </Provider>
@@ -105,14 +131,22 @@ describe('<HelpCenterNewView/>', () => {
             const brandInput = await findByRole('textbox', {
                 name: /help center name/i,
             })
-            fireEvent.change(brandInput, {target: {value: 'My brand'}})
             const submitButton = await findByRole('button', {
                 name: /add new helpcenter/i,
             })
-            fireEvent.click(submitButton)
-            expect(mockedCreateHelpCenter).toHaveBeenLastCalledWith(null, {
-                name: 'My brand',
-                default_locale: 'en-US',
+
+            void act(async () => {
+                fireEvent.change(brandInput, {target: {value: 'My brand'}})
+                fireEvent.click(submitButton)
+
+                await waitFor(() => getByTestId('loading'))
+
+                expect(
+                    useHelpcenterApi().client?.createHelpCenter
+                ).toHaveBeenLastCalledWith(null, {
+                    name: 'My brand',
+                    default_locale: 'en-US',
+                })
             })
         })
     })

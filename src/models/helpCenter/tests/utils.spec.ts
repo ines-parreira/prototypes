@@ -4,6 +4,7 @@ import {
     createArticleFromDto,
     createCategoryFromDto,
     createCategoryTranslationFromDto,
+    validLocaleCode,
 } from '../utils'
 
 describe('Help Center model utils', () => {
@@ -99,5 +100,17 @@ describe('Help Center model utils', () => {
                 position: 0,
             })
         })
+    })
+
+    describe('validLocaleCode', () => {
+        it('returns the localeCode if is valid', () => {
+            expect(validLocaleCode('en-US')).toEqual('en-US')
+        })
+        it.each([['latin'], ['']])(
+            'throws error if the locale code is not recognized',
+            (value: string) => {
+                expect(() => validLocaleCode(value)).toThrow()
+            }
+        )
     })
 })

@@ -4,11 +4,11 @@ import {
     HelpCenter,
     HelpCenterPreferences,
     HelpCenterLocale,
-} from '../../../../../models/helpCenter/types'
+} from '../../../../../../../models/helpCenter/types'
 
-import {FlagLanguageItem} from '../../../../common/components/LanguageBulletList'
+import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 
-import {LocalesByKey} from '../../providers/SupportedLocales'
+import {LocalesByKey} from '../../../../providers/SupportedLocales'
 
 // TODO: this is common util and needs to be moved probably as selector
 export function appendLocaleDataToHelpcenter(

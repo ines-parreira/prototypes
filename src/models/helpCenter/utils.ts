@@ -5,6 +5,7 @@ import {
     HelpCenterArticle,
     CategoryTranslation,
     ArticleWithLocalTranslation,
+    LocaleCode,
 } from './types'
 
 export function createCategoryTranslationFromDto(
@@ -59,4 +60,28 @@ export function createArticleFromDto(
         translation: payload.translation,
         position,
     }
+}
+
+function assertIsLocaleCode(code: unknown): asserts code is LocaleCode {
+    const allowedCodes = [
+        'en-US',
+        'fr-FR',
+        'fr-CA',
+        'es-ES',
+        'de-DE',
+        'nl-NL',
+        'cs-CZ',
+        'da-DK',
+        'no-NO',
+        'it-IT',
+        'sv-SE',
+    ]
+    if (allowedCodes.indexOf(String(code)) === -1) {
+        throw new TypeError(`${String(code)} is not a supported locale code`)
+    }
+}
+
+export function validLocaleCode(code: unknown): LocaleCode {
+    assertIsLocaleCode(code)
+    return code
 }

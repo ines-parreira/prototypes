@@ -1,12 +1,11 @@
 import React from 'react'
 import {Col, Row} from 'reactstrap'
 
-import {
-    HelpCenterLocale,
-    LocaleCode,
-} from '../../../../../models/helpCenter/types'
+import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
+import {validLocaleCode} from '../../../../../models/helpCenter/utils'
 
 import SelectField from '../../../../common/forms/SelectField/SelectField'
+import type {Value} from '../../../../common/forms/SelectField/types'
 
 import {useLanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
 import {useLocaleSelectOptions} from '../../hooks/useLocaleSelectOptions'
@@ -21,12 +20,12 @@ export const DefaultLanguageSelect = ({localesAvailable}: Props) => {
     const {preferences, updatePreference} = useLanguagePreferencesSettings()
     const localesOptions = useLocaleSelectOptions(
         localesAvailable,
-        preferences?.availableLanguages as LocaleCode[]
+        preferences?.availableLanguages
     )
 
-    const onChangeLanguage = (code: string) => {
+    const onChangeLanguage = (value: Value) => {
         updatePreference({
-            defaultLanguage: code,
+            defaultLanguage: validLocaleCode(value),
         })
     }
 
@@ -44,7 +43,7 @@ export const DefaultLanguageSelect = ({localesAvailable}: Props) => {
                     <SelectField
                         options={localesOptions}
                         value={preferences.defaultLanguage}
-                        onChange={onChangeLanguage as any}
+                        onChange={onChangeLanguage}
                         style={{display: 'inline-block'}}
                     />
                 </Col>

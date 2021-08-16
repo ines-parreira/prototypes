@@ -66,6 +66,7 @@ OwnProps) {
                             id,
                             name,
                             default_locale,
+                            supported_locales,
                             // deactivated_datetime,
                             updated_datetime,
                         }) => {
@@ -87,10 +88,9 @@ OwnProps) {
                                             defaultLanguage={
                                                 locales[default_locale]
                                             }
-                                            // TODO : use supported_locale from helpcenter when API will support it
-                                            languageList={[
-                                                locales[default_locale],
-                                            ]}
+                                            languageList={supported_locales.map(
+                                                (code) => locales[code]
+                                            )}
                                         />
                                     </BodyCell>
                                     <BodyCell>
