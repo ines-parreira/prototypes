@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssigneeStatSearchLink should not prepare a link if no agent exists under the passed name 1`] = `
+exports[`AssigneeStatViewLink should not prepare a link if no agent exists under the passed name 1`] = `
 <div>
   click here!
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should prepare a link when "Unassigned" is passed as agent name 1`] = `
+exports[`AssigneeStatViewLink should prepare a link when "Unassigned" is passed as agent name 1`] = `
 <div>
   <div>
     Link Mock
@@ -34,7 +34,7 @@ exports[`AssigneeStatSearchLink should prepare a link when "Unassigned" is passe
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should prepare a link when an agent exists under the passed name 1`] = `
+exports[`AssigneeStatViewLink should prepare a link when an agent exists under the passed name 1`] = `
 <div>
   <div>
     Link Mock
@@ -63,7 +63,7 @@ exports[`AssigneeStatSearchLink should prepare a link when an agent exists under
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should should prepare a link with channel filters when a single channel is selected 1`] = `
+exports[`AssigneeStatViewLink should should prepare a link with channel filters when a single channel is selected 1`] = `
 <div>
   <div>
     Link Mock
@@ -97,7 +97,7 @@ exports[`AssigneeStatSearchLink should should prepare a link with channel filter
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should should prepare a link with channel filters when multiple channels are selected 1`] = `
+exports[`AssigneeStatViewLink should should prepare a link with channel filters when multiple channels are selected 1`] = `
 <div>
   <div>
     Link Mock
@@ -131,7 +131,7 @@ exports[`AssigneeStatSearchLink should should prepare a link with channel filter
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should should prepare a link with integration filters when a single integration is selected 1`] = `
+exports[`AssigneeStatViewLink should should prepare a link with integration filters when a single integration is selected 1`] = `
 <div>
   <div>
     Link Mock
@@ -165,7 +165,7 @@ exports[`AssigneeStatSearchLink should should prepare a link with integration fi
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should should prepare a link with integration filters when multiple integrations are selected 1`] = `
+exports[`AssigneeStatViewLink should should prepare a link with integration filters when multiple integrations are selected 1`] = `
 <div>
   <div>
     Link Mock
@@ -199,7 +199,7 @@ exports[`AssigneeStatSearchLink should should prepare a link with integration fi
 </div>
 `;
 
-exports[`AssigneeStatSearchLink should should prepare a link with period filters in UTC format 1`] = `
+exports[`AssigneeStatViewLink should should prepare a link with period filters in UTC format 1`] = `
 <div>
   <div>
     Link Mock

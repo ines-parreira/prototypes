@@ -10,14 +10,14 @@ import {ViewField} from '../../../models/view/types'
 import {getViewFilters} from '../../../state/stats/selectors'
 import {ViewFilter} from '../../../state/views/types'
 
-import StatSearchLink from './StatSearchLink'
+import StatViewLink from './StatViewLink'
 
 type Props = {
     agentName: string
     children: ReactNode
 }
 
-export default function AssigneeStatSearchLink({agentName, children}: Props) {
+export default function AssigneeStatViewLink({agentName, children}: Props) {
     const {view} = useParams<{view: string}>()
     const viewFilters = useSelector(getViewFilters(view))
     const agents = useSelector(getAgents) as List<Map<any, any>>
@@ -92,8 +92,8 @@ export default function AssigneeStatSearchLink({agentName, children}: Props) {
     }
 
     return (
-        <StatSearchLink viewName={viewName} filters={filters}>
+        <StatViewLink viewName={viewName} filters={filters}>
             {children}
-        </StatSearchLink>
+        </StatViewLink>
     )
 }

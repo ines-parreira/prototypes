@@ -8,7 +8,7 @@ import {LinkProps} from 'react-router-dom'
 
 import {RootState, StoreDispatch} from '../../../../state/types'
 
-import AssigneeStatSearchLink from '../AssigneeStatSearchLink'
+import AssigneeStatViewLink from '../AssigneeStatViewLink'
 import {renderWithRouter} from '../../../../utils/testing'
 import {agents as agentsFixtures} from '../../../../fixtures/agents'
 import {integrationsState} from '../../../../fixtures/integrations'
@@ -16,14 +16,14 @@ import {TicketChannels} from '../../../../business/ticket'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../StatSearchLink', () => (props: LinkProps) => (
+jest.mock('../StatViewLink', () => (props: LinkProps) => (
     <div>
         Link Mock
         {JSON.stringify(props, null, 2)}
     </div>
 ))
 
-describe('AssigneeStatSearchLink', () => {
+describe('AssigneeStatViewLink', () => {
     const history = createMemoryHistory({initialEntries: ['/']})
     history.replace('/stats/support-performance-agents')
 
@@ -58,9 +58,9 @@ describe('AssigneeStatSearchLink', () => {
     ])('should %s', (name, agentName) => {
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <AssigneeStatSearchLink agentName={agentName}>
+                <AssigneeStatViewLink agentName={agentName}>
                     click here!
-                </AssigneeStatSearchLink>
+                </AssigneeStatViewLink>
             </Provider>,
             {
                 path: '/stats/:view',
@@ -149,9 +149,9 @@ describe('AssigneeStatSearchLink', () => {
         const agentName = 'Acme Support'
         const {container} = renderWithRouter(
             <Provider store={mockStore(state)}>
-                <AssigneeStatSearchLink agentName={agentName}>
+                <AssigneeStatViewLink agentName={agentName}>
                     click here!
-                </AssigneeStatSearchLink>
+                </AssigneeStatViewLink>
             </Provider>,
             {
                 path: '/stats/:view',

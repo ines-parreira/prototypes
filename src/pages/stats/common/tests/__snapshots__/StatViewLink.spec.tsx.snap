@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatSearchLink should render the component and construct the link for the new view 1`] = `
+exports[`StatViewLink should render the component and construct the link for the new view 1`] = `
 <div>
   Link Mock
   {

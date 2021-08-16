@@ -11,7 +11,7 @@ import {TagLabel} from '../pages/common/utils/labels'
 import {IntegrationType} from '../models/integration/types'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
-import AssigneeStatSearchLink from '../pages/stats/common/AssigneeStatSearchLink'
+import AssigneeStatViewLink from '../pages/stats/common/AssigneeStatViewLink'
 import * as segmentTracker from '../store/middlewares/segmentTracker.js'
 import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
 
@@ -756,13 +756,13 @@ export const stats = toImmutable<
                                 )
                             }}
                         >
-                            <AssigneeStatSearchLink
+                            <AssigneeStatViewLink
                                 agentName={(line.get(0) as Map<any, any>).get(
                                     'value'
                                 )}
                             >
                                 {value}
-                            </AssigneeStatSearchLink>
+                            </AssigneeStatViewLink>
                         </span>
                     )
                 }

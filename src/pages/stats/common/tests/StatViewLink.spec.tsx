@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {LinkProps} from 'react-router-dom'
 
-import StatSearchLink from '../StatSearchLink'
+import StatViewLink from '../StatViewLink'
 
 jest.mock('react-router-dom', () => ({
     Link: (props: LinkProps) => (
@@ -13,7 +13,7 @@ jest.mock('react-router-dom', () => ({
     ),
 }))
 
-describe('StatSearchLink', () => {
+describe('StatViewLink', () => {
     it('should render the component and construct the link for the new view', () => {
         const viewName = `Assigned to: Acme Support`
         const filters = [
@@ -21,9 +21,9 @@ describe('StatSearchLink', () => {
         ]
 
         const {container} = render(
-            <StatSearchLink viewName={viewName} filters={filters}>
+            <StatViewLink viewName={viewName} filters={filters}>
                 click here!
-            </StatSearchLink>
+            </StatViewLink>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
