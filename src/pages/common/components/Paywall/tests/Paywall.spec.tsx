@@ -151,6 +151,36 @@ describe('<Paywall />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should ask to upgrade custom plan when missing feature', () => {
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        current_subscription: {
+                            plan: advancedPlan.id,
+                        },
+                    }),
+                    billing: fromJS({
+                        plans: {
+                            [advancedPlan.id]: {...advancedPlan, custom: true},
+                        },
+                    }),
+                } as Partial<RootState>)}
+            >
+                <Paywall
+                    {...minProps}
+                    feature={AccountFeature.OverviewLiveStatistics}
+                    paywallConfigs={{
+                        [AccountFeature.OverviewLiveStatistics]: defaultPaywallConfig,
+                    }}
+                />
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render lightbox for the feature with a preview', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>

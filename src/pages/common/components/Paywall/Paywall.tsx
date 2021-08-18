@@ -35,16 +35,19 @@ const Paywall = ({feature, paywallConfigs = defaultPaywallConfigs}: Props) => {
         billingState.get('plans')
     )
     const shouldKeepPlan =
-        isLegacyPlan &&
-        plans &&
-        !!Object.values(plans).find(
-            (plan) =>
-                plan.name.split(' ')[0] ===
-                    (currentPlan.get('name') as string | undefined)?.split(
-                        ' '
-                    )[0] && plan.features[feature]?.enabled
-        )
-    const requiredPlanName = shouldKeepPlan
+        currentPlan.get('custom') ||
+        (isLegacyPlan &&
+            plans &&
+            !!Object.values(plans).find(
+                (plan) =>
+                    plan.name.split(' ')[0] ===
+                        (currentPlan.get('name') as string | undefined)?.split(
+                            ' '
+                        )[0] && plan.features[feature]?.enabled
+            ))
+    const requiredPlanName = currentPlan.get('custom')
+        ? 'Enterprise'
+        : shouldKeepPlan
         ? (currentPlan.get('name') as string)?.split(' ')[0]
         : getCheapestPlanNameForFeature(feature, plans || {})
     const config = paywallConfigs[feature]
