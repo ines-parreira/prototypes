@@ -1,14 +1,11 @@
-// @flow
-import React from 'react'
+import React, {ReactNode, ComponentProps} from 'react'
 
-import type {Node} from 'react'
-
-import ConfirmButton from '../../common/components/ConfirmButton.tsx'
+import ConfirmButton from '../../common/components/ConfirmButton'
 
 type Props = {
-    action: () => Promise<*>,
-    children?: Node,
-}
+    action: () => Promise<void>
+    children?: ReactNode
+} & ComponentProps<typeof ConfirmButton>
 
 const DeleteUser = (props: Props) => {
     const {action, children, ...buttonProps} = props

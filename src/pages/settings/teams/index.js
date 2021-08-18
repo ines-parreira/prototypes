@@ -1,2 +1,2 @@
-export Form from './Form'
-export List from './List'
+export Form from './Form.tsx'
+export List from './List.tsx'

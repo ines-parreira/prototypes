@@ -1,48 +1,41 @@
-// @flow
-import React from 'react'
-import {type Map} from 'immutable'
+import React, {Component, SyntheticEvent} from 'react'
+import {List} from 'immutable'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Button, Col, Container, Form, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import {type TicketChannel} from '../../../business/types/ticket'
-import UserActivityManager from '../../../services/userActivityManager'
-import * as chatsActions from '../../../state/chats/actions.ts'
-import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
-import * as currentAccountConstants from '../../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
+import {TicketChannel} from '../../../business/types/ticket'
+import UserActivityManager from '../../../services/userActivityManager.js'
+import {fetchChats} from '../../../state/chats/actions'
+import {submitSetting} from '../../../state/currentAccount/actions'
+import {getTicketAssignmentSettings} from '../../../state/currentAccount/selectors'
 
-import PageHeader from '../../common/components/PageHeader.tsx'
-import BooleanField from '../../common/forms/BooleanField'
-import {
-    CHANNELS,
-    CHAT_CHANNEL,
-    FACEBOOK_MESSENGER_CHANNEL,
-} from '../../../config/ticket.ts'
-import MultiSelectOptionsField, {
-    type Option,
-} from '../../common/forms/MultiSelectOptionsField'
+import PageHeader from '../../common/components/PageHeader'
+import BooleanField from '../../common/forms/BooleanField.js'
+import MultiSelectOptionsField from '../../common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {Option} from '../../common/forms/MultiSelectOptionsField/types'
+import {AccountSettingType} from '../../../state/currentAccount/types'
+import {RootState} from '../../../state/types'
 
-type Props = {
-    ticketAssignmentSettings: Map<*, *>,
-    submitSetting: (Object) => Promise<*>,
-    fetchChats: () => void,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isLoading: boolean,
-    unassignOnReply: boolean,
-    autoAssignToTeams: boolean,
-    assignmentChannels: TicketChannel[],
+    isLoading: boolean
+    unassignOnReply: boolean
+    autoAssignToTeams: boolean
+    assignmentChannels: TicketChannel[]
 }
 
-export class TicketAssignment extends React.Component<Props, State> {
+export class TicketAssignmentContainer extends Component<Props, State> {
     state = {
         isLoading: false,
         unassignOnReply: true,
         autoAssignToTeams: false,
-        assignmentChannels: [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
+        assignmentChannels: [
+            TicketChannel.Chat,
+            TicketChannel.FacebookMessenger,
+        ],
     }
 
     static channelsToOptions(channels: TicketChannel[]): Option[] {
@@ -57,7 +50,7 @@ export class TicketAssignment extends React.Component<Props, State> {
         const assignmentChannels = ticketAssignmentSettings.getIn([
             'data',
             'assignment_channels',
-        ])
+        ]) as List<any>
 
         if (!ticketAssignmentSettings.isEmpty()) {
             this.setState({
@@ -71,12 +64,12 @@ export class TicketAssignment extends React.Component<Props, State> {
                 ]),
                 assignmentChannels: assignmentChannels
                     ? assignmentChannels.toJS()
-                    : [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
+                    : [TicketChannel.Chat, TicketChannel.FacebookMessenger],
             })
         }
     }
 
-    _onSubmit = async (evt: SyntheticEvent<*>) => {
+    _onSubmit = async (evt: SyntheticEvent) => {
         evt.preventDefault()
         this.setState({isLoading: true})
 
@@ -96,9 +89,10 @@ export class TicketAssignment extends React.Component<Props, State> {
 
             const assignmentChannelsHaveChanged = !_isEqual(
                 assignmentChannels,
-                ticketAssignmentSettings
-                    .getIn(['data', 'assignment_channels'])
-                    .toJS()
+                (ticketAssignmentSettings.getIn([
+                    'data',
+                    'assignment_channels',
+                ]) as List<any>).toJS()
             )
 
             shouldFetchChats =
@@ -108,7 +102,7 @@ export class TicketAssignment extends React.Component<Props, State> {
 
         await submitSetting({
             id: ticketAssignmentSettings.get('id'),
-            type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+            type: AccountSettingType.TicketAssignment,
             data: {
                 unassign_on_reply: unassignOnReply,
                 auto_assign_to_teams: autoAssignToTeams,
@@ -117,7 +111,7 @@ export class TicketAssignment extends React.Component<Props, State> {
         })
 
         if (shouldFetchChats) {
-            fetchChats()
+            void fetchChats()
         }
 
         this.setState({isLoading: false})
@@ -125,7 +119,9 @@ export class TicketAssignment extends React.Component<Props, State> {
 
     _onChannelsChange = (options: Option[]) => {
         this.setState({
-            assignmentChannels: options.map((option) => option.value),
+            assignmentChannels: options.map(
+                (option) => option.value as TicketChannel
+            ),
         })
     }
 
@@ -155,7 +151,7 @@ export class TicketAssignment extends React.Component<Props, State> {
                                         label="Auto-assign tickets that are assigned to a team, to an available agent of
                                             this team, as soon as an agent of the team is available"
                                         value={autoAssignToTeams}
-                                        onChange={(value) =>
+                                        onChange={(value: boolean) =>
                                             this.setState({
                                                 autoAssignToTeams: value,
                                             })
@@ -172,7 +168,7 @@ export class TicketAssignment extends React.Component<Props, State> {
                                         label="When there is a new reply in a ticket of the following channels, if the
                                             user assigned to it is not available, un-assign the ticket"
                                         value={unassignOnReply}
-                                        onChange={(value) =>
+                                        onChange={(value: boolean) =>
                                             this.setState({
                                                 unassignOnReply: value,
                                             })
@@ -210,10 +206,10 @@ export class TicketAssignment extends React.Component<Props, State> {
                                         following channels:
                                     </p>
                                     <MultiSelectOptionsField
-                                        options={TicketAssignment.channelsToOptions(
-                                            CHANNELS
+                                        options={TicketAssignmentContainer.channelsToOptions(
+                                            Object.values(TicketChannel)
                                         )}
-                                        selectedOptions={TicketAssignment.channelsToOptions(
+                                        selectedOptions={TicketAssignmentContainer.channelsToOptions(
                                             assignmentChannels
                                         )}
                                         plural="channels"
@@ -243,16 +239,14 @@ export class TicketAssignment extends React.Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => {
-        return {
-            ticketAssignmentSettings: currentAccountSelectors.getTicketAssignmentSettings(
-                state
-            ),
-        }
-    },
+const connector = connect(
+    (state: RootState) => ({
+        ticketAssignmentSettings: getTicketAssignmentSettings(state),
+    }),
     {
-        submitSetting: currentAccountActions.submitSetting,
-        fetchChats: chatsActions.fetchChats,
+        submitSetting,
+        fetchChats,
     }
-)(TicketAssignment)
+)
+
+export default connector(TicketAssignmentContainer)

@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 import {TicketChannels} from '../../../../business/ticket.ts'
 import * as currentAccountConstants from '../../../../state/currentAccount/constants'
 
-import {TicketAssignment} from '../TicketAssignment'
+import {TicketAssignmentContainer} from '../TicketAssignment.tsx'
 
 const unassignOnReplyEnabledSetting = fromJS({
     id: 1,
@@ -53,7 +53,7 @@ describe('<TicketAssignment/>', () => {
             const submitSetting = jest.fn(() => Promise.resolve())
             const fetchChats = jest.fn()
             const component = shallow(
-                <TicketAssignment
+                <TicketAssignmentContainer
                     ticketAssignmentSettings={fromJS({})}
                     submitSetting={submitSetting}
                     fetchChats={fetchChats}
@@ -88,7 +88,7 @@ describe('<TicketAssignment/>', () => {
                 const submitSetting = jest.fn(() => Promise.resolve())
                 const fetchChats = jest.fn()
                 const component = shallow(
-                    <TicketAssignment
+                    <TicketAssignmentContainer
                         ticketAssignmentSettings={
                             autoAssignToTeamsEnabledSetting
                         }
@@ -123,7 +123,7 @@ describe('<TicketAssignment/>', () => {
             const submitSetting = jest.fn(() => Promise.resolve())
             const fetchChats = jest.fn()
             const component = shallow(
-                <TicketAssignment
+                <TicketAssignmentContainer
                     ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
                     submitSetting={submitSetting}
                     fetchChats={fetchChats}
@@ -158,7 +158,7 @@ describe('<TicketAssignment/>', () => {
                 const submitSetting = jest.fn(() => Promise.resolve())
                 const fetchChats = jest.fn()
                 const component = shallow(
-                    <TicketAssignment
+                    <TicketAssignmentContainer
                         ticketAssignmentSettings={
                             autoAssignToTeamsEnabledSetting
                         }
@@ -193,7 +193,7 @@ describe('<TicketAssignment/>', () => {
                 const submitSetting = jest.fn(() => Promise.resolve())
                 const fetchChats = jest.fn()
                 const component = shallow(
-                    <TicketAssignment
+                    <TicketAssignmentContainer
                         ticketAssignmentSettings={
                             autoAssignToTeamsDisabledSetting
                         }
@@ -228,7 +228,9 @@ describe('<TicketAssignment/>', () => {
                 'unchecked by default, because there is no account setting for assignment',
             () => {
                 const component = shallow(
-                    <TicketAssignment ticketAssignmentSettings={fromJS({})} />
+                    <TicketAssignmentContainer
+                        ticketAssignmentSettings={fromJS({})}
+                    />
                 )
 
                 expect(component).toMatchSnapshot()
@@ -237,7 +239,7 @@ describe('<TicketAssignment/>', () => {
 
         it('should render the "Unassign on replies" checkbox checked because the setting Unassign replies is enabled', () => {
             const component = shallow(
-                <TicketAssignment
+                <TicketAssignmentContainer
                     ticketAssignmentSettings={unassignOnReplyEnabledSetting}
                 />
             )
@@ -250,7 +252,7 @@ describe('<TicketAssignment/>', () => {
                 'disabled',
             () => {
                 const component = shallow(
-                    <TicketAssignment
+                    <TicketAssignmentContainer
                         ticketAssignmentSettings={
                             unassignOnReplyDisabledSetting
                         }
@@ -263,7 +265,7 @@ describe('<TicketAssignment/>', () => {
 
         it('should render the "Auto assign" checkbox checked because the setting "Auto assign" is enabled', () => {
             const component = shallow(
-                <TicketAssignment
+                <TicketAssignmentContainer
                     ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
                 />
             )
@@ -273,7 +275,7 @@ describe('<TicketAssignment/>', () => {
 
         it('should render the "Auto assign" checkbox unchecked because the setting "Auto assign" is disabled', () => {
             const component = shallow(
-                <TicketAssignment
+                <TicketAssignmentContainer
                     ticketAssignmentSettings={autoAssignToTeamsDisabledSetting}
                 />
             )
@@ -283,7 +285,7 @@ describe('<TicketAssignment/>', () => {
 
         it('should render the "Save changes" button loading and disabled because the setting are being saved', (done) => {
             const component = shallow(
-                <TicketAssignment
+                <TicketAssignmentContainer
                     ticketAssignmentSettings={unassignOnReplyDisabledSetting}
                 />
             )
@@ -301,7 +303,9 @@ describe('<TicketAssignment/>', () => {
             )
 
             const component = shallow(
-                <TicketAssignment ticketAssignmentSettings={settings} />
+                <TicketAssignmentContainer
+                    ticketAssignmentSettings={settings}
+                />
             )
 
             component.setState({isLoading: true}, () => {

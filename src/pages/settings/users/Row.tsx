@@ -1,41 +1,38 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
+import {Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
-import type {Map} from 'immutable'
-
-import {RoleLabel} from '../../common/utils/labels.tsx'
-import Avatar from '../../common/components/Avatar'
+import {RoleLabel} from '../../common/utils/labels'
+import Avatar from '../../common/components/Avatar/Avatar'
+import {fetchPagination, deleteAgent} from '../../../state/agents/actions'
 
 import DeleteUser from './DeleteUser'
-
 import css from './Row.less'
 
 type Props = {
-    agent: Map<*, *>,
-    currentPage: number,
-    isAccountOwner: boolean,
-    deleteAgent: (id: string, currentPage: number) => Promise<*>,
-    fetchAgents: (T: number) => Promise<*>,
-    last: boolean,
-}
+    agent: Map<any, any>
+    currentPage: number
+    isAccountOwner: boolean
+    last: boolean
+} & ConnectedProps<typeof connector>
 
-export default class Row extends React.Component<Props> {
+export class RowContainer extends Component<Props> {
     _deleteAgent = () => {
         const {agent, currentPage, deleteAgent, fetchAgents, last} = this.props
-        return deleteAgent(agent.get('id'), currentPage).then(() => {
+        return deleteAgent(agent.get('id')).then(() => {
             // if last agent on page was deleted,
             // reload the previous page.
             const page = last && currentPage > 1 ? currentPage - 1 : currentPage
-            return fetchAgents(page)
+            return fetchAgents(page) as Promise<void>
         })
     }
 
     render() {
         const {agent, isAccountOwner} = this.props
-        const editLink = `/app/settings/users/${agent.get('id')}`
+        const editLink = `/app/settings/users/${agent.get('id') as number}`
 
         return (
             <Link to={editLink} className={css.component}>
@@ -77,3 +74,10 @@ export default class Row extends React.Component<Props> {
         )
     }
 }
+
+const connector = connect(null, {
+    fetchAgents: fetchPagination,
+    deleteAgent,
+})
+
+export default connector(RowContainer)

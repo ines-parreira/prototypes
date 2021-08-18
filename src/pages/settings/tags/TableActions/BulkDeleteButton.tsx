@@ -1,11 +1,9 @@
-// @flow
-// $FlowFixMe
 import React, {useCallback, useState} from 'react'
 import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
 export type Props = {
-    disabled: boolean,
-    onBulkDelete: () => any,
+    disabled: boolean
+    onBulkDelete: () => void
 }
 
 const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {

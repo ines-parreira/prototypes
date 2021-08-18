@@ -6,7 +6,7 @@ import {UserRole} from '../../config/types/user'
  * Return highest role of user
  * Ex: Return 'admin' if user is 'admin' and 'agent'
  */
-export const getHighestRole = (user: Map<any, any>): Maybe<string> => {
+export const getHighestRole = (user: Map<any, any>): Maybe<UserRole> => {
     if (!user) {
         return null
     }

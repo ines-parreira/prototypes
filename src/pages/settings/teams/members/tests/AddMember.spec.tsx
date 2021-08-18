@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {fromJS, List} from 'immutable'
 
-import {AddMemberContainer} from '../AddMember.js'
+import {AddMemberContainer} from '../AddMember'
 
-const minProps = {
+const minProps = ({
     team: fromJS({
         id: 1,
         uri: '/api/teams/1/',
@@ -72,7 +72,7 @@ const minProps = {
         },
     ]) as List<any>,
     addTeamMember: jest.fn(),
-}
+} as unknown) as ComponentProps<typeof AddMemberContainer>
 
 describe('<AddMember />', () => {
     it('should render', () => {

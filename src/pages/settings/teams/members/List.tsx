@@ -1,6 +1,5 @@
-//@flow
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -9,70 +8,43 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-import {NavLink, withRouter} from 'react-router-dom'
-import {fromJS, type List, type Map, Set} from 'immutable'
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
+import {fromJS, List, Map, Set} from 'immutable'
 import classnames from 'classnames'
 
-import PageHeader from '../../../common/components/PageHeader.tsx'
-import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
-import * as actions from '../../../../state/teams/actions.ts'
-import Pagination from '../../../common/components/Pagination.tsx'
-import Loader from '../../../common/components/Loader/Loader.tsx'
-import Search from '../../../common/components/Search.tsx'
-
-import {type teamType} from '../../../../state/teams/types'
-
+import PageHeader from '../../../common/components/PageHeader'
+import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import {
+    addTeamMember,
+    deleteTeamMember,
+    deleteTeamMemberList,
+    fetchTeam,
+    fetchTeamMembersPagination,
+} from '../../../../state/teams/actions'
+import Pagination from '../../../common/components/Pagination'
+import Loader from '../../../common/components/Loader/Loader'
+import Search from '../../../common/components/Search'
+import {RootState} from '../../../../state/types'
 import css from '../List.less'
 
 import AddMember from './AddMember'
-
 import UserRow from './Row'
 
-type Props = {
-    accountOwnerId: number,
-    addTeamMember: (teamId: number, userId: number) => Promise<*>,
-    deleteTeamMember: (teamId: number, userId: number) => Promise<*>,
-    deleteTeamMemberList: (teamId: number, userIds: Set<number>) => Promise<*>,
-    fetchTeam: (teamId: number) => Promise<*>,
-    fetchTeamMembers: (
-        teamId: number,
-        page: ?number,
-        search: ?string
-    ) => Promise<*>,
-    match: {
-        params: {
-            id: string,
-        },
-    },
-}
+type Props = ConnectedProps<typeof connector> &
+    RouteComponentProps<{id: string}>
 
 type State = {
-    team: teamType,
-    members: List<Map<*, *>>,
-    pagination: Map<*, *>,
-    selection: Set<number>,
-    isFetching: boolean,
-    isDeleting: boolean,
-    search: string,
+    team: Map<any, any>
+    members: List<any>
+    pagination: Map<any, any>
+    selection: Set<any>
+    isFetching: boolean
+    isDeleting: boolean
+    search: string
 }
 
-@withRouter
-@connect(
-    (state) => {
-        return {
-            accountOwnerId: state.currentAccount.get('user_id'),
-        }
-    },
-    {
-        addTeamMember: actions.addTeamMember,
-        deleteTeamMember: actions.deleteTeamMember,
-        deleteTeamMemberList: actions.deleteTeamMemberList,
-        fetchTeam: actions.fetchTeam,
-        fetchTeamMembers: actions.fetchTeamMembersPagination,
-    }
-)
-export default class MembersList extends Component<Props, State> {
-    state = {
+export class MembersListContainer extends Component<Props, State> {
+    state: State = {
         team: fromJS({}),
         members: fromJS([]),
         pagination: fromJS({}),
@@ -84,46 +56,44 @@ export default class MembersList extends Component<Props, State> {
 
     componentDidMount() {
         this.setState({isFetching: true})
-        this._fetchTeam().then(() => this._fetchPage(1))
+        void this._fetchTeam().then(() => this._fetchPage(1))
     }
 
-    _fetchTeam = () => {
+    _fetchTeam = (): Promise<void> => {
         return this.props
             .fetchTeam(parseInt(this.props.match.params.id))
             .then((team) => {
-                this.setState({team})
+                this.setState({team: team as Map<any, any>})
             })
     }
 
-    _fetchTeamMembers = (page: number = 1) => {
+    _fetchTeamMembers = (page = 1): Promise<void> => {
         const {team, search} = this.state
-        return this.props
-            .fetchTeamMembers(team.get('id'), page, search)
-            .then((resp) => {
-                const members = resp.get('data')
-                const memberIds = Set(
-                    members.map((member) => {
-                        return member.get('id')
-                    })
-                )
-                this.setState((state) => ({
-                    pagination: resp.get('meta'),
-                    members,
-                    // prune selection on refetch
-                    selection: state.selection.intersect(memberIds),
-                }))
-            })
+        return (this.props.fetchTeamMembersPagination(
+            team.get('id'),
+            page,
+            search
+        ) as Promise<Map<any, any>>).then((resp) => {
+            const members = resp.get('data') as List<any>
+            const memberIds = Set(
+                members.map((member: Map<any, any>) => {
+                    return member.get('id') as number
+                })
+            )
+            this.setState((state) => ({
+                pagination: resp.get('meta'),
+                members,
+                // prune selection on refetch
+                selection: state.selection.intersect(memberIds),
+            }))
+        })
     }
 
-    _fetchPage = (page: number = 1) => {
+    _fetchPage = (page = 1) => {
         this.setState({isFetching: true})
-        return (
-            this._fetchTeamMembers(page)
-                // $FlowFixMe
-                .finally(() => {
-                    this.setState({isFetching: false})
-                })
-        )
+        return this._fetchTeamMembers(page).finally(() => {
+            this.setState({isFetching: false})
+        })
     }
 
     _onSearch = (search: string) => {
@@ -135,7 +105,7 @@ export default class MembersList extends Component<Props, State> {
         const currentPage = this.state.pagination.get('page') || 1
         const teamId = this.state.team.get('id')
         return this.props.addTeamMember(teamId, userId).then(() => {
-            this._fetchTeam()
+            void this._fetchTeam()
             return this._fetchTeamMembers(currentPage)
         })
     }
@@ -144,7 +114,7 @@ export default class MembersList extends Component<Props, State> {
         const currentPage = this.state.pagination.get('page') || 1
         const teamId = this.state.team.get('id')
         return this.props.deleteTeamMember(teamId, memberId).then(() => {
-            this._fetchTeam()
+            void this._fetchTeam()
             // if last agent on page was deleted,
             // reload the previous page.
             const page =
@@ -160,25 +130,21 @@ export default class MembersList extends Component<Props, State> {
         const selection = this.state.selection
         const currentPage = this.state.pagination.get('page') || 1
         const teamId = this.state.team.get('id')
-        return (
-            this.props
-                .deleteTeamMemberList(teamId, selection)
-                .then(() => {
-                    this._fetchTeam()
-                    // if last agents on page were deleted,
-                    // reload the previous page.
-                    const page =
-                        selection.size >= this.state.members.size &&
-                        currentPage > 1
-                            ? currentPage - 1
-                            : currentPage
-                    return this._fetchTeamMembers(page)
-                })
-                // $FlowFixMe
-                .finally(() => {
-                    this.setState({isDeleting: false})
-                })
-        )
+        return this.props
+            .deleteTeamMemberList(teamId, selection)
+            .then(() => {
+                void this._fetchTeam()
+                // if last agents on page were deleted,
+                // reload the previous page.
+                const page =
+                    selection.size >= this.state.members.size && currentPage > 1
+                        ? currentPage - 1
+                        : currentPage
+                return this._fetchTeamMembers(page)
+            })
+            .finally(() => {
+                this.setState({isDeleting: false})
+            })
     }
 
     _toggleTeamMemberSelection = (memberId: number) => {
@@ -199,10 +165,10 @@ export default class MembersList extends Component<Props, State> {
         const pageCount = pagination.get('nb_pages') || 1
         const currentPage = pagination.get('page') || 1
 
-        const teamId = team.get('id')
+        const teamId = team.get('id') as number
         const allMemberIds = Set(
-            members.map((member) => {
-                return member.get('id')
+            members.map((member: Map<any, any>) => {
+                return member.get('id') as number
             })
         )
         const isAllSelected = !allMemberIds.subtract(this.state.selection).size
@@ -288,7 +254,7 @@ export default class MembersList extends Component<Props, State> {
                         </Row>
 
                         <div className={css.list}>
-                            {members.map((member) => {
+                            {members.map((member: Map<any, any>) => {
                                 const memberId = member.get('id')
                                 return (
                                     <UserRow
@@ -340,3 +306,20 @@ export default class MembersList extends Component<Props, State> {
         )
     }
 }
+
+const connector = connect(
+    (state: RootState) => {
+        return {
+            accountOwnerId: state.currentAccount.get('user_id'),
+        }
+    },
+    {
+        addTeamMember,
+        deleteTeamMember,
+        deleteTeamMemberList,
+        fetchTeam,
+        fetchTeamMembersPagination,
+    }
+)
+
+export default withRouter(connector(MembersListContainer))

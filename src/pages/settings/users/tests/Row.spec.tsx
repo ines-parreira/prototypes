@@ -2,9 +2,9 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import Row from '../Row.js'
+import {RowContainer} from '../Row'
 
-jest.mock('../DeleteUser.js', () => () => <div>delete</div>)
+jest.mock('../DeleteUser', () => () => <div>delete</div>)
 
 const minProps = {
     agent: fromJS({
@@ -37,14 +37,17 @@ const minProps = {
 
 describe('<Row />', () => {
     it('should render', () => {
-        const {container} = render(<Row {...minProps} />)
+        const {container} = render(<RowContainer {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a user without a name', () => {
         const {container} = render(
-            <Row {...minProps} agent={minProps.agent.set('name', null)} />
+            <RowContainer
+                {...minProps}
+                agent={minProps.agent.set('name', null)}
+            />
         )
 
         expect(container.firstChild).toMatchSnapshot()

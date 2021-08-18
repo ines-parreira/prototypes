@@ -1,2 +1,2 @@
 // @flow
-export {default} from './TableActions'
+export {default} from './TableActions.tsx'

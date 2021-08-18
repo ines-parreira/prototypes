@@ -1,1 +1,1 @@
-export default from './TicketAssignment'
+export default from './TicketAssignment.tsx'

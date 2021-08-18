@@ -41,11 +41,11 @@ import ImportZendeskCreate from './settings/importData/zendesk/ImportZendeskCrea
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView.js'
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
-import TeamList from './settings/users/List.js'
-import TeamForm from './settings/users/Form.js'
-import TeamsList from './settings/teams/List.js'
-import TeamsForm from './settings/teams/Form.js'
-import List from './settings/teams/members/List.js'
+import TeamList from './settings/users/List'
+import TeamForm from './settings/users/Form'
+import TeamsList from './settings/teams/List'
+import TeamsForm from './settings/teams/Form'
+import List from './settings/teams/members/List'
 
 import UserAuditList from './settings/audit/UserAuditList.js'
 import BusinessHours from './settings/businessHours/index.js'
@@ -652,7 +652,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: withPaywall(AccountFeature.Teams)(
-                        withUserRoleRequired(TeamsList, ADMIN_ROLE)
+                        withUserRoleRequired(TeamsList as any, ADMIN_ROLE)
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -698,7 +698,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamList, ADMIN_ROLE),
+                    content: withUserRoleRequired(TeamList as any, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />

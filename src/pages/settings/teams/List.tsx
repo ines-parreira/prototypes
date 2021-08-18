@@ -1,55 +1,45 @@
-//@flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Emoji} from 'emoji-mart'
 import {Button, Container} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map, List} from 'immutable'
 
-import {fromJS, type Map, type List} from 'immutable'
-
-import PageHeader from '../../common/components/PageHeader.tsx'
-
-import * as actions from '../../../state/teams/actions.ts'
-import Avatar from '../../common/components/Avatar'
-import Loader from '../../common/components/Loader/Loader.tsx'
-import Pagination from '../../common/components/Pagination.tsx'
-
-import {type teamType} from '../../../state/teams/types'
+import PageHeader from '../../common/components/PageHeader'
+import {fetchTeamsPagination} from '../../../state/teams/actions'
+import Avatar from '../../common/components/Avatar/Avatar'
+import Loader from '../../common/components/Loader/Loader'
+import Pagination from '../../common/components/Pagination'
 
 import css from './List.less'
 
-type Props = {
-    fetchTeams: (T: number) => Promise<*>,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isFetching: boolean,
-    pagination: Map<*, *>,
-    teams: List<teamType>,
+    isFetching: boolean
+    pagination: Map<any, any>
+    teams: List<any>
 }
 
-@connect(null, {
-    fetchTeams: actions.fetchTeamsPagination,
-})
-export default class TeamList extends React.Component<Props, State> {
-    state = {
+export class TeamListContainer extends Component<Props, State> {
+    state: State = {
         isFetching: false,
         pagination: fromJS({}),
         teams: fromJS([]),
     }
 
     componentDidMount() {
-        this._fetchPage(1)
+        void this._fetchPage(1)
     }
 
-    _fetchPage = (page: number = 1) => {
+    _fetchPage = (page = 1) => {
         this.setState({isFetching: true})
         return this.props.fetchTeams(page).then((resp) => {
             this.setState({
                 isFetching: false,
-                pagination: resp.get('meta'),
-                teams: resp.get('data'),
+                pagination: (resp as Map<any, any>).get('meta'),
+                teams: (resp as Map<any, any>).get('data'),
             })
         })
     }
@@ -84,11 +74,15 @@ export default class TeamList extends React.Component<Props, State> {
                             </span>
                         )}
                     </p>
-                    {teams.map((team) => {
-                        const teamId = team.get('id')
+                    {teams.map((team: Map<any, any>) => {
+                        const teamId = team.get('id') as number
                         const emoji =
-                            team.getIn(['decoration', 'emoji']) || null
-                        const memberCount = team.get('members').size
+                            (team.getIn(['decoration', 'emoji']) as Map<
+                                any,
+                                any
+                            >) || null
+                        const memberCount = (team.get('members') as List<any>)
+                            .size
 
                         return (
                             <Link
@@ -123,35 +117,45 @@ export default class TeamList extends React.Component<Props, State> {
                                     <div className="d-flex flex-row align-items-center">
                                         {memberCount > 0 && (
                                             <ul className="list-unstyled d-flex flex-row mb-0 mr-2">
-                                                {team
-                                                    .get('members')
+                                                {(team.get('members') as List<
+                                                    any
+                                                >)
                                                     .slice(0, maxMembersPreview)
-                                                    .map((member) => {
-                                                        const memberProfilePictureUrl = member.getIn(
-                                                            [
-                                                                'meta',
-                                                                'profile_picture_url',
-                                                            ]
-                                                        )
-                                                        return (
-                                                            <li
-                                                                key={member.get(
-                                                                    'id'
-                                                                )}
-                                                                className="mr-1"
+                                                    .map(
+                                                        (
+                                                            member: Map<
+                                                                any,
+                                                                any
                                                             >
-                                                                <Avatar
-                                                                    name={member.get(
-                                                                        'name'
+                                                        ) => {
+                                                            const memberProfilePictureUrl = member.getIn(
+                                                                [
+                                                                    'meta',
+                                                                    'profile_picture_url',
+                                                                ]
+                                                            )
+                                                            return (
+                                                                <li
+                                                                    key={member.get(
+                                                                        'id'
                                                                     )}
-                                                                    url={
-                                                                        memberProfilePictureUrl
-                                                                    }
-                                                                    size={30}
-                                                                />
-                                                            </li>
-                                                        )
-                                                    })}
+                                                                    className="mr-1"
+                                                                >
+                                                                    <Avatar
+                                                                        name={member.get(
+                                                                            'name'
+                                                                        )}
+                                                                        url={
+                                                                            memberProfilePictureUrl
+                                                                        }
+                                                                        size={
+                                                                            30
+                                                                        }
+                                                                    />
+                                                                </li>
+                                                            )
+                                                        }
+                                                    )}
                                             </ul>
                                         )}
                                         <p className="mb-0 text-muted">
@@ -185,3 +189,9 @@ export default class TeamList extends React.Component<Props, State> {
         )
     }
 }
+
+const connector = connect(null, {
+    fetchTeams: fetchTeamsPagination,
+})
+
+export default connector(TeamListContainer)

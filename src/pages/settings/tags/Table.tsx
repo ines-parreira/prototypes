@@ -1,33 +1,33 @@
-// @flow
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {List, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as tagsSelectors from '../../../state/tags/selectors.ts'
+import {
+    getMeta,
+    makeGetSelectedTagMeta,
+    getSelectAll,
+    getTags,
+} from '../../../state/tags/selectors'
+import {RootState} from '../../../state/types'
 
 import Row from './Row'
-
 import css from './Table.less'
-import TableActions from './TableActions'
+import TableActions from './TableActions/TableActions'
 
 type Props = {
-    columns: Array<any>,
-    getSelectedTagMeta: (number) => Map<any, any>,
-    meta: Map<any, any>,
-    onBulkDelete: () => any,
-    onMerge: () => any,
-    onSelectAll: () => void,
-    onSort: (string, boolean) => void,
-    refresh: () => void,
-    reverse: boolean,
-    selectAll: boolean,
-    sort: string,
-    tags: List<any>,
-}
+    columns: Array<{title: string; field: string; isSortable: boolean}>
+    onBulkDelete: () => void
+    onMerge: () => void
+    onSelectAll: () => void
+    onSort: (sort: string, direction: boolean) => void
+    refresh: () => void
+    reverse: boolean
+    sort: string
+} & ConnectedProps<typeof connector>
 
 export class TableContainer extends Component<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'columns'> = {
         columns: [
             {
                 title: 'Tag',
@@ -55,7 +55,7 @@ export class TableContainer extends Component<Props> {
         return this.props.sort
     }
 
-    _sortIcon = (sort: string, reverse: ?boolean, field: string) => {
+    _sortIcon = (sort: string, reverse: boolean | null, field: string) => {
         if (sort !== field) {
             return null
         }
@@ -100,7 +100,9 @@ export class TableContainer extends Component<Props> {
         } = this.props
         const sort = this._getSort()
 
-        const selectedNum = meta.filter((meta) => meta.get('selected')).size
+        const selectedNum = meta.filter(
+            (meta: Map<any, any>) => meta.get('selected') as boolean
+        ).size
 
         return (
             <table className={classnames('view-table', css.table)}>
@@ -149,7 +151,7 @@ export class TableContainer extends Component<Props> {
                 </thead>
 
                 <tbody>
-                    {tags.map((tag, i) => (
+                    {tags.map((tag: Map<any, any>, i) => (
                         <Row
                             key={i}
                             row={tag}
@@ -163,11 +165,11 @@ export class TableContainer extends Component<Props> {
     }
 }
 
-export default connect((state) => {
-    return {
-        tags: tagsSelectors.getTags(state),
-        selectAll: tagsSelectors.getSelectAll(state),
-        getSelectedTagMeta: tagsSelectors.makeGetSelectedTagMeta(state),
-        meta: tagsSelectors.getMeta(state),
-    }
-})(TableContainer)
+const connector = connect((state: RootState) => ({
+    tags: getTags(state),
+    selectAll: getSelectAll(state),
+    getSelectedTagMeta: makeGetSelectedTagMeta(state),
+    meta: getMeta(state),
+}))
+
+export default connector(TableContainer)

@@ -1,8 +1,7 @@
-//@flow
-import React, {Component} from 'react'
-import {Emoji} from 'emoji-mart'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import React, {Component, SyntheticEvent} from 'react'
+import {Emoji, EmojiData} from 'emoji-mart'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -16,55 +15,39 @@ import {
     PopoverBody,
     Row,
 } from 'reactstrap'
-import {NavLink, withRouter} from 'react-router-dom'
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
-import * as actions from '../../../state/teams/actions.ts'
-import Loader from '../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../common/components/PageHeader.tsx'
-import InputField from '../../common/forms/InputField'
-import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
-import ConfirmButton from '../../common/components/ConfirmButton.tsx'
-import {type teamType} from '../../../state/teams/types'
-import EmojiPicker from '../../common/components/EmojiPicker'
-import history from '../../history.ts'
+import {
+    createTeam,
+    deleteTeam,
+    fetchTeam,
+    updateTeam,
+} from '../../../state/teams/actions'
+import Loader from '../../common/components/Loader/Loader'
+import PageHeader from '../../common/components/PageHeader'
+import InputField from '../../common/forms/InputField.js'
+import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
+import ConfirmButton from '../../common/components/ConfirmButton'
+import EmojiPicker from '../../common/components/EmojiPicker/EmojiPicker'
+import history from '../../history'
 
 import css from './Form.less'
 
-type Props = {
-    teamId: number,
-    createTeam: (team: teamType) => Promise<*>,
-    deleteTeam: (teamId: number) => Promise<*>,
-    fetchTeam: (teamId: number) => Promise<*>,
-    updateTeam: (team: teamType) => Promise<*>,
-}
+type OwnProps = RouteComponentProps<{id: string}>
+
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
-    team: teamType,
-    errors: Object,
-    isFetching: boolean,
-    isSubmitting: boolean,
-    isEmojiPickerOpen: boolean,
+    team: Map<any, any>
+    isFetching: boolean
+    isSubmitting: boolean
+    isEmojiPickerOpen: boolean
 }
 
-@withRouter
-@connect(
-    (state, ownProps) => {
-        return {
-            teamId: parseInt(ownProps.match.params.id),
-        }
-    },
-    {
-        createTeam: actions.createTeam,
-        deleteTeam: actions.deleteTeam,
-        fetchTeam: actions.fetchTeam,
-        updateTeam: actions.updateTeam,
-    }
-)
-export default class Form extends Component<Props, State> {
-    state = {
+export class FormContainer extends Component<Props, State> {
+    state: State = {
         team: fromJS({}),
-        errors: {},
         isFetching: false,
         isSubmitting: false,
         isEmojiPickerOpen: false,
@@ -72,7 +55,7 @@ export default class Form extends Component<Props, State> {
 
     componentDidMount() {
         if (this._isUpdate()) {
-            this._fetchTeam(this.props.teamId)
+            void this._fetchTeam(this.props.teamId)
         }
     }
 
@@ -85,12 +68,12 @@ export default class Form extends Component<Props, State> {
         return this.props.fetchTeam(id).then((resp) => {
             this.setState({
                 isFetching: false,
-                team: resp,
+                team: resp as Map<any, any>,
             })
         })
     }
 
-    _onSubmit = (e: SyntheticEvent<*>) => {
+    _onSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
         this.setState({isSubmitting: true})
         const team = this.state.team
@@ -100,7 +83,11 @@ export default class Form extends Component<Props, State> {
         return promise.then((resp) => {
             this.setState({isSubmitting: false})
             if (!this._isUpdate()) {
-                history.push(`/app/settings/teams/${resp.get('id')}/members`)
+                history.push(
+                    `/app/settings/teams/${
+                        (resp as Map<any, any>).get('id') as number
+                    }/members`
+                )
             }
         })
     }
@@ -128,7 +115,7 @@ export default class Form extends Component<Props, State> {
 
         const isUpdate = this._isUpdate()
         const team = this.state.team || fromJS({})
-        const emoji = team.getIn(['decoration', 'emoji'])
+        const emoji = team.getIn(['decoration', 'emoji']) as Map<any, any>
 
         return (
             <div className="full-width">
@@ -142,7 +129,7 @@ export default class Form extends Component<Props, State> {
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 {isUpdate
-                                    ? `Edit ${team.get('name')}`
+                                    ? `Edit ${team.get('name') as string}`
                                     : 'Create team'}
                             </BreadcrumbItem>
                         </Breadcrumb>
@@ -152,13 +139,17 @@ export default class Form extends Component<Props, State> {
                 {isUpdate && (
                     <SecondaryNavbar>
                         <NavLink
-                            to={`/app/settings/teams/${team.get('id')}/members`}
+                            to={`/app/settings/teams/${
+                                team.get('id') as number
+                            }/members`}
                             exact
                         >
                             Team members
                         </NavLink>
                         <NavLink
-                            to={`/app/settings/teams/${team.get('id')}`}
+                            to={`/app/settings/teams/${
+                                team.get('id') as number
+                            }`}
                             exact
                         >
                             Settings
@@ -255,7 +246,9 @@ export default class Form extends Component<Props, State> {
                                             <PopoverBody className={'p-0'}>
                                                 <EmojiPicker
                                                     showPreview={false}
-                                                    onClick={(emoji) => {
+                                                    onClick={(
+                                                        emoji: EmojiData
+                                                    ) => {
                                                         this.setState({
                                                             team: team.setIn(
                                                                 [
@@ -332,3 +325,19 @@ export default class Form extends Component<Props, State> {
         )
     }
 }
+
+const connector = connect(
+    (state, ownProps: OwnProps) => {
+        return {
+            teamId: parseInt(ownProps.match.params.id),
+        }
+    },
+    {
+        createTeam,
+        deleteTeam,
+        fetchTeam,
+        updateTeam,
+    }
+)
+
+export default withRouter(connector(FormContainer))

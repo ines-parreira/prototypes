@@ -1,17 +1,16 @@
-// @flow
 import React from 'react'
-import type {List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 import MergeButton from './MergeButton'
 import BulkDeleteButton from './BulkDeleteButton'
 import css from './TableActions.less'
 
 type Props = {
-    selectedNum: number,
-    tags: List<*>,
-    meta: Map<*, *>,
-    onMerge: () => any,
-    onBulkDelete: () => any,
+    selectedNum: number
+    tags: List<any>
+    meta: Map<any, any>
+    onMerge: () => void
+    onBulkDelete: () => void
 }
 
 const TableActions = (props: Props) => {

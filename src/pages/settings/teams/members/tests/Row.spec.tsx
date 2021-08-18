@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import Row from '../Row.js'
+import Row from '../Row'
 
 const minProps = {
     member: fromJS({

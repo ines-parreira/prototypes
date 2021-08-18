@@ -2,7 +2,7 @@ import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {TableContainer} from '../Table'
+import {TableContainer} from '../Table.tsx'
 
 jest.mock('../Row', () => {
     return jest.requireActual('../Row').Row

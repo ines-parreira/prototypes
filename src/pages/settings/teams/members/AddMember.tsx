@@ -1,6 +1,5 @@
-// @flow
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, ChangeEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {
     Dropdown,
     DropdownItem,
@@ -8,25 +7,24 @@ import {
     DropdownToggle,
     Input,
 } from 'reactstrap'
-import {type List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {AgentLabel} from '../../../common/utils/labels.tsx'
-import type {teamType} from '../../../../state/teams/types'
-import * as agentSelectors from '../../../../state/agents/selectors.ts'
+import {AgentLabel} from '../../../common/utils/labels'
+import {getAgents} from '../../../../state/agents/selectors'
+import {RootState} from '../../../../state/types'
 
 import css from './AddMember.less'
 
 type Props = {
-    team: teamType,
-    users: List<Map<*, *>>,
-    addTeamMember: () => Promise<*>,
-}
+    team: Map<any, any>
+    addTeamMember: (userId: number) => Promise<unknown>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isOpen: boolean,
-    isLoading: boolean,
-    search: string,
+    isOpen: boolean
+    isLoading: boolean
+    search: string
 }
 
 export class AddMemberContainer extends Component<Props, State> {
@@ -38,12 +36,11 @@ export class AddMemberContainer extends Component<Props, State> {
 
     _toggle = () => this.setState({isOpen: !this.state.isOpen})
 
-    _onSearch = (event: SyntheticInputEvent<HTMLInputElement>) =>
+    _onSearch = (event: ChangeEvent<HTMLInputElement>) =>
         this.setState({search: event.target.value})
 
     _addTeamMember = (userId: number) => {
         this.setState({isLoading: true})
-        // $FlowFixMe
         this.props.addTeamMember(userId).finally(() => {
             this.setState({isLoading: false})
         })
@@ -53,13 +50,17 @@ export class AddMemberContainer extends Component<Props, State> {
         const {team, users} = this.props
         const isLoading = this.state.isLoading
         const search = this.state.search.trim().toLowerCase()
-        const teamMemberIds = team
-            .get('members', [])
-            .map((member) => member.get('id'))
-        const availableUsers = users.filter((user) => {
+        const teamMemberIds = (team.get('members', []) as List<any>).map(
+            (member: Map<any, any>) => member.get('id') as number
+        )
+        const availableUsers = users.filter((user: Map<any, any>) => {
             return (
-                ((user.get('name') || '').toLowerCase().includes(search) ||
-                    user.get('email').toLowerCase().includes(search)) &&
+                (((user.get('name') as string) || '')
+                    .toLowerCase()
+                    .includes(search) ||
+                    (user.get('email') as string)
+                        .toLowerCase()
+                        .includes(search)) &&
                 !teamMemberIds.includes(user.get('id'))
             )
         })
@@ -98,7 +99,7 @@ export class AddMemberContainer extends Component<Props, State> {
                     <DropdownItem divider />
                     <div className={css.content}>
                         {availableUsers.size ? (
-                            availableUsers.map((user) => {
+                            availableUsers.map((user: Map<any, any>) => {
                                 const userId = user.get('id')
                                 return (
                                     <DropdownItem
@@ -133,8 +134,10 @@ export class AddMemberContainer extends Component<Props, State> {
     }
 }
 
-export default connect((state) => {
+const connector = connect((state: RootState) => {
     return {
-        users: agentSelectors.getAgents(state),
+        users: getAgents(state),
     }
-})(AddMemberContainer)
+})
+
+export default connector(AddMemberContainer)

@@ -1,25 +1,24 @@
-// @flow
-import React, {Component} from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import {Badge, Button} from 'reactstrap'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 
-import {RoleLabel} from '../../../common/utils/labels.tsx'
-import Avatar from '../../../common/components/Avatar'
+import {RoleLabel} from '../../../common/utils/labels'
+import Avatar from '../../../common/components/Avatar/Avatar'
 
 import css from './Row.less'
 
 type Props = {
-    member: Map<*, *>,
-    isAccountOwner: boolean,
-    deleteTeamMember: () => Promise<*>,
-    select: (memberId: number) => void,
-    isSelected: boolean,
+    member: Map<any, any>
+    isAccountOwner: boolean
+    deleteTeamMember: () => Promise<void>
+    select: (memberId: number) => void
+    isSelected: boolean
 }
 
 type State = {
-    isDeleting: boolean,
+    isDeleting: boolean
 }
 
 export default class Row extends Component<Props, State> {
@@ -27,7 +26,7 @@ export default class Row extends Component<Props, State> {
         isDeleting: false,
     }
 
-    _deleteTeamMember = (event: SyntheticEvent<*>) => {
+    _deleteTeamMember = (event: SyntheticEvent) => {
         event.preventDefault()
         this.setState({isDeleting: true})
         return this.props.deleteTeamMember().catch(() => {
@@ -38,7 +37,7 @@ export default class Row extends Component<Props, State> {
     render() {
         const {member, isAccountOwner, select, isSelected} = this.props
         const isDeleting = this.state.isDeleting
-        const editLink = `/app/settings/users/${member.get('id')}`
+        const editLink = `/app/settings/users/${member.get('id') as number}`
         return (
             <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">

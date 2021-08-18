@@ -1,15 +1,13 @@
-// @flow
-// $FlowFixMe
 import React, {useCallback, useState} from 'react'
 import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import type {List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 export type Props = {
-    selectedNum: number,
-    tags: List<*>,
-    meta: Map<*, *>,
-    onMerge: () => any,
-    disabled: boolean,
+    selectedNum: number
+    tags: List<any>
+    meta: Map<any, any>
+    onMerge: () => void
+    disabled: boolean
 }
 
 const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
@@ -18,14 +16,16 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
 
     const toggleMergeConfirmation = useCallback(() => {
         const destID = meta
-            .filter((meta) => meta.get('selected'))
+            .filter((meta: Map<any, any>) => meta.get('selected') as boolean)
             .keySeq()
             .toList()
-            .last()
-        const destName = tags
-            .filter((meta) => meta.get('id').toString() === destID.toString())
-            .first()
-            .get('name', '')
+            .last() as number
+        const destName = (tags
+            .filter(
+                (meta: Map<any, any>) =>
+                    (meta.get('id') as number).toString() === destID.toString()
+            )
+            .first() as Map<any, any>).get('name', '')
         setAskMergeConfirmation(!askMergeConfirmation)
         setMergeTagDestination(destName)
     }, [tags, meta, askMergeConfirmation])

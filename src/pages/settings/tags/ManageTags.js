@@ -25,7 +25,7 @@ import Search from '../../common/components/Search.tsx'
 import * as tagsActions from '../../../state/tags/actions.ts'
 import * as tagsSelectors from '../../../state/tags/selectors.ts'
 
-import Table from './Table'
+import Table from './Table.tsx'
 import css from './ManageTags.less'
 
 type Props = {

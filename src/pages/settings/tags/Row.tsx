@@ -1,39 +1,34 @@
-// @flow
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Button, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 
-import InputField from '../../common/forms/InputField'
-import ColorPicker from '../../common/components/ColorPicker.tsx'
-import {TagLabel} from '../../common/utils/labels.tsx'
-import {toJS} from '../../../utils.ts'
-import {DEFAULT_TAG_COLOR} from '../../../config.ts'
-import * as tagsActions from '../../../state/tags/actions.ts'
+import InputField from '../../common/forms/InputField.js'
+import ColorPicker from '../../common/components/ColorPicker'
+import {TagLabel} from '../../common/utils/labels'
+import {toJS} from '../../../utils'
+import {DEFAULT_TAG_COLOR} from '../../../config'
+import {cancel, edit, remove, save, select} from '../../../state/tags/actions'
+import {TagDecoration} from '../../../models/tag/types'
 
 import css from './Row.style.less'
 
 type Props = {
-    row: Map<*, *>,
-    meta: Map<*, *>,
-    edit: typeof tagsActions.edit,
-    save: typeof tagsActions.save,
-    cancel: typeof tagsActions.cancel,
-    remove: typeof tagsActions.remove,
-    select: typeof tagsActions.select,
-    refresh: () => void,
-}
+    row: Map<any, any>
+    meta: Map<any, any>
+    refresh: () => void
+} & ConnectedProps<typeof connector>
 
 type State = {
-    name?: string,
-    description?: string,
-    decoration: Map<*, *>,
-    askRemoveConfirmation: boolean,
+    name?: string
+    description?: string
+    decoration: Map<any, any>
+    askRemoveConfirmation: boolean
 }
 
 export class Row extends Component<Props, State> {
-    state = {
+    state: State = {
         name: '',
         description: '',
         decoration: fromJS({
@@ -42,7 +37,7 @@ export class Row extends Component<Props, State> {
         askRemoveConfirmation: false,
     }
 
-    _setStateFromRow = (row: Map<*, *>) => {
+    _setStateFromRow = (row: Map<any, any>) => {
         this.setState({
             name: row.get('name'),
             description: row.get('description') || '',
@@ -67,12 +62,13 @@ export class Row extends Component<Props, State> {
         this.props.edit(this.props.row.toJS())
     }
 
-    _onSave = (event: Object) => {
+    _onSave = (event: FormEvent) => {
         event.preventDefault()
-        let {name, description, decoration} = this.state
+        const {name, description} = this.state
+        let {decoration} = this.state
         const {row, save, refresh} = this.props
 
-        let obj = toJS(this.state.decoration)
+        const obj: TagDecoration = toJS(decoration)
         // Set default blue color if no color
         if (obj.color === '') {
             obj.color = DEFAULT_TAG_COLOR
@@ -85,7 +81,7 @@ export class Row extends Component<Props, State> {
             .set('description', description)
             .set('decoration', decoration)
 
-        save(updatedRow.toJS()).then(() => {
+        void save(updatedRow.toJS()).then(() => {
             refresh()
         })
     }
@@ -142,7 +138,7 @@ export class Row extends Component<Props, State> {
                         />
                     </td>
 
-                    <td colSpan="100">
+                    <td colSpan={100}>
                         <Form
                             className="cell-wrapper d-flex justify-content-between align-items-center"
                             onSubmit={this._onSave}
@@ -232,7 +228,7 @@ export class Row extends Component<Props, State> {
                         </Button>
 
                         <Button
-                            id={`remove-button-${row.get('id')}`}
+                            id={`remove-button-${row.get('id') as number}`}
                             type="button"
                             onClick={this._toggleRemoveConfirmation}
                             className={classNames(
@@ -245,7 +241,7 @@ export class Row extends Component<Props, State> {
                         <Popover
                             placement="left"
                             isOpen={this.state.askRemoveConfirmation}
-                            target={`remove-button-${row.get('id')}`}
+                            target={`remove-button-${row.get('id') as number}`}
                             toggle={this._toggleRemoveConfirmation}
                             trigger="legacy"
                         >
@@ -271,10 +267,12 @@ export class Row extends Component<Props, State> {
     }
 }
 
-export default connect(null, {
-    cancel: tagsActions.cancel,
-    edit: tagsActions.edit,
-    remove: tagsActions.remove,
-    save: tagsActions.save,
-    select: tagsActions.select,
-})(Row)
+const connector = connect(null, {
+    cancel,
+    edit,
+    remove,
+    save,
+    select,
+})
+
+export default connector(Row)

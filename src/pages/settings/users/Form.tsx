@@ -1,11 +1,9 @@
-//@flow
 import _memoize from 'lodash/memoize'
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
-import {Link, withRouter} from 'react-router-dom'
-import _pick from 'lodash/pick'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {
     Badge,
     Breadcrumb,
@@ -16,88 +14,67 @@ import {
     FormGroup,
     Label,
 } from 'reactstrap'
+import {AxiosError} from 'axios'
 
-import {getCheapestPlanNameForFeature} from '../../../utils/paywalls.ts'
-import {getBillingState} from '../../../state/billing/selectors.ts'
-import {toJS} from '../../../utils.ts'
-import Loader from '../../common/components/Loader/Loader.tsx'
-import ConfirmButton from '../../common/components/ConfirmButton.tsx'
-import RichDropdown, {type Option} from '../../common/components/RichDropdown'
-import UpgradeButton from '../../common/components/UpgradeButton/UpgradeButton.tsx'
+import {getCheapestPlanNameForFeature} from '../../../utils/paywalls'
+import {getBillingState} from '../../../state/billing/selectors'
+import {toJS} from '../../../utils'
+import Loader from '../../common/components/Loader/Loader'
+import ConfirmButton from '../../common/components/ConfirmButton'
+import RichDropdown from '../../common/components/RichDropdown/RichDropdown'
+import {Option} from '../../common/components/RichDropdown/types'
+import UpgradeButton from '../../common/components/UpgradeButton/UpgradeButton'
+import {ORDERED_ROLES_META_BY_USER_ROLE} from '../../../config/user'
 import {
-    ADMIN_ROLE,
-    BASIC_AGENT_ROLE,
-    ORDERED_ROLES_META_BY_USER_ROLE,
-} from '../../../config/user.ts'
-import type {MetaByAgentRole} from '../../../config/types/user'
-import {paywallConfigs} from '../../../config/paywalls.tsx'
-import InputField from '../../common/forms/InputField'
-import {currentAccountHasFeature} from '../../../state/currentAccount/selectors.ts'
-import * as actions from '../../../state/agents/actions.ts'
-import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
-import {AccountFeature} from '../../../state/currentAccount/types.ts'
-import * as helpers from '../../../state/agents/helpers.ts'
-import PageHeader from '../../common/components/PageHeader.tsx'
-import PopoverModal from '../../common/components/PopoverModal.tsx'
-import history from '../../history.ts'
+    MetaByAgentRole,
+    User,
+    UserDraft,
+    UserRole,
+} from '../../../config/types/user'
+import {paywallConfigs} from '../../../config/paywalls'
+import InputField from '../../common/forms/InputField.js'
+import {currentAccountHasFeature} from '../../../state/currentAccount/selectors'
+import {
+    updateAgent,
+    inviteAgent,
+    fetchAgent,
+    deleteAgent,
+    createAgent,
+} from '../../../state/agents/actions'
+import {updateAccountOwner} from '../../../state/currentAccount/actions'
+import {AccountFeature} from '../../../state/currentAccount/types'
+import * as helpers from '../../../state/agents/helpers'
+import PageHeader from '../../common/components/PageHeader'
+import PopoverModal from '../../common/components/PopoverModal'
+import history from '../../history'
+import {RootState} from '../../../state/types'
 
 import DeleteUser from './DeleteUser'
 import css from './Form.less'
 
-type Props = {
-    agentId: number,
-    currentUserId: number,
-    accountOwnerId: number,
-    createAgent: (Object) => Promise<Object>,
-    deleteAgent: (number) => Promise<Object>,
-    fetchAgent: (number) => Promise<Object>,
-    inviteAgent: Function,
-    orderedRoleMetaByUserRole: MetaByAgentRole,
-    updateAgent: (number, Object) => Promise<Object>,
-    updateAccountOwner: Function,
-    hasUserRolesFeature: boolean,
-    plans: Map<any, any>,
-}
+type OwnProps = {
+    orderedRoleMetaByUserRole: MetaByAgentRole
+} & RouteComponentProps<{id: string}>
+
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
-    agent: Map<any, any>,
-    email: string,
-    errors: Object,
-    isInviting: boolean,
-    isFetching: boolean,
-    isSubmitting: boolean,
-    name: string,
-    role: string,
+    agent: Map<any, any>
+    email: string
+    errors: Record<string, unknown>
+    isInviting: boolean
+    isFetching: boolean
+    isSubmitting: boolean
+    name: string
+    role: UserRole
 }
 
-@withRouter
-@connect(
-    (state, ownProps) => {
-        return {
-            agentId: parseInt(ownProps.match.params.id),
-            accountOwnerId: state.currentAccount.get('user_id'),
-            currentUserId: state.currentUser.get('id'),
-            hasUserRolesFeature: currentAccountHasFeature(
-                AccountFeature.UserRoles
-            )(state),
-            plans: getBillingState(state).get('plans'),
-        }
-    },
-    {
-        createAgent: actions.createAgent,
-        deleteAgent: actions.deleteAgent,
-        fetchAgent: actions.fetchAgent,
-        inviteAgent: actions.inviteAgent,
-        updateAgent: actions.updateAgent,
-        updateAccountOwner,
-    }
-)
-export default class Form extends Component<Props, State> {
+export class FormContainer extends Component<Props, State> {
     static defaultProps = {
         orderedRoleMetaByUserRole: ORDERED_ROLES_META_BY_USER_ROLE,
     }
 
-    state = {
+    state: State = {
         agent: fromJS({}),
         email: '',
         errors: {},
@@ -105,12 +82,14 @@ export default class Form extends Component<Props, State> {
         isFetching: false,
         isSubmitting: false,
         name: '',
-        role: this.props.hasUserRolesFeature ? BASIC_AGENT_ROLE : ADMIN_ROLE,
+        role: this.props.hasUserRolesFeature
+            ? UserRole.BasicAgent
+            : UserRole.Admin,
     }
 
     componentDidMount() {
         if (this._isUpdate()) {
-            this._fetchAgent(this.props.agentId)
+            void this._fetchAgent(this.props.agentId)
         }
     }
 
@@ -121,14 +100,14 @@ export default class Form extends Component<Props, State> {
     _fetchAgent = (id: number) => {
         this.setState({isFetching: true})
         return this.props.fetchAgent(id).then((resp) => {
-            const agent = toJS(resp)
+            const agent: User = toJS(resp)
             const role = helpers.getHighestRole(resp)
             this.setState({
                 agent: resp,
                 email: agent.email,
                 isFetching: false,
                 name: agent.name,
-                role,
+                role: role!,
             })
         })
     }
@@ -141,21 +120,23 @@ export default class Form extends Component<Props, State> {
     }
 
     _delete = () => {
-        return this.props.deleteAgent(this.props.agentId).then(({error}) => {
-            if (!error) {
+        return this.props.deleteAgent(this.props.agentId).then((resp) => {
+            if (!(resp as {error?: AxiosError}).error) {
                 history.push('/app/settings/users')
             }
         })
     }
 
-    _onSubmit = (e: SyntheticEvent<*>) => {
+    _onSubmit = (e: SyntheticEvent) => {
+        const {email, name, role} = this.state
         e.preventDefault()
-        const form = _pick(this.state, ['email', 'name'])
-        form.roles = [{name: this.state.role}]
+        const form: UserDraft = {email, name, roles: [{name: role}]}
         this.setState({isSubmitting: true})
-        const promise = this._isUpdate()
+        const promise = (this._isUpdate()
             ? this.props.updateAgent(this.props.agentId, form)
-            : this.props.createAgent(form)
+            : this.props.createAgent(form)) as Promise<{
+            error?: {data?: Record<string, unknown>}
+        }>
         return promise.then(({error}) => {
             this.setState({isSubmitting: false})
             if (error) {
@@ -212,7 +193,7 @@ export default class Form extends Component<Props, State> {
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 {isUpdate
-                                    ? `Edit ${agent.get('name')}`
+                                    ? `Edit ${agent.get('name') as string}`
                                     : 'Add user'}
                                 {isAgentAccountOwner && (
                                     <Badge
@@ -262,7 +243,9 @@ export default class Form extends Component<Props, State> {
                                     ? orderedRoleMetaByUserRole
                                     : {[role]: orderedRoleMetaByUserRole[role]}
                             )}
-                            onClick={(role) => this.setState({role})}
+                            onClick={(role) =>
+                                this.setState({role: role as UserRole})
+                            }
                             value={
                                 currentRoleMeta
                                     ? currentRoleMeta.label
@@ -294,7 +277,7 @@ export default class Form extends Component<Props, State> {
                                                 .open(
                                                     'https://docs.gorgias.com/user/adding-team-members#user_permissions',
                                                     '_blank'
-                                                )
+                                                )!
                                                 .focus()
                                         }}
                                     >
@@ -305,12 +288,12 @@ export default class Form extends Component<Props, State> {
                         </RichDropdown>
                         {!hasUserRolesFeature && (
                             <div className={classnames('mb-3', css.paywall)}>
-                                <h3>{paywallConfig.header}</h3>
+                                <h3>{paywallConfig!.header}</h3>
 
-                                {paywallConfig.description}
+                                {paywallConfig!.description}
                                 <UpgradeButton
                                     className="mt-3"
-                                    label={`Upgrade to ${requiredPlanName}`}
+                                    label={`Upgrade to ${requiredPlanName!}`}
                                     state={{
                                         openedPlanModal: requiredPlanName,
                                     }}
@@ -380,3 +363,27 @@ export default class Form extends Component<Props, State> {
         )
     }
 }
+
+const connector = connect(
+    (state: RootState, ownProps: OwnProps) => {
+        return {
+            agentId: parseInt(ownProps.match.params.id),
+            accountOwnerId: state.currentAccount.get('user_id'),
+            currentUserId: state.currentUser.get('id'),
+            hasUserRolesFeature: currentAccountHasFeature(
+                AccountFeature.UserRoles
+            )(state),
+            plans: getBillingState(state).get('plans'),
+        }
+    },
+    {
+        createAgent,
+        deleteAgent,
+        fetchAgent,
+        inviteAgent,
+        updateAgent,
+        updateAccountOwner,
+    }
+)
+
+export default withRouter(connector(FormContainer))
