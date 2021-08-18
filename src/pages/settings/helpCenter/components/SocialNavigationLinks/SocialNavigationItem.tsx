@@ -1,7 +1,6 @@
 import React from 'react'
 import {FormFeedback, FormGroup, Input} from 'reactstrap'
-
-import {isUrl} from '../../../../../utils'
+import isUrl from 'validator/lib/isURL'
 
 import {LinkEntity} from '../LinkList'
 
@@ -24,6 +23,15 @@ export const SocialNavigationItem = ({
     onBlur,
 }: Props): JSX.Element => {
     const errMessage = value !== '' && !isUrl(value) ? 'URL is invalid' : ''
+    const [innerValue, setInnerValue] = React.useState(value)
+
+    React.useEffect(() => {
+        setInnerValue(value)
+    }, [value])
+
+    const handleOnChangeValue = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        setInnerValue(ev.target.value)
+    }
 
     return (
         <div className={css['social-item']} data-testid={`${label}-nav`}>
@@ -35,8 +43,9 @@ export const SocialNavigationItem = ({
                 <FormGroup>
                     <Input
                         className={css['social-input']}
-                        defaultValue={value}
+                        value={innerValue}
                         invalid={!!errMessage}
+                        onChange={handleOnChangeValue}
                         onBlur={(ev) => {
                             ev.persist()
                             onBlur(ev, 'value', id)

@@ -4,7 +4,10 @@ import facebookLogo from '../../../../../../img/icons/social/facebook.svg'
 import twitterLogo from '../../../../../../img/icons/social/twitter.svg'
 import instagramLogo from '../../../../../../img/icons/social/instagram.svg'
 
-import {LocalSocialNavigationLink} from '../../../../../models/helpCenter/types'
+import {
+    LocaleCode,
+    LocalSocialNavigationLink,
+} from '../../../../../models/helpCenter/types'
 
 import css from './SocialNavigationLinks.less'
 import {SocialNavigationItem} from './SocialNavigationItem'
@@ -16,6 +19,7 @@ const LOGO_MAP: {[key: string]: string} = {
 }
 
 type Props = {
+    locale: LocaleCode
     links: LocalSocialNavigationLink[]
     onBlurLink: (
         ev: React.FocusEvent<HTMLInputElement>,
@@ -25,6 +29,7 @@ type Props = {
 }
 
 export const SocialNavigationLinks = ({
+    locale,
     links,
     onBlurLink,
 }: Props): JSX.Element => {
@@ -35,7 +40,7 @@ export const SocialNavigationLinks = ({
                 if (LOGO_MAP[link.translation.label.toLowerCase()]) {
                     return (
                         <SocialNavigationItem
-                            key={link.id}
+                            key={`${link.id}-${locale}`}
                             id={link.id}
                             label={link.translation.label}
                             value={link.translation.value}

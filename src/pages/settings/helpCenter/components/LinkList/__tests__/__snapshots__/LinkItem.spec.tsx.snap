@@ -12,6 +12,7 @@ exports[`<LinkItem> matches snapshot 1`] = `
       <input
         aria-invalid="false"
         class="link-input form-control"
+        data-testid="link-item-label-1"
         type="text"
         value="Test link"
       />
@@ -22,6 +23,7 @@ exports[`<LinkItem> matches snapshot 1`] = `
       <input
         aria-invalid="false"
         class="link-input form-control"
+        data-testid="link-item-value-1"
         type="text"
         value="https://test.com"
       />

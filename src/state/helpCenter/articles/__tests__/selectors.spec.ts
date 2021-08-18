@@ -4,6 +4,8 @@ import {createArticleFromDto} from '../../../../models/helpCenter/utils'
 import {getArticlesResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
 import {StoreState} from '../../../types'
+import {initialState as categoriesState} from '../../categories/reducer'
+import {initialState as uiState} from '../../ui/reducer'
 
 import {
     readArticles,
@@ -21,9 +23,8 @@ const store: Partial<StoreState> = {
         articles: {
             articlesById: _keyBy(articlesResponse, 'id'),
         },
-        categories: {
-            categoriesById: {},
-        },
+        ui: uiState,
+        categories: categoriesState,
     },
 }
 
@@ -32,9 +33,8 @@ const emptyStore: Partial<StoreState> = {
         articles: {
             articlesById: {},
         },
-        categories: {
-            categoriesById: {},
-        },
+        ui: uiState,
+        categories: categoriesState,
     },
 }
 

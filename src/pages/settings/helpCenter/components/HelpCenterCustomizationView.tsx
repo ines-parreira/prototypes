@@ -9,28 +9,30 @@ import {
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
+import {
+    changeViewLanguage,
+    readViewLanguage,
+} from '../../../../state/helpCenter/ui'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify} from '../../../../state/notifications/actions'
 
 import PageHeader from '../../../common/components/PageHeader'
 import {readHelpcenterById} from '../../../../state/entities/helpCenters/selectors'
 
-import {
-    HELP_CENTER_LANGUAGE_DEFAULT,
-    SOCIAL_NAVIGATION_LINKS,
-} from '../constants'
+import {SOCIAL_NAVIGATION_LINKS} from '../constants'
 
 import {
     useNavigationLinks,
     useSocialNavigationLinks,
 } from '../hooks/useNavigationLinks'
-// import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
+import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 
 import {saveSocialLinks, saveNavigationLinks} from '../utils/navigationLinks'
 
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useLocales} from '../hooks/useLocales'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
@@ -39,20 +41,22 @@ import {NavSection} from './NavSection'
 export const HelpCenterCustomizationView = () => {
     const helpcenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
+    const locales = useLocales()
 
     const data = useSelector(readHelpcenterById(helpcenterId.toString()))
     const {isReady, client} = useHelpcenterApi()
 
     const [links, setLinks] = React.useState<NavigationLinkDto[]>([])
-    const [selectedLocale, setSelectedLocale] = React.useState<LocaleCode>(
-        HELP_CENTER_LANGUAGE_DEFAULT
+    const selectedLocale = useSelector(readViewLanguage)
+
+    const localesOptions = useLocaleSelectOptions(
+        locales,
+        data?.supported_locales
     )
 
-    React.useEffect(() => {
-        if (selectedLocale !== data?.default_locale && data?.default_locale) {
-            setSelectedLocale(data?.default_locale)
-        }
-    }, [data?.default_locale, selectedLocale])
+    const handleOnChangeLocale = (locale: LocaleCode) => {
+        dispatch(changeViewLanguage(locale))
+    }
 
     React.useEffect(() => {
         async function init() {
@@ -83,7 +87,7 @@ export const HelpCenterCustomizationView = () => {
             }
             return true
         })
-    }, [links])
+    }, [links, selectedLocale])
 
     const socialLinks = React.useMemo(() => {
         return Object.entries(SOCIAL_NAVIGATION_LINKS).map(
@@ -119,19 +123,12 @@ export const HelpCenterCustomizationView = () => {
                 return socialLink
             }
         )
-    }, [links])
-
+    }, [links, selectedLocale])
     const headerNavigation = useNavigationLinks('header', linksWithoutSocial)
     const footerNavigation = useNavigationLinks('footer', linksWithoutSocial)
     const socialNavigation = useSocialNavigationLinks('footer', socialLinks, {
         allowEmpty: true,
     })
-
-    // TODO: Uncomment this when we support locales
-    // const localesOptions = useLocaleSelectOptions(
-    //     getLocalesResponseFixture,
-    //     data?.supported_locales
-    // )
 
     const handleOnReset = () => {
         headerNavigation.resetFields()
@@ -219,35 +216,36 @@ export const HelpCenterCustomizationView = () => {
                 style={{paddingBottom: 24}}
             >
                 <NavSection
-                    availableLocales={[]} // {localesOptions}
+                    availableLocales={localesOptions}
                     description="Change navigation elements at the top of the help center."
                     items={headerNavigation.links}
                     name="header"
                     selectedLocale={selectedLocale}
                     title="Header settings"
-                    onBlurLink={(ev, key, id) => {
+                    onChangeLink={(ev, key, id) => {
                         headerNavigation.update(ev.target.value, id, key)
                     }}
                     onClickAdd={() => headerNavigation.add(selectedLocale)}
-                    onChangeLocale={setSelectedLocale}
+                    onChangeLocale={handleOnChangeLocale}
                     onClickRemove={headerNavigation.remove}
                 />
                 <NavSection
-                    availableLocales={[]} // {localesOptions}
+                    availableLocales={localesOptions}
                     description="Change navigation elements at the bottom of the help center."
                     items={footerNavigation.links}
                     name="footer"
                     selectedLocale={selectedLocale}
                     title="Footer settings"
-                    onBlurLink={(ev, key, id) => {
+                    onChangeLink={(ev, key, id) => {
                         footerNavigation.update(ev.target.value, id, key)
                     }}
                     onClickAdd={() => footerNavigation.add(selectedLocale)}
-                    onChangeLocale={setSelectedLocale}
+                    onChangeLocale={handleOnChangeLocale}
                     onClickRemove={footerNavigation.remove}
                 />
                 <SocialNavigationLinks
                     links={socialNavigation.links}
+                    locale={selectedLocale}
                     onBlurLink={(ev, key, id) => {
                         socialNavigation.update(ev.target.value, id, key)
                     }}

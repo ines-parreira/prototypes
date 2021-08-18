@@ -6,12 +6,19 @@ import {useParams} from 'react-router-dom'
 import {renderHook} from 'react-hooks-testing-library'
 import configureMockStore from 'redux-mock-store'
 
+import {createCategoryFromDto} from '../../../../../models/helpCenter/utils'
+
 import {RootState, StoreDispatch} from '../../../../../state/types'
+import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {
     saveCategories,
     updateCategoriesOrder,
     updateCategoryTranslation,
 } from '../../../../../state/helpCenter/categories'
+
+import {getSingleCategoryEnglish} from '../../fixtures/getCategoriesResponse.fixtures'
 
 import {useCategoriesActions} from '../useCategoriesActions'
 
@@ -66,12 +73,9 @@ jest.mock('../../../../../state/helpCenter/categories', () => ({
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     helpCenter: {
-        articles: {
-            articlesById: {},
-        },
-        categories: {
-            categoriesById: {},
-        },
+        ui: uiState,
+        articles: articlesState,
+        categories: categoriesState,
     },
 }
 
@@ -130,23 +134,7 @@ describe('useCategoriesActions', () => {
             })
 
             await result.current.updateCategoriesPosition([
-                {
-                    id: 1,
-                    help_center_id: 1,
-                    position: 1,
-                    created_datetime: '',
-                    updated_datetime: '',
-                    articles: [],
-                    translation: {
-                        created_datetime: '',
-                        updated_datetime: '',
-                        category_id: 1,
-                        locale: 'en-US',
-                        title: '',
-                        slug: '',
-                        description: '',
-                    },
-                },
+                createCategoryFromDto(getSingleCategoryEnglish, 1),
             ])
 
             expect(updateCategoriesOrder).toHaveBeenCalled()

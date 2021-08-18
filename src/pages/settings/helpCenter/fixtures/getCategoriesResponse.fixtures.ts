@@ -1,17 +1,18 @@
-export const getCategoriesResponseEnglish = {
+import {CategoriesListPage, Category} from '../../../../models/helpCenter/types'
+
+export const getCategoriesResponseEnglish: CategoriesListPage = {
     data: [
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 1,
-            position: 0,
             help_center_id: 1,
+            available_locales: ['en-US'],
             translation: {
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
-                id: 1,
                 title: 'Orders',
                 description:
                     'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',
@@ -25,13 +26,12 @@ export const getCategoriesResponseEnglish = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 2,
-            position: 2,
             help_center_id: 1,
+            available_locales: ['en-US'],
             translation: {
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
-                id: 3,
                 title: 'Refunds',
                 description:
                     'pay back (money), typically to a customer who is not satisfied with goods or services bought.\n          "if you\'re not delighted with your purchase, we guarantee to refund your money in full"',
@@ -45,13 +45,12 @@ export const getCategoriesResponseEnglish = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 3,
-            position: 3,
             help_center_id: 1,
+            available_locales: ['en-US'],
             translation: {
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
-                id: 5,
                 title: 'Size Charts',
                 description:
                     'A size chart is a document that reflects the measurements for your size range within your brand. Typically, your public size chart is characterized by 4 main measurements, bust, waist, hip, and height.',
@@ -65,13 +64,12 @@ export const getCategoriesResponseEnglish = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 4,
-            position: 1,
             help_center_id: 1,
+            available_locales: ['en-US'],
             translation: {
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
-                id: 7,
                 title: 'Discounts',
                 description: 'A deduction from the usual cost of something.',
                 slug: 'orders',
@@ -91,18 +89,19 @@ export const getCategoriesResponseEnglish = {
     },
 }
 
-export const getSingleCategoryEnglish = {
+export const getSingleCategoryEnglish: Category = {
     created_datetime: '2021-06-01T09:46:30.044Z',
     updated_datetime: '2021-06-01T09:46:30.044Z',
     deleted_datetime: null,
     id: 1,
     position: 0,
     help_center_id: 1,
+    available_locales: ['en-US'],
+    articles: [],
     translation: {
         created_datetime: '2021-06-01T09:46:30.044Z',
         updated_datetime: '2021-06-01T09:46:30.044Z',
         deleted_datetime: null,
-        id: 1,
         title: 'Orders',
         description:
             'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',

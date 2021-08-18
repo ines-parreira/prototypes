@@ -2,6 +2,8 @@ import {createSelector} from 'reselect'
 
 import {readHelpCenterStore} from '../selectors'
 
+import {readViewLanguage} from '../ui/selectors'
+
 const helpCenterArticlesStore = createSelector(
     readHelpCenterStore,
     (store) => store.articles
@@ -14,7 +16,11 @@ const readArticlesById = createSelector(
 
 export const readArticles = createSelector(
     readArticlesById,
-    (articles) => Object.values(articles) || []
+    readViewLanguage,
+    (articles, locale) =>
+        Object.values(articles).filter(
+            (article) => article.translation?.locale === locale
+        ) || []
 )
 
 export const readArticleById = (articleId: number) =>

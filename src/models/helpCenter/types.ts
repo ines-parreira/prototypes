@@ -3,6 +3,7 @@ import {Components} from '../../../../../rest_api/help_center_api/client.generat
 // GENERAL
 
 export type LocaleCode = Components.Schemas.LocaleEntity['code']
+export type LocaleEntity = Components.Schemas.LocaleEntity
 
 // HELP CENTER
 
@@ -32,7 +33,8 @@ export type HelpCenterPreferences = {
 
 export type CreateCategoryDto = Components.Schemas.CreateCategoryDto
 export type CategoryTranslation = Components.Schemas.LocalCategoryTranslation
-export type CreateCategoryResponse = Components.Schemas.CategoryWithLocalTranslation
+export type CategoriesListPage = Components.Schemas.CategoriesListPage
+export type CategoryWithLocalTranslation = Components.Schemas.CategoryWithLocalTranslation
 export type UpdateCategoryTranslationResponse = Components.Schemas.CategoryTranslationEntity
 
 export type Category = {
@@ -42,6 +44,7 @@ export type Category = {
     id: number
     position: number
     help_center_id: number
+    available_locales: LocaleCode[]
     articles: HelpCenterArticle[]
     translation?: CategoryTranslation
 }
@@ -58,6 +61,7 @@ export type HelpCenterArticle = Omit<
     'translation'
 > & {
     position: number
+    available_locales: LocaleCode[]
     translation: ArticleTranslation
 }
 
@@ -101,10 +105,11 @@ export type LinkTranslation = Pick<
 
 export type LocalNavigationLink = BaseNavigationLink & {
     position: number
+    key: string
 }
 export type LocalSocialNavigationLink = Omit<
     LocalNavigationLink,
-    'translation'
+    'translation' | 'key'
 > & {
     meta: Components.Schemas.NavigationLinkMeta | undefined
     translation: Omit<LinkTranslation, 'locale'>

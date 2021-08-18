@@ -1,6 +1,10 @@
 import React from 'react'
 
-import {HelpCenter, Category} from '../../../../../models/helpCenter/types'
+import {
+    HelpCenter,
+    Category,
+    LocaleCode,
+} from '../../../../../models/helpCenter/types'
 
 import {CategoriesTable} from '../../components/CategoriesTable'
 
@@ -9,17 +13,19 @@ import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 
 type Props = {
     helpcenter: HelpCenter
+    currentViewLanguage: LocaleCode
     renderArticleList?: (category: Category) => React.ReactElement
 }
 
 export const CategoriesViews = ({
     helpcenter,
+    currentViewLanguage,
     renderArticleList,
 }: Props): JSX.Element => {
     const actions = useCategoriesActions()
     const {data, isLoading} = useHelpcenterCategories(
         helpcenter.id,
-        helpcenter.default_locale
+        currentViewLanguage
     )
 
     const handleOnReorder = (categories: Category[]) => {

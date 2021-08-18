@@ -2,6 +2,7 @@ import React from 'react'
 import {chain as _chain} from 'lodash'
 import _defaults from 'lodash/defaults'
 import produce, {Draft} from 'immer'
+import isUrl from 'validator/lib/isURL'
 
 import {
     // LinkTranslation,
@@ -11,7 +12,6 @@ import {
     LocaleCode,
     NavigationLinkDto,
 } from '../../../../models/helpCenter/types'
-import {isUrl} from '../../../../utils'
 
 type Options = {
     allowEmpty: boolean
@@ -34,6 +34,7 @@ function decorateLocaleLinks(
                     id: link.id,
                     group: link.group,
                     position: index,
+                    key: `${link.id}-${link.translation.label}-${link.translation.locale}`,
                     translation: {
                         locale: link.translation.locale,
                         value: link.translation.value,
@@ -107,9 +108,7 @@ export const useNavigationLinks = (
     )
 
     React.useEffect(() => {
-        if (response.length > 0) {
-            setLinks(decorateLocaleLinks(section, response))
-        }
+        setLinks(decorateLocaleLinks(section, response))
     }, [response, section])
 
     const innerOptions = React.useMemo(
@@ -120,10 +119,12 @@ export const useNavigationLinks = (
     const add = (locale: LocaleCode) => {
         setLinks(
             produce((draft: Draft<LocalNavigationLink[]>) => {
+                const id = links.reduce((sum, link) => link.id + sum, 1)
                 draft.push({
-                    id: links.reduce((sum, link) => link.id + sum, 1),
+                    id,
                     group: section,
                     position: links.length,
+                    key: `${id}-new-${locale}`,
                     translation: {
                         navigation_link_id: links.reduce(
                             (sum, link) => link.id + sum,

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ActionButton /> matches default snapshot 1`] = `
+<div>
+  <button
+    class="base btn btn-link"
+  >
+    Action
+  </button>
+</div>
+`;

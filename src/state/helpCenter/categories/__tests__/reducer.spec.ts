@@ -1,9 +1,10 @@
 import _keyBy from 'lodash/keyBy'
 import produce from 'immer'
 
+import {createCategoryFromDto} from '../../../../models/helpCenter/utils'
 import {
     getCategoriesResponseEnglish,
-    getSingleCategoryEnglish,
+    getSingleCategoryEnglish as categoryResponse,
 } from '../../../../pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 
 import {Category} from '../../../../models/helpCenter/types'
@@ -19,24 +20,8 @@ import {
 import {CategoriesAction} from '../types'
 
 const categoriesResponse: Category[] = getCategoriesResponseEnglish.data.map(
-    (category) => ({
-        ...category,
-        articles: [],
-        translation: {
-            ...category.translation,
-            locale: 'en-US',
-        },
-    })
+    (category) => createCategoryFromDto(category, 1)
 )
-
-const categoryResponse: Category = {
-    ...getSingleCategoryEnglish,
-    articles: [],
-    translation: {
-        ...getSingleCategoryEnglish.translation,
-        locale: 'en-US',
-    },
-}
 
 describe('Help Center/Categories reducer', () => {
     it('has the correct initial state', () => {

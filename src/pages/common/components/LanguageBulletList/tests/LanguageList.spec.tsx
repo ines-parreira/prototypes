@@ -1,10 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {
-    LocaleCode,
-    HelpCenterLocale,
-} from '../../../../../models/helpCenter/types'
+import {LocaleCode} from '../../../../../models/helpCenter/types'
 import {getLocalesResponseFixture as LOCALE_LIST} from '../../../../settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
 import {LanguageList} from '../LanguageList'
@@ -37,7 +34,7 @@ describe('<LanguageList />', () => {
             <LanguageList
                 helpcenterId="1"
                 defaultLanguage={LOCALE}
-                languageList={LOCALE_LIST as HelpCenterLocale[]}
+                languageList={LOCALE_LIST}
             />
         )
 
@@ -47,7 +44,7 @@ describe('<LanguageList />', () => {
 
     describe('when we have equal or less locales than limit', () => {
         it('renders all the locales', () => {
-            const fewerLocales = LOCALE_LIST.slice(0, 2) as HelpCenterLocale[]
+            const fewerLocales = LOCALE_LIST.slice(0, 2)
             const {getAllByTestId} = render(
                 <LanguageList
                     helpcenterId="1"
@@ -70,7 +67,7 @@ describe('<LanguageList />', () => {
                 <LanguageList
                     helpcenterId="1"
                     defaultLanguage={LOCALE}
-                    languageList={LOCALE_LIST as HelpCenterLocale[]}
+                    languageList={LOCALE_LIST}
                 />
             )
             getByTestId('locale-bullet-overflow')

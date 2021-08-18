@@ -1,10 +1,7 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import {
-    LocaleCode,
-    HelpCenterLocale,
-} from '../../../../../../models/helpCenter/types'
+import {LocaleCode} from '../../../../../../models/helpCenter/types'
 
 import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
@@ -17,7 +14,7 @@ describe('<HelpCenterEditModalHeader/>', () => {
     const props = {
         title: 'Article',
         language: 'fr-FR' as LocaleCode,
-        languageOptions: getLocalesResponseFixture as HelpCenterLocale[],
+        languageOptions: getLocalesResponseFixture,
         onChangeLanguage: mockedOnChangeLanguage,
         onClose: mockedOnClose,
     }

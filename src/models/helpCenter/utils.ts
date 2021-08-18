@@ -1,6 +1,6 @@
 import {
     Category,
-    CreateCategoryResponse,
+    CategoryWithLocalTranslation,
     UpdateCategoryTranslationResponse,
     HelpCenterArticle,
     CategoryTranslation,
@@ -30,7 +30,7 @@ export function createCategoryTranslationFromDto(
 }
 
 export function createCategoryFromDto(
-    payload: CreateCategoryResponse,
+    payload: CategoryWithLocalTranslation,
     position: number,
     articles?: HelpCenterArticle[]
 ): Category {
@@ -43,6 +43,9 @@ export function createCategoryFromDto(
         ...payload,
         position,
         articles: articles || [],
+        available_locales: payload?.available_locales || [
+            payload.translation.locale,
+        ],
         translation: createCategoryTranslationFromDto(payload.translation),
     }
 }
@@ -57,6 +60,9 @@ export function createArticleFromDto(
 
     return {
         ...payload,
+        available_locales: payload?.available_locales || [
+            payload.translation.locale,
+        ],
         translation: payload.translation,
         position,
     }

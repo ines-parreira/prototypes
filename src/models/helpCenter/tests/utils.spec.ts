@@ -1,4 +1,7 @@
-import {LocaleCode} from '../types'
+import {getSingleCategoryEnglish} from '../../../pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import {getSingleArticleEnglish} from '../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+
+import {UpdateCategoryTranslationResponse} from '../types'
 
 import {
     createArticleFromDto,
@@ -13,17 +16,16 @@ describe('Help Center model utils', () => {
             expect(createCategoryTranslationFromDto).toThrow()
         })
         it('returns the expected properties', () => {
-            const translation = {
+            const translation: UpdateCategoryTranslationResponse = {
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
-                id: 1,
                 title: 'Orders',
                 description:
                     'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',
                 slug: 'orders',
                 category_id: 1,
-                locale: 'en-US' as LocaleCode,
+                locale: 'en-US',
             }
 
             expect(createCategoryTranslationFromDto(translation)).toEqual({
@@ -40,63 +42,29 @@ describe('Help Center model utils', () => {
     })
 
     describe('createCategoryFromDto', () => {
-        const response = {
-            created_datetime: '2021-06-01T09:46:30.044Z',
-            updated_datetime: '2021-06-01T09:46:30.044Z',
-            deleted_datetime: null,
-            id: 1,
-            help_center_id: 1,
-            translation: {
-                created_datetime: '2021-06-01T09:46:30.044Z',
-                updated_datetime: '2021-06-01T09:46:30.044Z',
-                deleted_datetime: null,
-                title: 'Orders',
-                description:
-                    'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',
-                slug: 'orders',
-                category_id: 1,
-                locale: 'en-US' as LocaleCode,
-            },
-        }
         it('throws an error if translation is missing', () => {
             expect(createCategoryFromDto).toThrow()
         })
         it('returns the expected properties', () => {
-            expect(createCategoryFromDto(response, 0, [])).toEqual({
-                ...response,
+            const expected = {
+                ...getSingleCategoryEnglish,
                 position: 0,
                 articles: [],
-            })
+            }
+
+            expect(
+                createCategoryFromDto(getSingleCategoryEnglish, 0, [])
+            ).toEqual(expected)
         })
     })
 
     describe('createArticleFromDto', () => {
-        const response = {
-            id: 1,
-            category_id: null,
-            help_center_id: 1,
-            created_datetime: '2021-05-17T18:21:42.022Z',
-            updated_datetime: '2021-05-17T18:21:42.022Z',
-            deleted_datetime: undefined,
-            translation: {
-                title: 'Free article (EN)',
-                excerpt: 'Paragraph lorem ipsum, Yiddish xylophone wonder.',
-                slug: 'free-article',
-                article_id: 1,
-                created_datetime: '2021-05-17T18:21:42.022Z',
-                updated_datetime: '2021-05-17T18:21:42.022Z',
-                deleted_datetime: undefined,
-                locale: 'en-US' as LocaleCode,
-                content: 'Article content',
-            },
-        }
-
         it('throws an error if translation is missing', () => {
             expect(createArticleFromDto).toThrow()
         })
         it('returns the expected properties', () => {
-            expect(createArticleFromDto(response, 0)).toEqual({
-                ...response,
+            expect(createArticleFromDto(getSingleArticleEnglish, 0)).toEqual({
+                ...getSingleArticleEnglish,
                 position: 0,
             })
         })

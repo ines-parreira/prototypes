@@ -4,46 +4,36 @@ import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container, Button} from 'reactstrap'
 import _keyBy from 'lodash/keyBy'
 
-import {HelpCenterLocale} from '../../../../models/helpCenter/types'
-
-import PageHeader from '../../../common/components/PageHeader'
-import {HELP_CENTER_BASE_PATH} from '../constants'
-import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
+import {getHelpCenterClient} from '../../../../../../../rest_api/help_center_api/index'
 
 import {RootState} from '../../../../state/types'
-import {
-    helpCentersFetched,
-    // helpCenterUpdated,
-} from '../../../../state/entities/helpCenters/actions'
-import {
-    getHelpCenterClient,
-    // HelpCenterClient,
-} from '../../../../../../../rest_api/help_center_api/index'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import {HelpCenterLocale} from '../../../../models/helpCenter/types'
 import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
+
+import PageHeader from '../../../common/components/PageHeader'
+
+import {useLocales} from '../hooks/useLocales'
+import {HELP_CENTER_BASE_PATH} from '../constants'
 
 import HelpCentersTable from './HelpCenterTable'
+
 import css from './HelpCenterStartView.less'
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
-
-const localesByCode = _keyBy<HelpCenterLocale>(
-    getLocalesResponseFixture as HelpCenterLocale[],
-    'code'
-)
-
-// let helpCenterClient: HelpCenterClient
 
 export const HelpCenterStartView = ({
     history,
     helpCenters,
     helpCentersFetched,
-    // helpCenterUpdated,
     notify,
 }: Props) => {
-    // const [loadingHelpCenters, setLoadingHelpCenters] = useState<{
-    //     [key: number]: boolean
-    // }>({})
+    const localeOptions = useLocales()
+    const localesByCode = React.useMemo(
+        () => _keyBy<HelpCenterLocale>(localeOptions, 'code'),
+        [localeOptions]
+    )
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -67,41 +57,6 @@ export const HelpCenterStartView = ({
 
         void init()
     }, [])
-
-    // const toggleHelpCenter = async (
-    //     helpCenterId: number,
-    //     newToggleValue: boolean
-    // ) => {
-    //     const deactivated_datetime = newToggleValue
-    //         ? null
-    //         : new Date().toISOString()
-
-    //     setLoadingHelpCenters((prevLoadingHelpCenters) => ({
-    //         ...prevLoadingHelpCenters,
-    //         [helpCenterId]: true,
-    //     }))
-    //     try {
-    //         const {
-    //             data: updatedHelpcenter,
-    //         } = await helpCenterClient.updateHelpCenter(
-    //             {
-    //                 id: helpCenterId,
-    //             },
-    //             {deactivated_datetime}
-    //         )
-    //         helpCenterUpdated(updatedHelpcenter)
-    //     } catch (err) {
-    //         notify({
-    //             message: 'Failed to update the helpcenter',
-    //             status: NotificationStatus.Error,
-    //         })
-    //     } finally {
-    //         setLoadingHelpCenters((prevLoadingHelpCenters) => ({
-    //             ...prevLoadingHelpCenters,
-    //             [helpCenterId]: false,
-    //         }))
-    //     }
-    // }
 
     const helpCenterList = useMemo(
         () =>

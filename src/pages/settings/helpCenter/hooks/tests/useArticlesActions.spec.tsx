@@ -7,12 +7,17 @@ import {renderHook} from 'react-hooks-testing-library'
 import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from '../../../../../state/types'
+import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {
     deleteArticle,
     saveArticles,
     updateArticle,
     updateArticlesOrder,
 } from '../../../../../state/helpCenter/articles'
+
+import {getSingleArticleEnglish} from '../../fixtures/getArticlesResponse.fixture'
 
 import {useArticlesActions} from '../useArticlesActions'
 
@@ -73,12 +78,9 @@ jest.mock('../../../../../state/helpCenter/articles', () => ({
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     helpCenter: {
-        articles: {
-            articlesById: {},
-        },
-        categories: {
-            categoriesById: {},
-        },
+        ui: uiState,
+        articles: articlesState,
+        categories: categoriesState,
     },
 }
 
@@ -139,23 +141,9 @@ describe('useArticlesActions', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateArticleTranslation({
-                id: 1,
-                help_center_id: 1,
-                position: 1,
-                created_datetime: '',
-                updated_datetime: '',
-                translation: {
-                    locale: 'en-US',
-                    title: '',
-                    excerpt: '',
-                    content: '',
-                    slug: '',
-                    created_datetime: '',
-                    updated_datetime: '',
-                    article_id: 1,
-                },
-            })
+            await result.current.updateArticleTranslation(
+                getSingleArticleEnglish
+            )
 
             expect(updateArticle).toHaveBeenCalled()
         })
@@ -180,25 +168,7 @@ describe('useArticlesActions', () => {
             })
 
             await result.current.updateArticlePositionInCategory(
-                [
-                    {
-                        id: 1,
-                        help_center_id: 1,
-                        position: 1,
-                        created_datetime: '',
-                        updated_datetime: '',
-                        translation: {
-                            locale: 'en-US',
-                            title: '',
-                            excerpt: '',
-                            content: '',
-                            slug: '',
-                            created_datetime: '',
-                            updated_datetime: '',
-                            article_id: 1,
-                        },
-                    },
-                ],
+                [getSingleArticleEnglish],
                 1
             )
 
@@ -213,23 +183,7 @@ describe('useArticlesActions', () => {
             })
 
             await result.current.updateUncategorizedArticlePosition([
-                {
-                    id: 1,
-                    help_center_id: 1,
-                    position: 1,
-                    created_datetime: '',
-                    updated_datetime: '',
-                    translation: {
-                        locale: 'en-US',
-                        title: '',
-                        excerpt: '',
-                        content: '',
-                        slug: '',
-                        created_datetime: '',
-                        updated_datetime: '',
-                        article_id: 1,
-                    },
-                },
+                getSingleArticleEnglish,
             ])
 
             expect(updateArticlesOrder).toHaveBeenCalled()

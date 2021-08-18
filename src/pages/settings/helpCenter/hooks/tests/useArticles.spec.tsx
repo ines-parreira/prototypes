@@ -7,6 +7,10 @@ import {renderHook} from 'react-hooks-testing-library'
 import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from '../../../../../state/types'
+import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
+
 import {
     readArticlesInCategory,
     readUncategorizedArticles,
@@ -57,12 +61,9 @@ jest.mock('../../../../../state/helpCenter/articles', () => ({
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     helpCenter: {
-        articles: {
-            articlesById: {},
-        },
-        categories: {
-            categoriesById: {},
-        },
+        ui: uiState,
+        articles: articlesState,
+        categories: categoriesState,
     },
 }
 

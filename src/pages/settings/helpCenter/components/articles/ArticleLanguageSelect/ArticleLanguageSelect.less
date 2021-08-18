@@ -26,7 +26,7 @@
         display: flex;
         flex-direction: column;
 
-        min-width: 200px;
+        min-width: 260px;
         padding: 8px;
         border: 1px solid @neutral4;
         border-radius: 4px;
@@ -64,24 +64,8 @@
         }
     }
 
-    .status {
+    .actions {
         display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 14px;
-        height: 14px;
-        margin-left: 8px;
-        border-radius: 100%;
-
-        background: @neutral4;
-        color: @white;
-
-        font-size: 12px;
-        font-weight: 700;
-
-        &.completed {
-            background: @blue;
-        }
+        align-items: flex-end;
     }
 }

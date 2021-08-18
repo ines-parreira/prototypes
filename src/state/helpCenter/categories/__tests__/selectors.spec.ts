@@ -1,11 +1,15 @@
 import _keyBy from 'lodash/keyBy'
 
 import {Category} from '../../../../models/helpCenter/types'
-import {createArticleFromDto} from '../../../../models/helpCenter/utils'
+import {
+    createArticleFromDto,
+    createCategoryFromDto,
+} from '../../../../models/helpCenter/utils'
 import {getArticlesResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {getCategoriesResponseEnglish} from '../../../../pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 
 import {StoreState} from '../../../types'
+import {initialState as uiState} from '../../ui/reducer'
 
 import {readCategories, readCategoriesWithArticles} from '../selectors'
 
@@ -14,14 +18,7 @@ const articlesResponse = getArticlesResponseFixture.data.map(
 )
 
 const categoriesResponse: Category[] = getCategoriesResponseEnglish.data.map(
-    (category) => ({
-        ...category,
-        articles: [],
-        translation: {
-            ...category.translation,
-            locale: 'en-US',
-        },
-    })
+    (category) => createCategoryFromDto(category, 1)
 )
 
 const store: Partial<StoreState> = {
@@ -32,6 +29,7 @@ const store: Partial<StoreState> = {
         categories: {
             categoriesById: _keyBy(categoriesResponse, 'id'),
         },
+        ui: uiState,
     },
 }
 
@@ -43,6 +41,7 @@ const emptyStore: Partial<StoreState> = {
         categories: {
             categoriesById: {},
         },
+        ui: uiState,
     },
 }
 

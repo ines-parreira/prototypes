@@ -1,4 +1,7 @@
-import {HelpCenterArticlesListPage} from '../../../../models/helpCenter/types'
+import {
+    HelpCenterArticle,
+    HelpCenterArticlesListPage,
+} from '../../../../models/helpCenter/types'
 
 export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
     data: [
@@ -9,6 +12,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Free article (EN)',
                 excerpt: 'Paragraph lorem ipsum, Yiddish xylophone wonder.',
@@ -28,6 +32,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'English only post',
                 excerpt: 'This article only exists in english',
@@ -47,6 +52,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'English only post',
                 excerpt: 'This article only exists in english',
@@ -66,6 +72,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'English only post',
                 excerpt: 'This article only exists in english',
@@ -85,6 +92,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'English only post',
                 excerpt: 'This article only exists in english',
@@ -104,6 +112,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Return policy',
                 excerpt: 'This is about the returns',
@@ -123,6 +132,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Return policy',
                 excerpt: 'This is about the returns',
@@ -142,6 +152,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Return policy',
                 excerpt: 'This is about the returns',
@@ -161,6 +172,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Return policy',
                 excerpt: 'This is about the returns',
@@ -180,6 +192,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Pricing',
                 excerpt: 'This is about the pricing',
@@ -199,6 +212,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Pricing',
                 excerpt: 'This is about the pricing',
@@ -218,6 +232,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Pricing',
                 excerpt: 'This is about the pricing',
@@ -237,6 +252,7 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
             created_datetime: '2021-05-17T18:21:42.022Z',
             updated_datetime: '2021-05-17T18:21:42.022Z',
             deleted_datetime: undefined,
+            available_locales: ['en-US'],
             translation: {
                 title: 'Pricing',
                 excerpt: 'This is about the pricing',
@@ -258,5 +274,27 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
         page: 1,
         per_page: 20,
         next_page: '',
+    },
+}
+
+export const getSingleArticleEnglish: HelpCenterArticle = {
+    id: 1,
+    category_id: null,
+    help_center_id: 1,
+    created_datetime: '2021-05-17T18:21:42.022Z',
+    updated_datetime: '2021-05-17T18:21:42.022Z',
+    deleted_datetime: undefined,
+    available_locales: ['en-US'],
+    position: 0,
+    translation: {
+        title: 'Free article (EN)',
+        excerpt: 'Paragraph lorem ipsum, Yiddish xylophone wonder.',
+        slug: 'free-article',
+        article_id: 1,
+        created_datetime: '2021-05-17T18:21:42.022Z',
+        updated_datetime: '2021-05-17T18:21:42.022Z',
+        deleted_datetime: undefined,
+        locale: 'en-US',
+        content: 'Article content',
     },
 }

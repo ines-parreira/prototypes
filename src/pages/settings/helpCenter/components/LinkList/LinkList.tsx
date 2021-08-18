@@ -23,7 +23,7 @@ export const LinkList = ({
     titlePlaceholder,
     urlPlaceholder,
     onAddNew,
-    onBlur,
+    onChange,
     onDelete,
 }: Props) => {
     const isLimitExceeded = list.length >= limit
@@ -37,13 +37,13 @@ export const LinkList = ({
                     </div>
                     {list.map((item) => (
                         <LinkItem
-                            key={item.id}
+                            key={item.key}
                             id={item.id}
                             label={item.label}
                             titlePlaceholder={titlePlaceholder}
                             value={item.value}
                             urlPlaceholder={urlPlaceholder}
-                            onBlur={onBlur}
+                            onChange={onChange}
                             onDelete={onDelete}
                         />
                     ))}

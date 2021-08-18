@@ -14,10 +14,7 @@ describe('<HelpCenterTable/>', () => {
     const props = {
         isLoading: false,
         list: getHelpcentersResponseFixture,
-        locales: _keyBy<HelpCenterLocale>(
-            getLocalesResponseFixture as HelpCenterLocale[],
-            'code'
-        ),
+        locales: _keyBy<HelpCenterLocale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
     }
 

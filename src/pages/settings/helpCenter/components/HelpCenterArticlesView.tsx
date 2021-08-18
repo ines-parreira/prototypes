@@ -1,24 +1,30 @@
 import React, {FormEvent, useEffect, useState, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {withRouter, RouteComponentProps} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 import {Button, Container} from 'reactstrap'
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
 
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
+import SelectField from '../../../common/forms/SelectField/SelectField'
 import {notify} from '../../../../state/notifications/actions'
 import {
     HelpCenterArticle,
     HelpCenterArticleTranslation,
     HelpCenterLocaleCode,
-    HelpCenterLocale,
 } from '../../../../models/helpCenter/types'
+import {validLocaleCode} from '../../../../models/helpCenter/utils'
 import {NotificationStatus} from '../../../../state/notifications/types'
+import {
+    changeViewLanguage,
+    readViewLanguage,
+} from '../../../../state/helpCenter/ui'
+import {resetArticles} from '../../../../state/helpCenter/articles'
+import {resetCategories} from '../../../../state/helpCenter/categories'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import {getLocalesResponseFixture} from '../fixtures/getLocalesResponse.fixtures'
 import {MODALS, HELP_CENTER_DOMAIN} from '../constants'
 
 import {
@@ -32,8 +38,11 @@ import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 import {CategoryDrawer} from '../providers/CategoryDrawer'
 import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useArticlesActions} from '../hooks/useArticlesActions'
+import {useLocales} from '../hooks/useLocales'
 import {useArticles} from '../hooks/useArticles'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
 
 import {ArticlesTable} from './ArticlesTable'
 import CreateFirst from './articles/CreateFirst'
@@ -49,17 +58,15 @@ import HelpCenterEditModalFooter from './articles/HelpCenterEditModalFooter'
 
 import css from './HelpCenterArticlesView.less'
 
-type Props = RouteComponentProps & ConnectedProps<typeof connector>
-
 enum HelpCenterModalContent {
     ARTICLE = 'article',
     ARTICLE_ADVANCED = 'article-advanced',
 }
 
-export const HelpCenterArticlesView = ({notify, match}: Props) => {
-    const helpCenterId = parseInt(
-        (match.params as {helpcenterId: string}).helpcenterId
-    )
+export const HelpCenterArticlesView = (): JSX.Element => {
+    const dispatch = useAppDispatch()
+    const helpCenterId = useHelpCenterIdParam()
+    const viewLanguage = useSelector(readViewLanguage)
     const [editModal, setEditModal] = useState<HelpCenterModalContent | null>(
         null
     )
@@ -75,23 +82,36 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
         selectedArticleTranslations,
         setSelectedArticleTranslations,
     ] = useState<HelpCenterArticleTranslation[] | null>(null)
-    const [localeOptions] = useState(getLocalesResponseFixture)
+    const localeOptions = useLocales()
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
 
     const {isReady, client} = useHelpcenterApi()
     const helpCenter = useCurrentHelpCenter(helpCenterId).data
     const articlesActions = useArticlesActions()
-    const {articles, isLoading} = useArticles(helpCenter?.default_locale)
+    const {articles, isLoading} = useArticles(viewLanguage)
 
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const screenSize = useScreenSize()
 
+    const supportedLanguages = useLocaleSelectOptions(
+        localeOptions,
+        helpCenter?.supported_locales || []
+    )
+
     useEffect(() => {
         articleModal.on(MODALS.ARTICLE, Event.afterOpen, createArticle)
+        dispatch(resetCategories())
+        dispatch(resetArticles())
     }, [])
+
+    useEffect(() => {
+        if (helpCenter?.default_locale) {
+            dispatch(changeViewLanguage(helpCenter.default_locale))
+        }
+    }, [helpCenter?.default_locale])
 
     // Make sure to exit fullscreen mode when modal view changes
     useEffect(() => {
@@ -134,10 +154,12 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                         setSavedTranslation(translation || null)
                     }
                 } catch (err) {
-                    void notify({
-                        message: 'Failed to fetch article translations',
-                        status: NotificationStatus.Error,
-                    })
+                    void dispatch(
+                        notify({
+                            message: 'Failed to fetch article translations',
+                            status: NotificationStatus.Error,
+                        })
+                    )
                     console.error(err)
                 } finally {
                     setIsArticleLoading(false)
@@ -182,9 +204,11 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                         <HelpCenterEditModalHeader
                             title={selectedArticle.translation.title}
                             isFullscreen={fullscreenEditModal}
-                            languageOptions={
-                                localeOptions as HelpCenterLocale[]
-                            }
+                            languageOptions={localeOptions.filter((locale) =>
+                                helpCenter?.supported_locales?.includes(
+                                    locale.code
+                                )
+                            )}
                             onChangeLanguage={switchArticleTranslation}
                             onClose={handleOnArticleModalClose}
                             onResize={
@@ -256,9 +280,11 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                                 selectedArticle.translation.locale ||
                                 helpCenter.default_locale
                             }
-                            languageOptions={
-                                localeOptions as HelpCenterLocale[]
-                            }
+                            languageOptions={localeOptions.filter((locale) =>
+                                helpCenter?.supported_locales?.includes(
+                                    locale.code
+                                )
+                            )}
                             onChangeLanguage={switchArticleTranslation}
                             title="Article Settings"
                             onClose={handleOnArticleModalClose}
@@ -336,15 +362,19 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                     copy(
                         `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/${article.translation.slug}-${article.id}`
                     )
-                    void notify({
-                        message: 'Successfully copied the link',
-                        status: NotificationStatus.Success,
-                    })
+                    void dispatch(
+                        notify({
+                            message: 'Successfully copied the link',
+                            status: NotificationStatus.Success,
+                        })
+                    )
                 } catch (err) {
-                    void notify({
-                        message: 'Failed to copy the link',
-                        status: NotificationStatus.Error,
-                    })
+                    void dispatch(
+                        notify({
+                            message: 'Failed to copy the link',
+                            status: NotificationStatus.Error,
+                        })
+                    )
                     console.error(err)
                 }
             }
@@ -353,24 +383,30 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
 
         if (action === 'duplicateArticle') {
             if (!article.translation) {
-                void notify({
-                    message: 'Failed to duplicate the article',
-                    status: NotificationStatus.Error,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Failed to duplicate the article',
+                        status: NotificationStatus.Error,
+                    })
+                )
                 return
             }
 
             try {
                 await articlesActions.cloneArticle(article)
-                void notify({
-                    message: 'Duplicated the article with success',
-                    status: NotificationStatus.Success,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Duplicated the article with success',
+                        status: NotificationStatus.Success,
+                    })
+                )
             } catch (err) {
-                void notify({
-                    message: 'Failed to duplicate the article',
-                    status: NotificationStatus.Error,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Failed to duplicate the article',
+                        status: NotificationStatus.Error,
+                    })
+                )
                 console.error(err)
             }
         }
@@ -406,17 +442,21 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
         if (selectedArticle.id) {
             try {
                 await articlesActions.updateArticleTranslation(selectedArticle)
-                void notify({
-                    message: 'Article successfully saved',
-                    status: NotificationStatus.Success,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Article successfully saved',
+                        status: NotificationStatus.Success,
+                    })
+                )
                 setSelectedArticle(null)
                 setEditModal(null)
             } catch (err) {
-                void notify({
-                    message: 'Failed to save the article',
-                    status: NotificationStatus.Error,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Failed to save the article',
+                        status: NotificationStatus.Error,
+                    })
+                )
                 console.error(err)
             }
         }
@@ -435,17 +475,21 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                         selectedArticle.translation
                     )
                 }
-                void notify({
-                    message: 'Article successfully created',
-                    status: NotificationStatus.Success,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Article successfully created',
+                        status: NotificationStatus.Success,
+                    })
+                )
                 setSelectedArticle(null)
                 setEditModal(null)
             } catch (err) {
-                void notify({
-                    message: 'Failed to create the article',
-                    status: NotificationStatus.Error,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Failed to create the article',
+                        status: NotificationStatus.Error,
+                    })
+                )
                 console.error(err)
             }
         }
@@ -459,10 +503,12 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
         try {
             await articlesActions.deleteArticle(selectedArticle.id)
         } catch (err) {
-            void notify({
-                message: 'Failed to delete the article',
-                status: NotificationStatus.Error,
-            })
+            void dispatch(
+                notify({
+                    message: 'Failed to delete the article',
+                    status: NotificationStatus.Error,
+                })
+            )
             console.error(err)
         } finally {
             setSelectedArticle(null)
@@ -496,6 +542,15 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                     )
                 }
             >
+                <SelectField
+                    className="mr-4"
+                    options={supportedLanguages}
+                    value={viewLanguage}
+                    onChange={(value) =>
+                        dispatch(changeViewLanguage(validLocaleCode(value)))
+                    }
+                    style={{display: 'inline-block'}}
+                />
                 <Button
                     className="mr-2"
                     onClick={() =>
@@ -511,7 +566,7 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                 </Button>
             </PageHeader>
             <HelpCenterNavigation helpcenterId={helpCenterId} />
-            {isLoading && helpCenter === null ? (
+            {isLoading || helpCenter === null ? (
                 <Container fluid className="page-container">
                     <Loader />
                 </Container>
@@ -529,6 +584,7 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
                     {helpCenter && (
                         <CategoriesViews
                             helpcenter={helpCenter}
+                            currentViewLanguage={viewLanguage}
                             renderArticleList={(category) => (
                                 <ArticlesTable
                                     isNested
@@ -569,8 +625,4 @@ export const HelpCenterArticlesView = ({notify, match}: Props) => {
     )
 }
 
-const connector = connect(null, {
-    notify,
-})
-
-export default withRouter(connector(HelpCenterArticlesView))
+export default HelpCenterArticlesView

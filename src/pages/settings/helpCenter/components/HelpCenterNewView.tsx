@@ -25,8 +25,9 @@ import {useLocales} from '../hooks/useLocales'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {HELP_CENTER_BASE_PATH, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
 
-import css from './HelpCenterNewView.less'
 import LanguageSelect from './newView/LanguageSelect'
+
+import css from './HelpCenterNewView.less'
 
 type Props = ConnectedProps<typeof connector>
 

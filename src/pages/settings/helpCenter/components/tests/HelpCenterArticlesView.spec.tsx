@@ -5,8 +5,11 @@ import thunk from 'redux-thunk'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
 import {renderWithRouter} from '../../../../../utils/testing'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
+import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
+import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
@@ -15,31 +18,37 @@ jest.mock('../../hooks/useHelpcenterApi', () => {
         useHelpcenterApi: () => ({
             isReady: true,
             client: {
-                listArticleTranslations: jest.fn().mockReturnValue(
-                    Promise.resolve({
-                        data: [],
-                    })
-                ),
-                listLocales: jest.fn().mockReturnValue([
-                    {
-                        name: 'English - USA',
-                        code: 'en-US',
-                    },
-                    {
-                        name: 'French - France',
-                        code: 'fr-FR',
-                    },
-                    {
-                        name: 'French - Canada',
-                        code: 'fr-CA',
-                    },
-                    {
-                        name: 'Czech - Czech Republic',
-                        code: 'cs-CZ',
-                    },
-                ]),
+                listArticleTranslations: jest.fn().mockResolvedValue({
+                    data: [],
+                }),
+                listLocales: jest.fn().mockResolvedValue({
+                    data: [
+                        {
+                            name: 'English - USA',
+                            code: 'en-US',
+                        },
+                        {
+                            name: 'French - France',
+                            code: 'fr-FR',
+                        },
+                        {
+                            name: 'French - Canada',
+                            code: 'fr-CA',
+                        },
+                        {
+                            name: 'Czech - Czech Republic',
+                            code: 'cs-CZ',
+                        },
+                    ],
+                }),
             },
         }),
+    }
+})
+
+jest.mock('../../hooks/useHelpCenterIdParam', () => {
+    return {
+        useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
 
@@ -49,16 +58,11 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 
 const defaultState: Partial<RootState> = {
     helpCenter: {
-        articles: {
-            articlesById: {},
-        },
-        categories: {
-            categoriesById: {},
-        },
+        ui: uiState,
+        articles: articlesState,
+        categories: categoriesState,
     },
 }
-
-const mockNotify = jest.fn()
 
 const route = {
     path: '/app/settings/help-center/:helpcenterId/articles',
@@ -66,15 +70,6 @@ const route = {
 }
 
 describe('<HelpCenterArticlesView/>', () => {
-    const props = {
-        notify: mockNotify,
-        match: {
-            params: {
-                helpcenterId: 1,
-            },
-        },
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
     })
@@ -83,7 +78,7 @@ describe('<HelpCenterArticlesView/>', () => {
         const {container} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
-                    <HelpCenterArticlesView {...props} />
+                    <HelpCenterArticlesView />
                 </DndProvider>
             </Provider>,
             route

@@ -3,6 +3,7 @@ import {createSelector} from 'reselect'
 import {readHelpCenterStore} from '../selectors'
 
 import {readArticles} from '../articles/selectors'
+import {readViewLanguage} from '../ui/selectors'
 
 export const helpCenterCategoriesStore = createSelector(
     readHelpCenterStore,
@@ -16,7 +17,11 @@ const readCategoriesById = createSelector(
 
 export const readCategories = createSelector(
     readCategoriesById,
-    (articles) => Object.values(articles) || []
+    readViewLanguage,
+    (categories, locale) =>
+        Object.values(categories).filter(
+            (category) => category.translation?.locale === locale
+        ) || []
 )
 
 export const readCategoriesWithArticles = createSelector(

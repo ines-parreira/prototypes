@@ -60,7 +60,7 @@ export const useHelpcenterCategories = (
         }
 
         void init()
-    }, [helpcenterId, isReady])
+    }, [helpcenterId, locale, isReady])
 
     return {
         data,

@@ -1,17 +1,18 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import {ArticleLanguageSelect} from '../ArticleLanguageSelect'
+import {ArticleLanguageSelect, OptionItem} from '../ArticleLanguageSelect'
 
-const list = [
-    {value: 'en-US', label: 'English'},
-    {value: 'fr-FR', label: 'French'},
+const list: OptionItem[] = [
+    {value: 'en-US', label: 'English', text: 'English', canBeDeleted: false},
+    {value: 'fr-FR', label: 'French', text: 'French'},
     {
         value: 'de-DE',
         label: 'German',
+        text: 'German',
         isComplete: true,
     },
-    {value: 'es-ES', label: 'Spanish'},
+    {value: 'es-ES', label: 'Spanish', text: 'Spanish'},
 ]
 
 describe('<ArticleLanguageSelect>', () => {
@@ -62,5 +63,74 @@ describe('<ArticleLanguageSelect>', () => {
         expect(selectFn).toHaveBeenCalled()
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         expect(selectFn.mock.calls[0][1]).toEqual('fr-FR')
+    })
+
+    it('shows the create button if locale is not created', () => {
+        const mock: OptionItem[] = [
+            {
+                value: 'en-US',
+                label: 'English',
+                text: 'English',
+            },
+        ]
+        const {getByRole, getByText} = render(
+            <ArticleLanguageSelect
+                selected="en-US"
+                list={mock}
+                onSelect={() => null}
+            />
+        )
+
+        fireEvent.click(getByRole('button'))
+
+        getByText('create')
+    })
+
+    it('shows the delete and view button if locale is complete', () => {
+        const mock: OptionItem[] = [
+            {
+                value: 'en-US',
+                label: 'English',
+                text: 'English',
+                isComplete: true,
+                canBeDeleted: true,
+            },
+        ]
+        const {getByRole, getByText} = render(
+            <ArticleLanguageSelect
+                selected="en-US"
+                list={mock}
+                onSelect={() => null}
+            />
+        )
+
+        fireEvent.click(getByRole('button'))
+
+        getByText('delete')
+        getByText('view')
+    })
+
+    it('hides the delete button if locale cannot be deleted', () => {
+        const mock: OptionItem[] = [
+            {
+                value: 'en-US',
+                label: 'English',
+                text: 'English',
+                canBeDeleted: false,
+                isComplete: true,
+            },
+        ]
+        const {getByRole, getByText, queryByText} = render(
+            <ArticleLanguageSelect
+                selected="en-US"
+                list={mock}
+                onSelect={() => null}
+            />
+        )
+
+        fireEvent.click(getByRole('button'))
+
+        expect(queryByText('delete')).toBeNull()
+        getByText('view')
     })
 })

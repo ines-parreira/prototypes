@@ -7,7 +7,7 @@ import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
 export type LocaleOption = {
     label: JSX.Element
     text: string
-    value: string
+    value: LocaleCode
 }
 
 export const useLocaleSelectOptions = (

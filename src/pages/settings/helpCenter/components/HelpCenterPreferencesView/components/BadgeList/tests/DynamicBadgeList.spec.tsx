@@ -2,45 +2,19 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {LocaleCode} from '../../../../../../../../models/helpCenter/types'
+import {BadgeItemProps} from '../BadgeItem'
+import {DynamicBadgeList, BadgeSelectItem} from '../DynamicBadgeList'
 
-import {DynamicBadgeList} from '../DynamicBadgeList'
-
-const availableList = [
-    {
-        id: 'en-US' as LocaleCode,
-        label: 'English',
-        text: 'English',
-        value: 'en-US',
-    },
-    {
-        id: 'fr-FR' as LocaleCode,
-        label: 'French',
-        text: 'French',
-        value: 'fr-FR',
-    },
-    {
-        id: 'es-ES' as LocaleCode,
-        label: 'Spanish',
-        text: 'Spanish',
-        value: 'es-ES',
-    },
+const availableList: BadgeSelectItem[] = [
+    {id: 'en-US', label: 'English', text: 'English', value: 'en'},
+    {id: 'fr-FR', label: 'French', text: 'French', value: 'fr'},
+    {id: 'es-ES', label: 'Spanish', text: 'Spanish', value: 'es'},
 ]
 
 const selectedListDataTestIds = ['badge-en', 'badge-fr']
-const selectedList = [
-    {
-        id: 'en-US' as LocaleCode,
-        label: 'English',
-        text: 'English',
-        value: 'en-US',
-    },
-    {
-        id: 'fr-FR' as LocaleCode,
-        label: 'French',
-        text: 'French',
-        value: 'fr-FR',
-    },
+const selectedList: BadgeItemProps[] = [
+    {id: 'en-US', label: 'English'},
+    {id: 'fr-FR', label: 'French'},
 ]
 
 describe('<DynamicBadgeList />', () => {
