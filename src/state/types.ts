@@ -46,7 +46,6 @@ export type StoreState = {
     macros: Map<any, any>
     newMessage: Map<any, any>
     notifications: Notification[]
-    rules: Map<any, any>
     schemas: Map<any, any>
     stats: Map<any, any>
     tags: Map<any, any>

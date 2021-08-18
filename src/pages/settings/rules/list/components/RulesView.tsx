@@ -1,292 +1,266 @@
-import React, {Component, ComponentType} from 'react'
-import {fromJS, Map} from 'immutable'
-import moment from 'moment'
+import React, {useMemo, useState, useEffect, useCallback} from 'react'
 import classnames from 'classnames'
 import _xor from 'lodash/xor'
 import {Alert, Button, Container, Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-import {withRouter, RouteComponentProps} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import {parse} from 'query-string'
 
 import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
 
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
-import {getAST, getCode} from '../../../../../utils'
 import Video from '../../../../common/components/Video/Video'
 
-import {RuleDraft, RuleLimitStatus} from '../../../../../state/rules/types'
+import {RuleLimitStatus, RulePriority} from '../../../../../state/rules/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {RootState} from '../../../../../state/types'
 import {
-    getSortedRules,
+    rulesFetched,
+    rulesReordered,
+} from '../../../../../state/entities/rules/actions'
+import {
     getRulesLimitStatus,
-} from '../../../../../state/rules/selectors'
-import * as ruleActions from '../../../../../state/rules/actions'
+    getSortedRules,
+} from '../../../../../state/entities/rules/selectors'
+import {fetchRules, reorderRules} from '../../../../../models/rule/resources'
 import {notify} from '../../../../../state/notifications/actions'
 
 import RuleRow from './RuleRow/RuleRow'
-import RuleForm from './RuleForm.js'
+import RuleForm from './RuleForm'
+
 import css from './RulesView.less'
 
-type State = {
-    showForm: boolean
-    openedRules: number[]
-    hasScrolled: boolean
-}
+type Props = {location: {search: string}} & ConnectedProps<typeof connector>
 
-type Props = RouteComponentProps & ConnectedProps<typeof connector>
+export function RulesViewContainer({
+    limitStatus,
+    rulesFetched,
+    rulesReordered,
+    notify,
+    rules,
+    location,
+}: Props) {
+    const [showForm, setShowForm] = useState(false)
+    const [openedRules, setOpenedRules] = useState<number[]>([])
+    const [hasScrolled, setHasScrolled] = useState(false)
+    const ruleId = useMemo(() => parse(location.search).ruleId as string, [
+        location,
+    ])
 
-export class RulesView extends Component<Props, State> {
-    static defaultProps: Pick<Props, 'rules'> = {
-        rules: fromJS([]),
-    }
-
-    state = {
-        showForm: false,
-        openedRules: [] as number[],
-        hasScrolled: false,
-    }
-
-    componentWillMount() {
-        const {location} = this.props
-        const ruleId = parse(location.search).ruleId as string
-
-        if (ruleId) {
-            this._toggleRuleOpening(parseInt(ruleId))
-        }
-
-        void this.props.fetchRules()
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        const {location} = this.props
-        const {hasScrolled} = this.state
-        const ruleId = parse(location.search).ruleId as string
-
-        if (ruleId && !nextProps.rules.isEmpty() && !hasScrolled) {
-            this.setState({hasScrolled: true}, () => {
-                const elt: HTMLElement | null = document.getElementById(ruleId)
-
-                if (elt) {
-                    elt.scrollIntoView()
-                }
+    const handleFetch = async () => {
+        try {
+            const res = await fetchRules()
+            rulesFetched(res.data)
+        } catch (error) {
+            void notify({
+                message: 'Failed to fetch rules',
+                status: NotificationStatus.Error,
             })
         }
     }
 
-    _showForm = () => {
-        this.setState({showForm: true})
-    }
-
-    _hideForm = () => {
-        this.setState({showForm: false})
-    }
-
-    _handleSubmit = (values: Partial<RuleDraft>) => {
-        // add some default values for the rule
-        if (this.props.limitStatus !== RuleLimitStatus.Reached) {
-            values.event_types = 'ticket-created'
-            values.code = ''
-            values.code_ast = getAST(values.code)
-            values.code = getCode(values.code_ast)
-            values.deactivated_datetime = moment().format()
-            return this.props.create(values).then((res) => {
-                const {rule} = res as ReturnType<typeof ruleActions.addRuleEnd>
-                this._hideForm()
-                // when new rule is created, open it immediately
-                this._toggleRuleOpening(rule.id)
-            })
-        }
-        void this.props.notify({
-            message:
-                'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
-            status: NotificationStatus.Error,
-        })
-        return Promise.reject()
-    }
-
-    _toggleRuleOpening = (id: number) => {
-        this.setState({
-            openedRules: _xor(this.state.openedRules, [id]),
-        })
-    }
-
-    _updateOrder = (orders: string[]) => {
-        const priorities = orders.map((id, index) => {
-            return {
-                id: parseInt(id),
-                priority: orders.length - index,
-            }
-        })
-
-        void this.props.updateOrder(priorities)
-    }
-
-    render() {
-        const {rules, limitStatus} = this.props
-
-        return (
-            <div className="full-width">
-                <PageHeader title="Rules">
-                    <Button
-                        type="submit"
-                        color="success"
-                        className="float-right"
-                        onClick={this._showForm}
-                    >
-                        Create new rule
-                    </Button>
-                </PageHeader>
-
-                <Container
-                    fluid
-                    className={classnames('page-container', css.description)}
-                >
-                    <div className="mb-3">
-                        <p>
-                            Rules provide a way to automatically perform actions
-                            on tickets, like tagging, assigning or even
-                            responding.
-                        </p>
-
-                        <p>
-                            Learn more about how to setup rules{' '}
-                            <a
-                                href="https://docs.gorgias.com/rules"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                in our docs
-                            </a>
-                            .
-                        </p>
-
-                        <p>
-                            Rules are executed depending on triggering events
-                            and in the order they are listed on this page.{' '}
-                            <a
-                                href="https://docs.gorgias.com/rules/rules-faq"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                Learn more about rules execution
-                            </a>
-                            .
-                        </p>
-                        {limitStatus === RuleLimitStatus.Reaching && (
-                            <Alert color="warning">
-                                <span
-                                    className={classnames(
-                                        'd-flex',
-                                        'align-items-center',
-                                        css.statusInfo
-                                    )}
-                                >
-                                    <i className="material-icons mr-2">info</i>
-                                    <span>
-                                        You are using
-                                        <b> {rules.size} rules of 70 </b>
-                                        allowed on Gorgias. To add more rules,
-                                        please delete any inactive rules.
-                                    </span>
-                                </span>
-                            </Alert>
-                        )}
-                        {limitStatus === RuleLimitStatus.Reached && (
-                            <Alert color="danger">
-                                <span
-                                    className={classnames(
-                                        'd-flex',
-                                        'align-items-center',
-                                        css.statusInfo
-                                    )}
-                                >
-                                    <i className="material-icons mr-2">error</i>
-                                    <b>
-                                        Your account has reached the rule limit.
-                                    </b>
-                                    To add more rules, please delete any
-                                    inactive rules.
-                                </span>
-                            </Alert>
-                        )}
-                    </div>
-                    <Video videoId="0fIboyInGDg" legend="Working with rules" />
-                </Container>
-
-                {!rules.isEmpty() && (
-                    <div className="rule-category">
-                        <Table hover>
-                            <ReactSortable
-                                tag="tbody"
-                                options={{
-                                    sort: true,
-                                    draggable: '.draggable',
-                                    handle: '.drag-handle',
-                                    animation: 150,
-                                }}
-                                onChange={this._updateOrder}
-                            >
-                                {rules
-                                    .map((rule) => {
-                                        const id: number = (rule as Map<
-                                            any,
-                                            any
-                                        >).get('id')
-
-                                        return (
-                                            <RuleRow
-                                                key={id}
-                                                rule={rule}
-                                                toggleOpening={
-                                                    this._toggleRuleOpening
-                                                }
-                                                isOpen={this.state.openedRules.includes(
-                                                    id
-                                                )}
-                                                canDuplicate={
-                                                    limitStatus !==
-                                                    RuleLimitStatus.Reached
-                                                }
-                                            />
-                                        )
-                                    })
-                                    .toList()}
-                            </ReactSortable>
-                        </Table>
-                    </div>
-                )}
-
-                <Modal
-                    header="Create new rule"
-                    isOpen={this.state.showForm}
-                    onClose={this._hideForm}
-                >
-                    <RuleForm
-                        onSubmit={this._handleSubmit}
-                        onCancel={this._hideForm}
-                    />
-                </Modal>
-            </div>
+    const handleReordering = async (orders: string[]) => {
+        const priorities = orders.map(
+            (id, index) =>
+                ({
+                    id: parseInt(id),
+                    priority: orders.length - index,
+                } as RulePriority)
         )
+        const oldPriorities = rules.map(
+            (rule) =>
+                ({
+                    id: rule.id,
+                    priority: rule.priority,
+                } as RulePriority)
+        )
+        try {
+            rulesReordered(priorities)
+            await reorderRules(priorities)
+        } catch (error) {
+            rulesReordered(oldPriorities)
+            void notify({
+                message: 'Failed to reorder rules',
+                status: NotificationStatus.Error,
+            })
+        }
     }
+
+    const handleSubmit = (id: number) => {
+        setShowForm(false)
+        toggleRuleOpening(id)
+    }
+
+    const toggleRuleOpening = useCallback(
+        (ids: number | number[]) => {
+            if (typeof ids === 'number') {
+                setOpenedRules(_xor(openedRules, [ids]))
+            } else {
+                setOpenedRules(_xor(openedRules, ids))
+            }
+        },
+        [openedRules]
+    )
+
+    useEffect(() => {
+        void handleFetch()
+        if (ruleId) {
+            toggleRuleOpening(parseInt(ruleId))
+        }
+    }, [])
+
+    useEffect(() => {
+        if (ruleId && rules.length && !hasScrolled) {
+            const elt: HTMLElement | null = document.getElementById(ruleId)
+            if (elt) {
+                elt.scrollIntoView()
+                setHasScrolled(true)
+            }
+        }
+    }, [rules, ruleId, hasScrolled])
+
+    return (
+        <div className="full-width">
+            <PageHeader title="Rules">
+                <Button
+                    type="submit"
+                    color="success"
+                    className="float-right"
+                    onClick={() => setShowForm(true)}
+                >
+                    Create new rule
+                </Button>
+            </PageHeader>
+
+            <Container
+                fluid
+                className={classnames('page-container', css.description)}
+            >
+                <div className="mb-3">
+                    <p>
+                        Rules provide a way to automatically perform actions on
+                        tickets, like tagging, assigning or even responding.
+                    </p>
+
+                    <p>
+                        Learn more about how to setup rules{' '}
+                        <a
+                            href="https://docs.gorgias.com/rules"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            in our docs
+                        </a>
+                        .
+                    </p>
+
+                    <p>
+                        Rules are executed depending on triggering events and in
+                        the order they are listed on this page.{' '}
+                        <a
+                            href="https://docs.gorgias.com/rules/rules-faq"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            Learn more about rules execution
+                        </a>
+                        .
+                    </p>
+                    {limitStatus === RuleLimitStatus.Reaching && (
+                        <Alert color="warning">
+                            <span
+                                className={classnames(
+                                    'd-flex',
+                                    'align-items-center',
+                                    css.statusInfo
+                                )}
+                            >
+                                <i className="material-icons mr-2">info</i>
+                                <span>
+                                    You are using
+                                    <b> {rules.length} rules of 70 </b>
+                                    allowed on Gorgias. To add more rules,
+                                    please delete any inactive rules.
+                                </span>
+                            </span>
+                        </Alert>
+                    )}
+                    {limitStatus === RuleLimitStatus.Reached && (
+                        <Alert color="danger">
+                            <span
+                                className={classnames(
+                                    'd-flex',
+                                    'align-items-center',
+                                    css.statusInfo
+                                )}
+                            >
+                                <i className="material-icons mr-2">error</i>
+                                <b>Your account has reached the rule limit.</b>
+                                To add more rules, please delete any inactive
+                                rules.
+                            </span>
+                        </Alert>
+                    )}
+                </div>
+                <Video videoId="0fIboyInGDg" legend="Working with rules" />
+            </Container>
+
+            {rules.length && (
+                <div className="rule-category">
+                    <Table hover>
+                        <ReactSortable
+                            tag="tbody"
+                            options={{
+                                sort: true,
+                                draggable: '.draggable',
+                                handle: '.drag-handle',
+                                animation: 150,
+                            }}
+                            onChange={handleReordering}
+                        >
+                            {rules.map((rule) => (
+                                <RuleRow
+                                    key={rule.id}
+                                    rule={rule}
+                                    toggleOpening={toggleRuleOpening}
+                                    isOpen={openedRules.includes(rule.id)}
+                                    canDuplicate={
+                                        limitStatus !== RuleLimitStatus.Reached
+                                    }
+                                />
+                            ))}
+                        </ReactSortable>
+                    </Table>
+                </div>
+            )}
+
+            <Modal
+                header="Create new rule"
+                isOpen={showForm}
+                onClose={() => setShowForm(false)}
+            >
+                <RuleForm
+                    onSubmit={handleSubmit}
+                    onCancel={() => setShowForm(false)}
+                />
+            </Modal>
+        </div>
+    )
 }
 
 const connector = connect(
     (state: RootState) => {
-        const rules = getSortedRules(state)
         return {
-            rules,
+            rules: getSortedRules(state),
             limitStatus: getRulesLimitStatus(state),
         }
     },
     {
-        create: ruleActions.create,
-        fetchRules: ruleActions.fetchRules,
-        updateOrder: ruleActions.updateOrder,
-        notify: notify,
+        rulesFetched,
+        rulesReordered,
+        notify,
     }
 )
 
-export default withRouter(connector(RulesView as ComponentType<Props>))
+export default withRouter(connector(RulesViewContainer))

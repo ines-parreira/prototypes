@@ -389,263 +389,110 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
 exports[`<MemberExpression/> should update the rule on clicking a variable option 1`] = `
 Array [
   Array [
-    Immutable.Map {
-      "priority": 6,
-      "deactivated_datetime": "2021-01-15T15:26:02.575404+00:00",
-      "name": "Set tags",
-      "uri": "/api/rules/7/",
+    Object {
       "code": "if (eq(ticket.customer.integrations.shopify.last_order.fulfillment_status, null)) {
     Action('setTags', { tags: 'set' })
 }",
-      "code_ast": Immutable.Map {
-        "loc": SourceLocation {
-          "end": Object {
-            "column": 1,
-            "line": 3,
-          },
-          "start": Position {
-            "column": 0,
-            "line": 1,
-          },
-        },
-        "type": "Program",
-        "body": Immutable.List [
-          Immutable.Map {
-            "loc": SourceLocation {
-              "end": Object {
-                "column": 1,
-                "line": 3,
-              },
-              "start": Position {
-                "column": 0,
-                "line": 1,
-              },
-            },
-            "type": "IfStatement",
-            "test": Immutable.Map {
-              "loc": WrappingSourceLocation {
-                "end": Object {
-                  "column": 80,
-                  "line": 1,
-                },
-                "start": Object {
-                  "column": 4,
-                  "line": 1,
-                },
-              },
-              "type": "CallExpression",
-              "callee": Immutable.Map {
-                "loc": SourceLocation {
-                  "end": Object {
-                    "column": 6,
-                    "line": 1,
-                  },
-                  "start": Position {
-                    "column": 4,
-                    "line": 1,
-                  },
-                },
-                "type": "Identifier",
-                "name": "eq",
-              },
-              "arguments": Immutable.List [
-                Immutable.Map {
-                  "loc": WrappingSourceLocation {
-                    "end": Object {
-                      "column": 73,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 7,
-                      "line": 1,
-                    },
-                  },
-                  "type": "MemberExpression",
-                  "computed": false,
-                  "object": Immutable.Map {
-                    "loc": WrappingSourceLocation {
-                      "end": Object {
-                        "column": 54,
-                        "line": 1,
-                      },
-                      "start": Object {
-                        "column": 7,
-                        "line": 1,
-                      },
-                    },
-                    "type": "MemberExpression",
-                    "computed": false,
-                    "object": Immutable.Map {
-                      "loc": WrappingSourceLocation {
-                        "end": Object {
-                          "column": 43,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 7,
-                          "line": 1,
-                        },
-                      },
-                      "type": "MemberExpression",
-                      "computed": false,
-                      "object": Immutable.Map {
-                        "loc": WrappingSourceLocation {
-                          "end": Object {
-                            "column": 35,
-                            "line": 1,
-                          },
-                          "start": Object {
-                            "column": 7,
-                            "line": 1,
-                          },
-                        },
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": Immutable.Map {
-                          "loc": WrappingSourceLocation {
-                            "end": Object {
-                              "column": 22,
-                              "line": 1,
-                            },
-                            "start": Object {
-                              "column": 7,
-                              "line": 1,
-                            },
-                          },
-                          "type": "MemberExpression",
-                          "computed": false,
-                          "object": Immutable.Map {
-                            "loc": SourceLocation {
-                              "end": Object {
-                                "column": 13,
-                                "line": 1,
-                              },
-                              "start": Position {
-                                "column": 7,
-                                "line": 1,
-                              },
-                            },
-                            "type": "Identifier",
-                            "name": "ticket",
-                          },
-                          "property": Immutable.Map {
-                            "loc": SourceLocation {
-                              "end": Object {
-                                "column": 22,
-                                "line": 1,
-                              },
-                              "start": Position {
-                                "column": 14,
-                                "line": 1,
-                              },
-                            },
-                            "type": "Identifier",
-                            "name": "customer",
-                          },
-                        },
-                        "property": Immutable.Map {
-                          "loc": SourceLocation {
-                            "end": Object {
-                              "column": 35,
-                              "line": 1,
-                            },
-                            "start": Position {
-                              "column": 23,
-                              "line": 1,
-                            },
-                          },
-                          "type": "Identifier",
-                          "name": "integrations",
-                        },
-                      },
-                      "property": Immutable.Map {
+      "code_ast": Object {
+        "body": Array [
+          Object {
+            "alternate": null,
+            "consequent": Object {
+              "body": Array [
+                Object {
+                  "expression": Object {
+                    "arguments": Array [
+                      Object {
                         "loc": SourceLocation {
                           "end": Object {
-                            "column": 43,
-                            "line": 1,
+                            "column": 20,
+                            "line": 2,
                           },
                           "start": Position {
-                            "column": 36,
-                            "line": 1,
+                            "column": 11,
+                            "line": 2,
                           },
                         },
-                        "type": "Identifier",
-                        "name": "shopify",
+                        "raw": "'setTags'",
+                        "type": "Literal",
+                        "value": "setTags",
                       },
-                    },
-                    "property": Immutable.Map {
+                      Object {
+                        "loc": SourceLocation {
+                          "end": Object {
+                            "column": 37,
+                            "line": 2,
+                          },
+                          "start": Position {
+                            "column": 22,
+                            "line": 2,
+                          },
+                        },
+                        "properties": Array [
+                          Object {
+                            "computed": false,
+                            "key": Object {
+                              "loc": SourceLocation {
+                                "end": Object {
+                                  "column": 28,
+                                  "line": 2,
+                                },
+                                "start": Position {
+                                  "column": 24,
+                                  "line": 2,
+                                },
+                              },
+                              "name": "tags",
+                              "type": "Identifier",
+                            },
+                            "kind": "init",
+                            "loc": SourceLocation {
+                              "end": Object {
+                                "column": 35,
+                                "line": 2,
+                              },
+                              "start": Position {
+                                "column": 24,
+                                "line": 2,
+                              },
+                            },
+                            "method": false,
+                            "shorthand": false,
+                            "type": "Property",
+                            "value": Object {
+                              "loc": SourceLocation {
+                                "end": Object {
+                                  "column": 35,
+                                  "line": 2,
+                                },
+                                "start": Position {
+                                  "column": 30,
+                                  "line": 2,
+                                },
+                              },
+                              "raw": "'set'",
+                              "type": "Literal",
+                              "value": "set",
+                            },
+                          },
+                        ],
+                        "type": "ObjectExpression",
+                      },
+                    ],
+                    "callee": Object {
                       "loc": SourceLocation {
                         "end": Object {
-                          "column": 54,
-                          "line": 1,
+                          "column": 10,
+                          "line": 2,
                         },
                         "start": Position {
-                          "column": 44,
-                          "line": 1,
+                          "column": 4,
+                          "line": 2,
                         },
                       },
+                      "name": "Action",
                       "type": "Identifier",
-                      "name": "last_order",
                     },
-                  },
-                  "property": Immutable.Map {
-                    "loc": SourceLocation {
-                      "end": Object {
-                        "column": 73,
-                        "line": 1,
-                      },
-                      "start": Position {
-                        "column": 55,
-                        "line": 1,
-                      },
-                    },
-                    "type": "Identifier",
-                    "name": "fulfillment_status",
-                  },
-                },
-                Immutable.Map {
-                  "loc": SourceLocation {
-                    "end": Object {
-                      "column": 79,
-                      "line": 1,
-                    },
-                    "start": Position {
-                      "column": 75,
-                      "line": 1,
-                    },
-                  },
-                  "type": "Literal",
-                  "value": null,
-                  "raw": "null",
-                },
-              ],
-            },
-            "consequent": Immutable.Map {
-              "loc": SourceLocation {
-                "end": Object {
-                  "column": 1,
-                  "line": 3,
-                },
-                "start": Position {
-                  "column": 82,
-                  "line": 1,
-                },
-              },
-              "type": "BlockStatement",
-              "body": Immutable.List [
-                Immutable.Map {
-                  "loc": SourceLocation {
-                    "end": Object {
-                      "column": 38,
-                      "line": 2,
-                    },
-                    "start": Position {
-                      "column": 4,
-                      "line": 2,
-                    },
-                  },
-                  "type": "ExpressionStatement",
-                  "expression": Immutable.Map {
                     "loc": WrappingSourceLocation {
                       "end": Object {
                         "column": 38,
@@ -657,113 +504,266 @@ Array [
                       },
                     },
                     "type": "CallExpression",
-                    "callee": Immutable.Map {
-                      "loc": SourceLocation {
-                        "end": Object {
-                          "column": 10,
-                          "line": 2,
-                        },
-                        "start": Position {
-                          "column": 4,
-                          "line": 2,
-                        },
-                      },
-                      "type": "Identifier",
-                      "name": "Action",
-                    },
-                    "arguments": Immutable.List [
-                      Immutable.Map {
-                        "loc": SourceLocation {
-                          "end": Object {
-                            "column": 20,
-                            "line": 2,
-                          },
-                          "start": Position {
-                            "column": 11,
-                            "line": 2,
-                          },
-                        },
-                        "type": "Literal",
-                        "value": "setTags",
-                        "raw": "'setTags'",
-                      },
-                      Immutable.Map {
-                        "loc": SourceLocation {
-                          "end": Object {
-                            "column": 37,
-                            "line": 2,
-                          },
-                          "start": Position {
-                            "column": 22,
-                            "line": 2,
-                          },
-                        },
-                        "type": "ObjectExpression",
-                        "properties": Immutable.List [
-                          Immutable.Map {
-                            "loc": SourceLocation {
-                              "end": Object {
-                                "column": 35,
-                                "line": 2,
-                              },
-                              "start": Position {
-                                "column": 24,
-                                "line": 2,
-                              },
-                            },
-                            "type": "Property",
-                            "key": Immutable.Map {
-                              "loc": SourceLocation {
-                                "end": Object {
-                                  "column": 28,
-                                  "line": 2,
-                                },
-                                "start": Position {
-                                  "column": 24,
-                                  "line": 2,
-                                },
-                              },
-                              "type": "Identifier",
-                              "name": "tags",
-                            },
-                            "computed": false,
-                            "value": Immutable.Map {
-                              "loc": SourceLocation {
-                                "end": Object {
-                                  "column": 35,
-                                  "line": 2,
-                                },
-                                "start": Position {
-                                  "column": 30,
-                                  "line": 2,
-                                },
-                              },
-                              "type": "Literal",
-                              "value": "set",
-                              "raw": "'set'",
-                            },
-                            "kind": "init",
-                            "method": false,
-                            "shorthand": false,
-                          },
-                        ],
-                      },
-                    ],
                   },
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 38,
+                      "line": 2,
+                    },
+                    "start": Position {
+                      "column": 4,
+                      "line": 2,
+                    },
+                  },
+                  "type": "ExpressionStatement",
                 },
               ],
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 1,
+                  "line": 3,
+                },
+                "start": Position {
+                  "column": 82,
+                  "line": 1,
+                },
+              },
+              "type": "BlockStatement",
             },
-            "alternate": null,
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 1,
+                "line": 3,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "test": Object {
+              "arguments": Array [
+                Object {
+                  "computed": false,
+                  "loc": WrappingSourceLocation {
+                    "end": Object {
+                      "column": 73,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 7,
+                      "line": 1,
+                    },
+                  },
+                  "object": Object {
+                    "computed": false,
+                    "loc": WrappingSourceLocation {
+                      "end": Object {
+                        "column": 54,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 7,
+                        "line": 1,
+                      },
+                    },
+                    "object": Object {
+                      "computed": false,
+                      "loc": WrappingSourceLocation {
+                        "end": Object {
+                          "column": 43,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 7,
+                          "line": 1,
+                        },
+                      },
+                      "object": Object {
+                        "computed": false,
+                        "loc": WrappingSourceLocation {
+                          "end": Object {
+                            "column": 35,
+                            "line": 1,
+                          },
+                          "start": Object {
+                            "column": 7,
+                            "line": 1,
+                          },
+                        },
+                        "object": Object {
+                          "computed": false,
+                          "loc": WrappingSourceLocation {
+                            "end": Object {
+                              "column": 22,
+                              "line": 1,
+                            },
+                            "start": Object {
+                              "column": 7,
+                              "line": 1,
+                            },
+                          },
+                          "object": Object {
+                            "loc": SourceLocation {
+                              "end": Object {
+                                "column": 13,
+                                "line": 1,
+                              },
+                              "start": Position {
+                                "column": 7,
+                                "line": 1,
+                              },
+                            },
+                            "name": "ticket",
+                            "type": "Identifier",
+                          },
+                          "property": Object {
+                            "loc": SourceLocation {
+                              "end": Object {
+                                "column": 22,
+                                "line": 1,
+                              },
+                              "start": Position {
+                                "column": 14,
+                                "line": 1,
+                              },
+                            },
+                            "name": "customer",
+                            "type": "Identifier",
+                          },
+                          "type": "MemberExpression",
+                        },
+                        "property": Object {
+                          "loc": SourceLocation {
+                            "end": Object {
+                              "column": 35,
+                              "line": 1,
+                            },
+                            "start": Position {
+                              "column": 23,
+                              "line": 1,
+                            },
+                          },
+                          "name": "integrations",
+                          "type": "Identifier",
+                        },
+                        "type": "MemberExpression",
+                      },
+                      "property": Object {
+                        "loc": SourceLocation {
+                          "end": Object {
+                            "column": 43,
+                            "line": 1,
+                          },
+                          "start": Position {
+                            "column": 36,
+                            "line": 1,
+                          },
+                        },
+                        "name": "shopify",
+                        "type": "Identifier",
+                      },
+                      "type": "MemberExpression",
+                    },
+                    "property": Object {
+                      "loc": SourceLocation {
+                        "end": Object {
+                          "column": 54,
+                          "line": 1,
+                        },
+                        "start": Position {
+                          "column": 44,
+                          "line": 1,
+                        },
+                      },
+                      "name": "last_order",
+                      "type": "Identifier",
+                    },
+                    "type": "MemberExpression",
+                  },
+                  "property": Object {
+                    "loc": SourceLocation {
+                      "end": Object {
+                        "column": 73,
+                        "line": 1,
+                      },
+                      "start": Position {
+                        "column": 55,
+                        "line": 1,
+                      },
+                    },
+                    "name": "fulfillment_status",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 79,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 75,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "null",
+                  "type": "Literal",
+                  "value": null,
+                },
+              ],
+              "callee": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 6,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "name": "eq",
+                "type": "Identifier",
+              },
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 80,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "type": "CallExpression",
+            },
+            "type": "IfStatement",
           },
         ],
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
         "sourceType": "script",
+        "type": "Program",
       },
       "created_datetime": "2021-01-15T15:26:02.577755+00:00",
-      "event_types": "ticket-created",
-      "type": "user",
-      "id": 7,
+      "deactivated_datetime": "2021-01-15T15:26:02.575404+00:00",
       "description": "Set tags",
+      "event_types": "ticket-created",
+      "id": 7,
+      "name": "Set tags",
+      "priority": 6,
+      "type": "user",
       "updated_datetime": "2021-02-11T13:15:46.420156+00:00",
+      "uri": "/api/rules/7/",
     },
   ],
 ]

@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleForm /> should create the rule when the limit is not reached 1`] = `
+Array [
+  Array [
+    Object {
+      "code": "",
+      "code_ast": Object {
+        "body": Array [],
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 0,
+            "line": 0,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 0,
+          },
+        },
+        "sourceType": "script",
+        "type": "Program",
+      },
+      "deactivated_datetime": "1969-12-31T17:00:00-07:00",
+      "description": "",
+      "event_types": "ticket-created",
+      "name": "new rule",
+    },
+  ],
+]
+`;
+
+exports[`<RuleForm /> should create the rule when the limit is not reached 2`] = `
+Array [
+  Array [
+    Object {
+      "code": "",
+      "code_ast": Object {
+        "body": Array [],
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 0,
+            "line": 0,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 0,
+          },
+        },
+        "sourceType": "script",
+        "type": "Program",
+      },
+      "deactivated_datetime": "1969-12-31T17:00:00-07:00",
+      "description": "",
+      "event_types": "ticket-created",
+      "name": "new rule",
+    },
+  ],
+]
+`;
+
+exports[`<RuleForm /> should render the empty form 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-name"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-description"
+        >
+          Description
+        </label>
+        <div
+          class=""
+        >
+          <textarea
+            class="form-control"
+            id="id-description"
+            rows="3"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="actions float-right mt-3"
+    >
+      <button
+        class="mr-2 btn btn-secondary"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary disabled"
+        disabled=""
+        type="submit"
+      >
+        Create rule
+      </button>
+    </div>
+  </form>
+</div>
+`;

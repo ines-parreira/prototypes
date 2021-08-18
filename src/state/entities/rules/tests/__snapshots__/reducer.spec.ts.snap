@@ -1,0 +1,802 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rule reducer fetchRules action should add a new rule to the state 1`] = `
+Object {
+  "23": Object {
+    "code": "if (duringBusinessHours(message.created_datetime)) {
+}",
+    "code_ast": Object {
+      "body": Array [
+        Object {
+          "alternate": null,
+          "consequent": Object {
+            "body": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 1,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 51,
+                "line": 1,
+              },
+            },
+            "type": "BlockStatement",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "test": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 48,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 24,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 31,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 24,
+                      "line": 1,
+                    },
+                  },
+                  "name": "message",
+                  "type": "Identifier",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 48,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 32,
+                      "line": 1,
+                    },
+                  },
+                  "name": "created_datetime",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 23,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "name": "duringBusinessHours",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 49,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "type": "IfStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "created_datetime": "2021-04-16T09:03:03.759930+00:00",
+    "deactivated_datetime": "2021-04-16T09:03:03+00:00",
+    "description": "",
+    "event_types": "ticket-created",
+    "id": 23,
+    "name": "fixture",
+    "priority": 22,
+    "type": "user",
+    "updated_datetime": "2021-04-16T09:03:03.759945+00:00",
+    "uri": "/api/rules/23/",
+  },
+  "48": Object {
+    "code": "if (containsAll(ticket.tags.name, [])) {
+}",
+    "code_ast": Object {
+      "body": Array [
+        Object {
+          "alternate": null,
+          "consequent": Object {
+            "body": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 1,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 39,
+                "line": 1,
+              },
+            },
+            "type": "BlockStatement",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "test": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 32,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 16,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 16,
+                      "line": 1,
+                    },
+                  },
+                  "object": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 22,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 16,
+                        "line": 1,
+                      },
+                    },
+                    "name": "ticket",
+                    "type": "Identifier",
+                  },
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 27,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 23,
+                        "line": 1,
+                      },
+                    },
+                    "name": "tags",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 32,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 28,
+                      "line": 1,
+                    },
+                  },
+                  "name": "name",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              Object {
+                "elements": Array [],
+                "loc": Object {
+                  "end": Object {
+                    "column": 36,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 34,
+                    "line": 1,
+                  },
+                },
+                "type": "ArrayExpression",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 15,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "name": "containsAll",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 37,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "type": "IfStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "created_datetime": "2021-05-31T13:08:10.344449+00:00",
+    "deactivated_datetime": "2021-05-31T14:06:57.067000+00:00",
+    "description": "",
+    "event_types": "ticket-created",
+    "id": 48,
+    "name": "AUT-210",
+    "priority": 12,
+    "type": "user",
+    "updated_datetime": "2021-05-31T14:06:57.119351+00:00",
+    "uri": "/api/rules/48/",
+  },
+  "7": Object {
+    "code": "if (eq(message.source.from.address, 'alex@gorgias.io')) {
+    Action('setTags', { tags: 'set' })
+}",
+    "code_ast": Object {
+      "body": Array [
+        Object {
+          "alternate": null,
+          "consequent": Object {
+            "body": Array [
+              Object {
+                "expression": Object {
+                  "arguments": Array [
+                    Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 20,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 11,
+                          "line": 2,
+                        },
+                      },
+                      "raw": "'setTags'",
+                      "type": "Literal",
+                      "value": "setTags",
+                    },
+                    Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 37,
+                          "line": 2,
+                        },
+                        "start": Object {
+                          "column": 22,
+                          "line": 2,
+                        },
+                      },
+                      "properties": Array [
+                        Object {
+                          "computed": false,
+                          "key": Object {
+                            "loc": Object {
+                              "end": Object {
+                                "column": 28,
+                                "line": 2,
+                              },
+                              "start": Object {
+                                "column": 24,
+                                "line": 2,
+                              },
+                            },
+                            "name": "tags",
+                            "type": "Identifier",
+                          },
+                          "kind": "init",
+                          "loc": Object {
+                            "end": Object {
+                              "column": 35,
+                              "line": 2,
+                            },
+                            "start": Object {
+                              "column": 24,
+                              "line": 2,
+                            },
+                          },
+                          "method": false,
+                          "shorthand": false,
+                          "type": "Property",
+                          "value": Object {
+                            "loc": Object {
+                              "end": Object {
+                                "column": 35,
+                                "line": 2,
+                              },
+                              "start": Object {
+                                "column": 30,
+                                "line": 2,
+                              },
+                            },
+                            "raw": "'set'",
+                            "type": "Literal",
+                            "value": "set",
+                          },
+                        },
+                      ],
+                      "type": "ObjectExpression",
+                    },
+                  ],
+                  "callee": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 4,
+                        "line": 2,
+                      },
+                    },
+                    "name": "Action",
+                    "type": "Identifier",
+                  },
+                  "loc": Object {
+                    "end": Object {
+                      "column": 38,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 2,
+                    },
+                  },
+                  "type": "CallExpression",
+                },
+                "loc": Object {
+                  "end": Object {
+                    "column": 38,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 2,
+                  },
+                },
+                "type": "ExpressionStatement",
+              },
+            ],
+            "loc": Object {
+              "end": Object {
+                "column": 1,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 56,
+                "line": 1,
+              },
+            },
+            "type": "BlockStatement",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "test": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 34,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 7,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 26,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 7,
+                      "line": 1,
+                    },
+                  },
+                  "object": Object {
+                    "computed": false,
+                    "loc": Object {
+                      "end": Object {
+                        "column": 21,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 7,
+                        "line": 1,
+                      },
+                    },
+                    "object": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 14,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 7,
+                          "line": 1,
+                        },
+                      },
+                      "name": "message",
+                      "type": "Identifier",
+                    },
+                    "property": Object {
+                      "loc": Object {
+                        "end": Object {
+                          "column": 21,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 15,
+                          "line": 1,
+                        },
+                      },
+                      "name": "source",
+                      "type": "Identifier",
+                    },
+                    "type": "MemberExpression",
+                  },
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 26,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 22,
+                        "line": 1,
+                      },
+                    },
+                    "name": "from",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 34,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                  },
+                  "name": "address",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 53,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 36,
+                    "line": 1,
+                  },
+                },
+                "raw": "'alex@gorgias.io'",
+                "type": "Literal",
+                "value": "alex@gorgias.io",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 6,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "name": "eq",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 54,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "type": "IfStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "created_datetime": "2021-01-15T15:26:02.577755+00:00",
+    "deactivated_datetime": "2021-01-15T15:26:02.575404+00:00",
+    "description": "Set tags",
+    "event_types": "ticket-created",
+    "id": 7,
+    "name": "Set tags",
+    "priority": 6,
+    "type": "user",
+    "updated_datetime": "2021-02-11T13:15:46.420156+00:00",
+    "uri": "/api/rules/7/",
+  },
+}
+`;
+
+exports[`rule reducer updateCodeAst action should update the code and code ast of a rule 1`] = `
+Object {
+  "code": "if (notContainsAll(ticket.subject, ['hello'])) {
+} else {
+}",
+  "code_ast": Object {
+    "body": Array [
+      Object {
+        "alternate": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 3,
+            },
+            "start": Position {
+              "column": 7,
+              "line": 2,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "consequent": Object {
+          "body": Array [],
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 1,
+              "line": 2,
+            },
+            "start": Position {
+              "column": 47,
+              "line": 1,
+            },
+          },
+          "type": "BlockStatement",
+        },
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "test": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 33,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 19,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 25,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 19,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 33,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 26,
+                    "line": 1,
+                  },
+                },
+                "name": "subject",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "elements": Array [
+                Object {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 43,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 36,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "'hello'",
+                  "type": "Literal",
+                  "value": "hello",
+                },
+              ],
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 44,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 35,
+                  "line": 1,
+                },
+              },
+              "type": "ArrayExpression",
+            },
+          ],
+          "callee": Object {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 18,
+                "line": 1,
+              },
+              "start": Position {
+                "column": 4,
+                "line": 1,
+              },
+            },
+            "name": "notContainsAll",
+            "type": "Identifier",
+          },
+          "loc": WrappingSourceLocation {
+            "end": Object {
+              "column": 45,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 4,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "type": "IfStatement",
+      },
+    ],
+    "loc": SourceLocation {
+      "end": Object {
+        "column": 1,
+        "line": 3,
+      },
+      "start": Position {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "created_datetime": "2020-01-01:00:00:00",
+  "deactivated_datetime": null,
+  "description": "foo",
+  "event_types": "ticket-created",
+  "id": 1,
+  "name": "my rule",
+  "priority": 100,
+  "type": "user",
+  "updated_datetime": "2020-01-01:00:00:00",
+  "uri": "/api/rule/17",
+}
+`;

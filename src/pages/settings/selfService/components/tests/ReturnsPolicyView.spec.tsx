@@ -71,6 +71,7 @@ describe('<ReturnsPolicyView />', () => {
     const defaultState = {
         entities: {
             macros: {},
+            rules: {},
             sections: {},
             stats: {},
             tags: {},

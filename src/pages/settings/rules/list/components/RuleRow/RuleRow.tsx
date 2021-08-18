@@ -1,73 +1,96 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import classnames from 'classnames'
 import {Badge, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
-import {Map} from 'immutable'
 
-import * as RuleActions from '../../../../../../state/rules/actions'
 import {notify} from '../../../../../../state/notifications/actions'
 import {RootState} from '../../../../../../state/types'
-import {GorgiasThunkDispatch} from '../../../../../../../../../../types/redux-thunk'
 
 import ToggleButton from '../../../../../common/components/ToggleButton'
-import RuleItem from '../../../detail/components/RuleItem/RuleItem.js'
+import RuleItem from '../../../detail/components/RuleItem/RuleItem'
+import type {Rule} from '../../../../../../state/rules/types'
+import {
+    activateRule,
+    deactivateRule,
+} from '../../../../../../models/rule/resources'
+import {ruleUpdated} from '../../../../../../state/entities/rules/actions'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
 
 import css from './RuleRow.less'
 
 type OwnProps = {
-    rule: Map<any, any>
-    toggleOpening: (id: number) => void
+    rule: Rule
+    toggleOpening: (id: number | number[]) => void
     isOpen: boolean
     canDuplicate: boolean
 }
 
-type State = {
-    showConfirmation: boolean
-}
-
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-class RuleRow extends React.Component<Props, State> {
-    state = {
-        showConfirmation: false,
+export function RuleRow({
+    rule,
+    toggleOpening,
+    isOpen,
+    canDuplicate,
+    notify,
+    ruleUpdated,
+}: Props) {
+    const [confirmationIsShown, setConfirmationIsShown] = useState(false)
+
+    const toggleConfirmation = () => {
+        setConfirmationIsShown(!confirmationIsShown)
     }
 
-    _toggleConfirmation = () => {
-        this.setState({showConfirmation: !this.state.showConfirmation})
-    }
-
-    _handleActivate = () => {
-        const {actions, rule} = this.props
-        actions.rules.activate(rule.get('id'))
-    }
-
-    _handleDeactivate = () => {
-        const {actions, rule} = this.props
-
-        actions.rules.deactivate(rule.get('id'))
-        this._toggleConfirmation()
-    }
-
-    _toggleItemStatus = () => {
-        const checked = !!this.props.rule.get('deactivated_datetime')
-        if (checked) {
-            this._handleActivate()
-        } else {
-            this._toggleConfirmation()
+    const handleActivate = async () => {
+        try {
+            const res = await activateRule(rule.id)
+            ruleUpdated(res)
+            void notify({
+                status: NotificationStatus.Success,
+                message: 'Rule activated successfully',
+            })
+        } catch (error) {
+            void notify({
+                status: NotificationStatus.Error,
+                message: 'Unable to deactivate rule',
+            })
         }
     }
 
-    _renderClosed = () => {
-        const {rule} = this.props
-        const {showConfirmation} = this.state
-        const toggleId = `rule-toggle-${rule.get('id') as string}`
+    const handleDeactivate = async () => {
+        try {
+            const res = await deactivateRule(rule.id)
+            ruleUpdated(res)
+            void notify({
+                status: NotificationStatus.Success,
+                message: 'Rule deactivated successfully',
+            })
+        } catch (error) {
+            void notify({
+                status: NotificationStatus.Error,
+                message: 'Unable to deactivate rule',
+            })
+        }
+        setConfirmationIsShown(false)
+    }
+
+    const toggleItemStatus = async () => {
+        const checked = !!rule.deactivated_datetime
+        if (checked) {
+            await handleActivate()
+        } else {
+            toggleConfirmation()
+        }
+    }
+
+    const renderClosed = () => {
+        const toggleId = `rule-toggle-${rule.id}`
 
         return (
             <tr
-                id={rule.get('id')}
-                key={rule.get('id')}
-                data-id={rule.get('id')} // dragging info
+                id={rule.id.toString()}
+                key={rule.id}
+                data-id={rule.id} // dragging info
                 className={classnames('draggable', css.row)}
             >
                 <td className="smallest align-middle">
@@ -84,11 +107,11 @@ class RuleRow extends React.Component<Props, State> {
                 <td
                     className={classnames('link-full-td', css['middle-column'])}
                 >
-                    <a onClick={() => this.props.toggleOpening(rule.get('id'))}>
+                    <a onClick={() => toggleOpening(rule.id)}>
                         <div>
                             <span className="mr-2">
-                                <b>{rule.get('name')}</b>
-                                {rule.get('type') === 'system' && (
+                                <b>{rule.name}</b>
+                                {rule.type === 'system' && (
                                     <Badge className="ml-2" color="danger">
                                         <i className="material-icons mr-2">
                                             warning
@@ -98,7 +121,7 @@ class RuleRow extends React.Component<Props, State> {
                                 )}
                             </span>
                             <span className="text-faded">
-                                {rule.get('description')}
+                                {rule.description}
                             </span>
                         </div>
                     </a>
@@ -106,15 +129,15 @@ class RuleRow extends React.Component<Props, State> {
 
                 <td className="smallest align-middle position-relative">
                     <ToggleButton
-                        value={!rule.get('deactivated_datetime')}
-                        onChange={this._toggleItemStatus as () => Promise<void>}
+                        value={!rule.deactivated_datetime}
+                        onChange={toggleItemStatus}
                     />
                     <div className={css.confirmationPopover} id={toggleId} />
                     <Popover
                         placement="left"
-                        isOpen={showConfirmation}
+                        isOpen={confirmationIsShown}
                         target={toggleId}
-                        toggle={this._toggleConfirmation}
+                        toggle={toggleConfirmation}
                         trigger="legacy"
                     >
                         <PopoverHeader>Are you sure?</PopoverHeader>
@@ -126,7 +149,7 @@ class RuleRow extends React.Component<Props, State> {
                             <Button
                                 type="submit"
                                 color="success"
-                                onClick={this._handleDeactivate}
+                                onClick={handleDeactivate}
                             >
                                 Confirm
                             </Button>
@@ -137,40 +160,27 @@ class RuleRow extends React.Component<Props, State> {
         )
     }
 
-    _renderOpened = () => {
-        const {rule, actions, toggleOpening, canDuplicate, notify} = this.props
-
+    const renderOpened = () => {
         return (
             <RuleItem
                 rule={rule}
-                actions={actions}
+                onActivate={handleActivate}
+                onDeactivate={handleDeactivate}
                 toggleOpening={toggleOpening}
                 canDuplicate={canDuplicate}
-                notify={notify}
             />
         )
     }
-
-    render() {
-        if (this.props.isOpen) {
-            return this._renderOpened()
-        }
-
-        return this._renderClosed()
-    }
+    return isOpen ? renderOpened() : renderClosed()
 }
 
 const connector = connect(
     (state: RootState) => ({
         currentUser: state.currentUser,
     }),
-    (dispatch: GorgiasThunkDispatch<any, any, any>) => {
-        return {
-            actions: {
-                rules: bindActionCreators(RuleActions, dispatch),
-            },
-            notify: bindActionCreators(notify, dispatch),
-        }
+    {
+        notify,
+        ruleUpdated,
     }
 )
 

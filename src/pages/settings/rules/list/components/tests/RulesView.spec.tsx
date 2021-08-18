@@ -1,16 +1,17 @@
 import React, {ComponentProps, ReactNode} from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
-import {Location} from 'history'
-import {fromJS} from 'immutable'
+import {render, screen, waitFor} from '@testing-library/react'
 
-import {RuleLimitStatus} from '../../../../../../state/rules/types'
-import {NotificationStatus} from '../../../../../../state/notifications/types'
-import * as ruleActions from '../../../../../../state/rules/actions'
+import {Rule, RuleLimitStatus} from '../../../../../../state/rules/types'
+import {RULE_MAX_NUMBER_WARNING} from '../../../../../../state/entities/rules/selectors'
 import {
-    RULE_MAX_NUMBER,
-    RULE_MAX_NUMBER_WARNING,
-} from '../../../../../../state/rules/selectors'
-import {RulesView} from '../RulesView'
+    rulesFetched,
+    rulesReordered,
+} from '../../../../../../state/entities/rules/actions'
+import {fetchRules} from '../../../../../../models/rule/resources'
+import {emptyRule as ruleFixture} from '../../../../../../fixtures/rule'
+import {ApiListResponsePagination} from '../../../../../../models/api/types'
+
+import {RulesViewContainer} from '../RulesView'
 
 jest.mock('../RuleRow/RuleRow', () => ({isOpen}: {isOpen: boolean}) => {
     if (!isOpen) {
@@ -55,13 +56,8 @@ jest.mock(
     }
 )
 
-const ruleFixture = {
-    id: 1,
-    description: 'foo',
-    name: 'my rule',
-    code_ast: {},
-    code: {},
-}
+jest.mock('../../../../../../models/rule/resources')
+jest.mock('../../../../../../state/entities/rules/actions')
 
 const createRuleFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -71,86 +67,72 @@ const createRuleFixtures = (length: number) => {
 }
 
 describe('<RulesView/>', () => {
-    const createMock = jest.fn()
-    const fetchRulesMock: jest.MockedFunction<typeof ruleActions.fetchRules> = jest.fn()
-    const updateOrderMock = jest.fn()
+    const rulesFetchedMock = rulesFetched as jest.MockedFunction<
+        typeof rulesFetched
+    >
+    const rulesReorderedMock = rulesReordered as jest.MockedFunction<
+        typeof rulesReordered
+    >
+
+    const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
+    fetchRulesMock.mockResolvedValue(
+        ([] as unknown) as ApiListResponsePagination<Rule[]>
+    )
+
     const notifyMock = jest.fn()
-    const defaultProps = ({
-        create: createMock,
-        fetchRules: fetchRulesMock,
-        updateOrder: updateOrderMock,
-        notify: notifyMock,
-        location: {
-            search: '',
-        },
-        rules: fromJS([]),
+
+    const minProps: ComponentProps<typeof RulesViewContainer> = {
         limitStatus: RuleLimitStatus.NonReaching,
-    } as any) as ComponentProps<typeof RulesView>
+        rulesFetched: rulesFetchedMock,
+        rulesReordered: rulesReorderedMock,
+        notify: notifyMock,
+        location: {search: ''},
+        rules: [],
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
-        fetchRulesMock.mockReturnValue(() => Promise.resolve())
     })
 
-    it('should open a rule row because a ruleId is passed and fetch rules', () => {
+    it('should open a rule row because a ruleId is passed and fetch rules', async () => {
         const rules = createRuleFixtures(3)
         const {container} = render(
-            <RulesView
-                {...defaultProps}
-                rules={fromJS(rules)}
-                location={({search: '?ruleId=3'} as unknown) as Location}
+            <RulesViewContainer
+                {...minProps}
+                rules={rules}
+                location={{...location, search: '?ruleId=3'}}
             />
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        expect(
-            (defaultProps.fetchRules as jest.Mock).mock.calls
-        ).toMatchSnapshot()
+        expect(fetchRulesMock).toHaveBeenCalled()
+        await waitFor(() => {
+            expect(rulesFetchedMock).toHaveBeenCalled()
+        })
     })
 
-    it('should not open a rule row because no ruleId is passed', () => {
+    it('should not open a rule row because no ruleId is passed', async () => {
         const rules = createRuleFixtures(3)
         const {container} = render(
-            <RulesView {...defaultProps} rules={fromJS(rules)} />
+            <RulesViewContainer {...minProps} rules={rules} />
         )
 
         expect(container.firstChild).toMatchSnapshot()
         expect(screen.queryByText('Opened Row')).toBeNull()
-        expect(
-            (defaultProps.fetchRules as jest.Mock).mock.calls
-        ).toMatchSnapshot()
+        await waitFor(() => {
+            expect(rulesFetchedMock).toHaveBeenCalled()
+        })
     })
 
     it('should render a warning when reaching the rule limit', () => {
         const rules = createRuleFixtures(RULE_MAX_NUMBER_WARNING)
         render(
-            <RulesView
-                {...defaultProps}
-                rules={fromJS(rules)}
+            <RulesViewContainer
+                {...minProps}
+                rules={rules}
                 limitStatus={RuleLimitStatus.Reaching}
             />
         )
         expect(screen.getByText('65 rules of 70')).not.toBe(null)
-    })
-
-    it('should render a warning when the rule limit has been reached and prevent the creation of a rule while notifying the user', () => {
-        const rules = createRuleFixtures(RULE_MAX_NUMBER)
-        const {getByText, getByTestId} = render(
-            <RulesView
-                {...defaultProps}
-                rules={fromJS(rules)}
-                limitStatus={RuleLimitStatus.Reached}
-            />
-        )
-        expect(
-            screen.getByText('Your account has reached the rule limit.')
-        ).not.toBe(null)
-        fireEvent.click(getByText('Create new rule'))
-        fireEvent.click(getByTestId('create-rule'))
-        expect(defaultProps.notify).toHaveBeenNthCalledWith(1, {
-            message:
-                'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
-            status: NotificationStatus.Error,
-        })
     })
 })

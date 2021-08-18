@@ -71,6 +71,7 @@ export enum RuleEvent {
 
 export enum RuleType {
     User = 'user',
+    System = 'system',
 }
 
 export enum CollectionOperator {

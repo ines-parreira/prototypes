@@ -86,6 +86,7 @@ describe('<SelfServicePreferencesView/>', () => {
     const defaultState = {
         entities: {
             macros: {},
+            rules: {},
             sections: {},
             stats: {},
             tags: {},

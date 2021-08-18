@@ -1,4 +1,10 @@
-import {ObjectExpressionPropertyKey} from '../../state/rules/types'
+import esprima from 'esprima'
+import {Map} from 'immutable'
+
+import {
+    ObjectExpressionPropertyKey,
+    RuleOperation,
+} from '../../state/rules/types'
 
 export enum IdentifierCategoryKey {
     Message = 'message',
@@ -90,4 +96,50 @@ export type IdentifierElement = {
     label: string
     text: string
     value: string
+}
+
+export type RuleDraft = {
+    id?: number
+    code: string
+    code_ast: ReturnType<typeof esprima.parse>
+    deactivated_datetime: Maybe<string>
+    description: string
+    event_types: RuleEvent | string
+    name: string
+}
+
+export type Rule = RuleDraft & {
+    created_datetime: string
+    id: number
+    priority: number
+    schedule: Maybe<string>
+    type: RuleType
+    updated_datetime: string
+    uri: string
+}
+
+export enum RuleEvent {
+    TicketCreated = 'ticket-created',
+    TicketUpdated = 'ticket-updated',
+    TicketAssigned = 'ticket-assigned',
+    TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
+    TicketMessageCreated = 'ticket-message-created',
+}
+
+export enum RuleType {
+    User = 'user',
+    System = 'system',
+}
+
+export type RulePriority = {
+    id: number
+    priority: number
+}
+
+export type RuleASTPayload = {
+    id: number
+    schemas: Map<any, any>
+    value: Maybe<string | Record<string, unknown>>
+    operation: RuleOperation
+    path: string[]
 }

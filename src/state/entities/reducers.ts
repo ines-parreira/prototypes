@@ -16,6 +16,8 @@ import helpCenters from './helpCenters/reducer'
 import {HelpCentersState} from './helpCenters/types'
 import selfServiceConfigurations from './selfServiceConfigurations/reducer'
 import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
+import rules from './rules/reducer'
+import {RulesState} from './rules/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -26,8 +28,10 @@ const entitiesReducers = combineReducers<{
     viewsCount: ViewsCountState
     helpCenters: HelpCentersState
     selfServiceConfigurations: SelfServiceConfigurationsState
+    rules: RulesState
 }>({
     macros,
+    rules,
     sections,
     stats,
     tags,

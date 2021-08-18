@@ -1,4 +1,21 @@
-import {Rule} from '../state/rules/types'
+import esprima from 'esprima'
+
+import {Rule, RuleType} from '../state/rules/types'
+
+export const emptyRule = {
+    id: 1,
+    description: 'foo',
+    name: 'my rule',
+    code_ast: {} as ReturnType<typeof esprima.parse>,
+    code: '',
+    event_types: 'ticket-created',
+    deactivated_datetime: null,
+    created_datetime: '2020-01-01:00:00:00',
+    updated_datetime: '2020-01-01:00:00:00',
+    priority: 100,
+    type: RuleType.User,
+    uri: '/api/rule/17',
+} as Rule
 
 export const rule = {
     priority: 6,
@@ -493,3 +510,9 @@ export const ruleWithContainsAllIdentifier = ({
     description: '',
     updated_datetime: '2021-05-31T14:06:57.119351+00:00',
 } as unknown) as Rule
+
+export const rules = [
+    rule,
+    ruleWithBusinessHourIdentifier,
+    ruleWithContainsAllIdentifier,
+]

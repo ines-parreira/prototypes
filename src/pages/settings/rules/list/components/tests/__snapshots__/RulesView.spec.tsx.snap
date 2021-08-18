@@ -111,12 +111,6 @@ exports[`<RulesView/> should not open a rule row because no ruleId is passed 1`]
 </div>
 `;
 
-exports[`<RulesView/> should not open a rule row because no ruleId is passed 2`] = `
-Array [
-  Array [],
-]
-`;
-
 exports[`<RulesView/> should open a rule row because a ruleId is passed and fetch rules 1`] = `
 <div
   class="full-width"
@@ -226,10 +220,4 @@ exports[`<RulesView/> should open a rule row because a ruleId is passed and fetc
     </table>
   </div>
 </div>
-`;
-
-exports[`<RulesView/> should open a rule row because a ruleId is passed and fetch rules 2`] = `
-Array [
-  Array [],
-]
 `;

@@ -19,8 +19,11 @@ import {
 } from '../../../../../models/rule/utils'
 import {RootState} from '../../../../../state/types'
 import {getIconFromUrl} from '../../../../../state/integrations/helpers'
-import {ruleUpdated} from '../../../../../state/rules/actions'
-import {ObjectExpressionPropertyKey} from '../../../../../state/rules/types'
+import {ruleUpdated} from '../../../../../state/entities/rules/actions'
+import {
+    ObjectExpressionPropertyKey,
+    Rule,
+} from '../../../../../state/rules/types'
 import {makeHasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
 import RuleSelect from '../widget/RuleSelect'
 
@@ -80,7 +83,7 @@ export function MemberExpressionContainer({
 
     const handleSelect = useCallback(
         (value) => {
-            ruleUpdated(getFormattedRule(rule, value, parent))
+            ruleUpdated(getFormattedRule(rule, value, parent).toJS() as Rule)
             setSelectedCategory(null)
         },
         [rule, parent]
