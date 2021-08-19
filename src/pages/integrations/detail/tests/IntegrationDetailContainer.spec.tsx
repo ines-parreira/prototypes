@@ -138,15 +138,15 @@ jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
     <div>PhoneIntegrationVoicemail</div>
 ))
 
-jest.mock('../components/chat/ChatIntegrationList.js', () => () => (
+jest.mock('../components/chat/ChatIntegrationList', () => () => (
     <div>ChatIntegrationList</div>
 ))
 jest.mock(
-    '../components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance.js',
+    '../components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance',
     () => () => <div>ChatIntegrationAppearance</div>
 )
 jest.mock(
-    '../components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns.js',
+    '../components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns',
     () => () => <div>ChatIntegrationCampaigns</div>
 )
 jest.mock(
@@ -154,15 +154,15 @@ jest.mock(
     () => () => <div>ChatIntegrationQuickReplies</div>
 )
 jest.mock(
-    '../components/chat/ChatIntegrationMigration/ChatIntegrationMigration.js',
+    '../components/chat/ChatIntegrationMigration/ChatIntegrationMigration',
     () => () => <div>ChatIntegrationMigration</div>
 )
 jest.mock(
-    '../components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences.js',
+    '../components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences',
     () => () => <div>ChatIntegrationPreferences</div>
 )
 jest.mock(
-    '../components/chat/ChatIntegrationInstall/ChatIntegrationInstall.js',
+    '../components/chat/ChatIntegrationInstall/ChatIntegrationInstall',
     () => () => <div>ChatIntegrationInstall</div>
 )
 jest.mock(

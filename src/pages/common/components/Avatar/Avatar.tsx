@@ -9,7 +9,7 @@ type Props = {
     email: string
     name: string | null
     size: number
-    url?: string
+    url?: string | null
     className?: string
     style: CSSProperties
     badgeColor?: string

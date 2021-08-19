@@ -7,7 +7,7 @@ import {
     deactivateIntegration,
 } from '../../../../../state/integrations/actions'
 import ToggleButton from '../../../../common/components/ToggleButton'
-import ForwardIcon from '../ForwardIcon.js'
+import ForwardIcon from '../ForwardIcon'
 
 type Props = {
     integration: Map<string, any>

@@ -7,7 +7,7 @@ import {Button} from 'reactstrap'
 
 import {IntegrationType} from '../../../../../models/integration/types'
 import IntegrationList from '../IntegrationList.js'
-import ForwardIcon from '../ForwardIcon.js'
+import ForwardIcon from '../ForwardIcon'
 
 type IReceivedProps = {
     integrations: List<Map<string, string>>

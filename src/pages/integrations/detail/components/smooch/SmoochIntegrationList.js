@@ -6,7 +6,7 @@ import {parse} from 'query-string'
 
 import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import history from '../../../../history.ts'

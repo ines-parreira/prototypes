@@ -8,7 +8,7 @@ import Lightbox from 'react-images'
 
 import Carousel from '../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 type Props = {

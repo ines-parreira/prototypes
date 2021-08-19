@@ -8,8 +8,8 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
 } from '../../../../../../../config/integrations/smooch_inside.ts'
 
-import AutoResponder from '../AutoResponder'
-import ChatIntegrationPreview from '../ChatIntegrationPreview'
+import AutoResponder from '../AutoResponder.tsx'
+import ChatIntegrationPreview from '../ChatIntegrationPreview.tsx'
 import MessageContent from '../MessageContent'
 import OptionalEmailCapture from '../OptionalEmailCapture'
 import QuickReplies from '../QuickReplies'

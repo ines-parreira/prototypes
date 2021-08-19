@@ -4,7 +4,7 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import ChatIntegrationCampaigns from '../ChatIntegrationCampaigns'
+import ChatIntegrationCampaigns from '../ChatIntegrationCampaigns.tsx'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

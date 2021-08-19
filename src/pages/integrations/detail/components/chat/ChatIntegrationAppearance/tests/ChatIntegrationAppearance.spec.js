@@ -13,7 +13,7 @@ import {
     SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
 
-import {ChatIntegrationAppearance} from '../ChatIntegrationAppearance'
+import {ChatIntegrationAppearance} from '../ChatIntegrationAppearance.tsx'
 
 describe('<ChatIntegrationAppearance/>', () => {
     const minStore = {

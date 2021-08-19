@@ -267,7 +267,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                 <div
                   className="col-md-6"
                 >
-                  <InstallOnIntegrationsCard
+                  <Component
                     integration={
                       Immutable.Map {
                         "id": 2,
@@ -300,112 +300,10 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                       ]
                     }
                   >
-                    <Card
-                      className="integration-card"
-                      tag="div"
-                    >
-                      <div
-                        className="integration-card card"
-                      >
-                        <CardBody
-                          className="card-body"
-                          tag="div"
-                        >
-                          <div
-                            className="card-body card-body"
-                          >
-                            <div
-                              className="logo-wrapper"
-                            >
-                              <img
-                                alt="shopify-logo"
-                                src="test-file-stub"
-                              />
-                            </div>
-                            <div
-                              className="content-wrapper"
-                            >
-                              <h3>
-                                Shopify
-                              </h3>
-                              <p>
-                                Install the 
-                                customer chat
-                                 widget on your
-                                 
-                                Shopify
-                                 store in one click
-                              </p>
-                              <div>
-                                <div
-                                  className="integration-item"
-                                  key="3"
-                                >
-                                  <div>
-                                    <b>
-                                      mylittleintegration2
-                                    </b>
-                                  </div>
-                                  <ToggleButton
-                                    disabled={false}
-                                    loading={false}
-                                    onChange={[Function]}
-                                    value={true}
-                                  >
-                                    <label
-                                      className="switch"
-                                      onClick={[Function]}
-                                    >
-                                      <input
-                                        checked={true}
-                                        disabled={false}
-                                        readOnly={true}
-                                        type="checkbox"
-                                      />
-                                      <div
-                                        className="slider"
-                                      />
-                                    </label>
-                                  </ToggleButton>
-                                </div>
-                                <div
-                                  className="integration-item"
-                                  key="1"
-                                >
-                                  <div>
-                                    <b>
-                                      mylittleintegration
-                                    </b>
-                                  </div>
-                                  <ToggleButton
-                                    disabled={false}
-                                    loading={false}
-                                    onChange={[Function]}
-                                    value={false}
-                                  >
-                                    <label
-                                      className="switch"
-                                      onClick={[Function]}
-                                    >
-                                      <input
-                                        checked={false}
-                                        disabled={false}
-                                        readOnly={true}
-                                        type="checkbox"
-                                      />
-                                      <div
-                                        className="slider"
-                                      />
-                                    </label>
-                                  </ToggleButton>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </div>
-                    </Card>
-                  </InstallOnIntegrationsCard>
+                    <div>
+                      InstallOnIntegrationsCard
+                    </div>
+                  </Component>
                   <CustomInstallationCard
                     code="<!-- Gorgias Messenger Widget Start -->
 <script>

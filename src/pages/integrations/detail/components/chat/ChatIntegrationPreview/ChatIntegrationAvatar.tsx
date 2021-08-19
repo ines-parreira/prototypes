@@ -1,17 +1,16 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
 
-import {SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/smooch_inside.ts'
+import {SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    avatarTeamPictureUrl?: string,
-    avatarType?: string,
-    isOnline: boolean,
-    mainColor: string,
-    offlineColor: string,
+    avatarTeamPictureUrl?: string | null
+    avatarType?: string
+    isOnline: boolean
+    mainColor: string
+    offlineColor: string
 }
 
 const ChatIntegrationAvatar = (props: Props) => {

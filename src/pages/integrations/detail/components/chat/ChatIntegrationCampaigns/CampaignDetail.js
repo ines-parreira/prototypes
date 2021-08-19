@@ -35,7 +35,7 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation.tsx'
 
 import {
     CAMPAIGNS_TRIGGER_KEYS,
@@ -44,7 +44,7 @@ import {
 } from '../../../../../../config/integrations/smooch_inside.ts'
 import history from '../../../../../history.ts'
 
-import CampaignPreview from './CampaignPreview'
+import CampaignPreview from './CampaignPreview.tsx'
 import css from './CampaignDetail.less'
 
 /**

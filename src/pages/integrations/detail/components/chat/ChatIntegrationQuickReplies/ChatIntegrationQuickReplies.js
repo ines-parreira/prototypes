@@ -24,7 +24,7 @@ import {
     QUICK_REPLIES_MAX_ITEMS,
 } from '../../../../../../config/integrations/smooch_inside.ts'
 
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation.tsx'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
 import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'
 

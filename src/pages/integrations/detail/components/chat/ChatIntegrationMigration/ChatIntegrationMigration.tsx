@@ -1,44 +1,43 @@
-// @flow
-import React from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Alert} from 'reactstrap'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions.ts'
+import PageHeader from '../../../../../common/components/PageHeader'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
 type Props = {
-    integration: Map<*, *>,
-    actions: Map<*, *>,
-    updateCampaign: (Map<*, *>, Map<*, *>) => Promise<*>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    integrationName: string,
-    isInitialized: boolean,
-    isUpdating: boolean,
+    integrationName: string
+    isInitialized: boolean
+    isUpdating: boolean
 }
-export class ChatIntegrationMigration extends React.Component<Props, State> {
+
+export class ChatIntegrationMigration extends Component<Props, State> {
     state = {
         isUpdating: false,
         isInitialized: false,
         integrationName: '',
     }
 
-    _initState = (integration: Map<*, *>) => {
+    _initState = (integration: Map<any, any>) => {
         this.setState({
             integrationName: integration.get('name'),
             isInitialized: true,
         })
     }
 
-    _migrate = async (event: SyntheticEvent<HTMLButtonElement>) => {
+    //eslint-disable-next-line @typescript-eslint/require-await
+    _migrate = async (event: SyntheticEvent) => {
         event.preventDefault()
-        const {integration} = this.props
+        const {integration, updateOrCreateIntegration} = this.props
         this.setState({isUpdating: true})
         // build the application payload based on the current integration to create the new gorgias_chat integration
         const payload = _omit(integration.toJS(), [
@@ -53,15 +52,14 @@ export class ChatIntegrationMigration extends React.Component<Props, State> {
             'id',
             'description',
             'updated_datetime',
-        ])
+        ]) as Record<string, unknown> & {meta: Record<string, unknown>}
         payload.type = 'gorgias_chat'
 
         if (payload.meta.language === 'fr') {
             payload.meta.language = 'fr-FR'
         }
 
-        return this.props.actions
-            .updateOrCreateIntegration(fromJS(payload))
+        return (updateOrCreateIntegration(fromJS(payload)) as Promise<void>)
             .then(() => {
                 this.setState({isUpdating: false})
             })
@@ -187,6 +185,8 @@ export class ChatIntegrationMigration extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
+const connector = connect(null, {
     updateOrCreateIntegration,
-})(ChatIntegrationMigration)
+})
+
+export default connector(ChatIntegrationMigration)

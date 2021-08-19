@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 import history from '../../../../history.ts'
 
 import Carousel from './../../../common/Carousel'

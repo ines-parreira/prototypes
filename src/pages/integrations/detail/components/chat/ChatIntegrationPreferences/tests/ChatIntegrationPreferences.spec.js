@@ -19,7 +19,7 @@ import {
     ChatIntegrationPreferences,
     PREVIEW_AUTO_RESPONDER,
     PREVIEW_EMAIL_CAPTURE,
-} from '../ChatIntegrationPreferences'
+} from '../ChatIntegrationPreferences.tsx'
 
 describe('<ChatIntegrationPreferences/>', () => {
     describe('componentDidMount()', () => {

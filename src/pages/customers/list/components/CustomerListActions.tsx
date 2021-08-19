@@ -1,7 +1,5 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -13,29 +11,29 @@ import {
     PopoverBody,
 } from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
-import {type List, type Map} from 'immutable'
+import {List, Map} from 'immutable'
 
-import shortcutManager from '../../../../services/shortcutManager/index.ts'
-
-import * as customersActions from '../../../../state/customers/actions.ts'
-import * as viewsSelectors from '../../../../state/views/selectors.ts'
+import shortcutManager from '../../../../services/shortcutManager/index'
+import {bulkDeleteCustomer} from '../../../../state/customers/actions'
+import {
+    areAllActiveViewItemsSelected,
+    makeGetViewCount,
+} from '../../../../state/views/selectors'
+import {RootState} from '../../../../state/types'
 
 import css from './CustomerListActions.less'
 
 type Props = {
-    allViewItemsSelected: boolean,
-    actions: typeof customersActions,
-    selectedItemsIds: List<any>,
-    getViewCount: (id: number) => number,
-    view: Map<any, any>,
-}
+    selectedItemsIds: List<any>
+    view: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    popoverOpen: string,
-    displayDeleteConfirmation: boolean,
+    popoverOpen: string
+    displayDeleteConfirmation: boolean
 }
 
-class CustomerListActions extends React.Component<Props, State> {
+class CustomerListActions extends Component<Props, State> {
     state = {
         popoverOpen: '',
         displayDeleteConfirmation: false,
@@ -81,9 +79,9 @@ class CustomerListActions extends React.Component<Props, State> {
     }
 
     _bulkDelete = () => {
-        const {actions, selectedItemsIds} = this.props
+        const {bulkDeleteCustomer, selectedItemsIds} = this.props
         this.toggleDeleteConfirmation()
-        return actions.customers.bulkDeleteCustomer(selectedItemsIds)
+        return bulkDeleteCustomer(selectedItemsIds)
     }
 
     toggleActionsDropdown = (visible: boolean) => {
@@ -129,7 +127,7 @@ class CustomerListActions extends React.Component<Props, State> {
                         <DropdownItem
                             type="button"
                             className="text-danger"
-                            onClick={this.toggleActionsDropdown}
+                            onClick={this.toggleActionsDropdown as any}
                         >
                             Delete customers
                         </DropdownItem>
@@ -175,21 +173,14 @@ class CustomerListActions extends React.Component<Props, State> {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
-            state
-        ),
-        getViewCount: viewsSelectors.makeGetViewCount(state),
+const connector = connect(
+    (state: RootState) => ({
+        allViewItemsSelected: areAllActiveViewItemsSelected(state),
+        getViewCount: makeGetViewCount(state),
+    }),
+    {
+        bulkDeleteCustomer,
     }
-}
+)
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: {
-            customers: bindActionCreators(customersActions, dispatch),
-        },
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerListActions)
+export default connector(CustomerListActions)

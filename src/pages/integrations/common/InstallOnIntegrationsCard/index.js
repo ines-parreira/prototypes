@@ -1,1 +1,1 @@
-export default from './InstallOnIntegrationsCard'
+export default from './InstallOnIntegrationsCard.tsx'

@@ -6,7 +6,7 @@ import _truncate from 'lodash/truncate'
 
 import ToggleButton from '../../../../common/components/ToggleButton.tsx'
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import history from '../../../../history.ts'
 

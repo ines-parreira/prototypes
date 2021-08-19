@@ -1,10 +1,9 @@
-// @flow
-//$FlowFixMe
-import React, {Fragment} from 'react'
+import {AxiosError} from 'axios'
+import React, {Fragment, Component} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {fromJS, type List, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
@@ -31,31 +30,33 @@ import {
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
-} from '../../../../../../config/integrations/smooch_inside.ts'
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index.ts'
-import {
-    SHOPIFY_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
-} from '../../../../../../constants/integration.ts'
-
-import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
-
-import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
-import ColorField from '../../../../../common/forms/ColorField'
-import FileField from '../../../../../common/forms/FileField.tsx'
-import InputField from '../../../../../common/forms/InputField'
-import Loader from '../../../../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import RadioField from '../../../../../common/forms/RadioField.tsx'
-
+} from '../../../../../../config/integrations/smooch_inside'
+import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index'
+import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import ColorField from '../../../../../common/forms/ColorField.js'
+import FileField from '../../../../../common/forms/FileField'
+import InputField from '../../../../../common/forms/InputField.js'
+import Loader from '../../../../../common/components/Loader/Loader'
+import PageHeader from '../../../../../common/components/PageHeader'
+import RadioField from '../../../../../common/forms/RadioField'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import ChatIntegrationPreview from '../ChatIntegrationPreview'
-import MessageContentPreview from '../ChatIntegrationPreview/MessageContent'
+import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
+import MessageContentPreview from '../ChatIntegrationPreview/MessageContent.js'
+import {
+    IntegrationType,
+    IntegrationDecoration,
+} from '../../../../../../models/integration/types'
+import {RootState} from '../../../../../../state/types'
+import {
+    deleteIntegration,
+    updateOrCreateIntegration,
+} from '../../../../../../state/integrations/actions'
 
 import css from './ChatIntegrationAppearance.less'
 
 export const defaultContent = {
-    type: SMOOCH_INSIDE_INTEGRATION_TYPE,
+    type: IntegrationType.SmoochInsideIntegrationType,
     name: '',
     introductionText: SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS.introductionText,
     offlineIntroductionText:
@@ -83,32 +84,29 @@ const avatarTypeOptions = [
 ]
 
 type Props = {
-    integration: Map<*, *>,
-    isUpdate: boolean,
-    actions: Object,
-    loading: Map<*, *>,
-    currentUser: Map<*, *>,
-    shopifyIntegrations: List<Map<*, *>>,
-}
+    integration: Map<any, any>
+    isUpdate: boolean
+    loading: Map<any, any>
+    currentUser: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    type: string,
-    name: string,
-    introductionText: string,
-    offlineIntroductionText: string,
-    mainColor: string,
-    conversationColor: string,
-    isOnline: boolean,
-    language: string,
-    avatarType: string,
-    avatarTeamPictureUrl: ?string,
-
-    isCopied: boolean,
-    isShopifyInstructions: boolean,
-    isInitialized: boolean,
+    type: string
+    name: string
+    introductionText: string
+    offlineIntroductionText: string
+    mainColor: string
+    conversationColor: string
+    isOnline: boolean
+    language: string
+    avatarType: string
+    avatarTeamPictureUrl: Maybe<string>
+    isCopied: boolean
+    isShopifyInstructions: boolean
+    isInitialized: boolean
 }
 
-export class ChatIntegrationAppearance extends React.Component<Props, State> {
+export class ChatIntegrationAppearance extends Component<Props, State> {
     state = _merge(
         {
             isCopied: false,
@@ -138,7 +136,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
         }
     }
 
-    _initState = (integration: Map<*, *>) => {
+    _initState = (integration: Map<any, any>) => {
         this.setState(
             _defaults(
                 {
@@ -176,9 +174,15 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
         return loading.get('updateIntegration') === integration.get('id', true)
     }
 
-    _handleSubmit = (event: SyntheticEvent<*>) => {
+    _handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault()
-        const form = _pick(this.state, ['name', 'type'])
+        const form: {
+            name: string
+            type: string
+            decoration?: IntegrationDecoration
+            meta?: Record<string, unknown>
+            id?: number
+        } = _pick(this.state, ['name', 'type'])
         form.decoration = {
             conversation_color: this.state.conversationColor,
             main_color: this.state.mainColor,
@@ -201,49 +205,46 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
 
         if (this.props.isUpdate) {
             form.id = this.props.integration.get('id')
-            form.meta = this.props.integration
-                .get('meta')
+            form.meta = (this.props.integration.get('meta') as Map<any, any>)
                 .set('language', this.state.language)
                 .toJS()
         }
 
-        return this.props.actions
-            .updateOrCreateIntegration(fromJS(form))
-            .then(({error} = {}) => {
-                if (error) {
-                    return
-                }
+        return (this.props.updateOrCreateIntegration(fromJS(form)) as Promise<{
+            error?: AxiosError
+        }>).then(({error} = {}) => {
+            if (error) {
+                return
+            }
 
-                // reload the integration
-                this.setState({isInitialized: false})
-            })
+            // reload the integration
+            this.setState({isInitialized: false})
+        })
     }
 
-    // $FlowFixMe
     _setLanguage = (language: string) => {
-        let newState = {language}
+        const newState: Partial<State> = {language}
 
-        const textFieldsToUpdate = [
+        const textFieldsToUpdate: [
             'introductionText',
-            'offlineIntroductionText',
-        ]
+            'offlineIntroductionText'
+        ] = ['introductionText', 'offlineIntroductionText']
         textFieldsToUpdate.forEach((textName) => {
             if (
                 this.state[textName] ===
                 SMOOCH_INSIDE_WIDGET_TEXTS[this.state.language][textName]
             ) {
-                // $FlowFixMe
                 newState[textName] =
                     SMOOCH_INSIDE_WIDGET_TEXTS[language][textName]
             }
         })
 
-        this.setState(newState)
+        this.setState(newState as State)
     }
 
     render() {
         const {
-            actions,
+            deleteIntegration,
             integration,
             isUpdate,
             loading,
@@ -374,7 +375,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
                                                                         '100px',
                                                                 }}
                                                                 src={
-                                                                    avatarTeamPictureUrl
+                                                                    avatarTeamPictureUrl as any
                                                                 }
                                                                 alt="Team avatar"
                                                             />
@@ -408,7 +409,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
 
                                         <ColorField
                                             value={mainColor}
-                                            onChange={(value) =>
+                                            onChange={(value: string) =>
                                                 this.setState({
                                                     mainColor: value,
                                                 })
@@ -418,7 +419,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
 
                                         <ColorField
                                             value={conversationColor}
-                                            onChange={(value) =>
+                                            onChange={(value: string) =>
                                                 this.setState({
                                                     conversationColor: value,
                                                 })
@@ -434,7 +435,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
                                             label="Language"
                                         >
                                             {SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.map(
-                                                (option) => (
+                                                (option: Map<any, any>) => (
                                                     <option
                                                         key={option.get(
                                                             'value'
@@ -467,9 +468,7 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
                                         className="float-right"
                                         color="secondary"
                                         confirm={() =>
-                                            actions.deleteIntegration(
-                                                integration
-                                            )
+                                            deleteIntegration(integration)
                                         }
                                         content="Are you sure you want to delete this integration?"
                                     >
@@ -533,12 +532,18 @@ export class ChatIntegrationAppearance extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        shopifyIntegrations: integrationSelectors.getIntegrationsByTypes(
-            SHOPIFY_INTEGRATION_TYPE
-        )(state),
+const connector = connect(
+    (state: RootState) => {
+        return {
+            shopifyIntegrations: getIntegrationsByTypes(
+                IntegrationType.ShopifyIntegrationType
+            )(state),
+        }
+    },
+    {
+        deleteIntegration,
+        updateOrCreateIntegration,
     }
-}
+)
 
-export default connect(mapStateToProps)(ChatIntegrationAppearance)
+export default connector(ChatIntegrationAppearance)

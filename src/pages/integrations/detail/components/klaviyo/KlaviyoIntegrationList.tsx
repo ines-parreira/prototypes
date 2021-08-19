@@ -6,7 +6,7 @@ import {List, Map} from 'immutable'
 import history from '../../../../history'
 
 import IntegrationList from '../IntegrationList.js'
-import ForwardIcon from '../ForwardIcon.js'
+import ForwardIcon from '../ForwardIcon'
 import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
 
 type Props = {

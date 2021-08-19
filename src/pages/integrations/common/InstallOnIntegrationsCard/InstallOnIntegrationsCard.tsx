@@ -1,17 +1,17 @@
-// @flow
 import React from 'react'
 import {Card, CardBody} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import * as integrationHelpers from '../../../../state/integrations/helpers.ts'
-import ToggleButton from '../../../common/components/ToggleButton.tsx'
-import history from '../../../history.ts'
-
-import {notify} from '../../../../state/notifications/actions.ts'
-import {store} from '../../../../init.ts'
+import {getIconFromType} from '../../../../state/integrations/helpers'
+import ToggleButton from '../../../common/components/ToggleButton'
+import history from '../../../history'
+import {notify} from '../../../../state/notifications/actions'
+import {IntegrationType} from '../../../../models/integration/types'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {updateOrCreateIntegration} from '../../../../state/integrations/actions'
 
 import css from './InstallOnIntegrations.less'
 
@@ -20,18 +20,21 @@ function getMetaField(integrationType: string): string {
 }
 
 type Props = {
-    integrationType: string,
-    targetIntegrations: List<Map<*, *>>,
-    integration: Map<*, *>,
-    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
-}
+    integrationType: string
+    targetIntegrations: List<Map<any, any>>
+    integration: Map<any, any>
+    // $TsFixMe remove props drilling on FacebookIntegrationCard migration
+    updateOrCreateIntegration: (
+        ...args: ArgumentsOf<typeof updateOrCreateIntegration>
+    ) => ReturnType<ReturnType<typeof updateOrCreateIntegration>>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    integrationLoading: ?number,
-    showAll: boolean,
+    integrationLoading: number | null
+    showAll: boolean
 }
 
-export default class InstallOnIntegrationsCard extends React.Component<
+export class InstallOnIntegrationsCardContainer extends React.Component<
     Props,
     State
 > {
@@ -40,32 +43,39 @@ export default class InstallOnIntegrationsCard extends React.Component<
         showAll: false,
     }
 
-    async _installOnStore(targetIntegration: Map<*, *>) {
+    async _installOnStore(targetIntegration: Map<any, any>) {
         const {
             integration,
             integrationType,
             updateOrCreateIntegration,
         } = this.props
 
-        if (integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE) {
-            store.dispatch(
-                notify({
-                    status: 'error',
-                    message:
-                        'This version of the chat is no longer supported. Please use the new chat integration to add ' +
-                        'a chat to your online store.',
-                })
-            )
+        if (
+            integration.get('type') ===
+            IntegrationType.SmoochInsideIntegrationType
+        ) {
+            void notify({
+                status: NotificationStatus.Error,
+                message:
+                    'This version of the chat is no longer supported. Please use the new chat integration to add ' +
+                    'a chat to your online store.',
+            })
             return
         }
 
-        this.setState({integrationLoading: targetIntegration.get('id')})
+        this.setState({
+            integrationLoading: targetIntegration.get('id') as number,
+        })
 
         // todo(@martin): see if this is required too for Magento when implementing
         if (targetIntegration.getIn(['meta', 'need_scope_update'])) {
             history.push(
-                `/app/settings/integrations/${targetIntegration.get('type')}/` +
-                    `${targetIntegration.get('id')}/?error=need_scope_update`
+                `/app/settings/integrations/${
+                    targetIntegration.get('type') as string
+                }/` +
+                    `${
+                        targetIntegration.get('id') as number
+                    }/?error=need_scope_update`
             )
             return
         }
@@ -74,7 +84,7 @@ export default class InstallOnIntegrationsCard extends React.Component<
         let targetIntegrationIdsList = integration.getIn(
             ['meta', getMetaField(integrationType)],
             fromJS([])
-        )
+        ) as List<any>
 
         if (!targetIntegrationIdsList.contains(targetIntegrationId)) {
             targetIntegrationIdsList = targetIntegrationIdsList.push(
@@ -85,9 +95,10 @@ export default class InstallOnIntegrationsCard extends React.Component<
         const form = {
             id: integration.get('id'),
             type: integration.get('type'),
-            meta: integration
-                .get('meta')
-                .set(getMetaField(integrationType), targetIntegrationIdsList),
+            meta: (integration.get('meta') as Map<any, any>).set(
+                getMetaField(integrationType),
+                targetIntegrationIdsList
+            ),
         }
 
         await updateOrCreateIntegration(fromJS(form))
@@ -104,16 +115,18 @@ export default class InstallOnIntegrationsCard extends React.Component<
 
         this.setState({integrationLoading: targetIntegrationId})
 
-        const indexToDelete = integration
-            .getIn(['meta', getMetaField(integrationType)], fromJS([]))
-            .findIndex((value) => value === targetIntegrationId)
+        const indexToDelete = (integration.getIn(
+            ['meta', getMetaField(integrationType)],
+            fromJS([])
+        ) as List<any>).findIndex((value) => value === targetIntegrationId)
 
         const form = {
             id: integration.get('id'),
             type: integration.get('type'),
-            meta: integration
-                .get('meta')
-                .deleteIn([getMetaField(integrationType), indexToDelete]),
+            meta: (integration.get('meta') as Map<any, any>).deleteIn([
+                getMetaField(integrationType),
+                indexToDelete,
+            ]),
         }
 
         await updateOrCreateIntegration(fromJS(form))
@@ -130,12 +143,13 @@ export default class InstallOnIntegrationsCard extends React.Component<
         const {showAll, integrationLoading} = this.state
 
         const isChat =
-            integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+            integration.get('type') ===
+            IntegrationType.SmoochInsideIntegrationType
         const integrationAlias = isChat ? 'chat' : 'customer chat'
 
         let sortedTargetIntegrations = targetIntegrations.sortBy(
             (targetIntegration) =>
-                -moment(targetIntegration.get('created_datetime')).valueOf()
+                -moment(targetIntegration!.get('created_datetime')).valueOf()
         )
 
         if (!showAll) {
@@ -148,9 +162,7 @@ export default class InstallOnIntegrationsCard extends React.Component<
                     <div className={css['logo-wrapper']}>
                         <img
                             alt={`${integrationType}-logo`}
-                            src={integrationHelpers.getIconFromType(
-                                integrationType
-                            )}
+                            src={getIconFromType(integrationType)}
                         />
                     </div>
                     <div className={css['content-wrapper']}>
@@ -162,27 +174,24 @@ export default class InstallOnIntegrationsCard extends React.Component<
                         <div>
                             {sortedTargetIntegrations.map(
                                 (targetIntegration) => {
-                                    const targetIntegrationId = targetIntegration.get(
+                                    const targetIntegrationId = targetIntegration!.get(
                                         'id'
                                     )
-                                    const chatIsInstalled = integration
-                                        .getIn(
-                                            [
-                                                'meta',
-                                                getMetaField(integrationType),
-                                            ],
-                                            fromJS([])
-                                        )
-                                        .includes(targetIntegrationId)
+                                    const chatIsInstalled = (integration.getIn(
+                                        ['meta', getMetaField(integrationType)],
+                                        fromJS([])
+                                    ) as List<any>).includes(
+                                        targetIntegrationId
+                                    )
 
                                     return (
                                         <div
-                                            key={targetIntegration.get('id')}
+                                            key={targetIntegration!.get('id')}
                                             className={css['integration-item']}
                                         >
                                             <div>
                                                 <b>
-                                                    {targetIntegration.get(
+                                                    {targetIntegration!.get(
                                                         'name'
                                                     )}
                                                 </b>
@@ -197,7 +206,7 @@ export default class InstallOnIntegrationsCard extends React.Component<
                                                               )
                                                         : () =>
                                                               this._installOnStore(
-                                                                  targetIntegration
+                                                                  targetIntegration!
                                                               )
                                                 }
                                                 loading={
@@ -228,3 +237,7 @@ export default class InstallOnIntegrationsCard extends React.Component<
         )
     }
 }
+
+const connector = connect(null, {notify})
+
+export default connector(InstallOnIntegrationsCardContainer)

@@ -10,7 +10,7 @@ import * as campaignActions from '../../../../../../state/campaigns/actions'
 import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import ForwardIcon from '../../ForwardIcon'
+import ForwardIcon from '../../ForwardIcon.tsx'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import withPaywall from '../../../../../common/utils/withPaywall.tsx'
 

@@ -1,36 +1,32 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {type List, type Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {List, Map} from 'immutable'
 import Alert from 'reactstrap/lib/Alert'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
-import history from '../../../../history.ts'
-import IntegrationList from '../IntegrationList'
+import {
+    activateIntegration,
+    deactivateIntegration,
+} from '../../../../../state/integrations/actions'
+import ToggleButton from '../../../../common/components/ToggleButton'
+import history from '../../../../history'
+import IntegrationList from '../IntegrationList.js'
 import ForwardIcon from '../ForwardIcon'
+import {IntegrationType} from '../../../../../models/integration/types'
 
 type Props = {
-    integrations: List<Map<*, *>>,
-    loading: Map<*, *>,
-    activate: (number) => void,
-    deactivate: (number) => void,
-}
+    integrations: List<Map<any, any>>
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-})
-export default class ChatIntegrationList extends React.Component<Props> {
+export class ChatIntegrationListContainer extends Component<Props> {
     render() {
         const {integrations, loading} = this.props
         const hasActiveSmoochInsideIntegration = integrations.find(
             (integration) =>
-                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE &&
-                integration.get('deactivated_datetime') == null
+                integration!.get('type') ===
+                    IntegrationType.SmoochInsideIntegrationType &&
+                integration!.get('deactivated_datetime') == null
         )
 
         const longTypeDescription = () => {
@@ -69,9 +65,9 @@ export default class ChatIntegrationList extends React.Component<Props> {
             )
         }
 
-        const integrationToItemDisplay = (integration: Map<*, *>) => {
+        const integrationToItemDisplay = (integration: Map<any, any>) => {
             const toggleIntegration = (value: boolean) => {
-                const integrationId = integration.get('id')
+                const integrationId = integration.get('id') as number
                 if (value) {
                     this.props.activate(integrationId)
                 } else {
@@ -79,9 +75,9 @@ export default class ChatIntegrationList extends React.Component<Props> {
                 }
             }
 
-            const editLink = `/app/settings/integrations/smooch_inside/${integration.get(
-                'id'
-            )}/migration`
+            const editLink = `/app/settings/integrations/smooch_inside/${
+                integration.get('id') as number
+            }/migration`
             const isDisabled = integration.get('deactivated_datetime')
 
             const isLoading =
@@ -113,12 +109,12 @@ export default class ChatIntegrationList extends React.Component<Props> {
 
         return (
             <IntegrationList
-                integrationType={SMOOCH_INSIDE_INTEGRATION_TYPE}
+                integrationType={IntegrationType.SmoochInsideIntegrationType}
                 longTypeDescription={longTypeDescription()}
                 integrations={integrations.filter(
                     (integration) =>
-                        integration.get('type') ===
-                        SMOOCH_INSIDE_INTEGRATION_TYPE
+                        integration!.get('type') ===
+                        IntegrationType.SmoochInsideIntegrationType
                 )}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/smooch_inside/new')
@@ -130,3 +126,10 @@ export default class ChatIntegrationList extends React.Component<Props> {
         )
     }
 }
+
+const connector = connect(null, {
+    activate: activateIntegration,
+    deactivate: deactivateIntegration,
+})
+
+export default connector(ChatIntegrationListContainer)

@@ -7,7 +7,7 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
 } from '../../../../../constants/integration.ts'
 import history from '../../../../history.ts'
-import InstallOnIntegrationsCard from '../InstallOnIntegrationsCard'
+import {InstallOnIntegrationsCardContainer} from '../InstallOnIntegrationsCard.tsx'
 
 jest.mock('../../../../history.ts')
 
@@ -62,7 +62,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
                 })
 
                 const component = shallow(
-                    <InstallOnIntegrationsCard {...defaultProps} />
+                    <InstallOnIntegrationsCardContainer {...defaultProps} />
                 )
 
                 await component.instance()._installOnStore(targetIntegration)
@@ -99,7 +99,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
                 const updateOrCreateIntegration = jest.fn()
 
                 const component = shallow(
-                    <InstallOnIntegrationsCard
+                    <InstallOnIntegrationsCardContainer
                         {...defaultProps}
                         integration={chatIntegration}
                         updateOrCreateIntegration={updateOrCreateIntegration}
@@ -145,7 +145,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
                 const updateOrCreateIntegration = jest.fn()
 
                 const component = shallow(
-                    <InstallOnIntegrationsCard
+                    <InstallOnIntegrationsCardContainer
                         {...defaultProps}
                         integration={chatIntegration}
                         updateOrCreateIntegration={updateOrCreateIntegration}
@@ -193,7 +193,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
                 const updateOrCreateIntegration = jest.fn()
 
                 const component = shallow(
-                    <InstallOnIntegrationsCard
+                    <InstallOnIntegrationsCardContainer
                         {...defaultProps}
                         integration={chatIntegration}
                         updateOrCreateIntegration={updateOrCreateIntegration}
@@ -218,7 +218,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
     describe('render()', () => {
         it('should render first three passed integrations', () => {
             const component = shallow(
-                <InstallOnIntegrationsCard {...defaultProps} />
+                <InstallOnIntegrationsCardContainer {...defaultProps} />
             )
 
             expect(component).toMatchSnapshot()
@@ -226,7 +226,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
         it('should render all integrations because the Show more button was clicked', () => {
             const component = shallow(
-                <InstallOnIntegrationsCard {...defaultProps} />
+                <InstallOnIntegrationsCardContainer {...defaultProps} />
             )
 
             component.find({children: 'Show more'}).simulate('click')

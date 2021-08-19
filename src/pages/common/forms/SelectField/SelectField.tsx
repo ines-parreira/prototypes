@@ -35,7 +35,7 @@ type Props = {
     singular: string
     style: CSSProperties
     rightAddon?: string
-    value?: Value
+    value?: Value | null
     required: boolean
     onChange: (value: Value) => void
     onSearchChange: (search: string) => void
@@ -110,7 +110,7 @@ export default class SelectField extends Component<Props, State> {
     _filterOptions = (
         options: Option[],
         input: string,
-        value?: Value
+        value?: Value | null
     ): Option[] => {
         // Filter options by search query
         let filteredOptions = options.filter((option) => {

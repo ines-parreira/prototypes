@@ -9,6 +9,11 @@ import {
 import configureStore from '../../../../../../../store/configureStore'
 import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat'
 
+jest.mock(
+    '../../../../../common/InstallOnIntegrationsCard/InstallOnIntegrationsCard.tsx',
+    () => () => <div>InstallOnIntegrationsCard</div>
+)
+
 describe('FacebookIntegrationCustomerChat component', () => {
     const minStore = {
         integrations: fromJS({

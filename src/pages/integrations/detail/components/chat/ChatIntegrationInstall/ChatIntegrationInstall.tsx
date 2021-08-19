@@ -1,39 +1,36 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-
-import {notify} from '../../../../../../state/notifications/actions.ts'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
+import {notify} from '../../../../../../state/notifications/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
 import CustomInstallationCard from '../../../../common/CustomInstallationCard/CustomInstallationCard'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import {makeGetIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
+import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsCard/InstallOnIntegrationsCard'
+import {IntegrationType} from '../../../../../../models/integration/types'
+import {RootState} from '../../../../../../state/types'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
-import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
-import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsCard'
+import {renderChatCodeSnippet} from './utils.js'
 
-import {renderChatCodeSnippet} from './utils'
-
-const targetIntegrationsType = fromJS([SHOPIFY_INTEGRATION_TYPE])
+const targetIntegrationsType = fromJS([
+    IntegrationType.ShopifyIntegrationType,
+]) as List<any>
 
 type Props = {
-    domain: string,
-    actions: Object,
-    notify: ({}) => void,
-    getIntegrationsByTypes: (string) => List<Map<*, *>>,
-    integration: Map<*, *>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    name: string,
-    email: string,
-    integrationLoading: boolean | null,
+    name: string
+    email: string
+    integrationLoading: boolean | null
 }
 
-class ChatIntegrationInstall extends React.Component<Props, State> {
+export class ChatIntegrationInstallContainer extends Component<Props, State> {
     state = {
         name: '',
         email: '',
@@ -41,7 +38,11 @@ class ChatIntegrationInstall extends React.Component<Props, State> {
     }
 
     render() {
-        const {integration, getIntegrationsByTypes, actions} = this.props
+        const {
+            integration,
+            getIntegrationsByTypes,
+            updateOrCreateIntegration,
+        } = this.props
 
         return (
             <div className="full-width">
@@ -83,7 +84,7 @@ class ChatIntegrationInstall extends React.Component<Props, State> {
                                             )}
                                             integration={integration}
                                             updateOrCreateIntegration={
-                                                actions.updateOrCreateIntegration
+                                                updateOrCreateIntegration
                                             }
                                         />
                                     )
@@ -109,13 +110,15 @@ class ChatIntegrationInstall extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+const connector = connect(
+    (state: RootState) => ({
         domain: state.currentAccount.get('domain'),
-        getIntegrationsByTypes: integrationSelectors.makeGetIntegrationsByTypes(
-            state
-        ),
+        getIntegrationsByTypes: makeGetIntegrationsByTypes(state),
+    }),
+    {
+        updateOrCreateIntegration,
+        notify,
     }
-}
+)
 
-export default connect(mapStateToProps, {notify})(ChatIntegrationInstall)
+export default connector(ChatIntegrationInstallContainer)

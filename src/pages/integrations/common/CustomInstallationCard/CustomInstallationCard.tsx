@@ -1,34 +1,30 @@
-// @flow
-import React, {type Node} from 'react'
+import React, {ReactNode, Component} from 'react'
 import Clipboard from 'clipboard'
 import classnames from 'classnames'
 import {Alert, Button, Card, CardBody} from 'reactstrap'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../constants/integration'
 
 import css from './CustomInstallationCard.less'
 
 type Props = {
-    integrationType: string,
-    description: string | Node,
-    code: string,
+    integrationType: string
+    description: string | ReactNode
+    code: string
 }
 
 type State = {
-    isCopied: boolean,
+    isCopied: boolean
 }
 
-export default class CustomInstallationCard extends React.Component<
-    Props,
-    State
-> {
+export default class CustomInstallationCard extends Component<Props, State> {
     state = {
         isCopied: false,
     }
 
-    clearIsCopiedTimeout: ?TimeoutID = null
+    clearIsCopiedTimeout: number | null = null
 
-    clipboard: ?Clipboard = null
+    clipboard: Clipboard | null = null
 
     componentDidMount() {
         this.clipboard = new Clipboard('#copy-code-snippet')
@@ -39,7 +35,7 @@ export default class CustomInstallationCard extends React.Component<
                 clearTimeout(this.clearIsCopiedTimeout)
             }
 
-            this.clearIsCopiedTimeout = setTimeout(() => {
+            this.clearIsCopiedTimeout = window.setTimeout(() => {
                 this.setState({isCopied: false})
                 this.clearIsCopiedTimeout = null
             }, 1500)
@@ -48,7 +44,7 @@ export default class CustomInstallationCard extends React.Component<
 
     componentWillUnmount() {
         if (this.clearIsCopiedTimeout) {
-            clearTimeout(this.clearIsCopiedTimeout)
+            window.clearTimeout(this.clearIsCopiedTimeout)
         }
 
         if (this.clipboard) {

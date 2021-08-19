@@ -11,7 +11,7 @@ import {
     OUTLOOK_INTEGRATION_TYPE,
 } from '../../../../../constants/integration.ts'
 
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers.ts'
 import gmailImg from '../../../../../../img/integrations/gmail.png'

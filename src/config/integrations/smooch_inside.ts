@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
 import {Language} from '../../constants/languages'
 
@@ -16,7 +16,7 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: Language.German, label: 'German'},
     {value: Language.Norwegian, label: 'Norwegian'},
     {value: Language.Czech, label: 'Czech'},
-])
+]) as List<any>
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/common/texts/widget_texts.json') as Record<

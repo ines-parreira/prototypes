@@ -1,3 +1,5 @@
+import {IntegrationType} from '../models/integration/types'
+
 //$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'
 export const SMOOCH_INTEGRATION_TYPE = 'smooch'
@@ -18,11 +20,16 @@ export const KLAVIYO_INTEGRATION_TYPE = 'klaviyo'
 export const PHONE_INTEGRATION_TYPE = 'phone'
 export const TWITTER_INTEGRATION_TYPE = 'twitter'
 
+// $TsFixMe replace with proper enum once no more js files use the constant
 export const EMAIL_INTEGRATION_TYPES = Object.freeze([
     EMAIL_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-])
+]) as [
+    IntegrationType.EmailIntegrationType,
+    IntegrationType.GmailIntegrationType,
+    IntegrationType.OutlookIntegrationType
+]
 
 export const INTEGRATION_TYPES_MAP = Object.freeze({
     EMAIL_INTEGRATION_TYPE,

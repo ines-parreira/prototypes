@@ -1,21 +1,20 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 
-import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations/index.ts'
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside.ts'
+import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations/index'
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
-import CustomerInitialMessages from './CustomerInitialMessages'
+import CustomerInitialMessages from './CustomerInitialMessages.js'
 
 type Props = {
-    conversationColor: string,
-    name?: string,
-    language?: string,
-    autoResponderReply?: string,
+    conversationColor: string
+    name?: string
+    language?: string
+    autoResponderReply?: string
 }
 
-export default class OptionalEmailCapture extends React.Component<Props> {
+export default class OptionalEmailCapture extends Component<Props> {
     render() {
         const {
             conversationColor,
@@ -26,7 +25,7 @@ export default class OptionalEmailCapture extends React.Component<Props> {
 
         const translatedTexts =
             CHAT_AUTO_RESPONDER_TEXTS[
-                language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                language! || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
             ]
 
         return (
@@ -55,7 +54,7 @@ export default class OptionalEmailCapture extends React.Component<Props> {
                                 'mb-2'
                             )}
                         >
-                            {translatedTexts[autoResponderReply]}
+                            {translatedTexts[autoResponderReply!]}
                         </div>
                     </div>
                 </div>

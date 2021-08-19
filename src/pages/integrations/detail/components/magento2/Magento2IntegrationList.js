@@ -11,7 +11,7 @@ import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration.ts
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import history from '../../../../history.ts'
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 
 type Props = {
     integrations: List<Map<*, *>>,

@@ -46,7 +46,7 @@ export type IntegrationDataItem<T> = {
     deleted_datetime: Maybe<string>
 }
 
-type IntegrationDecoration = {
+export type IntegrationDecoration = {
     avatar_team_picture_url: Maybe<string>
     avatar_type: string
     conversation_color: string

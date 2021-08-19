@@ -1,1 +1,1 @@
-export default from './ChatIntegrationAppearance'
+export default from './ChatIntegrationAppearance.tsx'

@@ -16,7 +16,7 @@ import {
     SPANISH_LANGUAGE,
 } from '../../../../../../../constants/languages.ts'
 
-import {ChatIntegrationMigration} from '../ChatIntegrationMigration'
+import {ChatIntegrationMigration} from '../ChatIntegrationMigration.tsx'
 
 const integration = fromJS({
     id: 1,
@@ -94,20 +94,18 @@ describe('ChatIntegrationMigration component', () => {
     })
 
     it('should create a new gorgias_chat integration when clicking on the migration button', () => {
-        const actions = {
-            updateOrCreateIntegration: jest.fn(),
-        }
+        const updateOrCreateIntegration = jest.fn()
 
         const {container} = render(
             <ChatIntegrationMigration
-                actions={actions}
+                updateOrCreateIntegration={updateOrCreateIntegration}
                 integration={integration}
             />
         )
         const btn = container.querySelector('button.btn-success')
         userEvent.click(btn)
 
-        const parameters = actions.updateOrCreateIntegration.mock.calls[0][0]
+        const parameters = updateOrCreateIntegration.mock.calls[0][0]
         expect(parameters).not.toHaveProperty('meta.webhook')
         expect(parameters).not.toHaveProperty('meta.script_url')
         expect(parameters).not.toHaveProperty('meta.need_scope_update')
@@ -141,9 +139,7 @@ describe('ChatIntegrationMigration component', () => {
     })
 
     it('should create a new gorgias_chat integration with the default french locale', () => {
-        const actions = {
-            updateOrCreateIntegration: jest.fn(),
-        }
+        const updateOrCreateIntegration = jest.fn()
 
         const frenchIntegration = integration.setIn(
             ['meta', 'language'],
@@ -152,14 +148,14 @@ describe('ChatIntegrationMigration component', () => {
 
         const {container} = render(
             <ChatIntegrationMigration
-                actions={actions}
+                updateOrCreateIntegration={updateOrCreateIntegration}
                 integration={frenchIntegration}
             />
         )
         const btn = container.querySelector('button.btn-success')
         userEvent.click(btn)
 
-        const parameters = actions.updateOrCreateIntegration.mock.calls[0][0]
+        const parameters = updateOrCreateIntegration.mock.calls[0][0]
         expect(parameters.getIn(['meta', 'language'])).toEqual('fr-FR')
     })
 })

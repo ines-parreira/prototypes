@@ -11,7 +11,7 @@ import {notify} from '../../../../../../state/notifications/actions.ts'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
-import CustomInstallationCard from '../../../../common/CustomInstallationCard/CustomInstallationCard'
+import CustomInstallationCard from '../../../../common/CustomInstallationCard/CustomInstallationCard.tsx'
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
 import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsCard'
 

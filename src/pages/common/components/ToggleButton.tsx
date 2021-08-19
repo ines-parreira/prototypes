@@ -5,10 +5,7 @@ import css from './ToggleButton.less'
 
 type Props = {
     disabled?: boolean
-    onChange: (
-        isToggled: boolean,
-        event?: MouseEvent
-    ) => Maybe<Promise<unknown>>
+    onChange: (isToggled: boolean, event?: MouseEvent) => void
     value: boolean
     loading?: boolean
     className?: string
@@ -20,7 +17,7 @@ export default class ToggleButton extends Component<Props> {
     _onChange = (event: MouseEvent) => {
         event.preventDefault()
         if (!this.props.disabled) {
-            void this.props.onChange(!this.props.value, event)
+            this.props.onChange(!this.props.value, event)
         }
     }
 

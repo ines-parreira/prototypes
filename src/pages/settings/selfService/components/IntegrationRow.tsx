@@ -5,7 +5,7 @@ import {Map} from 'immutable'
 import ToggleButton from '../../../common/components/ToggleButton'
 import {getIconFromType} from '../../../../state/integrations/helpers'
 import {generateConfiguration} from '../utils/generateConfiguration'
-import ForwardIcon from '../../../integrations/detail/components/ForwardIcon.js'
+import ForwardIcon from '../../../integrations/detail/components/ForwardIcon'
 import {
     SelfServiceConfiguration,
     ShopType,

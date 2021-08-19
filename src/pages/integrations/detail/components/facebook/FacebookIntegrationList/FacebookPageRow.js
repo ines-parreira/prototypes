@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 
-import ForwardIcon from '../../ForwardIcon'
+import ForwardIcon from '../../ForwardIcon.tsx'
 
 import FacebookLoginButton from '../FacebookLoginButton'
 

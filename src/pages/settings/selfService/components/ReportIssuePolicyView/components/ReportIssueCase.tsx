@@ -9,7 +9,7 @@ import {
     useReorderDnD,
     Callbacks,
 } from '../../../../../settings/helpCenter/hooks/useReorderDnD'
-import ForwardIcon from '../../../../../integrations/detail/components/ForwardIcon.js'
+import ForwardIcon from '../../../../../integrations/detail/components/ForwardIcon'
 
 import css from './ReportIssueCase.less'
 

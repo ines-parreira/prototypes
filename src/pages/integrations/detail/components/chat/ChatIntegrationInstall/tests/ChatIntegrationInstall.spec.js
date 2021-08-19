@@ -8,7 +8,12 @@ import {
 } from '../../../../../../../constants/integration.ts'
 
 import configureStore from '../../../../../../../store/configureStore'
-import ChatIntegrationInstall from '../ChatIntegrationInstall'
+import ChatIntegrationInstall from '../ChatIntegrationInstall.tsx'
+
+jest.mock(
+    '../../../../../common/InstallOnIntegrationsCard/InstallOnIntegrationsCard.tsx',
+    () => () => <div>InstallOnIntegrationsCard</div>
+)
 
 describe('ChatIntegrationInstall component', () => {
     const minStore = {

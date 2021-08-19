@@ -4,7 +4,7 @@ import {List, Map} from 'immutable'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import history from '../../../../history'
-import ForwardIcon from '../ForwardIcon.js'
+import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList.js'
 import shopifyLogo from '../../../../../../img/integrations/shopify.png'
 import warningIcon from '../../../../../../img/icons/warning.svg'

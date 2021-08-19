@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon'
+import ForwardIcon from '../ForwardIcon.tsx'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 import history from '../../../../history.ts'

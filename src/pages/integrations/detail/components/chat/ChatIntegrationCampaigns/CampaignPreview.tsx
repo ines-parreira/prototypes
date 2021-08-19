@@ -1,19 +1,21 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
-import Avatar from '../../../../../common/components/Avatar'
+import Avatar from '../../../../../common/components/Avatar/Avatar'
 
 import css from './CampaignPreview.less'
 
 type Props = {
-    html?: ?string,
-    authorName?: ?string,
-    authorAvatarUrl?: ?string,
-    mainColor?: ?string,
-    translatedTexts: Object,
+    html?: string
+    authorName?: string
+    authorAvatarUrl?: string
+    mainColor?: string
+    translatedTexts: {
+        poweredByGorgias: string
+        campaignClickToReply: string
+    }
 }
 
-export default class CampaignPreview extends React.Component<Props> {
+export default class CampaignPreview extends Component<Props> {
     render() {
         const {
             html,
@@ -23,7 +25,7 @@ export default class CampaignPreview extends React.Component<Props> {
             translatedTexts,
         } = this.props
 
-        const _bgColor = (color) => ({backgroundColor: color})
+        const _bgColor = (color: string) => ({backgroundColor: color})
 
         return (
             <div className={css.preview}>
@@ -44,7 +46,7 @@ export default class CampaignPreview extends React.Component<Props> {
                             </div>
                             <div
                                 className={css.messageText}
-                                dangerouslySetInnerHTML={{__html: html}}
+                                dangerouslySetInnerHTML={{__html: html!}}
                             />
                         </div>
                     </div>
@@ -58,7 +60,7 @@ export default class CampaignPreview extends React.Component<Props> {
                     </div>
                 </div>
 
-                <div className={css.button} style={_bgColor(mainColor)}>
+                <div className={css.button} style={_bgColor(mainColor!)}>
                     <img
                         alt="close icon"
                         className={css.icon}

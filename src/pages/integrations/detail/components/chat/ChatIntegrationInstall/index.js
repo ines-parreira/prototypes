@@ -1,1 +1,1 @@
-export default from './ChatIntegrationInstall'
+export default from './ChatIntegrationInstall.tsx'

@@ -1,4 +1,4 @@
-import CHAT_AUTO_RESPONDER_TEXTS from '../../../../../integrations/common/texts/chat_auto_responder_texts.json'
+import CHAT_AUTO_RESPONDER_TEXTS_IMPORT from '../../../../../integrations/common/texts/chat_auto_responder_texts.json'
 
 import * as facebook from './facebook'
 import * as magento2 from './magento2'
@@ -30,6 +30,12 @@ export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
 ]
+
+// Casting for typing json imports
+const CHAT_AUTO_RESPONDER_TEXTS: Record<
+    string,
+    Record<string, string>
+> = CHAT_AUTO_RESPONDER_TEXTS_IMPORT
 
 export {CHAT_AUTO_RESPONDER_TEXTS}
 
@@ -87,12 +93,7 @@ export const getAutoResponderReplyOptions = (language: string | null) => {
     return CHAT_AUTO_RESPONDER_REPLY_OPTIONS.map((option) => {
         return {
             value: option,
-            label: `"${
-                (CHAT_AUTO_RESPONDER_TEXTS as Record<
-                    string,
-                    Record<string, string>
-                >)[language][option]
-            }"`,
+            label: `"${CHAT_AUTO_RESPONDER_TEXTS[language][option]}"`,
         }
     })
 }

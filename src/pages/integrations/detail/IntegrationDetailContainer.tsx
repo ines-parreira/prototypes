@@ -68,13 +68,13 @@ import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCre
 import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
 import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
 
-import ChatIntegrationList from './components/chat/ChatIntegrationList.js'
-import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance.js'
-import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns.js'
+import ChatIntegrationList from './components/chat/ChatIntegrationList'
+import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance'
+import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
 import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies.js'
-import ChatIntegrationMigration from './components/chat/ChatIntegrationMigration/ChatIntegrationMigration.js'
-import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences.js'
-import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall/ChatIntegrationInstall.js'
+import ChatIntegrationMigration from './components/chat/ChatIntegrationMigration/ChatIntegrationMigration'
+import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences'
+import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall/ChatIntegrationInstall'
 import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail.js'
 
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview.js'
@@ -510,31 +510,17 @@ export const IntegrationDetailContainer = ({
             if (!!integrationId) {
                 if (extra === Tab.SmoochInsideMigration) {
                     return (
-                        <ChatIntegrationMigration
-                            actions={actions}
-                            loading={loading}
-                            integration={integration}
-                        />
+                        <ChatIntegrationMigration integration={integration} />
                     )
                 }
 
                 if (extra === Tab.Installation) {
-                    return (
-                        <ChatIntegrationInstall
-                            actions={actions}
-                            loading={loading}
-                            integration={integration}
-                        />
-                    )
+                    return <ChatIntegrationInstall integration={integration} />
                 }
 
                 if (extra === Tab.Preferences) {
                     return (
-                        <ChatIntegrationPreferences
-                            actions={actions}
-                            loading={loading}
-                            integration={integration}
-                        />
+                        <ChatIntegrationPreferences integration={integration} />
                     )
                 }
 
@@ -563,7 +549,6 @@ export const IntegrationDetailContainer = ({
 
                 return (
                     <ChatIntegrationAppearance
-                        actions={actions}
                         integration={integration}
                         isUpdate={isUpdate}
                         loading={loading}
@@ -574,7 +559,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <ChatIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                 />
