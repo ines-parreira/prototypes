@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/help-center"
+            >
+              Help Center
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            ACME Helpcenter
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Appearance
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/articles"
+      >
+        Articles
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/customization"
+      >
+        Customization
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/help-center/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+      style="max-width: 680px; margin-left: 0px;"
+    >
+      <div
+        class="heading"
+      >
+        <h3>
+          Appearance
+        </h3>
+      </div>
+      <div
+        class="form-group"
+      >
+        <div
+          class="d-flex"
+        >
+          <label
+            class="switch"
+          >
+            <input
+              readonly=""
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
+          <label
+            class="control-label ml-2"
+          >
+            Enable search bar
+          </label>
+        </div>
+        <p>
+          This makes the search bar visible or not in your help center home page.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

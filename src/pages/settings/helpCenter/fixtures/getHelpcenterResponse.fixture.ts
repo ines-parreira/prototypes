@@ -15,6 +15,8 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         deleted_datetime: undefined,
         default_locale: 'en-US',
         supported_locales: ['en-US'],
+        search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
+        algolia_api_key: null,
     },
     {
         id: 2,
@@ -26,6 +28,8 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         deleted_datetime: undefined,
         default_locale: 'de-DE',
         supported_locales: ['en-US', 'de-DE'],
+        search_deactivated_datetime: null,
+        algolia_api_key: null,
     },
     {
         id: 3,
@@ -37,6 +41,8 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         deleted_datetime: undefined,
         default_locale: 'fr-FR',
         supported_locales: ['en-US', 'fr-FR'],
+        search_deactivated_datetime: null,
+        algolia_api_key: null,
     },
 ]
 
@@ -50,4 +56,6 @@ export const getSingleHelpcenterResponseFixture: HelpCenter = {
     deleted_datetime: undefined,
     default_locale: 'en-US',
     supported_locales: ['en-US', 'fr-FR'],
+    search_deactivated_datetime: null,
+    algolia_api_key: null,
 }

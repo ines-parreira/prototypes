@@ -16,7 +16,7 @@ export const HelpCenterNavigation = ({helpcenterId}: Props) => {
                 Articles
             </NavLink>
             {/* <NavLink to={`${baseURL}/contact-us`}>Contact Us</NavLink> */}
-            {/* <NavLink to={`${baseURL}/appearance`}>Appearance</NavLink> */}
+            <NavLink to={`${baseURL}/appearance`}>Appearance</NavLink>
             <NavLink to={`${baseURL}/preferences`} exact>
                 Preferences
             </NavLink>
