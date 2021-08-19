@@ -2,6 +2,9 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
+
+import {createCategoryFromDto} from '../../../../models/helpCenter/utils'
+
 import {
     readCategories,
     saveCategories,
@@ -41,13 +44,12 @@ export const useHelpcenterCategories = (
                         .then((response) => response.data)
 
                     const categories = data.data.map((category) => {
-                        return {
-                            ...category,
-                            position: positions.findIndex(
+                        return createCategoryFromDto(
+                            category,
+                            positions.findIndex(
                                 (index) => index === category.id
-                            ),
-                            articles: [],
-                        }
+                            )
+                        )
                     })
 
                     dispatch(saveCategories(categories))

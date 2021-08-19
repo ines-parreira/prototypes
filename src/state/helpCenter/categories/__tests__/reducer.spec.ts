@@ -15,6 +15,7 @@ import {
     updateCategory,
     deleteCategory,
     resetCategories,
+    pushCategorySupportedLocales,
 } from '../actions'
 
 import {CategoriesAction} from '../types'
@@ -91,6 +92,34 @@ describe('Help Center/Categories reducer', () => {
             expect(nextState).toEqual({
                 categoriesById: {},
             })
+        })
+    })
+
+    describe('dispatch pushCategorySupportedLocales', () => {
+        const nextState = reducer(
+            {
+                categoriesById: {
+                    [categoryResponse.id]: categoryResponse,
+                },
+            },
+            pushCategorySupportedLocales({
+                categoryId: 1,
+                supportedLocales: ['fr-FR'],
+            })
+        )
+
+        expect(nextState).toEqual({
+            categoriesById: {
+                1: {
+                    ...categoryResponse,
+                    articles: [],
+                    available_locales: ['en-US', 'fr-FR'],
+                    translation: {
+                        ...categoryResponse.translation,
+                        locale: 'en-US',
+                    },
+                },
+            },
         })
     })
 

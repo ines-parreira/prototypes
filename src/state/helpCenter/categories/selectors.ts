@@ -24,6 +24,9 @@ export const readCategories = createSelector(
         ) || []
 )
 
+export const readCategory = (id: number) =>
+    createSelector(readCategoriesById, (categories) => categories[id])
+
 export const readCategoriesWithArticles = createSelector(
     readCategories,
     readArticles,

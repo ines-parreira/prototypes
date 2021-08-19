@@ -1,18 +1,63 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {act, fireEvent, render} from '@testing-library/react'
 
 import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../fixtures/getHelpcenterResponse.fixture'
+
+import {RootState, StoreDispatch} from '../../../../../../../state/types'
+import {initialState as articlesState} from '../../../../../../../state/helpCenter/articles/reducer'
+import {initialState as uiState} from '../../../../../../../state/helpCenter/ui/reducer'
+import {initialState as categoriesState} from '../../../../../../../state/helpCenter/categories/reducer'
+
+import {HELP_CENTER_DOMAIN} from '../../../../constants'
+
 import {HelpCenterCategory} from '../HelpCenterCategory'
+
+jest.mock('../../../../hooks/useLocales', () => ({
+    useLocales: () => [
+        {
+            name: 'English - USA',
+            code: 'en-US',
+        },
+        {
+            name: 'French - France',
+            code: 'fr-FR',
+        },
+        {
+            name: 'French - Canada',
+            code: 'fr-CA',
+        },
+        {
+            name: 'Czech - Czech Republic',
+            code: 'cs-CZ',
+        },
+    ],
+}))
+
 type Props = {
     isOpen?: boolean
     getCategory?: () => Promise<unknown>
+}
+
+const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
+    thunk,
+])
+
+const defaultState: Partial<RootState> = {
+    helpCenter: {
+        ui: uiState,
+        articles: articlesState,
+        categories: categoriesState,
+    },
 }
 
 const Example = ({isOpen = false}: Props) => {
     const [open, setOpen] = React.useState(isOpen)
 
     return (
-        <>
+        <Provider store={mockedStore(defaultState)}>
             <button data-testid="toggle-btn" onClick={() => setOpen(true)}>
                 Click me
             </button>
@@ -20,23 +65,27 @@ const Example = ({isOpen = false}: Props) => {
                 isOpen={open}
                 isLoading={false}
                 helpCenter={helpCenter}
-                category={null}
                 onClose={() => setOpen(false)}
+                onLocaleChange={jest.fn()}
+                onDeleteTranslation={jest.fn()}
             />
-        </>
+        </Provider>
     )
 }
 
 describe('<HelpCenterCategory>', () => {
     it('renders in a hidden state by default', () => {
         const {getByTestId} = render(
-            <HelpCenterCategory
-                isOpen={false}
-                isLoading={false}
-                helpCenter={helpCenter}
-                category={null}
-                onClose={jest.fn()}
-            />
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterCategory
+                    isOpen={false}
+                    isLoading={false}
+                    helpCenter={helpCenter}
+                    onClose={jest.fn()}
+                    onLocaleChange={jest.fn()}
+                    onDeleteTranslation={jest.fn()}
+                />
+            </Provider>
         )
 
         expect(getByTestId('category-edit').className).toEqual('drawer closed')
@@ -95,21 +144,20 @@ describe('<HelpCenterCategory>', () => {
         })
     })
 
-    // TODO: uncomment this when we support different languages
-    // it('changes the language in the slug domain', () => {
-    //     const {getByTestId} = render(<Example isOpen />)
+    it('changes the language in the slug domain', () => {
+        const {getByTestId} = render(<Example isOpen />)
 
-    //     expect(getByTestId('slug-domain').textContent).toEqual(
-    //         `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/en-us`
-    //     )
+        expect(getByTestId('slug-domain').textContent).toEqual(
+            `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/en-us`
+        )
 
-    //     fireEvent.click(getByTestId('dropdown-select-trigger'))
-    //     fireEvent.click(getByTestId('option-fr-FR'))
+        fireEvent.click(getByTestId('dropdown-select-trigger'))
+        fireEvent.click(getByTestId('option-fr-FR'))
 
-    //     expect(getByTestId('slug-domain').textContent).toEqual(
-    //         `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/fr-fr`
-    //     )
-    // })
+        expect(getByTestId('slug-domain').textContent).toEqual(
+            `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/fr-fr`
+        )
+    })
 
     it('disables the Save button if Title, Slug or Description are missing', () => {
         const {getByLabelText, getByTestId} = render(<Example isOpen />)
@@ -143,18 +191,20 @@ describe('<HelpCenterCategory>', () => {
         const {getByTestId} = render(<Example isOpen />)
         const titleInput = getByTestId('title-input') as HTMLInputElement
 
-        expect(titleInput.value).toEqual('')
+        act(() => {
+            expect(titleInput.value).toEqual('')
 
-        fireEvent.change(titleInput, {
-            target: {
-                value: 'About us',
-            },
+            fireEvent.change(titleInput, {
+                target: {
+                    value: 'About us',
+                },
+            })
+
+            // Toggle the drawer to reset the state
+            fireEvent.click(getByTestId('close-drawer'))
+            fireEvent.click(getByTestId('toggle-btn'))
+
+            expect(titleInput.value).toEqual('')
         })
-
-        // Toggle the drawer to reset the state
-        fireEvent.click(getByTestId('close-drawer'))
-        fireEvent.click(getByTestId('toggle-btn'))
-
-        expect(titleInput.value).toEqual('')
     })
 })

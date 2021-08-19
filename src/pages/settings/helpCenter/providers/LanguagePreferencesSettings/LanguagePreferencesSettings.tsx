@@ -146,6 +146,10 @@ export const LanguagePreferencesSettings = ({
         updatePreferencesFromData()
     }, [data])
 
+    React.useEffect(() => {
+        updatePreferencesFromData()
+    }, [data])
+
     return (
         <PreferencesContext.Provider
             value={{

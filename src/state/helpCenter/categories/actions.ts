@@ -1,6 +1,10 @@
 import {createAction} from '@reduxjs/toolkit'
 
-import {Category, CategoryTranslation} from '../../../models/helpCenter/types'
+import {
+    Category,
+    CategoryTranslation,
+    LocaleCode,
+} from '../../../models/helpCenter/types'
 
 import {CategoryActions} from './types'
 
@@ -15,6 +19,16 @@ export const updateCategory = createAction<Category>(
 export const deleteCategory = createAction<number>(
     CategoryActions.DELETE_CATEGORY
 )
+
+export const pushCategorySupportedLocales = createAction<{
+    categoryId: number
+    supportedLocales: LocaleCode[]
+}>(CategoryActions.PUSH_CATEGORY_LOCALES)
+
+export const removeLocaleFromCategory = createAction<{
+    categoryId: number
+    locale: LocaleCode
+}>(CategoryActions.REMOVE_CATEGORY_LOCALE)
 
 export const updateCategoryTranslation = createAction<CategoryTranslation>(
     CategoryActions.UPDATE_CATEGORY_TRANSLATION

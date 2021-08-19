@@ -1,4 +1,6 @@
 import React from 'react'
+import {useAsyncFn} from 'react-use'
+import {useSelector} from 'react-redux'
 
 import {
     HelpCenter,
@@ -10,13 +12,13 @@ import {
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
+import {readCategory} from '../../../../../state/helpCenter/categories'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
 
 import {useModalManager} from '../../../../../hooks/useModalManager'
 
 import {HelpCenterCategory} from '../../components/articles/HelpCenterCategory'
-import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 
 import {MODALS} from '../../constants'
@@ -27,56 +29,50 @@ type Props = {
 
 export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const {isReady, client} = useHelpcenterApi()
-    const [isLoading, setLoading] = React.useState<boolean>(true)
-    const [category, setCategory] = React.useState<Category | null>(null)
-    const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY, {
-        autoDestroy: false,
-    })
-    const actions = useCategoriesActions()
-
+    const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
     const params = getParams() as Category & {isCreate?: boolean}
 
-    React.useEffect(() => {
-        async function init() {
-            if (isReady && client && params?.id) {
-                if (params.translation) {
-                    try {
-                        const response = await client?.getCategory({
-                            help_center_id: helpCenter.id,
-                            id: params.id,
-                            locale: params?.translation.locale,
-                        })
+    const category = useSelector(readCategory(params?.id))
+    const actions = useCategoriesActions()
 
-                        setCategory(response.data as Category)
-                        setLoading(false)
-                    } catch (e) {
-                        console.error(e)
-                        closeModal()
-                    }
-                }
-            } else {
-                if (isOpen()) {
-                    setLoading(false)
-                }
+    const [translation, readTranslation] = useAsyncFn(
+        (categoryId: number, locale: LocaleCode) => {
+            if (category.available_locales.includes(locale)) {
+                return actions.getCategoryTranslation(categoryId, locale)
             }
-        }
 
-        void init()
-    }, [helpCenter, isReady, params])
+            return Promise.resolve(undefined)
+        },
+        [actions]
+    )
 
     React.useEffect(() => {
-        if (isOpen() === false) {
-            setCategory(null)
+        if (category?.id && category?.translation?.locale) {
+            void readTranslation(category.id, category.translation.locale)
         }
-    }, [isOpen()])
+    }, [helpCenter, category, params])
 
     const handleOnSave = async (
         payload: Partial<CategoryTranslation>,
         locale: LocaleCode
     ) => {
         try {
-            await actions.updateCategoryTranslation(params.id, locale, payload)
+            if (category?.available_locales.includes(locale)) {
+                // Update translation
+                await actions.updateCategoryTranslation(
+                    params.id,
+                    locale,
+                    payload
+                )
+            } else {
+                // Create translation
+                await actions.createCategoryTranslation(params.id, {
+                    title: payload?.title || '',
+                    description: payload?.description || '',
+                    slug: payload?.slug || '',
+                    locale,
+                })
+            }
 
             void dispatch(
                 notify({
@@ -142,17 +138,49 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
         }
     }
 
+    const handleOnDeleteTranslation = async (
+        categoryId: number,
+        locale: LocaleCode
+    ) => {
+        try {
+            await actions.deleteCategoryTranslation(categoryId, locale)
+
+            void dispatch(
+                notify({
+                    message: 'Successfully deleted the category translations',
+                    status: NotificationStatus.Success,
+                })
+            )
+        } catch (err) {
+            console.error(err)
+            void dispatch(
+                notify({
+                    message:
+                        'Something went wrong. Cannot delete category translation',
+                    status: NotificationStatus.Error,
+                })
+            )
+        }
+    }
+
     return (
         <HelpCenterCategory
-            isLoading={isLoading}
+            isLoading={translation.loading}
             isCreate={params?.isCreate}
+            category={category}
             helpCenter={helpCenter}
             isOpen={isOpen()}
-            category={category}
+            translation={translation.value}
+            onLocaleChange={(locale) => {
+                if (category?.id) {
+                    void readTranslation(category.id, locale)
+                }
+            }}
             onSave={handleOnSave}
             onCreate={handleOnCreate}
             onClose={() => closeModal()}
             onDelete={handleOnDelete}
+            onDeleteTranslation={handleOnDeleteTranslation}
         />
     )
 }

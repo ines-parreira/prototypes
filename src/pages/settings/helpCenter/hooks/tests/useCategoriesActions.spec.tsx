@@ -13,6 +13,9 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {
+    deleteCategory,
+    pushCategorySupportedLocales,
+    removeLocaleFromCategory,
     saveCategories,
     updateCategoriesOrder,
     updateCategoryTranslation,
@@ -21,6 +24,7 @@ import {
 import {getSingleCategoryEnglish} from '../../fixtures/getCategoriesResponse.fixtures'
 
 import {useCategoriesActions} from '../useCategoriesActions'
+import {useHelpcenterApi} from '../useHelpcenterApi'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
@@ -32,24 +36,47 @@ jest.mock('../useHelpcenterApi', () => {
         useHelpcenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
-                createCategory: () =>
-                    Promise.resolve({
+                createCategory: jest.fn().mockResolvedValue({
+                    data: {
+                        translation: {},
+                    },
+                }),
+                getCategory: jest.fn().mockResolvedValue({
+                    data: {
+                        translation: {},
+                    },
+                }),
+                createCategoryTranslation: jest
+                    .fn()
+                    .mockResolvedValueOnce({
                         data: {
-                            translation: {},
+                            category_id: 1,
+                            locale: 'fr-FR',
+                            title: '',
+                            description: '',
+                            slug: '',
+                        },
+                    })
+                    .mockResolvedValue({
+                        data: {
+                            category_id: 1,
+                            locale: 'en-US',
+                            title: '',
+                            description: '',
+                            slug: '',
                         },
                     }),
-                updateCategoryTranslation: () =>
-                    Promise.resolve({
-                        data: {},
-                    }),
-                setCategoriesPositions: () =>
-                    Promise.resolve({
-                        data: [],
-                    }),
-                getCategoriesPositions: () =>
-                    Promise.resolve({
-                        data: [],
-                    }),
+                updateCategoryTranslation: jest.fn().mockResolvedValue({
+                    data: {},
+                }),
+                setCategoriesPositions: jest.fn().mockResolvedValue({
+                    data: [],
+                }),
+                getCategoriesPositions: jest.fn().mockResolvedValue({
+                    data: [],
+                }),
+                deleteCategoryTranslation: jest.fn().mockResolvedValue({}),
+                deleteCategory: jest.fn().mockResolvedValue({}),
             },
         }),
     }
@@ -68,6 +95,22 @@ jest.mock('../../../../../state/helpCenter/categories', () => ({
         type: 'HELPCENTER/CATEGORIES/UPDATE_CATEGORY_TRANSLATION',
         payload: {},
     }),
+    pushCategorySupportedLocales: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/CATEGORIES/PUSH_CATEGORY_LOCALES',
+        payload: {},
+    }),
+    deleteCategory: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/CATEGORIES/DELETE_CATEGORY',
+        payload: {},
+    }),
+    removeLocaleFromCategory: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/CATEGORIES/REMOVE_CATEGORY_LOCALE',
+        payload: {},
+    }),
+}))
+
+jest.mock('../../../../../state/helpCenter/ui/selectors', () => ({
+    readViewLanguage: () => 'en-US',
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -89,6 +132,24 @@ const dependencyWrapper: React.ComponentType<any> = ({
 describe('useCategoriesActions', () => {
     afterEach(() => {
         jest.clearAllMocks()
+    })
+
+    describe('getCategoryTranslation()', () => {
+        it('calls the getCategory with correct locale', async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.getCategoryTranslation(1, 'en-US')
+
+            expect(useHelpcenterApi().client?.getCategory).toHaveBeenCalledWith(
+                {
+                    help_center_id: 1,
+                    id: 1,
+                    locale: 'en-US',
+                }
+            )
+        })
     })
 
     describe('createCategory()', () => {
@@ -127,6 +188,41 @@ describe('useCategoriesActions', () => {
         })
     })
 
+    describe('createCategoryTranslation()', () => {
+        it('calls pushCategorySupportedLocales if locale param is different from view language', async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.createCategoryTranslation(1, {
+                locale: 'fr-FR',
+                title: ',',
+                description: ',',
+                slug: ',',
+            })
+
+            expect(pushCategorySupportedLocales).toHaveBeenCalledWith({
+                categoryId: 1,
+                supportedLocales: ['fr-FR'],
+            })
+        })
+
+        it("doesn't call pushCategorySupportedLocales if locale param is the same as view language", async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.createCategoryTranslation(1, {
+                locale: 'en-US',
+                title: ',',
+                description: ',',
+                slug: ',',
+            })
+
+            expect(pushCategorySupportedLocales).not.toHaveBeenCalled()
+        })
+    })
+
     describe('updateCategoriesPosition()', () => {
         it('dispatches updateCategoriesOrder action', async () => {
             const {result} = renderHook(useCategoriesActions, {
@@ -138,6 +234,43 @@ describe('useCategoriesActions', () => {
             ])
 
             expect(updateCategoriesOrder).toHaveBeenCalled()
+        })
+    })
+
+    describe('deleteCategoryTranslation()', () => {
+        it('dispatches removeLocaleFromCategory', async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.deleteCategoryTranslation(1, 'fr-FR')
+
+            expect(removeLocaleFromCategory).toHaveBeenCalledWith({
+                categoryId: 1,
+                locale: 'fr-FR',
+            })
+        })
+
+        it('dispatches deleteCategory if locale param is the same as view language', async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.deleteCategoryTranslation(1, 'en-US')
+
+            expect(deleteCategory).toHaveBeenCalledWith(1)
+        })
+    })
+
+    describe('deleteCategory()', () => {
+        it('dispatches deleteCategory', async () => {
+            const {result} = renderHook(useCategoriesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.deleteCategory(1)
+
+            expect(deleteCategory).toHaveBeenCalledWith(1)
         })
     })
 })

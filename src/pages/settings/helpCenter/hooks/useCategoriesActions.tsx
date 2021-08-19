@@ -1,10 +1,12 @@
 import {chain as _chain} from 'lodash'
+import {useSelector} from 'react-redux'
 
 import {
     LocaleCode,
     CategoryTranslation,
     CreateCategoryDto,
     Category,
+    CreateCategoryTranslationBody,
 } from '../../../../models/helpCenter/types'
 import {
     createCategoryFromDto,
@@ -14,10 +16,13 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import {
     deleteCategory,
+    pushCategorySupportedLocales,
+    removeLocaleFromCategory,
     saveCategories,
     updateCategoriesOrder,
     updateCategoryTranslation,
 } from '../../../../state/helpCenter/categories'
+import {readViewLanguage} from '../../../../state/helpCenter/ui'
 
 import {useHelpcenterApi} from './useHelpcenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
@@ -26,8 +31,29 @@ export const useCategoriesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpcenterApi()
+    const viewLanguage = useSelector(readViewLanguage)
 
     return {
+        async getCategoryTranslation(categoryId: number, locale: LocaleCode) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            return client
+                .getCategory({
+                    help_center_id: helpCenterId,
+                    id: categoryId,
+                    locale,
+                })
+                .then((response) => {
+                    const {data} = response
+
+                    if (data?.translation) {
+                        return data.translation
+                    }
+
+                    throw new Error('Category translation missing')
+                })
+        },
+
         async createCategory(payload: CreateCategoryDto) {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -66,7 +92,7 @@ export const useCategoriesActions = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             const translation = await client
-                ?.updateCategoryTranslation(
+                .updateCategoryTranslation(
                     {
                         help_center_id: helpCenterId,
                         category_id: categoryId,
@@ -79,9 +105,37 @@ export const useCategoriesActions = () => {
 
             const output = translation
 
-            dispatch(updateCategoryTranslation(output))
+            if (locale === viewLanguage) {
+                dispatch(updateCategoryTranslation(output))
+            }
 
             return output
+        },
+
+        async createCategoryTranslation(
+            categoryId: number,
+            payload: CreateCategoryTranslationBody
+        ) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            const translation = await client.createCategoryTranslation(
+                {
+                    help_center_id: helpCenterId,
+                    category_id: categoryId,
+                },
+                payload
+            )
+
+            if (payload.locale !== viewLanguage) {
+                dispatch(
+                    pushCategorySupportedLocales({
+                        categoryId,
+                        supportedLocales: [payload.locale],
+                    })
+                )
+            }
+
+            return translation
         },
 
         async updateCategoriesPosition(categories: Category[]) {
@@ -104,6 +158,25 @@ export const useCategoriesActions = () => {
             dispatch(updateCategoriesOrder(positions))
 
             return positions
+        },
+
+        async deleteCategoryTranslation(
+            categoryId: number,
+            locale: LocaleCode
+        ) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            await client.deleteCategoryTranslation({
+                help_center_id: helpCenterId,
+                category_id: categoryId,
+                locale,
+            })
+
+            dispatch(removeLocaleFromCategory({categoryId, locale}))
+
+            if (locale === viewLanguage) {
+                dispatch(deleteCategory(categoryId))
+            }
         },
 
         async deleteCategory(categoryId: number) {

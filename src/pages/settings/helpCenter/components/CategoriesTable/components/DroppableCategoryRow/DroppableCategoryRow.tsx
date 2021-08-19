@@ -70,6 +70,17 @@ export const DroppableCategoryRow = ({
 
     const opacity = isDragging ? 0 : 1
     const count = React.useMemo(() => articles.length, [articles])
+    const languageList = React.useMemo(() => {
+        if (category.available_locales.length > 0) {
+            return category.available_locales.map((code) => localesByCode[code])
+        }
+
+        if (category?.translation) {
+            return [localesByCode[category.translation.locale]]
+        }
+
+        return []
+    }, [category, localesByCode])
     const shouldCollapseRow = isOpen && articles.length > 0
     const bodyInnerClass = classNames({
         [css['no-click']]: articles.length === 0,
@@ -77,7 +88,7 @@ export const DroppableCategoryRow = ({
 
     const handleOnActionClick = (ev: React.MouseEvent, name: string) => {
         if (name === 'categorySettings') {
-            categoryModal.openModal(MODALS.CATEGORY, true, category)
+            categoryModal.openModal(MODALS.CATEGORY, false, category)
             return
         }
 
@@ -100,6 +111,7 @@ export const DroppableCategoryRow = ({
             </Badge>
         )
     }
+
     return (
         <>
             <TableBodyRow
@@ -140,27 +152,15 @@ export const DroppableCategoryRow = ({
                     {countElement}
                 </BodyCell>
                 <BodyCell innerClassName={bodyInnerClass}>
-                    {
-                        // isLoading ? (
-                        //     <Spinner size="sm" color="secondary" />
-                        // ) : (
-                        category.translation && (
-                            <LanguageList
-                                helpcenterId={category.id}
-                                defaultLanguage={
-                                    localesByCode[category.translation.locale]
-                                }
-                                languageList={[
-                                    localesByCode[category.translation.locale],
-                                ]}
-                                // TODO: uncomment this when we will support more locales
-                                // languageList={locales.map(
-                                //     (code) => localesByCode[code as string]
-                                // )}
-                            />
-                        )
-                        // )
-                    }
+                    {category.translation && (
+                        <LanguageList
+                            helpcenterId={category.id}
+                            defaultLanguage={
+                                localesByCode[category.translation.locale]
+                            }
+                            languageList={languageList}
+                        />
+                    )}
                 </BodyCell>
                 <BodyCell
                     width={120}

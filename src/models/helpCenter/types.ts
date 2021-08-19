@@ -1,4 +1,7 @@
-import {Components} from '../../../../../rest_api/help_center_api/client.generated'
+import {
+    Components,
+    Paths,
+} from '../../../../../rest_api/help_center_api/client.generated'
 
 // GENERAL
 
@@ -35,6 +38,8 @@ export type CreateCategoryDto = Components.Schemas.CreateCategoryDto
 export type CategoryTranslation = Components.Schemas.LocalCategoryTranslation
 export type CategoriesListPage = Components.Schemas.CategoriesListPage
 export type CategoryWithLocalTranslation = Components.Schemas.CategoryWithLocalTranslation
+export type CreateCategoryTranslationBody = Paths.CreateCategoryTranslation.RequestBody
+export type CreateCategoryResponse = Components.Schemas.CategoryWithLocalTranslation
 export type UpdateCategoryTranslationResponse = Components.Schemas.CategoryTranslationEntity
 
 export type Category = {

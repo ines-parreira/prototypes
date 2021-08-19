@@ -49,5 +49,5 @@ export const getSingleHelpcenterResponseFixture: HelpCenter = {
     updated_datetime: '2021-05-17T18:21:42.022Z',
     deleted_datetime: undefined,
     default_locale: 'en-US',
-    supported_locales: ['en-US'],
+    supported_locales: ['en-US', 'fr-FR'],
 }

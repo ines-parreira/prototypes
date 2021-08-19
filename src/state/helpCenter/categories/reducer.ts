@@ -1,4 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit'
+import _uniq from 'lodash/uniq'
 
 import {HelpCenterCategoriesState} from './types'
 
@@ -9,6 +10,8 @@ import {
     resetCategories,
     updateCategoryTranslation,
     updateCategoriesOrder,
+    pushCategorySupportedLocales,
+    removeLocaleFromCategory,
 } from './actions'
 
 export const initialState: HelpCenterCategoriesState = {
@@ -48,6 +51,33 @@ export default createReducer<HelpCenterCategoriesState>(
                 payload.forEach((categoryId, position) => {
                     state.categoriesById[categoryId].position = position
                 })
+            })
+
+            .addCase(pushCategorySupportedLocales, (state, {payload}) => {
+                if (state.categoriesById[payload.categoryId]) {
+                    state.categoriesById[
+                        payload.categoryId
+                    ].available_locales = _uniq([
+                        ...state.categoriesById[payload.categoryId]
+                            .available_locales,
+                        ...payload.supportedLocales,
+                    ])
+                }
+            })
+
+            .addCase(removeLocaleFromCategory, (state, {payload}) => {
+                const {categoryId, locale} = payload
+                if (state.categoriesById[categoryId]) {
+                    const indexOf = state.categoriesById[
+                        categoryId
+                    ].available_locales.findIndex((lang) => lang === locale)
+
+                    if (indexOf >= 0) {
+                        state.categoriesById[
+                            categoryId
+                        ].available_locales.splice(indexOf, 1)
+                    }
+                }
             })
 
             // Restores initial state
