@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatViewLink should render the component and construct the link for the new view 1`] = `
+exports[`ViewLink should render the component and construct the link for the new view 1`] = `
 <div>
   Link Mock
   {
-  "className": "searchLink",
+  "className": "viewLink",
   "to": {
     "pathname": "/app/tickets/new/public",
     "state": {

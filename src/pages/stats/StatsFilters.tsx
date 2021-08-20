@@ -27,7 +27,7 @@ import {getIntegrations} from '../../state/integrations/selectors'
 import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {mergeStatsFilters} from '../../state/stats/actions'
-import {getViewFilters} from '../../state/stats/selectors'
+import {makeStatsFiltersSelector} from '../../state/stats/selectors'
 import {getLabelledTeams} from '../../state/teams/selectors'
 import {RootState} from '../../state/types'
 
@@ -463,7 +463,7 @@ const makeMapStateToProps = () => {
             agents: getAgentsToJS(state),
             channels: getChannels(),
             config,
-            filters: getViewFilters(props.match.params.view)(state),
+            filters: makeStatsFiltersSelector(props.match.params.view)(state),
             integrations: getIntegrationsToJS(state),
             tags: state.entities.tags,
             teams: getTeamsToJS(state),

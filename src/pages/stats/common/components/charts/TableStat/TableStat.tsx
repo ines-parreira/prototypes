@@ -22,7 +22,7 @@ import {
     comparedPeriodString,
     formatCurrency,
     formatDuration,
-} from '../../../utils.js'
+} from '../../../utils'
 import DistributionVariantStat from '../DistributionVariantStat.js'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'

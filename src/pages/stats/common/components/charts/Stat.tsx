@@ -20,7 +20,7 @@ import {RootState} from '../../../../../state/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {saveFileAsDownloaded} from '../../../../../utils/file'
 import StatsHelpIcon from '../StatsHelpIcon'
-import {getViewFilters} from '../../../../../state/stats/selectors'
+import {makeStatsFiltersSelector} from '../../../../../state/stats/selectors'
 import {TwoDimensionalChart} from '../../../../../models/stat/types'
 import {downloadStat} from '../../../../../models/stat/resources'
 import {getFetchingStatusByName} from '../../../../../state/ui/stats/selectors'
@@ -248,7 +248,7 @@ const connector = connect(
                               )
                           }, fromJS({}) as Map<any, any>),
             stat: getStatDataByName(name)(state),
-            filters: getViewFilters(match.params.view)(state),
+            filters: makeStatsFiltersSelector(match.params.view)(state),
             isFetching: getFetchingStatusByName(name)(state),
         }
     },

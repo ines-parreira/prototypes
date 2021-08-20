@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 import {ViewFilter} from '../../../state/views/types'
 
-import css from './StatViewLink.less'
+import css from './ViewLink.less'
 
 type Props = {
     viewName: string
@@ -18,12 +18,12 @@ function buildRawCallExpression(filter: ViewFilter) {
     return `${filter.operator}(${filter.left}, ${filter.right})`
 }
 
-export default function StatViewLink({viewName, filters, children}: Props) {
+export default function ViewLink({viewName, filters, children}: Props) {
     const expression = filters.map(buildRawCallExpression).join(' && ')
 
     return (
         <Link
-            className={css.searchLink}
+            className={css.viewLink}
             to={{
                 pathname: '/app/tickets/new/public',
                 state: {

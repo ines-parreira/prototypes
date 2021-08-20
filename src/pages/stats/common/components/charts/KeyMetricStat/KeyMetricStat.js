@@ -11,7 +11,7 @@ import {
     formatCurrency,
     formatDuration,
     formatPercent,
-} from '../../../utils'
+} from '../../../utils.ts'
 import Loader from '../../../../../common/components/Loader/Loader.tsx'
 import StatsHelpIcon from '../../StatsHelpIcon.tsx'
 import StatPercentageDiff from '../../StatPercentageDiff.tsx'

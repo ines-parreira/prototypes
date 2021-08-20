@@ -11,7 +11,7 @@ import {
     views as statViewsConfig,
 } from '../../config/stats'
 import {notify} from '../../state/notifications/actions'
-import {getViewFilters} from '../../state/stats/selectors'
+import {makeStatsFiltersSelector} from '../../state/stats/selectors'
 import {errorToChildren} from '../../utils'
 import {Notification, NotificationStatus} from '../../state/notifications/types'
 import {RootState} from '../../state/types'
@@ -178,7 +178,7 @@ export class StatsContainer extends React.Component<Props> {
 const connector = connect(
     (state: RootState, props: RouteComponentProps<{view: string}>) => {
         return {
-            filters: getViewFilters(props.match.params.view)(state),
+            filters: makeStatsFiltersSelector(props.match.params.view)(state),
         }
     },
     {notify, statFetched, fetchStatEnded, fetchStatStarted}

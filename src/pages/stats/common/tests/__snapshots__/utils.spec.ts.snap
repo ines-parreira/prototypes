@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stats components utils getStatsViewFilters should return view filters for multiple channels 1`] = `
+Array [
+  Object {
+    "left": "ticket.channel",
+    "operator": "containsAny",
+    "right": "[\\"email\\",\\"chat\\"]",
+  },
+]
+`;
+
+exports[`stats components utils getStatsViewFilters should return view filters for multiple integrations 1`] = `
+Array [
+  Object {
+    "left": "ticket.messages.integration_id",
+    "operator": "containsAny",
+    "right": "[1,5]",
+  },
+]
+`;
+
+exports[`stats components utils getStatsViewFilters should return view filters for period 1`] = `
+Array [
+  Object {
+    "left": "ticket.created_datetime",
+    "operator": "gte",
+    "right": "'2021-05-28T22:00:00Z'",
+  },
+  Object {
+    "left": "ticket.created_datetime",
+    "operator": "lte",
+    "right": "'2021-06-04T19:59:59Z'",
+  },
+]
+`;
+
+exports[`stats components utils getStatsViewFilters should return view filters for single channel 1`] = `
+Array [
+  Object {
+    "left": "ticket.channel",
+    "operator": "eq",
+    "right": "\\"email\\"",
+  },
+]
+`;
+
+exports[`stats components utils getStatsViewFilters should return view filters for single integration 1`] = `
+Array [
+  Object {
+    "left": "ticket.messages.integration_id",
+    "operator": "eq",
+    "right": "1",
+  },
+]
+`;

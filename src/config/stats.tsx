@@ -6,14 +6,13 @@ import _isString from 'lodash/isString'
 import {defaults} from 'react-chartjs-2'
 
 import {TicketChannel} from '../business/types/ticket'
-import {formatDuration} from '../pages/stats/common/utils.js'
+import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 import {IntegrationType} from '../models/integration/types'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
-import AssigneeStatViewLink from '../pages/stats/common/AssigneeStatViewLink'
-import * as segmentTracker from '../store/middlewares/segmentTracker.js'
 import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
+import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
 
 import css from './stats.less'
 
@@ -745,25 +744,13 @@ export const stats = toImmutable<
                 }
                 if (axis.name.toLowerCase() === 'total') {
                     return (
-                        <span
-                            onClick={() => {
-                                segmentTracker.logEvent(
-                                    segmentTracker.EVENTS
-                                        .STAT_VIEW_LINK_CLICKED,
-                                    {
-                                        stat: 'tickets-closed-per-agent-total',
-                                    }
-                                )
-                            }}
+                        <TicketsClosedPerAgentViewLink
+                            agentName={(line.get(0) as Map<any, any>).get(
+                                'value'
+                            )}
                         >
-                            <AssigneeStatViewLink
-                                agentName={(line.get(0) as Map<any, any>).get(
-                                    'value'
-                                )}
-                            >
-                                {value}
-                            </AssigneeStatViewLink>
-                        </span>
+                            {value}
+                        </TicketsClosedPerAgentViewLink>
                     )
                 }
 

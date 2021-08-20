@@ -18,7 +18,7 @@ export const getFilters = createSelector<
     StatsState
 >(getStatsState, (state) => state.get('filters') as Maybe<Map<any, any>>)
 
-export const getViewFilters = (viewName: string) =>
+export const makeStatsFiltersSelector = (viewName: string) =>
     createSelector<
         RootState,
         Maybe<Map<any, any>>,
@@ -98,3 +98,7 @@ export const getViewFilters = (viewName: string) =>
             })
         }
     )
+
+export const getSupportPerformanceAgentsStatsFilters = makeStatsFiltersSelector(
+    'support-performance-agents'
+)

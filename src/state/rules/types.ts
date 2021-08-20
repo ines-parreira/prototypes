@@ -74,7 +74,13 @@ export enum RuleType {
     System = 'system',
 }
 
+export enum EqualityOperator {
+    Eq = 'eq',
+    Neq = 'neq',
+}
+
 export enum CollectionOperator {
+    IsEmpty = 'isEmpty',
     ContainsAll = 'containsAll',
     ContainsAny = 'containsAny',
     NotContainsAll = 'notContainsAll',

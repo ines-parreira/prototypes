@@ -45,9 +45,9 @@ describe('selectors', () => {
             it('should return no filter for the given view because there is no filter', () => {
                 state.stats = state.stats.set('filters', null)
                 expect(
-                    selectors.getViewFilters('support-performance-overview')(
-                        state
-                    )
+                    selectors.makeStatsFiltersSelector(
+                        'support-performance-overview'
+                    )(state)
                 ).toEqual(null)
             })
 
@@ -64,12 +64,12 @@ describe('selectors', () => {
                 })
                 state.stats = state.stats.set('filters', filters)
                 expect(
-                    selectors.getViewFilters('support-performance-overview')(
-                        state
-                    )
+                    selectors.makeStatsFiltersSelector(
+                        'support-performance-overview'
+                    )(state)
                 ).toMatchSnapshot()
                 expect(
-                    selectors.getViewFilters('satisfaction')(state)
+                    selectors.makeStatsFiltersSelector('satisfaction')(state)
                 ).toMatchSnapshot()
             })
 
@@ -99,7 +99,7 @@ describe('selectors', () => {
                 )
 
                 expect(
-                    selectors.getViewFilters('revenue')(state)
+                    selectors.makeStatsFiltersSelector('revenue')(state)
                 ).toMatchSnapshot()
             })
 
@@ -129,14 +129,14 @@ describe('selectors', () => {
                 )
 
                 expect(
-                    selectors.getViewFilters('revenue')(state)
+                    selectors.makeStatsFiltersSelector('revenue')(state)
                 ).toMatchSnapshot()
             })
 
             it('should return a default period if missing from the filters', () => {
                 state.stats = state.stats.set('filters', fromJS({}))
                 expect(
-                    selectors.getViewFilters('live-agents')(state)
+                    selectors.makeStatsFiltersSelector('live-agents')(state)
                 ).toMatchSnapshot()
             })
         })

@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssigneeViewLink should not prepare a link if no agent exists under the passed name 1`] = `
+<div>
+  click here!
+</div>
+`;
+
+exports[`AssigneeViewLink should prepare a link when "Unassigned" is passed as agent name 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Unassigned",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "isEmpty"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "2021-02-03T13:14:15Z"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;
+
+exports[`AssigneeViewLink should prepare a link when an agent exists under the passed name 1`] = `
+<div>
+  <div>
+    Link Mock
+    {
+  "viewName": "Assigned to: Acme Support",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "2021-02-03T13:14:15Z"
+    }
+  ],
+  "children": "click here!"
+}
+  </div>
+</div>
+`;

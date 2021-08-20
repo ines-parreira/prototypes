@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketsClosedPerAgentViewLink should log the event on click 1`] = `
+Array [
+  Array [
+    "stat-view-link-clicked",
+    Object {
+      "stat": "tickets-closed-per-agent-total",
+    },
+  ],
+]
+`;
+
+exports[`TicketsClosedPerAgentViewLink should render an assignee link 1`] = `
+<span>
+  <div>
+    AssigneeViewLink Mock
+    {
+  "agentName": "John Doe",
+  "filters": [
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;
