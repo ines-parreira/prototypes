@@ -1,30 +1,59 @@
 import React, {ReactNode, useMemo} from 'react'
 import {useSelector} from 'react-redux'
+import {List, Map} from 'immutable'
 
 import {getSupportPerformanceAgentsStatsFilters} from '../../../state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {getAgents} from '../../../state/agents/selectors'
+import {ViewFilter} from '../../../state/views/types'
+import {CollectionOperator, EqualityOperator} from '../../../state/rules/types'
 
-import AssigneeViewLink from './AssigneeViewLink'
 import {getStatsViewFilters} from './utils'
+import ViewLink from './ViewLink'
 
 type Props = {
     agentName: string
+    unassignedName?: string
     children: ReactNode
 }
 
 export default function TicketsClosedPerAgentViewLink({
     agentName,
     children,
+    unassignedName = 'Unassigned',
 }: Props) {
+    const agents = useSelector(getAgents) as List<Map<any, any>>
+    const agent = agents.find(
+        (agent) => (agent!.get('name') as string) === agentName
+    )
     const statsFilters = useSelector(getSupportPerformanceAgentsStatsFilters)
-    const filters = useMemo(() => {
-        const periodFilterLeft = getTicketViewFieldPath(
-            getTicketViewField(ViewField.Closed)
+    const filters = useMemo<ViewFilter[]>(() => {
+        const assigneeLeft = getTicketViewFieldPath(
+            getTicketViewField(ViewField.Assignee)
         )
-        return getStatsViewFilters(periodFilterLeft, statsFilters)
-    }, [statsFilters])
+        const assigneeFilter: ViewFilter = agent
+            ? {
+                  left: assigneeLeft,
+                  operator: EqualityOperator.Eq,
+                  right: agent.get('id') as number,
+              }
+            : {
+                  left: assigneeLeft,
+                  operator: CollectionOperator.IsEmpty,
+              }
+        const statsViewFilters = getStatsViewFilters(
+            getTicketViewFieldPath(getTicketViewField(ViewField.Closed)),
+            statsFilters
+        )
+        return [assigneeFilter].concat(statsViewFilters)
+    }, [agent, statsFilters])
+
+    if (!agent && agentName !== unassignedName) {
+        return <>{children}</>
+    }
+
     return (
         <span
             onClick={() => {
@@ -36,9 +65,16 @@ export default function TicketsClosedPerAgentViewLink({
                 )
             }}
         >
-            <AssigneeViewLink agentName={agentName} filters={filters}>
+            <ViewLink
+                viewName={
+                    agentName === unassignedName
+                        ? 'Unassigned'
+                        : `Assigned to: ${agentName}`
+                }
+                filters={filters}
+            >
                 {children}
-            </AssigneeViewLink>
+            </ViewLink>
         </span>
     )
 }

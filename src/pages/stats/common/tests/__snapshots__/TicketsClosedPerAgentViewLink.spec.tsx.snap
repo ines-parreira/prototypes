@@ -11,13 +11,58 @@ Array [
 ]
 `;
 
+exports[`TicketsClosedPerAgentViewLink should not render a link for an unknown agent 1`] = `click me!`;
+
 exports[`TicketsClosedPerAgentViewLink should render an assignee link 1`] = `
 <span>
   <div>
-    AssigneeViewLink Mock
+    ViewLink Mock
     {
-  "agentName": "John Doe",
+  "viewName": "Assigned to: Acme Support",
   "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "eq",
+      "right": 1
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.closed_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;
+
+exports[`TicketsClosedPerAgentViewLink should render the unassigned user link 1`] = `
+<span>
+  <div>
+    ViewLink Mock
+    {
+  "viewName": "Unassigned",
+  "filters": [
+    {
+      "left": "ticket.assignee_user.id",
+      "operator": "isEmpty"
+    },
     {
       "left": "ticket.closed_datetime",
       "operator": "gte",
