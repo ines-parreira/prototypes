@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import DonutKeyMetricStat from '../KeyMetricStat/DonutKeyMetricStat'
+import DonutKeyMetricStat from '../KeyMetricStat/DonutKeyMetricStat.tsx'
 
 describe('DonutKeyMetricStat', () => {
     it('should render a donut chart', () => {

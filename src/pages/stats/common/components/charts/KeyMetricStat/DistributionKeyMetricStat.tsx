@@ -1,15 +1,15 @@
-// @flow
 import React, {Component} from 'react'
 import classnames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
+import {Map} from 'immutable'
 
 import DistributionVariantStat from '../DistributionVariantStat'
 
 import css from './DistributionKeyMetricStat.less'
 
 type Props = {
-    config: Object,
-    formattedValue: Object,
+    config: Map<any, any>
+    formattedValue: Map<any, any>
 }
 
 export default class DistributionKeyMetricStat extends Component<Props> {
@@ -17,9 +17,9 @@ export default class DistributionKeyMetricStat extends Component<Props> {
 
     render() {
         const {config, formattedValue} = this.props
-        const maxValue = config.get('maxValue')
-        const minValue = config.get('minValue')
-        const variant = config.get('variant')
+        const maxValue = config.get('maxValue') as number
+        const minValue = config.get('minValue') as number
+        const variant = config.get('variant') as string
 
         return (
             <div>

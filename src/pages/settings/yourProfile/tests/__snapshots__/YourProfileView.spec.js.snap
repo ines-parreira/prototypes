@@ -179,8 +179,6 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               fixedWidth={false}
               fullWidth={true}
               id={null}
-              label="Timezone"
-              name="timezone"
               onChange={[Function]}
               onSearchChange={[Function]}
               options={
@@ -2589,7 +2587,6 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               fixedWidth={false}
               fullWidth={true}
               id={null}
-              name="language"
               onChange={[Function]}
               onSearchChange={[Function]}
               options={
@@ -2655,7 +2652,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               <Avatar
                 email=""
                 name="Alex Plugaru"
-                size="100"
+                size={100}
                 style={Object {}}
               />
             </div>

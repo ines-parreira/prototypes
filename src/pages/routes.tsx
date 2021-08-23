@@ -22,7 +22,7 @@ import CustomerInfobarContainer from './customers/detail/CustomerInfobarContaine
 import StatsPage from './stats/StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
-import ChangePassword from './settings/yourProfile/ChangePassword.js'
+import ChangePassword from './settings/yourProfile/ChangePassword'
 import APIView from './settings/api/APIView.js'
 
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer.js'

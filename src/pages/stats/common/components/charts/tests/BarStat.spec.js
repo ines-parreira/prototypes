@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import BarStat from '../BarStat'
+import BarStat from '../BarStat.tsx'
 import {
     stats as statsConfig,
     SUPPORT_VOLUME,

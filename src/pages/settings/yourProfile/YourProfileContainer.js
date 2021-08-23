@@ -11,7 +11,7 @@ import {
 } from '../../../state/currentUser/actions.ts'
 import {getPreferences} from '../../../state/currentUser/selectors.ts'
 
-import YourProfileView from './components/YourProfileView'
+import YourProfileView from './components/YourProfileView.tsx'
 
 class YourProfileContainer extends React.Component {
     componentWillReceiveProps(nextProps) {

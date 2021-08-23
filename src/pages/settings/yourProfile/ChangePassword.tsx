@@ -1,25 +1,19 @@
-//@flow
-// $FlowFixMe
 import React, {useMemo, useEffect, useState} from 'react'
 import {useAsyncFn} from 'react-use'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {Form, Button, Container} from 'reactstrap'
-import type {Map} from 'immutable'
+import {AxiosError} from 'axios'
 
-import {changePassword} from '../../../state/currentUser/actions.ts'
-import InputField from '../../common/forms/InputField'
-import PageHeader from '../../common/components/PageHeader.tsx'
-
-type Props = {
-    currentUser: Map<any, any>,
-    changePassword: (oldPassword: string, newPassword: string) => Promise<any>,
-}
+import {changePassword} from '../../../state/currentUser/actions'
+import InputField from '../../common/forms/InputField.js'
+import PageHeader from '../../common/components/PageHeader'
+import {RootState} from '../../../state/types'
 
 type Errors = {
-    old_password?: string,
-    new_password?: string,
-    confirm_new_password?: string,
+    old_password?: string
+    new_password?: string
+    confirm_new_password?: string
 }
 
 const VALIDATE_PASSWORD_ERROR_MESSAGE = 'Passwords do not match.'
@@ -30,7 +24,7 @@ const USER_PASSWORD_VALIDATION_PATTERN = `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).
 export const ChangePasswordContainer = ({
     currentUser,
     changePassword,
-}: Props) => {
+}: ConnectedProps<typeof connector>) => {
     const isLoading = currentUser.getIn(['_internal', 'loading', 'currentUser'])
     const [dirty, setDirty] = useState(true)
     const [oldPassword, setOldPassword] = useState('')
@@ -39,11 +33,14 @@ export const ChangePasswordContainer = ({
     const [errors, setErrors] = useState<Errors>({})
 
     const [, handleSubmit] = useAsyncFn(async () => {
-        const result = await changePassword(oldPassword, newPassword)
+        const result = (await changePassword(oldPassword, newPassword)) as {
+            reason?: string
+            error?: AxiosError<{error: {data?: Errors}}>
+        }
 
         // This is always populated if there's an error
         // if there's an http error we don't get back result.error.response.data.error.data
-        const isError = !!result?.reason?.length > 0
+        const isError = !!result?.reason && result.reason.length > 0
 
         setErrors({
             ...(result?.error?.response?.data?.error?.data || {}),
@@ -53,7 +50,7 @@ export const ChangePasswordContainer = ({
             setOldPassword('')
             setNewPassword('')
             setConfirmNewPassword('')
-        } else if (result.error.message !== 'Network Error') {
+        } else if (result.error?.message !== 'Network Error') {
             setDirty(false)
         }
     }, [oldPassword, newPassword])
@@ -61,7 +58,7 @@ export const ChangePasswordContainer = ({
     const invalid = useMemo(() => Object.keys(errors).length > 0, [errors])
 
     useEffect(() => {
-        const errors = {}
+        const errors: Errors = {}
         if (
             newPassword &&
             confirmNewPassword &&
@@ -84,7 +81,7 @@ export const ChangePasswordContainer = ({
                 <Form
                     onSubmit={(event) => {
                         event.preventDefault()
-                        handleSubmit()
+                        void handleSubmit()
                     }}
                 >
                     <InputField
@@ -154,11 +151,13 @@ export const ChangePasswordContainer = ({
     )
 }
 
-export default connect(
-    ({currentUser}) => ({
-        currentUser,
+const connector = connect(
+    (state: RootState) => ({
+        currentUser: state.currentUser,
     }),
     {
         changePassword,
     }
-)(ChangePasswordContainer)
+)
+
+export default connector(ChangePasswordContainer)

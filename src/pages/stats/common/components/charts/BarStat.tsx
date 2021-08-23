@@ -1,35 +1,33 @@
-// @flow
-import type {Map} from 'immutable'
-import React from 'react'
+import {Map, List} from 'immutable'
+import React, {Component} from 'react'
 import {Bar} from 'react-chartjs-2'
 
 import {
     colors as colorsConfig,
     chartMaxHeight,
-} from '../../../../../config/stats.tsx'
-import Legend from '../Legend'
+} from '../../../../../config/stats'
+import Legend from '../Legend/Legend'
 
 type Props = {
-    data: Map<*, *>,
-    config: Map<*, *>,
-    legend?: Map<any, any>,
+    data: Map<any, any>
+    config: Map<any, any>
+    legend?: Map<any, any>
 }
 
-export default class BarStat extends React.Component<Props> {
+export default class BarStat extends Component<Props> {
     render() {
         const {data, config, legend} = this.props
-        const datasets = data
-            .get('lines')
-            .map((line, index) => {
+        const datasets = (data.get('lines') as List<any>)
+            .map((line: Map<any, any>, index) => {
                 const lineName = line.get('name')
 
                 return {
                     label:
                         config.getIn(['lines', lineName, 'label']) || lineName,
-                    data: line.get('data').toJS(),
+                    data: (line.get('data') as Map<any, any>).toJS(),
                     backgroundColor:
                         config.getIn(['lines', lineName, 'color']) ||
-                        colorsConfig[index],
+                        colorsConfig[index!],
                 }
             })
             .toArray()
@@ -38,7 +36,7 @@ export default class BarStat extends React.Component<Props> {
             background: dataset.backgroundColor,
         }))
 
-        return data.get('lines').isEmpty() ? (
+        return (data.get('lines') as List<any>).isEmpty() ? (
             <div className="text-muted">There is no data for this period.</div>
         ) : (
             <div>
@@ -53,10 +51,14 @@ export default class BarStat extends React.Component<Props> {
                     <Bar
                         height={chartMaxHeight}
                         data={{
-                            labels: data.getIn(['axes', 'x']).toJS(),
+                            labels: (data.getIn(['axes', 'x']) as List<
+                                any
+                            >).toJS(),
                             datasets: datasets,
                         }}
-                        options={config.get('options')(legend)}
+                        options={(config.get('options') as (
+                            legend: Map<any, any>
+                        ) => Record<string, unknown>)(legend!)}
                     />
                 </div>
             </div>

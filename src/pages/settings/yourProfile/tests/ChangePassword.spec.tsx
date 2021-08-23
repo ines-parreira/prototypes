@@ -1,16 +1,15 @@
-// @flow
 import React from 'react'
-import {mount} from 'enzyme'
+import {mount, ReactWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import InputField from '../../../common/forms/InputField'
+import InputField from '../../../common/forms/InputField.js'
 import {ChangePasswordContainer} from '../ChangePassword'
 
 type fillInFormTypes = {
-    component: any,
-    currentPwd?: string,
-    newPwd?: string,
-    confirmNewPwd?: string,
+    component: ReactWrapper
+    currentPwd?: string
+    newPwd?: string
+    confirmNewPwd?: string
 }
 
 const mockChangePassword = jest.fn().mockResolvedValue({
@@ -69,13 +68,13 @@ const fillInForm = ({
     })
 }
 
-const findConfirmNewPasswordInput = (component: any) =>
+const findConfirmNewPasswordInput = (component: ReactWrapper) =>
     component.find(InputField).at(CONFIRM_NEW_PASSWORD_INPUT_INDEX)
 
-const findNewPasswordInput = (component: any) =>
+const findNewPasswordInput = (component: ReactWrapper) =>
     component.find(InputField).at(NEW_PASSWORD_INPUT_INDEX)
 
-const findOldPasswordInput = (component: any) =>
+const findOldPasswordInput = (component: ReactWrapper) =>
     component.find(InputField).at(OLD_PASSWORD_INPUT_INDEX)
 
 beforeEach(() => {

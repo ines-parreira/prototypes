@@ -1,23 +1,32 @@
-// @flow
-import React, {Component} from 'react'
+import React, {Component, ReactNode} from 'react'
 
 import css from './DonutKeyMetricStat.less'
 
 type Props = {
-    value: number,
-    maxValue: number,
-    fill: string,
-    formattedValue: string,
-    label: string,
-    width: number,
-    height: number,
-    innerRadius: number,
-    outerRadius: number,
-    differenceComponent: Object,
+    value: number
+    maxValue: number
+    fill: string
+    formattedValue: string
+    label: string
+    width: number
+    height: number
+    innerRadius: number
+    outerRadius: number
+    differenceComponent: ReactNode
+    total: number | null
+    startAngle: number
 }
 
 export default class DonutKeyMetricStat extends Component<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<
+        Props,
+        | 'height'
+        | 'width'
+        | 'outerRadius'
+        | 'innerRadius'
+        | 'total'
+        | 'startAngle'
+    > = {
         height: 320,
         width: 320,
         outerRadius: 0.95, // of the width
@@ -43,9 +52,9 @@ export default class DonutKeyMetricStat extends Component<Props> {
     }
 
     _renderPaths() {
-        let {fill, maxValue, value} = this.props
+        const {fill, maxValue, value} = this.props
         let index = 0
-        let startAngle = parseFloat(270)
+        let startAngle = parseFloat(270 as any)
 
         if (!value) {
             // using arcs we can't render a fully filled figured, but we can fill it for 99.99%
@@ -98,8 +107,8 @@ export default class DonutKeyMetricStat extends Component<Props> {
         value: number,
         total: number,
         startAngle: number,
-        fillType: string = 'empty',
-        single: boolean = false
+        fillType = 'empty',
+        single = false
     ) => {
         const d = this._getPathData(
             value,
@@ -122,8 +131,8 @@ export default class DonutKeyMetricStat extends Component<Props> {
         width: number,
         innerRadius: number,
         outerRadius: number,
-        reverse: boolean = false,
-        single: boolean = false
+        reverse = false,
+        single = false
     ) => {
         const activeAngle = (data / total) * 360
         const endAngle = startAngle + activeAngle
@@ -245,7 +254,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
         )},${this._toFixed(y)}`
     }
 
-    _toFixed = (number: number, decimalPlaces: number = 2) => {
+    _toFixed = (number: number, decimalPlaces = 2) => {
         return (Math.floor(number * 100) / 100).toFixed(decimalPlaces || 2)
     }
 }

@@ -23,7 +23,7 @@ import {
     formatCurrency,
     formatDuration,
 } from '../../../utils'
-import DistributionVariantStat from '../DistributionVariantStat.js'
+import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
 import SourceIcon from '../../../../../common/components/SourceIcon'

@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import YourProfileView from '../components/YourProfileView'
+import YourProfileView from '../components/YourProfileView.tsx'
 import {user} from '../../../../fixtures/users.ts'
 
 const mockUpdateCurrentUser = jest.fn()

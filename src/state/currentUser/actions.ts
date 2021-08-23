@@ -51,7 +51,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => (
         )
 }
 
-export function updateCurrentUser(data: EditableUserProfile) {
+export function updateCurrentUser(data: Partial<EditableUserProfile>) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.SUBMIT_CURRENT_USER_START,

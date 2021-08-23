@@ -1,7 +1,6 @@
-// @flow
-import React, {Component} from 'react'
+import React, {Component, ReactNode} from 'react'
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _rangeRight from 'lodash/rangeRight'
 
 import css from './DistributionVariantStat.less'
@@ -9,19 +8,19 @@ import fullStar from './../../../../../../img/satisfaction-survey/full-star.svg'
 import emptyStar from './../../../../../../img/satisfaction-survey/empty-star.svg'
 
 type Props = {
-    minValue: number,
-    maxValue: number,
-    variant: string,
-    currentValue: number,
+    minValue: number
+    maxValue: number
+    variant: string
+    currentValue: number
 }
 
 export default class DistributionVariantStat extends Component<Props> {
     render = () => {
         const {minValue, maxValue, variant, currentValue} = this.props
 
-        const VARIANTS = fromJS({
+        const VARIANTS: Map<any, any> = fromJS({
             star: {
-                fill: (key) => (
+                fill: (key: number) => (
                     <img
                         alt="filled star"
                         key={key}
@@ -29,7 +28,7 @@ export default class DistributionVariantStat extends Component<Props> {
                         className={css.star}
                     />
                 ),
-                empty: (key) => (
+                empty: (key: number) => (
                     <img
                         alt="empty star"
                         key={key}
@@ -39,7 +38,7 @@ export default class DistributionVariantStat extends Component<Props> {
                 ),
             },
             default: {
-                fill: (key) => (
+                fill: (key: number) => (
                     <i
                         key={key}
                         className={classNames(
@@ -50,7 +49,7 @@ export default class DistributionVariantStat extends Component<Props> {
                         star_rate
                     </i>
                 ),
-                empty: (key) => (
+                empty: (key: number) => (
                     <i
                         key={key}
                         className={classNames(
@@ -64,14 +63,21 @@ export default class DistributionVariantStat extends Component<Props> {
             },
         })
 
-        const variantComponent = VARIANTS.get(variant, 'default')
+        const variantComponent = VARIANTS.get(variant, 'default') as Map<
+            any,
+            any
+        >
 
         return (
             <span className={classNames(css.distribution)}>
                 {_rangeRight(minValue, maxValue + 1).map((index) =>
                     index <= maxValue - currentValue
-                        ? variantComponent.get('empty')(index)
-                        : variantComponent.get('fill')(index)
+                        ? (variantComponent.get('empty') as (
+                              key: number
+                          ) => ReactNode)(index)
+                        : (variantComponent.get('fill') as (
+                              key: number
+                          ) => ReactNode)(index)
                 )}
             </span>
         )

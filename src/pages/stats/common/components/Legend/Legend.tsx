@@ -3,7 +3,7 @@ import _isArray from 'lodash/isArray'
 
 import css from './Legend.less'
 
-type Label = {
+export type Label = {
     aheadLabel?: string
     name: string
     background: string

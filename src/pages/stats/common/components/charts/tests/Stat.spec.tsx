@@ -19,17 +19,17 @@ import {StatContainer} from '../Stat'
 
 jest.spyOn(fileUtils, 'saveFileAsDownloaded')
 
-jest.mock('../BarStat.js', () => () => <div>BarStat</div>)
+jest.mock('../BarStat', () => () => <div>BarStat</div>)
 
 jest.mock('../LineStat', () => () => <div>LineStat</div>)
 
 jest.mock('../TableStat/TableStat', () => () => <div>TableStat</div>)
 
-jest.mock('../KeyMetricStat/KeyMetricStat.js', () => () => (
+jest.mock('../KeyMetricStat/KeyMetricStat', () => () => (
     <div>KeyMetricStat</div>
 ))
 
-jest.mock('../PerHourPerWeekTableStat/PerHourPerWeekTableStat.js', () => () => (
+jest.mock('../PerHourPerWeekTableStat/PerHourPerWeekTableStat', () => () => (
     <div>PerHourPerWeekTableStat</div>
 ))
 

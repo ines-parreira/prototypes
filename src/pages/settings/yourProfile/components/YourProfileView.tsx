@@ -1,5 +1,4 @@
-// @flow
-import React from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
@@ -15,21 +14,26 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-
 import {Link} from 'react-router-dom'
+import {Map} from 'immutable'
 
-import type {Map} from 'immutable'
+import BooleanField from '../../../common/forms/BooleanField.js'
+import InputField from '../../../common/forms/InputField.js'
+import Avatar from '../../../common/components/Avatar/Avatar'
+import FileField from '../../../common/forms/FileField'
+import SelectField from '../../../common/forms/SelectField/SelectField'
+import PageHeader from '../../../common/components/PageHeader'
+import {AVAILABLE_LANGUAGES} from '../../../../config'
+import {
+    EditableUserProfile,
+    User,
+    UserSetting,
+} from '../../../../config/types/user'
 
-import BooleanField from '../../../common/forms/BooleanField'
-import InputField from '../../../common/forms/InputField'
-import Avatar from '../../../common/components/Avatar'
-import FileField from '../../../common/forms/FileField.tsx'
-import SelectField from '../../../common/forms/SelectField'
-import PageHeader from '../../../common/components/PageHeader.tsx'
-
-import {AVAILABLE_LANGUAGES} from './../../../../config.ts'
-
-const defaultContent = {
+const defaultContent: Pick<
+    State,
+    'name' | 'email' | 'password_confirmation' | 'bio' | 'timezone' | 'language'
+> = {
     name: '',
     email: '',
     password_confirmation: null,
@@ -39,27 +43,30 @@ const defaultContent = {
 }
 
 type Props = {
-    updateCurrentUser: (Object) => Promise<*>,
-    currentUser: Object,
-    submitSetting: (Object, boolean) => Promise<*>,
-    preferences: Object,
-    isLoading: boolean,
+    updateCurrentUser: (object: Partial<EditableUserProfile>) => Promise<User>
+    currentUser: Map<any, any>
+    submitSetting: (
+        object: UserSetting,
+        notification: boolean
+    ) => Promise<unknown>
+    preferences: Map<any, any>
+    isLoading: boolean
 }
 
 type State = {
-    bio: string,
-    email: string,
-    hasChangedEmail: boolean,
-    language: string,
-    loadingPreferences: boolean,
-    name: string,
-    preferences: Map<*, *>,
-    profilePictureUrl: string,
-    password_confirmation: null | string,
-    timezone: string,
+    bio: string
+    email: string
+    hasChangedEmail: boolean
+    language: string
+    loadingPreferences: boolean
+    name: string
+    preferences: Map<unknown, unknown>
+    profilePictureUrl?: string
+    password_confirmation: null | string
+    timezone: string
 }
 
-export default class YourProfileView extends React.Component<Props, State> {
+export default class YourProfileView extends Component<Props, State> {
     isInitialized: boolean
 
     constructor(props: Props) {
@@ -88,13 +95,18 @@ export default class YourProfileView extends React.Component<Props, State> {
         }
     }
 
-    _getForm(props: Props): Object {
+    _getForm = (
+        props: Props
+    ): typeof defaultContent & {profilePictureUrl?: string} => {
         if (props.currentUser.isEmpty()) {
             return defaultContent
         }
 
         return _merge(
-            _pick(props.currentUser.toJS(), Object.keys(defaultContent)),
+            _pick(
+                props.currentUser.toJS(),
+                Object.keys(defaultContent)
+            ) as typeof defaultContent,
             {
                 profilePictureUrl: props.currentUser.getIn([
                     'meta',
@@ -104,9 +116,12 @@ export default class YourProfileView extends React.Component<Props, State> {
         )
     }
 
-    _handleSubmit = (event: SyntheticEvent<*>) => {
+    _handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
-        const normalizedValues = _pick(this.state, Object.keys(defaultContent))
+        const normalizedValues = _pick(
+            this.state,
+            Object.keys(defaultContent)
+        ) as EditableUserProfile
 
         return this.props.updateCurrentUser(normalizedValues).then((user) => {
             if (user.email === normalizedValues.email) {
@@ -133,13 +148,15 @@ export default class YourProfileView extends React.Component<Props, State> {
         })
     }
 
-    _savePreferences = (event: SyntheticEvent<*>) => {
+    _savePreferences = (event: SyntheticEvent) => {
         event.preventDefault()
 
         this.setState({loadingPreferences: true})
 
         const newSettings = this.props.preferences
-            .update('data', (data) => data.mergeDeep(this.state.preferences))
+            .update('data', (data: Map<any, any>) =>
+                data.mergeDeep(this.state.preferences)
+            )
             .toJS()
 
         return this.props.submitSetting(newSettings, true).then(() => {
@@ -215,8 +232,6 @@ export default class YourProfileView extends React.Component<Props, State> {
                                         Timezone
                                     </Label>
                                     <SelectField
-                                        name="timezone"
-                                        label="Timezone"
                                         value={this.state.timezone}
                                         options={_sortBy(
                                             moment.tz
@@ -255,7 +270,6 @@ export default class YourProfileView extends React.Component<Props, State> {
                                         Language
                                     </Label>
                                     <SelectField
-                                        name="language"
                                         value={this.state.language}
                                         onChange={(value) =>
                                             this.setState({
@@ -285,7 +299,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     <div>
                                         <Avatar
                                             name={this.state.name}
-                                            size="100"
+                                            size={100}
                                             url={this.state.profilePictureUrl}
                                         />
                                     </div>
@@ -307,7 +321,9 @@ export default class YourProfileView extends React.Component<Props, State> {
                                                 {
                                                     profilePictureUrl: picture_url,
                                                 },
-                                                this._saveProfilePicture
+                                                () => {
+                                                    void this._saveProfilePicture()
+                                                }
                                             )
                                         }
                                         uploadType="profile_picture"
@@ -325,7 +341,9 @@ export default class YourProfileView extends React.Component<Props, State> {
                                                     {
                                                         profilePictureUrl: undefined,
                                                     },
-                                                    this._saveProfilePicture
+                                                    () => {
+                                                        void this._saveProfilePicture()
+                                                    }
                                                 )
                                             }}
                                         >
@@ -359,7 +377,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                 value={this.state.preferences.get(
                                     'show_macros'
                                 )}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({
                                         preferences: this.state.preferences.set(
                                             'show_macros',
@@ -376,7 +394,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     'show_macros_suggestions',
                                     true
                                 )}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({
                                         preferences: this.state.preferences.set(
                                             'show_macros_suggestions',

@@ -1,2 +1,2 @@
-import KeyMetricStat from './KeyMetricStat'
+import KeyMetricStat from './KeyMetricStat.tsx'
 export default KeyMetricStat

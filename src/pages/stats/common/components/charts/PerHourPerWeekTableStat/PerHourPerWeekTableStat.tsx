@@ -1,34 +1,32 @@
-// @flow
 import moment from 'moment-timezone'
-import type {Map} from 'immutable'
+import {Map, List} from 'immutable'
 import React from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Table} from 'reactstrap'
 
-import {DEPRECATED_getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors.ts'
-import {getTimezone} from '../../../../../../state/currentUser/selectors.ts'
-import Legend from '../../Legend'
+import {DEPRECATED_getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors'
+import {getTimezone} from '../../../../../../state/currentUser/selectors'
+import Legend, {Label} from '../../Legend/Legend'
+import {RootState} from '../../../../../../state/types'
 
 import css from './PerHourPerWeekTableStat.less'
 
 type Props = {
-    data: Map<any, any>,
-    config: Map<any, any>,
-    meta: Map<any, any>,
-    name?: string,
+    data: Map<any, any>
+    config: Map<any, any>
+    meta: Map<any, any>
+    name?: string
     context?: {
-        tagColors: Map<any, any>,
-    },
-    businessHoursSettings: Map<any, any>,
-    currentUserTimezone: string,
-}
+        tagColors: Map<any, any> | null
+    }
+} & ConnectedProps<typeof connector>
 
 type Limits = {
-    n0: number,
-    n1: number,
-    n2: number,
-    n3: number,
-    n4: number,
+    n0: number
+    n1: number
+    n2: number
+    n3: number
+    n4: number
 }
 
 const colors = {
@@ -40,16 +38,16 @@ const colors = {
     white: '#FFFFFF',
 }
 
-const getDataIntervals = (lines: Map<any, any>): Limits => {
+const getDataIntervals = (lines: List<any>): Limits => {
     const allCounts = lines
-        .map((row) => {
+        .map((row: List<any>) => {
             return row
                 .slice(1)
-                .filter((cell) => {
+                .filter((cell: Map<any, any>) => {
                     return cell.getIn(['type']) === 'number'
                 })
-                .map((cell) => {
-                    return cell.getIn(['value'])
+                .map((cell: Map<any, any>) => {
+                    return cell.getIn(['value']) as string | number
                 })
         })
         .flatten()
@@ -78,14 +76,14 @@ const getValueColor = (limits: Limits, value: number) => {
     return colors.white
 }
 
-const getLegendLabels = (lines: Map<any, any>) => {
+const getLegendLabels = (lines: List<any>): Label[] => {
     const limits = getDataIntervals(lines)
     const bHoursLegend = {
         name: 'Business Hours',
         background:
             'repeating-linear-gradient' +
             `(135deg, ${colors.white}, ${colors.white} 2px, ${colors.red} 2px, ${colors.red} 4px)`,
-        shape: 'square',
+        shape: 'square' as const,
     }
 
     if (limits.n4 < 4) {
@@ -119,34 +117,37 @@ const getLegendLabels = (lines: Map<any, any>) => {
 }
 
 const isInBusinessHour = (
-    currentDayIsoCode,
-    currentHour,
-    userTimezone,
-    bHoursSettings
+    currentDayIsoCode: number,
+    currentHour: number,
+    userTimezone: string,
+    bHoursSettings: Map<any, any>
 ) => {
-    let _getDay = (isoDay) => {
-        return '2019-06-0' + (2 + isoDay)
+    const _getDay = (isoDay: number) => {
+        return `2019-06-0${2 + isoDay}`
     }
 
     const bHoursTimezone = bHoursSettings.getIn(['data', 'timezone'])
     const weekStart = moment.tz(_getDay(1) + 'T00:00', userTimezone)
     const weekEnd = moment.tz(_getDay(7) + 'T23:59', userTimezone)
     const testedDateTime = moment.tz(
-        `${_getDay(currentDayIsoCode)}T${('00' + currentHour).slice(-2)}:01`,
+        `${_getDay(currentDayIsoCode)}T${`00${currentHour}`.slice(-2)}:01`,
         userTimezone
     )
 
     for (const range of bHoursSettings.getIn(['data', 'business_hours'])) {
-        for (const day of range
-            .get('days')
+        for (const day of ((range as Map<any, any>).get('days') as string)
             .split(',')
             .map((day) => parseInt(day))) {
-            let rangePeriodStart = moment.tz(
-                `${_getDay(day)}T${range.get('from_time')}`,
+            const rangePeriodStart = moment.tz(
+                `${_getDay(day)}T${
+                    (range as Map<any, any>).get('from_time') as string
+                }`,
                 bHoursTimezone
             )
-            let rangePeriodEnd = moment.tz(
-                `${_getDay(day)}T${range.get('to_time')}`,
+            const rangePeriodEnd = moment.tz(
+                `${_getDay(day)}T${
+                    (range as Map<any, any>).get('to_time') as string
+                }`,
                 bHoursTimezone
             )
 
@@ -183,16 +184,20 @@ const isInBusinessHour = (
 }
 
 type TableCellsProps = {
-    lines: Map<any, any>,
-    userTimezone: string,
-    businessHoursSettings: Map<any, any>,
+    lines: List<any>
+    userTimezone: string
+    businessHoursSettings: Map<any, any>
 }
 
 export function TableCells(props: TableCellsProps) {
     const {lines, userTimezone, businessHoursSettings} = props
     const limits = getDataIntervals(lines)
 
-    let metricRender = (metric, weekDayIdx, hourIdx) => {
+    const metricRender = (
+        metric: Map<any, any>,
+        weekDayIdx: number,
+        hourIdx: number
+    ) => {
         return (
             <td
                 key={weekDayIdx}
@@ -223,10 +228,10 @@ export function TableCells(props: TableCellsProps) {
     return (
         <>
             {lines
-                .map((line, hour) => (
+                .map((line: Map<any, any>, hour) => (
                     <tr key={hour}>
                         {line.map((metric, weekDay) => {
-                            return metricRender(metric, weekDay, hour)
+                            return metricRender(metric, weekDay, hour!)
                         })}
                     </tr>
                 ))
@@ -238,7 +243,7 @@ export function TableCells(props: TableCellsProps) {
 export function PerHourPerWeekTableStatContainer(props: Props) {
     const {data, currentUserTimezone, businessHoursSettings} = props
 
-    return data.get('lines').isEmpty() ? (
+    return (data.get('lines') as List<any>).isEmpty() ? (
         <div className="text-muted">There is no data for this period.</div>
     ) : (
         <div>
@@ -248,22 +253,30 @@ export function PerHourPerWeekTableStatContainer(props: Props) {
             <Table hover className={css.hourlyTable}>
                 <thead>
                     <tr>
-                        {data.getIn(['axes', 'x']).map((axe, index) => {
-                            return (
-                                <th
-                                    key={index}
-                                    className={css[`${axe.get('type')}`]}
-                                >
-                                    <span>{axe.get('name').toUpperCase()}</span>
-                                </th>
-                            )
-                        })}
+                        {(data.getIn(['axes', 'x']) as List<any>).map(
+                            (axe: Map<any, any>, index) => {
+                                return (
+                                    <th
+                                        key={index}
+                                        className={
+                                            css[`${axe.get('type') as string}`]
+                                        }
+                                    >
+                                        <span>
+                                            {(axe.get(
+                                                'name'
+                                            ) as string).toUpperCase()}
+                                        </span>
+                                    </th>
+                                )
+                            }
+                        )}
                     </tr>
                 </thead>
                 <tbody>
                     <TableCells
                         lines={data.get('lines')}
-                        userTimezone={currentUserTimezone}
+                        userTimezone={currentUserTimezone!}
                         businessHoursSettings={businessHoursSettings}
                     />
                 </tbody>
@@ -272,9 +285,11 @@ export function PerHourPerWeekTableStatContainer(props: Props) {
     )
 }
 
-export default connect((state) => {
+const connector = connect((state: RootState) => {
     return {
         businessHoursSettings: DEPRECATED_getBusinessHoursSettings(state),
         currentUserTimezone: getTimezone(state),
     }
-}, {})(PerHourPerWeekTableStatContainer)
+})
+
+export default connector(PerHourPerWeekTableStatContainer)

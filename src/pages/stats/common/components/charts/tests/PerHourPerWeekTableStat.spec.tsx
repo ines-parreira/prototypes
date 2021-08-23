@@ -1,13 +1,12 @@
-// @flow
 import {fromJS} from 'immutable'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 
 import {
     PerHourPerWeekTableStatContainer,
     TableCells,
 } from '../PerHourPerWeekTableStat/PerHourPerWeekTableStat'
-import {account} from '../../../../../../fixtures/account.ts'
+import {account} from '../../../../../../fixtures/account'
 
 const statPerHourPerWeekData = {
     axes: {
@@ -92,7 +91,10 @@ describe('PerHourPerWeekTableStat', () => {
             currentUserTimezone: '',
             config: fromJS({}),
             meta: fromJS({}),
-        }
+        } as Omit<
+            ComponentProps<typeof PerHourPerWeekTableStatContainer>,
+            'data'
+        >
 
         it('Should render the table with intervals', () => {
             const component = shallow(
