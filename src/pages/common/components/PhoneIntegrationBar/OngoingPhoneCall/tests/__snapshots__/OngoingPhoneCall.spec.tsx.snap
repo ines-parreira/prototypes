@@ -54,6 +54,17 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       </i>
     </button>
     <button
+      class="recording btn btn-secondary"
+      data-testid="record-call-button"
+      type="button"
+    >
+      <i
+        class="text-danger material-icons"
+      >
+        fiber_manual_record
+      </i>
+    </button>
+    <button
       class="btn btn-danger"
       data-testid="end-call-button"
       type="button"

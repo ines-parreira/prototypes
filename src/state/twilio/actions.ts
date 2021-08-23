@@ -4,6 +4,7 @@ import {
     SET_TWILIO_CONNECTION,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
+    SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
 } from './constants'
 
@@ -23,6 +24,11 @@ export type SetIsDialingAction = {
 }
 
 export type SetIsRingingAction = {
+    type: string
+    payload: boolean
+}
+
+export type SetIsRecordingAction = {
     type: string
     payload: boolean
 }
@@ -60,5 +66,12 @@ export function setIsRinging(isRinging: boolean): SetIsRingingAction {
     return {
         type: SET_TWILIO_IS_RINGING,
         payload: isRinging,
+    }
+}
+
+export function setIsRecording(isRecording: boolean): SetIsRingingAction {
+    return {
+        type: SET_TWILIO_IS_RECORDING,
+        payload: isRecording,
     }
 }

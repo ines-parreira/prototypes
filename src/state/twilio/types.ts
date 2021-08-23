@@ -5,4 +5,5 @@ export type TwilioState = {
     connection: Connection | null
     isDialing: boolean
     isRinging: boolean
+    isRecording: boolean
 }
