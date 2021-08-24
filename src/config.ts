@@ -156,8 +156,21 @@ export function shouldHideTwitterIntegration() {
         location.hostname.endsWith('.gorgias.io') ||
         location.hostname.endsWith('.gorgias.com')
     const allowedHostnames = [
-        'zachbanov.gorgias.com',
         'test-martin.gorgias.com',
+        'bloomsybox.gorgias.com',
+        'yumove.gorgias.com',
+        'zox.gorgias.com',
+        'bionicgym.gorgias.com',
+        'onefreshpillow.gorgias.com',
+        'acousticsounds.gorgias.com',
+        'g2esports.gorgias.com',
+        'facetheory.gorgias.com',
+        'craftginclub.gorgias.com',
+        'bagallerydeals.gorgias.com',
+        'manieredevoir.gorgias.com',
+        'ego.gorgias.com',
+        'bearaby.gorgias.com',
+        'frenchconnectionuk.gorgias.com',
     ]
 
     return isProd && !allowedHostnames.includes(location.hostname)
