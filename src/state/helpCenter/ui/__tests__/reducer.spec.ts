@@ -1,6 +1,6 @@
 import reducer, {initialState} from '../reducer'
 
-import {changeHelpCenterId, changeViewLanguage} from '../actions'
+import {changeViewLanguage} from '../actions'
 
 import {ChangeViewLanguage} from '../types'
 
@@ -16,14 +16,6 @@ describe('Help Center/UI reducer', () => {
             const nextState = reducer(undefined, changeViewLanguage('fr-FR'))
 
             expect(nextState.currentLanguage).toEqual('fr-FR')
-        })
-    })
-
-    describe('dispatch changeHelpCenterId', () => {
-        it('updates the current help center id', () => {
-            const nextState = reducer(undefined, changeHelpCenterId(1))
-
-            expect(nextState.currentId).toEqual(1)
         })
     })
 })

@@ -1,12 +1,9 @@
 import {useEffect, useState} from 'react'
-import {useAsyncFn} from 'react-use'
+import axios from 'axios'
 import {useSelector} from 'react-redux'
 
 import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
-import {
-    changeViewLanguage,
-    getCurrentHelpCenterId,
-} from '../../../../state/helpCenter/ui'
+import {readHelpcenterById} from '../../../../state/entities/helpCenters/selectors'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
@@ -16,49 +13,52 @@ import {useHelpcenterApi} from './useHelpcenterApi'
 type useCurrentHelpCenterApi = {
     isLoading: boolean
     data: HelpCenter | null
-    error: Error | undefined
+    errorCode: number | undefined
 }
 
-let cachedHelpCenter: HelpCenter
+type ErrorResponse = {
+    statusCode: number
+    message: string
+}
 
-export const useCurrentHelpCenter = (): useCurrentHelpCenterApi => {
+export const useCurrentHelpCenter = (
+    helpcenterId: number
+): useCurrentHelpCenterApi => {
     const dispatch = useAppDispatch()
-    const currentHelpCenterId = useSelector(getCurrentHelpCenterId)
-    const [data, setData] = useState<HelpCenter>(cachedHelpCenter)
+    const data = useSelector(readHelpcenterById(helpcenterId.toString()))
 
-    const {client} = useHelpcenterApi()
+    const {isReady, client} = useHelpcenterApi()
 
-    const [helpCenter, getHelpCenter] = useAsyncFn(async () => {
-        if (client && currentHelpCenterId) {
-            const response = await client.getHelpCenter({
-                help_center_id: currentHelpCenterId,
-            })
-
-            return response.data
-        }
-    }, [client, currentHelpCenterId])
+    const [isLoading, setLoading] = useState<boolean>(!data)
+    const [errorCode, setErrorCode] = useState<number>()
 
     useEffect(() => {
         async function init() {
-            const response = await getHelpCenter()
+            if (isReady && client) {
+                try {
+                    const response = await client.getHelpCenter({
+                        help_center_id: helpcenterId,
+                    })
 
-            if (response) {
-                dispatch(helpCentersFetched([response]))
-                dispatch(changeViewLanguage(response.default_locale))
-
-                setData(response)
-                cachedHelpCenter = response
+                    dispatch(helpCentersFetched([response.data]))
+                    setLoading(false)
+                } catch (error) {
+                    if (axios.isAxiosError(error)) {
+                        const data: ErrorResponse = error.response?.data
+                        setErrorCode(data.statusCode)
+                    }
+                    console.error(error)
+                }
             }
         }
-
-        if (data?.id !== currentHelpCenterId) {
+        if (!data) {
             void init()
         }
-    }, [data, currentHelpCenterId, dispatch, getHelpCenter])
+    }, [client, data, helpcenterId, isReady])
 
     return {
-        isLoading: helpCenter.loading,
+        isLoading,
         data,
-        error: helpCenter.error,
+        errorCode,
     }
 }

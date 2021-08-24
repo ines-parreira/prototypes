@@ -87,7 +87,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const [isArticleLoading, setIsArticleLoading] = useState(false)
 
     const {isReady, client} = useHelpcenterApi()
-    const helpCenter = useCurrentHelpCenter().data
+    const helpCenter = useCurrentHelpCenter(helpCenterId).data
     const articlesActions = useArticlesActions()
     const {articles, isLoading} = useArticles(viewLanguage)
 
@@ -106,6 +106,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         dispatch(resetCategories())
         dispatch(resetArticles())
     }, [])
+
+    useEffect(() => {
+        if (helpCenter?.default_locale) {
+            dispatch(changeViewLanguage(helpCenter.default_locale))
+        }
+    }, [helpCenter?.default_locale])
 
     // Make sure to exit fullscreen mode when modal view changes
     useEffect(() => {

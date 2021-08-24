@@ -16,8 +16,8 @@ import {
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify} from '../../../../state/notifications/actions'
 
-import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
+import {readHelpcenterById} from '../../../../state/entities/helpCenters/selectors'
 
 import {SOCIAL_NAVIGATION_LINKS} from '../constants'
 
@@ -32,7 +32,6 @@ import {saveSocialLinks, saveNavigationLinks} from '../utils/navigationLinks'
 
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useLocales} from '../hooks/useLocales'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
@@ -44,7 +43,7 @@ export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
     const locales = useLocales()
 
-    const {isLoading, data} = useCurrentHelpCenter()
+    const data = useSelector(readHelpcenterById(helpcenterId.toString()))
     const {isReady, client} = useHelpcenterApi()
 
     const [links, setLinks] = React.useState<NavigationLinkDto[]>([])
@@ -52,7 +51,7 @@ export const HelpCenterCustomizationView = () => {
 
     const localesOptions = useLocaleSelectOptions(
         locales,
-        data?.supported_locales || []
+        data?.supported_locales
     )
 
     const handleOnChangeLocale = (locale: LocaleCode) => {
@@ -134,14 +133,6 @@ export const HelpCenterCustomizationView = () => {
     const handleOnReset = () => {
         headerNavigation.resetFields()
         footerNavigation.resetFields()
-    }
-
-    if (isLoading || !data) {
-        return (
-            <Container fluid className="page-container">
-                <Loader />
-            </Container>
-        )
     }
 
     const handleOnSave = async () => {

@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react'
-import axios from 'axios'
+import React from 'react'
 import {
     useHistory,
     useLocation,
@@ -7,16 +6,10 @@ import {
     Route,
     useRouteMatch,
 } from 'react-router-dom'
-import {useSelector} from 'react-redux'
-
 import {Container} from 'reactstrap'
 
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
-import {
-    changeHelpCenterId,
-    getCurrentHelpCenterId,
-} from '../../../../../state/helpCenter/ui'
 
 import Loader from '../../../../common/components/Loader/Loader'
 
@@ -34,31 +27,17 @@ import HelpCenterInstallationView from '../../components/HelpCenterInstallationV
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const {path} = useRouteMatch()
-    const helpCenterId = useHelpCenterIdParam()
+    const helpcenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
-    const currentHelpCenterId = useSelector(getCurrentHelpCenterId)
 
-    const {isLoading, error} = useCurrentHelpCenter()
+    const {isLoading, errorCode} = useCurrentHelpCenter(helpcenterId)
 
-    useEffect(() => {
-        if (helpCenterId !== currentHelpCenterId || !currentHelpCenterId) {
-            dispatch(changeHelpCenterId(helpCenterId))
-        }
-    }, [helpCenterId, currentHelpCenterId, dispatch])
+    if (errorCode) {
+        const message =
+            errorCode === 404 ? 'Help center not found' : 'Something went wrong'
 
-    if (error) {
-        let message = 'Something went wrong'
-
-        if (axios.isAxiosError(error)) {
-            const err: {statusCode: number} = error.response?.data
-
-            if (err?.statusCode === 404) {
-                message = 'Help center not found!'
-            }
-        }
-
-        history.push(location.pathname.split(helpCenterId.toString())[0])
+        history.push(location.pathname.split(helpcenterId.toString())[0])
         void dispatch(
             notify({
                 message: message,

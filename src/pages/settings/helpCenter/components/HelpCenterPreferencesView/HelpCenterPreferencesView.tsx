@@ -1,7 +1,9 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 
-import Loader from '../../../../common/components/Loader/Loader'
+import {readHelpcenterById} from '../../../../../state/entities/helpCenters/selectors'
+
 import PageHeader from '../../../../common/components/PageHeader'
 
 import {LanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
@@ -11,7 +13,6 @@ import {useLocales} from '../../hooks/useLocales'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {DefaultLanguageSelect} from '../DefaultLanguageSelect'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 
@@ -20,15 +21,7 @@ import {FooterActions} from './components/FooterActions'
 export const HelpCenterPreferencesView = () => {
     const helpcenterId = useHelpCenterIdParam()
     const locales = useLocales()
-    const {isLoading, data} = useCurrentHelpCenter()
-
-    if (isLoading || !data) {
-        return (
-            <Container fluid className="page-container">
-                <Loader />
-            </Container>
-        )
-    }
+    const data = useSelector(readHelpcenterById(helpcenterId.toString()))
 
     return (
         <div className="full-width">

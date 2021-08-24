@@ -4,7 +4,6 @@ import {LocaleCode} from '../../../models/helpCenter/types'
 
 export enum UiActions {
     ChangeLanguage = 'HELPCENTER/UI/CHANGE_LANGUAGE',
-    ChangeHelpCenterId = 'HELPCENTER/UI/CHANGE_ID',
 }
 
 export type ChangeViewLanguage = PayloadActionCreator<
@@ -12,12 +11,6 @@ export type ChangeViewLanguage = PayloadActionCreator<
     UiActions.ChangeLanguage
 >
 
-export type ChangeHelpCenterId = PayloadActionCreator<
-    number | null,
-    UiActions.ChangeHelpCenterId
->
-
 export type HelpCenterUiState = {
     currentLanguage: LocaleCode
-    currentId: number | null
 }

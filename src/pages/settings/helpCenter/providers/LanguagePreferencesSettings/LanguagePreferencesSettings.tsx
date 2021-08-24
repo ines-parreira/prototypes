@@ -2,9 +2,11 @@ import React from 'react'
 import produce, {Draft} from 'immer'
 
 import {useAsyncFn} from 'react-use'
+import {useSelector} from 'react-redux'
 
 import {LocaleCode} from '../../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import {readHelpcenterById} from '../../../../../state/entities/helpCenters/selectors'
 import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
@@ -12,7 +14,6 @@ import {NotificationStatus} from '../../../../../state/notifications/types'
 import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../constants'
 
 import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 
 export type PreferencesState = {
     defaultLanguage: LocaleCode
@@ -57,8 +58,7 @@ export const LanguagePreferencesSettings = ({
     const [preferences, updatePreference] = React.useState<PreferencesState>(
         defaultPreferences
     )
-    const {data} = useCurrentHelpCenter()
-
+    const data = useSelector(readHelpcenterById(helpcenterId.toString()))
     const {client} = useHelpcenterApi()
     const [, savePreferences] = useAsyncFn(() => {
         if (!client) {
@@ -119,7 +119,7 @@ export const LanguagePreferencesSettings = ({
     }, [data, preferences])
 
     const arePreferencesChanged = React.useCallback(() => {
-        if (data?.default_locale !== preferences.defaultLanguage) {
+        if (data.default_locale !== preferences.defaultLanguage) {
             return true
         }
 
@@ -141,6 +141,10 @@ export const LanguagePreferencesSettings = ({
 
         return false
     }, [data, preferences])
+
+    React.useEffect(() => {
+        updatePreferencesFromData()
+    }, [data])
 
     React.useEffect(() => {
         updatePreferencesFromData()
