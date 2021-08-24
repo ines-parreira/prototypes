@@ -6,9 +6,7 @@ import {CardHeaderStarPoints} from '../CardHeaderStarPoints.tsx'
 describe('<CardHeaderStarPoints/>', () => {
     describe('render()', () => {
         it('should render children', () => {
-            const component = shallow(
-                <CardHeaderStarPoints>555</CardHeaderStarPoints>
-            )
+            const component = shallow(<CardHeaderStarPoints value="555" />)
 
             expect(component).toMatchSnapshot()
         })

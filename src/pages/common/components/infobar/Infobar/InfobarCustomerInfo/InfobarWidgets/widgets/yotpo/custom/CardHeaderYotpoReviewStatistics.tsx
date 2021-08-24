@@ -1,13 +1,11 @@
-// @flow
-import React, {type Node} from 'react'
-
+import React, {ReactNode} from 'react'
 import {Badge} from 'reactstrap'
 
 import css from './CardHeaderYotpoReviewStatistics.less'
 
 type Props = {
-    children: Node,
-    label?: string,
+    children: ReactNode
+    label?: string
 }
 
 export function CardHeaderYotpoReviewStatistics({children}: Props) {

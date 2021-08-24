@@ -336,7 +336,7 @@ export type Order = {
 }
 
 export type Image = {
-    id: number
+    id?: number
     alt: Maybe<string>
     src: string
 }
@@ -344,7 +344,7 @@ export type Image = {
 export type Variant = {
     id: number
     admin_graphql_api_id: string
-    sku: string
+    sku: Maybe<string>
     price: string
     title: string
     image_id: Maybe<number>

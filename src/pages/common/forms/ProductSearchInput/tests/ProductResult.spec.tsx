@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import {shallow} from 'enzyme'
 
@@ -7,14 +5,14 @@ import {
     integrationDataItemProductFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../fixtures/shopify.ts'
-import type {IntegrationDataItem} from '../../../../../models/integration'
-import type {
+} from '../../../../../fixtures/shopify'
+import {IntegrationDataItem} from '../../../../../models/integration/types'
+import {
     Product,
     Variant,
+    InventoryManagement,
 } from '../../../../../constants/integrations/types/shopify'
 import ProductResult from '../ProductResult'
-import {InventoryManagement} from '../../../../../constants/integrations/types/shopify.ts'
 
 describe('<ProductResult/>', () => {
     describe('render()', () => {
@@ -40,7 +38,7 @@ describe('<ProductResult/>', () => {
         })
 
         it('should render without subtitle', () => {
-            const variant: Variant = shopifyVariantFixture({sku: null})
+            const variant: Variant = shopifyVariantFixture({sku: null} as any)
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })

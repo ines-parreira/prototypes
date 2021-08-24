@@ -29,7 +29,7 @@ import {
     IntegrationType,
     IntegrationDataItem,
 } from '../../../../../../../../../../../models/integration/types'
-import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
+import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'

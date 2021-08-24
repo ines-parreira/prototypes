@@ -20,7 +20,7 @@ import {notify} from '../../../../state/notifications/actions'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks/index.js'
-import createDndUploadPlugin from '../../draftjs/plugins/dndUpload/index.js'
+import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin from '../../draftjs/plugins/mentions/index.js'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createVariablesPlugin from '../../draftjs/plugins/variables/index.js'
@@ -47,7 +47,7 @@ import provideMentionFilteredSuggestions, {
 import withGrammarlyUsageTracking, {
     InjectedProps as GrammarlyUsageTrackingProps,
 } from './withGrammarlyUsageTracking'
-import Toolbar from './Toolbar.js'
+import Toolbar from './Toolbar'
 import css from './RichFieldEditor.less'
 
 type suggestionsType = List<any>
@@ -407,7 +407,9 @@ export class RichFieldEditor extends InputField<Props, State> {
                     )}
                 </div>
                 <Toolbar
-                    {...(this.props as ComponentProps<typeof Toolbar>)}
+                    {...((this.props as unknown) as ComponentProps<
+                        typeof Toolbar
+                    >)}
                     canDropFiles={this._getCanDropFiles()}
                     pluginMethods={this.editor?.getPluginMethods()}
                 />

@@ -1,35 +1,25 @@
-//@flow
-//$FlowFixMe
 import React, {useEffect} from 'react'
-import {withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import Infobar from '../../common/components/infobar/Infobar'
-
-import {fetchPreviewCustomer} from '../../../state/infobar/actions.ts'
-import {InfobarState} from '../../../state/infobar/types.ts'
-import * as WidgetActions from '../../../state/widgets/actions.ts'
-import {WidgetsState} from '../../../state/widgets/types.ts'
-
+import Infobar from '../../common/components/infobar/Infobar/Infobar'
+import {fetchPreviewCustomer} from '../../../state/infobar/actions'
+import {InfobarState} from '../../../state/infobar/types'
+import * as WidgetActions from '../../../state/widgets/actions'
+import {WidgetContextType} from '../../../state/widgets/types'
 import {
     getActiveCustomer,
     getActiveCustomerId,
-} from '../../../state/customers/selectors.ts'
-import {getSources} from '../../../state/widgets/selectors.ts'
+} from '../../../state/customers/selectors'
+import {getSources} from '../../../state/widgets/selectors'
+import {RootState} from '../../../state/types'
 
 type Props = {
-    actions: {
-        fetchPreviewCustomer: typeof fetchPreviewCustomer,
-        widgets: typeof WidgetActions,
-    },
-    activeCustomer: Map<any, any>,
-    activeCustomerId: number | null,
-    infobar: InfobarState,
-    isEditingWidgets: boolean,
-    sources: Map<any, any>,
-    widgets: WidgetsState,
-}
+    infobar: InfobarState
+    isEditingWidgets: boolean
+} & ConnectedProps<typeof connector> &
+    RouteComponentProps
 
 export const CustomerInfobarContainer = ({
     actions,
@@ -40,7 +30,7 @@ export const CustomerInfobarContainer = ({
     widgets,
 }: Props) => {
     useEffect(() => {
-        actions.widgets.selectContext('customer')
+        actions.widgets.selectContext(WidgetContextType.Customer)
         actions.widgets.fetchWidgets()
     }, [])
 
@@ -52,19 +42,20 @@ export const CustomerInfobarContainer = ({
 
     return (
         <Infobar
-            actions={actions}
+            // $TsFixMe remove casting once props drilling removed
+            actions={actions as any}
             sources={sources}
             isRouteEditingWidgets={!!isEditingWidgets}
             identifier={identifier}
             customer={activeCustomer}
             widgets={widgets}
-            context="customer"
+            context={WidgetContextType.Customer}
         />
     )
 }
 
 const connector = connect(
-    (state) => ({
+    (state: RootState) => ({
         widgets: state.widgets,
         activeCustomer: getActiveCustomer(state),
         activeCustomerId: getActiveCustomerId(state),

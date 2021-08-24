@@ -3,15 +3,15 @@ import React from 'react'
 import css from './CardHeaderStarPoints.less'
 
 type Props = {
-    children: string
+    value: string
 }
 
-export function CardHeaderStarPoints({children}: Props) {
+export function CardHeaderStarPoints({value}: Props) {
     return (
         <span className={css.container}>
             <span className={`material-icons ${css.stars}`}>stars</span>
             <span className={css.children}>
-                {parseFloat(children).toLocaleString()}
+                {parseFloat(value).toLocaleString()}
             </span>
         </span>
     )

@@ -1,26 +1,24 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import type {IntegrationDataItem} from '../../../../models/integration'
-import type {Product} from '../../../../constants/integrations/types/shopify'
-import type {SearchInputResultProps} from '../SearchInput'
+import {
+    IntegrationDataItem,
+    IntegrationType,
+} from '../../../../models/integration/types'
+import {Product} from '../../../../constants/integrations/types/shopify'
+import {SearchInputResultProps} from '../SearchInput/types'
 
-import Result, {type Props as ResultProps} from './Result'
+import Result, {Props as ResultProps} from './Result'
 
 type Props = SearchInputResultProps<IntegrationDataItem<Product>>
 
-export default class ProductResult extends React.PureComponent<Props> {
-    static _dataMappers = {
-        [SHOPIFY_INTEGRATION_TYPE]: ProductResult._shopifyDataMapper,
-    }
-
-    static _shopifyDataMapper(product: Product): ResultProps {
+export default class ProductResult extends Component<Props> {
+    public static _shopifyDataMapper = function (
+        product: Product
+    ): ResultProps {
         const variant = product.variants[0]
         const sku = variant.sku ? `SKU: ${variant.sku}` : null
 
         return {
-            // $FlowFixMe
             image: product.image,
             title: product.title,
             subtitle:
@@ -29,11 +27,9 @@ export default class ProductResult extends React.PureComponent<Props> {
                     : sku,
             stock: {
                 tracked: product.variants.every(
-                    // $FlowFixMe
                     (variant) => !!variant.inventory_management
                 ),
                 quantity: product.variants.reduce(
-                    // $FlowFixMe
                     (total, variant) => total + variant.inventory_quantity,
                     0
                 ),
@@ -42,14 +38,22 @@ export default class ProductResult extends React.PureComponent<Props> {
         }
     }
 
+    static _dataMappers = {
+        [IntegrationType.ShopifyIntegrationType]:
+            // eslint-disable-next-line @typescript-eslint/unbound-method
+            ProductResult._shopifyDataMapper,
+    }
+
     render() {
         const {result: item} = this.props
         const {data: product} = item
         const integrationType = item.integration_type
-        const dataMapper = ProductResult._dataMappers[integrationType]
+        const dataMapper =
+            ProductResult._dataMappers[
+                integrationType as keyof typeof ProductResult._dataMappers
+            ]
         const resultProps = dataMapper ? dataMapper(product) : null
 
-        //$FlowFixMe
-        return <Result {...resultProps} />
+        return <Result {...resultProps!} />
     }
 }

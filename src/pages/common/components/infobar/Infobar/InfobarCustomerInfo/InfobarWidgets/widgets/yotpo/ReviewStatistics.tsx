@@ -3,7 +3,7 @@ import type {Map} from 'immutable'
 
 import {toJS} from '../../../../../../../../../utils'
 
-import {CardHeaderYotpoReviewStatistics} from './custom/CardHeaderYotpoReviewStatistics.js'
+import {CardHeaderYotpoReviewStatistics} from './custom/CardHeaderYotpoReviewStatistics'
 import {CardContentYotpoReviewTopics} from './custom/CardContentYotpoReviewTopics'
 
 export default function ReviewStatistics() {

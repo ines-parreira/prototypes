@@ -29,7 +29,7 @@ import {
     IntegrationType,
     IntegrationDataItem,
 } from '../../../../../../../../../../../models/integration/types'
-import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
+import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
 import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import {CustomerContext} from '../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import Loader from '../../../../../../../../Loader/Loader'

@@ -1,27 +1,29 @@
-// @flow
-import * as React from 'react'
+import React, {ReactNode} from 'react'
 
-import type {ActionName} from '../../draftjs/plugins/toolbar/types'
-import type {PluginMethods} from '../../draftjs/plugins/types'
-import Toolbar from '../../draftjs/plugins/toolbar/Toolbar.tsx'
-import {AddImage, AddLink} from '../../draftjs/plugins/toolbar/components'
+import {ActionName} from '../../draftjs/plugins/toolbar/types'
+import {PluginMethods} from '../../draftjs/plugins/types'
+import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
+import {
+    AddImage,
+    AddLink,
+} from '../../draftjs/plugins/toolbar/components/index.js'
 
 type Props = {
-    attachFiles: (T: Array<Blob>) => void,
-    canDropFiles: boolean,
-    displayedActions: ?(ActionName[]),
-    buttons?: React.Node[],
-    attachments?: File[],
-    linkEntityKey?: string,
-    linkIsOpen: boolean,
-    linkUrl: string,
-    linkText: string,
-    onLinkUrlChange: (string) => void,
-    onLinkTextChange: (string) => void,
-    onLinkOpen: () => void,
-    onLinkClose: () => void,
-    quickReply: React.Node,
-    pluginMethods?: PluginMethods,
+    attachFiles: (T: Array<Blob>) => void
+    canDropFiles: boolean
+    displayedActions?: ActionName[]
+    buttons?: ReactNode[]
+    attachments?: File[]
+    linkEntityKey?: string
+    linkIsOpen: boolean
+    linkUrl: string
+    linkText: string
+    onLinkUrlChange: (url: string) => void
+    onLinkTextChange: (text: string) => void
+    onLinkOpen: () => void
+    onLinkClose: () => void
+    quickReply: ReactNode
+    pluginMethods?: PluginMethods
 }
 
 export default function RichFieldToolbar(props: Props) {

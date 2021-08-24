@@ -1,28 +1,22 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
-import type {
+import {
     IntegrationDataItem,
+    IntegrationType,
     Product,
     Variant,
-} from '../../../../models/integration'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import type {Product as ShopifyProduct} from '../../../../constants/integrations/types/shopify'
-import type {SearchInputSubResultProps} from '../SearchInput'
+} from '../../../../models/integration/types'
+import {Product as ShopifyProduct} from '../../../../constants/integrations/types/shopify'
+import {SearchInputSubResultProps} from '../SearchInput/types'
 
-import Result, {type Props as ResultProps} from './Result'
+import Result, {Props as ResultProps} from './Result'
 
 type Props = SearchInputSubResultProps<IntegrationDataItem<Product>, Variant>
 
-export default class VariantResult extends React.PureComponent<Props> {
-    static _dataMappers = {
-        [SHOPIFY_INTEGRATION_TYPE]: VariantResult._shopifyDataMapper,
-    }
-
-    static _shopifyDataMapper(
+export default class VariantResult extends Component<Props> {
+    public static _shopifyDataMapper = function (
         product: ShopifyProduct,
-        // $TsFixMe replace any type to Variant
-        variant: any
+        variant: Variant
     ): ResultProps {
         const title =
             product.variants.length > 1 && variant.title
@@ -35,7 +29,6 @@ export default class VariantResult extends React.PureComponent<Props> {
                 : product.image
 
         return {
-            // $FlowFixMe
             image,
             title,
             subtitle: variant.sku ? `SKU: ${variant.sku}` : null,
@@ -46,14 +39,22 @@ export default class VariantResult extends React.PureComponent<Props> {
         }
     }
 
+    static _dataMappers = {
+        [IntegrationType.ShopifyIntegrationType]:
+            // eslint-disable-next-line @typescript-eslint/unbound-method
+            VariantResult._shopifyDataMapper,
+    }
+
     render() {
         const {result: item, subResult: variant} = this.props
         const {data: product} = item
         const integrationType = item.integration_type
-        const dataMapper = VariantResult._dataMappers[integrationType]
+        const dataMapper =
+            VariantResult._dataMappers[
+                integrationType as keyof typeof VariantResult._dataMappers
+            ]
         const resultProps = dataMapper ? dataMapper(product, variant) : null
 
-        // $FlowFixMe
-        return <Result {...resultProps} />
+        return <Result {...resultProps!} />
     }
 }

@@ -15,7 +15,7 @@ import {
 import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
-import ProductSearchInput from '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js'
+import ProductSearchInput from '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
 import {CustomerContext} from '../../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {ShopifyActionType} from '../../../types'
 import {DraftOrderModalContainer} from '../DraftOrderModal'
@@ -57,7 +57,7 @@ const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
 const mockShopifyInvoicePayloadFixture = shopifyInvoicePayloadFixture
 
 jest.mock(
-    '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput.js',
+    '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput',
     () => ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
         const item = mockIntegrationDataItemProductFixture()
         const variant = item.data.variants[0]

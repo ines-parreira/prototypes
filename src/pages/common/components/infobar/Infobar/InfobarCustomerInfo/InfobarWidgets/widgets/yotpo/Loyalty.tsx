@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 import type {Map} from 'immutable'
 
-import {CardHeaderYotpoLoyaltyPoints} from './custom/CardHeaderYotpoLoyaltyPoints.js'
+import {CardHeaderYotpoLoyaltyPoints} from './custom/CardHeaderYotpoLoyaltyPoints'
 
 export default function Loyalty() {
     return {
@@ -21,9 +21,9 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
         return (
             <>
-                <CardHeaderYotpoLoyaltyPoints>
-                    {source.getIn(['point_balance'])}
-                </CardHeaderYotpoLoyaltyPoints>
+                <CardHeaderYotpoLoyaltyPoints
+                    value={source.getIn(['point_balance'])}
+                />
             </>
         )
     }

@@ -1,22 +1,18 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {CardHeaderYotpoRatingThumbs} from '../CardHeaderYotpoRatingThumbs'
+import {CardHeaderYotpoRatingThumbs} from '../CardHeaderYotpoRatingThumbs.tsx'
 
 describe('<CardHeaderYotpoRatingThumbs/>', () => {
     describe('render()', () => {
         it('should render children and green thumb', () => {
-            const component = shallow(
-                <CardHeaderYotpoRatingThumbs>3</CardHeaderYotpoRatingThumbs>
-            )
+            const component = shallow(<CardHeaderYotpoRatingThumbs value="3" />)
 
             expect(component).toMatchSnapshot()
         })
 
         it('should render children and red thumb', () => {
-            const component = shallow(
-                <CardHeaderYotpoRatingThumbs>1</CardHeaderYotpoRatingThumbs>
-            )
+            const component = shallow(<CardHeaderYotpoRatingThumbs value="1" />)
 
             expect(component).toMatchSnapshot()
         })

@@ -31,6 +31,7 @@ import {
     CancelReason,
     TransactionKind,
     ShippingLine,
+    InventoryManagement,
 } from '../constants/integrations/types/shopify'
 import {
     IntegrationDataItem,
@@ -51,6 +52,13 @@ export const shopifyVariantFixture = ({
     price = '9.99',
     inventoryQuantity = 0,
     inventoryManagement = null,
+}: {
+    id?: number
+    sku?: string
+    title?: string
+    price?: string
+    inventoryQuantity?: number
+    inventoryManagement?: Maybe<InventoryManagement>
 } = {}): Variant => ({
     id,
     admin_graphql_api_id: `gid://shopify/ProductVariant/${id}`,

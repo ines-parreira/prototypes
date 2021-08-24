@@ -18,7 +18,7 @@ import CustomerListContainer from './customers/list/CustomerListContainer.js'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
-import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer.js'
+import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 import StatsPage from './stats/StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
@@ -65,7 +65,7 @@ import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCent
 const appRender = (props: {
     navbar: ComponentType<Record<string, unknown>>
     content: ComponentType<Record<string, unknown>>
-    infobar?: ComponentType<Record<string, unknown>>
+    infobar?: ComponentType<any>
     containerPadding?: boolean
     infobarOnMobile?: boolean
     noContainerWidthLimit?: boolean

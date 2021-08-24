@@ -62,11 +62,11 @@ export const getActiveCustomer = createSelector<
 
 export const getActiveCustomerId = createSelector<
     RootState,
-    number,
+    Maybe<number>,
     Map<any, any>
 >(
     getActiveCustomer,
-    (activeCustomer: Map<any, any>) => activeCustomer.get('id') as number
+    (activeCustomer: Map<any, any>) => activeCustomer.get('id') as Maybe<number>
 )
 
 export const getActiveCustomerIntegrationData = createSelector<

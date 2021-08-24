@@ -1,20 +1,18 @@
-// @flow
-
-import React, {type Node} from 'react'
+import React from 'react'
 
 import css from './CardHeaderYotpoRatingThumbs.less'
 
 type Props = {
-    children: Node,
-    label?: string,
+    value?: string
+    label?: string
 }
 
-export function CardHeaderYotpoRatingThumbs({children, label}: Props) {
-    const missingData = typeof children === 'undefined'
+export function CardHeaderYotpoRatingThumbs({value, label}: Props) {
+    const missingData = typeof value === 'undefined'
     let thumb = null
     if (!missingData) {
         thumb =
-            parseFloat(children) > 2.5 ? (
+            parseFloat(value!) > 2.5 ? (
                 <span className={`material-icons ${css.greenThumb}`}>
                     thumb_up{' '}
                 </span>
@@ -29,7 +27,7 @@ export function CardHeaderYotpoRatingThumbs({children, label}: Props) {
             className={`${css.container} ${missingData ? css.missingData : ''}`}
         >
             {label ? <span className={css.label}>{label}: </span> : null}
-            <strong>{missingData ? 'N/A' : children}</strong>
+            <strong>{missingData ? 'N/A' : value}</strong>
             {thumb}
         </span>
     )

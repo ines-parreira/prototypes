@@ -12,7 +12,7 @@ import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
 
 import {CardHeaderValue} from '../CardHeaderValue'
 
-import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs.js'
+import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'
 import css from './Customer.less'
 
 export default function Customer() {
@@ -35,12 +35,13 @@ class AfterTitle extends React.Component<AfterTitleProps> {
         return (
             <>
                 <CardHeaderDetails>
-                    <CardHeaderYotpoRatingThumbs label="Avg. rating">
-                        {source.getIn([
+                    <CardHeaderYotpoRatingThumbs
+                        label="Avg. rating"
+                        value={source.getIn([
                             'reviews_statistics',
                             'avg_product_rating',
                         ])}
-                    </CardHeaderYotpoRatingThumbs>
+                    />
                     <CardHeaderValue label="Reviews">
                         {source.getIn(
                             ['reviews_statistics', 'total_reviews'],

@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './ProductSearchInput'
+export {default} from './ProductSearchInput.tsx'

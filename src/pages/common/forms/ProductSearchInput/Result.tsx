@@ -1,28 +1,25 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 import {getSizedImageUrl} from '@shopify/theme-images'
 
 import defaultImage from '../../../../../img/presentationals/shopify-product-default-image.png'
-import {ProductStockQuantity} from '../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/StockQuantity/index.ts'
+import {ProductStockQuantity} from '../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/StockQuantity'
+import {Image} from '../../../../constants/integrations/types/shopify'
 
 import css from './Result.less'
 
 export type Props = {
-    image: ?{
-        src: string,
-        alt: string,
-    },
-    title: string,
-    subtitle: ?string,
+    image: Maybe<Image>
+    title: string
+    subtitle: string | null
     stock: {
-        tracked: boolean,
-        quantity: ?number,
-        totalVariants?: number,
-    },
+        tracked: boolean
+        quantity: number | null
+        totalVariants?: number
+    }
 }
 
-export default class Result extends React.PureComponent<Props> {
+export default class Result extends Component<Props> {
     _renderStock() {
         const {stock} = this.props
 
@@ -36,7 +33,7 @@ export default class Result extends React.PureComponent<Props> {
 
         return (
             <div className={css.stock}>
-                <ProductStockQuantity value={stock.quantity} /> in stock{' '}
+                <ProductStockQuantity value={stock.quantity!} /> in stock{' '}
                 {stock.totalVariants && stock.totalVariants > 1
                     ? `for ${stock.totalVariants} variants`
                     : null}
@@ -54,7 +51,7 @@ export default class Result extends React.PureComponent<Props> {
         return (
             <div className={css.container}>
                 <div className={css.imgContainer}>
-                    <img className={css.img} src={imageSrc} alt={imageAlt} />
+                    <img className={css.img} src={imageSrc} alt={imageAlt!} />
                 </div>
                 <div className={css.legend}>
                     <div className={css.title}>{title}</div>

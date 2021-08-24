@@ -8,8 +8,8 @@ exports[`<TitleWrapper/> render() should not render loyalty point balance 1`] = 
 
 exports[`<TitleWrapper/> render() should render loyalty point balance 1`] = `
 <Fragment>
-  <CardHeaderYotpoLoyaltyPoints>
-    1
-  </CardHeaderYotpoLoyaltyPoints>
+  <CardHeaderYotpoLoyaltyPoints
+    value={1}
+  />
 </Fragment>
 `;

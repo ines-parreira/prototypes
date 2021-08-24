@@ -2,11 +2,11 @@ import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
-import {CustomerInfobarContainer} from '../CustomerInfobarContainer.js'
+import {CustomerInfobarContainer} from '../CustomerInfobarContainer'
 import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
 
 jest.mock(
-    '../../../common/components/infobar/Infobar',
+    '../../../common/components/infobar/Infobar/Infobar',
     () => ({
         actions,
         sources,
@@ -30,7 +30,7 @@ jest.mock(
 )
 
 describe('<CustomerInfobarContainer />', () => {
-    const minProps = {
+    const minProps = ({
         actions: {
             fetchPreviewCustomer: jest.fn(),
             widgets: {
@@ -62,7 +62,7 @@ describe('<CustomerInfobarContainer />', () => {
             customer: fromJS({}),
         }),
         widgets: fromJS({}),
-    }
+    } as unknown) as ComponentProps<typeof CustomerInfobarContainer>
 
     it('should render infobar for active customer', () => {
         const {container} = render(<CustomerInfobarContainer {...minProps} />)
