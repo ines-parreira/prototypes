@@ -163,7 +163,6 @@ export function shouldHideTwitterIntegration() {
         'bionicgym.gorgias.com',
         'onefreshpillow.gorgias.com',
         'acousticsounds.gorgias.com',
-        'g2esports.gorgias.com',
         'facetheory.gorgias.com',
         'craftginclub.gorgias.com',
         'bagallerydeals.gorgias.com',
