@@ -4,14 +4,19 @@ import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../../pages/settings/helpCenter/c
 
 import {HelpCenterUiState} from './types'
 
-import {changeViewLanguage} from './actions'
+import {changeHelpCenterId, changeViewLanguage} from './actions'
 
 export const initialState: HelpCenterUiState = {
     currentLanguage: HELP_CENTER_LANGUAGE_DEFAULT,
+    currentId: null,
 }
 
 export default createReducer<HelpCenterUiState>(initialState, (builder) =>
-    builder.addCase(changeViewLanguage, (state, {payload}) => {
-        state.currentLanguage = payload
-    })
+    builder
+        .addCase(changeViewLanguage, (state, {payload}) => {
+            state.currentLanguage = payload
+        })
+        .addCase(changeHelpCenterId, (state, {payload}) => {
+            state.currentId = payload
+        })
 )

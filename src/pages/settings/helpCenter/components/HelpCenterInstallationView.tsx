@@ -56,7 +56,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
-    const {isLoading, data} = useCurrentHelpCenter(helpCenterId)
+    const {isLoading, data} = useCurrentHelpCenter()
     const {isReady, client} = useHelpcenterApi()
 
     const [subDomainValue, setSubdomainValue] = React.useState(
