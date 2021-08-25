@@ -1,4 +1,10 @@
-import {advancedPlan, basicPlan, proPlan} from '../../fixtures/subscriptionPlan'
+import {
+    advancedPlan,
+    basicPlan,
+    proPlan,
+    basicAutomationPlan,
+    proAutomationPlan,
+} from '../../fixtures/subscriptionPlan'
 import {AccountFeature} from '../../state/currentAccount/types'
 import {Plan} from '../../models/billing/types'
 import {getCheapestPlanNameForFeature} from '../paywalls'
@@ -7,6 +13,8 @@ const publicPlans: Record<string, Plan> = {
     [basicPlan.id]: basicPlan,
     [proPlan.id]: proPlan,
     [advancedPlan.id]: advancedPlan,
+    [basicAutomationPlan.id]: basicAutomationPlan,
+    [proAutomationPlan.id]: proAutomationPlan,
 }
 
 describe('getCheapestPlanNameForFeature()', () => {

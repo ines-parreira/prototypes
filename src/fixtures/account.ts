@@ -59,5 +59,10 @@ export const account: Account = {
         [AccountFeature.Teams]: {enabled: true},
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
+        [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
+        [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
+        [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
+        [AccountFeature.AutomationReturnFlow]: {enabled: true},
+        [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
     },
 }

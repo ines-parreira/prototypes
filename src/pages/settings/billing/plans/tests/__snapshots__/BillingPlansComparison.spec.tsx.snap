@@ -1077,11 +1077,11 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         class="cardFooter card-footer"
       >
         <button
-          aria-label="Upgrade to Pro Plan"
+          aria-label="Switch to Pro Plan"
           class="btn btn-link"
           type="button"
         >
-          Upgrade to Pro Plan
+          Switch to Pro Plan
         </button>
       </div>
     </div>

@@ -86,6 +86,9 @@ exports[`<BillingUsage/> should display price 1`] = `
           "enabled": true,
           "limit": 3,
         },
+        "automation_cancellations_flow": Immutable.Map {
+          "enabled": true,
+        },
         "revenue_statistics": Immutable.Map {
           "enabled": true,
         },
@@ -110,10 +113,22 @@ exports[`<BillingUsage/> should display price 1`] = `
         "yotpo_integration": Immutable.Map {
           "enabled": true,
         },
+        "automation_return_flow": Immutable.Map {
+          "enabled": true,
+        },
         "instagram_dm": Immutable.Map {
           "enabled": true,
         },
         "teams": Immutable.Map {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Immutable.Map {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Immutable.Map {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Immutable.Map {
           "enabled": true,
         },
         "chat_campaigns": Immutable.Map {
@@ -660,6 +675,9 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
           "enabled": true,
           "limit": 3,
         },
+        "automation_cancellations_flow": Immutable.Map {
+          "enabled": true,
+        },
         "revenue_statistics": Immutable.Map {
           "enabled": true,
         },
@@ -684,10 +702,22 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         "yotpo_integration": Immutable.Map {
           "enabled": true,
         },
+        "automation_return_flow": Immutable.Map {
+          "enabled": true,
+        },
         "instagram_dm": Immutable.Map {
           "enabled": true,
         },
         "teams": Immutable.Map {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Immutable.Map {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Immutable.Map {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Immutable.Map {
           "enabled": true,
         },
         "chat_campaigns": Immutable.Map {

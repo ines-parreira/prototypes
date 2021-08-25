@@ -32,6 +32,11 @@ export enum AccountFeature {
     Teams = 'teams',
     UserRoles = 'user_roles',
     ViewSharing = 'view_sharing',
+    AutomationTrackOrderFlow = 'automation_track_order_flow',
+    AutomationReportIssueFlow = 'automation_report_issue_flow',
+    AutomationCancellationsFlow = 'automation_cancellations_flow',
+    AutomationReturnFlow = 'automation_return_flow',
+    AutomationSelfServiceStatistics = 'automation_self_service_statistics',
 }
 
 export type ViewsOrderingAccountSetting = {
