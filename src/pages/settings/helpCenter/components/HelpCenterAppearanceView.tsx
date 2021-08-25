@@ -18,7 +18,7 @@ import {SearchToggle} from './SearchToggle'
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const {isLoading, data: helpCenter} = useCurrentHelpCenter(helpCenterId)
+    const {isLoading, data: helpCenter} = useCurrentHelpCenter()
     const {client} = useHelpcenterApi()
 
     const toggleSearch = async (searchActivated: boolean) => {
