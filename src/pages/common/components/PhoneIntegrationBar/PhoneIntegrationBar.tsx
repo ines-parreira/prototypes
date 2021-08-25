@@ -123,8 +123,6 @@ function instantiateDevice(
     })
 
     device.on('offline', () => {
-        setConnection(null)
-
         if (reconnectionAttempts > maxReconnectionAttempts) {
             console.error(
                 `Impossible to reconnect to Twilio after ${maxReconnectionAttempts} attempts`
