@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketsCreatedPerTagViewLink should log the event on click 1`] = `
+Array [
+  Array [
+    "stat-view-link-clicked",
+    Object {
+      "stat": "tickets-created-per-tag-total",
+    },
+  ],
+]
+`;
+
+exports[`TicketsCreatedPerTagViewLink should render a tag link 1`] = `
+<span>
+  <div>
+    ViewLink Mock
+    {
+  "viewName": "Tagged with: fooTag",
+  "filters": [
+    {
+      "left": "ticket.tags.name",
+      "operator": "containsAny",
+      "right": "[\\"fooTag\\"]"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;
+
+exports[`TicketsCreatedPerTagViewLink should render the "untagged" link 1`] = `
+<span>
+  <div>
+    ViewLink Mock
+    {
+  "viewName": "Untagged",
+  "filters": [
+    {
+      "left": "ticket.tags.name",
+      "operator": "isEmpty"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"email\\""
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;

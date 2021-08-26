@@ -13,6 +13,7 @@ import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
 import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
+import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
 
 import css from './stats.less'
 
@@ -763,8 +764,23 @@ export const stats = toImmutable<
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: ({line, value}: StatConfigCellCallbackData, {tagColors}) => {
+            cell: (
+                {line, value, axis}: StatConfigCellCallbackData,
+                {tagColors}
+            ) => {
                 const tagName = line.first() as Map<any, any>
+
+                if (axis.name.toLowerCase() === 'total') {
+                    return (
+                        <TicketsCreatedPerTagViewLink
+                            tagName={(line.get(0) as Map<any, any>).get(
+                                'value'
+                            )}
+                        >
+                            {value}
+                        </TicketsCreatedPerTagViewLink>
+                    )
+                }
 
                 // current cell does not contain a tag name
                 if (tagName.get('value') !== value) {

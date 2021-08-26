@@ -102,3 +102,5 @@ export const makeStatsFiltersSelector = (viewName: string) =>
 export const getSupportPerformanceAgentsStatsFilters = makeStatsFiltersSelector(
     'support-performance-agents'
 )
+
+export const getTagsStatsFilters = makeStatsFiltersSelector('tags')
