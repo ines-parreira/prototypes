@@ -24,7 +24,7 @@ import {
     emailTicket,
     instagramMedia,
     smoochTicket,
-} from '../../ticket/tests/fixtures.js'
+} from '../../ticket/tests/fixtures'
 import socketManager from '../../../services/socketManager/socketManager'
 import {Integration, IntegrationType} from '../../../models/integration/types'
 import {ticket} from '../../../fixtures/ticket'
@@ -50,11 +50,6 @@ type MockedRootState = {
     newMessage?: Map<any, any>
     currentUser?: Map<any, any>
 }
-
-//$TsFixMe remove casting once ticket/fixtures is migrated
-const typeSafeSmoochTicket = smoochTicket as Map<any, any>
-const typeSafeEmailTicket = emailTicket as Map<any, any>
-const typeSafeInstagramMedia = instagramMedia as Map<any, any>
 
 //$TsFixMe remove casting once ticket/reducers is migrated
 const typeSafeTicketInitialState = ticketInitialState as Map<any, any>
@@ -102,7 +97,7 @@ describe('actions', () => {
             })
 
             it('`from` field from last message from agent (chat, messenger)', () => {
-                const from = typeSafeSmoochTicket.getIn([
+                const from = smoochTicket.getIn([
                     'messages',
                     1,
                     'source',
@@ -114,7 +109,7 @@ describe('actions', () => {
                 })
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: typeSafeSmoochTicket,
+                    ticket: smoochTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
                         'chat'
@@ -131,10 +126,7 @@ describe('actions', () => {
             })
 
             it('`to` field from last message from customer (chat, messenger)', () => {
-                const _smoochTicket = typeSafeSmoochTicket.deleteIn([
-                    'messages',
-                    1,
-                ]) // delete last message from agent
+                const _smoochTicket = smoochTicket.deleteIn(['messages', 1]) // delete last message from agent
                 const from = _smoochTicket.getIn([
                     'messages',
                     0,
@@ -166,10 +158,7 @@ describe('actions', () => {
 
             it('preferred channel', () => {
                 // remove messages, to simulate a new ticket
-                const _emailTicket = typeSafeEmailTicket.set(
-                    'messages',
-                    fromJS([])
-                )
+                const _emailTicket = emailTicket.set('messages', fromJS([]))
                 const preferred = getPreferredChannel(
                     TicketMessageSourceType.Email,
                     channels
@@ -197,7 +186,7 @@ describe('actions', () => {
             })
 
             it('`from` field from last message from agent', () => {
-                const from = typeSafeEmailTicket.getIn([
+                const from = emailTicket.getIn([
                     'messages',
                     1,
                     'source',
@@ -227,10 +216,7 @@ describe('actions', () => {
 
             it('`to` field from last message from customer (email found in `to`)', () => {
                 // delete last message from agent
-                const _emailTicket = typeSafeEmailTicket.deleteIn([
-                    'messages',
-                    1,
-                ])
+                const _emailTicket = emailTicket.deleteIn(['messages', 1])
                 const from = _emailTicket.getIn([
                     'messages',
                     0,
@@ -263,7 +249,7 @@ describe('actions', () => {
             it('should return channel in `cc` field from last message from customer (email found in `cc`)', () => {
                 // delete last message from agent
                 // and move `To` addresses in `Cc` and remove `To` addresses
-                const _emailTicket = typeSafeEmailTicket
+                const _emailTicket = emailTicket
                     .deleteIn(['messages', 1])
                     .updateIn(
                         ['messages', 0, 'source'],
@@ -304,10 +290,7 @@ describe('actions', () => {
 
             it('preferred email (email not found in `to`)', () => {
                 // remove address that can match
-                const _emailTicket = typeSafeEmailTicket.deleteIn([
-                    'messages',
-                    1,
-                ])
+                const _emailTicket = emailTicket.deleteIn(['messages', 1])
                 const from = getPreferredChannel(
                     TicketMessageSourceType.Email,
                     channels
@@ -337,7 +320,7 @@ describe('actions', () => {
             it('empty name and address (internal-note)', () => {
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: typeSafeEmailTicket,
+                    ticket: emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
                         'internal-note'
@@ -363,7 +346,7 @@ describe('actions', () => {
                     (integration) => integration.meta.verified === false
                 ) as Integration
 
-                const _emailTicket = typeSafeEmailTicket
+                const _emailTicket = emailTicket
                     .deleteIn(['messages', 1]) // delete last message from agent
                     .setIn(
                         ['messages', 0, 'source', 'to', 0],
@@ -414,7 +397,7 @@ describe('actions', () => {
                     name: 'an integration which does not exist',
                     address: 'notexist@gorgi.us',
                 }
-                const _emailTicket = typeSafeEmailTicket
+                const _emailTicket = emailTicket
                     .setIn(
                         ['messages', 0, 'source', 'to'],
                         fromJS([
@@ -468,7 +451,7 @@ describe('actions', () => {
             it('should persist the sender channel in the localStorage', () => {
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: typeSafeEmailTicket,
+                    ticket: emailTicket,
                     newMessage: initialState,
                 })
                 expect(getLastSenderChannel()).toBe(null)
@@ -545,7 +528,7 @@ describe('actions', () => {
             describe('email-forward', () => {
                 it('should prepare an email forward', () => {
                     store = mockStore({
-                        ticket: typeSafeEmailTicket,
+                        ticket: emailTicket,
                         newMessage: initialState,
                         integrations: fromJS(integrationsState),
                     })
@@ -561,7 +544,7 @@ describe('actions', () => {
                     const attachments2 = fromJS([{url: 'baz'}, {url: 'far'}])
 
                     store = mockStore({
-                        ticket: typeSafeEmailTicket
+                        ticket: emailTicket
                             .setIn(['messages', 0, 'attachments'], attachments)
                             .setIn(
                                 ['messages', 1, 'attachments'],
@@ -582,7 +565,7 @@ describe('actions', () => {
                     const newMessageAttachments = fromJS([{url: 'foo'}])
 
                     store = mockStore({
-                        ticket: typeSafeEmailTicket.setIn(
+                        ticket: emailTicket.setIn(
                             ['messages', 0, 'attachments'],
                             attachments
                         ),
@@ -603,7 +586,7 @@ describe('actions', () => {
             describe('instagram comment', () => {
                 it('should not add prefix if there is no receiver name', () => {
                     store = mockStore({
-                        ticket: typeSafeInstagramMedia,
+                        ticket: instagramMedia,
                         newMessage: initialState.setIn(
                             ['newMessage', 'source', 'type'],
                             'instagram-comment'
@@ -635,7 +618,7 @@ describe('actions', () => {
                         )
 
                     store = mockStore({
-                        ticket: typeSafeInstagramMedia,
+                        ticket: instagramMedia,
                         newMessage,
                     })
                     store.dispatch(
@@ -660,7 +643,7 @@ describe('actions', () => {
                         )
 
                     store = mockStore({
-                        ticket: typeSafeInstagramMedia,
+                        ticket: instagramMedia,
                         newMessage,
                     })
                     store.dispatch(
@@ -683,7 +666,7 @@ describe('actions', () => {
 
                 sourceTypes.forEach((sourceType) => {
                     store = mockStore({
-                        ticket: typeSafeEmailTicket,
+                        ticket: emailTicket,
                         newMessage: initialState,
                         integrations: fromJS(integrationsState),
                     })
@@ -719,7 +702,7 @@ describe('actions', () => {
                     const signature = fromJS({
                         text: 'Bar\nBaz',
                     })
-                    const storeTicket = typeSafeEmailTicket.set(
+                    const storeTicket = emailTicket.set(
                         'messages',
                         fromJS([ticket.messages[0]])
                     )
@@ -786,7 +769,7 @@ describe('actions', () => {
                         () => contentState
                     )
                     store = mockStore({
-                        ticket: typeSafeEmailTicket,
+                        ticket: emailTicket,
                         newMessage: initialState.setIn(
                             ['state', 'contentState'],
                             contentState
@@ -824,7 +807,7 @@ describe('actions', () => {
 
             it('should always pass the args to the reducer', () => {
                 store = mockStore({
-                    ticket: typeSafeEmailTicket,
+                    ticket: emailTicket,
                     newMessage: initialState,
                 })
 
@@ -1115,7 +1098,7 @@ describe('actions', () => {
         describe('prepareTicketMessage', () => {
             it('should prepare next new message after we submitted an instagram comment', () => {
                 store = mockStore({
-                    ticket: typeSafeInstagramMedia.set('id', 12),
+                    ticket: instagramMedia.set('id', 12),
                     newMessage: initialState.setIn(
                         ['newMessage', 'source'],
                         fromJS({
@@ -1149,7 +1132,7 @@ describe('actions', () => {
 
             it('should reject with TicketMessageActionValidationError on action validation error', async () => {
                 store = mockStore({
-                    ticket: typeSafeEmailTicket,
+                    ticket: emailTicket,
                     newMessage: initialState,
                     currentUser: fromJS({
                         id: 1,
@@ -1180,7 +1163,7 @@ describe('actions', () => {
 
             it('should reject with TicketMessageInvalidSendDataError on send data validation error', async () => {
                 store = mockStore({
-                    ticket: typeSafeEmailTicket,
+                    ticket: emailTicket,
                     newMessage: initialState
                         .setIn(
                             ['newMessage', 'channel'],

@@ -14,6 +14,7 @@ import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
 import StatCurrentDate from '../pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
+import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
 
 import css from './stats.less'
 
@@ -507,6 +508,23 @@ export const stats = toImmutable<
         helpText: 'Number of tickets created per channel',
         style: 'table',
         downloadable: true,
+        callbacks: {
+            cell: ({value, axis, line}) => {
+                if (axis.name.toLowerCase() === 'total') {
+                    return (
+                        <TicketsCreatedPerChannelViewLink
+                            channelName={(line.get(0) as Map<any, any>).get(
+                                'value'
+                            )}
+                        >
+                            {value}
+                        </TicketsCreatedPerChannelViewLink>
+                    )
+                }
+
+                return value
+            },
+        } as StatConfigCallbacks,
     },
     [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
         helpText: 'Number of tickets created per channel per day',

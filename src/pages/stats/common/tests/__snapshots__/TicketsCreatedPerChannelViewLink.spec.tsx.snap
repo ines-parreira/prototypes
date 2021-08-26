@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketsCreatedPerChannelViewLink should log the event on click 1`] = `
+Array [
+  Array [
+    "stat-view-link-clicked",
+    Object {
+      "stat": "tickets-created-per-channel-total",
+    },
+  ],
+]
+`;
+
+exports[`TicketsCreatedPerChannelViewLink should not render a link for an unknown channel 1`] = `click me!`;
+
+exports[`TicketsCreatedPerChannelViewLink should render a link for a channel 1`] = `
+<span>
+  <div>
+    ViewLink Mock
+    {
+  "viewName": "Channel: Facebook Mention",
+  "filters": [
+    {
+      "left": "ticket.channel",
+      "operator": "eq",
+      "right": "\\"facebook-mention\\""
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "gte",
+      "right": "'2021-05-28T22:00:00Z'"
+    },
+    {
+      "left": "ticket.created_datetime",
+      "operator": "lte",
+      "right": "'2021-06-04T21:59:59Z'"
+    },
+    {
+      "left": "ticket.messages.integration_id",
+      "operator": "eq",
+      "right": "1"
+    }
+  ],
+  "children": "click me!"
+}
+  </div>
+</span>
+`;

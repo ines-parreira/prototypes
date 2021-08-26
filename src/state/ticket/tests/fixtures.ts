@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 export const smoochTicket = fromJS({
     messages: [
@@ -44,7 +44,7 @@ export const smoochTicket = fromJS({
             from_agent: true,
         },
     ],
-})
+}) as Map<any, any>
 
 export const emailTicket = fromJS({
     messages: [
@@ -88,7 +88,7 @@ export const emailTicket = fromJS({
             from_agent: true,
         },
     ],
-})
+}) as Map<any, any>
 
 export const facebookPost = fromJS({
     messages: [
@@ -133,7 +133,7 @@ export const facebookPost = fromJS({
             from_agent: true,
         },
     ],
-})
+}) as Map<any, any>
 
 export const instagramMedia = fromJS({
     messages: [
@@ -179,4 +179,4 @@ export const instagramMedia = fromJS({
             from_agent: false,
         },
     ],
-})
+}) as Map<any, any>

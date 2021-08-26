@@ -1,27 +1,31 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
-import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration.ts'
-import {getEmailChannels} from '../../integrations/selectors.ts'
-import {integrationsState} from '../../../fixtures/integrations.ts'
+import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration'
+import {getEmailChannels} from '../../integrations/selectors'
+import {integrationsState} from '../../../fixtures/integrations'
 import {
     getNewMessageSender,
     getOutboundCallFrom,
     getPreferredChannel,
     getSourceTypeOfResponse,
+    getTicketChannelFromName,
     guessReceiversFromTicket,
     isForwardedMessage,
     persistLastSenderChannel,
+    Receivers,
     receiversStateFromValue,
     receiversValueFromState,
     replaceIntegrationVariables,
-} from '../utils.ts'
-import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
+} from '../utils'
+import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils.js'
 import {
+    TicketChannel,
     TicketMessageSourceType,
     TicketVia,
-} from '../../../business/types/ticket.ts'
+} from '../../../business/types/ticket'
+import {RootState} from '../../types'
 
 import {emailTicket, facebookPost, smoochTicket} from './fixtures'
 
@@ -32,14 +36,14 @@ jest.mock('../../../config/ticket', () => {
 
     return {
         ...ticketConfig,
-        getVariableWithValue: (variable) => {
+        getVariableWithValue: (variable: string) => {
             if (variable.includes('variableWithReplace')) {
                 return 'my value'
             }
 
             return null
         },
-    }
+    } as unknown
 })
 
 const customers = {
@@ -154,9 +158,12 @@ const ticket = fromJS({
             },
         },
     ],
-})
+}) as Map<any, any>
 
-const receiversExample = guessReceiversFromTicket(ticket, 'email')
+const receiversExample = guessReceiversFromTicket(
+    ticket,
+    TicketMessageSourceType.Email
+)
 const receiversValueExample = {
     to: [
         {
@@ -195,13 +202,15 @@ const receiversStateExample = {
             address: receiversValueExample.cc[0].value,
         },
     ],
-}
-const channels = getEmailChannels({integrations: fromJS(integrationsState)})
+} as Receivers
+const channels = getEmailChannels({
+    integrations: fromJS(integrationsState),
+} as RootState)
 
 describe('ticket utils', () => {
     describe('getSourceTypeOfResponse()', () => {
         it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
-            const messages = []
+            const messages: unknown[] = []
             const via = TicketVia.Twilio
 
             expect(getSourceTypeOfResponse(messages, via)).toEqual(
@@ -224,7 +233,10 @@ describe('ticket utils', () => {
     describe('guessReceiversFromTicket()', () => {
         it('guess receivers empty', () => {
             const updatedTicket = ticket.delete('messages').delete('customer')
-            const receivers = guessReceiversFromTicket(updatedTicket, 'email')
+            const receivers = guessReceiversFromTicket(
+                updatedTicket,
+                TicketMessageSourceType.Email
+            )
 
             expect(receivers).toEqual({
                 to: [],
@@ -232,7 +244,10 @@ describe('ticket utils', () => {
         })
 
         it('guess receivers email', () => {
-            const receivers = guessReceiversFromTicket(ticket, 'email')
+            const receivers = guessReceiversFromTicket(
+                ticket,
+                TicketMessageSourceType.Email
+            )
 
             expect(receivers).toEqual({
                 to: [customers.email[1], customers.email[2]],
@@ -246,7 +261,10 @@ describe('ticket utils', () => {
                 ['messages', 4, 'from_agent'],
                 false
             )
-            const receivers = guessReceiversFromTicket(updatedTicket, 'email')
+            const receivers = guessReceiversFromTicket(
+                updatedTicket,
+                TicketMessageSourceType.Email
+            )
 
             expect(receivers).toEqual({
                 to: [customers.email[0]],
@@ -255,7 +273,10 @@ describe('ticket utils', () => {
         })
 
         it('guess receivers chat', () => {
-            const receivers = guessReceiversFromTicket(ticket, 'chat')
+            const receivers = guessReceiversFromTicket(
+                ticket,
+                TicketMessageSourceType.Chat
+            )
 
             expect(receivers).toEqual({
                 to: [customers.chat[1]],
@@ -268,7 +289,10 @@ describe('ticket utils', () => {
                 ['messages', 1, 'from_agent'],
                 false
             )
-            const receivers = guessReceiversFromTicket(updatedTicket, 'chat')
+            const receivers = guessReceiversFromTicket(
+                updatedTicket,
+                TicketMessageSourceType.Chat
+            )
 
             expect(receivers).toEqual({
                 to: [customers.chat[0]],
@@ -277,7 +301,10 @@ describe('ticket utils', () => {
 
         it('guess receivers from customer email', () => {
             const updatedTicket = ticket.delete('messages')
-            const receivers = guessReceiversFromTicket(updatedTicket, 'email')
+            const receivers = guessReceiversFromTicket(
+                updatedTicket,
+                TicketMessageSourceType.Email
+            )
 
             const receiver = {
                 ...customers.email[2],
@@ -291,7 +318,10 @@ describe('ticket utils', () => {
 
         it('guess receivers from customer chat', () => {
             const updatedTicket = ticket.delete('messages')
-            const receivers = guessReceiversFromTicket(updatedTicket, 'chat')
+            const receivers = guessReceiversFromTicket(
+                updatedTicket,
+                TicketMessageSourceType.Chat
+            )
 
             const receiver = {
                 ...customers.chat[0],
@@ -305,47 +335,55 @@ describe('ticket utils', () => {
     })
 
     describe('receiversValueFromState()', () => {
-        expect(receiversValueFromState(receiversExample, 'email')).toEqual(
-            receiversValueExample
-        )
+        expect(
+            receiversValueFromState(
+                receiversExample,
+                TicketMessageSourceType.Email
+            )
+        ).toEqual(receiversValueExample)
     })
 
     describe('receiversStateFromValue()', () => {
-        expect(receiversStateFromValue(receiversValueExample, 'email')).toEqual(
-            receiversStateExample
-        )
+        expect(
+            receiversStateFromValue(
+                (receiversValueExample as unknown) as Receivers,
+                TicketMessageSourceType.Email
+            )
+        ).toEqual(receiversStateExample)
     })
 
     describe('getPreferredChannel()', () => {
         it('should return preferred', () => {
-            const expected = channels.find((channel) => {
-                return (
-                    channel.get('type') === 'email' &&
-                    channel.get('preferred', false)
-                )
+            const expected = channels.find((channel: Map<any, any>) => {
+                return (channel.get('type') === 'email' &&
+                    channel.get('preferred', false)) as boolean
             })
-            expect(getPreferredChannel('email', channels)).toEqualImmutable(
-                expected
-            )
+            expect(
+                getPreferredChannel(TicketMessageSourceType.Email, channels)
+            ).toEqualImmutable(expected)
         })
 
         it('should return first', () => {
             // remove preferred channels of the list
             const _chans = channels.filter(
-                (channel) => channel.get('preferred', false) === false
-            )
+                (channel: Map<any, any>) =>
+                    channel.get('preferred', false) === false
+            ) as List<any>
             const expected = _chans.find(
-                (channel) => channel.get('type') === 'email'
+                (channel: Map<any, any>) => channel.get('type') === 'email'
             )
-            expect(getPreferredChannel('email', _chans)).toEqualImmutable(
-                expected
-            )
+            expect(
+                getPreferredChannel(TicketMessageSourceType.Email, _chans)
+            ).toEqualImmutable(expected)
         })
 
         it('should return empty Map', () => {
-            expect(getPreferredChannel('skype', channels)).toEqualImmutable(
-                fromJS({})
-            )
+            expect(
+                getPreferredChannel(
+                    'skype' as TicketMessageSourceType,
+                    channels
+                )
+            ).toEqualImmutable(fromJS({}))
         })
     })
 
@@ -358,7 +396,11 @@ describe('ticket utils', () => {
                 'from',
             ])
             expect(
-                getNewMessageSender(smoochTicket, 'chat', channels)
+                getNewMessageSender(
+                    smoochTicket,
+                    TicketMessageSourceType.Chat,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
@@ -370,7 +412,11 @@ describe('ticket utils', () => {
                 'from',
             ])
             expect(
-                getNewMessageSender(facebookPost, 'facebook-comment', channels)
+                getNewMessageSender(
+                    facebookPost,
+                    TicketMessageSourceType.FacebookComment,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
@@ -385,7 +431,11 @@ describe('ticket utils', () => {
                 0,
             ])
             expect(
-                getNewMessageSender(_smoochTicket, 'chat', channels)
+                getNewMessageSender(
+                    _smoochTicket,
+                    TicketMessageSourceType.Chat,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
@@ -400,38 +450,70 @@ describe('ticket utils', () => {
                 0,
             ])
             expect(
-                getNewMessageSender(_facebookPost, 'facebook-comment', channels)
+                getNewMessageSender(
+                    _facebookPost,
+                    TicketMessageSourceType.FacebookComment,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
         it('should return preferred channel', () => {
             // remove messages, to simulate a new ticket
             const _emailTicket = emailTicket.set('messages', fromJS([]))
-            const expected = getPreferredChannel('email', channels)
+            const expected = getPreferredChannel(
+                TicketMessageSourceType.Email,
+                channels
+            )
             expect(
-                getNewMessageSender(_emailTicket, 'email', channels)
+                getNewMessageSender(
+                    _emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
         it('should return `from` field from last message from agent', () => {
-            const from = emailTicket.getIn(['messages', 1, 'source', 'from'])
+            const from = emailTicket.getIn([
+                'messages',
+                1,
+                'source',
+                'from',
+            ]) as Map<any, any>
             const expected = channels.find(
-                (channel) => channel.get('address') === from.get('address')
+                (channel: Map<any, any>) =>
+                    channel.get('address') === from.get('address')
             )
             expect(
-                getNewMessageSender(emailTicket, 'email', channels)
+                getNewMessageSender(
+                    emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
         it('should return channel in `to` field from last message from customer (email found in `to`)', () => {
             // delete last message from agent
             const _emailTicket = emailTicket.deleteIn(['messages', 1])
-            const to = _emailTicket.getIn(['messages', 0, 'source', 'to', 1])
+            const to = _emailTicket.getIn([
+                'messages',
+                0,
+                'source',
+                'to',
+                1,
+            ]) as Map<any, any>
             const expected = channels.find(
-                (channel) => channel.get('address') === to.get('address')
+                (channel: Map<any, any>) =>
+                    channel.get('address') === to.get('address')
             )
             expect(
-                getNewMessageSender(emailTicket, 'email', channels)
+                getNewMessageSender(
+                    emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
@@ -440,17 +522,31 @@ describe('ticket utils', () => {
             // and move `To` addresses in `Cc` and remove `To` addresses
             const _emailTicket = emailTicket
                 .deleteIn(['messages', 1])
-                .updateIn(['messages', 0, 'source'], (source) => {
-                    return source
-                        .set('cc', source.get('to'))
-                        .set('to', fromJS([]))
-                })
-            const cc = _emailTicket.getIn(['messages', 0, 'source', 'cc', 1])
+                .updateIn(
+                    ['messages', 0, 'source'],
+                    (source: Map<any, any>) => {
+                        return source
+                            .set('cc', source.get('to'))
+                            .set('to', fromJS([]))
+                    }
+                )
+            const cc = _emailTicket.getIn([
+                'messages',
+                0,
+                'source',
+                'cc',
+                1,
+            ]) as Map<any, any>
             const expected = channels.find(
-                (channel) => channel.get('address') === cc.get('address')
+                (channel: Map<any, any>) =>
+                    channel.get('address') === cc.get('address')
             )
             expect(
-                getNewMessageSender(emailTicket, 'email', channels)
+                getNewMessageSender(
+                    emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
@@ -460,24 +556,42 @@ describe('ticket utils', () => {
                 ['messages', 1, 'source', 'from'],
                 fromJS({name: 'foo', address: 'unknown@gorgias.io'})
             )
-            const expected = getPreferredChannel('email', channels)
+            const expected = getPreferredChannel(
+                TicketMessageSourceType.Email,
+                channels
+            )
             expect(
-                getNewMessageSender(_emailTicket, 'email', channels)
+                getNewMessageSender(
+                    _emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
         it('should return preferred email (email not found in `from`)', () => {
             // remove address that can match
             const _emailTicket = emailTicket.deleteIn(['messages', 0])
-            const expected = getPreferredChannel('email', channels)
+            const expected = getPreferredChannel(
+                TicketMessageSourceType.Email,
+                channels
+            )
             expect(
-                getNewMessageSender(_emailTicket, 'email', channels)
+                getNewMessageSender(
+                    _emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
         })
 
         it('should return an empty name and address (internal-note)', () => {
             expect(
-                getNewMessageSender(emailTicket, 'internal-note', channels)
+                getNewMessageSender(
+                    emailTicket,
+                    TicketMessageSourceType.InternalNote,
+                    channels
+                )
             ).toEqualImmutable(
                 fromJS({
                     name: '',
@@ -496,18 +610,25 @@ describe('ticket utils', () => {
             // remove messages, to simulate a new ticket
             const _emailTicket = emailTicket.set('messages', fromJS([]))
 
-            const expected = getPreferredChannel('email', channels)
+            const expected = getPreferredChannel(
+                TicketMessageSourceType.Email,
+                channels
+            )
 
             // persisted channel is not present in the channels list so the preferred channel should be returned
             expect(
-                getNewMessageSender(_emailTicket, 'email', channels)
+                getNewMessageSender(
+                    _emailTicket,
+                    TicketMessageSourceType.Email,
+                    channels
+                )
             ).toEqualImmutable(expected)
 
             // update the channel list and we should get the persisted channel
             expect(
                 getNewMessageSender(
                     _emailTicket,
-                    'email',
+                    TicketMessageSourceType.Email,
                     channels.push(testChannel)
                 )
             ).toEqualImmutable(testChannel)
@@ -792,7 +913,10 @@ describe('ticket utils', () => {
     describe('getOutboundCallFrom()', () => {
         const emptySender = fromJS({id: null, name: '', address: ''})
         const getValidSender = (id: number) =>
-            fromJS({id, name: 'Acme Phone', address: '+14151112222'})
+            fromJS({id, name: 'Acme Phone', address: '+14151112222'}) as Map<
+                any,
+                any
+            >
         const getPhoneEvent = (integrationId: number) => ({
             type: PhoneIntegrationEvent.IncomingPhoneCall,
             data: {integration: {id: integrationId}},
@@ -823,6 +947,18 @@ describe('ticket utils', () => {
             const channel = getValidSender(2)
             const channels = fromJS([getValidSender(1), channel])
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
+        })
+    })
+
+    describe('getChannelFromName', () => {
+        it('should convert channel name to an existing TicketChannel', () => {
+            expect(getTicketChannelFromName('Instagram Ad Comment')).toBe(
+                TicketChannel.InstagramAdComment
+            )
+        })
+
+        it('should return null for an invalid ticket channel', () => {
+            expect(getTicketChannelFromName('Foo Bar Baz')).toBe(null)
         })
     })
 })
