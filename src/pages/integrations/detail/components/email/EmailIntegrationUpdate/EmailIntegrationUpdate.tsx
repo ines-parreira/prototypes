@@ -1,13 +1,11 @@
-// @flow
-import React, {type Node} from 'react'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component, FormEvent, ReactNode} from 'react'
+import {Link} from 'react-router-dom'
 import Clipboard from 'clipboard'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
-import {fromJS, type Map} from 'immutable'
-import type {EditorState} from 'draft-js'
-
+import {fromJS, Map} from 'immutable'
+import {EditorState} from 'draft-js'
 import {
     Container,
     Form,
@@ -19,64 +17,55 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import {
-    EMAIL_INTEGRATION_TYPE,
-    GMAIL_INTEGRATION_TYPE,
-    OUTLOOK_INTEGRATION_TYPE,
-    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS,
-} from '../../../../../../constants/integration.ts'
+import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 import {
     getForwardingEmailAddress,
     getRedirectUri,
-} from '../../../../../../state/integrations/selectors.ts'
-
+} from '../../../../../../state/integrations/selectors'
 import {
     isGorgiasSupportAddress,
     displayRestrictedSymbols,
-} from '../../../../../../utils.ts'
-import {convertToHTML} from '../../../../../../utils/editor.tsx'
-import Loader from '../../../../../common/components/Loader/Loader.tsx'
-import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
-import * as integrationActions from '../../../../../../state/integrations/actions.ts'
+} from '../../../../../../utils'
+import {convertToHTML} from '../../../../../../utils/editor'
+import Loader from '../../../../../common/components/Loader/Loader'
+import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {
+    deleteIntegration,
+    importEmails,
+    updateOrCreateIntegration,
+} from '../../../../../../state/integrations/actions'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
-} from '../../../../../../config.ts'
-import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
+} from '../../../../../../config'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
-import InputField from '../../../../../common/forms/InputField'
-import BooleanField from '../../../../../common/forms/BooleanField'
-import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables.tsx'
+import InputField from '../../../../../common/forms/InputField.js'
+import BooleanField from '../../../../../common/forms/BooleanField.js'
+import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
+import {RootState} from '../../../../../../state/types'
+import {IntegrationType} from '../../../../../../models/integration/types'
 
 type Props = {
-    domain: string,
-    forwardingEmailAddress: string,
-    importEmails: (Map<*, *>) => Promise<*>,
-    integration: Map<*, *>,
-    actions: Object,
-    loading: Map<*, *>,
-    location: Object,
-    gmailRedirectUri: string,
-}
+    integration: Map<any, any>
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isCopied: boolean,
-    dirty: boolean,
-    errors: Object,
-    name: string,
-    use_gmail_categories: boolean,
-    enable_gmail_sending: boolean,
-    signature_text: string,
-    signature_html: string,
+    isCopied: boolean
+    dirty: boolean
+    errors: {name?: string | null}
+    name: string
+    use_gmail_categories: boolean
+    enable_gmail_sending: boolean
+    signature_text: string
+    signature_html: string
 }
 
-export class EmailIntegrationUpdateContainer extends React.Component<
-    Props,
-    State
-> {
-    isInitialized: boolean = false
+export class EmailIntegrationUpdateContainer extends Component<Props, State> {
+    isInitialized = false
 
-    state = {
+    state: State = {
         isCopied: false,
         dirty: false,
         errors: {},
@@ -119,22 +108,22 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         }
     }
 
-    _getIntegrationValues = (integration: Map<*, *>): Object => {
+    _getIntegrationValues = (integration: Map<any, any>) => {
         return {
             name: integration.get('name', ''),
             enable_gmail_sending:
-                integration.get('type') === GMAIL_INTEGRATION_TYPE
+                integration.get('type') === IntegrationType.GmailIntegrationType
                     ? integration.getIn(['meta', 'enable_gmail_sending'], true)
                     : true,
             use_gmail_categories:
-                integration.get('type') === GMAIL_INTEGRATION_TYPE
+                integration.get('type') === IntegrationType.GmailIntegrationType
                     ? integration.getIn(['meta', 'use_gmail_categories']) ||
                       false
                     : false,
         }
     }
 
-    _getFormValues = (): Map<*, *> => {
+    _getFormValues = (): Map<any, any> => {
         const {integration} = this.props
         let form
 
@@ -143,7 +132,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
             .setIn(['meta', 'signature', 'text'], this.state.signature_text)
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
-        if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
+        if (integration.get('type') === IntegrationType.GmailIntegrationType) {
             form = form
                 .setIn(
                     ['meta', 'use_gmail_categories'],
@@ -172,13 +161,14 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         })
     }
 
-    _handleSubmit = (e: SyntheticEvent<*>) => {
+    _handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        const {updateOrCreateIntegration} = this.props.actions
+        const {updateOrCreateIntegration} = this.props
 
-        return updateOrCreateIntegration(this._getFormValues()).then((res) => {
+        return (updateOrCreateIntegration(this._getFormValues()) as Promise<
+            void
+        >).then(() => {
             this.setState({dirty: false})
-            return res
         })
     }
 
@@ -201,9 +191,10 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         return importEmails(
             fromJS({
                 id: integration.get('id'),
-                meta: integration
-                    .get('meta')
-                    .setIn(['import_state', 'enabled'], true),
+                meta: (integration.get('meta') as Map<any, any>).setIn(
+                    ['import_state', 'enabled'],
+                    true
+                ),
             })
         )
     }
@@ -212,8 +203,8 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         importActivated: boolean,
         status: string,
         mailsImported: boolean,
-        importDescription: Node,
-        importMethod: () => Promise<*>
+        importDescription: ReactNode,
+        importMethod: () => Promise<unknown>
     ) => {
         const {integration, loading} = this.props
         const email = integration.getIn(['meta', 'address'], '')
@@ -408,7 +399,9 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         if (name && invalidNameRegexp.test(name)) {
             errors.name =
                 'The name of your Email integration cannot contain these characters: ' +
-                displayRestrictedSymbols(EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS)
+                displayRestrictedSymbols(
+                    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
+                )
         } else {
             errors.name = null
         }
@@ -432,7 +425,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
             domain,
             integration,
             loading,
-            actions: {deleteIntegration},
+            deleteIntegration,
             gmailRedirectUri,
         } = this.props
 
@@ -440,7 +433,8 @@ export class EmailIntegrationUpdateContainer extends React.Component<
             loading.get('updateIntegration') === integration.get('id')
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
-        const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
+        const isGmail =
+            integration.get('type') === IntegrationType.GmailIntegrationType
 
         const {
             errors,
@@ -454,7 +448,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
         const nameHelp =
             'The name that customers will see when they receive emails from you. ' +
             `Cannot contain these characters: ${displayRestrictedSymbols(
-                EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
+                EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
             )}`
 
         const enableGmailSendingHelp = (
@@ -501,7 +495,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                                     'Forums)'
                                 }
                                 value={use_gmail_categories}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({
                                         use_gmail_categories: value,
                                     })
@@ -540,7 +534,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                                 label="Enable sending emails with Gmail"
                                 help={enableGmailSendingHelp}
                                 value={enable_gmail_sending}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({
                                         enable_gmail_sending: value,
                                     })
@@ -569,9 +563,9 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                                 className="ml-2"
                                 tag="a"
                                 color="success"
-                                href={`${gmailRedirectUri}?integration_id=${integration.get(
-                                    'id'
-                                )}`}
+                                href={`${gmailRedirectUri}?integration_id=${
+                                    integration.get('id') as number
+                                }`}
                             >
                                 Re-activate
                             </Button>
@@ -580,9 +574,7 @@ export class EmailIntegrationUpdateContainer extends React.Component<
                         <ConfirmButton
                             className="float-right"
                             color="secondary"
-                            confirm={() =>
-                                deleteIntegration(integration, 'email')
-                            }
+                            confirm={() => deleteIntegration(integration)}
                             content="Are you sure you want to delete this integration?"
                         >
                             <i className="material-icons mr-1 text-danger">
@@ -605,13 +597,16 @@ export class EmailIntegrationUpdateContainer extends React.Component<
 
         return (
             <Container fluid className="page-container">
-                {integration.get('type') === EMAIL_INTEGRATION_TYPE &&
+                {integration.get('type') ===
+                    IntegrationType.EmailIntegrationType &&
                     this._renderInstructions()}
 
-                {integration.get('type') === GMAIL_INTEGRATION_TYPE &&
+                {integration.get('type') ===
+                    IntegrationType.GmailIntegrationType &&
                     this._gmailRenderImport()}
 
-                {integration.get('type') === OUTLOOK_INTEGRATION_TYPE &&
+                {integration.get('type') ===
+                    IntegrationType.OutlookIntegrationType &&
                     this._outlookRenderImport()}
 
                 {this._renderSettings()}
@@ -620,19 +615,19 @@ export class EmailIntegrationUpdateContainer extends React.Component<
     }
 }
 
-const mapStateToProps = (state) => ({
-    domain: state.currentAccount.get('domain'),
-    gmailRedirectUri: getRedirectUri(GMAIL_INTEGRATION_TYPE)(state),
-    forwardingEmailAddress: getForwardingEmailAddress(state),
-})
-
-const mapDispatchToProps = {
-    importEmails: integrationActions.importEmails,
-}
-
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(EmailIntegrationUpdateContainer)
+const connector = connect(
+    (state: RootState) => ({
+        domain: state.currentAccount.get('domain'),
+        gmailRedirectUri: getRedirectUri(IntegrationType.GmailIntegrationType)(
+            state
+        ),
+        forwardingEmailAddress: getForwardingEmailAddress(state),
+    }),
+    {
+        importEmails,
+        updateOrCreateIntegration,
+        deleteIntegration,
+    }
 )
+
+export default connector(EmailIntegrationUpdateContainer)

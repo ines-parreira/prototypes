@@ -1,1 +1,1 @@
-export default from './EmailIntegrationCreateVerification'
+export default from './EmailIntegrationCreateVerification.tsx'

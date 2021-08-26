@@ -1,15 +1,14 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    quickReplies: Array<string>,
-    mainColor?: string,
+    quickReplies: Array<string>
+    mainColor?: string
 }
 
-export default class QuickReplies extends React.Component<Props> {
+export default class QuickReplies extends Component<Props> {
     render() {
         const {quickReplies, mainColor} = this.props
 

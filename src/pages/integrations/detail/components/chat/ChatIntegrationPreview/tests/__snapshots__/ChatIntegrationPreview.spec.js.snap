@@ -352,7 +352,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
         </div>
       </div>
     </div>
-    <MessageContent
+    <Connect(MessageContentContainer)
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
@@ -443,7 +443,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
         </div>
       </div>
     </div>
-    <MessageContent
+    <Connect(MessageContentContainer)
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
@@ -529,7 +529,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
         </div>
       </div>
     </div>
-    <MessageContent
+    <Connect(MessageContentContainer)
       conversationColor="#456789"
       currentUser={
         Immutable.Map {

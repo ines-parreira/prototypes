@@ -1,9 +1,8 @@
-// @flow
-import React from 'react'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import Clipboard from 'clipboard'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {
     Button,
     Breadcrumb,
@@ -13,22 +12,22 @@ import {
     InputGroupAddon,
     Input,
 } from 'reactstrap'
+import {Map} from 'immutable'
 
-import {EMAIL_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors.ts'
-import * as notificationActions from '../../../../../../state/notifications/actions.ts'
-import * as integrationActions from '../../../../../../state/integrations/actions.ts'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import type {Dispatch} from '../../../../../../state/types'
-import history from '../../../../../history.ts'
+import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors'
+import {notify} from '../../../../../../state/notifications/actions'
+import {sendVerificationEmail} from '../../../../../../state/integrations/actions'
+import PageHeader from '../../../../../common/components/PageHeader'
+import history from '../../../../../history'
+import outlook from '../../../../../../../img/integrations/outlook.svg'
+import office from '../../../../../../../img/integrations/office.svg'
+import zoho from '../../../../../../../img/integrations/zoho.svg'
+import exchange from '../../../../../../../img/integrations/exchange.svg'
+import groups from '../../../../../../../img/integrations/google-groups.svg'
+import {RootState} from '../../../../../../state/types'
+import {IntegrationType} from '../../../../../../models/integration/types'
 
 import css from './EmailIntegrationCreateForwarding.less'
-
-import outlook from './../../../../../../../img/integrations/outlook.svg'
-import office from './../../../../../../../img/integrations/office.svg'
-import zoho from './../../../../../../../img/integrations/zoho.svg'
-import exchange from './../../../../../../../img/integrations/exchange.svg'
-import groups from './../../../../../../../img/integrations/google-groups.svg'
 
 const servicesWithTutorials = [
     {
@@ -64,23 +63,15 @@ const servicesWithTutorials = [
 ]
 
 type Props = {
-    forwardingEmailAddress: string,
-    notify: (Object) => void,
-    sendVerificationEmail: () => Promise<Dispatch>,
-    integration: Object,
-    actions: Object,
-    location: Object,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isCopied: boolean,
-    isLoading: boolean,
+    isCopied: boolean
+    isLoading: boolean
 }
 
-export class EmailIntegrationCreateForwarding extends React.Component<
-    Props,
-    State
-> {
+export class EmailIntegrationCreateForwarding extends Component<Props, State> {
     state = {
         isCopied: false,
         isLoading: false,
@@ -88,7 +79,10 @@ export class EmailIntegrationCreateForwarding extends React.Component<
 
     componentDidUpdate() {
         // activate copy to clipboard button only for email integration
-        if (this.props.integration.get('type') === EMAIL_INTEGRATION_TYPE) {
+        if (
+            this.props.integration.get('type') ===
+            IntegrationType.EmailIntegrationType
+        ) {
             const clipboard = new Clipboard('#copy-forwarding-email')
             clipboard.on('success', () => {
                 this.setState({isCopied: true})
@@ -102,12 +96,12 @@ export class EmailIntegrationCreateForwarding extends React.Component<
     _onSubmit = () => {
         const {integration} = this.props
         this.setState({isLoading: true})
-        this.props.sendVerificationEmail().then(() => {
+        void this.props.sendVerificationEmail().then(() => {
             this.setState({isLoading: false})
             history.push(
-                `/app/settings/integrations/email/${integration.get(
-                    'id'
-                )}/verification`
+                `/app/settings/integrations/email/${
+                    integration.get('id') as number
+                }/verification`
             )
         })
     }
@@ -232,20 +226,14 @@ export class EmailIntegrationCreateForwarding extends React.Component<
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+const connector = connect(
+    (state: RootState) => ({
         forwardingEmailAddress: getForwardingEmailAddress(state),
+    }),
+    {
+        sendVerificationEmail,
+        notify,
     }
-}
-
-const mapDispatchToProps = {
-    sendVerificationEmail: integrationActions.sendVerificationEmail,
-    notify: notificationActions.notify,
-}
-
-export default withRouter(
-    connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(EmailIntegrationCreateForwarding)
 )
+
+export default connector(EmailIntegrationCreateForwarding)

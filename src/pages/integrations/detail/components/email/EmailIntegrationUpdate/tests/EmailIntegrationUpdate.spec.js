@@ -2,7 +2,7 @@ import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate'
+import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate.tsx'
 import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,

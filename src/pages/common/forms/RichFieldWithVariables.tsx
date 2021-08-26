@@ -7,6 +7,7 @@ import {
     DropdownItem,
     Label,
 } from 'reactstrap'
+import {EditorState} from 'draft-js'
 
 import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils.js'
 import {insertText} from '../../../utils'
@@ -20,7 +21,7 @@ type Props = {
     value: Record<string, unknown>
     allowExternalChanges?: boolean
     variableTypes: Array<string>
-    onChange: () => void
+    onChange: (editorState: EditorState) => void
     type?: string
     rows?: string
     placeholder?: string

@@ -5,7 +5,7 @@ import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations/i
 import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
-import CustomerInitialMessages from './CustomerInitialMessages.js'
+import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
     conversationColor: string

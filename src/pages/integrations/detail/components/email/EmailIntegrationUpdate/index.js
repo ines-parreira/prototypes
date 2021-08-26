@@ -1,1 +1,1 @@
-export default from './EmailIntegrationUpdate'
+export default from './EmailIntegrationUpdate.tsx'

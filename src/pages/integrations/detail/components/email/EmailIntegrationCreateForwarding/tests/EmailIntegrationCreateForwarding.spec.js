@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding'
+import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding.tsx'
 
 const commonProps = {
     integration: fromJS({

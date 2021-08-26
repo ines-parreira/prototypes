@@ -1,4 +1,3 @@
-// @flow
 import classnames from 'classnames'
 import moment from 'moment'
 import React from 'react'

@@ -1,26 +1,25 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/smooch_inside.ts'
+} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    language?: ?string,
-    conversationColor?: ?string,
+    language?: string | null
+    conversationColor?: string | null
 }
 
-export default class RequiredEmailCapture extends React.Component<Props> {
+export default class RequiredEmailCapture extends Component<Props> {
     static defaultProps = {
         language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     }
 
     render() {
         const {language, conversationColor} = this.props
-        const translatedTexts = SMOOCH_INSIDE_WIDGET_TEXTS[language]
+        const translatedTexts = SMOOCH_INSIDE_WIDGET_TEXTS[language!]
 
         return (
             <div className={css.requiredEmailCapture}>
@@ -42,7 +41,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                     />
                 </div>
                 <div className={css.buttonWrapper}>
-                    <button style={{backgroundColor: conversationColor}}>
+                    <button style={{backgroundColor: conversationColor!}}>
                         {translatedTexts.send}
                     </button>
                 </div>

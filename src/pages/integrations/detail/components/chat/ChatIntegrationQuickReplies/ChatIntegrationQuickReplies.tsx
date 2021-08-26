@@ -1,7 +1,6 @@
-// @flow
-import React from 'react'
+import React, {Component, FormEvent} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {
     Breadcrumb,
@@ -14,37 +13,36 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import BooleanField from '../../../../../common/forms/BooleanField'
-import ListField from '../../../../../common/forms/ListField.tsx'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions.ts'
+import PageHeader from '../../../../../common/components/PageHeader'
+import BooleanField from '../../../../../common/forms/BooleanField.js'
+import ListField from '../../../../../common/forms/ListField'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
-} from '../../../../../../config/integrations/smooch_inside.ts'
+} from '../../../../../../config/integrations/smooch_inside'
 
-import ChatIntegrationNavigation from '../ChatIntegrationNavigation.tsx'
-import ChatIntegrationPreview from '../ChatIntegrationPreview'
+import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
+import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'
 
 type Props = {
-    integration: Map<*, *>,
-    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    quickReplies: List<string>,
-    quickRepliesEnabled: boolean,
-    isUpdating: boolean,
-    isInitialized: boolean,
+    quickReplies: List<string>
+    quickRepliesEnabled: boolean
+    isUpdating: boolean
+    isInitialized: boolean
 }
 
-export class ChatIntegrationQuickRepliesComponent extends React.Component<
+export class ChatIntegrationQuickRepliesComponent extends Component<
     Props,
     State
 > {
-    state = {
+    state: State = {
         quickReplies: fromJS([]),
         quickRepliesEnabled: false,
         isUpdating: false,
@@ -53,7 +51,7 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
 
     _initState = () => {
         const {integration} = this.props
-        const quickRepliesState =
+        const quickRepliesState: Map<any, any> =
             integration.getIn(['meta', 'quick_replies']) || fromJS({})
         let quickReplies = quickRepliesState.get('replies') || fromJS([])
 
@@ -82,18 +80,19 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
         }
     }
 
-    _submit = (event: Object) => {
+    _submit = (event: FormEvent) => {
         event.preventDefault()
         const {updateOrCreateIntegration, integration} = this.props
 
         this.setState({isUpdating: true})
 
-        const existingMeta = integration.get('meta') || fromJS({})
+        const existingMeta: Map<any, any> =
+            integration.get('meta') || fromJS({})
         const trimmedQuickReplies = this.state.quickReplies.map(
-            (quickReplies) => quickReplies.trim()
-        )
+            (quickReplies) => quickReplies!.trim()
+        ) as List<string>
 
-        let payload = fromJS({
+        const payload = fromJS({
             id: integration.get('id'),
             meta: existingMeta.set(
                 'quick_replies',
@@ -106,7 +105,7 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
 
         this.setState({quickReplies: trimmedQuickReplies})
 
-        return updateOrCreateIntegration(payload)
+        return (updateOrCreateIntegration(payload) as Promise<void>)
             .then(() => this.setState({isUpdating: false}))
             .catch(() => this.setState({isUpdating: false}))
     }
@@ -127,9 +126,9 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}`}
+                                    to={`/app/settings/integrations/${
+                                        integration.get('type') as string
+                                    }`}
                                 >
                                     Chat (Deprecated)
                                 </Link>
@@ -161,7 +160,9 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
                                             type="checkbox"
                                             label="Enable quick replies"
                                             value={quickRepliesEnabled}
-                                            onChange={(quickRepliesEnabled) =>
+                                            onChange={(
+                                                quickRepliesEnabled: boolean
+                                            ) =>
                                                 this.setState({
                                                     quickRepliesEnabled,
                                                 })
@@ -206,7 +207,6 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
                                     'decoration',
                                     'main_color',
                                 ])}
-                                quickReplies={this.state.quickReplies.toJS()}
                                 language={integration.getIn([
                                     'meta',
                                     'language',
@@ -228,7 +228,8 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
         )
     }
 }
-
-export default connect(null, {
+const connector = connect(null, {
     updateOrCreateIntegration,
-})(ChatIntegrationQuickRepliesComponent)
+})
+
+export default connector(ChatIntegrationQuickRepliesComponent)

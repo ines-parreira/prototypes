@@ -42,7 +42,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import RadioField from '../../../../../common/forms/RadioField'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
-import MessageContentPreview from '../ChatIntegrationPreview/MessageContent.js'
+import MessageContentPreview from '../ChatIntegrationPreview/MessageContent'
 import {
     IntegrationType,
     IntegrationDecoration,
@@ -521,7 +521,6 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                             >
                                 <MessageContentPreview
                                     conversationColor={conversationColor}
-                                    currentUser={currentUser}
                                 />
                             </ChatIntegrationPreview>
                         </Col>

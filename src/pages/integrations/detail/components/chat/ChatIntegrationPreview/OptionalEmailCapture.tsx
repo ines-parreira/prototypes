@@ -1,22 +1,21 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/smooch_inside.ts'
+} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
-    conversationColor: string,
-    name?: string,
-    language?: string,
+    conversationColor: string
+    name?: string
+    language?: string
 }
 
-export default class OptionalEmailCapture extends React.Component<Props> {
+export default class OptionalEmailCapture extends Component<Props> {
     render() {
         const {conversationColor, name, language} = this.props
 

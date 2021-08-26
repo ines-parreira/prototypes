@@ -1,50 +1,41 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, Map} from 'immutable'
+import {Link} from 'react-router-dom'
 import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration.ts'
-import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
-import {displayRestrictedSymbols} from '../../../../../../utils.ts'
-import {notify} from '../../../../../../state/notifications/actions.ts'
-
-import InputField from '../../../../../common/forms/InputField'
-
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
+import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
+import {displayRestrictedSymbols} from '../../../../../../utils'
+import {notify} from '../../../../../../state/notifications/actions'
+import InputField from '../../../../../common/forms/InputField.js'
+import PageHeader from '../../../../../common/components/PageHeader'
+import {RootState} from '../../../../../../state/types'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
 import css from './EmailIntegrationCreateCustom.less'
 
 type Props = {
-    domain: string,
-    actions: Object,
-    loading: Object,
-    location: Object,
-    notify: (Object) => Promise<*>,
-}
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    name: string,
-    email: string,
-    errors: Object,
-    dirty: boolean,
+    name: string
+    email: string
+    errors: {name?: string | null}
+    dirty: boolean
 }
 
-export class EmailIntegrationCreateCustom extends React.Component<
-    Props,
-    State
-> {
-    state = {
+export class EmailIntegrationCreateCustom extends Component<Props, State> {
+    state: State = {
         name: '',
         email: '',
         errors: {},
         dirty: false,
     }
 
-    _handleSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
+    _handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
 
         const integration = fromJS({
@@ -56,12 +47,13 @@ export class EmailIntegrationCreateCustom extends React.Component<
             },
         })
 
-        const {updateOrCreateIntegration} = this.props.actions
+        const {updateOrCreateIntegration} = this.props
 
-        return updateOrCreateIntegration(integration).then((res) => {
-            this.setState({dirty: false})
-            return res
-        })
+        return (updateOrCreateIntegration(integration) as Promise<void>).then(
+            () => {
+                this.setState({dirty: false})
+            }
+        )
     }
 
     _setName = (name: string) => {
@@ -73,7 +65,9 @@ export class EmailIntegrationCreateCustom extends React.Component<
         if (name && invalidNameRegexp.test(name)) {
             errors.name =
                 'The name of your Email integration cannot contain these characters: ' +
-                displayRestrictedSymbols(EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS)
+                displayRestrictedSymbols(
+                    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
+                )
         } else {
             errors.name = null
         }
@@ -92,7 +86,7 @@ export class EmailIntegrationCreateCustom extends React.Component<
         const nameHelp =
             'The name that customers will see when they receive emails from you. ' +
             `Cannot contain these characters: ${displayRestrictedSymbols(
-                EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
+                EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
             )}`
 
         const hasErrors = Object.values(errors).some((val) => val != null)
@@ -177,11 +171,11 @@ export class EmailIntegrationCreateCustom extends React.Component<
     }
 }
 
-const mapStateToProps = (state) => ({
-    domain: state.currentAccount.get('domain'),
-    outlookRedirectUri: getRedirectUri('outlook')(state),
-})
-
-export default withRouter(
-    connect(mapStateToProps, {notify})(EmailIntegrationCreateCustom)
+const connector = connect(
+    (state: RootState) => ({
+        domain: state.currentAccount.get('domain') as string,
+    }),
+    {notify, updateOrCreateIntegration}
 )
+
+export default connector(EmailIntegrationCreateCustom)

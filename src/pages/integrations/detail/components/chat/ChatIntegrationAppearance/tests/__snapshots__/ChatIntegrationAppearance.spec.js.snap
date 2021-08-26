@@ -292,9 +292,8 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
-          <MessageContent
+          <Connect(MessageContentContainer)
             conversationColor="#0d87dd"
-            currentUser={Immutable.Map {}}
           />
         </ChatIntegrationPreview>
       </Col>
@@ -640,9 +639,8 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
-          <MessageContent
+          <Connect(MessageContentContainer)
             conversationColor="#0d87dd"
-            currentUser={Immutable.Map {}}
           />
         </ChatIntegrationPreview>
       </Col>
@@ -988,9 +986,8 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
-          <MessageContent
+          <Connect(MessageContentContainer)
             conversationColor="#0d87dd"
-            currentUser={Immutable.Map {}}
           />
         </ChatIntegrationPreview>
       </Col>
@@ -1358,9 +1355,8 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
-          <MessageContent
+          <Connect(MessageContentContainer)
             conversationColor="#0d87dd"
-            currentUser={Immutable.Map {}}
           />
         </ChatIntegrationPreview>
       </Col>
@@ -1710,9 +1706,8 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
-          <MessageContent
+          <Connect(MessageContentContainer)
             conversationColor="#0d87dd"
-            currentUser={Immutable.Map {}}
           />
         </ChatIntegrationPreview>
       </Col>
@@ -2090,9 +2085,8 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
-          <MessageContent
+          <Connect(MessageContentContainer)
             conversationColor="#0d87dd"
-            currentUser={Immutable.Map {}}
           />
         </ChatIntegrationPreview>
       </Col>

@@ -1,19 +1,18 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
-import {type Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
-import Avatar from '../../../../../common/components/Avatar'
+import Avatar from '../../../../../common/components/Avatar/Avatar'
+import {RootState} from '../../../../../../state/types'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
-    conversationColor: string,
-    currentUser?: Map<*, *>,
-}
+    conversationColor: string
+} & ConnectedProps<typeof connector>
 
-export default class MessageContent extends React.Component<Props> {
+export class MessageContentContainer extends React.Component<Props> {
     render() {
         const {conversationColor, currentUser} = this.props
 
@@ -36,7 +35,7 @@ export default class MessageContent extends React.Component<Props> {
                         email={currentUser.get('email')}
                         name={currentUser.get('name')}
                         url={currentUser.getIn(['meta', 'profile_picture_url'])}
-                        size="35"
+                        size={35}
                         className={css.avatar}
                     />
                     <div>
@@ -58,3 +57,9 @@ export default class MessageContent extends React.Component<Props> {
         )
     }
 }
+
+const connector = connect((state: RootState) => ({
+    currentUser: state.currentUser,
+}))
+
+export default connector(MessageContentContainer)

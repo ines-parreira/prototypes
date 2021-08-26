@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'enzyme'
 
-import {EmailIntegrationCreate} from '../EmailIntegrationCreate'
+import {EmailIntegrationCreate} from '../EmailIntegrationCreate.tsx'
 
 describe('<EmailIntegrationCreate/>', () => {
     describe('render()', () => {

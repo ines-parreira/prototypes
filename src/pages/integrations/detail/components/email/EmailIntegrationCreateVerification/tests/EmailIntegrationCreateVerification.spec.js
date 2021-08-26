@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification'
+import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification.tsx'
 
 const commonProps = {
     forwardingEmailAddress: 'hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us',

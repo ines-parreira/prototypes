@@ -59,19 +59,19 @@ import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail.js
 import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList'
 import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail'
 
-import EmailIntegrationList from './components/email/EmailIntegrationList.js'
-import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.js'
-import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate.js'
-import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding.js'
-import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification.js'
-import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom.js'
+import EmailIntegrationList from './components/email/EmailIntegrationList'
+import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
+import EmailIntegrationCreate from './components/email/EmailIntegrationCreate/EmailIntegrationCreate'
+import EmailIntegrationCreateForwarding from './components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding'
+import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
+import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
 import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance'
 import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
-import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies.js'
+import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies'
 import ChatIntegrationMigration from './components/chat/ChatIntegrationMigration/ChatIntegrationMigration'
 import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences'
 import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall/ChatIntegrationInstall'
@@ -207,7 +207,6 @@ export const IntegrationDetailContainer = ({
                     if (extra === Tab.EmailForwarding) {
                         return (
                             <EmailIntegrationCreateForwarding
-                                actions={actions}
                                 integration={integration}
                             />
                         )
@@ -216,7 +215,6 @@ export const IntegrationDetailContainer = ({
                     if (extra === Tab.EmailVerification) {
                         return (
                             <EmailIntegrationCreateVerification
-                                actions={actions}
                                 integration={integration}
                             />
                         )
@@ -238,7 +236,6 @@ export const IntegrationDetailContainer = ({
                     return (
                         <EmailIntegrationLayout integration={integration}>
                             <EmailIntegrationUpdate
-                                actions={actions}
                                 integration={integration}
                                 loading={loading}
                             />
@@ -247,25 +244,14 @@ export const IntegrationDetailContainer = ({
                 }
 
                 if (extra === Tab.EmailCustom) {
-                    return (
-                        <EmailIntegrationCreateCustom
-                            actions={actions}
-                            loading={loading}
-                        />
-                    )
+                    return <EmailIntegrationCreateCustom loading={loading} />
                 }
 
-                return (
-                    <EmailIntegrationCreate
-                        actions={actions}
-                        loading={loading}
-                    />
-                )
+                return <EmailIntegrationCreate />
             }
 
             return (
                 <EmailIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                     gmailRedirectUri={getRedirectUri(

@@ -1,33 +1,22 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 
-import {
-    GMAIL_INTEGRATION_TYPE,
-    OUTLOOK_INTEGRATION_TYPE,
-} from '../../../../../../constants/integration.ts'
-import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config.ts'
-import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
-
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-
+import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config'
+import {getRedirectUri} from '../../../../../../state/integrations/selectors'
+import PageHeader from '../../../../../common/components/PageHeader'
 import googleLogo from '../../../../../../../img/integrations/google-icon.svg'
 import officeLogo from '../../../../../../../img/integrations/office-transparent.png'
+import {IntegrationType} from '../../../../../../models/integration/types'
+import {RootState} from '../../../../../../state/types'
 
 import css from './EmailIntegrationCreate.less'
 
-type Props = {
-    gmailRedirectUri: string,
-    outlookRedirectUri: string,
-    actions: Object,
-    loading: Object,
-    location: Object,
-}
+type Props = ConnectedProps<typeof connector>
 
-export class EmailIntegrationCreate extends React.Component<Props> {
+export class EmailIntegrationCreate extends Component<Props> {
     render() {
         const {gmailRedirectUri, outlookRedirectUri} = this.props
 
@@ -125,9 +114,13 @@ export class EmailIntegrationCreate extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    gmailRedirectUri: getRedirectUri(GMAIL_INTEGRATION_TYPE)(state),
-    outlookRedirectUri: getRedirectUri(OUTLOOK_INTEGRATION_TYPE)(state),
-})
+const connector = connect((state: RootState) => ({
+    gmailRedirectUri: getRedirectUri(IntegrationType.GmailIntegrationType)(
+        state
+    ),
+    outlookRedirectUri: getRedirectUri(IntegrationType.OutlookIntegrationType)(
+        state
+    ),
+}))
 
-export default withRouter(connect(mapStateToProps)(EmailIntegrationCreate))
+export default connector(EmailIntegrationCreate)

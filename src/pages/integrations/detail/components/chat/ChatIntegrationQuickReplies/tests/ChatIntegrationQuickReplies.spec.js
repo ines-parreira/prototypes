@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 
 import ChatIntegrationQuickReplies, {
     ChatIntegrationQuickRepliesComponent,
-} from '../ChatIntegrationQuickReplies'
+} from '../ChatIntegrationQuickReplies.tsx'
 
 const mockStore = configureMockStore([thunk])
 

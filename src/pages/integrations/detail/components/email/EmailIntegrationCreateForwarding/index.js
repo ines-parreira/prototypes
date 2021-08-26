@@ -1,1 +1,1 @@
-export default from './EmailIntegrationCreateForwarding'
+export default from './EmailIntegrationCreateForwarding.tsx'

@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {EmailIntegrationCreateCustom} from '../EmailIntegrationCreateCustom'
+import {EmailIntegrationCreateCustom} from '../EmailIntegrationCreateCustom.tsx'
 
 const commonProps = {
     integration: fromJS({

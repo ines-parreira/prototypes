@@ -720,12 +720,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                     language="en-US"
                     mainColor="#123456"
                     name="my chat integration"
-                    quickReplies={
-                      Array [
-                        "Get order status",
-                        "Apply promo code",
-                      ]
-                    }
                     renderFooter={true}
                   >
                     <div
@@ -1660,12 +1654,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                     language="en-US"
                     mainColor="#123456"
                     name="my chat integration"
-                    quickReplies={
-                      Array [
-                        "foo",
-                        "bar",
-                      ]
-                    }
                     renderFooter={true}
                   >
                     <div

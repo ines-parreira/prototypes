@@ -10,10 +10,10 @@ import {
 
 import AutoResponder from '../AutoResponder.tsx'
 import ChatIntegrationPreview from '../ChatIntegrationPreview.tsx'
-import MessageContent from '../MessageContent'
-import OptionalEmailCapture from '../OptionalEmailCapture'
-import QuickReplies from '../QuickReplies'
-import RequiredEmailCapture from '../RequiredEmailCapture'
+import MessageContent from '../MessageContent.tsx'
+import OptionalEmailCapture from '../OptionalEmailCapture.tsx'
+import QuickReplies from '../QuickReplies.tsx'
+import RequiredEmailCapture from '../RequiredEmailCapture.tsx'
 
 const mainColor = '#123456'
 const conversationColor = '#456789'

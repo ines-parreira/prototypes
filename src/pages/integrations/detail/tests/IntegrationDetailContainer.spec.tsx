@@ -12,27 +12,27 @@ jest.mock('../components/aircall/AircallIntegrationCreate.js', () => () => (
     <div>AircallIntegrationCreate</div>
 ))
 
-jest.mock('../components/email/EmailIntegrationList.js', () => () => (
+jest.mock('../components/email/EmailIntegrationList', () => () => (
     <div>EmailIntegrationList</div>
 ))
 jest.mock(
-    '../components/email/EmailIntegrationUpdate/EmailIntegrationUpdate.js',
+    '../components/email/EmailIntegrationUpdate/EmailIntegrationUpdate',
     () => () => <div>EmailIntegrationUpdate</div>
 )
 jest.mock(
-    '../components/email/EmailIntegrationCreate/EmailIntegrationCreate.js',
+    '../components/email/EmailIntegrationCreate/EmailIntegrationCreate',
     () => () => <div>EmailIntegrationCreate</div>
 )
 jest.mock(
-    '../components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding.js',
+    '../components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding',
     () => () => <div>EmailIntegrationCreateForwarding</div>
 )
 jest.mock(
-    '../components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification.js',
+    '../components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification',
     () => () => <div>EmailIntegrationCreateVerification</div>
 )
 jest.mock(
-    '../components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom.js',
+    '../components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom',
     () => () => <div>EmailIntegrationCreateCustom</div>
 )
 jest.mock(
@@ -150,7 +150,7 @@ jest.mock(
     () => () => <div>ChatIntegrationCampaigns</div>
 )
 jest.mock(
-    '../components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies.js',
+    '../components/chat/ChatIntegrationQuickReplies/ChatIntegrationQuickReplies',
     () => () => <div>ChatIntegrationQuickReplies</div>
 )
 jest.mock(

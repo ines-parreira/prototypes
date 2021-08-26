@@ -1,34 +1,28 @@
-// @flow
-import React from 'react'
-import type {List, Map} from 'immutable'
+import React, {Component} from 'react'
+import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import {
-    EMAIL_INTEGRATION_TYPES,
-    GMAIL_INTEGRATION_TYPE,
-    OUTLOOK_INTEGRATION_TYPE,
-} from '../../../../../constants/integration.ts'
-
-import ForwardIcon from '../ForwardIcon.tsx'
-import IntegrationList from '../IntegrationList'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers.ts'
+import ForwardIcon from '../ForwardIcon'
+import IntegrationList from '../IntegrationList.js'
+import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 import outlookImg from '../../../../../../img/integrations/outlook.png'
-import history from '../../../../history.ts'
+import history from '../../../../history'
+import {IntegrationType} from '../../../../../models/integration/types'
+import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration'
 
 import css from './EmailIntegrationList.less'
 
 type Props = {
-    integrations: List<Map<*, *>>,
-    loading: Object,
-    actions: Object,
-    gmailRedirectUri: string,
-    outlookRedirectUri: string,
+    integrations: List<Map<any, any>>
+    loading: Map<any, any>
+    gmailRedirectUri: string
+    outlookRedirectUri: string
 }
 
-export default class EmailIntegrationList extends React.Component<Props> {
+export default class EmailIntegrationList extends Component<Props> {
     render() {
         const {
             integrations,
@@ -46,18 +40,20 @@ export default class EmailIntegrationList extends React.Component<Props> {
 
         const isSubmitting = loading.get('updateIntegration')
 
-        const integrationToItemDisplay = (integration) => {
+        const integrationToItemDisplay = (integration: Map<any, any>) => {
             const active = !integration.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === integration.get('id')
-            const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
+            const isGmail =
+                integration.get('type') === IntegrationType.GmailIntegrationType
             const isOutlook =
-                integration.get('type') === OUTLOOK_INTEGRATION_TYPE
+                integration.get('type') ===
+                IntegrationType.OutlookIntegrationType
 
             const isVerified = integration.getIn(['meta', 'verified'], true)
 
-            let editLink = `/app/settings/integrations/email/${integration.get(
-                'id'
-            )}${isVerified || isGmail ? '' : '/verification'}`
+            const editLink = `/app/settings/integrations/email/${
+                integration.get('id') as number
+            }${isVerified || isGmail ? '' : '/verification'}`
 
             let imgComponent = (
                 <i className={classnames(css.icon, 'material-icons')}>email</i>
@@ -94,9 +90,9 @@ export default class EmailIntegrationList extends React.Component<Props> {
                                 <Button
                                     tag="a"
                                     color="success"
-                                    href={`${gmailRedirectUri}?integration_id=${integration.get(
-                                        'id'
-                                    )}`}
+                                    href={`${gmailRedirectUri}?integration_id=${
+                                        integration.get('id') as number
+                                    }`}
                                     className={classnames({
                                         'btn-loading': isRowSubmitting,
                                     })}
@@ -108,9 +104,9 @@ export default class EmailIntegrationList extends React.Component<Props> {
                                 <Button
                                     tag="a"
                                     color="success"
-                                    href={`${outlookRedirectUri}?integration_id=${integration.get(
-                                        'id'
-                                    )}`}
+                                    href={`${outlookRedirectUri}?integration_id=${
+                                        integration.get('id') as number
+                                    }`}
                                     className={classnames({
                                         'btn-loading': isRowSubmitting,
                                     })}
