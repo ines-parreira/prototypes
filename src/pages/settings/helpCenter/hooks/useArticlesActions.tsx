@@ -1,5 +1,6 @@
 import _isNumber from 'lodash/isNumber'
 import {chain as _chain} from 'lodash'
+import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
@@ -7,15 +8,19 @@ import {HelpCenterClient} from '../../../../../../../rest_api/help_center_api/in
 import {
     CreateArticleDto,
     HelpCenterArticle,
+    LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
 
 import {
     deleteArticle,
+    pushArticleSupportedLocales,
+    removeLocaleFromArticle,
     saveArticles,
     updateArticle,
     updateArticlesOrder,
 } from '../../../../state/helpCenter/articles'
+import {readViewLanguage} from '../../../../state/helpCenter/ui'
 
 import {useHelpcenterApi} from './useHelpcenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
@@ -56,6 +61,7 @@ export const useArticlesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpcenterApi()
+    const viewLanguage = useSelector(readViewLanguage)
 
     return {
         async createArticle(translation: CreateArticleDto['translation']) {
@@ -142,9 +148,40 @@ export const useArticlesActions = () => {
                 translation: response,
             }
 
-            dispatch(updateArticle(updatedArticle))
+            if (updatedArticle.translation.locale === viewLanguage) {
+                dispatch(updateArticle(updatedArticle))
+            }
 
             return updatedArticle
+        },
+
+        async createArticleTranslation(article: HelpCenterArticle) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            const response = await client
+                .createArticleTranslation(
+                    {
+                        help_center_id: helpCenterId,
+                        article_id: article.id,
+                    },
+                    {
+                        locale: article.translation.locale,
+                        title: article.translation.title,
+                        content: article.translation.content,
+                        excerpt: article.translation.excerpt,
+                        slug: article.translation.slug,
+                    }
+                )
+                .then((response) => response.data)
+
+            dispatch(
+                pushArticleSupportedLocales({
+                    articleId: article.id,
+                    supportedLocales: [article.translation.locale],
+                })
+            )
+
+            return response
         },
 
         async deleteArticle(articleId: number) {
@@ -188,6 +225,22 @@ export const useArticlesActions = () => {
             return response
         },
 
+        async deleteArticleTranslation(articleId: number, locale: LocaleCode) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            await client.deleteArticleTranslation({
+                help_center_id: helpCenterId,
+                article_id: articleId,
+                locale,
+            })
+
+            dispatch(removeLocaleFromArticle({articleId, locale}))
+
+            if (locale === viewLanguage) {
+                dispatch(deleteArticle(articleId))
+            }
+        },
+
         async cloneArticle(article: HelpCenterArticle) {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -195,8 +248,8 @@ export const useArticlesActions = () => {
                 locale: article.translation.locale,
                 excerpt: article.translation.excerpt,
                 content: article.translation.content || '',
-                slug: `${article.translation.slug}-1`,
-                title: `${article.translation.title} (1)`,
+                slug: `${article.translation.slug}-copy`,
+                title: `${article.translation.title} copy`,
             }
 
             const translations = await client
@@ -214,21 +267,35 @@ export const useArticlesActions = () => {
                 : await this.createArticle(payload)
 
             await Promise.all(
-                translations.map((translation) =>
-                    client.updateArticleTranslation(
-                        {
-                            help_center_id: helpCenterId,
-                            article_id: duplicateArticle.id,
-                            locale: translation.locale,
-                        },
-                        {
-                            title: `${translation.title} (1)`,
-                            excerpt: translation.excerpt,
-                            content: translation.content,
-                            slug: `${translation.slug}-1`,
-                        }
+                translations
+                    .filter(
+                        (translation) =>
+                            translation.locale !== article.translation.locale
                     )
-                )
+                    .map((translation) =>
+                        client.createArticleTranslation(
+                            {
+                                help_center_id: helpCenterId,
+                                article_id: duplicateArticle.id,
+                            },
+                            {
+                                locale: translation.locale,
+                                title: `${translation.title} copy`,
+                                excerpt: translation.excerpt,
+                                content: translation.content,
+                                slug: `${translation.slug}-copy`,
+                            }
+                        )
+                    )
+            )
+
+            dispatch(
+                pushArticleSupportedLocales({
+                    articleId: duplicateArticle.id,
+                    supportedLocales: translations.map(
+                        (translation) => translation.locale
+                    ),
+                })
             )
 
             return duplicateArticle

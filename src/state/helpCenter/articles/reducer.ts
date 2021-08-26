@@ -1,4 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit'
+import _uniq from 'lodash/uniq'
 
 import {HelpCenterArticlesState} from './types'
 
@@ -8,6 +9,8 @@ import {
     deleteArticle,
     resetArticles,
     updateArticlesOrder,
+    pushArticleSupportedLocales,
+    removeLocaleFromArticle,
 } from './actions'
 
 export const initialState: HelpCenterArticlesState = {
@@ -44,6 +47,33 @@ export default createReducer<HelpCenterArticlesState>(initialState, (builder) =>
                     state.articlesById[articleId].position = position
                 }
             })
+        })
+
+        .addCase(pushArticleSupportedLocales, (state, {payload}) => {
+            if (state.articlesById[payload.articleId]) {
+                state.articlesById[
+                    payload.articleId
+                ].available_locales = _uniq([
+                    ...state.articlesById[payload.articleId].available_locales,
+                    ...payload.supportedLocales,
+                ])
+            }
+        })
+
+        .addCase(removeLocaleFromArticle, (state, {payload}) => {
+            const {articleId, locale} = payload
+            if (state.articlesById[articleId]) {
+                const indexOf = state.articlesById[
+                    articleId
+                ].available_locales.findIndex((lang) => lang === locale)
+
+                if (indexOf >= 0) {
+                    state.articlesById[articleId].available_locales.splice(
+                        indexOf,
+                        1
+                    )
+                }
+            }
         })
 
         // Restores initial state

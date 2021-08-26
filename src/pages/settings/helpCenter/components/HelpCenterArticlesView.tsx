@@ -11,7 +11,7 @@ import {notify} from '../../../../state/notifications/actions'
 import {
     HelpCenterArticle,
     HelpCenterArticleTranslation,
-    HelpCenterLocaleCode,
+    LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {validLocaleCode} from '../../../../models/helpCenter/utils'
 import {NotificationStatus} from '../../../../state/notifications/types'
@@ -54,9 +54,10 @@ import HelpCenterEditArticleForm from './articles/HelpCenterEditArticleForm'
 import HelpCenterEditAdvancedArticleForm from './articles/HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalHeader from './articles/HelpCenterEditModalHeader'
 import HelpCenterEditModalFooter from './articles/HelpCenterEditModalFooter'
-// import {HelpCenterCategory} from './articles/HelpCenterCategory'
+import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 
 import css from './HelpCenterArticlesView.less'
+import {ConfirmationModal} from './ConfirmationModal'
 
 enum HelpCenterModalContent {
     ARTICLE = 'article',
@@ -83,10 +84,14 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         setSelectedArticleTranslations,
     ] = useState<HelpCenterArticleTranslation[] | null>(null)
     const localeOptions = useLocales()
+    const [articleLanguage, setArticleLanguage] = useState(viewLanguage)
+    const [pendingDeleteLocale, setPendingDeleteLocale] = React.useState<
+        OptionItem
+    >()
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
 
-    const {isReady, client} = useHelpcenterApi()
+    const {client} = useHelpcenterApi()
     const helpCenter = useCurrentHelpCenter().data
     const articlesActions = useArticlesActions()
     const {articles, isLoading} = useArticles(viewLanguage)
@@ -121,7 +126,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 !selectedArticle?.id ||
                 !helpCenter?.id ||
                 selectedArticleTranslations ||
-                !isReady
+                !client
             ) {
                 return
             }
@@ -136,7 +141,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         article_id: selectedArticle.id,
                     })
                     const translation = translations.find(
-                        ({locale}) => locale === helpCenter.default_locale
+                        ({locale}) => locale === viewLanguage
                     )
 
                     if (translation) {
@@ -162,11 +167,41 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
 
         void updateSelectedArticleTranslations()
-    }, [selectedArticle])
+    }, [
+        client,
+        helpCenter?.id,
+        viewLanguage,
+        selectedArticle,
+        selectedArticleTranslations,
+        notify,
+    ])
 
     const handleOnArticleModalClose = () => {
         articleModal.closeModal()
+        setArticleLanguage(viewLanguage)
+        setPendingDeleteLocale(undefined)
         setEditModal(null)
+    }
+
+    const handleOnClickAction = (
+        ev: React.MouseEvent,
+        action: ActionType,
+        option: OptionItem
+    ) => {
+        if (action === 'delete') {
+            ev.stopPropagation()
+            setPendingDeleteLocale(option)
+        }
+    }
+
+    const handleOnConfirmDeleteLocale = () => {
+        if (selectedArticle && pendingDeleteLocale) {
+            void articlesActions.deleteArticleTranslation(
+                selectedArticle.id,
+                pendingDeleteLocale.value
+            )
+        }
+        handleOnArticleModalClose()
     }
 
     const canSaveArticle: boolean = useMemo(() => {
@@ -194,15 +229,14 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         switch (editModal) {
             case HelpCenterModalContent.ARTICLE:
                 return (
-                    <form onSubmit={saveArticle} className={css.modalForm}>
+                    <span className={css.modalForm}>
                         <HelpCenterEditModalHeader
                             title={selectedArticle.translation.title}
                             isFullscreen={fullscreenEditModal}
-                            languageOptions={localeOptions.filter((locale) =>
-                                helpCenter?.supported_locales?.includes(
-                                    locale.code
-                                )
-                            )}
+                            selectedArticle={selectedArticle}
+                            supportedLocales={
+                                helpCenter?.supported_locales || []
+                            }
                             onChangeLanguage={switchArticleTranslation}
                             onClose={handleOnArticleModalClose}
                             onResize={
@@ -213,10 +247,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                           )
                                     : undefined
                             }
-                            language={
-                                selectedArticle.translation.locale ||
-                                helpCenter.default_locale
-                            }
+                            language={articleLanguage}
                             onEditTitle={(title: string) =>
                                 setSelectedArticle(
                                     (prevSelectedArticle) =>
@@ -231,6 +262,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                         null
                                 )
                             }
+                            onClickAction={handleOnClickAction}
                             toggleModalBtn={
                                 <button
                                     type="button"
@@ -264,21 +296,17 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                             onSave={saveArticle}
                             onDelete={deleteArticle}
                         />
-                    </form>
+                    </span>
                 )
             case HelpCenterModalContent.ARTICLE_ADVANCED:
                 return (
-                    <form onSubmit={saveArticle} className={css.modalForm}>
+                    <span className={css.modalForm}>
                         <HelpCenterEditModalHeader
-                            language={
-                                selectedArticle.translation.locale ||
-                                helpCenter.default_locale
+                            language={articleLanguage}
+                            selectedArticle={selectedArticle}
+                            supportedLocales={
+                                helpCenter?.supported_locales || []
                             }
-                            languageOptions={localeOptions.filter((locale) =>
-                                helpCenter?.supported_locales?.includes(
-                                    locale.code
-                                )
-                            )}
                             onChangeLanguage={switchArticleTranslation}
                             title="Article Settings"
                             onClose={handleOnArticleModalClose}
@@ -295,6 +323,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                     Edit Article
                                 </button>
                             }
+                            onClickAction={handleOnClickAction}
                         />
                         <HelpCenterEditAdvancedArticleForm
                             articleId={selectedArticle.id}
@@ -317,7 +346,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                             onSave={saveArticle}
                             onDelete={deleteArticle}
                         />
-                    </form>
+                    </span>
                 )
             default:
                 return null
@@ -330,7 +359,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
 
         selectArticle({
-            translation: getNewTranslation(helpCenter.default_locale),
+            translation: getNewTranslation(articleLanguage),
         } as HelpCenterArticle)
     }
 
@@ -406,15 +435,18 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
     }
 
-    const switchArticleTranslation = (locale: HelpCenterLocaleCode) => {
+    const switchArticleTranslation = (
+        ev: React.MouseEvent,
+        value: LocaleCode
+    ) => {
         if (!helpCenter || !selectedArticle || !selectedArticleTranslations) {
             return
         }
 
         const translation =
             selectedArticleTranslations.find(
-                ({locale: translationLocale}) => translationLocale === locale
-            ) || getNewTranslation(locale)
+                ({locale: translationLocale}) => translationLocale === value
+            ) || getNewTranslation(value)
         setSelectedArticle(
             (prevSelectedArticle) =>
                 prevSelectedArticle &&
@@ -423,6 +455,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     translation,
                 } as HelpCenterArticle)
         )
+        setArticleLanguage(value)
     }
 
     const saveArticle = async (event?: FormEvent) => {
@@ -432,10 +465,23 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             return
         }
 
+        const localeIsAvailable =
+            selectedArticle?.available_locales?.includes(
+                selectedArticle?.translation?.locale
+            ) || false
+
         // Update Article
         if (selectedArticle.id) {
             try {
-                await articlesActions.updateArticleTranslation(selectedArticle)
+                if (localeIsAvailable) {
+                    await articlesActions.updateArticleTranslation(
+                        selectedArticle
+                    )
+                } else {
+                    await articlesActions.createArticleTranslation(
+                        selectedArticle
+                    )
+                }
                 void dispatch(
                     notify({
                         message: 'Article successfully saved',
@@ -613,6 +659,30 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     >
                         {getEditModalContent()}
                     </HelpCenterEditModal>
+                    {pendingDeleteLocale && (
+                        <ConfirmationModal
+                            isOpen={!!pendingDeleteLocale}
+                            confirmText={`Delete ${pendingDeleteLocale?.text}`}
+                            title={
+                                <span>
+                                    Are you sure you want to delete{' '}
+                                    {pendingDeleteLocale?.label} for this
+                                    article?
+                                </span>
+                            }
+                            style={{width: '100%', maxWidth: 610}}
+                            onClose={() => setPendingDeleteLocale(undefined)}
+                            onConfirm={handleOnConfirmDeleteLocale}
+                        >
+                            <span>
+                                You will lose all content saved and published of
+                                this language ({pendingDeleteLocale?.label}) for
+                                this article. You can’t undo this action, you’ll
+                                have to compose again all the content for this
+                                language if you decide to add it.
+                            </span>
+                        </ConfirmationModal>
+                    )}
                 </SupportedLocalesProvider>
             )}
         </div>

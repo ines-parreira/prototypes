@@ -1,22 +1,35 @@
 import React, {ReactChild, ChangeEvent} from 'react'
 
-import LanguageSelect from '../newView/LanguageSelect'
 import {
-    HelpCenterLocale,
-    HelpCenterLocaleCode,
+    ActionType,
+    ArticleLanguageSelect,
+    OptionItem,
+} from '../articles/ArticleLanguageSelect'
+import {
+    HelpCenterArticle,
+    LocaleCode,
 } from '../../../../../models/helpCenter/types'
+
+import {useLocaleSelectOptions} from '../../hooks/useLocaleSelectOptions'
+import {useLocales} from '../../hooks/useLocales'
 
 import css from './HelpCenterEditModalHeader.less'
 
 type Props = {
     title: string
-    language: string
+    language: LocaleCode
     isFullscreen?: boolean
-    languageOptions: HelpCenterLocale[]
+    supportedLocales: LocaleCode[]
+    selectedArticle: HelpCenterArticle
     onEditTitle?: (title: string) => void
-    onChangeLanguage: (articleLanguage: HelpCenterLocaleCode) => void
+    onChangeLanguage: (ev: React.MouseEvent, value: LocaleCode) => void
     onResize?: () => void
     onClose: () => void
+    onClickAction: (
+        ev: React.MouseEvent,
+        action: ActionType,
+        currentOption: OptionItem
+    ) => void
     toggleModalBtn?: ReactChild
 }
 
@@ -24,13 +37,18 @@ export const HelpCenterEditModalHeader = ({
     title,
     isFullscreen,
     language,
-    languageOptions,
+    supportedLocales,
+    selectedArticle,
     onEditTitle,
     onClose,
     onResize,
     onChangeLanguage,
+    onClickAction,
     toggleModalBtn,
-}: Props) => {
+}: Props): JSX.Element => {
+    const locales = useLocales()
+    const localeOptions = useLocaleSelectOptions(locales, supportedLocales)
+
     const getResizeModalButton = () =>
         isFullscreen ? (
             <button
@@ -52,6 +70,29 @@ export const HelpCenterEditModalHeader = ({
             </button>
         )
 
+    const options = React.useMemo(
+        () =>
+            localeOptions.map((option) => {
+                let isComplete = false
+                let canBeDeleted = true
+
+                if (selectedArticle?.available_locales) {
+                    isComplete = selectedArticle.available_locales.includes(
+                        option.value
+                    )
+                    canBeDeleted =
+                        selectedArticle?.available_locales?.length > 1
+                }
+
+                return {
+                    ...option,
+                    isComplete,
+                    canBeDeleted,
+                }
+            }),
+        [localeOptions, selectedArticle.available_locales]
+    )
+
     return (
         <header className={css.header}>
             <input
@@ -65,11 +106,11 @@ export const HelpCenterEditModalHeader = ({
                 className={css.titleInput}
             />
             <div className={css.headerControls}>
-                <LanguageSelect
-                    value={language}
-                    className={css.languageSelect}
-                    onChange={onChangeLanguage}
-                    options={languageOptions}
+                <ArticleLanguageSelect
+                    selected={language}
+                    list={options}
+                    onSelect={onChangeLanguage}
+                    onClickAction={onClickAction}
                 />
                 {toggleModalBtn}
                 {onResize && getResizeModalButton()}

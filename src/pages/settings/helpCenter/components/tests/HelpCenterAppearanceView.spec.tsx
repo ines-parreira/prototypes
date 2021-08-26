@@ -60,6 +60,24 @@ jest.mock('../../../../../state/entities/helpCenters/actions', () => ({
     }),
 }))
 
+jest.mock('../../hooks/useCurrentHelpCenter', () => {
+    return {
+        useCurrentHelpCenter: () => ({
+            isLoading: false,
+            data: {
+                search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
+            },
+        }),
+    }
+})
+
+jest.mock('../../../../../state/entities/helpCenters/actions', () => ({
+    helpCentersFetched: jest.fn().mockReturnValue({
+        type: 'helpCentersFetched',
+        payload: [],
+    }),
+}))
+
 const route = {
     path: '/app/settings/help-center/:helpcenterId/appearance',
     route: '/app/settings/help-center/1/appearance',

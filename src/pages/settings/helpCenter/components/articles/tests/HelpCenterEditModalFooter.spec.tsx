@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, waitFor, within} from '@testing-library/react'
 
 import HelpCenterEditModalFooter from '../HelpCenterEditModalFooter'
 
@@ -29,17 +29,33 @@ describe('<HelpCenterEditModalFooter/>', () => {
             )
             const dropdownBtn = getByRole('button', {name: /toggle dropdown/i})
             fireEvent.click(dropdownBtn)
-            const saveItem = getByRole('menuitem', {name: /save/i})
+            const saveItem = getByRole('menuitem', {name: /Save Article/i})
             fireEvent.click(saveItem)
             expect(mockedOnSave).toHaveBeenCalledTimes(1)
         })
 
-        it('should trigger onDelete when clicking on delete list item', () => {
-            const {getByRole} = render(<HelpCenterEditModalFooter {...props} />)
+        it('should trigger onDelete when confirming the delete action', () => {
+            const {getByRole, getByText} = render(
+                <HelpCenterEditModalFooter {...props} />
+            )
+
             const dropdownBtn = getByRole('button', {name: /toggle dropdown/i})
             fireEvent.click(dropdownBtn)
-            const deleteItem = getByRole('menuitem', {name: /delete/i})
+
+            const deleteItem = getByRole('menuitem', {name: /Delete Article/i})
             fireEvent.click(deleteItem)
+
+            void waitFor(() =>
+                getByText('Are you sure you want to delete this article?')
+            )
+
+            const dialogModal = getByRole('dialog')
+            const confirmButton = within(dialogModal).getByText(
+                /Delete article/i
+            )
+
+            fireEvent.click(confirmButton)
+
             expect(mockedOnDelete).toHaveBeenCalledTimes(1)
         })
     })

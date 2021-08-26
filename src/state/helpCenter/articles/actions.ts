@@ -1,6 +1,6 @@
 import {createAction} from '@reduxjs/toolkit'
 
-import {HelpCenterArticle} from '../../../models/helpCenter/types'
+import {HelpCenterArticle, LocaleCode} from '../../../models/helpCenter/types'
 
 import {ArticleActions} from './types'
 
@@ -21,5 +21,15 @@ export const deleteArticle = createAction<number>(ArticleActions.DELETE_ARTICLE)
 export const updateArticlesOrder = createAction<number[]>(
     ArticleActions.UPDATE_ARTICLES_ORDER
 )
+
+export const pushArticleSupportedLocales = createAction<{
+    articleId: number
+    supportedLocales: LocaleCode[]
+}>(ArticleActions.PUSH_ARTICLE_LOCALES)
+
+export const removeLocaleFromArticle = createAction<{
+    articleId: number
+    locale: LocaleCode
+}>(ArticleActions.REMOVE_ARTICLE_LOCALE)
 
 export const resetArticles = createAction(ArticleActions.RESET_ARTICLES)

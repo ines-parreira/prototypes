@@ -58,6 +58,7 @@ export type Category = {
 
 export type CreateArticleDto = Components.Schemas.CreateArticleDto
 export type CreateArticleTranslationDto = Components.Schemas.CreateArticleTranslationDto
+export type UpdateArticleTranslationParameters = Paths.UpdateArticleTranslation.PathParameters
 
 export type ArticleWithLocalTranslation = Components.Schemas.ArticleWithLocalTranslation
 export type ArticleTranslation = Components.Schemas.LocalArticleTranslation

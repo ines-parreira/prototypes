@@ -12,6 +12,8 @@ import {
     updateArticle,
     deleteArticle,
     resetArticles,
+    pushArticleSupportedLocales,
+    removeLocaleFromArticle,
 } from '../actions'
 
 import {ArticlesAction} from '../types'
@@ -87,6 +89,54 @@ describe('Help Center/Articles reducer', () => {
 
             expect(nextState).toEqual({
                 articlesById: {},
+            })
+        })
+    })
+
+    describe('dispatch pushArticleSupportedLocales', () => {
+        const nextState = reducer(
+            {
+                articlesById: {
+                    [singleArticle.id]: singleArticle,
+                },
+            },
+            pushArticleSupportedLocales({
+                articleId: 1,
+                supportedLocales: ['fr-FR'],
+            })
+        )
+
+        expect(nextState).toEqual({
+            articlesById: {
+                1: {
+                    ...singleArticle,
+                    available_locales: ['en-US', 'fr-FR'],
+                },
+            },
+        })
+    })
+
+    describe('dispatch removeLocaleFromArticle', () => {
+        it('removes the given locale from `available_locales`', () => {
+            const nextState = reducer(
+                {
+                    articlesById: {
+                        [singleArticle.id]: {
+                            ...singleArticle,
+                            available_locales: ['en-US', 'fr-FR', 'de-DE'],
+                        },
+                    },
+                },
+                removeLocaleFromArticle({articleId: 1, locale: 'de-DE'})
+            )
+
+            expect(nextState).toEqual({
+                articlesById: {
+                    1: {
+                        ...singleArticle,
+                        available_locales: ['en-US', 'fr-FR'],
+                    },
+                },
             })
         })
     })

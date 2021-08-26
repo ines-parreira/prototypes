@@ -16,74 +16,30 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`]
       class="headerControls"
     >
       <div
-        class="InputField languageSelect form-group"
-        color=""
+        class="wrapper"
       >
-        <div
-          class=""
+        <button
+          class="trigger"
+          data-testid="dropdown-select-trigger"
         >
-          <select
-            class="form-control"
-            id="id-input-1"
-            options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+          <span>
+            <span>
+              <span
+                class="flag-emoji"
+              >
+                🇫🇷
+              </span>
+              <span>
+                French - France
+              </span>
+            </span>
+          </span>
+          <span
+            class="material-icons"
           >
-            <option
-              value="en-US"
-            >
-              🇺🇸 English - USA
-            </option>
-            <option
-              value="fr-FR"
-            >
-              🇫🇷 French - France
-            </option>
-            <option
-              value="fr-CA"
-            >
-              🇨🇦 French - Canada
-            </option>
-            <option
-              value="cs-CZ"
-            >
-              🇨🇿 Czech - Czech Republic
-            </option>
-            <option
-              value="da-DK"
-            >
-              🇩🇰 Danish - Denmark
-            </option>
-            <option
-              value="nl-NL"
-            >
-              🇳🇱 Dutch - Netherlands
-            </option>
-            <option
-              value="de-DE"
-            >
-              🇩🇪 German - Germany
-            </option>
-            <option
-              value="it-IT"
-            >
-              🇮🇹 Italian - Italy
-            </option>
-            <option
-              value="no-NO"
-            >
-              🇳🇴 Norwegian - Norway
-            </option>
-            <option
-              value="es-ES"
-            >
-              🇪🇸 Spanish - Spain
-            </option>
-            <option
-              value="sv-SE"
-            >
-              🇸🇪 Swedish - Sweden
-            </option>
-          </select>
-        </div>
+            arrow_drop_down
+          </span>
+        </button>
       </div>
       <button
         aria-label="close modal"

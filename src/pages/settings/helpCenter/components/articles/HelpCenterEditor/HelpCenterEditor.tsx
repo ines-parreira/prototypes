@@ -4,6 +4,8 @@ import _isUndefined from 'lodash/isUndefined'
 import {Editor} from 'react-draft-wysiwyg'
 import {EditorState, convertToRaw, convertFromRaw} from 'draft-js'
 
+import {LocaleCode} from '../../../../../../models/helpCenter/types'
+
 import {
     insertAtomicBlocksForImagesEntities,
     draftToMarkdown,
@@ -15,11 +17,12 @@ import './react-draft-wysiwyg.css'
 
 type Props = {
     articleId?: number
+    locale: LocaleCode
     value?: string
     onChange: (value: string) => void
 }
 
-const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
+const HelpCenterEditor = ({articleId, locale, value = '', onChange}: Props) => {
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     const transformValueToEditorState = React.useCallback(
@@ -41,7 +44,7 @@ const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
         } else {
             transformValueToEditorState(value)
         }
-    }, [articleId])
+    }, [articleId, locale])
 
     const onEditorChange = (editorState: EditorState) => {
         setEditorState(editorState)

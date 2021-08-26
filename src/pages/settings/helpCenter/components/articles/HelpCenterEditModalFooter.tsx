@@ -8,6 +8,8 @@ import {
     ButtonGroup,
 } from 'reactstrap'
 
+import {ConfirmationModal} from '../ConfirmationModal'
+
 import css from './HelpCenterEditModalFooter.less'
 
 type Props = {
@@ -20,33 +22,66 @@ export const HelpCenterEditModalFooter = ({
     canSave,
     onSave,
     onDelete,
-}: Props) => {
+}: Props): JSX.Element => {
+    const [pendingDeleteArticle, setPendingDeleteArticle] = React.useState(
+        false
+    )
+
+    const handleOnClickConfirm = () => {
+        onDelete()
+        setPendingDeleteArticle(false)
+    }
+
     return (
         <footer className={css.footer}>
             <ButtonGroup>
                 <Button
                     disabled={!canSave}
-                    type="submit"
                     color="primary"
                     className={css.submitButton}
+                    onClick={onSave}
                 >
-                    Save
+                    Save Article
                 </Button>
                 <UncontrolledButtonDropdown className={css.dropdownButton}>
                     <DropdownToggle caret />
                     <DropdownMenu className={css.dropdownMenu} right>
-                        <DropdownItem onClick={onDelete}>
+                        <DropdownItem
+                            onClick={() => setPendingDeleteArticle(true)}
+                        >
                             <span className={css.danger}>
                                 <i className="material-icons mr-2">delete</i>
-                                Delete
+                                Delete Article
                             </span>
                         </DropdownItem>
                         <DropdownItem disabled={!canSave} onClick={onSave}>
-                            <i className="material-icons mr-2">save</i>Save
+                            <i className="material-icons mr-2">save</i>
+                            Save Article
                         </DropdownItem>
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
             </ButtonGroup>
+            {pendingDeleteArticle && (
+                <ConfirmationModal
+                    isOpen={!!pendingDeleteArticle}
+                    confirmText={`Delete article`}
+                    title={
+                        <span>
+                            Are you sure you want to delete this article?
+                        </span>
+                    }
+                    style={{width: '100%', maxWidth: 610}}
+                    onClose={() => setPendingDeleteArticle(false)}
+                    onConfirm={handleOnClickConfirm}
+                >
+                    <span>
+                        You will lose all content saved and published of this
+                        article. You can’t undo this action, you’ll have to
+                        compose again all the content for this article if you
+                        decide to add it.
+                    </span>
+                </ConfirmationModal>
+            )}
         </footer>
     )
 }

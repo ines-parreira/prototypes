@@ -53,6 +53,17 @@ export const ArticleRow = ({
     )
 
     const opacity = isDragging ? 0 : 1
+    const languageList = React.useMemo(() => {
+        if (article.available_locales.length > 0) {
+            return article.available_locales.map((code) => localesByCode[code])
+        }
+
+        if (article?.translation) {
+            return [localesByCode[article.translation.locale]]
+        }
+
+        return []
+    }, [article, localesByCode])
 
     const handleOnActionsClick = (ev: React.MouseEvent, name: string) => {
         return onClickSettings(ev, name, article)
@@ -94,9 +105,7 @@ export const ArticleRow = ({
                         defaultLanguage={
                             localesByCode[article.translation.locale]
                         }
-                        languageList={[
-                            localesByCode[article.translation.locale],
-                        ]}
+                        languageList={languageList}
                     />
                 )}
             </BodyCell>

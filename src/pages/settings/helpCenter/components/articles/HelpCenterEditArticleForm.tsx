@@ -20,6 +20,7 @@ export const HelpCenterEditArticleForm = ({translation, onChange}: Props) => {
     return (
         <HelpCenterEditor
             articleId={translation.article_id}
+            locale={translation.locale}
             value={translation.content}
             onChange={onEditArticleContent}
         />

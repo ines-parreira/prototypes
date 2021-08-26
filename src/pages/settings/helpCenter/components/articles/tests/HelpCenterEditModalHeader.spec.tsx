@@ -4,19 +4,43 @@ import {render, fireEvent} from '@testing-library/react'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 
 import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
-import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
+import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
+
+jest.mock('../../../hooks/useLocales', () => ({
+    useLocales: () => [
+        {
+            name: 'English - USA',
+            code: 'en-US',
+        },
+        {
+            name: 'French - France',
+            code: 'fr-FR',
+        },
+        {
+            name: 'French - Canada',
+            code: 'fr-CA',
+        },
+        {
+            name: 'Czech - Czech Republic',
+            code: 'cs-CZ',
+        },
+    ],
+}))
 
 const mockedOnChangeLanguage = jest.fn()
 const mockedOnClose = jest.fn()
 const mockedOnResize = jest.fn()
+const mockedOnClickAction = jest.fn()
 
 describe('<HelpCenterEditModalHeader/>', () => {
     const props = {
         title: 'Article',
         language: 'fr-FR' as LocaleCode,
-        languageOptions: getLocalesResponseFixture,
+        supportedLocales: ['en-US', 'fr-FR'] as LocaleCode[],
+        selectedArticle: {...getSingleArticleEnglish, position: 0},
         onChangeLanguage: mockedOnChangeLanguage,
         onClose: mockedOnClose,
+        onClickAction: mockedOnClickAction,
     }
 
     beforeEach(() => {

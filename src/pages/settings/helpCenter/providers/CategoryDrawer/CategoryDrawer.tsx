@@ -9,7 +9,6 @@ import {
     CategoryTranslation,
     CreateCategoryDto,
 } from '../../../../../models/helpCenter/types'
-
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
 import {readCategory} from '../../../../../state/helpCenter/categories'

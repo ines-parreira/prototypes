@@ -11,9 +11,9 @@ exports[`<HelpCenterEditModalFooter/> should display the component correctly 1`]
     >
       <button
         class="submitButton btn btn-primary"
-        type="submit"
+        type="button"
       >
-        Save
+        Save Article
       </button>
       <div
         class="dropdownButton btn-group"
@@ -50,7 +50,7 @@ exports[`<HelpCenterEditModalFooter/> should display the component correctly 1`]
               >
                 delete
               </i>
-              Delete
+              Delete Article
             </span>
           </button>
           <button
@@ -64,7 +64,7 @@ exports[`<HelpCenterEditModalFooter/> should display the component correctly 1`]
             >
               save
             </i>
-            Save
+            Save Article
           </button>
         </div>
       </div>
