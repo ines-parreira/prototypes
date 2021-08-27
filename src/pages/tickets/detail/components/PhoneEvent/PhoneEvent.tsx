@@ -34,11 +34,13 @@ const names = new window.Map<string, string>([
 ])
 const customerBasedEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,
-    PhoneIntegrationEvent.OutgoingPhoneCall,
     PhoneIntegrationEvent.MissedPhoneCall,
     PhoneIntegrationEvent.VoicemailRecording,
 ]
-const agentBasedEvents = [PhoneIntegrationEvent.PhoneCallAnswered]
+const agentBasedEvents = [
+    PhoneIntegrationEvent.PhoneCallAnswered,
+    PhoneIntegrationEvent.OutgoingPhoneCall,
+]
 
 type Props = {
     event: Map<string, any>

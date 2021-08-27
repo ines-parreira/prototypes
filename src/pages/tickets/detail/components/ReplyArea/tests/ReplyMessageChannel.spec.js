@@ -29,6 +29,7 @@ describe('ReplyMessageChannel component', () => {
         accountChannels: fromJS([]),
         channel: '',
         hasRecipients: false,
+        hasPhoneIntegration: false,
         isForward: false,
         isNewMessagePublic: false,
         messages: fromJS({}),
@@ -167,6 +168,7 @@ describe('ReplyMessageChannel component', () => {
                     },
                 })}
                 messages={fromJS([])}
+                hasPhoneIntegration
             />
         )
         expect(component).toMatchSnapshot()

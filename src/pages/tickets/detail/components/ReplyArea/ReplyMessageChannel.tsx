@@ -11,7 +11,10 @@ import {
 
 import {RootState} from '../../../../../state/types'
 import {KeymapActions} from '../../../../../services/shortcutManager/shortcutManager'
-import {getChannelsByType} from '../../../../../state/integrations/selectors'
+import {
+    getChannelsByType,
+    hasIntegrationOfTypes,
+} from '../../../../../state/integrations/selectors'
 import {prepare} from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getMessages} from '../../../../../state/ticket/selectors'
@@ -19,6 +22,7 @@ import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
 import SourceIcon from '../../../../common/components/SourceIcon'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+import {IntegrationType} from '../../../../../models/integration/types'
 
 import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField.js'
 import MessageSourceFields from './MessageSourceFields/MessageSourceFields.js'
@@ -186,7 +190,13 @@ export class ReplyMessageChannelContainer extends Component<Props> {
     }
 
     render() {
-        const {prepareNewMessage, isForward, className, ticket} = this.props
+        const {
+            prepareNewMessage,
+            isForward,
+            className,
+            ticket,
+            hasPhoneIntegration,
+        } = this.props
 
         const isTicketExisting = !!ticket.get('id')
         const replyOptions = ticket.get('reply_options') as Map<any, any>
@@ -215,6 +225,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             !!replyOptions.get(TicketMessageSourceType.TwitterTweet)
         const suggestPhone =
             isTicketExisting &&
+            hasPhoneIntegration &&
             !!replyOptions.get(TicketMessageSourceType.Phone)
         const suggestYotpoReview =
             isTicketExisting &&
@@ -519,6 +530,9 @@ const connector = connect(
             messages: getMessages(state),
             sourceType,
             ticket: state.ticket,
+            hasPhoneIntegration: hasIntegrationOfTypes(
+                IntegrationType.PhoneIntegrationType
+            )(state),
         }
     },
     {

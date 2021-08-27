@@ -12,8 +12,8 @@ import {
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {getNewMessageType} from '../../../../state/newMessage/selectors'
 import {
+    TicketChannel,
     TicketMessageSourceType,
-    TicketVia,
 } from '../../../../business/types/ticket'
 import {
     getOtherAgentsOnTicket,
@@ -27,6 +27,8 @@ import {getBody, getDisplayHistory} from '../../../../state/ticket/selectors'
 import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
 import appCss from '../../../App.less'
+import {hasIntegrationOfTypes} from '../../../../state/integrations/selectors'
+import {IntegrationType} from '../../../../models/integration/types'
 
 import HistoryButton from './HistoryButton.js'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
@@ -60,6 +62,7 @@ export const TicketViewContainer = ({
     customers,
     customersIsLoading,
     displayHistoryOnNextPage,
+    hasPhoneIntegration,
     hideTicket,
     isHistoryDisplayed,
     isTicketHidden,
@@ -81,11 +84,20 @@ export const TicketViewContainer = ({
     )
     const hideHistoryButton = useMemo(() => !ticket.get('id'), [ticket])
     const isExistingTicket = useMemo(() => !!ticket.get('id'), [ticket])
+    const hasPhoneChannel = useMemo(
+        () =>
+            (ticket.getIn(['customer', 'channels'], []) as Map<any, any>).some(
+                (channel: Map<any, any>) =>
+                    channel.get('type') === TicketChannel.Phone
+            ),
+        [ticket]
+    )
     const shouldRenderPhoneButtons = useMemo(
         () =>
-            ticket.get('via') === TicketVia.Twilio &&
+            hasPhoneIntegration &&
+            hasPhoneChannel &&
             sourceType === TicketMessageSourceType.Phone,
-        [sourceType, ticket]
+        [hasPhoneIntegration, hasPhoneChannel, sourceType]
     )
 
     const getMainContentElement = (
@@ -396,6 +408,9 @@ const connector = connect(
         ticket: state.ticket,
         ticketBody: getBody(state),
         sourceType: getNewMessageType(state),
+        hasPhoneIntegration: hasIntegrationOfTypes(
+            IntegrationType.PhoneIntegrationType
+        )(state),
     }),
     {
         displayHistoryOnNextPage,
