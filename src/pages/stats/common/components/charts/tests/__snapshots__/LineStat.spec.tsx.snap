@@ -29,10 +29,7 @@ exports[`LineStat should render a line chart 1`] = `
     </div>
   </div>
   <div>
-    <canvas
-      height="360"
-      width="300"
-    />
+    <canvas />
   </div>
 </div>
 `;
