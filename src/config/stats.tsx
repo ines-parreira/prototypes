@@ -4,7 +4,6 @@ import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
 import {defaults} from 'react-chartjs-2'
-import {ChartType, Scale, TooltipItem} from 'chart.js'
 
 import {TicketChannel} from '../business/types/ticket'
 import {formatDuration} from '../pages/stats/common/utils'
@@ -122,85 +121,80 @@ const intentsOptions = getIntentsOptions()
 
 // Default configuration for Chart.js
 _merge(defaults, {
-    maintainAspectRatio: false,
-    clip: 16,
-    layout: {
-        padding: {
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
+    global: {
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+            },
         },
-    },
-    title: {
-        position: 'top',
-        fontSize: 16,
-        fontStyle: '600',
-        fontColor: 'rgb(41, 43, 44)',
-        fontFamily: "'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif",
-    },
-    hover: {
-        mode: 'index',
-        intersect: false,
-    },
-    animation: {
-        duration: 300,
-    },
-    elements: {
-        point: {
-            radius: 0,
+        title: {
+            position: 'top',
+            fontSize: 16,
+            fontStyle: '600',
+            fontColor: 'rgb(41, 43, 44)',
+            fontFamily:
+                "'Inter', 'Helvetica Neue', Arial, Helvetica, sans-serif",
         },
-    },
-    plugins: {
         legend: {
             // legend is displayed separately
             display: false,
         },
-        tooltip: {
+        tooltips: {
             mode: 'index',
             intersect: false,
-            titleFont: {
-                size: 15,
-            },
-            titleColor: mainBlue,
-            position: 'nearest',
-            bodyColor: mainBlue,
+            titleFontSize: 15,
+            titleFontColor: mainBlue,
+            bodyFontSize: 14,
+            bodyFontColor: mainBlue,
             titleMarginBottom: 15,
             bodySpacing: 10,
-            padding: 20,
+            xPadding: 20,
+            yPadding: 20,
             caretPadding: 5,
             backgroundColor: '#ffffff',
             borderColor: '#e2e3ec',
             borderWidth: 1,
             callbacks: {
                 title: (tooltipItem: {label: string}[]) => {
-                    return formatDateTooltipCb(parseInt(tooltipItem[0].label))
+                    return formatDateAxeCb(tooltipItem[0].label)
                 },
+            },
+        },
+        hover: {
+            mode: 'index',
+            intersect: false,
+        },
+        animation: {
+            duration: 300,
+        },
+        elements: {
+            point: {
+                radius: 0,
             },
         },
     },
 })
 
 const defaultTicks = {
-    color: '#b2bddd',
+    fontColor: '#b2bddd',
 }
 
 const defaultScaleLabel = {
-    color: '#b2bddd',
+    fontColor: '#b2bddd',
 }
 const defaultXAxeGridLines = {
     display: false,
-    drawBorder: true,
+    drawBorder: false,
     color: '#dfe3f1',
-    borderColor: '#d2d7de',
-    borderDash: [2, 4],
-    z: -1,
 }
 const defaultYAxeGridLines = {
     drawBorder: false,
     color: '#dfe3f1',
     borderDash: [2, 4],
-    z: -1,
 }
 
 export enum StatValueType {
@@ -443,56 +437,47 @@ export const stats = toImmutable<
                     right: 15,
                 },
             },
-            plugins: {
-                tooltip: {
-                    intersect: true,
-                    position: 'nearest',
-                },
+            tooltips: {
+                intersect: true,
+                position: 'nearest',
             },
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: false,
-                    grid: {...defaultXAxeGridLines, display: true},
-                    ticks: _merge({}, defaultTicks, {
-                        callback: function (
-                            this: Scale<any>,
-                            val: any,
-                            index: number
-                        ) {
-                            return index % 2 === 0
-                                ? moment
-                                      .utc(
-                                          moment.unix(
-                                              parseInt(
-                                                  this.getLabelForValue(val)
-                                              )
-                                          )
-                                      )
-                                      .format('h a')
-                                : ''
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: false,
+                        gridLines: {
+                            borderColor: '#d2d7de',
+                            borderDash: [2],
                         },
-                    }),
-                },
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatTicketAxeCb,
-                    }),
-                    grid: {
-                        borderColor: '#d2d7de',
-                        borderDash: [2],
-                        z: -1,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: (val: any, index: number) =>
+                                index % 2 === 0
+                                    ? moment.utc(moment.unix(val)).format('h a')
+                                    : '',
+                        }),
                     },
-                    min: 0,
-                    suggestedMax: 1,
-                },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: {
+                            borderColor: '#d2d7de',
+                            borderDash: [2],
+                        },
+                    },
+                ],
             },
         }),
     },
@@ -609,30 +594,36 @@ export const stats = toImmutable<
         },
         options: (legend: Map<any, any>) => ({
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    stacked: true,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                    }),
-                    grid: defaultYAxeGridLines,
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: true,
+                        gridLines: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        stacked: true,
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                    },
+                ],
             },
         }),
     },
@@ -842,31 +833,34 @@ export const stats = toImmutable<
         downloadable: true,
         options: (legend: Map<any, any>) => ({
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb,
-                    }),
-                    grid: defaultYAxeGridLines,
-                    stacked: true,
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: true,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        stacked: true,
+                    },
+                ],
             },
         }),
     },
@@ -891,29 +885,33 @@ export const stats = toImmutable<
         },
         options: (legend: Map<any, any>) => ({
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: false,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb,
-                    }),
-                    grid: defaultYAxeGridLines,
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: false,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                    },
+                ],
             },
         }),
     },
@@ -985,49 +983,47 @@ export const stats = toImmutable<
                 backgroundColor: '#ffb584',
                 borderWidth: 0,
                 borderColor: '#ffb584',
-                fill: true,
-                pointHoverBackgroundColor: '#ffb584',
             },
             '90%': {
                 label: '90%',
                 backgroundColor: '#ff6b80',
                 borderWidth: 0,
                 borderColor: '#ff6b80',
-                fill: true,
-                pointHoverbackgroundColor: '#ff6b80',
             },
         },
         options: (legend: Map<any, any>) => ({
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: formatDurationTooltipCb,
-                    },
+            tooltips: {
+                callbacks: {
+                    label: formatDurationTooltipCb,
                 },
             },
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    grid: defaultYAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatDurationAxeCb,
-                    }),
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatDurationAxeCb,
+                        }),
+                    },
+                ],
             },
         }),
     },
@@ -1042,49 +1038,47 @@ export const stats = toImmutable<
                 backgroundColor: '#8892f2',
                 borderWidth: 0,
                 borderColor: '#8892f2',
-                fill: true,
-                pointHoverBackgroundColor: '#8892f2',
             },
             '90%': {
                 label: '90%',
                 backgroundColor: '#ff6b80',
                 borderWidth: 0,
                 borderColor: '#ff6b80',
-                fill: true,
-                pointHoverBackgroundColor: '#ff6b80',
             },
         },
         options: (legend: Map<any, any>) => ({
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: formatDurationTooltipCb,
-                    },
+            tooltips: {
+                callbacks: {
+                    label: formatDurationTooltipCb,
                 },
             },
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    grid: defaultYAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatDurationAxeCb,
-                    }),
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatDurationAxeCb,
+                        }),
+                    },
+                ],
             },
         }),
     },
@@ -1182,29 +1176,33 @@ export const stats = toImmutable<
         },
         options: (legend: Map<any, any>) => ({
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: false,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb,
-                    }),
-                    grid: defaultYAxeGridLines,
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: false,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                    },
+                ],
             },
         }),
     },
@@ -1242,53 +1240,48 @@ export const stats = toImmutable<
         lines: intentsOptions,
         options: (legend: Map<any, any>) => ({
             scales: {
-                x: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb,
-                    }),
-                    grid: defaultYAxeGridLines,
-                    stacked: true,
-                },
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: true,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        stacked: true,
+                    },
+                ],
             },
-            plugins: {
-                tooltip: {
-                    mode: 'point',
-                    position: 'nearest',
-                },
+            tooltips: {
+                mode: 'point',
+                position: 'nearest',
             },
         }),
     },
 })
 
 // Callbacks to format values of datasets or axes
-function formatDurationAxeCb(this: Scale<any>, value: number) {
-    return formatDuration(parseInt(this.getLabelForValue(value)), 1)
-}
+const formatDurationAxeCb = (val: any) => formatDuration(val, 1)
 
-function formatDateAxeCb(this: Scale<any>, value: number) {
-    return moment.unix(parseInt(this.getLabelForValue(value))).format('MMM Do')
-}
-
-function formatDateTooltipCb(value: number) {
-    return moment.unix(value).format('MMM Do')
+const formatDateAxeCb = (val: any) => {
+    return moment.unix(val).format('MMM Do')
 }
 
 // hide number of tickets if it's not an int
@@ -1296,10 +1289,13 @@ const formatTicketAxeCb = (val: any) => {
     return val % 1 === 0 ? (val as number) : ''
 }
 
-const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
-    return `${ctx.dataset.label || ''}: ${
-        formatDuration(ctx.parsed.y, 2) || '0'
-    } `
+const formatDurationTooltipCb = (
+    item: {datasetIndex: number; yLabel: number},
+    data: {datasets: {label: string}[]}
+) => {
+    return `${data.datasets[item.datasetIndex].label}: ${
+        formatDuration(item.yLabel, 2) || '0'
+    }`
 }
 
 /**

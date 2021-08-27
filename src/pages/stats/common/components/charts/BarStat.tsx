@@ -49,7 +49,6 @@ export default class BarStat extends Component<Props> {
                 }
                 <div>
                     <Bar
-                        type="bar"
                         height={chartMaxHeight}
                         data={{
                             labels: (data.getIn(['axes', 'x']) as List<

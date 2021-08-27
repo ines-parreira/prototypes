@@ -8,8 +8,6 @@ import {
     RESOLUTION_TIME,
 } from '../../../../../../config/stats'
 
-jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
-
 const minProps = ({
     name: 'stat_name',
     label: 'Stat label',
