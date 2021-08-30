@@ -11,7 +11,6 @@ import {
     fireEvent,
     act,
     waitForElementToBeRemoved,
-    waitFor,
 } from '@testing-library/react'
 
 import {RootState, StoreDispatch} from '../../../../../../state/types'
@@ -153,9 +152,7 @@ describe('<CustomDomain />', () => {
         fireEvent.change(input, {target: {value: 'gorgias.help'}})
         fireEvent.click(addDomainBtn)
 
-        await waitForElementToBeRemoved(addDomainBtn)
-
-        expect(screen.queryByText('Connection in progress')).not.toBeNull()
+        await screen.findByText('Connection in progress')
 
         const checkStatusBtn = screen.queryByText(
             'Check Status'
@@ -163,9 +160,7 @@ describe('<CustomDomain />', () => {
 
         fireEvent.click(checkStatusBtn)
 
-        await waitFor(() =>
-            expect(screen.queryByText('Error connecting')).not.toBeNull()
-        )
+        await screen.findByText('Error connecting')
     })
 
     it('removes the connection status when deleting the domain', async () => {
