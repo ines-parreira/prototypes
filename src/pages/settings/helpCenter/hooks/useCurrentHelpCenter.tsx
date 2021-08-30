@@ -7,6 +7,7 @@ import {
     changeViewLanguage,
     getCurrentHelpCenterId,
 } from '../../../../state/helpCenter/ui'
+import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
@@ -19,21 +20,26 @@ type useCurrentHelpCenterApi = {
     error: Error | undefined
 }
 
-let cachedHelpCenter: HelpCenter
+//    We make us of this to not trigger more than 1 request
+// if the hook is called multiple times before we have the data.
+let fetchInProgress = false
 
 export const useCurrentHelpCenter = (): useCurrentHelpCenterApi => {
     const dispatch = useAppDispatch()
     const currentHelpCenterId = useSelector(getCurrentHelpCenterId)
-    const [data, setData] = useState<HelpCenter>(cachedHelpCenter)
+    const cachedHelpCenter = useSelector(getCurrentHelpCenter)
+
+    const [data, setData] = useState<HelpCenter | null>(cachedHelpCenter)
 
     const {client} = useHelpcenterApi()
 
     const [helpCenter, getHelpCenter] = useAsyncFn(async () => {
         if (client && currentHelpCenterId) {
+            fetchInProgress = true
             const response = await client.getHelpCenter({
                 help_center_id: currentHelpCenterId,
             })
-
+            fetchInProgress = false
             return response.data
         }
     }, [client, currentHelpCenterId])
@@ -47,11 +53,10 @@ export const useCurrentHelpCenter = (): useCurrentHelpCenterApi => {
                 dispatch(changeViewLanguage(response.default_locale))
 
                 setData(response)
-                cachedHelpCenter = response
             }
         }
 
-        if (data?.id !== currentHelpCenterId) {
+        if (data?.id !== currentHelpCenterId && !fetchInProgress) {
             void init()
         }
     }, [data, currentHelpCenterId, dispatch, getHelpCenter])

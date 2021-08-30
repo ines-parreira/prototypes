@@ -7,6 +7,7 @@ import {LocaleCode} from '../../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
 import {notify} from '../../../../../state/notifications/actions'
+import {changeViewLanguage} from '../../../../../state/helpCenter/ui/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 
 import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../constants'
@@ -74,6 +75,7 @@ export const LanguagePreferencesSettings = ({
             )
             .then((response) => {
                 dispatch(helpCenterUpdated(response.data))
+                dispatch(changeViewLanguage(response.data.default_locale))
                 void dispatch(
                     notify({
                         message: 'Successfully saved the preferences',
