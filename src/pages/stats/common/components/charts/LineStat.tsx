@@ -4,6 +4,7 @@ import {Line} from 'react-chartjs-2'
 import moment from 'moment'
 import {Map, List} from 'immutable'
 import _flatten from 'lodash/flatten'
+import _isEqual from 'lodash/isEqual'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Legend from '../Legend/Legend'
@@ -15,6 +16,8 @@ import {
 import {RootState} from '../../../../../state/types'
 import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/currentAccount/selectors'
 
+import {highlightTimeRanges} from './plugins'
+
 type Props = {
     data: Map<any, any>
     legend: Map<any, any>
@@ -23,6 +26,27 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export class LineStatContainer extends Component<Props> {
+    _getOptions = (legend: Map<any, any>) => {
+        const {config, businessRanges} = this.props
+        const defaultOptions = (config.get('options') as (
+            legend: Map<any, any>
+        ) => ChartOptions)(legend)
+        const formattedBusinessRanges = businessRanges?.map((range) => [
+            range[0].add(30, 'minutes').startOf('hour'),
+            range[1].add(30, 'minutes').startOf('hour'),
+        ])
+        return config.get('hasBusinessHoursHighlight') && businessRanges
+            ? {
+                  ...defaultOptions,
+                  plugins: {
+                      highlight_time_ranges: {
+                          timeRanges: formattedBusinessRanges,
+                      },
+                  },
+              }
+            : defaultOptions
+    }
+
     render() {
         const {data, config, legend, meta, businessRanges} = this.props
         const start = moment(meta.get('start_datetime'))
@@ -57,127 +81,10 @@ export class LineStatContainer extends Component<Props> {
             name: dataset.label as string,
             background: dataset.backgroundColor as string,
         }))
-        const roundedRanges = businessRanges?.map((range) => [
-            range[0].add(30, 'minutes').startOf('hour'),
-            range[1].add(30, 'minutes').startOf('hour'),
-        ])
         const extraProps = {
             plugins: _flatten([
-                config.get('hasBusinessHoursHighlight') && roundedRanges
-                    ? [
-                          {
-                              id: 'custom_canvas_background_color',
-                              afterDraw: (
-                                  chart: Chart & {
-                                      scales: {
-                                          ['x-axis-0']: {
-                                              left: number
-                                              width: number
-                                              _gridLineItems: {x1: number}[]
-                                              _ticks: {value: number}[]
-                                          }
-                                          ['y-axis-0']: {
-                                              height: number
-                                              top: number
-                                          }
-                                      }
-                                  }
-                              ) => {
-                                  roundedRanges.map((range) => {
-                                      if (!chart.canvas) {
-                                          return
-                                      }
-                                      const ctx = chart.canvas.getContext(
-                                          '2d'
-                                      ) as CanvasRenderingContext2D
-                                      ctx.save()
-                                      const startIndex = chart.scales[
-                                          'x-axis-0'
-                                      ]._ticks.findIndex((item) => {
-                                          return (
-                                              moment
-                                                  .unix(item.value)
-                                                  .format('h a') ===
-                                              range[0].format('h a')
-                                          )
-                                      })
-                                      const endIndex = chart.scales[
-                                          'x-axis-0'
-                                      ]._ticks.findIndex((item) => {
-                                          return (
-                                              moment
-                                                  .unix(item.value)
-                                                  .format('h a') ===
-                                              range[1].format('h a')
-                                          )
-                                      })
-                                      ctx.globalCompositeOperation =
-                                          'destination-over'
-                                      ctx.fillStyle = '#ffffff'
-                                      if (endIndex >= startIndex) {
-                                          ctx.fillRect(
-                                              chart.scales['x-axis-0']
-                                                  ._gridLineItems[startIndex]
-                                                  .x1,
-                                              chart.scales['y-axis-0'].top,
-                                              chart.scales['x-axis-0']
-                                                  ._gridLineItems[endIndex].x1 -
-                                                  chart.scales['x-axis-0']
-                                                      ._gridLineItems[
-                                                      startIndex
-                                                  ].x1,
-                                              chart.scales['y-axis-0'].height
-                                          )
-                                      } else {
-                                          ctx.fillRect(
-                                              chart.scales['x-axis-0']
-                                                  ._gridLineItems[startIndex]
-                                                  .x1,
-                                              chart.scales['y-axis-0'].top,
-                                              chart.scales['x-axis-0']
-                                                  ._gridLineItems[
-                                                  chart.scales['x-axis-0']
-                                                      ._ticks.length - 1
-                                              ].x1 -
-                                                  chart.scales['x-axis-0']
-                                                      ._gridLineItems[
-                                                      startIndex
-                                                  ].x1,
-                                              chart.scales['y-axis-0'].height
-                                          )
-                                          ctx.fillRect(
-                                              chart.scales['x-axis-0']
-                                                  ._gridLineItems[0].x1,
-                                              chart.scales['y-axis-0'].top,
-                                              chart.scales['x-axis-0']
-                                                  ._gridLineItems[endIndex].x1 -
-                                                  chart.scales['x-axis-0']
-                                                      ._gridLineItems[0].x1,
-                                              chart.scales['y-axis-0'].height
-                                          )
-                                      }
-                                      ctx.restore()
-                                  })
-                                  if (!chart.canvas) {
-                                      return
-                                  }
-                                  const ctx = chart.canvas.getContext(
-                                      '2d'
-                                  ) as CanvasRenderingContext2D
-                                  ctx.save()
-                                  ctx.globalCompositeOperation =
-                                      'destination-over'
-                                  ctx.fillStyle = '#f4f5f7'
-                                  ctx.fillRect(
-                                      chart.scales['x-axis-0'].left,
-                                      chart.scales['y-axis-0'].top,
-                                      chart.scales['x-axis-0'].width,
-                                      chart.scales['y-axis-0'].height
-                                  )
-                                  ctx.restore()
-                              },
-                          },
-                      ]
+                config.get('hasBusinessHoursHighlight') && businessRanges
+                    ? [highlightTimeRanges]
                     : [],
             ]),
         } as Partial<ComponentProps<typeof Line>>
@@ -193,6 +100,7 @@ export class LineStatContainer extends Component<Props> {
                 }
                 <div>
                     <Line
+                        type="line"
                         height={chartMaxHeight}
                         data={{
                             labels: (data.getIn(['axes', 'x']) as List<
@@ -200,9 +108,7 @@ export class LineStatContainer extends Component<Props> {
                             >).toJS(),
                             datasets: datasets,
                         }}
-                        options={(config.get('options') as (
-                            legend: Map<any, any>
-                        ) => ChartOptions)(legend)}
+                        options={this._getOptions(legend) as ChartOptions}
                         {...extraProps}
                     />
                 </div>
@@ -215,4 +121,7 @@ const connector = connect((state: RootState) => ({
     businessRanges: getBusinessHoursRangesByUserTimezone(state),
 }))
 
-export default connector(LineStatContainer)
+// Use memo to prevent redrawing on state change
+export default connector(
+    React.memo(LineStatContainer, (prev, next) => _isEqual(prev, next))
+)

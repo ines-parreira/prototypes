@@ -21,7 +21,7 @@ exports[`BarStat should render a bar chart 1`] = `
     />
   </div>
   <div>
-    <Bar
+    <ForwardRef
       data={
         Object {
           "datasets": Array [
@@ -58,51 +58,56 @@ exports[`BarStat should render a bar chart 1`] = `
       options={
         Object {
           "scales": Object {
-            "xAxes": Array [
-              Object {
-                "gridLines": Object {
-                  "color": "#dfe3f1",
-                  "display": false,
-                  "drawBorder": false,
-                },
-                "scaleLabel": Object {
-                  "display": true,
-                  "fontColor": "#b2bddd",
-                  "labelString": "created",
-                },
-                "stacked": false,
-                "ticks": Object {
-                  "callback": [Function],
-                  "fontColor": "#b2bddd",
-                },
+            "x": Object {
+              "grid": Object {
+                "borderColor": "#d2d7de",
+                "borderDash": Array [
+                  2,
+                  4,
+                ],
+                "color": "#dfe3f1",
+                "display": false,
+                "drawBorder": true,
+                "z": -1,
               },
-            ],
-            "yAxes": Array [
-              Object {
-                "gridLines": Object {
-                  "borderDash": Array [
-                    2,
-                    4,
-                  ],
-                  "color": "#dfe3f1",
-                  "drawBorder": false,
-                },
-                "scaleLabel": Object {
-                  "display": true,
-                  "fontColor": "#b2bddd",
-                  "labelString": "closed",
-                },
-                "ticks": Object {
-                  "callback": [Function],
-                  "fontColor": "#b2bddd",
-                  "min": 0,
-                  "suggestedMax": 1,
-                },
+              "stacked": false,
+              "ticks": Object {
+                "callback": [Function],
+                "color": "#b2bddd",
               },
-            ],
+              "title": Object {
+                "color": "#b2bddd",
+                "display": true,
+                "text": "created",
+              },
+            },
+            "y": Object {
+              "grid": Object {
+                "borderDash": Array [
+                  2,
+                  4,
+                ],
+                "color": "#dfe3f1",
+                "drawBorder": false,
+                "drawTicks": false,
+                "z": -1,
+              },
+              "min": 0,
+              "suggestedMax": 1,
+              "ticks": Object {
+                "callback": [Function],
+                "color": "#b2bddd",
+              },
+              "title": Object {
+                "color": "#b2bddd",
+                "display": true,
+                "text": "closed",
+              },
+            },
           },
         }
       }
+      type="bar"
     />
   </div>
 </div>

@@ -1,6 +1,7 @@
 import {Map, List} from 'immutable'
 import React, {Component} from 'react'
 import {Bar} from 'react-chartjs-2'
+import _isEqual from 'lodash/isEqual'
 
 import {
     colors as colorsConfig,
@@ -14,7 +15,7 @@ type Props = {
     legend?: Map<any, any>
 }
 
-export default class BarStat extends Component<Props> {
+export class BarStat extends Component<Props> {
     render() {
         const {data, config, legend} = this.props
         const datasets = (data.get('lines') as List<any>)
@@ -49,6 +50,7 @@ export default class BarStat extends Component<Props> {
                 }
                 <div>
                     <Bar
+                        type="bar"
                         height={chartMaxHeight}
                         data={{
                             labels: (data.getIn(['axes', 'x']) as List<
@@ -65,3 +67,6 @@ export default class BarStat extends Component<Props> {
         )
     }
 }
+
+// Use memo to prevent redrawing on state change
+export default React.memo(BarStat, (prev, next) => _isEqual(prev, next))
