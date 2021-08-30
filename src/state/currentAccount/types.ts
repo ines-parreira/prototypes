@@ -56,17 +56,7 @@ export type AccountSetting =
               unassign_on_reply: boolean
           }
       }
-    | {
-          id: number
-          type: AccountSettingType.SatisfactionSurveys
-          data: {
-              send_survey_for_chat: boolean
-              send_survey_for_email: boolean
-              survey_email_html: string
-              survey_email_text: string
-              survey_interval: number
-          }
-      }
+    | AccountSettingSatisfactionSurvey
     | ViewsOrderingAccountSetting
 
 export type AccountSettingBusinessHours = {
@@ -79,6 +69,18 @@ export type AccountSettingBusinessHours = {
             from_time: string
             to_time: string
         }[]
+    }
+}
+
+export type AccountSettingSatisfactionSurvey = {
+    id: number
+    type: AccountSettingType.SatisfactionSurveys
+    data: {
+        send_survey_for_chat: boolean
+        send_survey_for_email: boolean
+        survey_email_html: string
+        survey_email_text: string
+        survey_interval: number
     }
 }
 

@@ -1,37 +1,32 @@
-// @flow
 import classnames from 'classnames'
 import React, {Component} from 'react'
 import {Badge, Button, Table} from 'reactstrap'
-import {connect} from 'react-redux'
-
+import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
+import {AxiosError} from 'axios'
+import {Map} from 'immutable'
 
-import type {Dispatch} from '../../../state/types'
-
-import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing.ts'
-import * as billingSelectors from '../../../state/billing/selectors.ts'
+import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing'
+import * as billingSelectors from '../../../state/billing/selectors'
 import {
     fetchInvoices,
     updateInvoiceInList,
-} from '../../../state/billing/actions.ts'
-import Loader from '../../common/components/Loader/Loader.tsx'
-import GorgiasApi from '../../../services/gorgiasApi.ts'
-import {notify} from '../../../state/notifications/actions.ts'
+} from '../../../state/billing/actions'
+import Loader from '../../common/components/Loader/Loader'
+import GorgiasApi from '../../../services/gorgiasApi'
+import {notify} from '../../../state/notifications/actions'
+import {RootState} from '../../../state/types'
+import {NotificationStatus} from '../../../state/notifications/types'
 
-type Props = {
-    fetchInvoices: () => Promise<Dispatch>,
-    notify: (Object) => Promise<Dispatch>,
-    updateInvoiceInList: (Object) => Promise<Dispatch>,
-    invoices: Object,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isFetchingInvoices: boolean,
-    confirmingInvoicePayment: ?string,
-    payingInvoice: ?string,
+    isFetchingInvoices: boolean
+    confirmingInvoicePayment: string | null
+    payingInvoice: string | null
 }
 
-export class BillingInvoices extends Component<Props, State> {
+export class BillingInvoicesContainer extends Component<Props, State> {
     gorgiasApi = new GorgiasApi()
     state = {
         isFetchingInvoices: false,
@@ -39,7 +34,6 @@ export class BillingInvoices extends Component<Props, State> {
         payingInvoice: null,
     }
 
-    // $FlowFixMe
     async componentWillMount() {
         this.setState({isFetchingInvoices: true})
         await this.props.fetchInvoices()
@@ -54,18 +48,22 @@ export class BillingInvoices extends Component<Props, State> {
             const invoice = await this.gorgiasApi.payInvoice(invoiceId)
             updateInvoiceInList(invoice)
         } catch (exc) {
-            if (exc.response.status === 402) {
+            const error: AxiosError<{error: {msg: string}}> = exc
+            if (error.response!.status === 402) {
                 // 402: The payment needs to be confirmed by the user.
                 await this._confirmInvoicePayment(invoiceId)
                 return
             }
 
-            let errorMsg =
-                exc.response && exc.response.data.error
-                    ? exc.response.data.error.msg
+            const errorMsg =
+                error.response && error.response.data.error
+                    ? error.response.data.error.msg
                     : 'Failed to pay the invoice. Please try again in a few seconds.'
 
-            this.props.notify({status: 'error', title: errorMsg})
+            void this.props.notify({
+                status: NotificationStatus.Error,
+                title: errorMsg,
+            })
         } finally {
             this.setState({payingInvoice: null})
         }
@@ -85,12 +83,16 @@ export class BillingInvoices extends Component<Props, State> {
                 updateInvoiceInList(invoice)
             }
         } catch (exc) {
-            let errorMsg =
-                exc.response && exc.response.data.error
-                    ? exc.response.data.error.msg
+            const error: AxiosError<{error?: {msg: string}}> = exc
+            const errorMsg =
+                error.response && error.response.data.error
+                    ? error.response.data.error.msg
                     : 'Failed to confirm the payment. Please try again in a few seconds.'
 
-            this.props.notify({status: 'error', title: errorMsg})
+            void this.props.notify({
+                status: NotificationStatus.Error,
+                title: errorMsg,
+            })
         } finally {
             this.setState({confirmingInvoicePayment: null})
         }
@@ -132,10 +134,12 @@ export class BillingInvoices extends Component<Props, State> {
                         </tr>
                     </thead>
                     <tbody>
-                        {invoices.map((invoice) => {
+                        {invoices.map((invoice: Map<any, any>) => {
                             const paid = invoice.get('paid')
                             const invoicePdfUrl = invoice.get('invoice_pdf')
-                            const paymentIntent = invoice.get('payment_intent')
+                            const paymentIntent = invoice.get(
+                                'payment_intent'
+                            ) as Map<any, any>
                             const shopifyPaid =
                                 invoice.getIn([
                                     'metadata',
@@ -190,7 +194,7 @@ export class BillingInvoices extends Component<Props, State> {
                                                         !!payingInvoice
                                                     }
                                                     onClick={() => {
-                                                        this._confirmInvoicePayment(
+                                                        void this._confirmInvoicePayment(
                                                             invoice.get('id')
                                                         )
                                                     }}
@@ -214,7 +218,7 @@ export class BillingInvoices extends Component<Props, State> {
                                                         !!payingInvoice
                                                     }
                                                     onClick={() => {
-                                                        this._payInvoice(
+                                                        void this._payInvoice(
                                                             invoice.get('id')
                                                         )
                                                     }}
@@ -233,11 +237,11 @@ export class BillingInvoices extends Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => {
-        return {
-            invoices: billingSelectors.invoices(state),
-        }
-    },
+const connector = connect(
+    (state: RootState) => ({
+        invoices: billingSelectors.invoices(state),
+    }),
     {fetchInvoices, notify, updateInvoiceInList}
-)(BillingInvoices)
+)
+
+export default connector(BillingInvoicesContainer)

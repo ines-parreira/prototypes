@@ -1,1 +1,1 @@
-export default from './BusinessHours'
+export default from './BusinessHours.tsx'

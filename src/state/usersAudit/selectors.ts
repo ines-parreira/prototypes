@@ -22,16 +22,16 @@ export const getUserAuditEvents = createSelector<
 
 export const getUserAuditPagination = createSelector<
     RootState,
-    List<any>,
+    Map<any, any>,
     UsersAuditState
 >(
     getUsersAuditState,
-    (usersAudit) => (usersAudit.get('meta') || fromJS([])) as List<any>
+    (usersAudit) => (usersAudit.get('meta') || fromJS({})) as Map<any, any>
 )
 
 export const getUserAuditUserIdOptions = createSelector<
     RootState,
-    List<any>,
+    List<{value: string; label: string}>,
     List<any>
 >(
     getAgents,
@@ -39,7 +39,7 @@ export const getUserAuditUserIdOptions = createSelector<
         agents.map((agent: Map<any, any>) => ({
             value: agent.get('id'),
             label: agent.get('name') || '',
-        })) as List<any>
+        })) as List<{value: string; label: string}>
 )
 
 export const getUserAuditObjectsEvents = createSelector<
@@ -57,7 +57,7 @@ export const getUserAuditObjectsEvents = createSelector<
 
 export const getUserAuditObjectTypeOptions = createSelector<
     RootState,
-    List<any>,
+    List<{value: string; label: string}>,
     Map<any, any>
 >(getUserAuditObjectsEvents, (objectsEvents) =>
     objectsEvents
@@ -70,10 +70,10 @@ export const getUserAuditObjectTypeOptions = createSelector<
 
 export const getUserAuditEventTypeOptions = createSelector<
     RootState,
-    List<any>,
+    List<{value: string; label: string}>,
     Map<any, any>
 >(getUserAuditObjectsEvents, (objectsEvents) => {
-    let eventTypes = fromJS([]) as List<any>
+    let eventTypes = fromJS([]) as List<{value: string; label: string}>
     objectsEvents.forEach((props: Map<any, any>) => {
         ;(props.get('events') as List<any>).forEach((eventType: string) => {
             eventTypes = eventTypes.push({

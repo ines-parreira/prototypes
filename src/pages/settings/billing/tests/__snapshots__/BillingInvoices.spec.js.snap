@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BillingInvoices component should display invoices, without PDF download links if paid through Shopify 1`] = `
-<BillingInvoices
+<BillingInvoicesContainer
   fetchInvoices={[Function]}
   invoices={
     Immutable.List [
@@ -147,11 +147,11 @@ exports[`BillingInvoices component should display invoices, without PDF download
       </table>
     </Table>
   </div>
-</BillingInvoices>
+</BillingInvoicesContainer>
 `;
 
 exports[`BillingInvoices component should display loader 1`] = `
-<BillingInvoices
+<BillingInvoicesContainer
   fetchInvoices={[Function]}
   invoices={Immutable.Map {}}
 >
@@ -182,11 +182,11 @@ exports[`BillingInvoices component should display loader 1`] = `
       </div>
     </div>
   </Loader>
-</BillingInvoices>
+</BillingInvoicesContainer>
 `;
 
 exports[`BillingInvoices component should load with empty props 1`] = `
-<BillingInvoices
+<BillingInvoicesContainer
   fetchInvoices={[Function]}
   invoices={Immutable.Map {}}
 />

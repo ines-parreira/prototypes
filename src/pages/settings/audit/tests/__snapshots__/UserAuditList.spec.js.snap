@@ -86,7 +86,6 @@ exports[`UserAuditList component mounts correctly 1`] = `
           }
         }
         labelDateFormat="LLL"
-        maxDaysSpan={7}
         onChange={[Function]}
         startDatetime={"2017-12-30T08:00:00.000Z"}
       />
@@ -155,7 +154,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
           </tr>
         </thead>
         <tbody>
-          <Connect(UserAuditRow)
+          <Connect(UserAuditRowContainer)
             eventItem={
               Immutable.Map {
                 "id": 1,
@@ -168,7 +167,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
             }
             key="1"
           />
-          <Connect(UserAuditRow)
+          <Connect(UserAuditRowContainer)
             eventItem={
               Immutable.Map {
                 "id": 2,
@@ -181,7 +180,7 @@ exports[`UserAuditList component mounts correctly 1`] = `
             }
             key="2"
           />
-          <Connect(UserAuditRow)
+          <Connect(UserAuditRowContainer)
             eventItem={
               Immutable.Map {
                 "id": 3,

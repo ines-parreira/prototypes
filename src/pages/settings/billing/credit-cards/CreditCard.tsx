@@ -1,7 +1,6 @@
-// @flow
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import _pick from 'lodash/pick'
 import {
@@ -14,73 +13,59 @@ import {
     FormGroup,
     Row,
 } from 'reactstrap'
+import {fromJS, Map} from 'immutable'
+import {AxiosError} from 'axios'
 
-import {fromJS} from 'immutable'
-
-import {setCreditCard} from '../../../../state/billing/actions.ts'
+import {setCreditCard} from '../../../../state/billing/actions'
 import {
     getCurrentPlan as currentPlanSelector,
     hasLegacyPlan as hasLegacyPlanSelector,
-} from '../../../../state/billing/selectors.ts'
-
-import Loader from '../../../common/components/Loader/Loader.tsx'
-import {loadScript} from '../../../../utils.ts'
-
-import Errors from '../../../common/forms/Errors'
+} from '../../../../state/billing/selectors'
+import Loader from '../../../common/components/Loader/Loader'
+import {loadScript} from '../../../../utils'
+import Errors from '../../../common/forms/Errors.js'
 import InputField from '../../../common/forms/InputField'
-
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import PageHeader from '../../../common/components/PageHeader.tsx'
-import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
-
-import GorgiasApi from '../../../../services/gorgiasApi.ts'
-
-import {setCurrentSubscription} from '../../../../state/currentAccount/actions.ts'
-import {notify} from '../../../../state/notifications/actions.ts'
-import {createStripeCardToken} from '../../../../utils/stripe.ts'
-import history from '../../../history.ts'
-
-import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner.tsx'
-import BillingPlanCard from '../plans/BillingPlanCard.tsx'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import PageHeader from '../../../common/components/PageHeader'
+import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
+import GorgiasApi from '../../../../services/gorgiasApi'
+import {setCurrentSubscription} from '../../../../state/currentAccount/actions'
+import {notify} from '../../../../state/notifications/actions'
+import {createStripeCardToken} from '../../../../utils/stripe'
+import history from '../../../history'
+import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner'
+import BillingPlanCard from '../plans/BillingPlanCard'
+import {RootState} from '../../../../state/types'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {CreditCard} from '../../../../state/billing/types'
 
 import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
     creditCardNormalizer,
-} from './utils'
-
-declare var Stripe: Object
+} from './utils.js'
 
 type Props = {
-    location: Object,
-    updateCreditCard: () => void,
-    setCurrentSubscription: (Object) => void,
-    setCreditCard: (Object) => void,
-    currentPlan: Object,
-    currentUser: Object,
-    currentSubscription: Object,
-    currentAccount: Object,
-    accountHasLegacyPlan: boolean,
-    hasCreditCard: boolean,
-    number: string,
-    name: string,
-    expDate: string,
-    cvc: string,
-    notify: (Object) => Object,
-}
+    updateCreditCard: () => void
+    number: string
+    name: string
+    expDate: string
+    cvc: string
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 
 type State = {
-    isSubmitting: boolean,
-    isStripeLoaded: boolean,
-    dirty: boolean,
-    errors: Object,
-    name: string,
-    number: string,
-    expDate: string,
-    cvc: string,
+    isSubmitting: boolean
+    isStripeLoaded: boolean
+    dirty: boolean
+    errors: Partial<Record<keyof CreditCard, string> & {global?: string}>
+    name: string
+    number: string
+    expDate: string
+    cvc: string
 }
 
-export class CreditCard extends Component<Props, State> {
+export class CreditCardContainer extends Component<Props, State> {
     gorgiasApi = new GorgiasApi()
 
     static defaultProps = {
@@ -92,7 +77,7 @@ export class CreditCard extends Component<Props, State> {
         cvc: '',
     }
 
-    state = {
+    state: State = {
         isSubmitting: false,
         isStripeLoaded: !!window.Stripe,
         dirty: false,
@@ -133,11 +118,8 @@ export class CreditCard extends Component<Props, State> {
     /**
      * Update the credit card of the account,
      * and start the subscription if this one is trialing or incomplete.
-     *
-     * @param event
-     * @returns - A promise when the transaction is finished.
      */
-    _submit = (event: SyntheticEvent<*>): Promise<any> => {
+    _submit = (event: SyntheticEvent) => {
         event.preventDefault()
         const {
             currentAccount,
@@ -147,10 +129,14 @@ export class CreditCard extends Component<Props, State> {
             notify,
         } = this.props
         const hasSubscription = !!currentSubscription.get('status')
-        const cardToEncode = _pick(this.state, ['name', 'number', 'cvc'])
+        const cardToEncode: stripe.StripeCardTokenData = _pick(this.state, [
+            'name',
+            'number',
+            'cvc',
+        ])
         const [expMonth, expYear] = this.state.expDate.split('/')
-        cardToEncode.exp_month = expMonth.trim()
-        cardToEncode.exp_year = expYear.trim()
+        cardToEncode.exp_month = expMonth.trim() as any
+        cardToEncode.exp_year = expYear.trim() as any
 
         this.setState({isSubmitting: true})
         segmentTracker.logEvent(
@@ -162,10 +148,11 @@ export class CreditCard extends Component<Props, State> {
             }
         )
 
-        return new Promise(async (resolve) => {
+        // eslint-disable-next-line no-async-promise-executor, @typescript-eslint/no-misused-promises
+        return new Promise<void>(async (resolve) => {
             let creditCard = null
             let subscription = currentSubscription
-            let payment = null
+            let payment: Map<any, any> | null = null
             try {
                 const creditCardToken = await createStripeCardToken(
                     cardToEncode
@@ -174,16 +161,21 @@ export class CreditCard extends Component<Props, State> {
                     fromJS({token: creditCardToken.id})
                 )
             } catch (exception) {
+                const error: AxiosError<{error: {msg: string}}> &
+                    stripe.StripeCardTokenResponse = exception
                 let errorMsg =
                     'Failed to update credit card. Please try again in a few seconds.'
-                if (exception.response && exception.response.data.error) {
+                if (error.response && error.response.data.error) {
                     // Gorgias API error
-                    errorMsg = exception.response.data.error.msg
-                } else if (exception.error && exception.error.message) {
+                    errorMsg = error.response.data.error.msg
+                } else if (error.error && error.error.message) {
                     // Stripe API error
-                    errorMsg = exception.error.message
+                    errorMsg = error.error.message
                 }
-                this.props.notify({status: 'error', title: errorMsg})
+                void this.props.notify({
+                    status: NotificationStatus.Error,
+                    title: errorMsg,
+                })
                 this.setState({isSubmitting: false})
                 return resolve()
             }
@@ -212,18 +204,22 @@ export class CreditCard extends Component<Props, State> {
                 subscription = response.get('subscription')
                 payment = response.get('payment')
             } catch (exception) {
+                const error: AxiosError<{error?: {msg: string}}> = exception
                 const errorMsg =
-                    exception.response && exception.response.data.error
-                        ? exception.response.data.error.msg
+                    error.response && error.response.data.error
+                        ? error.response.data.error.msg
                         : 'Failed to update credit card. Please try again in a few seconds.'
-                this.props.notify({status: 'error', title: errorMsg})
+                void this.props.notify({
+                    status: NotificationStatus.Error,
+                    title: errorMsg,
+                })
                 return resolve()
             }
             this.props.setCurrentSubscription(subscription)
 
-            if (payment.get('confirmation_url')) {
-                notify({
-                    status: 'info',
+            if (payment!.get('confirmation_url')) {
+                void notify({
+                    status: NotificationStatus.Info,
                     message:
                         'In order to activate your subscription, we need you to confirm this payment to your bank.' +
                         'You will be redirected in a few seconds to a secure page.',
@@ -232,19 +228,17 @@ export class CreditCard extends Component<Props, State> {
                 })
 
                 setTimeout(() => {
-                    // $FlowFixMe
-                    window.location.href = payment.get('confirmation_url')
+                    window.location.href = payment!.get('confirmation_url')
                 }, 4500)
                 return resolve()
             }
 
-            if (payment.get('error')) {
-                notify({
-                    status: 'error',
-                    message:
-                        payment.get('error') +
-                        ' ' +
-                        'Please update your payment method and retry to pay your invoice.',
+            if (payment!.get('error')) {
+                void notify({
+                    status: NotificationStatus.Error,
+                    message: `${
+                        payment!.get('error') as string
+                    } Please update your payment method and retry to pay your invoice.`,
                 })
             }
 
@@ -254,8 +248,8 @@ export class CreditCard extends Component<Props, State> {
         })
     }
 
-    _validate(values: Object) {
-        const errors = {}
+    _validate(values: CreditCard) {
+        const errors: State['errors'] = {}
 
         if (typeof Stripe === 'undefined') {
             return errors
@@ -282,7 +276,7 @@ export class CreditCard extends Component<Props, State> {
         return errors
     }
 
-    _updateField = (value: Object) => {
+    _updateField = (value: Partial<State>) => {
         const newState = Object.assign({}, this.state, value)
 
         this.setState(
@@ -312,9 +306,9 @@ export class CreditCard extends Component<Props, State> {
             currentPlan.isEmpty() ||
             currentPlan.get('amount') === 0
                 ? ''
-                : ` and pay ${currentPlan.get('currencySign')}${currentPlan.get(
-                      'amount'
-                  )}`
+                : ` and pay ${currentPlan.get('currencySign') as string}${
+                      currentPlan.get('amount') as number
+                  }`
 
         if (!isStripeLoaded) {
             return <Loader />
@@ -466,8 +460,8 @@ export class CreditCard extends Component<Props, State> {
     }
 }
 
-function mapStateToProps(state) {
-    return {
+const connector = connect(
+    (state: RootState) => ({
         currentPlan: currentPlanSelector(state),
         currentUser: state.currentUser,
         currentSubscription: currentAccountSelectors.getCurrentSubscription(
@@ -476,13 +470,12 @@ function mapStateToProps(state) {
         currentAccount: state.currentAccount,
         hasCreditCard: !!state.billing.get('creditCard'),
         accountHasLegacyPlan: hasLegacyPlanSelector(state),
+    }),
+    {
+        setCurrentSubscription,
+        notify,
+        setCreditCard,
     }
-}
+)
 
-const actions = {
-    setCurrentSubscription,
-    notify,
-    setCreditCard,
-}
-
-export default withRouter(connect(mapStateToProps, actions)(CreditCard))
+export default withRouter(connector(CreditCardContainer))

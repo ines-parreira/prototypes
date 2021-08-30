@@ -12,8 +12,8 @@ import history from '../../history.ts'
 
 import BillingUsage from './BillingUsage'
 import BillingPaymentMethod from './BillingPaymentMethod'
-import BillingDetails from './details/BillingDetails'
-import BillingInvoices from './BillingInvoices'
+import BillingDetails from './details/BillingDetails.tsx'
+import BillingInvoices from './BillingInvoices.tsx'
 
 @withRouter
 export class BillingContainer extends Component {

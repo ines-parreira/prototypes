@@ -1,21 +1,20 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Input} from 'reactstrap'
-import type {Map} from 'immutable'
+import {Map, List} from 'immutable'
 
-import SelectField from '../../common/forms/SelectField'
+import SelectField from '../../common/forms/SelectField/SelectField'
 
 import css from './BusinessHours.less'
 
-import {DAYS_OPTIONS} from './constants'
+import {DAYS_OPTIONS} from './constants.js'
 
 type Props = {
-    onChange: (Map<*, *>) => void,
-    businessHour: Map<*, *>,
+    onChange: (map: Map<any, any>) => void
+    businessHour: Map<any, any>
 }
 
-export default class BusinessHoursForm extends React.Component<Props> {
-    _onChange = (newData: Object) => {
+export default class BusinessHoursForm extends Component<Props> {
+    _onChange = (newData: Record<string, unknown>) => {
         this.props.onChange(this.props.businessHour.merge(newData))
     }
 
@@ -27,7 +26,7 @@ export default class BusinessHoursForm extends React.Component<Props> {
                 <SelectField
                     value={businessHour.get('days')}
                     onChange={(value) => this._onChange({days: value})}
-                    options={DAYS_OPTIONS.toJS()}
+                    options={(DAYS_OPTIONS as List<any>).toJS()}
                     fixedWidth
                 />
                 <Input

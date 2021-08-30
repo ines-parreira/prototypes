@@ -1,4 +1,4 @@
-import React, {ComponentProps, ComponentType} from 'react'
+import React, {ComponentType} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {hasRole} from '../../../utils'
@@ -10,13 +10,12 @@ import NotAllowed from './NotAllowed'
 
 // check user role before render the desired component
 const withUserRoleRequired = (
-    Component: ComponentType<Record<string, unknown>>,
+    Component: ComponentType<any>,
     requiredRole: UserRole,
     redirectTo?: string
 ) => {
     const UserRoleRequired = (
-        props: ComponentProps<typeof Component> &
-            ConnectedProps<typeof connector>
+        props: Record<string, unknown> & ConnectedProps<typeof connector>
     ) => {
         // user has required role
         if (requiredRole && hasRole(props.currentUser, requiredRole)) {

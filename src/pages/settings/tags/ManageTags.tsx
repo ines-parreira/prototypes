@@ -1,6 +1,5 @@
-// @flow
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, ComponentProps, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {
@@ -11,49 +10,49 @@ import {
     PopoverBody,
     PopoverHeader,
 } from 'reactstrap'
+import {Map} from 'immutable'
 
-import type {List, Map} from 'immutable'
+import InputField from '../../common/forms/InputField.js'
+import Pagination from '../../common/components/Pagination'
+import Loader from '../../common/components/Loader/Loader'
+import PageHeader from '../../common/components/PageHeader'
+import Video from '../../common/components/Video/Video'
+import Search from '../../common/components/Search'
+import {
+    fetchTags,
+    create,
+    remove,
+    selectAll,
+    setPage,
+    merge,
+    bulkDelete,
+} from '../../../state/tags/actions'
+import {
+    getTags,
+    getMeta,
+    getCurrentPage,
+    getNumberPages,
+} from '../../../state/tags/selectors'
+import {RootState} from '../../../state/types'
+import {TagSortableProperty} from '../../../state/tags/types'
 
-import InputField from '../../common/forms/InputField'
-
-import Pagination from '../../common/components/Pagination.tsx'
-import Loader from '../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../common/components/PageHeader.tsx'
-import Video from '../../common/components/Video'
-import Search from '../../common/components/Search.tsx'
-
-import * as tagsActions from '../../../state/tags/actions.ts'
-import * as tagsSelectors from '../../../state/tags/selectors.ts'
-
-import Table from './Table.tsx'
+import Table from './Table'
 import css from './ManageTags.less'
 
-type Props = {
-    tags: List<*>,
-    meta: Map<*, *>,
-    currentPage: number,
-    numberPages: number,
-    fetch: typeof tagsActions.fetchTags,
-    create: typeof tagsActions.create,
-    remove: typeof tagsActions.remove,
-    selectAll: () => void,
-    setPage: typeof tagsActions.setPage,
-    merge: typeof tagsActions.merge,
-    bulkDelete: typeof tagsActions.bulkDelete,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    sort: string,
-    search: string,
-    reverse: boolean,
-    newTag: string,
-    showCreationPopup: boolean,
-    isFetching: boolean,
+    sort: TagSortableProperty
+    search: string
+    reverse: boolean
+    newTag: string
+    showCreationPopup: boolean
+    isFetching: boolean
 }
 
-export class ManageTags extends Component<Props, State> {
+export class ManageTagsContainer extends Component<Props, State> {
     state = {
-        sort: 'usage',
+        sort: TagSortableProperty.Usage,
         reverse: true,
         search: '',
         newTag: '',
@@ -63,7 +62,7 @@ export class ManageTags extends Component<Props, State> {
 
     componentDidMount() {
         this.setState({isFetching: true})
-        this.props.fetch().then(() => {
+        void this.props.fetch().then(() => {
             this.setState({isFetching: false})
         })
     }
@@ -77,7 +76,7 @@ export class ManageTags extends Component<Props, State> {
             // needed in case user deletes all tags on the last page. We want to now fetch tags for previous page
             this.props.setPage(nextNumPages)
         } else if (currentPage !== nextPage) {
-            this.props.fetch(
+            void this.props.fetch(
                 nextPage,
                 this.state.sort,
                 this.state.reverse,
@@ -87,7 +86,7 @@ export class ManageTags extends Component<Props, State> {
     }
 
     _fetchPage = () => {
-        this.props.fetch(
+        void this.props.fetch(
             this.props.currentPage,
             this.state.sort,
             this.state.reverse,
@@ -97,12 +96,17 @@ export class ManageTags extends Component<Props, State> {
 
     _onSearch = (search: string) => {
         this.setState({search}, () => {
-            this.props.fetch(1, this.state.sort, this.state.reverse, search)
+            void this.props.fetch(
+                1,
+                this.state.sort,
+                this.state.reverse,
+                search
+            )
         })
     }
 
-    _onSort = (sort: string, reverse: boolean) => {
-        this.props
+    _onSort = (sort: TagSortableProperty, reverse: boolean) => {
+        void this.props
             .fetch(this.props.currentPage, sort, reverse, this.state.search)
             .then(() => {
                 this.setState({
@@ -112,10 +116,10 @@ export class ManageTags extends Component<Props, State> {
             })
     }
 
-    _onCreate = (event: Object) => {
+    _onCreate = (event: FormEvent) => {
         event.preventDefault()
 
-        this.props
+        void this.props
             .create({
                 name: this.state.newTag,
             })
@@ -133,13 +137,13 @@ export class ManageTags extends Component<Props, State> {
     _bulkDelete = () => {
         const {meta, bulkDelete} = this.props
 
-        let tagIDs = []
-        meta.forEach((meta, key) => {
+        const tagIDs: string[] = []
+        meta.forEach((meta: Map<any, any>, key) => {
             if (meta.get('selected')) {
                 tagIDs.push(key)
             }
         })
-        bulkDelete(tagIDs).then(() => {
+        void bulkDelete(tagIDs).then(() => {
             this._fetchPage()
         })
     }
@@ -147,7 +151,9 @@ export class ManageTags extends Component<Props, State> {
     _merge = () => {
         const {meta, merge} = this.props
 
-        const selectedTagMeta = meta.filter((meta) => meta.get('selected'))
+        const selectedTagMeta = meta.filter(
+            (meta: Map<any, any>) => meta.get('selected') as boolean
+        )
 
         return merge(selectedTagMeta.keySeq().toList()).then(() => {
             this._fetchPage()
@@ -167,7 +173,9 @@ export class ManageTags extends Component<Props, State> {
         }
 
         // check if any items are selected
-        const selected = meta.filter((meta) => meta.get('selected')).size
+        const selected = meta.filter(
+            (meta: Map<any, any>) => meta.get('selected') as boolean
+        ).size
 
         return (
             <div
@@ -265,7 +273,9 @@ export class ManageTags extends Component<Props, State> {
                 <Table
                     sort={sort}
                     reverse={reverse}
-                    onSort={this._onSort}
+                    onSort={
+                        this._onSort as ComponentProps<typeof Table>['onSort']
+                    }
                     onSelectAll={selectAll}
                     refresh={this._fetchPage}
                     onMerge={this._merge}
@@ -283,22 +293,24 @@ export class ManageTags extends Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => {
+const connector = connect(
+    (state: RootState) => {
         return {
-            tags: tagsSelectors.getTags(state),
-            meta: tagsSelectors.getMeta(state),
-            currentPage: tagsSelectors.getCurrentPage(state),
-            numberPages: tagsSelectors.getNumberPages(state),
+            tags: getTags(state),
+            meta: getMeta(state),
+            currentPage: getCurrentPage(state),
+            numberPages: getNumberPages(state),
         }
     },
     {
-        fetch: tagsActions.fetchTags,
-        create: tagsActions.create,
-        remove: tagsActions.remove,
-        selectAll: tagsActions.selectAll,
-        setPage: tagsActions.setPage,
-        merge: tagsActions.merge,
-        bulkDelete: tagsActions.bulkDelete,
+        fetch: fetchTags,
+        create,
+        remove,
+        selectAll,
+        setPage,
+        merge,
+        bulkDelete,
     }
-)(ManageTags)
+)
+
+export default connector(ManageTagsContainer)

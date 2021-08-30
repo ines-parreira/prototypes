@@ -1,44 +1,38 @@
-//@flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
 import moment from 'moment-timezone'
+import {Map} from 'immutable'
 
-import Loader from '../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../common/components/PageHeader.tsx'
-import PeriodPicker from '../../stats/common/PeriodPicker.tsx'
-import SelectFilter from '../../stats/common/SelectFilter.tsx'
-import Pagination from '../../common/components/Pagination.tsx'
-import {fetchUsersAudit} from '../../../state/usersAudit/actions.ts'
+import Loader from '../../common/components/Loader/Loader'
+import PageHeader from '../../common/components/PageHeader'
+import PeriodPicker from '../../stats/common/PeriodPicker'
+import SelectFilter from '../../stats/common/SelectFilter'
+import Pagination from '../../common/components/Pagination'
+import {fetchUsersAudit} from '../../../state/usersAudit/actions'
 import {
     getUserAuditEvents,
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,
     getUserAuditPagination,
     getUserAuditUserIdOptions,
-} from '../../../state/usersAudit/selectors.ts'
-import {getMoment} from '../../../utils/date.ts'
+} from '../../../state/usersAudit/selectors'
+import {getMoment} from '../../../utils/date'
+import {RootState} from '../../../state/types'
 
 import UserAuditRow from './UserAuditRow'
-import {DATETIME_LABEL_FORMAT} from './constants'
+import {DATETIME_LABEL_FORMAT} from './constants.js'
 
-type Props = {
-    events: Object,
-    eventsListMeta: Object,
-    fetchUsersAudit: typeof fetchUsersAudit,
-    userIdOptions: Array<Object>,
-    eventTypeOptions: Array<Object>,
-    objectTypeOptions: Array<Object>,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isFetching: boolean,
-    end_datetime: string,
-    start_datetime: string,
-    event_types: Array<string>,
-    object_types: Array<string>,
-    user_ids: Array<number>,
+    isFetching: boolean
+    end_datetime: string
+    start_datetime: string
+    event_types: Array<string>
+    object_types: Array<string>
+    user_ids: Array<number>
 }
 
 // filters we'll use to fetch from the API
@@ -52,10 +46,10 @@ const filterStateProps = [
 
 const _startOfToday = () => getMoment().startOf('day')
 const _endOfToday = () => getMoment().endOf('day')
-const _someDaysAgoStartOfDay = (days) =>
+const _someDaysAgoStartOfDay = (days: number) =>
     _startOfToday().subtract(days - 1, 'days')
 
-export class UserAuditList extends React.Component<Props, State> {
+export class UserAuditListContainer extends Component<Props, State> {
     state = {
         isFetching: false,
         start_datetime: _startOfToday().format(),
@@ -79,9 +73,9 @@ export class UserAuditList extends React.Component<Props, State> {
         }
     }
 
-    _fetchUsersAudit = (page: number = 1) => {
+    _fetchUsersAudit = (page = 1) => {
         this.setState({isFetching: true})
-        this.props
+        void this.props
             .fetchUsersAudit({page, ..._pick(this.state, filterStateProps)})
             .then(() => {
                 this.setState({isFetching: false})
@@ -92,8 +86,8 @@ export class UserAuditList extends React.Component<Props, State> {
         startDatetime,
         endDatetime,
     }: {
-        startDatetime: string,
-        endDatetime: string,
+        startDatetime: string
+        endDatetime: string
     }) => {
         this.setState(
             {
@@ -106,7 +100,7 @@ export class UserAuditList extends React.Component<Props, State> {
 
     handleChange = (filterName: string) => {
         return (values: Array<string>) => {
-            this.setState({[filterName]: values})
+            this.setState({[filterName]: values} as any)
         }
     }
 
@@ -138,42 +132,42 @@ export class UserAuditList extends React.Component<Props, State> {
                         <SelectFilter
                             plural="team members"
                             singular="team member"
-                            onChange={this.handleChange('user_ids')}
+                            onChange={this.handleChange('user_ids') as any}
                             value={user_ids}
                         >
                             {userIdOptions.map((option) => (
                                 <SelectFilter.Item
-                                    key={option.value}
-                                    label={option.label}
-                                    value={option.value}
+                                    key={option!.value}
+                                    label={option!.label}
+                                    value={option!.value}
                                 />
                             ))}
                         </SelectFilter>
                         <SelectFilter
                             plural="objects"
                             singular="object"
-                            onChange={this.handleChange('object_types')}
+                            onChange={this.handleChange('object_types') as any}
                             value={object_types}
                         >
                             {objectTypeOptions.map((option) => (
                                 <SelectFilter.Item
-                                    key={option.value}
-                                    label={option.label}
-                                    value={option.value}
+                                    key={option!.value}
+                                    label={option!.label}
+                                    value={option!.value}
                                 />
                             ))}
                         </SelectFilter>
                         <SelectFilter
                             plural="events"
                             singular="event"
-                            onChange={this.handleChange('event_types')}
+                            onChange={this.handleChange('event_types') as any}
                             value={event_types}
                         >
                             {eventTypeOptions.map((option) => (
                                 <SelectFilter.Item
-                                    key={option.value}
-                                    label={option.label}
-                                    value={option.value}
+                                    key={option!.value}
+                                    label={option!.label}
+                                    value={option!.value}
                                 />
                             ))}
                         </SelectFilter>
@@ -198,11 +192,10 @@ export class UserAuditList extends React.Component<Props, State> {
                                 timePicker: true,
                             }}
                             labelDateFormat={DATETIME_LABEL_FORMAT}
-                            maxDaysSpan={7}
                             onChange={this._onApplyDatePicker}
                             formatMaxSpan={(maxSpan) =>
                                 moment.duration({
-                                    days: maxSpan,
+                                    days: maxSpan as number,
                                     seconds: -1, // counting days start at 0 because for our needs 1 day selected is 23H59m59s
                                 })
                             }
@@ -239,7 +232,7 @@ export class UserAuditList extends React.Component<Props, State> {
                                 </thead>
                                 <tbody>
                                     {events
-                                        .map((eventItem) => (
+                                        .map((eventItem: Map<any, any>) => (
                                             <UserAuditRow
                                                 key={eventItem.get('id')}
                                                 eventItem={eventItem}
@@ -263,7 +256,7 @@ export class UserAuditList extends React.Component<Props, State> {
 }
 
 const connector = connect(
-    (state) => ({
+    (state: RootState) => ({
         events: getUserAuditEvents(state),
         eventsListMeta: getUserAuditPagination(state),
         userIdOptions: getUserAuditUserIdOptions(state),
@@ -275,4 +268,4 @@ const connector = connect(
     }
 )
 
-export default connector(UserAuditList)
+export default connector(UserAuditListContainer)

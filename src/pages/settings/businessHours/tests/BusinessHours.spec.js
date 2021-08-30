@@ -5,7 +5,7 @@ import {noop as _noop} from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import BusinessHours, {BusinessHoursContainer} from '../BusinessHours'
+import BusinessHours, {BusinessHoursContainer} from '../BusinessHours.tsx'
 import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants'
 
 const mockStore = configureMockStore([thunk])

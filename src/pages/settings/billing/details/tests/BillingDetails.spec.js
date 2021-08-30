@@ -2,12 +2,12 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingDetails} from '../BillingDetails'
+import {BillingDetailsContainer} from '../BillingDetails.tsx'
 
 describe('BillingDetails component', () => {
     it('should display loader while fetching a contact', () => {
         const component = shallow(
-            <BillingDetails
+            <BillingDetailsContainer
                 fetchContact={() => Promise.resolve()}
                 contact={null}
             />
@@ -17,7 +17,7 @@ describe('BillingDetails component', () => {
 
     it('should render nothing if contact prop is null after fetching it', () => {
         const component = shallow(
-            <BillingDetails
+            <BillingDetailsContainer
                 fetchContact={() => Promise.resolve()}
                 contact={null}
             />
@@ -28,7 +28,7 @@ describe('BillingDetails component', () => {
 
     it('should display billing contact information', () => {
         const component = shallow(
-            <BillingDetails
+            <BillingDetailsContainer
                 fetchContact={() => Promise.resolve()}
                 contact={fromJS({
                     email: 'hello@acme.gorgias.io',

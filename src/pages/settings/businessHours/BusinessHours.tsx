@@ -1,36 +1,35 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-import {fromJS, Map, List} from 'immutable'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Button, Row, Col, Container, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 
-import PageHeader from '../../common/components/PageHeader.tsx'
-import InputField from '../../common/forms/InputField'
-import {getMomentTimezoneNames} from '../../../utils/date.ts'
+import PageHeader from '../../common/components/PageHeader'
+import InputField from '../../common/forms/InputField.js'
+import {getMomentTimezoneNames} from '../../../utils/date'
+import {submitSetting} from '../../../state/currentAccount/actions'
+import {DEPRECATED_getBusinessHoursSettings} from '../../../state/currentAccount/selectors'
+import {RootState} from '../../../state/types'
+import {
+    AccountSettingType,
+    AccountSettingBusinessHours,
+} from '../../../state/currentAccount/types'
 
-import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
-import * as currentAccountConstants from '../../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
-
-import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
+import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants.js'
 import BusinessHoursForm from './BusinessHoursForm'
 import css from './BusinessHours.less'
 
-type Props = {
-    submitSetting: (Object) => Promise<*>,
-    businessHoursSettings: Map<*, *>,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    items: List<Map<*, *>>,
-    timezone: string,
-    loading: boolean,
+    items: List<any>
+    timezone: string
+    loading: boolean
 }
 
-export class BusinessHoursContainer extends React.Component<Props, State> {
-    state = {
+export class BusinessHoursContainer extends Component<Props, State> {
+    state: State = {
         items: fromJS([DEFAULT_BUSINESS_HOUR]),
         timezone: 'UTC',
         loading: false,
@@ -54,9 +53,9 @@ export class BusinessHoursContainer extends React.Component<Props, State> {
         const {businessHoursSettings} = this.props
         const {timezone, items} = this.state
 
-        const setting = {
+        const setting: AccountSettingBusinessHours = {
             id: businessHoursSettings.get('id'),
-            type: currentAccountConstants.SETTING_TYPE_BUSINESS_HOURS,
+            type: AccountSettingType.BusinessHours,
             data: {
                 timezone: timezone,
                 business_hours: items.toJS(),
@@ -104,7 +103,7 @@ export class BusinessHoursContainer extends React.Component<Props, State> {
                         will change when outside business hours.
                     </p>
 
-                    <Form onSubmit={this._onSubmit}>
+                    <Form onSubmit={this._onSubmit as any}>
                         <Row className="mb-2">
                             <Col md="9">
                                 <div className="mb-3">
@@ -128,7 +127,7 @@ export class BusinessHoursContainer extends React.Component<Props, State> {
                                                 onChange={(data) =>
                                                     this.setState({
                                                         items: items.set(
-                                                            idx,
+                                                            idx!,
                                                             data
                                                         ),
                                                     })
@@ -139,7 +138,7 @@ export class BusinessHoursContainer extends React.Component<Props, State> {
                                                 onClick={() =>
                                                     this.setState({
                                                         items: items.delete(
-                                                            idx
+                                                            idx!
                                                         ),
                                                     })
                                                 }
@@ -194,15 +193,13 @@ export class BusinessHoursContainer extends React.Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => {
-        return {
-            businessHoursSettings: currentAccountSelectors.DEPRECATED_getBusinessHoursSettings(
-                state
-            ),
-        }
-    },
+const connector = connect(
+    (state: RootState) => ({
+        businessHoursSettings: DEPRECATED_getBusinessHoursSettings(state),
+    }),
     {
-        submitSetting: currentAccountActions.submitSetting,
+        submitSetting,
     }
-)(BusinessHoursContainer)
+)
+
+export default connector(BusinessHoursContainer)

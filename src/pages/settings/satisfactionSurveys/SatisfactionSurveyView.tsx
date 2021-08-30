@@ -1,41 +1,33 @@
-// @flow
-import React from 'react'
+import React, {Component, FormEvent} from 'react'
 import classnames from 'classnames'
 import {Form, FormGroup, Button, Container} from 'reactstrap'
-import {connect} from 'react-redux'
-import {type Map} from 'immutable'
-import {type EditorState} from 'draft-js'
+import {connect, ConnectedProps} from 'react-redux'
+import {Map} from 'immutable'
+import {EditorState} from 'draft-js'
 
-import {convertToHTML, getPlainText} from '../../../utils/editor.tsx'
+import {convertToHTML, getPlainText} from '../../../utils/editor'
+import BooleanField from '../../common/forms/BooleanField.js'
+import InputField from '../../common/forms/InputField.js'
+import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
+import PageHeader from '../../common/components/PageHeader'
+import {getSurveysSettings} from '../../../state/currentAccount/selectors'
+import {submitSetting} from '../../../state/currentAccount/actions'
+import {DELAY_SURVEY_FOR} from '../../../config'
+import {RootState} from '../../../state/types'
+import {
+    AccountSettingSatisfactionSurvey,
+    AccountSettingType,
+} from '../../../state/currentAccount/types'
 
-import BooleanField from '../../common/forms/BooleanField'
-import InputField from '../../common/forms/InputField'
-import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables.tsx'
-
-import PageHeader from '../../common/components/PageHeader.tsx'
-
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
-import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
-import * as currentAccountConstants from '../../../state/currentAccount/constants'
-
-import {DELAY_SURVEY_FOR} from './../../../config.ts'
-
-type Props = {
-    submitSetting: (settings: {
-        id: number,
-        type: string,
-        data: Object,
-    }) => Promise<void>,
-    surveysSettings: Object,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isLoading: boolean,
-    settings: Map<any, any>,
+    isLoading: boolean
+    settings: Map<any, any>
 }
 
-class SatisfactionSurveyView extends React.Component<Props, State> {
-    constructor(props) {
+class SatisfactionSurveyView extends Component<Props, State> {
+    constructor(props: Props) {
         super(props)
 
         this.state = {
@@ -55,14 +47,14 @@ class SatisfactionSurveyView extends React.Component<Props, State> {
         }))
     }
 
-    _onSubmit = (e) => {
+    _onSubmit = (e: FormEvent) => {
         e.preventDefault()
 
         this.setState({isLoading: true})
 
-        const newSettings = {
+        const newSettings: AccountSettingSatisfactionSurvey = {
             id: this.props.surveysSettings.get('id'),
-            type: currentAccountConstants.SETTING_TYPE_SATISFACTION_SURVEYS,
+            type: AccountSettingType.SatisfactionSurveys,
             data: this.state.settings.toJS(),
         }
 
@@ -121,7 +113,7 @@ class SatisfactionSurveyView extends React.Component<Props, State> {
                                     value={this.state.settings.get(
                                         'send_survey_for_email'
                                     )}
-                                    onChange={(value) =>
+                                    onChange={(value: boolean) =>
                                         this.setState({
                                             settings: this.state.settings.set(
                                                 'send_survey_for_email',
@@ -137,7 +129,7 @@ class SatisfactionSurveyView extends React.Component<Props, State> {
                                     value={this.state.settings.get(
                                         'send_survey_for_chat'
                                     )}
-                                    onChange={(value) =>
+                                    onChange={(value: boolean) =>
                                         this.setState({
                                             settings: this.state.settings.set(
                                                 'send_survey_for_chat',
@@ -199,11 +191,13 @@ class SatisfactionSurveyView extends React.Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => ({
-        surveysSettings: currentAccountSelectors.getSurveysSettings(state),
+const connector = connect(
+    (state: RootState) => ({
+        surveysSettings: getSurveysSettings(state),
     }),
     {
-        submitSetting: currentAccountActions.submitSetting,
+        submitSetting,
     }
-)(SatisfactionSurveyView)
+)
+
+export default connector(SatisfactionSurveyView)

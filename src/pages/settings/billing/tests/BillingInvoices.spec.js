@@ -2,12 +2,12 @@ import React from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingInvoices} from '../BillingInvoices'
+import {BillingInvoicesContainer} from '../BillingInvoices.tsx'
 
 describe('BillingInvoices component', () => {
     it('should display loader', () => {
         const component = mount(
-            <BillingInvoices
+            <BillingInvoicesContainer
                 fetchInvoices={() => Promise.resolve()}
                 invoices={fromJS({})}
             />
@@ -17,7 +17,7 @@ describe('BillingInvoices component', () => {
 
     it('should load with empty props', () => {
         const component = mount(
-            <BillingInvoices
+            <BillingInvoicesContainer
                 fetchInvoices={() => Promise.resolve()}
                 invoices={fromJS({})}
             />
@@ -28,7 +28,7 @@ describe('BillingInvoices component', () => {
 
     it('should display invoices, without PDF download links if paid through Shopify', () => {
         const component = mount(
-            <BillingInvoices
+            <BillingInvoicesContainer
                 shopifyBillingStatus="inactive"
                 fetchInvoices={() => Promise.resolve()}
                 invoices={fromJS([

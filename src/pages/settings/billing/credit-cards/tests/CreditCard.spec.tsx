@@ -1,21 +1,23 @@
-//@flow
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {CreditCard} from '../CreditCard'
-import history from '../../../../history.ts'
+import {CreditCardContainer} from '../CreditCard'
+import history from '../../../../history'
 
-jest.mock('../../../../history.ts')
+jest.mock('../../../../history')
 jest.mock('../../../../../utils', () => {
+    const utils: Record<string, unknown> = jest.requireActual(
+        '../../../../../utils'
+    )
     return {
-        ...jest.requireActual('../../../../../utils'),
+        ...utils,
         loadScript: jest.fn(),
     }
 })
 
 describe('CreditCard component', () => {
-    const minProps = {
+    const minProps = ({
         currentAccount: fromJS({}),
         currentUser: fromJS({}),
         hasCreditCard: false,
@@ -25,15 +27,15 @@ describe('CreditCard component', () => {
         setCreditCard: jest.fn(),
         setCurrentSubscription: jest.fn(),
         updateCreditCard: jest.fn(),
-    }
+    } as unknown) as ComponentProps<typeof CreditCardContainer>
 
     it('should display loader while fetching stripe SDK', () => {
-        const component = shallow(<CreditCard {...minProps} />)
+        const component = shallow(<CreditCardContainer {...minProps} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render nothing if loaded, but no current subscription is set', () => {
-        const component = shallow(<CreditCard {...minProps} />)
+        const component = shallow(<CreditCardContainer {...minProps} />)
         component.setState({isStripeLoaded: true})
         expect(history.push).toHaveBeenNthCalledWith(
             1,
@@ -44,7 +46,7 @@ describe('CreditCard component', () => {
 
     it('should display credit card form', () => {
         const component = shallow(
-            <CreditCard
+            <CreditCardContainer
                 {...minProps}
                 currentPlan={fromJS({
                     name: 'basic',

@@ -1,6 +1,5 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import Clipboard from 'clipboard'
 import {
     FormGroup,
@@ -13,30 +12,25 @@ import {
     FormText,
 } from 'reactstrap'
 
-import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import * as authsSelectors from '../../../state/auths/selectors.ts'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
-import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions.ts'
-import {notify} from '../../../state/notifications/actions.ts'
-import PageHeader from '../../common/components/PageHeader.tsx'
-import * as segmentTracker from '../../../store/middlewares/segmentTracker'
+import {getCurrentUser} from '../../../state/currentUser/selectors'
+import {getApiKey} from '../../../state/auths/selectors'
+import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
+import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions'
+import {notify} from '../../../state/notifications/actions'
+import PageHeader from '../../common/components/PageHeader'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {RootState} from '../../../state/types'
+import {NotificationStatus} from '../../../state/notifications/types'
 
-type Props = {
-    apiKey: string,
-    domain: string,
-    email: string,
-    fetchCurrentAuths: typeof fetchCurrentAuths,
-    notify: typeof notify,
-    resetApiKey: typeof resetApiKey,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isCopiedAPIKey: boolean,
-    isCopiedEmail: boolean,
-    isCopiedUrl: boolean,
+    isCopiedAPIKey: boolean
+    isCopiedEmail: boolean
+    isCopiedUrl: boolean
 }
 
-export class APIViewComponent extends React.Component<Props, State> {
+export class APIViewContainer extends Component<Props, State> {
     state = {
         isCopiedAPIKey: false,
         isCopiedEmail: false,
@@ -45,9 +39,18 @@ export class APIViewComponent extends React.Component<Props, State> {
 
     componentWillMount() {
         // Load postman js
-        ;(function (p, o, s, t, m, a, n) {
+        ;(function (
+            p: Window & {_pm?: () => void; PostmanRunObject?: any[]},
+            o: Document,
+            s: '_pm',
+            t: 'PostmanRunObject',
+            m: string,
+            a,
+            n?: HTMLScriptElement
+        ) {
             !p[s] &&
                 (p[s] = function () {
+                    // eslint-disable-next-line prefer-rest-params
                     ;(p[t] || (p[t] = [])).push(arguments)
                 })
             !o.getElementById(s + t) &&
@@ -55,8 +58,7 @@ export class APIViewComponent extends React.Component<Props, State> {
                     // eslint-disable-next-line no-param-reassign
                     ((n = o.createElement('script')),
                     (n.id = s + t),
-                    // $FlowFixMe
-                    (n.async = 1),
+                    (((n as unknown) as {async: number}).async = 1),
                     (n.src = m),
                     n)
                 )
@@ -70,20 +72,22 @@ export class APIViewComponent extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this.props.fetchCurrentAuths()
+        void this.props.fetchCurrentAuths()
 
         const clipboard = new Clipboard('.copyBtn')
 
         clipboard.on('success', (e) => {
-            const targetId = e.trigger.dataset.clipboardTarget
-            const target = `isCopied${targetId.replace('#', '')}`
-            const newState = {}
+            const targetId = (e.trigger as Element & {
+                dataset: {clipboardTarget: string}
+            }).dataset.clipboardTarget
+            const target = `isCopied${targetId.replace('#', '')}` as keyof State
+            const newState: Partial<State> = {}
             newState[target] = true
 
-            this.setState(newState)
+            this.setState(newState as State)
             setTimeout(() => {
                 newState[target] = false
-                this.setState(newState)
+                this.setState(newState as State)
             }, 1500)
         })
     }
@@ -94,8 +98,8 @@ export class APIViewComponent extends React.Component<Props, State> {
         segmentTracker.logEvent(
             segmentTracker.EVENTS.SUBSCRIBED_TO_DEV_NEWSLETTER
         )
-        notify({
-            status: 'success',
+        void notify({
+            status: NotificationStatus.Success,
             message:
                 'Thank you! You have been subscribed to our developer newsletter.',
         })
@@ -107,12 +111,12 @@ export class APIViewComponent extends React.Component<Props, State> {
         )
 
         if (confirm) {
-            this.props.resetApiKey()
+            void this.props.resetApiKey()
         }
     }
 
     _createApiKey = () => {
-        this.props.resetApiKey()
+        void this.props.resetApiKey()
     }
 
     _renderCreateApiKeySection() {
@@ -322,18 +326,17 @@ export class APIViewComponent extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        apiKey: authsSelectors.getApiKey(state),
-        email: currentUserSelectors.getCurrentUser(state).get('email'),
-        domain: currentAccountSelectors
-            .getCurrentAccountState(state)
-            .get('domain'),
+const connector = connect(
+    (state: RootState) => ({
+        apiKey: getApiKey(state),
+        email: getCurrentUser(state).get('email'),
+        domain: getCurrentAccountState(state).get('domain') as string,
+    }),
+    {
+        fetchCurrentAuths,
+        notify,
+        resetApiKey,
     }
-}
+)
 
-export default connect(mapStateToProps, {
-    fetchCurrentAuths,
-    notify,
-    resetApiKey,
-})(APIViewComponent)
+export default connector(APIViewContainer)

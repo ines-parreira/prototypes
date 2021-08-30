@@ -1,5 +1,6 @@
 import axios, {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
+import {Map} from 'immutable'
 
 import {Subscription} from '../billing/types'
 import GorgiasApi from '../../services/gorgiasApi'

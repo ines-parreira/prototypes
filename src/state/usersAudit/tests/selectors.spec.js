@@ -60,7 +60,7 @@ describe('users audit selectors', () => {
 
     it('getUserAuditPagination', () => {
         expect(selectors.getUserAuditPagination({})).toEqualImmutable(
-            fromJS([])
+            fromJS({})
         )
         expect(selectors.getUserAuditPagination(state)).toEqualImmutable(
             state.usersAudit.get('meta')

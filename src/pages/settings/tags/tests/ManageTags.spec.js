@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {ManageTags} from '../ManageTags'
+import {ManageTagsContainer} from '../ManageTags.tsx'
 import Loader from '../../../common/components/Loader/Loader.tsx'
 import Pagination from '../../../common/components/Pagination.tsx'
 
@@ -46,7 +46,7 @@ describe('ManageTags component', () => {
         })
 
         component = shallow(
-            <ManageTags
+            <ManageTagsContainer
                 tagsState={tagData}
                 tags={tagData.get('items')}
                 meta={tagData.get('meta')}

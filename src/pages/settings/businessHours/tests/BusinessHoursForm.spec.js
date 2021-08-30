@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {mount, shallow} from 'enzyme'
 import {noop as _noop} from 'lodash/noop'
 
-import BusinessHoursForm from '../BusinessHoursForm'
+import BusinessHoursForm from '../BusinessHoursForm.tsx'
 
 describe('BusinessHoursForm component', () => {
     it('should render', () => {

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BillingDetailsForm component should display loader 1`] = `
-<BillingDetailsForm
+<BillingDetailsFormContainer
   contact={null}
   fetchContact={[Function]}
   updateContact={null}
@@ -158,11 +158,11 @@ exports[`BillingDetailsForm component should display loader 1`] = `
       </div>
     </Container>
   </div>
-</BillingDetailsForm>
+</BillingDetailsFormContainer>
 `;
 
 exports[`BillingDetailsForm component should display not display the form 1`] = `
-<BillingDetailsForm
+<BillingDetailsFormContainer
   contact={null}
   fetchContact={[Function]}
   updateContact={null}
@@ -291,11 +291,11 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
       </div>
     </Container>
   </div>
-</BillingDetailsForm>
+</BillingDetailsFormContainer>
 `;
 
 exports[`BillingDetailsForm component should display the form with billing contact information 1`] = `
-<BillingDetailsForm
+<BillingDetailsFormContainer
   contact={
     Immutable.Map {
       "email": "hello@acme.gorgias.io",
@@ -2610,5 +2610,5 @@ exports[`BillingDetailsForm component should display the form with billing conta
       </div>
     </Container>
   </div>
-</BillingDetailsForm>
+</BillingDetailsFormContainer>
 `;

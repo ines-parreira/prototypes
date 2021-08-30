@@ -23,22 +23,22 @@ import StatsPage from './stats/StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
 import ChangePassword from './settings/yourProfile/ChangePassword'
-import APIView from './settings/api/APIView.js'
+import APIView from './settings/api/APIView'
 
-import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer.js'
+import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer.js'
 import NoMatch from './common/components/NoMatch'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
 import withUserRoleRequired from './common/components/UserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer.js'
-import CreditCardContainer from './settings/billing/credit-cards/CreditCard.js'
-import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm.js'
+import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
+import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
 import BillingPlansContainer from './settings/billing/plans/BillingPlans'
-import ManageTagsContainer from './settings/tags/ManageTags.js'
+import ManageTagsContainer from './settings/tags/ManageTags'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskCreate from './settings/importData/zendesk/ImportZendeskCreate'
-import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView.js'
+import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
 import TeamList from './settings/users/List'
@@ -47,7 +47,7 @@ import TeamsList from './settings/teams/List'
 import TeamsForm from './settings/teams/Form'
 import List from './settings/teams/members/List'
 
-import UserAuditList from './settings/audit/UserAuditList.js'
+import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours/index.js'
 import TicketAssignment from './settings/ticketAssignment/index.js'
 
@@ -63,8 +63,8 @@ import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewVie
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 
 const appRender = (props: {
-    navbar: ComponentType<Record<string, unknown>>
-    content: ComponentType<Record<string, unknown>>
+    navbar: ComponentType<any>
+    content: ComponentType<any>
     infobar?: ComponentType<any>
     containerPadding?: boolean
     infobarOnMobile?: boolean
@@ -291,7 +291,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer as any,
+                    infobar: TicketListInfobarContainer,
                 })}
             />
             <Route
@@ -300,7 +300,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer as any,
+                    infobar: TicketListInfobarContainer,
                 })}
             />
             <Route
@@ -309,7 +309,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer as any,
+                    infobar: TicketListInfobarContainer,
                 })}
             />
             <Route
@@ -318,7 +318,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: TicketListContainer,
                     navbar: TicketNavbar,
-                    infobar: TicketListInfobarContainer as any,
+                    infobar: TicketListInfobarContainer,
                 })}
             />
         </Switch>

@@ -1,35 +1,29 @@
-// @flow
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Button, Card, CardBody, Row, Col} from 'reactstrap'
+import {Map} from 'immutable'
 
-import {fetchContact} from '../../../../state/billing/actions.ts'
-import {getContact} from '../../../../state/billing/selectors.ts'
-import Loader from '../../../common/components/Loader/Loader.tsx'
-
-import {type billingContactType} from '../../../../state/billing/types'
-
+import {fetchContact} from '../../../../state/billing/actions'
+import {getContact} from '../../../../state/billing/selectors'
+import Loader from '../../../common/components/Loader/Loader'
 import countries from '../../../../config/countries.json'
+import {RootState} from '../../../../state/types'
 
 import css from './BillingDetails.less'
 
-type Props = {
-    contact: billingContactType | null,
-    fetchContact: () => Promise<billingContactType>,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isLoading: boolean,
+    isLoading: boolean
 }
 
-export class BillingDetails extends Component<Props, State> {
+export class BillingDetailsContainer extends Component<Props, State> {
     state = {
         isLoading: true,
     }
 
     componentDidMount() {
-        // $FlowFixMe
         this.props.fetchContact().finally(() => {
             this.setState({isLoading: false})
         })
@@ -45,13 +39,13 @@ export class BillingDetails extends Component<Props, State> {
         }
 
         const {contact} = this.props
-        const shipping = contact.get('shipping')
-        const address = shipping.get('address')
+        const shipping = contact.get('shipping') as Map<any, any>
+        const address = shipping.get('address') as Map<any, any>
 
         // If all address properties contain an empty string, the contact doesn't have a shipping address.
         const hasAddress = !address.filterNot((value) => value === '').isEmpty()
 
-        let country = countries.find(
+        let country = (countries as {value: string; label: string}[]).find(
             (country) => country.value === address.get('country')
         )
         country = country ? country.label : address.get('country')
@@ -117,9 +111,11 @@ export class BillingDetails extends Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => ({
+const connector = connect(
+    (state: RootState) => ({
         contact: getContact(state),
     }),
     {fetchContact}
-)(BillingDetails)
+)
+
+export default connector(BillingDetailsContainer)

@@ -1,6 +1,5 @@
-// @flow
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {
     Breadcrumb,
@@ -12,30 +11,25 @@ import {
     Col,
 } from 'reactstrap'
 import classNames from 'classnames'
+import {Map} from 'immutable'
 
-import {fetchContact, updateContact} from '../../../../state/billing/actions.ts'
-import {getContact} from '../../../../state/billing/selectors.ts'
-import Loader from '../../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../../common/components/PageHeader.tsx'
-import InputField from '../../../common/forms/InputField'
-
+import {fetchContact, updateContact} from '../../../../state/billing/actions'
+import {getContact} from '../../../../state/billing/selectors'
+import Loader from '../../../common/components/Loader/Loader'
+import PageHeader from '../../../common/components/PageHeader'
+import InputField from '../../../common/forms/InputField.js'
 import countries from '../../../../config/countries.json'
+import {RootState} from '../../../../state/types'
 
-import {type billingContactType} from '../../../../state/billing/types'
-
-type Props = {
-    contact: billingContactType | null,
-    fetchContact: () => Promise<billingContactType>,
-    updateContact: (billingContactType) => Promise<billingContactType>,
-}
+type Props = ConnectedProps<typeof connector>
 
 type State = {
-    contact: billingContactType | null,
-    isLoading: boolean,
-    isSubmitting: boolean,
+    contact: Maybe<Map<any, any>>
+    isLoading: boolean
+    isSubmitting: boolean
 }
 
-export class BillingDetailsForm extends Component<Props, State> {
+export class BillingDetailsFormContainer extends Component<Props, State> {
     state = {
         isLoading: false,
         isSubmitting: false,
@@ -54,7 +48,6 @@ export class BillingDetailsForm extends Component<Props, State> {
     componentDidMount() {
         if (this.props.contact === null) {
             this.setState({isLoading: true})
-            // $FlowFixMe
             this.props.fetchContact().finally(() => {
                 this.setState({isLoading: false})
             })
@@ -70,21 +63,20 @@ export class BillingDetailsForm extends Component<Props, State> {
         return null
     }
 
-    _submit = (event: SyntheticEvent<*>) => {
+    _submit = (event: SyntheticEvent) => {
         event.preventDefault()
         this.setState({
             isSubmitting: true,
         })
 
-        // $FlowFixMe
-        return this.props.updateContact(this.state.contact).finally(() => {
+        return this.props.updateContact(this.state.contact!).finally(() => {
             this.setState({isSubmitting: false})
         })
     }
 
-    _getInputProps = (contact: billingContactType, path: Array<string>) => ({
+    _getInputProps = (contact: Map<any, any>, path: Array<string>) => ({
         value: contact.getIn(path, ''),
-        onChange: (value: mixed) =>
+        onChange: (value: unknown) =>
             this.setState({
                 contact: contact.setIn(path, value),
             }),
@@ -130,7 +122,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                             label="Billing email"
                                             help="Invoices are sent to this email address."
                                             required
-                                            {...this._getInputProps(contact, [
+                                            {...this._getInputProps(contact!, [
                                                 'email',
                                             ])}
                                         />
@@ -139,7 +131,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                             name="name"
                                             label="Company name"
                                             placeholder="My Company"
-                                            {...this._getInputProps(contact, [
+                                            {...this._getInputProps(contact!, [
                                                 'shipping',
                                                 'name',
                                             ])}
@@ -149,7 +141,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                             name="phone"
                                             label="Phone number"
                                             placeholder="415 859 3010"
-                                            {...this._getInputProps(contact, [
+                                            {...this._getInputProps(contact!, [
                                                 'shipping',
                                                 'phone',
                                             ])}
@@ -159,7 +151,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                             name="line1"
                                             label="Address (line 1)"
                                             placeholder="123 Post St"
-                                            {...this._getInputProps(contact, [
+                                            {...this._getInputProps(contact!, [
                                                 ...addressPath,
                                                 'line1',
                                             ])}
@@ -169,7 +161,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                             name="line2"
                                             label="Address (line 2)"
                                             placeholder="2nd floor"
-                                            {...this._getInputProps(contact, [
+                                            {...this._getInputProps(contact!, [
                                                 ...addressPath,
                                                 'line2',
                                             ])}
@@ -182,7 +174,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                                     label="City"
                                                     placeholder="San Francisco"
                                                     {...this._getInputProps(
-                                                        contact,
+                                                        contact!,
                                                         [...addressPath, 'city']
                                                     )}
                                                 />
@@ -194,7 +186,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                                     label="State"
                                                     placeholder="CA"
                                                     {...this._getInputProps(
-                                                        contact,
+                                                        contact!,
                                                         [
                                                             ...addressPath,
                                                             'state',
@@ -209,7 +201,7 @@ export class BillingDetailsForm extends Component<Props, State> {
                                                     label="Postal code"
                                                     placeholder="94103"
                                                     {...this._getInputProps(
-                                                        contact,
+                                                        contact!,
                                                         [
                                                             ...addressPath,
                                                             'postal_code',
@@ -222,13 +214,16 @@ export class BillingDetailsForm extends Component<Props, State> {
                                             type="select"
                                             name="country"
                                             label="Country"
-                                            {...this._getInputProps(contact, [
+                                            {...this._getInputProps(contact!, [
                                                 ...addressPath,
                                                 'country',
                                             ])}
                                         >
                                             <option value={''}>-</option>
-                                            {countries.map((country) => (
+                                            {(countries as {
+                                                value: string
+                                                label: string
+                                            }[]).map((country) => (
                                                 <option
                                                     value={country.value}
                                                     key={country.value}
@@ -262,9 +257,11 @@ export class BillingDetailsForm extends Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => ({
+const connector = connect(
+    (state: RootState) => ({
         contact: getContact(state),
     }),
     {fetchContact, updateContact}
-)(BillingDetailsForm)
+)
+
+export default connector(BillingDetailsFormContainer)

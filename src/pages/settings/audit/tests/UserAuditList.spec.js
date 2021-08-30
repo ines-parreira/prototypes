@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme/build'
 import {fromJS} from 'immutable'
 
-import {UserAuditList} from '../UserAuditList'
+import {UserAuditListContainer} from '../UserAuditList.tsx'
 import Loader from '../../../common/components/Loader/Loader.tsx'
 import Pagination from '../../../common/components/Pagination.tsx'
 import {
@@ -10,7 +10,7 @@ import {
     getUserAuditObjectTypeOptions,
     getUserAuditUserIdOptions,
 } from '../../../../state/usersAudit/selectors.ts'
-import UserAuditRow from '../UserAuditRow'
+import UserAuditRow from '../UserAuditRow.tsx'
 
 describe('UserAuditList component', () => {
     let component
@@ -66,7 +66,7 @@ describe('UserAuditList component', () => {
             nb_pages: 1,
         })
         component = shallow(
-            <UserAuditList
+            <UserAuditListContainer
                 events={userAuditData}
                 eventsListMeta={userAuditMeta}
                 userIdOptions={getUserAuditUserIdOptions({users: agents})}

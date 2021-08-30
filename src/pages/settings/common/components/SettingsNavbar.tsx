@@ -1,34 +1,33 @@
-//@flow
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {Link} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
+import {Map} from 'immutable'
 
-import {hasRole} from '../../../../utils.ts'
-import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user.ts'
-import type {UserRole} from '../../../../config/types/user'
-import {isProduction} from '../../../../utils/environment.ts'
+import {hasRole} from '../../../../utils'
+import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
+import {UserRole} from '../../../../config/types/user'
+import {isProduction} from '../../../../utils/environment'
 
 type Props = {
-    currentUser: Object,
-    location: Object,
-}
+    currentUser: Map<any, any>
+} & RouteComponentProps
 
 type CategoryLink = {
-    className?: string,
-    requiredRole?: UserRole,
-    text: string,
-    to: string,
-    isHidden?: boolean,
+    className?: string
+    requiredRole?: UserRole
+    text: string
+    to: string
+    isHidden?: boolean
 }
 
 type Category = {
-    icon: string,
-    links: CategoryLink[],
-    name: string,
+    icon: string
+    links: CategoryLink[]
+    name: string
 }
 
-export default class SettingsNavbar extends React.Component<Props> {
+export default class SettingsNavbar extends Component<Props> {
     static propTypes = {}
     static contextTypes = {
         closePanel: PropTypes.func.isRequired,
@@ -200,7 +199,10 @@ export default class SettingsNavbar extends React.Component<Props> {
                                         active: isActive,
                                     })}
                                     onClick={() => {
-                                        this.context.closePanel()
+                                        // eslint-disable-next-line  @typescript-eslint/no-unsafe-member-access
+                                        ;(this.context as {
+                                            closePanel: () => void
+                                        }).closePanel()
                                     }}
                                 >
                                     {text}

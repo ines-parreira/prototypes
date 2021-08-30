@@ -2,12 +2,12 @@ import React from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingDetailsForm} from '../BillingDetailsForm'
+import {BillingDetailsFormContainer} from '../BillingDetailsForm.tsx'
 
 describe('BillingDetailsForm component', () => {
     it('should display loader', () => {
         const component = mount(
-            <BillingDetailsForm
+            <BillingDetailsFormContainer
                 fetchContact={() => Promise.resolve()}
                 contact={null}
                 updateContact={null}
@@ -18,7 +18,7 @@ describe('BillingDetailsForm component', () => {
 
     it('should display not display the form', () => {
         const component = mount(
-            <BillingDetailsForm
+            <BillingDetailsFormContainer
                 fetchContact={() => Promise.resolve()}
                 contact={null}
                 updateContact={null}
@@ -30,7 +30,7 @@ describe('BillingDetailsForm component', () => {
 
     it('should display the form with billing contact information', () => {
         const component = mount(
-            <BillingDetailsForm
+            <BillingDetailsFormContainer
                 updateContact={null}
                 fetchContact={() => Promise.resolve()}
                 contact={fromJS({
