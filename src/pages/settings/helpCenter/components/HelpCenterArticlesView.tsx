@@ -119,6 +119,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
     }, [editModal])
 
+    useEffect(() => {
+        if (selectedArticle?.translation) {
+            setArticleLanguage(selectedArticle.translation.locale)
+        }
+    }, [selectedArticle])
+
     // Fetch article's translations when opening an article
     useEffect(() => {
         async function updateSelectedArticleTranslations() {
