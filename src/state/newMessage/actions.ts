@@ -471,11 +471,6 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
             )
             break
         }
-        case TicketMessageSourceType.YotpoReview: {
-            dispatch(prepareDefault(sourceType))
-            dispatch(setSourceType(TicketMessageSourceType.YotpoReview))
-            break
-        }
         default: {
             dispatch(prepareDefault(sourceType))
             break

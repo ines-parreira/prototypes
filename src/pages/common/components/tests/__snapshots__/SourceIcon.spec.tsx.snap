@@ -108,6 +108,18 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 14`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 15`] = `
 <i
+  className="icon d-inline-block icon-custom icon-yotpo-review-public-comment"
+/>
+`;
+
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 16`] = `
+<i
+  className="icon d-inline-block icon-custom icon-yotpo-review-private-comment"
+/>
+`;
+
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 17`] = `
+<i
   className="icon d-inline-block icon-custom icon-twitter"
 />
 `;

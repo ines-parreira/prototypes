@@ -68,7 +68,8 @@ export function canAddAttachments(
         [TicketMessageSourceType.InstagramDirectMessage, 1],
         [TicketMessageSourceType.InstagramComment, 0],
         [TicketMessageSourceType.InstagramMentionComment, 0],
-        [TicketMessageSourceType.YotpoReview, 0],
+        [TicketMessageSourceType.YotpoReviewPublicComment, 0],
+        [TicketMessageSourceType.YotpoReviewPrivateComment, 0],
     ]).get(messageType)
 
     isInvalid =

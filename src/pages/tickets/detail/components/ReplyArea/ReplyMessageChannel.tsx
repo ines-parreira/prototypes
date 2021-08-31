@@ -438,21 +438,38 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                 </DropdownItem>
                             )}
                             {suggestYotpoReview && (
-                                <DropdownItem
-                                    type="button"
-                                    onClick={() => {
-                                        prepareNewMessage(
-                                            TicketMessageSourceType.YotpoReview
-                                        )
-                                    }}
-                                >
-                                    <SourceIcon
-                                        type={
-                                            TicketMessageSourceType.YotpoReview
-                                        }
-                                    />
-                                    Reply on Yotpo review
-                                </DropdownItem>
+                                <>
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage(
+                                                TicketMessageSourceType.YotpoReviewPublicComment
+                                            )
+                                        }}
+                                    >
+                                        <SourceIcon
+                                            type={
+                                                TicketMessageSourceType.YotpoReviewPublicComment
+                                            }
+                                        />
+                                        Public reply on Yotpo review
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={() => {
+                                            prepareNewMessage(
+                                                TicketMessageSourceType.YotpoReviewPrivateComment
+                                            )
+                                        }}
+                                    >
+                                        <SourceIcon
+                                            type={
+                                                TicketMessageSourceType.YotpoReviewPrivateComment
+                                            }
+                                        />
+                                        Private reply on Yotpo review
+                                    </DropdownItem>
+                                </>
                             )}
                             {suggestTwitterTweet && (
                                 <DropdownItem

@@ -99,6 +99,28 @@ export function getLastSameSourceTypeMessage(
                     TicketMessageSourceType.InstagramMentionMedia
             )
             .last() as Map<any, any>
+    } else if (
+        !msg &&
+        sourceType === TicketMessageSourceType.YotpoReviewPublicComment
+    ) {
+        return messages
+            .filter(
+                (m: Map<any, any>) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.YotpoReview
+            )
+            .last() as Map<any, any>
+    } else if (
+        !msg &&
+        sourceType === TicketMessageSourceType.YotpoReviewPrivateComment
+    ) {
+        return messages
+            .filter(
+                (m: Map<any, any>) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.YotpoReview
+            )
+            .last() as Map<any, any>
     }
 
     return msg
@@ -491,6 +513,22 @@ export function getNewMessageSender(
             return [
                 newMessageSourceType,
                 TicketMessageSourceType.InstagramMentionMedia,
+            ].includes(type)
+        } else if (
+            newMessageSourceType ===
+            TicketMessageSourceType.YotpoReviewPublicComment
+        ) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.YotpoReview,
+            ].includes(type)
+        } else if (
+            newMessageSourceType ===
+            TicketMessageSourceType.YotpoReviewPrivateComment
+        ) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.YotpoReview,
             ].includes(type)
         }
 

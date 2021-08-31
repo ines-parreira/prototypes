@@ -69,6 +69,10 @@ export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceType.OttspottCall
 export const PHONE_SOURCE = TicketMessageSourceType.Phone
 export const SYSTEM_MESSAGE_SOURCE = TicketMessageSourceType.SystemMessage
 export const YOTPO_REVIEW_SOURCE = TicketMessageSourceType.YotpoReview
+export const YOTPO_REVIEW_PUBLIC_COMMENT_SOURCE =
+    TicketMessageSourceType.YotpoReviewPublicComment
+export const YOTPO_REVIEW_PRIVATE_COMMENT_SOURCE =
+    TicketMessageSourceType.YotpoReviewPrivateComment
 export const TWITTER_TWEET_SOURCE = TicketMessageSourceType.TwitterTweet
 
 export const SOURCE_TYPES = Object.values(TicketMessageSourceType)
@@ -91,6 +95,8 @@ export const USABLE_SOURCE_TYPES = [
     INSTAGRAM_DM_SOURCE,
     INTERNAL_NOTE_SOURCE,
     YOTPO_REVIEW_SOURCE,
+    YOTPO_REVIEW_PUBLIC_COMMENT_SOURCE,
+    YOTPO_REVIEW_PRIVATE_COMMENT_SOURCE,
     TWITTER_TWEET_SOURCE,
 ]
 
@@ -316,12 +322,12 @@ export function sourceTypeToChannel(
         return TicketChannel.InstagramComment
     }
 
-    if (sourceType === 'ottspott-call') {
-        return TicketChannel.Phone
+    if (sourceType.startsWith('yotpo-review')) {
+        return TicketChannel.YotpoReview
     }
 
-    if (sourceType === TicketMessageSourceType.YotpoReview) {
-        return TicketChannel.YotpoReview
+    if (sourceType === 'ottspott-call') {
+        return TicketChannel.Phone
     }
 
     if (sourceType === TicketMessageSourceType.TwitterTweet) {
@@ -375,6 +381,10 @@ export function responseSourceType(
 
     if (lastSourceType === TicketMessageSourceType.InstagramMentionMedia) {
         return TicketMessageSourceType.InstagramMentionComment
+    }
+
+    if (lastSourceType === TicketMessageSourceType.YotpoReview) {
+        return TicketMessageSourceType.YotpoReviewPublicComment
     }
 
     if (!isAnswerableType(lastSourceType)) {

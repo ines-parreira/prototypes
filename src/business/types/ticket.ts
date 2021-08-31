@@ -28,6 +28,8 @@ export enum TicketMessageSourceType {
     SystemMessage = 'system-message',
     Twilio = 'twilio',
     YotpoReview = 'yotpo-review',
+    YotpoReviewPublicComment = 'yotpo-review-public-comment',
+    YotpoReviewPrivateComment = 'yotpo-review-private-comment',
     TwitterTweet = 'twitter-tweet',
 }
 

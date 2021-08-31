@@ -1211,6 +1211,111 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
 </div>
 `;
 
+exports[`ReplyMessageChannel component existing ticket with message of type yotpo-review 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="mt-1 mr-2"
+  >
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="dropdownToggle"
+        color=""
+        type="button"
+      >
+        <SourceIcon
+          className="md-2"
+          type="yotpo-review"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email"
+          />
+          Reply via email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email-forward"
+          />
+          Forward by email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="yotpo-review-public-comment"
+          />
+          Public reply on Yotpo review
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="yotpo-review-private-comment"
+          />
+          Private reply on Yotpo review
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="internal-note"
+          />
+          Leave an internal note
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="sourceLabel mt-1"
+  >
+    Internal note
+  </div>
+  <KeyboardShortcuts
+    keymap={
+      Object {
+        "FORWARD_REPLY": Object {
+          "action": [Function],
+          "key": "f",
+        },
+        "INTERNAL_NOTE_REPLY": Object {
+          "action": [Function],
+          "key": "i",
+        },
+      }
+    }
+    name="TicketDetailContainer"
+  />
+</div>
+`;
+
 exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
 <div
   className="component"

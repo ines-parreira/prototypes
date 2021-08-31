@@ -96,6 +96,14 @@ const sourceTypeToIcon = (
             icon.custom = true
             icon.name = 'yotpo-review'
             break
+        case TicketMessageSourceType.YotpoReviewPublicComment:
+            icon.custom = true
+            icon.name = 'yotpo-review-public-comment'
+            break
+        case TicketMessageSourceType.YotpoReviewPrivateComment:
+            icon.custom = true
+            icon.name = 'yotpo-review-private-comment'
+            break
     }
 
     return icon
