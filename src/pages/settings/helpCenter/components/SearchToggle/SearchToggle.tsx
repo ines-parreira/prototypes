@@ -6,9 +6,10 @@ import ToggleButton from '../../../../common/components/ToggleButton'
 type Props = {
     searchActivated: boolean
     onToggle: (searchActivated: boolean) => void
+    loading?: boolean
 }
 
-export const SearchToggle = ({searchActivated, onToggle}: Props) => {
+export const SearchToggle = ({searchActivated, onToggle, loading}: Props) => {
     const toggleSearch = (isToggled: boolean) => {
         onToggle(isToggled)
     }
@@ -19,7 +20,8 @@ export const SearchToggle = ({searchActivated, onToggle}: Props) => {
                 <ToggleButton
                     value={searchActivated}
                     onChange={toggleSearch as () => Promise<void>}
-                    label="Help Center search"
+                    loading={loading}
+                    disabled={loading}
                 />
                 <Label className="control-label ml-2">Enable search bar</Label>
             </div>

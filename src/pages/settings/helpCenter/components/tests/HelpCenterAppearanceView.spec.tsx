@@ -15,6 +15,7 @@ import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
+
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
@@ -22,7 +23,7 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
     helpCenter: {
-        ui: uiState,
+        ui: {...uiState, currentId: 1},
         articles: articlesState,
         categories: categoriesState,
     },
@@ -42,41 +43,6 @@ jest.mock('../../hooks/useHelpcenterApi', () => {
         }),
     }
 })
-jest.mock('../../hooks/useCurrentHelpCenter', () => {
-    return {
-        useCurrentHelpCenter: () => ({
-            isLoading: false,
-            data: {
-                search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
-            },
-        }),
-    }
-})
-
-jest.mock('../../../../../state/entities/helpCenters/actions', () => ({
-    helpCentersFetched: jest.fn().mockReturnValue({
-        type: 'helpCentersFetched',
-        payload: [],
-    }),
-}))
-
-jest.mock('../../hooks/useCurrentHelpCenter', () => {
-    return {
-        useCurrentHelpCenter: () => ({
-            isLoading: false,
-            data: {
-                search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
-            },
-        }),
-    }
-})
-
-jest.mock('../../../../../state/entities/helpCenters/actions', () => ({
-    helpCentersFetched: jest.fn().mockReturnValue({
-        type: 'helpCentersFetched',
-        payload: [],
-    }),
-}))
 
 const route = {
     path: '/app/settings/help-center/:helpcenterId/appearance',
@@ -99,23 +65,23 @@ describe('<HelpCenterAppearanceView/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should call helpcenter API on search bar enabled', () => {
-        const {getByRole} = renderWithRouter(
+    it('should call help center API on search toggle click', async () => {
+        const {container, findByRole} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterAppearanceView />
             </Provider>,
             route
         )
 
-        fireEvent.click(getByRole('checkbox'))
+        const searchToggle = await findByRole('checkbox')
+
+        fireEvent.click(searchToggle)
 
         expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith(
-            {
-                help_center_id: 1,
-            },
-            {
-                search_deactivated: false,
-            }
+            {help_center_id: 1},
+            {search_deactivated: false}
         )
+
+        expect(container).toMatchSnapshot()
     })
 })

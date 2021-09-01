@@ -15,8 +15,14 @@ describe('<SearchToggle />', () => {
         jest.resetAllMocks()
     })
 
-    it('should display the component correctly', () => {
+    it('should display the search toggle', () => {
         const {container} = render(<SearchToggle {...props} />)
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should display the toggle loading', () => {
+        const {container} = render(<SearchToggle {...props} loading />)
 
         expect(container).toMatchSnapshot()
     })
