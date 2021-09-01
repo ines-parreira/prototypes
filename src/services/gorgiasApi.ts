@@ -222,6 +222,25 @@ export default class GorgiasApi {
         ]
     }
 
+    async getShippingAddressList(
+        integrationId: number,
+        customerId: string
+    ): Promise<Map<any, any>> {
+        const url = `/integrations/shopify/shipping-address/${customerId}/list/`
+        const response = await this._api.get(url, {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+
+        const responseData = response.data as {
+            data: {addresses: List<Map<any, any>>}
+        }
+
+        const shippingAddressesList = responseData?.data?.addresses
+        return fromJS(shippingAddressesList) as Map<any, any>
+    }
+
     async calculateDraftOrder(
         integrationId: number,
         payload: Map<any, any>

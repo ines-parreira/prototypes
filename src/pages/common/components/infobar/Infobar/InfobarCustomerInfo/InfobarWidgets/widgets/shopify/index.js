@@ -1,6 +1,6 @@
 import Customer from './Customer.tsx'
 import Item from './Item'
-import Order from './Order'
+import {Order, ShippingAddress} from './Order'
 import Fulfillment from './Fulfillment.tsx'
 
 const shopify = (args) => {
@@ -20,6 +20,10 @@ const shopify = (args) => {
 
     if (path.match(/integrations\.\d+\.orders\.\[]\.fulfillments\.\[]$/)) {
         return Fulfillment()
+    }
+
+    if (path.match(/integrations\.\d+\.orders\.\[]\.shipping_address$/)) {
+        return ShippingAddress()
     }
 
     return {}

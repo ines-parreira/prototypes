@@ -91,6 +91,7 @@ export type GorgiasAction = {
     message?: string
     orderId?: number
     payload?: unknown
+    addresses?: List<Map<any, any>>
     lineItems?: List<any>
     refund?: Map<any, any>
     amount?: number

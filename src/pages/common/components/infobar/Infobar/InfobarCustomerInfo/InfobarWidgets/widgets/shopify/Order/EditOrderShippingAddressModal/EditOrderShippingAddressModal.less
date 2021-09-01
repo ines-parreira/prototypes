@@ -1,0 +1,43 @@
+@import '~css/new/colors';
+
+:local {
+    .formFooter {
+        background-color: @quartz;
+    }
+
+    .required {
+        &::after {
+            content: ' *';
+            color: @red;
+        }
+    }
+
+    .focusable {
+        &:focus {
+            outline: auto 5px -webkit-focus-ring-color;
+        }
+    }
+
+    .addressDropDown {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .addressDropDownToggle {
+        text-align: left !important;
+    }
+
+    .addressDropDownToggle::after {
+        float: right;
+        margin-top: 7px !important;
+    }
+
+    .formBody {
+        padding: 20px;
+    }
+
+    .spinner {
+        display: inline-block;
+        width: 20px;
+    }
+}
