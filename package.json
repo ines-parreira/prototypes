@@ -20,7 +20,7 @@
         "test:watch": "yarn jest --watch",
         "test:ci": "run-s quality test:ci:cover",
         "test:ci:cover": "yarn run jest --coverage --no-cache --ci --runInBand",
-        "dll": "webpack --env.dll",
+        "dll": "node --max_old_space_size=2048 ./node_modules/.bin/webpack --env.dll",
         "postinstall": "run-s dll",
         "build": "NODE_ENV=production run-s dll && NODE_ENV=production webpack && NODE_ENV=production webpack --config webpack.sharedWorker.config.js",
         "serve": "webpack --config webpack.sharedWorker.config.js; webpack-dev-server --inline --hot --progress --debug",
