@@ -20,3 +20,23 @@ export const getCurrentHelpCenter = createSelector(
         return null
     }
 )
+
+export const getHelpcenterSortedList = createSelector(
+    getHelpCenters,
+    (helpCenters) => {
+        return Object.values(helpCenters).sort(
+            (
+                {created_datetime: createdDate1},
+                {created_datetime: createdDate2}
+            ) => {
+                if (
+                    new Date(createdDate1).getTime() >
+                    new Date(createdDate2).getTime()
+                ) {
+                    return -1
+                }
+                return 1
+            }
+        )
+    }
+)

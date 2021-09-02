@@ -8,7 +8,7 @@ import {initialState as uiState} from '../../../helpCenter/ui/reducer'
 import {initialState as articlesState} from '../../../helpCenter/articles/reducer'
 import {initialState as categoriesState} from '../../../helpCenter/categories/reducer'
 
-import {getCurrentHelpCenter} from '../selectors'
+import {getCurrentHelpCenter, getHelpcenterSortedList} from '../selectors'
 
 describe('Entities/Help Center', () => {
     describe('getCurrentHelpCenter', () => {
@@ -43,6 +43,34 @@ describe('Entities/Help Center', () => {
 
             expect(getCurrentHelpCenter(dataStore as StoreState)).toEqual(
                 getHelpcentersResponseFixture[0]
+            )
+        })
+    })
+
+    describe('getHelpcenterSortedList', () => {
+        it('returns the list sorted by created date', () => {
+            const dataStore: Partial<StoreState> = {
+                entities: {
+                    helpCenters: _keyBy(getHelpcentersResponseFixture, 'id'),
+                } as any,
+            }
+            const sortedFixture = getHelpcentersResponseFixture.sort(
+                (
+                    {created_datetime: createdDate1},
+                    {created_datetime: createdDate2}
+                ) => {
+                    if (
+                        new Date(createdDate1).getTime() >
+                        new Date(createdDate2).getTime()
+                    ) {
+                        return -1
+                    }
+                    return 1
+                }
+            )
+
+            expect(getHelpcenterSortedList(dataStore as StoreState)).toEqual(
+                sortedFixture
             )
         })
     })

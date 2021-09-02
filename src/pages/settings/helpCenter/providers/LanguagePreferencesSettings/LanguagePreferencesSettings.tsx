@@ -2,6 +2,7 @@ import React from 'react'
 import produce, {Draft} from 'immer'
 
 import {useAsyncFn} from 'react-use'
+import {useSelector} from 'react-redux'
 
 import {LocaleCode} from '../../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
@@ -9,11 +10,11 @@ import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actio
 import {notify} from '../../../../../state/notifications/actions'
 import {changeViewLanguage} from '../../../../../state/helpCenter/ui/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
+import {getCurrentHelpCenter} from '../../../../../state/entities/helpCenters/selectors'
 
 import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../constants'
 
 import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 
 export type PreferencesState = {
     defaultLanguage: LocaleCode
@@ -58,7 +59,7 @@ export const LanguagePreferencesSettings = ({
     const [preferences, updatePreference] = React.useState<PreferencesState>(
         defaultPreferences
     )
-    const {data} = useCurrentHelpCenter()
+    const helpCenter = useSelector(getCurrentHelpCenter)
 
     const {client} = useHelpcenterApi()
     const [, savePreferences] = useAsyncFn(() => {
@@ -107,46 +108,47 @@ export const LanguagePreferencesSettings = ({
 
     const updatePreferencesFromData = React.useCallback(() => {
         const updateFn = (draftSettings: Draft<PreferencesState>) => {
-            if (data) {
-                if (data.default_locale) {
-                    draftSettings.defaultLanguage = data.default_locale
+            if (helpCenter) {
+                if (helpCenter.default_locale) {
+                    draftSettings.defaultLanguage = helpCenter.default_locale
                 }
-                if (data.supported_locales) {
-                    draftSettings.availableLanguages = data.supported_locales
+                if (helpCenter.supported_locales) {
+                    draftSettings.availableLanguages =
+                        helpCenter.supported_locales
                 }
             }
         }
 
         updatePreference(produce(preferences, updateFn))
-    }, [data, preferences])
+    }, [helpCenter, preferences])
 
     const arePreferencesChanged = React.useCallback(() => {
-        if (data?.default_locale !== preferences.defaultLanguage) {
+        if (helpCenter?.default_locale !== preferences.defaultLanguage) {
             return true
         }
 
         const areAvailableLanguagesChanged = preferences.availableLanguages.some(
             (locale, index) => {
-                if (data.supported_locales[index]) {
-                    return data.supported_locales[index] !== locale
+                if (helpCenter.supported_locales[index]) {
+                    return helpCenter.supported_locales[index] !== locale
                 }
                 return true
             }
         )
         if (
             preferences.availableLanguages.length !==
-                data.supported_locales.length ||
+                helpCenter.supported_locales.length ||
             areAvailableLanguagesChanged
         ) {
             return true
         }
 
         return false
-    }, [data, preferences])
+    }, [helpCenter, preferences])
 
     React.useEffect(() => {
         updatePreferencesFromData()
-    }, [data])
+    }, [helpCenter])
 
     return (
         <PreferencesContext.Provider

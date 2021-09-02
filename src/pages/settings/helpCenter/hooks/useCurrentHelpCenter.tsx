@@ -1,13 +1,11 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
+
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 
 import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
-import {
-    changeViewLanguage,
-    getCurrentHelpCenterId,
-} from '../../../../state/helpCenter/ui'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
+import {getCurrentHelpCenterId} from '../../../../state/helpCenter/ui'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {HelpCenter} from '../../../../models/helpCenter/types'
@@ -26,44 +24,39 @@ let fetchInProgress = false
 
 export const useCurrentHelpCenter = (): useCurrentHelpCenterApi => {
     const dispatch = useAppDispatch()
-    const currentHelpCenterId = useSelector(getCurrentHelpCenterId)
-    const cachedHelpCenter = useSelector(getCurrentHelpCenter)
-
-    const [data, setData] = useState<HelpCenter | null>(cachedHelpCenter)
-
     const {client} = useHelpcenterApi()
 
+    const localeHelpCenterId = useSelector(getCurrentHelpCenterId)
+    const localHelpCenter = useSelector(getCurrentHelpCenter)
+
     const [helpCenter, getHelpCenter] = useAsyncFn(async () => {
-        if (client && currentHelpCenterId) {
+        if (client && localeHelpCenterId) {
             fetchInProgress = true
             const response = await client.getHelpCenter({
-                help_center_id: currentHelpCenterId,
+                help_center_id: localeHelpCenterId,
             })
             fetchInProgress = false
             return response.data
         }
-    }, [client, currentHelpCenterId])
+    }, [client, localeHelpCenterId])
 
+    // ? Ensure we have the current help center loaded in store
     useEffect(() => {
-        async function init() {
+        async function requestHelpCenter() {
             const response = await getHelpCenter()
-
             if (response) {
                 dispatch(helpCentersFetched([response]))
-                dispatch(changeViewLanguage(response.default_locale))
-
-                setData(response)
             }
         }
 
-        if (data?.id !== currentHelpCenterId && !fetchInProgress) {
-            void init()
+        if (!localHelpCenter && !fetchInProgress) {
+            void requestHelpCenter()
         }
-    }, [data, currentHelpCenterId, dispatch, getHelpCenter])
+    }, [localeHelpCenterId, localHelpCenter, dispatch, getHelpCenter])
 
     return {
         isLoading: helpCenter.loading,
-        data,
+        data: localHelpCenter,
         error: helpCenter.error,
     }
 }

@@ -23,7 +23,7 @@ const store: Partial<StoreState> = {
         articles: {
             articlesById: _keyBy(articlesResponse, 'id'),
         },
-        ui: uiState,
+        ui: {...uiState, currentLanguage: 'en-US'},
         categories: categoriesState,
     },
 }
@@ -33,7 +33,7 @@ const emptyStore: Partial<StoreState> = {
         articles: {
             articlesById: {},
         },
-        ui: uiState,
+        ui: {...uiState, currentLanguage: 'en-US'},
         categories: categoriesState,
     },
 }

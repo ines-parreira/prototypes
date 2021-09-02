@@ -11,8 +11,6 @@ import {RootState, StoreDispatch} from '../../../../../state/types'
 import {initialState as articlesState} from '../../../../../state/helpCenter/articles/reducer'
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
-import {UiActions} from '../../../../../state/helpCenter/ui/types'
-import {HELPCENTERS_FETCHED} from '../../../../../state/entities/helpCenters/constants'
 
 import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
 
@@ -20,16 +18,6 @@ import {useCurrentHelpCenter} from '../useCurrentHelpCenter'
 
 const mockedGetHelpCenter = jest.fn().mockResolvedValue({
     data: getHelpcentersResponseFixture[0],
-})
-
-const mockedChangeViewLanguage = jest.fn().mockReturnValue({
-    type: UiActions.ChangeLanguage,
-    payload: {},
-})
-
-const mockedHelpCentersFetched = jest.fn().mockReturnValue({
-    type: HELPCENTERS_FETCHED,
-    payload: [],
 })
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -53,13 +41,6 @@ const dependencyWrapper: (
 }) => <Provider store={mockStore(state as RootState)}>{children}</Provider>
 
 describe('useCurrentHelpCenter()', () => {
-    jest.mock('../../../../../state/helpCenter/ui/actions', () => ({
-        changeViewLanguage: mockedChangeViewLanguage,
-    }))
-    jest.mock('../../../../../state/entities/helpCenters/actions', () => ({
-        helpCentersFetched: mockedHelpCentersFetched,
-    }))
-
     it('finishes loading once the requests are done', async () => {
         const defaultState: Partial<RootState> = {
             entities: {
@@ -76,14 +57,9 @@ describe('useCurrentHelpCenter()', () => {
         })
         expect(result.current.isLoading).toBeTruthy()
 
-        await waitFor(() => !!result.current.data)
+        await waitFor(() => result.current.data !== null)
 
         expect(result.current.isLoading).toBeFalsy()
-        expect(result.current.data).toEqual(
-            getHelpcentersResponseFixture.find(
-                (helpCenter) => helpCenter.id === 1
-            )
-        )
     })
 
     it('returns the data from store if it is available', () => {

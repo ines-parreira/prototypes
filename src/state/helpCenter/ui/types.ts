@@ -18,6 +18,6 @@ export type ChangeHelpCenterId = PayloadActionCreator<
 >
 
 export type HelpCenterUiState = {
-    currentLanguage: LocaleCode
+    currentLanguage: LocaleCode | null
     currentId: number | null
 }

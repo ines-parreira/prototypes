@@ -15,11 +15,15 @@ import {
 } from '../../../../state/helpCenter/ui'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify} from '../../../../state/notifications/actions'
+import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 
-import {SOCIAL_NAVIGATION_LINKS} from '../constants'
+import {
+    HELP_CENTER_LANGUAGE_DEFAULT,
+    SOCIAL_NAVIGATION_LINKS,
+} from '../constants'
 
 import {
     useNavigationLinks,
@@ -32,7 +36,6 @@ import {saveSocialLinks, saveNavigationLinks} from '../utils/navigationLinks'
 
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useLocales} from '../hooks/useLocales'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
@@ -44,15 +47,16 @@ export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
     const locales = useLocales()
 
-    const {isLoading, data} = useCurrentHelpCenter()
+    const helpCenter = useSelector(getCurrentHelpCenter)
     const {isReady, client} = useHelpcenterApi()
 
     const [links, setLinks] = React.useState<NavigationLinkDto[]>([])
-    const selectedLocale = useSelector(readViewLanguage)
+    const selectedLocale =
+        useSelector(readViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
 
     const localesOptions = useLocaleSelectOptions(
         locales,
-        data?.supported_locales || []
+        helpCenter?.supported_locales || []
     )
 
     const handleOnChangeLocale = (locale: LocaleCode) => {
@@ -136,7 +140,7 @@ export const HelpCenterCustomizationView = () => {
         footerNavigation.resetFields()
     }
 
-    if (isLoading || !data) {
+    if (!helpCenter) {
         return (
             <Container fluid className="page-container">
                 <Loader />
@@ -213,7 +217,7 @@ export const HelpCenterCustomizationView = () => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName={data.name}
+                        helpcenterName={helpCenter.name}
                         activeLabel="Customization"
                     />
                 }

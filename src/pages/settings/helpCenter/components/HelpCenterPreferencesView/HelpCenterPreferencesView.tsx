@@ -1,5 +1,8 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
+
+import {getCurrentHelpCenter} from '../../../../../state/entities/helpCenters/selectors'
 
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -11,7 +14,6 @@ import {useLocales} from '../../hooks/useLocales'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {DefaultLanguageSelect} from '../DefaultLanguageSelect'
-import {useCurrentHelpCenter} from '../../hooks/useCurrentHelpCenter'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 
@@ -20,9 +22,9 @@ import {FooterActions} from './components/FooterActions'
 export const HelpCenterPreferencesView = () => {
     const helpcenterId = useHelpCenterIdParam()
     const locales = useLocales()
-    const {isLoading, data} = useCurrentHelpCenter()
+    const helpCenter = useSelector(getCurrentHelpCenter)
 
-    if (isLoading || !data) {
+    if (!helpCenter) {
         return (
             <Container fluid className="page-container">
                 <Loader />
@@ -35,15 +37,15 @@ export const HelpCenterPreferencesView = () => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName={data.name}
+                        helpcenterName={helpCenter.name}
                         activeLabel="Preferences"
                     />
                 }
             />
             <HelpCenterNavigation helpcenterId={helpcenterId} />
             <LanguagePreferencesSettings
-                defaultLocale={data.default_locale}
-                availableLocales={data.supported_locales}
+                defaultLocale={helpCenter.default_locale}
+                availableLocales={helpCenter.supported_locales}
                 helpcenterId={helpcenterId}
             >
                 <Container

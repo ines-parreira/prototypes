@@ -1,19 +1,25 @@
-import React, {useEffect, useState, useCallback, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import React, {useEffect, useCallback, useMemo, FunctionComponent} from 'react'
+import {useAsyncFn} from 'react-use'
+import {useSelector} from 'react-redux'
+import {Link, useHistory} from 'react-router-dom'
 import {Container, Button} from 'reactstrap'
 import _keyBy from 'lodash/keyBy'
 
-import {getHelpCenterClient} from '../../../../../../../rest_api/help_center_api/index'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import {RootState} from '../../../../state/types'
 import {HelpCenterLocale} from '../../../../models/helpCenter/types'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {helpCentersFetched} from '../../../../state/entities/helpCenters/actions'
+import {getHelpcenterSortedList} from '../../../..//state/entities/helpCenters/selectors'
+import {
+    changeHelpCenterId,
+    changeViewLanguage,
+} from '../../../../state/helpCenter/ui'
 
 import PageHeader from '../../../common/components/PageHeader'
 
+import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useLocales} from '../hooks/useLocales'
 import {HELP_CENTER_BASE_PATH} from '../constants'
 
@@ -21,65 +27,64 @@ import HelpCentersTable from './HelpCenterTable'
 
 import css from './HelpCenterStartView.less'
 
-type Props = RouteComponentProps & ConnectedProps<typeof connector>
+export const HelpCenterStartView: FunctionComponent = () => {
+    const dispatch = useAppDispatch()
+    const history = useHistory()
 
-export const HelpCenterStartView = ({
-    history,
-    helpCenters,
-    helpCentersFetched,
-    notify,
-}: Props) => {
+    const {client} = useHelpcenterApi()
     const localeOptions = useLocales()
-    const localesByCode = React.useMemo(
+
+    const helpCenterList = useSelector(getHelpcenterSortedList)
+    const localesByCode = useMemo(
         () => _keyBy<HelpCenterLocale>(localeOptions, 'code'),
         [localeOptions]
     )
-    const [isLoading, setIsLoading] = useState(false)
+    const [
+        helpCenterListResponse,
+        getHelpCentersList,
+    ] = useAsyncFn(async () => {
+        if (client) {
+            const response = await client.listHelpCenters()
+            return response.data.data
+        }
+        return []
+    }, [client, dispatch])
 
     useEffect(() => {
         async function init() {
-            setIsLoading(true)
             try {
-                const helpCenterClient = await getHelpCenterClient()
-                const {
-                    data: {data: helpCenters},
-                } = await helpCenterClient.listHelpCenters()
-                helpCentersFetched(helpCenters)
+                const helpCenters = await getHelpCentersList()
+                dispatch(helpCentersFetched(helpCenters))
             } catch (err) {
-                void notify({
-                    message: 'Failed to retrieve the help center list',
-                    status: NotificationStatus.Error,
-                })
-            } finally {
-                setIsLoading(false)
+                void dispatch(
+                    notify({
+                        message: 'Failed to retrieve the help center list',
+                        status: NotificationStatus.Error,
+                    })
+                )
+                console.error(err)
             }
         }
 
         void init()
-    }, [])
+    }, [dispatch, getHelpCentersList])
 
-    const helpCenterList = useMemo(
-        () =>
-            Object.values(helpCenters).sort(
-                (
-                    {created_datetime: createdDate1},
-                    {created_datetime: createdDate2}
-                ) => {
-                    if (
-                        new Date(createdDate1).getTime() >
-                        new Date(createdDate2).getTime()
-                    ) {
-                        return -1
-                    }
-                    return 1
-                }
-            ),
-        [helpCenters]
+    const navigateToArticles = useCallback(
+        (helpCenterId: number) => {
+            const currentHelpCenter = helpCenterList.find(
+                ({id}) => id === helpCenterId
+            )
+
+            if (currentHelpCenter) {
+                dispatch(changeHelpCenterId(currentHelpCenter.id))
+                dispatch(changeViewLanguage(currentHelpCenter.default_locale))
+                history.push(
+                    `${HELP_CENTER_BASE_PATH}/${helpCenterId}/articles`
+                )
+            }
+        },
+        [helpCenterList, history, dispatch]
     )
-
-    const navigateToArticles = useCallback((helpCenterId: number) => {
-        history.push(`${HELP_CENTER_BASE_PATH}/${helpCenterId}/articles`)
-    }, [])
 
     return (
         <div className="full-width">
@@ -106,24 +111,11 @@ export const HelpCenterStartView = ({
             <HelpCentersTable
                 list={helpCenterList}
                 locales={localesByCode}
-                isLoading={isLoading}
-                // loadingHelpCenters={loadingHelpCenters}
-                // toggle={toggleHelpCenter}
+                isLoading={helpCenterListResponse.loading}
                 onClick={navigateToArticles}
             />
         </div>
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        helpCenters: state.entities.helpCenters,
-    }),
-    {
-        helpCentersFetched,
-        // helpCenterUpdated,
-        notify,
-    }
-)
-
-export default withRouter(connector(HelpCenterStartView))
+export default HelpCenterStartView

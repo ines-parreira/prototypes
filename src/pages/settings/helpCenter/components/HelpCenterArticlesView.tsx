@@ -21,11 +21,16 @@ import {
 } from '../../../../state/helpCenter/ui'
 import {resetArticles} from '../../../../state/helpCenter/articles'
 import {resetCategories} from '../../../../state/helpCenter/categories'
+import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import {MODALS, HELP_CENTER_DOMAIN} from '../constants'
+import {
+    MODALS,
+    HELP_CENTER_DOMAIN,
+    HELP_CENTER_LANGUAGE_DEFAULT,
+} from '../constants'
 
 import {
     getNewTranslation,
@@ -36,7 +41,6 @@ import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
 import {CategoriesViews} from '../providers/CategoriesView'
 import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 import {CategoryDrawer} from '../providers/CategoryDrawer'
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useLocales} from '../hooks/useLocales'
 import {useArticles} from '../hooks/useArticles'
@@ -67,7 +71,8 @@ enum HelpCenterModalContent {
 export const HelpCenterArticlesView = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const viewLanguage = useSelector(readViewLanguage)
+    const viewLanguage =
+        useSelector(readViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
     const [editModal, setEditModal] = useState<HelpCenterModalContent | null>(
         null
     )
@@ -92,7 +97,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const [isArticleLoading, setIsArticleLoading] = useState(false)
 
     const {client} = useHelpcenterApi()
-    const helpCenter = useCurrentHelpCenter().data
+    const helpCenter = useSelector(getCurrentHelpCenter)
     const articlesActions = useArticlesActions()
     const {articles, isLoading} = useArticles(viewLanguage)
 
@@ -149,7 +154,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     const translation = translations.find(
                         ({locale}) => locale === viewLanguage
                     )
-
                     if (translation) {
                         setSelectedArticleTranslations(translations)
                         setSelectedArticle({
@@ -175,11 +179,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         void updateSelectedArticleTranslations()
     }, [
         client,
-        helpCenter?.id,
+        helpCenter,
         viewLanguage,
         selectedArticle,
         selectedArticleTranslations,
-        notify,
+        dispatch,
     ])
 
     const handleOnArticleModalClose = () => {

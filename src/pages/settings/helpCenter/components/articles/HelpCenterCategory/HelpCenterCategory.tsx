@@ -26,7 +26,10 @@ import {Drawer} from '../../../../../common/components/Drawer'
 import {useLocales} from '../../../hooks/useLocales'
 import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
 
-import {HELP_CENTER_DOMAIN} from '../../../constants'
+import {
+    HELP_CENTER_DOMAIN,
+    HELP_CENTER_LANGUAGE_DEFAULT,
+} from '../../../constants'
 import {slugify} from '../../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../../ConfirmationModal'
 
@@ -67,7 +70,8 @@ export const HelpCenterCategory = ({
     onDelete,
     onDeleteTranslation,
 }: Props): JSX.Element => {
-    const viewLanguage = useSelector(readViewLanguage)
+    const viewLanguage =
+        useSelector(readViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
     const locales = useLocales()
     const [title, setTitle] = React.useState('')
     const [slug, setSlug] = React.useState('')

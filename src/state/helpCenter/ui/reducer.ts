@@ -1,13 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit'
 
-import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../../pages/settings/helpCenter/constants'
-
 import {HelpCenterUiState} from './types'
 
 import {changeHelpCenterId, changeViewLanguage} from './actions'
 
 export const initialState: HelpCenterUiState = {
-    currentLanguage: HELP_CENTER_LANGUAGE_DEFAULT,
+    currentLanguage: null,
     currentId: null,
 }
 

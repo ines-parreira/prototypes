@@ -16,7 +16,7 @@ const store: Partial<StoreState> = {
 
 const nextStore: Partial<StoreState> = {
     helpCenter: {
-        ui: {...uiState, currentId: 1},
+        ui: {...uiState, currentLanguage: 'en-US', currentId: 1},
         articles: articlesState,
         categories: categoriesState,
     },
@@ -25,7 +25,8 @@ const nextStore: Partial<StoreState> = {
 describe('Help Center/UI selectors', () => {
     describe('readViewLanguage()', () => {
         it('reads the current language', () => {
-            expect(readViewLanguage(store as StoreState)).toEqual('en-US')
+            expect(readViewLanguage(store as StoreState)).toEqual(null)
+            expect(readViewLanguage(nextStore as StoreState)).toEqual('en-US')
         })
     })
 

@@ -15,7 +15,8 @@ import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
 import {
     changeHelpCenterId,
-    getCurrentHelpCenterId,
+    changeViewLanguage,
+    readViewLanguage,
 } from '../../../../../state/helpCenter/ui'
 
 import Loader from '../../../../common/components/Loader/Loader'
@@ -34,18 +35,24 @@ import HelpCenterInstallationView from '../../components/HelpCenterInstallationV
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const {path} = useRouteMatch()
-    const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
-    const currentHelpCenterId = useSelector(getCurrentHelpCenterId)
+    const helpCenterId = useHelpCenterIdParam()
 
-    const {isLoading, error} = useCurrentHelpCenter()
+    const {isLoading, error, data: helpCenter} = useCurrentHelpCenter()
+    const viewLanguage = useSelector(readViewLanguage)
 
+    // ? If we access the help center via URL, set the current help center
+    // ? and the default locale
     useEffect(() => {
-        if (helpCenterId !== currentHelpCenterId || !currentHelpCenterId) {
+        if (!helpCenter?.id) {
             dispatch(changeHelpCenterId(helpCenterId))
         }
-    }, [helpCenterId, currentHelpCenterId, dispatch])
+
+        if (!viewLanguage && helpCenter) {
+            dispatch(changeViewLanguage(helpCenter.default_locale))
+        }
+    }, [helpCenter, viewLanguage, helpCenterId, dispatch])
 
     if (error) {
         let message = 'Something went wrong'

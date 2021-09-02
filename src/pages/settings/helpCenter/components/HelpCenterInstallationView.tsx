@@ -1,6 +1,7 @@
 import React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import classNames from 'classnames'
+import {useSelector} from 'react-redux'
 import {Container, FormGroup, Button} from 'reactstrap'
 
 import {NotificationStatus} from '../../../../state/notifications/types'
@@ -9,12 +10,12 @@ import {
     helpCenterDeleted,
     helpCenterUpdated,
 } from '../../../../state/entities/helpCenters/actions'
+import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import PageHeader from '../../../common/components/PageHeader'
 import {ConfirmModalAction} from '../../../common/components/ConfirmModalAction'
 
-import {useCurrentHelpCenter} from '../hooks/useCurrentHelpCenter'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 
 import {isValidSubdomain} from '../utils/validations'
@@ -56,18 +57,18 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
     const location = useLocation()
-    const {isLoading, data} = useCurrentHelpCenter()
+    const helpCenter = useSelector(getCurrentHelpCenter)
     const {isReady, client} = useHelpcenterApi()
 
     const [subDomainValue, setSubdomainValue] = React.useState(
-        data?.subdomain || ''
+        helpCenter?.subdomain || ''
     )
 
     React.useEffect(() => {
-        if (data) {
-            setSubdomainValue(data.subdomain)
+        if (helpCenter) {
+            setSubdomainValue(helpCenter.subdomain)
         }
-    }, [data])
+    }, [helpCenter])
 
     const handleOnChangeSubDomain = (
         ev: React.ChangeEvent<HTMLInputElement>
@@ -76,8 +77,8 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     }
 
     const handleOnReset = () => {
-        if (data) {
-            setSubdomainValue(data.subdomain)
+        if (helpCenter) {
+            setSubdomainValue(helpCenter.subdomain)
         }
     }
 
@@ -135,18 +136,18 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         }
     }
 
-    if (isLoading && data === null) {
+    if (helpCenter === null) {
         return null
     }
 
-    const subdomain = data ? data.subdomain : ''
+    const subdomain = helpCenter ? helpCenter.subdomain : ''
 
     return (
         <div className="full-width">
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName={data?.name || ''}
+                        helpcenterName={helpCenter?.name || ''}
                         activeLabel="Installation"
                     />
                 }

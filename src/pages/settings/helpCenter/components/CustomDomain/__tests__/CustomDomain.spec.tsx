@@ -130,11 +130,7 @@ describe('<CustomDomain />', () => {
             fireEvent.change(input, {target: {value: 'gorgias.help'}})
             fireEvent.click(addDomainBtn)
 
-            await waitForElementToBeRemoved(addDomainBtn)
-
-            await screen.findByTestId('connection-status')
-
-            expect(screen.queryByText('Connection in progress')).not.toBeNull()
+            await screen.findByText('Connection in progress')
         })
     })
 
