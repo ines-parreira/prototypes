@@ -271,6 +271,7 @@ export type StatConfig = {
     axisHelpers?: Record<string, string>
     component?: ComponentType
     hasBusinessHoursHighlight?: boolean
+    colorMap?: {[key: string]: string}
 }
 
 export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SankeyStat /> should display sankey diagram when data is found 1`] = `
+<div>
+  <div>
+    <canvas
+      data="[object Object]"
+      height="360"
+      options="[object Object]"
+      type="sankey"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SankeyStat /> should display text when no data is found 1`] = `
+<div>
+  <div>
+    <div
+      class="text-muted"
+    >
+      There is no data for this period.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SankeyStat /> should display text when there is no flow 1`] = `
+<div>
+  <div>
+    <div
+      class="text-muted"
+    >
+      There is no data for this period.
+    </div>
+  </div>
+</div>
+`;

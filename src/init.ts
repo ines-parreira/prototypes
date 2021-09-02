@@ -1,8 +1,11 @@
 import {fromJS, Map} from 'immutable'
 import moment from 'moment-timezone'
 import {Store} from 'redux'
+import {Chart} from 'chart.js'
+import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 import './polyfills.js'
+
 import {EditableUserProfile} from './config/types/user'
 import {resendVerificationEmail} from './state/currentAccount/actions'
 import {
@@ -189,3 +192,6 @@ transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(
         store.dispatch(notify(notification) as any)
     }
 )
+
+// Register ChartJS Sankey plugin
+Chart.register(SankeyController, Flow)

@@ -12,6 +12,7 @@ import {
     colors as colorsConfig,
     chartMaxHeight,
     chartPointRadius,
+    StatConfig,
 } from '../../../../../config/stats'
 import {RootState} from '../../../../../state/types'
 import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/currentAccount/selectors'
@@ -35,7 +36,7 @@ export class LineStatContainer extends Component<Props> {
             range[0].add(30, 'minutes').startOf('hour'),
             range[1].add(30, 'minutes').startOf('hour'),
         ])
-        return config.get('hasBusinessHoursHighlight') && businessRanges
+        return (config.get('hasBusinessHoursHighlight') && businessRanges
             ? {
                   ...defaultOptions,
                   plugins: {
@@ -44,7 +45,7 @@ export class LineStatContainer extends Component<Props> {
                       },
                   },
               }
-            : defaultOptions
+            : defaultOptions) as StatConfig
     }
 
     render() {
@@ -108,7 +109,7 @@ export class LineStatContainer extends Component<Props> {
                             >).toJS(),
                             datasets: datasets,
                         }}
-                        options={this._getOptions(legend) as ChartOptions}
+                        options={this._getOptions(legend)}
                         {...extraProps}
                     />
                 </div>

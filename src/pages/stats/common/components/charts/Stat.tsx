@@ -30,6 +30,7 @@ import TableStat from './TableStat/TableStat'
 import PerHourPerWeekTableStat from './PerHourPerWeekTableStat/PerHourPerWeekTableStat'
 import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
 import BarStat from './BarStat'
+import SankeyStat from './SankeyStat'
 
 import css from './Stat.less'
 
@@ -213,6 +214,12 @@ export class StatContainer extends Component<Props, State> {
                             legend={legend}
                             config={config}
                             meta={meta}
+                        />
+                    ) : statStyle === 'sankey' ? (
+                        <SankeyStat
+                            data={data}
+                            legend={legend}
+                            config={config}
                         />
                     ) : (
                         <TableStat

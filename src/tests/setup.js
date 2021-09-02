@@ -145,6 +145,8 @@ jest.mock('react-router-dom', () => ({
     /* eslint-enable */
 }))
 
+jest.mock('chart.js')
+
 Object.defineProperty(window, 'requestAnimationFrame', {
     value: jest.fn(),
 })
