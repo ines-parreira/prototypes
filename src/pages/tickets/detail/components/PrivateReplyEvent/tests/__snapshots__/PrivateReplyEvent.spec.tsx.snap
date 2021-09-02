@@ -212,12 +212,11 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
   <div
     className="eventDetails"
   >
-    <CommentCard
-      commentMessage="Nice post!"
+    <TicketMessageEmbeddedCard
       integrationId={8}
-      isFacebookComment={true}
       messageCreatedDatetime="2021-04-27T01:45:26+00:00"
       messageId="1537287279812902_1664359293772366"
+      messageText="Nice post!"
       meta={Object {}}
       sender={
         Object {
@@ -251,6 +250,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
           "type": "facebook-comment",
         }
       }
+      textBelowAvatar={false}
     />
   </div>
 </div>
@@ -300,13 +300,13 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
   <div
     className="eventDetails"
   >
-    <CommentCard
-      commentMessage="Nice post!"
+    <TicketMessageEmbeddedCard
       integrationId={8}
-      isFacebookComment={true}
+      messageText="Nice post!"
       meta={Object {}}
       sender={Object {}}
       source={Object {}}
+      textBelowAvatar={false}
     />
   </div>
 </div>
@@ -356,9 +356,8 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
   <div
     className="eventDetails"
   >
-    <CommentCard
+    <TicketMessageEmbeddedCard
       integrationId={8}
-      isFacebookComment={false}
       messageCreatedDatetime="2021-04-27T01:45:26+00:00"
       messageId="1537287279812902_1664359293772366"
       meta={Object {}}
@@ -394,6 +393,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
           "type": "facebook-comment",
         }
       }
+      textBelowAvatar={false}
     />
   </div>
 </div>

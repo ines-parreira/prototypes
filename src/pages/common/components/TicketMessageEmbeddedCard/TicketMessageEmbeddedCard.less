@@ -1,0 +1,43 @@
+@import '~css/new/colors';
+
+:local {
+    .textBlock {
+        color: @blockTextColor;
+    }
+
+    .dateTimeText {
+        font-size: 12px;
+        font-weight: 500;
+        color: @lightPurple2;
+    }
+
+    .avatarContainer {
+        padding: 0;
+
+        .avatar {
+            width: 56px;
+            flex-shrink: 0;
+        }
+    }
+
+    .source {
+        color: @lightPurple2;
+        margin-left: 5px;
+        margin-right: 5px;
+        display: flex;
+    }
+
+    .customerNameBody {
+        white-space: nowrap;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: 600;
+        color: @indigo;
+    }
+
+    .verticalCenter {
+        display: flex;
+        align-items: center;
+    }
+}

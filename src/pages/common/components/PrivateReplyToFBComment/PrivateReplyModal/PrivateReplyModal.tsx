@@ -10,7 +10,7 @@ import {Actor, Meta, Source} from '../../../../../models/ticket/types'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
 
-import CommentCard from '../CommentCard/CommentCard'
+import TicketMessageEmbeddedCard from '../../TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import {StoreDispatch} from '../../../../../state/types'
 import {goToNextTicket, setStatus} from '../../../../../state/ticket/actions'
 import {COMMENT_TICKET_PRIVATE_REPLY_EVENT} from '../../../../tickets/detail/components/PrivateReplyEvent/constants'
@@ -87,15 +87,15 @@ function PrivateReplyModal({
                 {modalHeaderText} {sender.firstname} {sender.lastname}
             </ModalHeader>
             <ModalBody className="p-0">
-                <CommentCard
+                <TicketMessageEmbeddedCard
                     integrationId={integrationId}
                     messageId={messageId}
-                    commentMessage={commentMessage}
+                    messageText={commentMessage}
                     source={source}
                     sender={sender}
                     meta={meta}
                     messageCreatedDatetime={messageCreatedDatetime}
-                    isFacebookComment={isFacebookComment}
+                    textBelowAvatar={false}
                 />
                 <textarea
                     rows={4}

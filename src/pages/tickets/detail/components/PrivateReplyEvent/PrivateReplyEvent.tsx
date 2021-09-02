@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {Button, Card, CardBody} from 'reactstrap'
 
 import {AgentLabel, DatetimeLabel} from '../../../../common/utils/labels'
-import CommentCard from '../../../../common/components/PrivateReplyToFBComment/CommentCard/CommentCard'
+import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
 import facebookIcon from '../../../../../../img/integrations/facebook-dark-icon.svg'
 import facebookMessengerIcon from '../../../../../../img/integrations/facebook-messenger-dark-event-icon.svg'
@@ -260,18 +260,15 @@ export default function PrivateReplyEvent({event, isLast}: Props): JSX.Element {
 
             eventDetails = (
                 <div className={css.eventDetails}>
-                    <CommentCard
+                    <TicketMessageEmbeddedCard
                         integrationId={integrationId}
                         messageId={messageId}
-                        commentMessage={privateReplyEventManager.getComment()}
+                        messageText={privateReplyEventManager.getComment()}
                         source={commentMessageSource}
                         sender={commentMessageSender}
                         meta={commentMessageMeta}
                         messageCreatedDatetime={commentMessageDatetime}
-                        isFacebookComment={
-                            privateReplyEventManager.privateReplyType ===
-                            PrivateReplyType.FacebookPrivateReply
-                        }
+                        textBelowAvatar={false}
                     />
                 </div>
             )
