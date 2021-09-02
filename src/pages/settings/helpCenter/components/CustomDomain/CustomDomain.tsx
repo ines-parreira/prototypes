@@ -76,7 +76,7 @@ export const CustomDomain = () => {
             try {
                 const response = await client.deleteCustomDomain({
                     help_center_id: helpCenterId,
-                    id: currentDomain.id,
+                    hostname: currentDomain.hostname,
                 })
 
                 if (response.status === 200) {
@@ -145,7 +145,7 @@ export const CustomDomain = () => {
             try {
                 const response = await client.checkCustomDomainStatus({
                     help_center_id: helpCenterId,
-                    id: currentDomain.id,
+                    hostname: currentDomain.hostname,
                 })
 
                 setCurrentDomain(response.data)
