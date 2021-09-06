@@ -47,6 +47,9 @@ export const CURRENT_DATE = 'current-date'
 export const USERS_PERFORMANCE_OVERVIEW = 'users-performance-overview'
 export const LIVE_OVERVIEW_METRICS = 'live-overview-metrics'
 export const SUPPORT_VOLUME_PER_HOUR = 'support-volume-per-hour'
+export const AUTOMATION_OVERVIEW = 'automation-overview'
+export const AUTOMATION_FLOW = 'automation-flow'
+export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -272,6 +275,7 @@ export type StatConfig = {
     component?: ComponentType
     hasBusinessHoursHighlight?: boolean
     colorMap?: {[key: string]: string}
+    priority?: {[key: string]: number}
 }
 
 export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>
@@ -1286,6 +1290,114 @@ export const stats = toImmutable<
             },
         }),
     },
+    [AUTOMATION_OVERVIEW]: {
+        style: 'key-metrics',
+        api_resource_name: AUTOMATION_OVERVIEW,
+        metrics: [
+            {
+                label: 'Overall automation rate',
+                name: 'overall_automation',
+                tooltip:
+                    'Percentage of customer interactions automated with Gorgias automation features. ' +
+                    'The top 10% merchants of Gorgias are able to reach 33% of overall automation',
+            },
+        ],
+    },
+    [AUTOMATION_FLOW]: {
+        helpText:
+            'Vizualize at a glance where your customer interactions come from, if they are automated and if so, from which channel.',
+        style: 'sankey',
+        downloadable: false,
+        colorMap: {
+            total: '#ded7de',
+            email: '#9bc0fc',
+            phone: '#fed7a3',
+            chat: '#febea3',
+            social: '#f89eab',
+            rules: '#24d69d',
+            automated: '#4a8df9',
+            not_automated: '#ded7de',
+            self_service: '#8088D6',
+        },
+        priority: {
+            total: 1,
+            email: 1,
+            phone: 2,
+            chat: 3,
+            social: 4,
+            rules: 1,
+            self_service: 2,
+            automated: 1,
+            not_automated: 2,
+        },
+        options: () => ({
+            animation: false,
+            plugins: {
+                tooltip: {
+                    mode: 'nearest',
+                    displayColors: false,
+                    titleFont: {
+                        size: 12,
+                        weight: 'bold',
+                    },
+                    titleMarginBottom: 4,
+                    caretSize: 0,
+                },
+            },
+        }),
+    },
+    [AUTOMATION_PER_CHANNEL]: {
+        helpText: 'Number of customer interactions automated by channels',
+        style: 'bar',
+        downloadable: true,
+        lines: {
+            automated: {
+                label: 'Automated via rule',
+                color: '#24d69d',
+            },
+            not_automated: {
+                label: 'Not automated',
+                color: '#d2d7de',
+            },
+        },
+        options: (legend: Map<any, any>) => ({
+            scales: {
+                x: {
+                    title: _merge({}, defaultScaleLabel, {
+                        text: legend.getIn(['axes', 'x']),
+                        display: !!legend.getIn(['axes', 'x']),
+                    }),
+                    stacked: true,
+                    grid: {
+                        drawBorder: false,
+                        display: false,
+                    },
+                    ticks: _merge({}, defaultTicks, {
+                        callback: formatNumber,
+                    }),
+                },
+
+                y: {
+                    stacked: true,
+                    ticks: _merge({}, defaultTicks, {
+                        min: 0,
+                        suggestedMax: 1,
+                        callback: formatTicketAxeCb,
+                    }),
+                    grid: defaultYAxeGridLines,
+                },
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: (tooltipItem: {label: string}[]) => {
+                            return humanizeString(tooltipItem[0].label)
+                        },
+                    },
+                },
+            },
+        }),
+    },
 })
 
 // Callbacks to format values of datasets or axes
@@ -1308,6 +1420,10 @@ const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
     return `${ctx.dataset.label || ''}: ${
         formatDuration(ctx.parsed.y, 2) || '0'
     } `
+}
+
+function formatNumber(this: Scale<any>, value: number) {
+    return humanizeString(this.getLabelForValue(value))
 }
 
 /**
@@ -1400,36 +1516,6 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
             TICKETS_CREATED_PER_CHANNEL,
         ],
     },
-    intents: {
-        name: 'Intents',
-        description: `Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face.
-Intents can be used in rules and macros to automate your ticket-reply workflow.`,
-        url: 'https://docs.gorgias.com/intents-sentiments/customer-intents',
-        filters: [
-            {
-                type: 'channels',
-                options: [
-                    TicketChannel.Api,
-                    TicketChannel.Chat,
-                    TicketChannel.Email,
-                    TicketChannel.Facebook,
-                    TicketChannel.FacebookMention,
-                    TicketChannel.FacebookMessenger,
-                    TicketChannel.InstagramAdComment,
-                    TicketChannel.InstagramComment,
-                    TicketChannel.Phone,
-                    TicketChannel.Sms,
-                ],
-            },
-            {type: 'period'},
-        ],
-        link: 'intents',
-        stats: [
-            INTENTS_OVERVIEW,
-            INTENTS_BREAKDOWN_PER_DAY,
-            INTENTS_OCCURRENCE,
-        ],
-    },
     'support-performance-agents': {
         name: 'Agents',
         description: `Agents statistics will show you how many tickets were closed by each agent during this period.`,
@@ -1445,23 +1531,6 @@ Intents can be used in rules and macros to automate your ticket-reply workflow.`
         ],
         link: 'support-performance-agents',
         stats: [TICKETS_CLOSED_PER_AGENT_PER_DAY, TICKETS_CLOSED_PER_AGENT],
-    },
-    macros: {
-        name: 'Macros',
-        description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
-It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
-to help reduce your support inquiries.`,
-        url: 'https://docs.gorgias.com/statistics/statistics#macros',
-        filters: [
-            {
-                type: 'integrations',
-                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
-            },
-            {type: 'channels'},
-            {type: 'period'},
-        ],
-        link: 'macros',
-        stats: [MESSAGES_SENT_PER_MACRO],
     },
     satisfaction: {
         name: 'Satisfaction',
@@ -1519,4 +1588,73 @@ helping customers through the purchasing journey.`,
     },
 })
 
-export const views = liveViews.merge(supportPerformanceViews)
+export const automationViews: Map<any, any> = fromJS({
+    automation: {
+        name: 'Overview',
+        title: 'Automation Overview',
+        description: `The automation overview records how many customer interactions are automated
+(answered and closed without agent intervention) thanks to Gorgias automation rules. 
+You can see at a glance how many interactions are automated depending on its source and the automation
+tool used to answer it.`,
+        url: 'https://docs.gorgias.com/statistics/statistics',
+        filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
+            {type: 'channels'},
+            {type: 'period'},
+        ],
+        link: 'automation',
+        stats: [AUTOMATION_OVERVIEW, AUTOMATION_FLOW, AUTOMATION_PER_CHANNEL],
+    },
+    macros: {
+        name: 'Macros',
+        description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
+It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
+to help reduce your support inquiries.`,
+        url: 'https://docs.gorgias.com/statistics/statistics#macros',
+        filters: [
+            {
+                type: 'integrations',
+                options: {allowedTypes: MESSAGE_INTEGRATION_TYPES},
+            },
+            {type: 'channels'},
+            {type: 'period'},
+        ],
+        link: 'macros',
+        stats: [MESSAGES_SENT_PER_MACRO],
+    },
+    intents: {
+        name: 'Intents',
+        description: `Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face.
+Intents can be used in rules and macros to automate your ticket-reply workflow.`,
+        url: 'https://docs.gorgias.com/intents-sentiments/customer-intents',
+        filters: [
+            {
+                type: 'channels',
+                options: [
+                    TicketChannel.Api,
+                    TicketChannel.Chat,
+                    TicketChannel.Email,
+                    TicketChannel.Facebook,
+                    TicketChannel.FacebookMention,
+                    TicketChannel.FacebookMessenger,
+                    TicketChannel.InstagramAdComment,
+                    TicketChannel.InstagramComment,
+                    TicketChannel.Phone,
+                    TicketChannel.Sms,
+                ],
+            },
+            {type: 'period'},
+        ],
+        link: 'intents',
+        stats: [
+            INTENTS_OVERVIEW,
+            INTENTS_BREAKDOWN_PER_DAY,
+            INTENTS_OCCURRENCE,
+        ],
+    },
+})
+
+export const views = liveViews.merge(supportPerformanceViews, automationViews)

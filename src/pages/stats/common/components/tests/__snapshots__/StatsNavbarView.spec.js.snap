@@ -65,28 +65,10 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="item"
         exact={true}
-        key="Intents"
-        to="/app/stats/intents"
-      >
-        Intents
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="item"
-        exact={true}
         key="Agents"
         to="/app/stats/support-performance-agents"
       >
         Agents
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="item"
-        exact={true}
-        key="Macros"
-        to="/app/stats/macros"
-      >
-        Macros
       </NavLink>
       <NavLink
         activeClassName="active"
@@ -105,6 +87,41 @@ exports[`StatsNavbarView should render 1`] = `
         to="/app/stats/revenue"
       >
         Revenue
+      </NavLink>
+    </div>
+  </NavbarBlock>
+  <NavbarBlock
+    title="Automations"
+  >
+    <div
+      className="menu"
+    >
+      <NavLink
+        activeClassName="active"
+        className="item"
+        exact={true}
+        key="Overview"
+        to="/app/stats/automation"
+      >
+        Overview
+      </NavLink>
+      <NavLink
+        activeClassName="active"
+        className="item"
+        exact={true}
+        key="Macros"
+        to="/app/stats/macros"
+      >
+        Macros
+      </NavLink>
+      <NavLink
+        activeClassName="active"
+        className="item"
+        exact={true}
+        key="Intents"
+        to="/app/stats/intents"
+      >
+        Intents
       </NavLink>
     </div>
   </NavbarBlock>

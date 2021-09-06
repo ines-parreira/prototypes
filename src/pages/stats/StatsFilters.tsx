@@ -402,7 +402,7 @@ export const StatsFiltersContainer = ({
         () =>
             config.get('description') ? (
                 <h1 className="align-items-center">
-                    <span>{config.get('name')}</span>
+                    <span>{config.get('title') ?? config.get('name')}</span>
                     <PopoverModal className="ml-3" placement="bottom-start">
                         <p className={css.learnMoreContent}>
                             {config.get('description')}
@@ -423,7 +423,7 @@ export const StatsFiltersContainer = ({
                     </PopoverModal>
                 </h1>
             ) : (
-                (config.get('name') as string)
+                ((config.get('title') ?? config.get('name')) as string)
             ),
         [config]
     )
