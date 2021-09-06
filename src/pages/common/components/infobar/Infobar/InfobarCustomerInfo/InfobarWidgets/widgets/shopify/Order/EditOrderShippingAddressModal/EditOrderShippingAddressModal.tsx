@@ -223,7 +223,7 @@ export function EditOrderShippingAddressModal(
     }
 
     const getZipLine = (address: Map<any, any>) => {
-        let zipLine = address.get('city') as string
+        let zipLine = (address.get('city') as string) || ''
 
         ;['province', 'zip'].forEach(function (key: string) {
             if (address.get(key))
