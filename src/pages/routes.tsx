@@ -1,7 +1,9 @@
 import React, {ComponentType} from 'react'
 import {Route, Switch, Redirect, RouteComponentProps} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
+import {currentAccountHasFeature} from '../state/currentAccount/selectors'
 import {AccountFeature} from '../state/currentAccount/types'
 
 import App from './App'
@@ -100,7 +102,10 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/user`} render={UserRoutes} />
             <Route path={`${path}/ticket`} render={TicketRoutes} />
             <Route path={`${path}/tickets`} render={TicketsRoutes} />
-            <Route path={`${path}/stats`} render={StatsRoutes} />
+            <Route
+                path={`${path}/stats`}
+                render={(props) => <StatsRoutes {...props} />}
+            />
             <Route path={`${path}/settings`} render={SettingsRoutes} />
             <Route
                 path={`${path}/home`}
@@ -326,12 +331,24 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function StatsRoutes({match: {path}}: RouteComponentProps) {
+    const hasLiveOverviewFeature = useSelector(
+        currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
+    )
+
     return (
         <Switch>
             <Route
                 exact
                 path={`${path}/`}
-                render={() => <Redirect to={`${path}/live-overview`} />}
+                render={() => (
+                    <Redirect
+                        to={`${path}/${
+                            hasLiveOverviewFeature
+                                ? 'live-overview'
+                                : 'support-performance-overview'
+                        }`}
+                    />
+                )}
             />
             <Route
                 path={`${path}/:view`}
