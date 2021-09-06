@@ -283,4 +283,33 @@ describe('<FilterTopbar/>', () => {
         expect(minProps.viewCreated).not.toHaveBeenCalled()
         expect(minProps.activeViewIdSet).not.toHaveBeenCalled()
     })
+
+    it('should close popover on search', async () => {
+        const {rerender, getByText, queryByText} = render(
+            <FilterTopbarContainer {...minProps} />
+        )
+
+        fireEvent.click(getByText('Update view'))
+        await waitFor(() => {
+            expect(getByText('Confirm')).toBeTruthy()
+        })
+        rerender(<FilterTopbarContainer {...minProps} isSearch />)
+        rerender(<FilterTopbarContainer {...minProps} />)
+        expect(queryByText('Confirm')).toBeNull()
+    })
+
+    it('should close popover on cancel', async () => {
+        const {getByText, queryByText} = render(
+            <FilterTopbarContainer {...minProps} />
+        )
+
+        fireEvent.click(getByText('Update view'))
+        await waitFor(() => {
+            expect(getByText('Confirm')).toBeTruthy()
+        })
+        fireEvent.click(getByText('Cancel'))
+        await waitFor(() => {
+            expect(queryByText('Confirm')).toBeNull()
+        })
+    })
 })

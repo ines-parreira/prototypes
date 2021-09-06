@@ -65,7 +65,13 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const {activeView, areFiltersValid, fetchViewItems} = this.props
+        const {
+            activeView,
+            areFiltersValid,
+            fetchViewItems,
+            isSearch,
+        } = this.props
+        const {askUpdateConfirmation} = this.state
 
         // fetch page again when filters changed and that filters are valid
         const isSameView =
@@ -75,6 +81,9 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
 
         if (isSameView && filtersHaveChanged && areFiltersValid) {
             void fetchViewItems()
+        }
+        if (!prevProps.isSearch && isSearch && askUpdateConfirmation) {
+            this.setState({askUpdateConfirmation: false})
         }
     }
 
@@ -140,6 +149,8 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
 
     _cancel = () => {
         const {config, isUpdate, fetchViewItems, resetView} = this.props
+
+        this.setState({askUpdateConfirmation: false})
         if (isUpdate) {
             // if is updating an existing view, on cancel we reset current view
             resetView()
