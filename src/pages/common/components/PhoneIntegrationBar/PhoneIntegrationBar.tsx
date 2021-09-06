@@ -111,6 +111,7 @@ function instantiateDevice(
         closeProtection: true,
         debug: true,
         warnings: true,
+        codecPreferences: [Connection.Codec.Opus, Connection.Codec.PCMU],
     })
 
     const maxReconnectionAttempts = 10
