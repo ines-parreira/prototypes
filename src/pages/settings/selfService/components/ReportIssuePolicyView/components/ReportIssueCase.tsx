@@ -75,7 +75,7 @@ const ReportIssueCase = ({
                 )}
             </BodyCell>
 
-            <td className="link-full-td">
+            <td className={classNames('link-full-td', css.caseTitle)}>
                 <Link to={linkToEditor}>
                     <div>
                         <b>{title}</b>

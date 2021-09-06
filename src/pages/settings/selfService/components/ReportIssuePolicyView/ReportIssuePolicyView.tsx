@@ -71,11 +71,9 @@ const ReportIssuePolicyView: ComponentType = () => {
                         </p>
                     </Col>
                 </Row>
-
-                <Row>
-                    <ReportIssueCasesList />
-                </Row>
             </Container>
+
+            <ReportIssueCasesList />
         </div>
     )
 }

@@ -158,6 +158,8 @@ const ConditionRow = ({
             {operator === JsonLogicOperator.IS_ONE_OF &&
                 Array.isArray(value) && (
                     <MultiSelectOptionsField
+                        plural="statuses"
+                        singular="status"
                         onChange={handleValuesChange}
                         options={OptionsByVariableMap[variable]}
                         selectedOptions={selectedOptions}

@@ -21,6 +21,7 @@ import produce from 'immer'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 
 import {
     ReportIssueRulesLogic,
@@ -196,11 +197,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
         }
 
         if (caseIndex === 'new') {
-            const newCaseIndex =
-                newConfiguration.report_issue_policy.cases.length - 2
-            history.replace(
-                `/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue/${newCaseIndex}`
-            )
+            history.goBack()
         }
     }
 
@@ -291,6 +288,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                         ? errors.title
                                         : undefined
                                 }
+                                disabled={isFallbackCase}
                             />
 
                             <InputField
@@ -299,6 +297,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 placeholder='Ex. Condition Condition applied when status is "delivered"'
                                 value={description}
                                 onChange={handleDescriptionChange}
+                                disabled={isFallbackCase}
                             />
 
                             <fieldset className={css.fieldset}>
@@ -330,11 +329,11 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                             placement="top"
                                             target="conditionsInfoIcon"
                                         >
-                                            Select either order fulfillment{' '}
-                                            <b>or</b> shipment statuses,{' '}
+                                            Select either order, fulfillment{' '}
+                                            <b>or</b> shipment statuses{' '}
                                             <b>and</b> specific financial
                                             statuses (which applies to all) for
-                                            a given set of issue reasons.
+                                            a given set of issue reasons
                                         </UncontrolledTooltip>
                                     </legend>
 
@@ -382,22 +381,28 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 </Button>
 
                                 {!isFallbackCase && caseIndex !== 'new' && (
-                                    <Button
-                                        type="button"
+                                    <ConfirmButton
+                                        content={
+                                            <span>
+                                                You are about to delete this
+                                                case.
+                                            </span>
+                                        }
+                                        confirm={handleDeleteClick}
                                         className={css.deleteButton}
+                                        confirmColor="danger"
                                         color="secondary"
-                                        onClick={handleDeleteClick}
                                     >
-                                        <span
+                                        <i
                                             className={classNames(
                                                 'material-icons',
                                                 css.deleteButtonIcon
                                             )}
                                         >
                                             delete
-                                        </span>{' '}
-                                        Delete
-                                    </Button>
+                                        </i>{' '}
+                                        Delete case
+                                    </ConfirmButton>
                                 )}
                             </div>
                         </Form>

@@ -99,8 +99,8 @@ const ReportIssueCasesList = (): ReactElement | null => {
         <TableWrapper>
             <TableHead>
                 <HeaderCell style={{width: 25}} />
-                <HeaderCell style={{width: 100}} />
-                <HeaderCell style={{width: 'initial'}} />
+                <HeaderCell style={{width: 1}} />
+                <HeaderCell style={{width: 'auto'}} />
                 <HeaderCell style={{width: 25}} />
             </TableHead>
             <TableBody>
