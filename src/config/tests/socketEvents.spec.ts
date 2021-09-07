@@ -14,7 +14,10 @@ import {viewsCountFetched} from '../../state/entities/viewsCount/actions'
 import * as integrationActions from '../../state/integrations/actions'
 import * as notificationActions from '../../state/notifications/actions'
 import {handleViewsCount} from '../../state/views/actions'
-import {SocketEventType} from '../../services/socketManager/types'
+import {
+    OutboundPhoneCallInitiated,
+    SocketEventType,
+} from '../../services/socketManager/types'
 import * as socketEvents from '../socketEvents'
 import {view} from '../../fixtures/views'
 import {
@@ -38,6 +41,7 @@ import {
     sectionUpdated,
 } from '../../state/entities/sections/actions'
 import * as ticketActions from '../../state/ticket/actions'
+import history from '../../pages/history'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -596,6 +600,45 @@ describe('Config: socketEvents', () => {
                 }
 
                 expect(spy.mock.calls).toMatchSnapshot()
+            })
+        })
+
+        describe('OutboundPhoneCallInitiated handler', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.OutboundPhoneCallInitiated,
+            })
+
+            it('should redirect to ticket page because agent is on the original ticket page', () => {
+                const originalTicketId = 123
+                window.location.pathname = `/app/ticket/${originalTicketId}`
+
+                const spy = jest.spyOn(history, 'push')
+                const data: OutboundPhoneCallInitiated = {
+                    event: {
+                        type: SocketEventType.OutboundPhoneCallInitiated,
+                        phone_ticket_id: 456,
+                        original_ticket_id: originalTicketId,
+                    },
+                }
+                handler?.onReceive(data)
+
+                expect(spy.mock.calls).toMatchSnapshot()
+            })
+
+            it('should not redirect to ticket page because agent is not on the original ticket page', () => {
+                window.location.pathname = `/app/ticket/789`
+
+                const spy = jest.spyOn(history, 'push')
+                const data: OutboundPhoneCallInitiated = {
+                    event: {
+                        type: SocketEventType.OutboundPhoneCallInitiated,
+                        phone_ticket_id: 456,
+                        original_ticket_id: 123,
+                    },
+                }
+                handler?.onReceive(data)
+
+                expect(spy.mock.calls).toEqual([])
             })
         })
 

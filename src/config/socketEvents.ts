@@ -30,6 +30,7 @@ import {
     CustomerUpdatedEvent,
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
+    OutboundPhoneCallInitiated,
     ServerMessage,
     SocketEventType,
     TicketChatUpdatedEvent,
@@ -61,6 +62,7 @@ import {
     viewDeleted,
     viewUpdated,
 } from '../state/entities/views/actions'
+import history from '../pages/history'
 
 import {MAX_RECENT_CHATS} from './recentChats'
 import {
@@ -659,6 +661,21 @@ export const receivedEvents: ReceivedEvent[] = [
                     message,
                 }) as any
             )
+        },
+    },
+    {
+        name: SocketEventType.OutboundPhoneCallInitiated,
+        onReceive: function (json) {
+            const {event} = (json as unknown) as OutboundPhoneCallInitiated
+            const {
+                phone_ticket_id: phoneTicketId,
+                original_ticket_id: originalTicketId,
+            } = event
+            const originalTicketPath = `/app/ticket/${originalTicketId}`
+
+            if (window.location.pathname === originalTicketPath) {
+                history.push(`/app/ticket/${phoneTicketId}`)
+            }
         },
     },
 ]

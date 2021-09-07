@@ -34,6 +34,7 @@ export enum SocketEventType {
     EmailForwardingActivated = 'email.forwarding-activated',
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
     ViewsDeactivated = 'views-deactivated',
+    OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
 }
 
 export enum JoinEventType {
@@ -206,6 +207,14 @@ export type ViewsDeactivated = {
     }
 }
 
+export type OutboundPhoneCallInitiated = {
+    event: {
+        type: SocketEventType.OutboundPhoneCallInitiated
+        phone_ticket_id: number
+        original_ticket_id: number
+    }
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | UserLocationUpdatedEvent
@@ -228,3 +237,5 @@ export type ServerMessage =
     | TicketChatUpdatedEvent
     | EmailIntegrationVerifiedEvent
     | FacebookIntegrationsReconnected
+    | ViewsDeactivated
+    | OutboundPhoneCallInitiated
