@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import {Link} from 'react-router-dom'
 
 import {DatetimeLabel} from '../../../../common/utils/labels'
 import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
@@ -22,6 +23,7 @@ const icons = new window.Map<string, string>([
     [PhoneIntegrationEvent.MissedPhoneCall, callMissedIcon],
     [PhoneIntegrationEvent.VoicemailRecording, voicemailLeftIcon],
     [PhoneIntegrationEvent.PhoneCallAnswered, callAnsweredIcon],
+    [PhoneIntegrationEvent.ConversationStarted, callAnsweredIcon],
 ])
 
 const names = new window.Map<string, string>([
@@ -31,6 +33,7 @@ const names = new window.Map<string, string>([
     [PhoneIntegrationEvent.MissedPhoneCall, 'Missed call'],
     [PhoneIntegrationEvent.PhoneCallAnswered, 'Call answered'],
     [PhoneIntegrationEvent.VoicemailRecording, 'Voicemail left'],
+    [PhoneIntegrationEvent.ConversationStarted, 'Phone conversation started'],
 ])
 const customerBasedEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,
@@ -40,6 +43,15 @@ const customerBasedEvents = [
 const agentBasedEvents = [
     PhoneIntegrationEvent.PhoneCallAnswered,
     PhoneIntegrationEvent.OutgoingPhoneCall,
+    PhoneIntegrationEvent.ConversationStarted,
+]
+
+const withDetailsEvents = [
+    PhoneIntegrationEvent.IncomingPhoneCall,
+    PhoneIntegrationEvent.OutgoingPhoneCall,
+    PhoneIntegrationEvent.CompletedPhoneCall,
+    PhoneIntegrationEvent.VoicemailRecording,
+    PhoneIntegrationEvent.PhoneCallAnswered,
 ]
 
 type Props = {
@@ -56,8 +68,7 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     const handleOpenTicketAdditionalInfo = useCallback(() => {
         setDisplayAdditionalInfo(!displayAdditionalInfo)
     }, [displayAdditionalInfo, setDisplayAdditionalInfo])
-    const doesEventTypeHaveDetails =
-        eventType !== PhoneIntegrationEvent.MissedPhoneCall
+    const doesEventTypeHaveDetails = withDetailsEvents.includes(eventType)
 
     const getEventTitle = useCallback(() => {
         const eventType = event.get('type')
@@ -97,6 +108,10 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
         }
     }, [event])
     const eventTitle = getEventTitle()
+    const phoneTicketId: Maybe<string> = event.getIn([
+        'data',
+        'phone_ticket_id',
+    ])
 
     return (
         <div
@@ -114,6 +129,14 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
                     {eventTitle && (
                         <span className={css.actionName}>{eventTitle}</span>
                     )}
+                    {phoneTicketId && (
+                        <span>
+                            <span className="ml-2 mr-2">-</span>
+                            <Link to={`/app/ticket/${phoneTicketId}`}>
+                                View ticket
+                            </Link>
+                        </span>
+                    )}
                     {doesEventTypeHaveDetails && (
                         <span onClick={handleOpenTicketAdditionalInfo}>
                             <i
@@ -126,7 +149,10 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
                         </span>
                     )}
                 </div>
-                <DatetimeLabel dateTime={event.get('created_datetime')} />
+                <DatetimeLabel
+                    dateTime={event.get('created_datetime')}
+                    className={classnames(css.date, 'text-faded')}
+                />
             </div>
             {displayAdditionalInfo && <PhoneEventDetails event={event} />}
         </div>

@@ -20,22 +20,27 @@ describe('<PhoneEvent/>', () => {
     })
 
     describe('render()', () => {
-        it.each(Object.values(PhoneIntegrationEvent))(
-            'should render with closed details',
-            (eventType) => {
-                const event = fromJS({
-                    type: eventType,
-                    customer: {name: 'Michael Gorgias'},
-                })
-                const {container} = render(
-                    <Provider store={store}>
-                        <PhoneEvent event={event} isLast={false} />
-                    </Provider>
-                )
+        it.each([
+            PhoneIntegrationEvent.IncomingPhoneCall,
+            PhoneIntegrationEvent.OutgoingPhoneCall,
+            PhoneIntegrationEvent.CompletedPhoneCall,
+            PhoneIntegrationEvent.MissedPhoneCall,
+            PhoneIntegrationEvent.VoicemailRecording,
+            PhoneIntegrationEvent.PhoneCallAnswered,
+        ])('should render with closed details', (eventType) => {
+            const event = fromJS({
+                type: eventType,
+                customer: {name: 'Michael Gorgias'},
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEvent event={event} isLast={false} />
+                </Provider>
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            }
-        )
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it.each([
             PhoneIntegrationEvent.VoicemailRecording,
             PhoneIntegrationEvent.IncomingPhoneCall,
@@ -56,6 +61,20 @@ describe('<PhoneEvent/>', () => {
                 </Provider>
             )
             getByText('keyboard_arrow_down').click()
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with "View ticket" link"', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.ConversationStarted,
+                data: {phone_ticket_id: 123},
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEvent event={event} isLast={false} />
+                </Provider>
+            )
 
             expect(container.firstChild).toMatchSnapshot()
         })

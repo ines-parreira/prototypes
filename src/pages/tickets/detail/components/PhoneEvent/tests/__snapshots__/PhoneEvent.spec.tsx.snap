@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<PhoneEvent/> render() should render with "View ticket" link" 1`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="phone-call-conversation-started"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Phone conversation started
+      </span>
+      <span>
+        <span
+          class="ml-2 mr-2"
+        >
+          -
+        </span>
+        <a
+          to="/app/ticket/123"
+        >
+          View ticket
+        </a>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEvent/> render() should render with closed details 1`] = `
 <div
   class="component"

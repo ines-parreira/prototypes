@@ -11,6 +11,8 @@ import {RootState} from '../../../../../state/types'
 import {setConnection, setIsDialing} from '../../../../../state/twilio/actions'
 import {PhoneCallDirection} from '../../../../../business/twilio'
 import client from '../../../../../models/api/resources'
+import {getTicket} from '../../../../../state/ticket/selectors'
+import {getCurrentUser} from '../../../../../state/currentUser/selectors'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -20,12 +22,16 @@ function PhoneTicketSubmitButtons({
     device,
     connection,
     source,
+    ticketId,
+    agentId,
     setIsDialing,
     setConnection,
 }: Props) {
     const {isValid, onCall} = useOutboundCall(
         device,
         source,
+        ticketId,
+        agentId,
         setIsDialing,
         setConnection
     )
@@ -55,6 +61,8 @@ const mapStateToProps = (state: RootState) => ({
     device: state.twilio.device,
     connection: state.twilio.connection,
     source: getNewMessageSource(state),
+    ticketId: getTicket(state).get('id'),
+    agentId: getCurrentUser(state).get('id'),
 })
 
 const mapDispatchToProps = {
@@ -68,6 +76,8 @@ export default connector(PhoneTicketSubmitButtons)
 function useOutboundCall(
     device: Device | null,
     source: Map<any, any>,
+    ticketId: number,
+    agentId: number,
     setIsDialing: (isDialing: boolean) => void,
     setConnection: (connection: Connection | null) => void
 ) {
@@ -88,6 +98,8 @@ function useOutboundCall(
             // Custom parameters:
             integration_id: (integrationId as number).toString(),
             customer_name: customerName as string,
+            original_ticket_id: ticketId.toString(),
+            agent_id: agentId.toString(),
         })
 
         if (connection) {
@@ -115,6 +127,8 @@ function useOutboundCall(
         toAddress,
         integrationId,
         customerName,
+        ticketId,
+        agentId,
         setIsDialing,
         setConnection,
     ])
