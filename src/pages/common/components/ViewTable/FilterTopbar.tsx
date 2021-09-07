@@ -206,6 +206,11 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
                 return
             }
             if (view.get('id') == null) {
+                window.Raven?.captureBreadcrumb({
+                    message: 'View created from client',
+                    data: resp,
+                    level: 'log',
+                })
                 viewCreated(resp as View)
             } else {
                 viewUpdated(resp as View)

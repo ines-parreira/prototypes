@@ -327,6 +327,11 @@ export const receivedEvents: ReceivedEvent[] = [
                 type: viewsConstants.CREATE_VIEW_SUCCESS,
                 resp: (json as ViewCreatedEvent).view,
             })
+            window.Raven?.captureBreadcrumb({
+                message: 'View created from socket event',
+                data: json,
+                level: 'log',
+            })
             typeSafeReduxStore.dispatch(
                 viewCreated((json as ViewCreatedEvent).view)
             )
