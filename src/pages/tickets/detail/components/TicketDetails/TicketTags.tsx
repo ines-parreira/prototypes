@@ -295,6 +295,7 @@ export class TicketTags extends Component<Props, State> {
                                         this.search(e.target.value)
                                     }
                                     onKeyDown={this.handleSearchKeyDown}
+                                    role="menuitem"
                                 />
                             )}
                         </DropdownItem>
