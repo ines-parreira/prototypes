@@ -35,7 +35,7 @@ import SankeyStat from './SankeyStat'
 import css from './Stat.less'
 
 type OwnProps = {
-    defaultLoaderHeight: string
+    defaultLoaderHeight?: string
     name: string
 }
 

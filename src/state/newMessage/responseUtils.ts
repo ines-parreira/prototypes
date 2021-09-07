@@ -94,7 +94,7 @@ const getCache = (context: MessageContext): MessageContext => {
                 //@ts-ignore
                 context.selectionState = SelectionState.createEmpty().merge(
                     cachedSelectionState
-                ) as SelectionState
+                )
             }
 
             if (hasEmailExtraContent(context.contentState)) {
@@ -199,7 +199,7 @@ export const selectionAfter = (
         return SelectionState.createEmpty(block.key).merge({
             focusOffset: block.text.length,
             anchorOffset: block.text.length,
-        }) as SelectionState
+        })
     }
     return null
 }

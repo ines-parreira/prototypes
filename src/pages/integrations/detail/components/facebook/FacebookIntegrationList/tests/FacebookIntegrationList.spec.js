@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {createBrowserHistory, History} from 'history'
+import {createBrowserHistory, type History} from 'history'
 import {Router, Route} from 'react-router-dom'
 
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'

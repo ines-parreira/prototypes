@@ -125,7 +125,7 @@ export class StatsContainer extends React.Component<Props> {
                     status: NotificationStatus.Error,
                     title: serverError || defaultError,
                 }
-                const errorDetails = errorToChildren(error)
+                const errorDetails = errorToChildren(error as AxiosError)
 
                 if (errorDetails) {
                     notification.allowHTML = true

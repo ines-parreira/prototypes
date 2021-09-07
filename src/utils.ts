@@ -2,7 +2,7 @@ import crypto from 'crypto'
 
 import {SyntheticEvent} from 'react'
 
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
@@ -755,9 +755,9 @@ const _valuesDeep = (obj: unknown[] | Record<string, unknown>): unknown[] => {
  * - receiver: Invalid value
  * "
  */
-export const errorToChildren = (incomingError: {
-    response: {data: {error: {data: Record<string, unknown>}}}
-}): Maybe<string> => {
+export const errorToChildren = (
+    incomingError: AxiosError<{error?: {data?: Record<string, unknown>}}>
+): Maybe<string> => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
     const hasErrors = !!data

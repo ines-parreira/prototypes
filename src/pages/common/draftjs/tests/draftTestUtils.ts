@@ -87,7 +87,7 @@ export const pressBackspace = (editorState: EditorState) => {
 
         const previousBlock = editorState
             .getCurrentContent()
-            .getBlockBefore(selection.getAnchorKey())
+            .getBlockBefore(selection.getAnchorKey())!
         removeSelection = selection
             .set('anchorOffset', previousBlock.getLength() - 1)
             .set('anchorKey', previousBlock.getKey())

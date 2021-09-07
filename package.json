@@ -21,7 +21,8 @@
         "test:ci": "run-s quality test:ci:cover",
         "test:ci:cover": "yarn run jest --coverage --no-cache --ci --runInBand",
         "dll": "node --max_old_space_size=2048 ./node_modules/.bin/webpack --env.dll",
-        "postinstall": "run-s dll",
+        "patch-package": "patch-package",
+        "postinstall": "run-s patch-package dll",
         "build": "NODE_ENV=production run-s dll && NODE_ENV=production webpack && NODE_ENV=production webpack --config webpack.sharedWorker.config.js",
         "serve": "webpack --config webpack.sharedWorker.config.js; webpack-dev-server --inline --hot --progress --debug",
         "serve:sharedWorker": "webpack -w --config webpack.sharedWorker.config.js",
@@ -140,7 +141,7 @@
         "@types/daterangepicker": "3.1.0",
         "@types/domhandler": "2.4.1",
         "@types/draft-convert": "2.1.1",
-        "@types/draft-js": "0.10.41",
+        "@types/draft-js": "0.11.5",
         "@types/emoji-mart": "3.0.3",
         "@types/enzyme": "3.10.7",
         "@types/escodegen": "0.0.6",
@@ -162,7 +163,7 @@
         "@types/react": "16.9.8",
         "@types/react-document-title": "2.0.4",
         "@types/react-dom": "16.9.8",
-        "@types/react-draft-wysiwyg": "1.13.2",
+        "@types/react-draft-wysiwyg": "1.13.3",
         "@types/react-images": "0.5.3",
         "@types/react-immutable-proptypes": "2.1.0",
         "@types/react-paginate": "6.2.1",
@@ -211,6 +212,8 @@
         "npm-run-all": "4.1.5",
         "openapi-client-axios-typegen": "3.13.1",
         "optimize-css-assets-webpack-plugin": "5.0.1",
+        "patch-package": "6.4.7",
+        "postinstall-postinstall": "2.1.0",
         "prettier": "2.0.5",
         "raven-js": "3.23.3",
         "react-addons-test-utils": "15.6.2",
@@ -233,6 +236,7 @@
     },
     "resolutions": {
         "@types/react": "16.9.8",
-        "@formatjs/ecma402-abstract": "1.2.2"
+        "@formatjs/ecma402-abstract": "1.2.2",
+        "jquery": "3.5.1"
     }
 }

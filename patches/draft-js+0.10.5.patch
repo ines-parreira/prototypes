@@ -1,0 +1,202 @@
+diff --git a/node_modules/draft-js/lib/DraftEditorDragHandler.js b/node_modules/draft-js/lib/DraftEditorDragHandler.js
+index a6fe5bf..b2bc494 100644
+--- a/node_modules/draft-js/lib/DraftEditorDragHandler.js
++++ b/node_modules/draft-js/lib/DraftEditorDragHandler.js
+@@ -100,7 +100,16 @@ var DraftEditorDragHandler = {
+
+ function moveText(editorState, targetSelection) {
+   var newContentState = DraftModifier.moveText(editorState.getCurrentContent(), editorState.getSelection(), targetSelection);
+-  return EditorState.push(editorState, newContentState, 'insert-fragment');
++  editorState = EditorState.push(
++    editorState,
++    newContentState,
++    'insert-fragment',
++  );
++  editorState = EditorState.forceSelection(
++    editorState,
++    newContentState.getSelectionAfter(),
++  );
++  return editorState;
+ }
+
+ /**
+diff --git a/node_modules/draft-js/lib/DraftModifier.js b/node_modules/draft-js/lib/DraftModifier.js
+index bf3bb72..d74f9d1 100644
+--- a/node_modules/draft-js/lib/DraftModifier.js
++++ b/node_modules/draft-js/lib/DraftModifier.js
+@@ -18,6 +18,7 @@ var ContentStateInlineStyle = require('./ContentStateInlineStyle');
+ var DraftFeatureFlags = require('./DraftFeatureFlags');
+ var Immutable = require('immutable');
+
++const SelectionState = require('./SelectionState');
+ var applyEntityToContentState = require('./applyEntityToContentState');
+ var getCharacterRemovalRange = require('./getCharacterRemovalRange');
+ var getContentStateFragment = require('./getContentStateFragment');
+@@ -65,7 +66,26 @@ var DraftModifier = {
+
+     var afterRemoval = DraftModifier.removeRange(contentState, removalRange, 'backward');
+
+-    return DraftModifier.replaceWithFragment(afterRemoval, targetRange, movedFragment);
++    var selBlockMap = contentState.getBlockMap();
++    targetRange = targetRange.updateOnDeletingSelection(
++      removalRange,
++      selBlockMap,
++    );
++
++    var afterReplaced = DraftModifier.replaceWithFragment(afterRemoval, targetRange, movedFragment);
++
++    var selectionAfter = SelectionState.createEmpty(
++      targetRange.getStartKey(),
++    ).merge({
++      anchorKey: targetRange.getStartKey(),
++      anchorOffset: targetRange.getStartOffset(),
++      focusKey: targetRange.getStartKey(),
++      focusOffset: targetRange.getStartOffset(),
++    });
++
++    afterReplaced = afterReplaced.merge({selectionAfter: selectionAfter});
++
++    return afterReplaced;
+   },
+
+   replaceWithFragment: function replaceWithFragment(contentState, targetRange, fragment) {
+diff --git a/node_modules/draft-js/lib/SelectionState.js b/node_modules/draft-js/lib/SelectionState.js
+index 0d80367..8faf73d 100644
+--- a/node_modules/draft-js/lib/SelectionState.js
++++ b/node_modules/draft-js/lib/SelectionState.js
+@@ -128,7 +128,135 @@ var SelectionState = function (_SelectionStateRecord) {
+     });
+   };
+
++  SelectionState.prototype.compareWithSelection = function compareWithSelection(sel2, blockMap) {
++    var sel1 = this;
++    var s1Start = {key: sel1.getStartKey(), offset: sel1.getStartOffset()};
++    var s1End = {key: sel1.getEndKey(), offset: sel1.getEndOffset()};
++    var s2Start = {key: sel2.getStartKey(), offset: sel2.getStartOffset()};
++    var s2End = {key: sel2.getEndKey(), offset: sel2.getEndOffset()};
++
++    var isOkDirection =
++      comparePositions(s1Start, s1End, blockMap) <= 0 &&
++      comparePositions(s2Start, s2End, blockMap) <= 0;
++    var areEqual =
++      s1Start.key == s2Start.key &&
++      s1Start.offset == s2Start.offset &&
++      s1End.key == s2End.key &&
++      s1End.offset == s2End.offset;
++
++    var s1Start_to_s2Start = comparePositions(s1Start, s2Start, blockMap);
++    var s1End_to_s2Start = comparePositions(s1End, s2Start, blockMap);
++    var s1Start_to_s2End = comparePositions(s1Start, s2End, blockMap);
++    var s1End_to_s2End = comparePositions(s1End, s2End, blockMap);
++
++    var isOverlap =
++      (s1Start_to_s2Start > 0 && s1Start_to_s2End < 0 && s1End_to_s2End > 0) ||
++      (s1Start_to_s2Start < 0 && s1End_to_s2Start > 0 && s1End_to_s2End < 0);
++    var isS1Outside = s1Start_to_s2Start <= 0 && s1End_to_s2End >= 0;
++    var isS1Inside = s1Start_to_s2Start >= 0 && s1End_to_s2End <= 0;
++    var isS1ToRight = s1Start_to_s2End >= 0;
++    var isS1ToLeft = s1End_to_s2Start <= 0;
++
++    var rel = !isOkDirection
++      ? 'UNKNOWN'
++      : areEqual
++        ? 'EQUAL'
++        : isOverlap
++          ? 'OVERLAP'
++          : isS1Outside
++            ? 'OUTSIDE'
++            : isS1Inside
++              ? 'INSIDE'
++              : isS1ToRight
++                ? 'RIGHT'
++                : isS1ToLeft
++                  ? 'LEFT'
++                  : 'UNKNOWN';
++
++    return rel;
++  }
++
++  SelectionState.prototype.updateOnDeletingSelection = function updateOnDeletingSelection(selDel, blockMap) {
++    var startKey = this.getStartKey();
++    var startOffset = this.getStartOffset();
++    var endKey = this.getEndKey();
++    var endOffset = this.getEndOffset();
++
++    var newStartPos = fixPosOnDeletingSelection(
++      {key: startKey, offset: startOffset},
++      selDel,
++      blockMap,
++    );
++    startKey = newStartPos.key;
++    startOffset = newStartPos.offset;
++    var newEndPos = fixPosOnDeletingSelection(
++      {key: endKey, offset: endOffset},
++      selDel,
++      blockMap,
++    );
++    endKey = newEndPos.key;
++    endOffset = newEndPos.offset;
++
++    var selection = SelectionState.createEmpty(startKey).merge({
++      anchorKey: startKey,
++      anchorOffset: startOffset,
++      focusKey: endKey,
++      focusOffset: endOffset,
++    });
++    return selection;
++  }
++
+   return SelectionState;
+ }(SelectionStateRecord);
+
++function fixPosOnDeletingSelection(
++  pos,
++  selDel,
++  blockMap
++) {
++  pos = Object.assign({}, pos);
++  var isSelectionOnSingleBlock = selDel.getStartKey() == selDel.getEndKey();
++  var cmp = comparePositionWithSelection(pos, selDel, blockMap);
++  if (cmp == 'INSIDE') {
++    pos.key = selDel.getStartKey();
++    pos.offset = selDel.getStartOffset();
++  } else if (cmp == 'LEFT') {
++  } else if (cmp == 'RIGHT') {
++    if (isSelectionOnSingleBlock) {
++      if (pos.key == selDel.getEndKey()) {
++        pos.offset -= selDel.getEndOffset() - selDel.getStartOffset();
++      }
++    } else if (pos.key == selDel.getEndKey()) {
++      pos.key = selDel.getStartKey();
++      pos.offset = selDel.getStartOffset() + pos.offset - selDel.getEndOffset();
++    }
++  }
++
++  return pos;
++}
++
++function comparePositionWithSelection(
++  pos1,
++  sel2,
++  blockMap
++) {
++  var sel1 = SelectionState.createEmpty(pos1.key).merge({
++    anchorKey: pos1.key,
++    anchorOffset: pos1.offset,
++    focusKey: pos1.key,
++    focusOffset: pos1.offset,
++  });
++  return sel1.compareWithSelection(sel2, blockMap);
++}
++
++function comparePositions(
++  pos1,
++  pos2,
++  blockMap
++){
++  var ind1 = blockMap.keySeq().findIndex(k => k == pos1.key);
++  var ind2 = blockMap.keySeq().findIndex(k => k == pos2.key);
++  return ind1 == ind2 ? pos1.offset - pos2.offset : ind1 - ind2;
++}
++
+ module.exports = SelectionState;

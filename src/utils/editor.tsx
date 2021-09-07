@@ -686,7 +686,7 @@ export function findContentState(
                 return selectionState.merge({
                     focusKey: parentBlockKey,
                     focusOffset: parentBlock.getLength(),
-                }) as SelectionState
+                })
             }
         } else {
             j = 0
