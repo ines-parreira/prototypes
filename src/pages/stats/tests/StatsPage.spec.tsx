@@ -171,7 +171,7 @@ describe('StatsPage', () => {
             </Provider>,
             {
                 path: '/:view',
-                route: `/overview`,
+                route: `/support-performance-overview`,
             }
         )
 
@@ -193,7 +193,7 @@ describe('StatsPage', () => {
             </Provider>,
             {
                 path: '/:view',
-                route: `/overview`,
+                route: `/support-performance-overview`,
             }
         )
 
@@ -293,6 +293,22 @@ describe('StatsPage', () => {
             {
                 path: '/:view',
                 route: `/revenue`,
+            }
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render NoMatch component when an unmatched path is accessed', () => {
+        const store = mockStore(defaultState)
+
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <StatsPage />
+            </Provider>,
+            {
+                path: '/:view',
+                route: `/foo`,
             }
         )
 

@@ -15,6 +15,8 @@ import Paywall from '../common/components/Paywall/Paywall'
 import {getIntegrations} from '../../state/integrations/selectors'
 import useAppDispatch from '../../hooks/useAppDispatch'
 
+import NoMatch from '../common/components/NoMatch'
+
 import StatsFilters from './StatsFilters'
 import Stats from './Stats'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
@@ -24,6 +26,7 @@ import css from './StatsPage.less'
 export default function StatsPage() {
     const dispatch = useAppDispatch()
     const {view} = useParams<{view?: string}>()
+    const isViewValid = views.some((v: Map<any, any>) => v.get('link') === view)
     const isOnSatisfactionSurveyPage =
         view === views.getIn(['satisfaction', 'link'])
     const isOnRevenuePage = view === views.getIn(['revenue', 'link'])
@@ -70,6 +73,14 @@ export default function StatsPage() {
             dispatch(resetStatsFilters())
         }
     }, [])
+
+    if (!isViewValid) {
+        return (
+            <div className={classNames('full-width', css.wrapper)}>
+                <NoMatch />
+            </div>
+        )
+    }
 
     // do not display statistics until filters have been initialized
     if (!globalFilters) {
