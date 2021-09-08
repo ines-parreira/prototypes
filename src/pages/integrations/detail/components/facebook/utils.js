@@ -245,6 +245,26 @@ export function getInstagramDMSettingsInlineComponent(
         'enabled',
     ])
 
+    if (!currentPlanHasInstagramDMFeature) {
+        const segmentEventToSend = {
+            name: SegmentEvent.PaywallUpgradeButtonSelected,
+            props: {
+                domain: currentAccount.get('domain'),
+                current_plan: currentPlan.get('name'),
+                paywall_feature: 'instagram_dm',
+            },
+        }
+
+        return (
+            <UpgradeButton
+                size="sm"
+                hasInvertedColors={true}
+                className="ml-1 py-0 px-1"
+                segmentEventToSend={segmentEventToSend}
+            />
+        )
+    }
+
     if (
         instagramDMSettingStatus === InstagramDMSettingStatus.SHOULD_RECONNECT
     ) {
@@ -280,25 +300,6 @@ export function getInstagramDMSettingsInlineComponent(
                 </a>{' '}
                 or contact us via chat.
             </Alert>
-        )
-    }
-    if (!currentPlanHasInstagramDMFeature) {
-        const segmentEventToSend = {
-            name: SegmentEvent.PaywallUpgradeButtonSelected,
-            props: {
-                domain: currentAccount.get('domain'),
-                current_plan: currentPlan.get('name'),
-                paywall_feature: 'instagram_dm',
-            },
-        }
-
-        return (
-            <UpgradeButton
-                size="sm"
-                hasInvertedColors={true}
-                className="ml-1 py-0 px-1"
-                segmentEventToSend={segmentEventToSend}
-            />
         )
     }
 

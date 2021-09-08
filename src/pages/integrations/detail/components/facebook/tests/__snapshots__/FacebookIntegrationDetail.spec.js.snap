@@ -1039,7 +1039,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
 </div>
 `;
 
-exports[`<FacebookIntegrationDetail/> render() should render an integration for: account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with a warning) 1`] = `
+exports[`<FacebookIntegrationDetail/> render() should render an integration for: account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button) 1`] = `
 <div
   className="full-width"
 >
@@ -1201,61 +1201,21 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
               <td
                 className="pl-0"
               >
-                <Alert
-                  className="ml-1 py-1 mt-3"
-                  closeAriaLabel="Close"
-                  color="warning"
-                  fade={true}
-                  isOpen={true}
-                  tag="div"
-                  transition={
+                <UpgradeButton
+                  className="ml-1 py-0 px-1"
+                  hasInvertedColors={true}
+                  segmentEventToSend={
                     Object {
-                      "appear": true,
-                      "baseClass": "fade",
-                      "baseClassActive": "show",
-                      "enter": true,
-                      "exit": true,
-                      "in": true,
-                      "mountOnEnter": false,
-                      "onEnter": [Function],
-                      "onEntered": [Function],
-                      "onEntering": [Function],
-                      "onExit": [Function],
-                      "onExited": [Function],
-                      "onExiting": [Function],
-                      "tag": "div",
-                      "timeout": 150,
-                      "unmountOnExit": true,
+                      "name": "paywall-upgrade-button-selected",
+                      "props": Object {
+                        "current_plan": "legacy",
+                        "domain": "acme",
+                        "paywall_feature": "instagram_dm",
+                      },
                     }
                   }
-                >
-                  To activate Instagram Messaging, please click the green
-                   
-                  <b>
-                    Reconnect
-                  </b>
-                   button. If this message persists, please check that you have enabled the
-                   
-                  <a
-                    href="https://docs.gorgias.com/instagram/instagram-direct-messages#how_do_i_check_if_i_have_enabled_the_allow_access_to_messages_setting_in_instagram"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Allow Access to Messages setting
-                  </a>
-                   
-                  in your Instagram app and then reconnect your integration. If this messages still persists, please reach out to
-                   
-                  <a
-                    href="mailto:support@gorgias.com"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    our support team
-                  </a>
-                   
-                  or contact us via chat.
-                </Alert>
+                  size="sm"
+                />
               </td>
             </tr>
           </tbody>

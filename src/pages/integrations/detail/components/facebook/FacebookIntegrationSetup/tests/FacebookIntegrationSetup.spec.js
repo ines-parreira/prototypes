@@ -406,7 +406,7 @@ describe('FacebookIntegrationSetup', () => {
             [false, true],
         ],
         [
-            "account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with a warning)",
+            "account not eligible to IG DM and hasn't the feature (Render a disabled IG DM setting with an upgrade button)",
             [false, false],
         ],
     ])(
