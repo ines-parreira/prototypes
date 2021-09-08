@@ -89,7 +89,7 @@ export function SankeyStat({data, config, legend}: Props) {
                                             : null
                                         return `${
                                             labels ? labels[from] : from
-                                        } -> ${labels ? labels[to] : to}`
+                                        } ➞ ${labels ? labels[to] : to}`
                                     },
                                     label: (tooltipItem: TooltipItem<any>) => {
                                         const data = tooltipItem.dataset
@@ -103,7 +103,7 @@ export function SankeyStat({data, config, legend}: Props) {
                                             .reduce((acc, val) => acc + val)
 
                                         const ratio = (flow / totalFrom) * 100
-                                        return `${totalFrom} -> ${flow} (${ratio.toFixed(
+                                        return `${totalFrom} ➞ ${flow} (${ratio.toFixed(
                                             0
                                         )} %)`
                                     },
