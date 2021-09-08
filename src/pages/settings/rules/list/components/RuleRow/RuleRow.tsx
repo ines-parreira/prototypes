@@ -41,9 +41,9 @@ export function RuleRow({
         setConfirmationIsShown(!confirmationIsShown)
     }
 
-    const handleActivate = async () => {
+    const handleActivate = async (rule: Rule) => {
         try {
-            const res = await activateRule(rule.id)
+            const res = await activateRule(rule)
             ruleUpdated(res)
             void notify({
                 status: NotificationStatus.Success,
@@ -52,14 +52,14 @@ export function RuleRow({
         } catch (error) {
             void notify({
                 status: NotificationStatus.Error,
-                message: 'Unable to deactivate rule',
+                message: 'Unable to activate rule',
             })
         }
     }
 
-    const handleDeactivate = async () => {
+    const handleDeactivate = async (rule: Rule) => {
         try {
-            const res = await deactivateRule(rule.id)
+            const res = await deactivateRule(rule)
             ruleUpdated(res)
             void notify({
                 status: NotificationStatus.Success,
@@ -74,10 +74,10 @@ export function RuleRow({
         setConfirmationIsShown(false)
     }
 
-    const toggleItemStatus = async () => {
+    const toggleItemStatus = async (rule: Rule) => {
         const checked = !!rule.deactivated_datetime
         if (checked) {
-            await handleActivate()
+            await handleActivate(rule)
         } else {
             toggleConfirmation()
         }
@@ -130,7 +130,7 @@ export function RuleRow({
                 <td className="smallest align-middle position-relative">
                     <ToggleButton
                         value={!rule.deactivated_datetime}
-                        onChange={toggleItemStatus}
+                        onChange={() => toggleItemStatus(rule)}
                     />
                     <div className={css.confirmationPopover} id={toggleId} />
                     <Popover
@@ -149,7 +149,7 @@ export function RuleRow({
                             <Button
                                 type="submit"
                                 color="success"
-                                onClick={handleDeactivate}
+                                onClick={() => handleDeactivate(rule)}
                             >
                                 Confirm
                             </Button>

@@ -130,7 +130,7 @@ describe('rule resources', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
                 .reply(200, rulesFixtures[0])
-            const res = await activateRule(1)
+            const res = await activateRule(rulesFixtures[0])
             expect(res).toStrictEqual(rulesFixtures[0])
             expect(mockedServer.history.put[0].data).toMatchSnapshot()
         })
@@ -138,7 +138,7 @@ describe('rule resources', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
                 .reply(503, {message: 'error'})
-            return expect(activateRule(1)).rejects.toEqual(
+            return expect(activateRule(rulesFixtures[0])).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })
@@ -148,7 +148,7 @@ describe('rule resources', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
                 .reply(200, rulesFixtures[0])
-            const res = await deactivateRule(1)
+            const res = await deactivateRule(rulesFixtures[0])
             expect(res).toStrictEqual(rulesFixtures[0])
             expect(mockedServer.history.put[0].data).toMatchSnapshot()
         })
@@ -156,7 +156,7 @@ describe('rule resources', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
                 .reply(503, {message: 'error'})
-            return expect(deactivateRule(1)).rejects.toEqual(
+            return expect(deactivateRule(rulesFixtures[0])).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

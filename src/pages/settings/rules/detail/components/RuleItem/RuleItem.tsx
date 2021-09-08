@@ -59,8 +59,8 @@ type OwnProps = {
     rule: Rule
     toggleOpening: (id: number | number[]) => void
     canDuplicate: boolean
-    onActivate: () => Promise<void>
-    onDeactivate: () => Promise<void>
+    onActivate: (rule: Rule) => Promise<void>
+    onDeactivate: (rule: Rule) => Promise<void>
 }
 
 export type RuleItemActions = {
@@ -145,7 +145,14 @@ export function RuleItemContainer({
     })
 
     const handleDeactivate = async () => {
-        await onDeactivate()
+        if (eventTypes.length) {
+            await onDeactivate({...rule, event_types: eventTypes.join(',')})
+        } else {
+            void notify({
+                message: 'Cannot update rule without any event types',
+                status: NotificationStatus.Error,
+            })
+        }
         toggleConfirmation()
     }
 
@@ -199,7 +206,17 @@ export function RuleItemContainer({
     const toggleItemStatus = async () => {
         const checked = !!rule.deactivated_datetime
         if (checked) {
-            await onActivate()
+            if (eventTypes.length) {
+                await onActivate({
+                    ...rule,
+                    event_types: eventTypes.join(','),
+                })
+            } else {
+                void notify({
+                    message: 'Cannot update rule without any event types',
+                    status: NotificationStatus.Error,
+                })
+            }
         } else {
             toggleConfirmation()
         }
