@@ -75,13 +75,13 @@ export const REASONS_DROPDOWN_OPTIONS: Option[] = [
         label: 'My discount code is not working',
         value: 'reasonDiscountNotWorking',
     },
-    {label: "I'd like a discount code", value: 'reasonDisountNotWorking'},
+    {label: "I'd like a discount code", value: 'reasonRequestDiscount'},
     {
         label: 'I forgot to apply my discount code',
         value: 'reasonForgotToUseDiscount',
     },
     {isDivider: true},
-    {label: 'EXCAHNGE', isHeader: true},
+    {label: 'EXCHANGE', isHeader: true},
     {
         label: "I'd like to exchange items in my order",
         value: 'reasonExchangeRequest',
