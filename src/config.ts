@@ -171,6 +171,9 @@ export function shouldHideTwitterIntegration() {
         'ego.gorgias.com',
         'bearaby.gorgias.com',
         'frenchconnectionuk.gorgias.com',
+        'fittrack.gorgias.com',
+        'mhi.gorgias.com',
+        'criquetshirts.gorgias.com',
     ]
 
     return isProd && !allowedHostnames.includes(location.hostname)
