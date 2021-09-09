@@ -177,6 +177,13 @@ export default class CardInfobarWidget extends React.Component {
         return content
     }
 
+    _isRootWidget(templatePath) {
+        return (
+            templatePath.endsWith('.template.widgets.0') ||
+            templatePath.match(/.template.widgets.(\d+).widgets.0$/)
+        )
+    }
+
     render() {
         const {
             isEditing,
@@ -258,6 +265,15 @@ export default class CardInfobarWidget extends React.Component {
                             )}
                         </span>
                         {this._renderPopover()}
+                        {/*TODO(@Mehdi): uncomment this when INT-712 is done */}
+                        {/*{this._isRootWidget(template.get('templatePath')) && (*/}
+                        {/*    <WidgetCustomActions*/}
+                        {/*        source={source}*/}
+                        {/*        isEditing={isEditing}*/}
+                        {/*        widget={widget}*/}
+                        {/*        template={template}*/}
+                        {/*    />*/}
+                        {/*)}*/}
                         {!!AfterTitle && <AfterTitle {...this.props} />}
                     </CardBody>
                 )}
