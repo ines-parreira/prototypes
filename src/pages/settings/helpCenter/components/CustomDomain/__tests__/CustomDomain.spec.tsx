@@ -100,6 +100,8 @@ jest.mock('../../../hooks/useHelpcenterApi', () => {
                                 custom_domain_deactivated_datetime: custom_domain_deactivated
                                     ? '2021-07-29T10:41:10.343Z'
                                     : null,
+                                primary_color: '#4A8DF9',
+                                theme: 'light',
                             },
                         })
                     ),

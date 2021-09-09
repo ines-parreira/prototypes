@@ -18,6 +18,8 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
         algolia_api_key: null,
         custom_domain_deactivated_datetime: null,
+        primary_color: '#4A8DF9',
+        theme: 'light',
     },
     {
         id: 2,
@@ -32,6 +34,8 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         search_deactivated_datetime: null,
         algolia_api_key: null,
         custom_domain_deactivated_datetime: null,
+        primary_color: '#4A8DF9',
+        theme: 'light',
     },
     {
         id: 3,
@@ -46,6 +50,8 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         search_deactivated_datetime: null,
         algolia_api_key: null,
         custom_domain_deactivated_datetime: null,
+        primary_color: '#4A8DF9',
+        theme: 'light',
     },
 ]
 
@@ -62,4 +68,6 @@ export const getSingleHelpcenterResponseFixture: HelpCenter = {
     search_deactivated_datetime: null,
     algolia_api_key: null,
     custom_domain_deactivated_datetime: null,
+    primary_color: '#4A8DF9',
+    theme: 'light',
 }

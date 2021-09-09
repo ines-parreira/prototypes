@@ -11,11 +11,13 @@ Object {
     "deleted_datetime": undefined,
     "id": 1,
     "name": "ACME Helpcenter",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "subdomain": "acme",
     "supported_locales": Array [
       "en-US",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:21:42.022Z",
   },
 }
@@ -32,12 +34,14 @@ Object {
     "deleted_datetime": undefined,
     "id": 2,
     "name": "ACME Helpcenter 2",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
     "subdomain": "acme2",
     "supported_locales": Array [
       "en-US",
       "de-DE",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:22:42.022Z",
   },
 }
@@ -54,11 +58,13 @@ Object {
     "deleted_datetime": undefined,
     "id": 1,
     "name": "ACME Helpcenter",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "subdomain": "acme",
     "supported_locales": Array [
       "en-US",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:21:42.022Z",
   },
 }
@@ -75,11 +81,13 @@ Object {
     "deleted_datetime": undefined,
     "id": 1,
     "name": "ACME Helpcenter",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "subdomain": "acme",
     "supported_locales": Array [
       "en-US",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:21:42.022Z",
   },
   "2": Object {
@@ -91,12 +99,14 @@ Object {
     "deleted_datetime": undefined,
     "id": 2,
     "name": "ACME Helpcenter 2",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
     "subdomain": "acme2",
     "supported_locales": Array [
       "en-US",
       "de-DE",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:22:42.022Z",
   },
   "3": Object {
@@ -108,12 +118,14 @@ Object {
     "deleted_datetime": undefined,
     "id": 3,
     "name": "ACME Helpcenter 3",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
     "subdomain": "acme3",
     "supported_locales": Array [
       "en-US",
       "fr-FR",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:23:42.022Z",
   },
 }
@@ -130,11 +142,13 @@ Object {
     "deleted_datetime": undefined,
     "id": 1,
     "name": "bar",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": "2021-05-17T18:21:42.022Z",
     "subdomain": "acme",
     "supported_locales": Array [
       "en-US",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:21:42.022Z",
   },
   "2": Object {
@@ -146,12 +160,14 @@ Object {
     "deleted_datetime": undefined,
     "id": 2,
     "name": "ACME Helpcenter 2",
+    "primary_color": "#4A8DF9",
     "search_deactivated_datetime": null,
     "subdomain": "acme2",
     "supported_locales": Array [
       "en-US",
       "de-DE",
     ],
+    "theme": "light",
     "updated_datetime": "2021-05-17T18:22:42.022Z",
   },
 }
