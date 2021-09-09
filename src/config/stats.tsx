@@ -1307,7 +1307,7 @@ export const stats = toImmutable<
         helpText:
             'Vizualize at a glance where your customer interactions come from, if they are automated and if so, from which channel.',
         style: 'sankey',
-        downloadable: false,
+        downloadable: true,
         colorMap: {
             total: '#ded7de',
             email: '#9bc0fc',
