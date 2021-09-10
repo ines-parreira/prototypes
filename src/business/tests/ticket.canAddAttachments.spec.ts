@@ -122,6 +122,42 @@ describe('Business', () => {
                     )
                 })
             })
+
+            it('should allow to add when twitter-tweet with less than 4 attachments', () => {
+                // Given
+                messageType = TicketMessageSourceType.TwitterTweet
+                attachmentCount = 3
+
+                // When
+                const result = canAddAttachments(
+                    messageType,
+                    newMessage,
+                    attachmentCount
+                )
+
+                // Then
+                expect(result).toBeNull()
+            })
+
+            describe('only X attachments allowed', () => {
+                it('should not allow to add when twitter-tweet with more than 4 attachments', () => {
+                    // Given
+                    messageType = TicketMessageSourceType.TwitterTweet
+                    attachmentCount = 5
+
+                    // When
+                    const result = canAddAttachments(
+                        messageType,
+                        newMessage,
+                        attachmentCount
+                    )
+
+                    // Then
+                    expect(result?.message).toEqual(
+                        `When using Twitter tweet, you can add a maximum of 4 attachments.`
+                    )
+                })
+            })
         })
     })
 })

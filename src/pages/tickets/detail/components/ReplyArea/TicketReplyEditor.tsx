@@ -7,6 +7,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {RootState} from '../../../../../state/types'
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
+import {humanize} from '../../../../../business/format'
 import {getOtherAgents} from '../../../../../state/agents/selectors'
 import {
     addAttachments,
@@ -150,6 +151,24 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             return false
         }
 
+        // Twitter only allows either a single GIF or a maximum of 4 pictures
+        if (newMessageType === TicketMessageSourceType.TwitterTweet) {
+            const gifFiles = files.filter(
+                (file) => file.type && file.type === 'image/gif'
+            )
+
+            if (gifFiles.length > 0 && files.length > 1) {
+                void this.props.notify({
+                    type: NotificationStatus.Error,
+                    status: NotificationStatus.Warning,
+                    message: `When answering to ${humanize(
+                        newMessageType
+                    )} messages, you can only attach a single GIF or a maximum of 4 pictures.`,
+                })
+                return false
+            }
+        }
+
         // check total attachments size.
         const currentSize = this.getFilesSize(files)
         const maxSize = getMaxAttachmentSize(
@@ -184,7 +203,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                 void this.props.notify({
                     type: NotificationStatus.Error,
                     status: NotificationStatus.Warning,
-                    message: `When answering to ${newMessageType} messages, the only attachments allowed are ${' '}
+                    message: `When answering to ${humanize(
+                        newMessageType
+                    )} messages, the only attachments allowed are ${' '}
                     images (except svg).`,
                 })
                 cancel = true
@@ -236,6 +257,8 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
     getButtons = () => {
         const {attachments, newMessage, newMessageType} = this.props
+        let attachmentsMask: string
+
         if (
             canAddAttachments(
                 newMessageType,
@@ -250,6 +273,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             'loading',
             'addAttachment',
         ])
+
+        if (newMessageType === TicketMessageSourceType.TwitterTweet) {
+            attachmentsMask = 'image/*'
+        }
 
         return [
             <div className="attachment" key="attachments">
@@ -270,7 +297,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     multiple
                     onChange={(event) => {
                         event.target.files &&
-                            this.handleFiles(event.target.files)
+                            this.handleFiles(
+                                event.target.files,
+                                attachmentsMask
+                            )
                     }}
                     onClick={(event) => {
                         // empty input on click
@@ -298,6 +328,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         const isNewMessageFacebookMessengerType =
             newMessageType === TicketMessageSourceType.FacebookMessenger
         const canAddMention = canLeaveInternalNote(newMessageType)
+        let attachmentsMask: string
 
         const mentionProps = {
             canAddMention,
@@ -324,6 +355,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             predictionContext: this.props.predictionContext,
         }
 
+        if (newMessageType === TicketMessageSourceType.TwitterTweet) {
+            attachmentsMask = 'image/*'
+        }
+
         return (
             <div className={css.component}>
                 <RichField
@@ -340,7 +375,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         html: newMessage.getIn(['newMessage', 'body_html']),
                     }}
                     onChange={this.onEditorChange}
-                    attachFiles={(files) => this.handleFiles(files)}
+                    attachFiles={(files) =>
+                        this.handleFiles(files, attachmentsMask)
+                    }
                     tabIndex={4}
                     readOnly={newMessage.getIn([
                         '_internal',

@@ -61,13 +61,14 @@ export function canAddAttachments(
         }
     }
 
-    const maxAttachmentsCount = new Map([
+    let maxAttachmentsCount = new Map([
         [TicketMessageSourceType.FacebookComment, 1],
         [TicketMessageSourceType.FacebookMentionComment, 1],
         [TicketMessageSourceType.FacebookReviewComment, 1],
         [TicketMessageSourceType.InstagramDirectMessage, 1],
         [TicketMessageSourceType.InstagramComment, 0],
         [TicketMessageSourceType.InstagramMentionComment, 0],
+        [TicketMessageSourceType.TwitterTweet, 4],
         [TicketMessageSourceType.YotpoReviewPublicComment, 0],
         [TicketMessageSourceType.YotpoReviewPrivateComment, 0],
     ]).get(messageType)
@@ -91,6 +92,14 @@ export function canAddAttachments(
                 )}, you can not send attachments.`,
                 status: NotificationStatus.Warning,
             }
+        }
+
+        maxAttachmentsCount = maxAttachmentsCount || 0
+        return {
+            message: `When using ${humanize(
+                messageType
+            )}, you can add a maximum of ${maxAttachmentsCount} attachments.`,
+            status: NotificationStatus.Warning,
         }
     }
     return null
