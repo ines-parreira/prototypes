@@ -4,6 +4,7 @@ import {Button, Container, FormGroup} from 'reactstrap'
 
 import {
     LocaleCode,
+    LocalSocialNavigationLink,
     NavigationLinkDto,
 } from '../../../../models/helpCenter/types'
 
@@ -43,7 +44,7 @@ import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {NavSection} from './NavSection'
 
 export const HelpCenterCustomizationView = () => {
-    const helpcenterId = useHelpCenterIdParam()
+    const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const locales = useLocales()
 
@@ -66,72 +67,61 @@ export const HelpCenterCustomizationView = () => {
     React.useEffect(() => {
         async function init() {
             if (isReady && client && selectedLocale) {
-                const navigationlinks = await client
+                await client
                     .listNavigationLinks({
-                        help_center_id: helpcenterId,
+                        help_center_id: helpCenterId,
                         locale: selectedLocale,
                     })
-                    .then((response) => response.data.data)
-
-                setLinks(navigationlinks)
+                    .then((response) => setLinks(response.data.data))
             }
         }
 
         void init()
-    }, [isReady, helpcenterId, selectedLocale, client])
+    }, [isReady, helpCenterId, selectedLocale, client])
 
-    const linksWithoutSocial = React.useMemo(() => {
-        return links.filter((link) => {
-            if (link.translation) {
-                if (link.meta && link.meta?.network) {
-                    return !Object.keys(SOCIAL_NAVIGATION_LINKS).includes(
-                        link.meta?.network
-                    )
-                }
-                return true
-            }
-            return true
-        })
-    }, [links, selectedLocale])
+    const linksWithoutSocial = React.useMemo(
+        () =>
+            links.filter((link) =>
+                link.meta?.network
+                    ? !Object.keys(SOCIAL_NAVIGATION_LINKS).includes(
+                          link.meta?.network
+                      )
+                    : true
+            ),
+        [links]
+    )
 
-    const socialLinks = React.useMemo(() => {
-        return Object.entries(SOCIAL_NAVIGATION_LINKS).map(
-            ([socialKey, socialLink]) => {
-                const currentRemoteLink = links.find((link) => {
-                    if (link.meta && link.meta?.network) {
-                        return socialKey === link.meta.network.toLowerCase()
-                    }
+    const socialLinks = React.useMemo(
+        () =>
+            Object.entries(SOCIAL_NAVIGATION_LINKS).map<
+                LocalSocialNavigationLink
+            >(([socialKey, socialLink]) => {
+                const currentRemoteLink = links.find((link) =>
+                    link.meta?.network
+                        ? socialKey === link.meta.network.toLowerCase()
+                        : false
+                )
 
-                    return false
-                })
-
-                if (currentRemoteLink?.translation) {
+                if (currentRemoteLink) {
                     return {
                         id: currentRemoteLink.id,
-                        position: socialLink.position,
+                        label: currentRemoteLink.label,
+                        value: currentRemoteLink.value,
                         group: currentRemoteLink.group,
                         meta: currentRemoteLink.meta,
-                        translation: {
-                            label: currentRemoteLink.translation.label,
-                            value: currentRemoteLink.translation.value,
-                            created_datetime:
-                                currentRemoteLink.translation.created_datetime,
-                            updated_datetime:
-                                currentRemoteLink.translation.updated_datetime,
-                            navigation_link_id:
-                                currentRemoteLink.translation
-                                    .navigation_link_id,
-                        },
+                        created_datetime: currentRemoteLink.created_datetime,
+                        updated_datetime: currentRemoteLink.updated_datetime,
                     }
                 }
 
                 return socialLink
-            }
-        )
-    }, [links, selectedLocale])
+            }),
+        [links]
+    )
+
     const headerNavigation = useNavigationLinks('header', linksWithoutSocial)
     const footerNavigation = useNavigationLinks('footer', linksWithoutSocial)
-    const socialNavigation = useSocialNavigationLinks('footer', socialLinks, {
+    const socialNavigation = useSocialNavigationLinks(socialLinks, {
         allowEmpty: true,
     })
 
@@ -155,12 +145,11 @@ export const HelpCenterCustomizationView = () => {
                     client,
                     linksWithoutSocial,
                     headerNavigation.links.filter(
-                        (link) =>
-                            link.translation.label && link.translation.value
+                        (link) => link.label && link.value
                     ),
                     {
                         group: 'header',
-                        helpcenterId: helpcenterId,
+                        helpCenterId: helpCenterId,
                         locale: selectedLocale,
                     }
                 )
@@ -169,27 +158,26 @@ export const HelpCenterCustomizationView = () => {
                     client,
                     linksWithoutSocial,
                     footerNavigation.links.filter(
-                        (link) =>
-                            link.translation.label && link.translation.value
+                        (link) => link.label && link.value
                     ),
                     {
                         group: 'footer',
-                        helpcenterId: helpcenterId,
+                        helpCenterId: helpCenterId,
                         locale: selectedLocale,
                     }
                 )
 
                 await saveSocialLinks(client, socialNavigation.links, {
-                    helpcenterId: helpcenterId,
+                    helpCenterId: helpCenterId,
                     locale: selectedLocale,
                 })
 
-                const navigationlinks = await client.listNavigationLinks({
-                    help_center_id: helpcenterId,
+                const navigationLinks = await client.listNavigationLinks({
+                    help_center_id: helpCenterId,
                     locale: selectedLocale,
                 })
 
-                setLinks(navigationlinks.data.data)
+                setLinks(navigationLinks.data.data)
 
                 void dispatch(
                     notify({
@@ -222,7 +210,7 @@ export const HelpCenterCustomizationView = () => {
                     />
                 }
             />
-            <HelpCenterNavigation helpcenterId={helpcenterId} />
+            <HelpCenterNavigation helpcenterId={helpCenterId} />
             <Container
                 fluid
                 className="page-container"

@@ -41,6 +41,7 @@ export const NavSection = ({
     const handleOnSelect = (value: React.ReactText) => {
         onChangeLocale(validLocaleCode(value))
     }
+
     return (
         <div className={css.wrapper}>
             <div className={css.heading}>
@@ -68,8 +69,8 @@ export const NavSection = ({
                 list={items.map((item) => ({
                     id: item.id,
                     key: item.key,
-                    value: item.translation.value,
-                    label: item.translation.label,
+                    value: item.value,
+                    label: item.label,
                 }))}
                 onChange={onChangeLink}
                 onDelete={onClickRemove}

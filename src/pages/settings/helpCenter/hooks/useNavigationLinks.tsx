@@ -5,10 +5,9 @@ import produce, {Draft} from 'immer'
 import isUrl from 'validator/lib/isURL'
 
 import {
-    // LinkTranslation,
     LocalNavigationLink,
     LocalSocialNavigationLink,
-    NavigationLinkSections,
+    NavigationLinkGroup,
     LocaleCode,
     NavigationLinkDto,
 } from '../../../../models/helpCenter/types'
@@ -22,30 +21,23 @@ const DEFAULT_OPTIONS = {
 }
 
 function decorateLocaleLinks(
-    section: NavigationLinkSections,
+    group: NavigationLinkGroup,
     links: NavigationLinkDto[]
 ): LocalNavigationLink[] {
     return _chain(links)
-        .filter((link) => link.group === section)
+        .filter((link) => link.group === group)
         .orderBy(['position'])
-        .map((link, index) => {
-            if (link.translation) {
-                return {
-                    id: link.id,
-                    group: link.group,
-                    position: index,
-                    key: `${link.id}-${link.translation.label}-${link.translation.locale}`,
-                    translation: {
-                        locale: link.translation.locale,
-                        value: link.translation.value,
-                        label: link.translation.label,
-                        updated_datetime: link.translation.updated_datetime,
-                        created_datetime: link.translation.created_datetime,
-                        navigation_link_id: link.translation.navigation_link_id,
-                    },
-                }
+        .map<LocalNavigationLink>((link) => {
+            return {
+                id: link.id,
+                label: link.label,
+                value: link.value,
+                locale: link.locale,
+                group: link.group,
+                created_datetime: link.created_datetime,
+                updated_datetime: link.updated_datetime,
+                key: `${link.id}-${link.label}-${link.locale}`,
             }
-            throw Error('Missing translation')
         })
         .value()
 }
@@ -64,15 +56,9 @@ function draftUpdateLink<
 >(links: T[], value: string, id: number, key: 'label' | 'value') {
     return produce(links, (draft) => {
         const index = links.findIndex((link) => link.id === id)
-        const translation = draft[index].translation
 
-        translation[key] = value
-        translation.updated_datetime = 'now'
-
-        draft[index] = {
-            ...draft[index],
-            translation,
-        }
+        draft[index][key] = value
+        draft[index].updated_datetime = 'now'
     })
 }
 
@@ -82,34 +68,41 @@ function isListValid<T extends LocalNavigationLink | LocalSocialNavigationLink>(
 ): boolean {
     return links.every((link) => {
         if (options.allowEmpty) {
-            return link.translation.value ? isUrl(link.translation.value) : true
+            return link.value ? isUrl(link.value) : true
         }
 
         // If we have a Title with no URL, list is not valid
-        if (link.translation.label && link.translation.value === '') {
+        if (link.label && link.value === '') {
             return false
         }
         // If we have an URL with no Title, list is not valid
-        if (link.translation.label === '' && link.translation.value) {
+        if (link.label === '' && link.value) {
             return false
         }
 
-        return link.translation.value ? isUrl(link.translation.value) : true
+        return link.value ? isUrl(link.value) : true
     })
 }
 
 export const useNavigationLinks = (
-    section: NavigationLinkSections,
+    group: NavigationLinkGroup,
     response: NavigationLinkDto[],
     options?: Options
-) => {
+): {
+    links: LocalNavigationLink[]
+    add: (locale: LocaleCode) => void
+    remove: (id: number) => void
+    update: (value: string, id: number, key: 'label' | 'value') => void
+    isListValid: () => boolean
+    resetFields: () => void
+} => {
     const [links, setLinks] = React.useState<LocalNavigationLink[]>(
-        decorateLocaleLinks(section, response)
+        decorateLocaleLinks(group, response)
     )
 
     React.useEffect(() => {
-        setLinks(decorateLocaleLinks(section, response))
-    }, [response, section])
+        setLinks(decorateLocaleLinks(group, response))
+    }, [response, group])
 
     const innerOptions = React.useMemo(
         () => _defaults(options, DEFAULT_OPTIONS),
@@ -120,22 +113,16 @@ export const useNavigationLinks = (
         setLinks(
             produce((draft: Draft<LocalNavigationLink[]>) => {
                 const id = links.reduce((sum, link) => link.id + sum, 1)
+
                 draft.push({
                     id,
-                    group: section,
-                    position: links.length,
+                    label: '',
+                    value: '',
+                    locale,
+                    group,
+                    created_datetime: 'now',
+                    updated_datetime: '',
                     key: `${id}-new-${locale}`,
-                    translation: {
-                        navigation_link_id: links.reduce(
-                            (sum, link) => link.id + sum,
-                            1
-                        ),
-                        created_datetime: 'now',
-                        updated_datetime: '',
-                        locale,
-                        label: '',
-                        value: '',
-                    },
                 })
             })
         )
@@ -150,7 +137,7 @@ export const useNavigationLinks = (
     }
 
     const resetFields = () => {
-        setLinks(decorateLocaleLinks(section, response))
+        setLinks(decorateLocaleLinks(group, response))
     }
 
     return {
@@ -164,10 +151,15 @@ export const useNavigationLinks = (
 }
 
 export const useSocialNavigationLinks = (
-    section: NavigationLinkSections,
     response: LocalSocialNavigationLink[],
     options?: Options
-) => {
+): {
+    links: LocalSocialNavigationLink[]
+    remove: (id: number) => void
+    update: (value: string, id: number, key: 'label' | 'value') => void
+    isListValid: () => boolean
+    resetFields: () => void
+} => {
     const [links, setLinks] = React.useState<LocalSocialNavigationLink[]>(
         response
     )
@@ -176,7 +168,7 @@ export const useSocialNavigationLinks = (
         if (response.length > 0) {
             setLinks(response)
         }
-    }, [response, section])
+    }, [response])
 
     const innerOptions = React.useMemo(
         () => _defaults(options, DEFAULT_OPTIONS),

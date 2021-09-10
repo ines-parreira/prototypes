@@ -19,7 +19,7 @@ const Example = () => {
                     <div key={link.id} data-testid={`link-${link.id}`}>
                         <input
                             data-testid={`label-${link.id}`}
-                            defaultValue={link.translation.label}
+                            defaultValue={link.label}
                             onBlur={(ev) =>
                                 navigation.update(
                                     ev.target.value,
@@ -30,7 +30,7 @@ const Example = () => {
                         />
                         <input
                             data-testid={`value-${link.id}`}
-                            defaultValue={link.translation.value}
+                            defaultValue={link.value}
                             onBlur={(ev) =>
                                 navigation.update(
                                     ev.target.value,

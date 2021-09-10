@@ -37,16 +37,14 @@ export const SocialNavigationLinks = ({
         <div className={css['social-list']}>
             <h3>Social network links</h3>
             {links.map((link) => {
-                if (LOGO_MAP[link.translation.label.toLowerCase()]) {
+                if (LOGO_MAP[link.label.toLowerCase()]) {
                     return (
                         <SocialNavigationItem
                             key={`${link.id}-${locale}`}
                             id={link.id}
-                            label={link.translation.label}
-                            value={link.translation.value}
-                            logo={
-                                LOGO_MAP[link.translation.label.toLowerCase()]
-                            }
+                            label={link.label}
+                            value={link.value}
+                            logo={LOGO_MAP[link.label.toLowerCase()]}
                             onBlur={onBlurLink}
                         />
                     )

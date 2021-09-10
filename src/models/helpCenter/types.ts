@@ -74,51 +74,34 @@ export type HelpCenterArticle = Omit<
 // NAVIGATION
 
 export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto
-export type NavigationLinkDto = Components.Schemas.NavigationLinkWithLocalTranslation
+export type UpdateNavigationLinkDto = Components.Schemas.UpdateNavigationLinkDto
+export type NavigationLinkDto = Components.Schemas.NavigationLinkEntity
 export type NavigationLinkMeta = Components.Schemas.NavigationLinkMeta
-export type NavigationSocialLinks = Components.Schemas.NavigationLinkMeta['network']
+export type NavigationLinkGroup = Components.Schemas.NavigationLinkEntity['group']
 
-export type NavigationTranslation = {
-    created_datetime: string
-    updated_datetime: string
-    deleted_datetime: string | null
-    id: number | string
-    label: string
-    value: string
-    meta: any // TODO: define this
-    navigation_link_id: number
-    locale: string
-}
-
-export type NavigationLinkSections = Components.Schemas.NavigationLinkEntity['group']
-
-export type BaseNavigationLink = Pick<
-    Components.Schemas.NavigationLinkWithLocalTranslation,
-    'id' | 'group'
-> & {
-    translation: LinkTranslation
-}
-
-export type LinkTranslation = Pick<
-    Components.Schemas.LocalNavigationLinkTranslation,
+export type LocalNavigationLink = Pick<
+    Components.Schemas.NavigationLinkEntity,
+    | 'id'
     | 'label'
     | 'value'
     | 'locale'
-    | 'updated_datetime'
+    | 'group'
     | 'created_datetime'
-    | 'navigation_link_id'
->
-
-export type LocalNavigationLink = BaseNavigationLink & {
-    position: number
+    | 'updated_datetime'
+> & {
     key: string
 }
-export type LocalSocialNavigationLink = Omit<
-    LocalNavigationLink,
-    'translation' | 'key'
-> & {
-    meta: Components.Schemas.NavigationLinkMeta | undefined
-    translation: Omit<LinkTranslation, 'locale'>
-}
+export type LocalSocialNavigationLink = Pick<
+    Components.Schemas.NavigationLinkEntity,
+    | 'id'
+    | 'label'
+    | 'value'
+    | 'group'
+    | 'meta'
+    | 'created_datetime'
+    | 'updated_datetime'
+>
+
+// CUSTOM DOMAIN
 
 export type CustomDomain = Components.Schemas.CustomDomain

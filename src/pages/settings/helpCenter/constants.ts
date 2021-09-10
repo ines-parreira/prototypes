@@ -19,48 +19,36 @@ export const SOCIAL_NAVIGATION_LINKS: Record<
 > = {
     facebook: {
         id: -1,
-        position: 1,
+        label: 'Facebook',
+        value: '',
         group: 'footer',
         meta: {
             network: 'facebook',
         },
-        translation: {
-            label: 'Facebook',
-            value: '',
-            created_datetime: '',
-            updated_datetime: '',
-            navigation_link_id: -1,
-        },
+        created_datetime: '',
+        updated_datetime: '',
     },
     twitter: {
         id: -2,
-        position: 2,
+        label: 'Twitter',
+        value: '',
         group: 'footer',
         meta: {
             network: 'twitter',
         },
-        translation: {
-            label: 'Twitter',
-            value: '',
-            created_datetime: '',
-            updated_datetime: '',
-            navigation_link_id: -2,
-        },
+        created_datetime: '',
+        updated_datetime: '',
     },
     instagram: {
         id: -3,
-        position: 3,
+        label: 'Instagram',
+        value: '',
         group: 'footer',
         meta: {
             network: 'instagram',
         },
-        translation: {
-            label: 'Instagram',
-            value: '',
-            created_datetime: '',
-            updated_datetime: '',
-            navigation_link_id: -3,
-        },
+        created_datetime: '',
+        updated_datetime: '',
     },
 }
 

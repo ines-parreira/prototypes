@@ -25,8 +25,9 @@ export const LinkList = ({
     onAddNew,
     onChange,
     onDelete,
-}: Props) => {
+}: Props): JSX.Element => {
     const isLimitExceeded = list.length >= limit
+
     return (
         <div>
             {list.length > 0 && (

@@ -6,104 +6,98 @@ import {
     LocalNavigationLink,
     LocalSocialNavigationLink,
     NavigationLinkMeta,
-    CreateNavigationLinkDto,
 } from '../../../../models/helpCenter/types'
 
-export function saveSocialLinks(
+export async function saveSocialLinks(
     client: HelpCenterClient,
     localLinks: LocalSocialNavigationLink[],
     context: {
-        helpcenterId: number
+        helpCenterId: number
         locale: LocaleCode
     }
-): Promise<any> {
+): Promise<void> {
     const promises = localLinks.map((socialLink) => {
-        if (socialLink.translation.value === '' && socialLink.id >= 0) {
-            return client?.deleteNavigationLink({
-                help_center_id: context.helpcenterId,
+        if (socialLink.value === '' && socialLink.id >= 0) {
+            return client.deleteNavigationLink({
+                help_center_id: context.helpCenterId,
                 id: socialLink.id,
             })
         }
 
-        if (socialLink.translation.updated_datetime === 'now') {
+        if (socialLink.updated_datetime === 'now') {
             const group = 'footer'
             const meta: NavigationLinkMeta = {
                 network: socialLink.meta?.network,
             }
 
             if (socialLink.id >= 0) {
-                return client.updateNavigationLinkTranslation(
+                return client.updateNavigationLink(
                     {
-                        help_center_id: context.helpcenterId,
-                        navigation_link_id: socialLink.id,
-                        locale: context.locale,
+                        help_center_id: context.helpCenterId,
+                        id: socialLink.id,
                     },
                     {
-                        label: socialLink.translation.label,
-                        value: socialLink.translation.value,
+                        label: socialLink.label,
+                        value: socialLink.value,
                     }
                 )
             }
 
             return client.createNavigationLink(
                 {
-                    help_center_id: context.helpcenterId,
+                    help_center_id: context.helpCenterId,
                 },
                 {
+                    label: socialLink.label,
+                    value: socialLink.value,
+                    locale: context.locale,
                     group,
                     meta,
-                    translation: {
-                        locale: context.locale,
-                        label: socialLink.translation.label,
-                        value: socialLink.translation.value,
-                    },
                 }
             )
         }
         return null
     })
 
-    return Promise.all(promises)
+    await Promise.all(promises)
 }
 
-export function saveNavigationLinks(
+export async function saveNavigationLinks(
     client: HelpCenterClient,
     remoteLinks: NavigationLinkDto[],
     localLinks: LocalNavigationLink[],
     context: {
         group: 'header' | 'footer'
-        helpcenterId: number
+        helpCenterId: number
         locale: LocaleCode
     }
-): Promise<any> {
-    const localLinksId = localLinks.map((link) => link.id)
-    const remoteLinksId = remoteLinks
+): Promise<void> {
+    const localLinksIds = localLinks.map((link) => link.id)
+    const remoteLinksIds = remoteLinks
         .filter((link) => link.group === context.group)
         .map((link) => link.id)
 
-    const idLinksToDelete = remoteLinksId.filter(
-        (linkId) => !localLinksId.includes(linkId)
+    const linkIdsToDelete = remoteLinksIds.filter(
+        (linkId) => !localLinksIds.includes(linkId)
     )
 
     const linksToCreate = localLinks.filter(
         (link) =>
-            link.translation.created_datetime === 'now' &&
-            !remoteLinksId.includes(link.id)
+            link.created_datetime === 'now' && !remoteLinksIds.includes(link.id)
     )
 
     const linksToUpdate = localLinks.filter(
         (link) =>
-            link.translation.updated_datetime === 'now' &&
-            link.translation.created_datetime !== 'now'
+            link.updated_datetime === 'now' && link.created_datetime !== 'now'
     )
 
     const promises: Promise<any>[] = []
 
-    if (idLinksToDelete.length > 0) {
-        idLinksToDelete.forEach((linkId) => {
+    if (linkIdsToDelete.length > 0) {
+        linkIdsToDelete.forEach((linkId) => {
             promises.push(
-                client?.deleteNavigationLink({
-                    help_center_id: context.helpcenterId,
+                client.deleteNavigationLink({
+                    help_center_id: context.helpCenterId,
                     id: linkId,
                 })
             )
@@ -112,21 +106,17 @@ export function saveNavigationLinks(
 
     if (linksToCreate.length > 0) {
         linksToCreate.forEach((link) => {
-            const payload: CreateNavigationLinkDto = {
-                group: context.group,
-                translation: {
-                    locale: context.locale,
-                    label: link.translation.label,
-                    value: link.translation.value,
-                },
-            }
-
             promises.push(
-                client?.createNavigationLink(
+                client.createNavigationLink(
                     {
-                        help_center_id: context.helpcenterId,
+                        help_center_id: context.helpCenterId,
                     },
-                    payload
+                    {
+                        label: link.label,
+                        value: link.value,
+                        locale: context.locale,
+                        group: context.group,
+                    }
                 )
             )
         })
@@ -135,20 +125,19 @@ export function saveNavigationLinks(
     if (linksToUpdate.length > 0) {
         linksToUpdate.forEach((link) => {
             promises.push(
-                client.updateNavigationLinkTranslation(
+                client.updateNavigationLink(
                     {
-                        help_center_id: context.helpcenterId,
-                        navigation_link_id: link.id,
-                        locale: context.locale,
+                        help_center_id: context.helpCenterId,
+                        id: link.id,
                     },
                     {
-                        label: link.translation.label,
-                        value: link.translation.value,
+                        label: link.label,
+                        value: link.value,
                     }
                 )
             )
         })
     }
 
-    return Promise.all(promises)
+    await Promise.all(promises)
 }

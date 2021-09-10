@@ -34,7 +34,7 @@ export const LinkItem = ({
     urlPlaceholder,
     onChange,
     onDelete,
-}: Props) => {
+}: Props): JSX.Element => {
     let valueErrMessage = ''
     let labelErrMessage = ''
 
@@ -52,7 +52,7 @@ export const LinkItem = ({
         <div data-testid={`link-item-${id}`} className={css['link-item']}>
             <FormGroup>
                 <Input
-                    defaultValue={label}
+                    value={label}
                     data-testid={`link-item-label-${id}`}
                     invalid={!!labelErrMessage}
                     placeholder={titlePlaceholder}
@@ -70,7 +70,7 @@ export const LinkItem = ({
             </FormGroup>
             <FormGroup>
                 <Input
-                    defaultValue={value}
+                    value={value}
                     data-testid={`link-item-value-${id}`}
                     invalid={!!valueErrMessage}
                     placeholder={urlPlaceholder}
