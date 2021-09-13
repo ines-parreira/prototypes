@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketDetailsStat should log event on open tickets click 1`] = `
+Array [
+  Array [
+    "stat-view-link-clicked",
+    Object {
+      "stat": "tickets-open-per-agent-live",
+    },
+  ],
+]
+`;
+
+exports[`TicketDetailsStat should render a message when no assigned tickets 1`] = `
+<div
+  class="empty"
+>
+  No open tickets assigned to this agent
+</div>
+`;
+
+exports[`TicketDetailsStat should render open tickets and channels breakdown 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="openTickets"
+  >
+    <a
+      data-testid="view-link"
+    >
+      <span
+        aria-label="view name"
+      >
+        Open tickets assigned to: John Doe
+      </span>
+      <span
+        aria-label="filters"
+      >
+        [
+  {
+    "left": "ticket.assignee_user.id",
+    "operator": "eq",
+    "right": 1
+  },
+  {
+    "left": "ticket.status",
+    "operator": "eq",
+    "right": "\\"open\\""
+  },
+  {
+    "left": "ticket.channel",
+    "operator": "eq",
+    "right": "\\"email\\""
+  }
+]
+      </span>
+      <span
+        aria-label="children"
+      >
+        21
+      </span>
+    </a>
+  </div>
+  <div
+    class="separator"
+  />
+  <div
+    class="channelsBreakdown"
+  >
+    <div
+      class="channel"
+    >
+      <i
+        class="icon d-inline-block text-purple material-icons channelIcon"
+      >
+        forum
+      </i>
+      2
+    </div>
+    <div
+      class="channel"
+    >
+      <i
+        class="icon d-inline-block material-icons channelIcon"
+      >
+        email
+      </i>
+      19
+    </div>
+  </div>
+</div>
+`;

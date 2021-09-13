@@ -26,10 +26,10 @@ import {
 import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
-import SourceIcon from '../../../../../common/components/SourceIcon'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
 
 import css from './TableStat.less'
+import TicketDetailsStat from './TicketDetailsStat'
 
 type OwnProps = {
     data: Map<any, any>
@@ -76,31 +76,16 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                 const details = (metric.get('details') as Map<
                     any,
                     any
-                >)?.toJS() as Record<TicketMessageSourceType, string>
-                return metric.get('value') ? (
-                    <div className={css.ticketDetailsWrapper}>
-                        <div>{callback(callbackData, callbackContext)}</div>
-                        <div className={css.ticketDetailsSeparator} />
-                        <div className={css.ticketDetailsList}>
-                            {(Object.keys(
-                                details
-                            ) as TicketMessageSourceType[]).map((key) => {
-                                return details[key] ? (
-                                    <div key={key} className={css.ticketDetail}>
-                                        <SourceIcon
-                                            type={key}
-                                            className={css.ticketDetailIcon}
-                                        />
-                                        {details[key]}
-                                    </div>
-                                ) : null
-                            })}
-                        </div>
-                    </div>
-                ) : (
-                    <div className={css.ticketDetailsEmpty}>
-                        No open tickets assigned to this agent
-                    </div>
+                >)?.toJS() as Record<TicketMessageSourceType, number>
+                return (
+                    <TicketDetailsStat
+                        agentId={line.getIn(['0', 'value', 'id'])}
+                        agentName={line.getIn(['0', 'value', 'name'])}
+                        openTickets={
+                            callback(callbackData, callbackContext) as number
+                        }
+                        channelsBreakdown={details}
+                    />
                 )
             }
             case StatValueType.OnlineTime: {

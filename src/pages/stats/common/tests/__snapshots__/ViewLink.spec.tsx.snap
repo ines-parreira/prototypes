@@ -4,7 +4,7 @@ exports[`ViewLink should render the component and construct the link for the new
 <div>
   Link Mock
   {
-  "className": "viewLink",
+  "className": "viewLink foo",
   "to": {
     "pathname": "/app/tickets/new/public",
     "state": {

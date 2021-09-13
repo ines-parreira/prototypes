@@ -106,3 +106,5 @@ export const getSupportPerformanceAgentsStatsFilters = makeStatsFiltersSelector(
 export const getTagsStatsFilters = makeStatsFiltersSelector('tags')
 
 export const getChannelsStatsFilters = makeStatsFiltersSelector('channels')
+
+export const getLiveAgentsStatsFilters = makeStatsFiltersSelector('live-agents')

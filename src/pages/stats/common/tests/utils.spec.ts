@@ -34,6 +34,18 @@ describe('stats components utils', () => {
                     integrations: [1, 5],
                 }),
             ],
+            [
+                'single agent',
+                fromJS({
+                    agents: [1],
+                }),
+            ],
+            [
+                'multiple agents',
+                fromJS({
+                    agents: [1, 2, 3],
+                }),
+            ],
         ])('should return view filters for %s', (testName, statsFilters) => {
             const viewFilters = getStatsViewFilters(
                 'ticket.created_datetime',

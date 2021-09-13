@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
+import React, {HTMLAttributes, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
+import classNames from 'classnames'
 
 import {ViewFilter} from '../../../state/views/types'
 
@@ -9,7 +10,7 @@ type Props = {
     viewName: string
     filters: ViewFilter[]
     children: ReactNode
-}
+} & HTMLAttributes<HTMLAnchorElement>
 
 function buildRawCallExpression(filter: ViewFilter) {
     if (filter.right == null) {
@@ -18,12 +19,19 @@ function buildRawCallExpression(filter: ViewFilter) {
     return `${filter.operator}(${filter.left}, ${filter.right})`
 }
 
-export default function ViewLink({viewName, filters, children}: Props) {
+export default function ViewLink({
+    viewName,
+    filters,
+    children,
+    className,
+    ...anchorProps
+}: Props) {
     const expression = filters.map(buildRawCallExpression).join(' && ')
 
     return (
         <Link
-            className={css.viewLink}
+            {...anchorProps}
+            className={classNames(css.viewLink, className)}
             to={{
                 pathname: '/app/tickets/new/public',
                 state: {

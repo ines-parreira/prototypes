@@ -46,8 +46,8 @@ export default function TicketsClosedPerAgentViewLink({
         const statsViewFilters = getStatsViewFilters(
             getTicketViewFieldPath(getTicketViewField(ViewField.Closed)),
             statsFilters
-        )
-        return [assigneeFilter].concat(statsViewFilters)
+        ).filter((filter) => filter.left !== assigneeLeft)
+        return [assigneeFilter, ...statsViewFilters]
     }, [agent, statsFilters])
 
     if (!agent && agentName !== unassignedName) {

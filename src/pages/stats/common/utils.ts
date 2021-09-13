@@ -148,5 +148,21 @@ export const getStatsViewFilters = (
         })
     }
 
+    if (statsFilters?.has('agents')) {
+        const filtersList = statsFilters?.get('agents') as List<number>
+        filters.push({
+            left: getTicketViewFieldPath(
+                getTicketViewField(ViewField.Assignee)
+            ),
+            operator:
+                filtersList.size > 1
+                    ? CollectionOperator.ContainsAny
+                    : EqualityOperator.Eq,
+            right: JSON.stringify(
+                filtersList.size > 1 ? filtersList.toJS() : filtersList.first()
+            ),
+        })
+    }
+
     return filters
 }

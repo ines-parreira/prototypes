@@ -35,6 +35,7 @@ describe('TicketsClosedPerAgentViewLink', () => {
                 },
                 channels: [TicketChannels.EMAIL],
                 integrations: [1],
+                agents: [1, 2],
             },
         }),
         agents: fromJS({all: agentsFixtures}),

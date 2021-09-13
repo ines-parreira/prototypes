@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`stats components utils getStatsViewFilters should return view filters for multiple agents 1`] = `
+Array [
+  Object {
+    "left": "ticket.assignee_user.id",
+    "operator": "containsAny",
+    "right": "[1,2,3]",
+  },
+]
+`;
+
 exports[`stats components utils getStatsViewFilters should return view filters for multiple channels 1`] = `
 Array [
   Object {
@@ -31,6 +41,16 @@ Array [
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
+  },
+]
+`;
+
+exports[`stats components utils getStatsViewFilters should return view filters for single agent 1`] = `
+Array [
+  Object {
+    "left": "ticket.assignee_user.id",
+    "operator": "eq",
+    "right": "1",
   },
 ]
 `;

@@ -21,7 +21,7 @@ describe('ViewLink', () => {
         ]
 
         const {container} = render(
-            <ViewLink viewName={viewName} filters={filters}>
+            <ViewLink viewName={viewName} filters={filters} className="foo">
                 click here!
             </ViewLink>
         )
