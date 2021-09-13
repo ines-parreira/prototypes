@@ -284,7 +284,7 @@ describe('<FilterTopbar/>', () => {
         expect(minProps.activeViewIdSet).not.toHaveBeenCalled()
     })
 
-    it('should close popover on search', async () => {
+    it('should close popover on view change', async () => {
         const {rerender, getByText, queryByText} = render(
             <FilterTopbarContainer {...minProps} />
         )
@@ -293,9 +293,21 @@ describe('<FilterTopbar/>', () => {
         await waitFor(() => {
             expect(getByText('Confirm')).toBeTruthy()
         })
-        rerender(<FilterTopbarContainer {...minProps} isSearch />)
-        rerender(<FilterTopbarContainer {...minProps} />)
-        expect(queryByText('Confirm')).toBeNull()
+
+        rerender(
+            <FilterTopbarContainer
+                {...minProps}
+                activeView={fromJS({
+                    ...viewFixture,
+                    editMode: false,
+                    filters: ticketChannelEqualsEmailFilter,
+                    filters_ast: utils.getAST(ticketChannelEqualsEmailFilter),
+                })}
+            />
+        )
+        await waitFor(() => {
+            expect(queryByText('Confirm')).toBeNull()
+        })
     })
 
     it('should close popover on cancel', async () => {

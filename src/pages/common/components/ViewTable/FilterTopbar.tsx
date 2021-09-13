@@ -65,12 +65,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const {
-            activeView,
-            areFiltersValid,
-            fetchViewItems,
-            isSearch,
-        } = this.props
+        const {activeView, areFiltersValid, fetchViewItems} = this.props
         const {askUpdateConfirmation} = this.state
 
         // fetch page again when filters changed and that filters are valid
@@ -82,7 +77,11 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
         if (isSameView && filtersHaveChanged && areFiltersValid) {
             void fetchViewItems()
         }
-        if (!prevProps.isSearch && isSearch && askUpdateConfirmation) {
+        if (
+            prevProps.activeView.get('editMode') !==
+                activeView.get('editMode') &&
+            askUpdateConfirmation
+        ) {
             this.setState({askUpdateConfirmation: false})
         }
     }
