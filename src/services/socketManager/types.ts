@@ -211,7 +211,7 @@ export type OutboundPhoneCallInitiated = {
     event: {
         type: SocketEventType.OutboundPhoneCallInitiated
         phone_ticket_id: number
-        original_ticket_id: number
+        original_path: string
     }
 }
 

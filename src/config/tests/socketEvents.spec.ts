@@ -610,14 +610,15 @@ describe('Config: socketEvents', () => {
 
             it('should redirect to ticket page because agent is on the original ticket page', () => {
                 const originalTicketId = 123
-                window.location.pathname = `/app/ticket/${originalTicketId}`
+                const originalPath = `/app/ticket/${originalTicketId}`
+                window.location.pathname = originalPath
 
                 const spy = jest.spyOn(history, 'push')
                 const data: OutboundPhoneCallInitiated = {
                     event: {
                         type: SocketEventType.OutboundPhoneCallInitiated,
                         phone_ticket_id: 456,
-                        original_ticket_id: originalTicketId,
+                        original_path: originalPath,
                     },
                 }
                 handler?.onReceive(data)
@@ -626,6 +627,8 @@ describe('Config: socketEvents', () => {
             })
 
             it('should not redirect to ticket page because agent is not on the original ticket page', () => {
+                const originalTicketId = 123
+                const originalPath = `/app/ticket/${originalTicketId}`
                 window.location.pathname = `/app/ticket/789`
 
                 const spy = jest.spyOn(history, 'push')
@@ -633,7 +636,7 @@ describe('Config: socketEvents', () => {
                     event: {
                         type: SocketEventType.OutboundPhoneCallInitiated,
                         phone_ticket_id: 456,
-                        original_ticket_id: 123,
+                        original_path: originalPath,
                     },
                 }
                 handler?.onReceive(data)

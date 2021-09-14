@@ -13,6 +13,7 @@ import {
 } from '../../../../../../business/types/ticket'
 import {RootState} from '../../../../../../state/types'
 import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
+import {ClickablePhoneNumber} from '../../../ClickablePhoneNumber/ClickablePhoneNumber'
 
 import CustomerInfoWrapper from './CustomerInfoWrapper'
 
@@ -20,6 +21,7 @@ type Props = {
     channels: List<any>
     customerLocationInfo: Map<any, any>
     customerLastSeenOnChat: number | null
+    customerName: string
     children: ReactNode
 } & ConnectedProps<typeof connector>
 
@@ -38,6 +40,7 @@ export class CustomerChannels extends Component<Props> {
             children,
             customerLocationInfo,
             customerLastSeenOnChat,
+            customerName,
             currentUser,
         } = this.props
 
@@ -67,9 +70,9 @@ export class CustomerChannels extends Component<Props> {
         ])
 
         const list = filteredChannels.map((channel: Map<any, any>, idx) => {
-            let props = null
             let addressComponent = null
             const channelType = channel.get('type')
+            const componentId = `address-copied-${channel.get('id') as number}`
             let channelAddress = (channel.get('address') as string) || ''
 
             if (!channelAddress) {
@@ -78,47 +81,44 @@ export class CustomerChannels extends Component<Props> {
 
             switch (channelType) {
                 case TicketChannel.Email:
-                    props = {
-                        href: `mailto:${channelAddress}`,
-                    }
+                    addressComponent = (
+                        <a id={componentId} href={`mailto:${channelAddress}`}>
+                            {channelAddress}
+                        </a>
+                    )
                     break
                 case TicketChannel.Twitter:
                     // Display the twitter handle instead of the address
                     channelAddress = channel.getIn(['customer', 'name']) || ''
-
-                    props = {
-                        href: `https://twitter.com/${channelAddress}`,
-                        target: '_blank',
-                    }
+                    addressComponent = (
+                        <a
+                            id={componentId}
+                            href={`https://twitter.com/${channelAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {channelAddress}
+                        </a>
+                    )
                     break
                 case TicketChannel.Phone:
-                    // remove dots and spaces so that some extensions recognize the address as a tel number
-                    props = {
-                        href: `tel:${channelAddress
-                            .replace(/\./g, '')
-                            .replace(/ /g, '')}`,
-                    }
+                    addressComponent = (
+                        <ClickablePhoneNumber
+                            id={componentId}
+                            address={channelAddress}
+                            customerName={customerName}
+                        />
+                    )
                     break
                 default:
-                    props = null
-            }
-
-            const componentId = `address-copied-${channel.get('id') as number}`
-
-            if (props) {
-                addressComponent = (
-                    <a {...props} id={componentId}>
-                        {channelAddress}
-                    </a>
-                )
-            } else {
-                addressComponent = (
-                    <span id={componentId}>{channelAddress}</span>
-                )
+                    addressComponent = (
+                        <span id={componentId}>{channelAddress}</span>
+                    )
+                    break
             }
 
             return (
-                <p key={idx} className={css.customerChannel}>
+                <div key={idx} className={css.customerChannel}>
                     <SourceIcon type={channelType} className="uncolored mr-2" />
                     {addressComponent}
                     <span
@@ -142,7 +142,7 @@ export class CustomerChannels extends Component<Props> {
                             Copy
                         </Tooltip>
                     </span>
-                </p>
+                </div>
             )
         })
 

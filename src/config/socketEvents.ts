@@ -669,11 +669,10 @@ export const receivedEvents: ReceivedEvent[] = [
             const {event} = (json as unknown) as OutboundPhoneCallInitiated
             const {
                 phone_ticket_id: phoneTicketId,
-                original_ticket_id: originalTicketId,
+                original_path: originalPath,
             } = event
-            const originalTicketPath = `/app/ticket/${originalTicketId}`
 
-            if (window.location.pathname === originalTicketPath) {
+            if (window.location.pathname === originalPath) {
                 history.push(`/app/ticket/${phoneTicketId}`)
             }
         },

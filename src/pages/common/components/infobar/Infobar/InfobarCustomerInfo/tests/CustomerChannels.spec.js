@@ -1,12 +1,19 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {mount, shallow} from 'enzyme'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from '../../../../../../../constants/user.ts'
+import {initialState} from '../../../../../../../state/twilio/reducers.ts'
 import {CustomerChannels as CustomerChannelsComponent} from '../CustomerChannels.tsx'
+import CustomerInfoWrapper from '../CustomerInfoWrapper.tsx'
+
+const mockStore = configureMockStore([thunk])
 
 describe('CustomerChannels component', () => {
     beforeEach(() => {
@@ -28,6 +35,7 @@ describe('CustomerChannels component', () => {
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
+                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -76,6 +84,7 @@ describe('CustomerChannels component', () => {
                     currentUser={fromJS({
                         timezone: 'Europe/Paris',
                     })}
+                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -104,6 +113,7 @@ describe('CustomerChannels component', () => {
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
+                    customerName="Foo"
                     channels={fromJS([])}
                 />
             )
@@ -125,6 +135,7 @@ describe('CustomerChannels component', () => {
                         city: 'Paris',
                         time_zone: {offset: '+0100'},
                     })}
+                    customerName="Foo"
                     channels={fromJS([])}
                 />
             )
@@ -147,6 +158,7 @@ describe('CustomerChannels component', () => {
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
+                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -174,6 +186,7 @@ describe('CustomerChannels component', () => {
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
+                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -192,50 +205,63 @@ describe('CustomerChannels component', () => {
         const mockDate = new Date('2021-02-26T13:00:00.000Z')
         global.Date.now = jest.fn(() => mockDate)
 
+        const store = mockStore({
+            twilio: initialState,
+        })
+
         const component = mount(
-            <CustomerChannelsComponent
-                currentUser={fromJS({
-                    timezone: 'Europe/Paris',
-                })}
-                customerLastSeenOnChat={1614342240000} // 2021-02-26T12:24:00.000Z
-                customerLocationInfo={fromJS({
-                    city: 'Paris',
-                    country_name: 'France',
-                    time_zone: {offset: '+0100'},
-                })}
-                channels={fromJS([
-                    {
-                        type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                        address: 'foo@gorgias.io',
-                        preferred: true,
-                    },
-                    {
-                        type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                        address: 'bar@gorgias.io',
-                        preferred: false,
-                    },
-                    {
-                        type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                        address: 'baz@gorgias.io',
-                        preferred: false,
-                    },
-                    {
-                        type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                        address: '+15551238523',
-                        preferred: true,
-                    },
-                    {
-                        type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                        address: '+15554567852',
-                        preferred: false,
-                    },
-                    {
-                        type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                        address: '+15557899632',
-                        preferred: false,
-                    },
-                ])}
-            />,
+            <Provider store={store}>
+                <CustomerChannelsComponent
+                    currentUser={fromJS({
+                        timezone: 'Europe/Paris',
+                    })}
+                    customerLastSeenOnChat={1614342240000} // 2021-02-26T12:24:00.000Z
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                        country_name: 'France',
+                        time_zone: {offset: '+0100'},
+                    })}
+                    customerName="Foo"
+                    channels={fromJS([
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            address: 'foo@gorgias.io',
+                            preferred: true,
+                            id: 1,
+                        },
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            address: 'bar@gorgias.io',
+                            preferred: false,
+                            id: 2,
+                        },
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            address: 'baz@gorgias.io',
+                            preferred: false,
+                            id: 3,
+                        },
+                        {
+                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                            address: '+15551238523',
+                            preferred: true,
+                            id: 4,
+                        },
+                        {
+                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                            address: '+15554567852',
+                            preferred: false,
+                            id: 5,
+                        },
+                        {
+                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                            address: '+15557899632',
+                            preferred: false,
+                            id: 6,
+                        },
+                    ])}
+                />
+            </Provider>,
             {
                 // required for `reactstrap.Tooltip` to mount correctly
                 // see https://github.com/reactstrap/reactstrap/issues/818
@@ -243,11 +269,11 @@ describe('CustomerChannels component', () => {
             }
         )
 
-        expect(component.children()).toMatchSnapshot()
+        expect(component.find(CustomerInfoWrapper)).toMatchSnapshot()
 
         component.find('button').simulate('click')
 
-        expect(component.children()).toMatchSnapshot()
+        expect(component.find(CustomerInfoWrapper)).toMatchSnapshot()
 
         // cleanup after using `attachTo`
         // see https://github.com/airbnb/enzyme/blob/master/docs/api/ReactWrapper/detach.md

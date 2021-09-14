@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 6 11 22 33 44
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      Call with
+    </h6>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 1
+       (
+      +14151112222
+      )
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 2
+       (
+      +14153334444
+      )
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations 2`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 6 11 22 33 44
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      Call with
+    </h6>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 1
+       (
+      +14151112222
+      )
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations, with disabled buttons because the address is invalid 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 66666666666666666666666666
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      Call with
+    </h6>
+    <button
+      class="btn-link disabled dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 1
+       (
+      +14151112222
+      )
+    </button>
+    <button
+      class="btn-link disabled dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 2
+       (
+      +14153334444
+      )
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations, with disabled buttons because the address is invalid 2`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 66666666666666666666666666
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      Call with
+    </h6>
+    <button
+      class="btn-link disabled dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 1
+       (
+      +14151112222
+      )
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations, with disabled buttons because there is no device 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 6 11 22 33 44
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      Call with
+    </h6>
+    <button
+      class="btn-link disabled dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 1
+       (
+      +14151112222
+      )
+    </button>
+    <button
+      class="btn-link disabled dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 2
+       (
+      +14153334444
+      )
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations, with disabled buttons because there is no device 2`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 6 11 22 33 44
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-header"
+      tabindex="-1"
+    >
+      Call with
+    </h6>
+    <button
+      class="btn-link disabled dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      My Phone Integration 1
+       (
+      +14151112222
+      )
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ClickablePhoneNumber/> should render href with prefix "tel:" because there is no phone integration 1`] = `
+<a
+  href="tel:+33611223344"
+  id="phone-number-1"
+>
+  +33 6 11 22 33 44
+</a>
+`;

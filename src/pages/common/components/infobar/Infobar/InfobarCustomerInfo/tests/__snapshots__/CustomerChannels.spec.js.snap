@@ -3,7 +3,7 @@
 exports[`CustomerChannels component should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more" 1`] = `
 <CustomerInfoWrapper>
   <div>
-    <p
+    <div
       className="customerChannel"
       key=".0:$0"
     >
@@ -19,13 +19,13 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <a
         href="mailto:foo@gorgias.io"
-        id="address-copied-undefined"
+        id="address-copied-1"
       >
         foo@gorgias.io
       </a>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-1"
       >
         <i
           className="material-icons"
@@ -94,8 +94,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key=".0:$1"
     >
@@ -111,13 +111,13 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <a
         href="mailto:bar@gorgias.io"
-        id="address-copied-undefined"
+        id="address-copied-2"
       >
         bar@gorgias.io
       </a>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-2"
       >
         <i
           className="material-icons"
@@ -186,7 +186,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
+    </div>
     <Button
       className="container pl-0"
       color="link"
@@ -215,7 +215,7 @@ exports[`CustomerChannels component should display all passed channels (includin
 exports[`CustomerChannels component should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more" 2`] = `
 <CustomerInfoWrapper>
   <div>
-    <p
+    <div
       className="customerChannel"
       key="0"
     >
@@ -231,13 +231,13 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <a
         href="mailto:foo@gorgias.io"
-        id="address-copied-undefined"
+        id="address-copied-1"
       >
         foo@gorgias.io
       </a>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-1"
       >
         <i
           className="material-icons"
@@ -306,8 +306,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="1"
     >
@@ -323,13 +323,13 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <a
         href="mailto:bar@gorgias.io"
-        id="address-copied-undefined"
+        id="address-copied-2"
       >
         bar@gorgias.io
       </a>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-2"
       >
         <i
           className="material-icons"
@@ -398,8 +398,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="2"
     >
@@ -415,13 +415,13 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <a
         href="mailto:baz@gorgias.io"
-        id="address-copied-undefined"
+        id="address-copied-3"
       >
         baz@gorgias.io
       </a>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-3"
       >
         <i
           className="material-icons"
@@ -490,8 +490,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="3"
     >
@@ -505,15 +505,32 @@ exports[`CustomerChannels component should display all passed channels (includin
           phone
         </i>
       </SourceIcon>
-      <a
-        href="tel:+15551238523"
-        id="address-copied-undefined"
+      <Connect(ClickablePhoneNumberContainer)
+        address="+15551238523"
+        customerName="Foo"
+        id="address-copied-4"
       >
-        +15551238523
-      </a>
+        <ClickablePhoneNumberContainer
+          address="+15551238523"
+          connection={null}
+          customerName="Foo"
+          device={null}
+          id="address-copied-4"
+          integrations={Immutable.List []}
+          setConnection={[Function]}
+          setIsDialing={[Function]}
+        >
+          <a
+            href="tel:+15551238523"
+            id="address-copied-4"
+          >
+            +15551238523
+          </a>
+        </ClickablePhoneNumberContainer>
+      </Connect(ClickablePhoneNumberContainer)>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-4"
       >
         <i
           className="material-icons"
@@ -582,8 +599,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="4"
     >
@@ -597,15 +614,32 @@ exports[`CustomerChannels component should display all passed channels (includin
           phone
         </i>
       </SourceIcon>
-      <a
-        href="tel:+15554567852"
-        id="address-copied-undefined"
+      <Connect(ClickablePhoneNumberContainer)
+        address="+15554567852"
+        customerName="Foo"
+        id="address-copied-5"
       >
-        +15554567852
-      </a>
+        <ClickablePhoneNumberContainer
+          address="+15554567852"
+          connection={null}
+          customerName="Foo"
+          device={null}
+          id="address-copied-5"
+          integrations={Immutable.List []}
+          setConnection={[Function]}
+          setIsDialing={[Function]}
+        >
+          <a
+            href="tel:+15554567852"
+            id="address-copied-5"
+          >
+            +15554567852
+          </a>
+        </ClickablePhoneNumberContainer>
+      </Connect(ClickablePhoneNumberContainer)>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-5"
       >
         <i
           className="material-icons"
@@ -674,8 +708,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="5"
     >
@@ -689,15 +723,32 @@ exports[`CustomerChannels component should display all passed channels (includin
           phone
         </i>
       </SourceIcon>
-      <a
-        href="tel:+15557899632"
-        id="address-copied-undefined"
+      <Connect(ClickablePhoneNumberContainer)
+        address="+15557899632"
+        customerName="Foo"
+        id="address-copied-6"
       >
-        +15557899632
-      </a>
+        <ClickablePhoneNumberContainer
+          address="+15557899632"
+          connection={null}
+          customerName="Foo"
+          device={null}
+          id="address-copied-6"
+          integrations={Immutable.List []}
+          setConnection={[Function]}
+          setIsDialing={[Function]}
+        >
+          <a
+            href="tel:+15557899632"
+            id="address-copied-6"
+          >
+            +15557899632
+          </a>
+        </ClickablePhoneNumberContainer>
+      </Connect(ClickablePhoneNumberContainer)>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
-        data-clipboard-target="#address-copied-undefined"
+        data-clipboard-target="#address-copied-6"
       >
         <i
           className="material-icons"
@@ -766,7 +817,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           </UncontrolledTooltip>
         </Tooltip>
       </span>
-    </p>
+    </div>
     <p
       className="customerChannel"
     >
@@ -825,7 +876,7 @@ exports[`CustomerChannels component should display all passed channels (includin
 exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 1 passed channel 1`] = `
 <Fragment>
   <CustomerInfoWrapper>
-    <p
+    <div
       className="customerChannel"
       key="0"
     >
@@ -862,7 +913,7 @@ exports[`CustomerChannels component should display all passed channels and not d
           Copy
         </Tooltip>
       </span>
-    </p>
+    </div>
   </CustomerInfoWrapper>
 </Fragment>
 `;
@@ -924,7 +975,7 @@ exports[`CustomerChannels component should display all passed channels and not d
 exports[`CustomerChannels component should display first few passed channels and the button "show more" because there are more channels than those displayed 1`] = `
 <Fragment>
   <CustomerInfoWrapper>
-    <p
+    <div
       className="customerChannel"
       key="0"
     >
@@ -961,8 +1012,8 @@ exports[`CustomerChannels component should display first few passed channels and
           Copy
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="1"
     >
@@ -999,8 +1050,8 @@ exports[`CustomerChannels component should display first few passed channels and
           Copy
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="2"
     >
@@ -1037,8 +1088,8 @@ exports[`CustomerChannels component should display first few passed channels and
           Copy
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="3"
     >
@@ -1046,12 +1097,11 @@ exports[`CustomerChannels component should display first few passed channels and
         className="uncolored mr-2"
         type="phone"
       />
-      <a
-        href="tel:+15551238523"
+      <Connect(ClickablePhoneNumberContainer)
+        address="+15551238523"
+        customerName="Foo"
         id="address-copied-undefined"
-      >
-        +15551238523
-      </a>
+      />
       <span
         className="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
@@ -1075,8 +1125,8 @@ exports[`CustomerChannels component should display first few passed channels and
           Copy
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="4"
     >
@@ -1084,12 +1134,11 @@ exports[`CustomerChannels component should display first few passed channels and
         className="uncolored mr-2"
         type="phone"
       />
-      <a
-        href="tel:+15554567852"
+      <Connect(ClickablePhoneNumberContainer)
+        address="+15554567852"
+        customerName="Foo"
         id="address-copied-undefined"
-      >
-        +15554567852
-      </a>
+      />
       <span
         className="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
@@ -1113,8 +1162,8 @@ exports[`CustomerChannels component should display first few passed channels and
           Copy
         </Tooltip>
       </span>
-    </p>
-    <p
+    </div>
+    <div
       className="customerChannel"
       key="5"
     >
@@ -1122,12 +1171,11 @@ exports[`CustomerChannels component should display first few passed channels and
         className="uncolored mr-2"
         type="phone"
       />
-      <a
-        href="tel:+15557899632"
+      <Connect(ClickablePhoneNumberContainer)
+        address="+15557899632"
+        customerName="Foo"
         id="address-copied-undefined"
-      >
-        +15557899632
-      </a>
+      />
       <span
         className="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-undefined"
@@ -1151,7 +1199,7 @@ exports[`CustomerChannels component should display first few passed channels and
           Copy
         </Tooltip>
       </span>
-    </p>
+    </div>
     <p
       className="customerChannel"
     >
@@ -1179,7 +1227,7 @@ exports[`CustomerChannels component should display first few passed channels and
 exports[`CustomerChannels component should display the email channel and the local time channel and then display the button "show more" because there are more channels than those displayed 1`] = `
 <Fragment>
   <CustomerInfoWrapper>
-    <p
+    <div
       className="customerChannel"
       key="0"
     >
@@ -1216,7 +1264,7 @@ exports[`CustomerChannels component should display the email channel and the loc
           Copy
         </Tooltip>
       </span>
-    </p>
+    </div>
     <p
       className="customerChannel"
     >
@@ -1244,7 +1292,7 @@ exports[`CustomerChannels component should display the email channel and the loc
 exports[`CustomerChannels component should display the email channel and the local time channel and then display the button "show more" because there are more channels than those displayed 2`] = `
 <Fragment>
   <CustomerInfoWrapper>
-    <p
+    <div
       className="customerChannel"
       key="0"
     >
@@ -1281,7 +1329,7 @@ exports[`CustomerChannels component should display the email channel and the loc
           Copy
         </Tooltip>
       </span>
-    </p>
+    </div>
     <p
       className="customerChannel"
     >

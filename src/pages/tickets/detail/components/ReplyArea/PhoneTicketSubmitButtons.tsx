@@ -9,10 +9,9 @@ import {Connection, Device} from 'twilio-client'
 import {getNewMessageSource} from '../../../../../state/newMessage/selectors'
 import {RootState} from '../../../../../state/types'
 import {setConnection, setIsDialing} from '../../../../../state/twilio/actions'
-import {PhoneCallDirection} from '../../../../../business/twilio'
-import client from '../../../../../models/api/resources'
 import {getTicket} from '../../../../../state/ticket/selectors'
 import {getCurrentUser} from '../../../../../state/currentUser/selectors'
+import {useOutboundCall} from '../../../../../hooks/integrations/phone/useOutboundCall'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -27,7 +26,7 @@ function PhoneTicketSubmitButtons({
     setIsDialing,
     setConnection,
 }: Props) {
-    const {isValid, onCall} = useOutboundCall(
+    const {isValid, onSubmit} = useSubmit(
         device,
         source,
         ticketId,
@@ -49,7 +48,7 @@ function PhoneTicketSubmitButtons({
                 type="submit"
                 color="success"
                 disabled={isDisabled}
-                onClick={onCall}
+                onClick={onSubmit}
             >
                 Call
             </Button>
@@ -73,7 +72,7 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps)
 export default connector(PhoneTicketSubmitButtons)
 
-function useOutboundCall(
+function useSubmit(
     device: Device | null,
     source: Map<any, any>,
     ticketId: number,
@@ -81,57 +80,24 @@ function useOutboundCall(
     setIsDialing: (isDialing: boolean) => void,
     setConnection: (connection: Connection | null) => void
 ) {
-    const [fromAddress, setFromAddress] = useState<string | undefined>()
-    const [toAddress, setToAddress] = useState<string | undefined>()
-    const [customerName, setCustomerName] = useState<string | undefined>()
-    const [integrationId, setIntegrationId] = useState<number | undefined>()
+    const [fromAddress, setFromAddress] = useState<string>('')
+    const [toAddress, setToAddress] = useState<string>('')
+    const [customerName, setCustomerName] = useState<string>('')
+    const [integrationId, setIntegrationId] = useState<number>(0)
     const [isValid, setIsValid] = useState(false)
 
-    const onCall = useCallback(() => {
-        const connection = device?.connect({
-            Direction: PhoneCallDirection.OutboundDial,
-            Caller: fromAddress as string,
-            Called: toAddress as string,
-            From: fromAddress as string,
-            To: toAddress as string,
-
-            // Custom parameters:
-            integration_id: (integrationId as number).toString(),
-            customer_name: customerName as string,
-            original_ticket_id: ticketId.toString(),
-            agent_id: agentId.toString(),
-        })
-
-        if (connection) {
-            connection.on('cancel', () => {
-                setIsDialing(false)
-                setConnection(null)
-                onDisconnect().catch(console.error)
-            })
-
-            connection.on('disconnect', () => {
-                setIsDialing(false)
-                setConnection(null)
-                onDisconnect().catch(console.error)
-            })
-
-            connection.on('error', console.error)
-
-            setIsDialing(true)
-            setConnection(connection)
-            onConnect().catch(console.error)
-        }
-    }, [
-        device,
+    const onCall = useOutboundCall(device, setIsDialing, setConnection)
+    const options = {
         fromAddress,
         toAddress,
         integrationId,
         customerName,
         ticketId,
         agentId,
-        setIsDialing,
-        setConnection,
-    ])
+    }
+    const onSubmit = useCallback(() => {
+        onCall(options)
+    }, [onCall, options])
 
     useEffect(() => {
         const newIntegrationId = source.getIn(['from', 'id'])
@@ -142,8 +108,8 @@ function useOutboundCall(
         const parsedFrom = parsePhoneNumber(rawFrom)
         const parsedTo = parsePhoneNumber(rawTo)
 
-        const formattedFrom = parsedFrom?.format('E.164')
-        const formattedTo = parsedTo?.format('E.164')
+        const formattedFrom = parsedFrom?.format('E.164') || ''
+        const formattedTo = parsedTo?.format('E.164') || ''
 
         setIntegrationId(newIntegrationId)
         setCustomerName(newCustomerName)
@@ -153,21 +119,5 @@ function useOutboundCall(
         setIsValid(!!newIntegrationId && !!formattedFrom && !!formattedTo)
     }, [source])
 
-    return {isValid, onCall}
-}
-
-async function onConnect() {
-    try {
-        await client.post('/integrations/phone/call/connected')
-    } catch (error) {
-        console.error(error)
-    }
-}
-
-async function onDisconnect() {
-    try {
-        await client.post('/integrations/phone/call/disconnected')
-    } catch (error) {
-        console.error(error)
-    }
+    return {isValid, onSubmit}
 }

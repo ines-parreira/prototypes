@@ -274,6 +274,7 @@ export const InfobarCustomerInfoContainer = ({
                             'location_info',
                         ])}
                         customerLastSeenOnChat={lastSeenOnChat}
+                        customerName={customer.get('name') || ''}
                     >
                         <CustomerNote customer={customer} />
                     </CustomerChannels>
