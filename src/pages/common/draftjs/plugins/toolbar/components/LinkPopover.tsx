@@ -1,6 +1,9 @@
 import React, {Component, ReactNode, MouseEvent} from 'react'
 import classnames from 'classnames'
 import {Popover} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
+
+import {RootState} from '../../../../../../state/types'
 
 import css from './LinkPopover.less'
 
@@ -10,7 +13,7 @@ type Props = {
     onEdit?: (arg0: string) => void
     onDelete?: (arg0: string) => void
     children?: React.ReactNode
-}
+} & ConnectedProps<typeof connector>
 
 type State = {
     isOpen: boolean
@@ -36,7 +39,7 @@ const Button = (props: {
     </button>
 )
 
-export default class LinkPopover extends Component<Props, State> {
+export class LinkPopoverContainer extends Component<Props, State> {
     state: State = {
         isOpen: false,
     }
@@ -50,11 +53,14 @@ export default class LinkPopover extends Component<Props, State> {
     }
 
     _onMouseEnter = (e: MouseEvent) => {
+        const {isEditingLink} = this.props
         e.preventDefault()
         if (this.timeout) {
             window.clearTimeout(this.timeout)
         }
-        this.setState({isOpen: true})
+        if (!isEditingLink) {
+            this.setState({isOpen: true})
+        }
     }
 
     _onMouseLeave = (e: MouseEvent) => {
@@ -126,3 +132,9 @@ export default class LinkPopover extends Component<Props, State> {
         )
     }
 }
+
+const connector = connect((state: RootState) => ({
+    isEditingLink: state.ui.editor.isEditingLink,
+}))
+
+export default connector(LinkPopoverContainer)

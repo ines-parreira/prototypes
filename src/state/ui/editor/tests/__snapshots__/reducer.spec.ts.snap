@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`editor reducer linkEditionEnded action should set the isEditingLink value to false 1`] = `
+Object {
+  "isEditingLink": false,
+}
+`;
+
+exports[`editor reducer linkEditionStarted action should set the isEditingLink value to true 1`] = `
+Object {
+  "isEditingLink": true,
+}
+`;

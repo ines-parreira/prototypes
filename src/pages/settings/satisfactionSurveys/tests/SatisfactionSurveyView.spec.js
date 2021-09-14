@@ -3,6 +3,7 @@ import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import SatisfactionSurveyView from '../SatisfactionSurveyView.tsx'
 
@@ -31,10 +32,9 @@ describe('SatisfactionSurveyView', () => {
     describe('render', () => {
         it('should render current survey settings form', () => {
             const component = mount(
-                <SatisfactionSurveyView
-                    store={store}
-                    submitSetting={jest.fn()}
-                />
+                <Provider store={store}>
+                    <SatisfactionSurveyView submitSetting={jest.fn()} />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -44,10 +44,9 @@ describe('SatisfactionSurveyView', () => {
     describe('_onSubmit', () => {
         it('should submit user data', () => {
             const component = mount(
-                <SatisfactionSurveyView
-                    store={store}
-                    submitSetting={mockSubmitSetting}
-                />
+                <Provider store={store}>
+                    <SatisfactionSurveyView submitSetting={mockSubmitSetting} />
+                </Provider>
             )
 
             component.find('form').simulate('submit')

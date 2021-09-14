@@ -1,6 +1,9 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate.tsx'
 import {
@@ -19,6 +22,13 @@ const commonProps = {
 }
 
 describe('<EmailIntegrationUpdateContainer />', () => {
+    const mockStore = configureMockStore([thunk])
+    let store = mockStore({})
+
+    beforeEach(() => {
+        store = mockStore({})
+    })
+
     it.each([
         {
             selector: '#id-name',
@@ -59,7 +69,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const {container, getByText} = render(
-                <EmailIntegrationUpdateContainer {...props} />
+                <Provider store={store}>
+                    <EmailIntegrationUpdateContainer {...props} />
+                </Provider>
             )
 
             expect(
@@ -120,7 +132,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const {container, getByText} = render(
-                <EmailIntegrationUpdateContainer {...props} />
+                <Provider store={store}>
+                    <EmailIntegrationUpdateContainer {...props} />
+                </Provider>
             )
 
             expect(
@@ -183,7 +197,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const {container, getByText} = render(
-                <EmailIntegrationUpdateContainer {...props} />
+                <Provider store={store}>
+                    <EmailIntegrationUpdateContainer {...props} />
+                </Provider>
             )
 
             expect(

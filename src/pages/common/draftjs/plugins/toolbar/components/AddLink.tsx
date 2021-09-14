@@ -1,6 +1,7 @@
 import {EditorState, Modifier} from 'draft-js'
 import React, {Component, KeyboardEvent} from 'react'
 import {Button} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
 
 import InputField from '../../../../forms/InputField.js'
 import {removeLink} from '../../utils'
@@ -11,6 +12,10 @@ import {
     linkify,
 } from '../../../../../../utils/editor'
 import {ActionInjectedProps} from '../types'
+import {
+    linkEditionEnded,
+    linkEditionStarted,
+} from '../../../../../../state/ui/editor/actions'
 
 import css from './AddLink.less'
 import Popover from './ButtonPopover'
@@ -24,9 +29,20 @@ type Props = {
     isOpen: boolean
     onOpen: () => void
     onClose: () => void
-} & ActionInjectedProps
+} & ActionInjectedProps &
+    ConnectedProps<typeof connector>
 
-export default class AddLink extends Component<Props> {
+export class AddLinkContainer extends Component<Props> {
+    componentDidUpdate(prevProps: Props) {
+        const {isOpen, linkEditionEnded, linkEditionStarted} = this.props
+
+        if (!prevProps.isOpen && isOpen) {
+            linkEditionStarted()
+        } else if (prevProps.isOpen && !isOpen) {
+            linkEditionEnded()
+        }
+    }
+
     _isValid = (): boolean =>
         !!(
             this.props.text.trim() &&
@@ -207,3 +223,10 @@ export default class AddLink extends Component<Props> {
         )
     }
 }
+
+const connector = connect(null, {
+    linkEditionStarted,
+    linkEditionEnded,
+})
+
+export default connector(AddLinkContainer)

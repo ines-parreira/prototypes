@@ -1,6 +1,9 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import {GorgiasChatCampaignDetailComponent} from '../GorgiasChatCampaignDetail'
 
@@ -40,19 +43,25 @@ jest.mock('../../../../../../common/utils/withPaywall.tsx', () => () => {
 })
 
 describe('<GorgiasChatCampaignDetail/>', () => {
+    const mockStore = configureMockStore([thunk])
+    let store = mockStore({})
+
     beforeEach(() => {
         jest.resetAllMocks()
+        store = mockStore({})
     })
 
     describe('render()', () => {
         it("should display default value when it's a new campaign", () => {
             const {container} = render(
-                <GorgiasChatCampaignDetailComponent
-                    {...commonProps}
-                    campaign={fromJS({})}
-                    integration={fromJS(chatIntegration)}
-                    id="new"
-                />
+                <Provider store={store}>
+                    <GorgiasChatCampaignDetailComponent
+                        {...commonProps}
+                        campaign={fromJS({})}
+                        integration={fromJS(chatIntegration)}
+                        id="new"
+                    />
+                </Provider>
             )
 
             expect(container).toMatchSnapshot()
@@ -71,28 +80,30 @@ describe('<GorgiasChatCampaignDetail/>', () => {
             }
 
             const {container} = render(
-                <GorgiasChatCampaignDetailComponent
-                    {...commonProps}
-                    campaign={fromJS({
-                        name: 'My little campaign',
-                        id: '789das-ds54f6s-asd64',
-                        message,
-                        triggers: [
-                            {
-                                key: 'current_url',
-                                operator: 'contains',
-                                value: 'gorgias',
-                            },
-                            {
-                                key: 'time_spent_on_page',
-                                operator: 'gt',
-                                value: 42,
-                            },
-                        ],
-                    })}
-                    integration={fromJS(chatIntegration)}
-                    id="my-litte-campaign-789das-ds54f6s-asd64"
-                />
+                <Provider store={store}>
+                    <GorgiasChatCampaignDetailComponent
+                        {...commonProps}
+                        campaign={fromJS({
+                            name: 'My little campaign',
+                            id: '789das-ds54f6s-asd64',
+                            message,
+                            triggers: [
+                                {
+                                    key: 'current_url',
+                                    operator: 'contains',
+                                    value: 'gorgias',
+                                },
+                                {
+                                    key: 'time_spent_on_page',
+                                    operator: 'gt',
+                                    value: 42,
+                                },
+                            ],
+                        })}
+                        integration={fromJS(chatIntegration)}
+                        id="my-litte-campaign-789das-ds54f6s-asd64"
+                    />
+                </Provider>
             )
 
             expect(container).toMatchSnapshot()
@@ -112,28 +123,30 @@ describe('<GorgiasChatCampaignDetail/>', () => {
             }
 
             const {container} = render(
-                <GorgiasChatCampaignDetailComponent
-                    {...commonProps}
-                    campaign={fromJS({
-                        name: 'My little campaign',
-                        id: '789das-ds54f6s-asd64',
-                        message,
-                        triggers: [
-                            {
-                                key: 'current_url',
-                                operator: 'contains',
-                                value: 'gorgias',
-                            },
-                            {
-                                key: 'time_spent_on_page',
-                                operator: 'gt',
-                                value: 42,
-                            },
-                        ],
-                    })}
-                    integration={fromJS(chatIntegration)}
-                    id="my-litte-campaign-789das-ds54f6s-asd64"
-                />
+                <Provider store={store}>
+                    <GorgiasChatCampaignDetailComponent
+                        {...commonProps}
+                        campaign={fromJS({
+                            name: 'My little campaign',
+                            id: '789das-ds54f6s-asd64',
+                            message,
+                            triggers: [
+                                {
+                                    key: 'current_url',
+                                    operator: 'contains',
+                                    value: 'gorgias',
+                                },
+                                {
+                                    key: 'time_spent_on_page',
+                                    operator: 'gt',
+                                    value: 42,
+                                },
+                            ],
+                        })}
+                        integration={fromJS(chatIntegration)}
+                        id="my-litte-campaign-789das-ds54f6s-asd64"
+                    />
+                </Provider>
             )
 
             expect(container).toMatchSnapshot()

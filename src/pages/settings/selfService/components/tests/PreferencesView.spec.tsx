@@ -97,6 +97,9 @@ describe('<SelfServicePreferencesView/>', () => {
             selfServiceConfigurations: {},
         },
         ui: {
+            editor: {
+                isEditingLink: false,
+            },
             stats: {
                 fetchingMap: {},
             },
