@@ -8,7 +8,7 @@ exports[`<StatsFilters /> should display the page 1`] = `
     class="align-items-center"
   >
     <span>
-      Overview
+      Performance overview
     </span>
     <button
       class="wrapper ml-3 btn btn-secondary"

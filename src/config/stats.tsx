@@ -1435,6 +1435,7 @@ function formatNumber(this: Scale<any>, value: number) {
 export const liveViews: Map<any, any> = fromJS({
     'live-overview': {
         name: 'Overview',
+        title: 'Live overview',
         description:
             'Get a live overview of the current activity of your support team, including agent status, open tickets, and volume of tickets you are handling throughout the day.',
         url: 'https://docs.gorgias.com/statistics/statistics#data_sets',
@@ -1444,6 +1445,7 @@ export const liveViews: Map<any, any> = fromJS({
     },
     'live-agents': {
         name: 'Agents',
+        title: 'Live agents',
         description:
             'Live Agents will show you the work agents have accomplished over the day.',
         url: 'https://docs.gorgias.com/statistics/statistics#data_sets',
@@ -1456,6 +1458,7 @@ export const liveViews: Map<any, any> = fromJS({
 export const supportPerformanceViews: Map<any, any> = fromJS({
     'support-performance-overview': {
         name: 'Overview',
+        title: 'Performance overview',
         description: `Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support.`,
@@ -1593,7 +1596,7 @@ export const automationViews: Map<any, any> = fromJS({
         name: 'Overview',
         title: 'Automation Overview',
         description: `The automation overview records how many customer interactions are automated
-(answered and closed without agent intervention) thanks to Gorgias automation rules. 
+(answered and closed without agent intervention) thanks to Gorgias automation rules.
 You can see at a glance how many interactions are automated depending on its source and the automation
 tool used to answer it.`,
         url: 'https://docs.gorgias.com/statistics/statistics',
