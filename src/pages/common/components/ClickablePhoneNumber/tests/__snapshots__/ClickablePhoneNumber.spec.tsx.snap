@@ -15,7 +15,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
   </a>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="dropdownMenu dropdown-menu"
     role="menu"
     tabindex="-1"
   >
@@ -66,7 +66,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
   </a>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="dropdownMenu dropdown-menu"
     role="menu"
     tabindex="-1"
   >
@@ -106,7 +106,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
   </a>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="dropdownMenu dropdown-menu"
     role="menu"
     tabindex="-1"
   >
@@ -157,7 +157,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
   </a>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="dropdownMenu dropdown-menu"
     role="menu"
     tabindex="-1"
   >
@@ -197,7 +197,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
   </a>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="dropdownMenu dropdown-menu"
     role="menu"
     tabindex="-1"
   >
@@ -248,7 +248,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
   </a>
   <div
     aria-hidden="true"
-    class="dropdown-menu"
+    class="dropdownMenu dropdown-menu"
     role="menu"
     tabindex="-1"
   >

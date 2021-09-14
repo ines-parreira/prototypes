@@ -78,7 +78,7 @@ const ClickablePhoneNumberContainer = ({
             <DropdownToggle id={id} tag="a" href="#">
                 {address}
             </DropdownToggle>
-            <DropdownMenu container="body">
+            <DropdownMenu container="body" className={css.dropdownMenu}>
                 <DropdownItem header>Call with</DropdownItem>
                 {integrations.map((integration: Map<any, any>) => {
                     const phoneNumber = integration.getIn([
