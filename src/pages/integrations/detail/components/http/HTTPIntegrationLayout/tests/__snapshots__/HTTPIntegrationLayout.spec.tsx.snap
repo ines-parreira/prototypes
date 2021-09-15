@@ -1,0 +1,267 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li>
+          <div>
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </div>
+        </li>
+        <li>
+          <div>
+            <a
+              to="/app/settings/integrations/http"
+            >
+              HTTP
+            </a>
+          </div>
+        </li>
+        <li>
+          <div>
+            Add new HTTP integration
+          </div>
+          <div>
+            is active: 
+            true
+          </div>
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <span>
+    children
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationLayout should render the layout of an event page of a HTTP integration 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li>
+            <div>
+              <a
+                to="/app/settings/integrations"
+              >
+                Integrations
+              </a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a
+                to="/app/settings/integrations/http"
+              >
+                HTTP
+              </a>
+            </div>
+          </li>
+          <li>
+            <div>
+              Backend integration
+            </div>
+            <div>
+              is active: 
+              false
+            </div>
+          </li>
+          <li>
+            <div>
+              #
+              2
+            </div>
+            <div>
+              is active: 
+              true
+            </div>
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/http/1"
+      >
+        Settings
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/http/1/events"
+      >
+        Logs
+      </a>
+    </nav>
+    <span>
+      children
+    </span>
+  </div>
+</div>
+`;
+
+exports[`HTTPIntegrationLayout should render the layout of the events page of a HTTP integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li>
+          <div>
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </div>
+        </li>
+        <li>
+          <div>
+            <a
+              to="/app/settings/integrations/http"
+            >
+              HTTP
+            </a>
+          </div>
+        </li>
+        <li>
+          <div>
+            Backend integration
+          </div>
+          <div>
+            is active: 
+            false
+          </div>
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </a>
+  </nav>
+  <span>
+    children
+  </span>
+</div>
+`;
+
+exports[`HTTPIntegrationLayout should render the layout of the settings page of a HTTP integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li>
+          <div>
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </div>
+        </li>
+        <li>
+          <div>
+            <a
+              to="/app/settings/integrations/http"
+            >
+              HTTP
+            </a>
+          </div>
+        </li>
+        <li>
+          <div>
+            Backend integration
+          </div>
+          <div>
+            is active: 
+            true
+          </div>
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </a>
+  </nav>
+  <span>
+    children
+  </span>
+</div>
+`;

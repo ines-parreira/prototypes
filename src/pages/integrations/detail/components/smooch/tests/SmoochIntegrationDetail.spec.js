@@ -12,17 +12,14 @@ import {
     SPANISH_LANGUAGE,
 } from '../../../../../../constants/languages.ts'
 
-import {SmoochIntegrationDetail} from '../SmoochIntegrationDetail'
+import {SmoochIntegrationDetail} from '../SmoochIntegrationDetail.tsx'
 
 const defaultProps = {
-    actions: {
-        fetchIntegration: jest.fn(),
-        triggerCreateSuccess: jest.fn(),
-        updateOrCreateIntegration: jest.fn(),
-        activateIntegration: jest.fn(),
-        deactivateIntegration: jest.fn(),
-        deleteIntegration: jest.fn(),
-    },
+    activateIntegration: jest.fn(),
+    deactivateIntegration: jest.fn(),
+    deleteIntegration: jest.fn(),
+    triggerCreateSuccess: jest.fn(),
+    updateOrCreateIntegration: jest.fn(),
     loading: fromJS({
         integration: null,
         updateIntegration: null,
@@ -135,9 +132,7 @@ describe('<SmoochIntegrationDetail/>', () => {
                 integration: fromJS({}),
             })
 
-            expect(
-                defaultProps.actions.triggerCreateSuccess
-            ).not.toHaveBeenCalled()
+            expect(defaultProps.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the current and previous integrations are both not empty', () => {
@@ -163,9 +158,7 @@ describe('<SmoochIntegrationDetail/>', () => {
                 .instance()
                 .componentWillReceiveProps({...defaultProps, integration})
 
-            expect(
-                defaultProps.actions.triggerCreateSuccess
-            ).not.toHaveBeenCalled()
+            expect(defaultProps.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the current action is not "authentication"', () => {
@@ -191,9 +184,7 @@ describe('<SmoochIntegrationDetail/>', () => {
                 .instance()
                 .componentWillReceiveProps({...defaultProps, integration})
 
-            expect(
-                defaultProps.actions.triggerCreateSuccess
-            ).not.toHaveBeenCalled()
+            expect(defaultProps.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should call `triggerCreateSuccess`', () => {
@@ -224,9 +215,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 location,
             })
 
-            expect(
-                defaultProps.actions.triggerCreateSuccess
-            ).toHaveBeenCalledWith(integration.toJS())
+            expect(defaultProps.triggerCreateSuccess).toHaveBeenCalledWith(
+                integration.toJS()
+            )
         })
     })
 
@@ -308,9 +299,7 @@ describe('<SmoochIntegrationDetail/>', () => {
 
             component.instance()._handleSubmit({preventDefault: jest.fn()})
 
-            expect(
-                defaultProps.actions.updateOrCreateIntegration
-            ).toHaveBeenCalledWith(
+            expect(defaultProps.updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
                     id: integration.get('id'),
                     name: newName,

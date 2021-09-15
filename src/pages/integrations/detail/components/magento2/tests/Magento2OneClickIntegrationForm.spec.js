@@ -5,14 +5,18 @@ import {render} from '@testing-library/react'
 
 import {Magento2OneClickIntegrationForm} from '../Magento2OneClickIntegrationForm.tsx'
 
+jest.mock('../Magento2IntegrationActionButtons', () => {
+    const {Magento2IntegrationActionButtons} = jest.requireActual(
+        '../Magento2IntegrationActionButtons'
+    )
+
+    return Magento2IntegrationActionButtons
+})
+
 describe('<Magento2OneClickIntegrationForm/>', () => {
     const commonProps = {
         redirectUri: 'gorgias.io',
-        actions: {
-            activateIntegration: jest.fn(),
-            deactivateIntegration: jest.fn(),
-            deleteIntegration: jest.fn(),
-        },
+        updateOrCreateIntegration: jest.fn(),
         getExistingMagento2Integration: jest.fn().mockReturnValue(fromJS({})),
     }
 

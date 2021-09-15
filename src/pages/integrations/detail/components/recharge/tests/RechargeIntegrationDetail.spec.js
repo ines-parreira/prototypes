@@ -7,7 +7,7 @@ import {
     SUCCESS_AUTHENTICATION_STATUS,
 } from '../../../../../../constants/integration.ts'
 
-import {RechargeIntegrationDetail} from '../RechargeIntegrationDetail'
+import {RechargeIntegrationDetail} from '../RechargeIntegrationDetail.tsx'
 
 describe('<RechargeIntegrationDetail/>', () => {
     const actions = {

@@ -1,7 +1,6 @@
-// @flow
-import React from 'react'
-import type {Map} from 'immutable'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component, SyntheticEvent} from 'react'
+import {Map, fromJS} from 'immutable'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import {
     Alert,
@@ -13,32 +12,31 @@ import {
     Row,
 } from 'reactstrap'
 import {parse} from 'query-string'
-import {fromJS} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
+import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
+import Loader from '../../../../common/components/Loader/Loader'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
+import PageHeader from '../../../../common/components/PageHeader'
+import {
+    fetchIntegration,
+    deleteIntegration,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
 
 type Props = {
-    integration: Map<*, *>,
-    redirectUri: string,
-    actions: Object,
-    loading: Map<*, *>,
-
-    // Router
-    location: Object,
-}
+    integration: Map<any, any>
+    redirectUri: string
+    loading: Map<any, any>
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 
 type State = {
-    name: string,
+    name: string
 }
 
-export class SmileIntegrationDetailComponent extends React.Component<
-    Props,
-    State
-> {
+export class SmileIntegrationDetailComponent extends Component<Props, State> {
     isInitialized = false
 
     state = {
@@ -66,33 +64,32 @@ export class SmileIntegrationDetailComponent extends React.Component<
 
             if (isAuthenticating) {
                 if (authenticationRequired) {
-                    setTimeout(
-                        nextProps.actions.fetchIntegration(
+                    setTimeout(() => {
+                        void this.props.fetchIntegration(
                             nextProps.integration.get('id'),
                             nextProps.integration.get('type'),
                             true
-                        ),
-                        3000
-                    )
+                        )
+                    }, 3000)
                 }
             }
         }
     }
 
-    _handleUpdate = (evt: Event): void => {
+    _handleUpdate = (evt: SyntheticEvent<HTMLButtonElement>): void => {
         evt.preventDefault()
-        const {integration, actions} = this.props
-        actions.updateOrCreateIntegration(
+        const {integration, updateOrCreateIntegration} = this.props
+        void updateOrCreateIntegration(
             fromJS({id: integration.get('id'), name: this.state.name})
         )
     }
 
     _onReactivate = () => {
-        window.location = this.props.redirectUri
+        window.location.href = this.props.redirectUri
     }
 
     render() {
-        const {actions, integration, loading} = this.props
+        const {deleteIntegration, integration, loading} = this.props
 
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
@@ -208,7 +205,7 @@ export class SmileIntegrationDetailComponent extends React.Component<
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
-                                        actions.deleteIntegration(integration)
+                                        deleteIntegration(integration)
                                     }
                                     content="Are you sure you want to delete this integration?"
                                     disabled={isSubmitting}
@@ -227,4 +224,9 @@ export class SmileIntegrationDetailComponent extends React.Component<
     }
 }
 
-export default withRouter(SmileIntegrationDetailComponent)
+const connector = connect(null, {
+    fetchIntegration,
+    deleteIntegration,
+    updateOrCreateIntegration,
+})
+export default withRouter(connector(SmileIntegrationDetailComponent))

@@ -204,7 +204,6 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
               },
             ]
           }
-          name="http.headers"
           onChange={[Function]}
           title="Header"
           validate={[Function]}
@@ -464,7 +463,6 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
               },
             ]
           }
-          name="http.headers"
           onChange={[Function]}
           title="Header"
           validate={[Function]}
@@ -487,7 +485,6 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
               },
             ]
           }
-          name="http.form"
           onChange={[Function]}
           title="Form field"
         />
@@ -705,7 +702,6 @@ exports[`HTTPIntegrationOverview should display default values because there is 
         <ObjectListField
           fieldName="header"
           fields={Array []}
-          name="http.headers"
           onChange={[Function]}
           title="Header"
           validate={[Function]}

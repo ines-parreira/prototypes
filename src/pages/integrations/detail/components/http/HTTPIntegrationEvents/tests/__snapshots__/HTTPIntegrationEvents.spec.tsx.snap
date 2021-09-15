@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HTTPIntegrationEvents /> component should render a loader because the component has no events 1`] = `
+<div>
+  Loader
+</div>
+`;
+
+exports[`<HTTPIntegrationEvents /> component should render a loader while the component is fetching events 1`] = `
+<div>
+  Loader
+</div>
+`;
+
+exports[`<HTTPIntegrationEvents /> component should render events 1`] = `
+<div>
+  <div
+    class="page-container container-fluid"
+  >
+    <p>
+      Shows the latest HTTP requests sent by this integration with their responses. This page is useful to see if this integration works correctly.
+    </p>
+  </div>
+  <br />
+  <table
+    class="view-table table-integrations table table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Method
+        </th>
+        <th>
+          URL
+        </th>
+        <th>
+          Status code
+        </th>
+        <th>
+          Sent
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="link-full-td"
+        >
+          <a
+            class="disabled"
+            to="/app/settings/integrations/http/1/events/undefined"
+          >
+            <div>
+              GET
+            </div>
+          </a>
+        </td>
+        <td
+          class="link-full-td"
+        >
+          <a
+            class="disabled"
+            to="/app/settings/integrations/http/1/events/undefined"
+          >
+            <div>
+              https://developers.gorgias.com
+            </div>
+          </a>
+        </td>
+        <td
+          class="link-full-td"
+        >
+          <a
+            class="disabled"
+            to="/app/settings/integrations/http/1/events/undefined"
+          >
+            <div>
+              <span
+                class="badge badge-secondary"
+              >
+                 
+                UNKNOWN HTTP STATUS CODE
+              </span>
+            </div>
+          </a>
+        </td>
+        <td
+          class="link-full-td"
+        >
+          <a
+            class="disabled"
+            to="/app/settings/integrations/http/1/events/undefined"
+          >
+            <div>
+              <div>
+                nowTimestamp
+              </div>
+            </div>
+          </a>
+        </td>
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/http/1/events/undefined"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

@@ -1,18 +1,19 @@
-// @flow
 import React from 'react'
-import {type Map} from 'immutable'
+import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
 
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
-    integration: Map<*, *>,
+    integration: Map<any, any>
 }
 
-export default class SmoochIntegrationNavigation extends React.Component<Props> {
+export default class SmoochIntegrationNavigation extends React.Component<
+    Props
+> {
     render() {
         const {integration} = this.props
-        const integrationId = integration.get('id')
+        const integrationId = integration.get('id') as number
         const baseURL = `/app/settings/integrations/smooch/${integrationId}`
 
         return (

@@ -2,7 +2,7 @@ import React from 'react'
 
 import {List, Map} from 'immutable'
 
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 
 import {
     activateIntegration,
@@ -35,7 +35,7 @@ export default function TwitterIntegrationList({
 }: Props): JSX.Element {
     const twitterIntegrations = integrations.filter(
         (v) => v?.get('type') === IntegrationType.TwitterIntegrationType
-    )
+    ) as List<Map<any, any>>
 
     const longTypeDescription =
         'Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.'

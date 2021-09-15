@@ -8,17 +8,18 @@ import {
     SUCCESS_AUTHENTICATION_STATUS,
 } from '../../../../../../constants/integration.ts'
 
-import {SmileIntegrationDetailComponent} from '../SmileIntegrationDetail'
+import {SmileIntegrationDetailComponent} from '../SmileIntegrationDetail.tsx'
+
+jest.useFakeTimers()
 
 describe('<SmileIntegrationDetail/>', () => {
     const actions = {
         fetchIntegration: jest.fn(),
-        triggerCreateSuccess: jest.fn(),
         updateOrCreateIntegration: jest.fn(),
     }
 
     const defaultProps = {
-        actions,
+        ...actions,
         location: {query: {}},
         loading: fromJS({}),
     }
@@ -59,8 +60,8 @@ describe('<SmileIntegrationDetail/>', () => {
             )
 
             expect(component.state()).toMatchSnapshot()
+            jest.runAllTimers()
             expect(actions.fetchIntegration).not.toHaveBeenCalled()
-            expect(actions.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the previous integration was not empty', () => {
@@ -86,8 +87,8 @@ describe('<SmileIntegrationDetail/>', () => {
             })
 
             expect(component.state()).toMatchSnapshot()
+            jest.runAllTimers()
             expect(actions.fetchIntegration).not.toHaveBeenCalled()
-            expect(actions.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it(
@@ -116,8 +117,8 @@ describe('<SmileIntegrationDetail/>', () => {
                 })
 
                 expect(component.state()).toMatchSnapshot()
+                jest.runAllTimers()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
-                expect(actions.triggerCreateSuccess).not.toHaveBeenCalled()
             }
         )
 
@@ -149,12 +150,12 @@ describe('<SmileIntegrationDetail/>', () => {
                 })
 
                 expect(component.state()).toMatchSnapshot()
+                jest.runAllTimers()
                 expect(actions.fetchIntegration).toHaveBeenCalledWith(
                     integration.get('id'),
                     integration.get('type'),
                     true
                 )
-                expect(actions.triggerCreateSuccess).not.toHaveBeenCalled()
             }
         )
 
@@ -186,6 +187,7 @@ describe('<SmileIntegrationDetail/>', () => {
                 })
 
                 expect(component.state()).toMatchSnapshot()
+                jest.runAllTimers()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
             }
         )

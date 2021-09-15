@@ -10,7 +10,7 @@ import {
 } from '../../../../../../config/integrations/index.ts'
 import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch.ts'
 import {SMOOCH_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {SmoochIntegrationPreferences} from '../SmoochIntegrationPreferences'
+import {SmoochIntegrationPreferences} from '../SmoochIntegrationPreferences.tsx'
 
 describe('<SmoochIntegrationPreferences/>', () => {
     describe('componentWillMount()', () => {

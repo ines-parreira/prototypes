@@ -1,30 +1,25 @@
 import {Button} from 'reactstrap'
 import React from 'react'
 import classNames from 'classnames'
-
 import {Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import {deleteIntegration} from '../../../../../state/integrations/actions'
 
 type Props = {
     integration: Map<string, any>
-    actions: {
-        updateOrCreateIntegration: (
-            integration: Map<string, any>
-        ) => Promise<void>
-        deleteIntegration: (integration: Map<string, any>) => Promise<void>
-    }
     redirectUri?: string
     isUpdate: boolean
     isSubmitting: boolean
     submitIsDisabled: boolean
-}
+} & ConnectedProps<typeof connector>
 
-const Magento2IntegrationActionButtons = ({
+export const Magento2IntegrationActionButtons = ({
     isUpdate,
     isSubmitting,
     submitIsDisabled,
-    actions,
+    deleteIntegration,
     integration,
     redirectUri,
 }: Props) => {
@@ -86,7 +81,7 @@ const Magento2IntegrationActionButtons = ({
                 <ConfirmButton
                     className="float-right"
                     color="secondary"
-                    confirm={() => actions.deleteIntegration(integration)}
+                    confirm={() => deleteIntegration(integration)}
                     content="Are you sure you want to delete this integration?"
                 >
                     <i className="material-icons mr-1 text-danger">delete</i>
@@ -97,4 +92,8 @@ const Magento2IntegrationActionButtons = ({
     )
 }
 
-export default Magento2IntegrationActionButtons
+const connector = connect(null, {
+    deleteIntegration,
+})
+
+export default connector(Magento2IntegrationActionButtons)

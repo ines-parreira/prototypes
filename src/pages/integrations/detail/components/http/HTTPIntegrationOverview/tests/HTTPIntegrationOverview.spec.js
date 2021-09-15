@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import HTTPIntegrationOverview from '../'
+import {HTTPIntegrationOverview} from '../HTTPIntegrationOverview.tsx'
 
 const actions = {
     deactivateIntegration: () => {},
@@ -17,7 +17,7 @@ describe('HTTPIntegrationOverview', () => {
             <HTTPIntegrationOverview
                 integration={fromJS({})}
                 isUpdate={false}
-                actions={actions}
+                {...actions}
                 loading={fromJS({integration: false})}
             />
         )
@@ -57,7 +57,7 @@ describe('HTTPIntegrationOverview', () => {
                     },
                 })}
                 isUpdate={true}
-                actions={actions}
+                {...actions}
                 loading={fromJS({integration: false})}
             />
         )
@@ -97,7 +97,7 @@ describe('HTTPIntegrationOverview', () => {
                     },
                 })}
                 isUpdate={false}
-                actions={actions}
+                {...actions}
                 loading={fromJS({integration: true})}
             />
         )
@@ -136,7 +136,7 @@ describe('HTTPIntegrationOverview', () => {
                     },
                 })}
                 isUpdate={true}
-                actions={actions}
+                {...actions}
                 loading={fromJS({integration: false})}
             />
         )

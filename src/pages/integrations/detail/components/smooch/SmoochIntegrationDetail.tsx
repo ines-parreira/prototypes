@@ -1,7 +1,6 @@
-// @flow
-import React from 'react'
-import {Link, withRouter} from 'react-router-dom'
-import {fromJS, type Map} from 'immutable'
+import React, {Component} from 'react'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {fromJS, Map} from 'immutable'
 import classNames from 'classnames'
 import {
     Button,
@@ -13,34 +12,40 @@ import {
     Col,
 } from 'reactstrap'
 import {parse} from 'query-string'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {
     SMOOCH_LANGUAGE_DEFAULT,
     SMOOCH_LANGUAGE_OPTIONS,
-} from '../../../../../config/integrations/smooch.ts'
+} from '../../../../../config/integrations/smooch'
+import {
+    activateIntegration,
+    deactivateIntegration,
+    deleteIntegration,
+    triggerCreateSuccess,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
 
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
+import Loader from '../../../../common/components/Loader/Loader'
+import PageHeader from '../../../../common/components/PageHeader'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
 type Props = {
-    integration: Map<*, *>,
-    actions: Object,
-    loading: Map<*, *>,
-
-    location: Object,
-}
+    integration: Map<any, any>
+    loading: Map<any, any>
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 
 type State = {
-    name: string,
-    language: string,
+    name: string
+    language: string
 }
 
-export class SmoochIntegrationDetail extends React.Component<Props, State> {
-    isInitialized: boolean = false
+export class SmoochIntegrationDetail extends Component<Props, State> {
+    isInitialized = false
 
     state = {
         name: '',
@@ -82,7 +87,7 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
             !nextProps.integration.isEmpty() &&
             isAuthenticating
         ) {
-            nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
+            this.props.triggerCreateSuccess(nextProps.integration.toJS())
         }
     }
 
@@ -94,22 +99,29 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
         this.setState({language})
     }
 
-    _handleSubmit = (event: SyntheticEvent<*>) => {
+    _handleSubmit = (event: React.SyntheticEvent<any>) => {
         event.preventDefault()
 
         const integrationData = fromJS({
             id: this.props.integration.get('id'),
             name: this.state.name,
-            meta: this.props.integration
-                .get('meta')
-                .set('language', this.state.language),
+            meta: (this.props.integration.get('meta') as Map<any, any>).set(
+                'language',
+                this.state.language
+            ),
         })
 
-        return this.props.actions.updateOrCreateIntegration(integrationData)
+        return this.props.updateOrCreateIntegration(integrationData)
     }
 
     render() {
-        const {actions, integration, loading} = this.props
+        const {
+            activateIntegration,
+            deactivateIntegration,
+            deleteIntegration,
+            integration,
+            loading,
+        } = this.props
 
         const isSubmitting =
             loading.get('updateIntegration') === integration.get('id')
@@ -168,10 +180,10 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
                                 >
                                     {SMOOCH_LANGUAGE_OPTIONS.map((option) => (
                                         <option
-                                            key={option.get('value')}
-                                            value={option.get('value')}
+                                            key={option!.get('value')}
+                                            value={option!.get('value')}
                                         >
-                                            {option.get('label')}
+                                            {option!.get('label')}
                                         </option>
                                     ))}
                                 </InputField>
@@ -198,7 +210,7 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
                                             })}
                                             disabled={isSubmitting}
                                             onClick={() =>
-                                                actions.deactivateIntegration(
+                                                deactivateIntegration(
                                                     integration.get('id')
                                                 )
                                             }
@@ -214,7 +226,7 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
                                             })}
                                             disabled={isSubmitting}
                                             onClick={() =>
-                                                actions.activateIntegration(
+                                                activateIntegration(
                                                     integration.get('id')
                                                 )
                                             }
@@ -227,9 +239,7 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
                                         className="float-right"
                                         color="secondary"
                                         confirm={() =>
-                                            actions.deleteIntegration(
-                                                integration
-                                            )
+                                            deleteIntegration(integration)
                                         }
                                         content="Are you sure you want to delete this integration?"
                                     >
@@ -248,4 +258,12 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(SmoochIntegrationDetail)
+const connector = connect(null, {
+    activateIntegration,
+    deactivateIntegration,
+    deleteIntegration,
+    triggerCreateSuccess,
+    updateOrCreateIntegration,
+})
+
+export default withRouter(connector(SmoochIntegrationDetail))

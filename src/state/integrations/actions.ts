@@ -542,7 +542,7 @@ export function updateOrCreateIntegration(
     integration: Map<any, any>,
     action?: Record<string, unknown>
 ) {
-    return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return dispatch(updateOrCreateIntegrationRequest(integration, action))
     }
 }

@@ -1,8 +1,7 @@
-// @flow
 import React from 'react'
-import {Link, withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {type Map} from 'immutable'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {connect, ConnectedProps} from 'react-redux'
+import {Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
@@ -14,35 +13,30 @@ import {
 } from 'reactstrap'
 import {parse} from 'query-string'
 
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {notify} from '../../../../../state/notifications/actions'
+import {triggerCreateSuccess} from '../../../../../state/integrations/actions'
 
-import {notify} from '../../../../../state/notifications/actions.ts'
-import history from '../../../../history.ts'
+import Loader from '../../../../common/components/Loader/Loader'
+import PageHeader from '../../../../common/components/PageHeader'
+import history from '../../../../history'
 
 import css from './Magento2ManualSelectionButton.less'
-import Magento2ManualIntegrationForm from './Magento2ManualIntegrationForm.tsx'
-import Magento2OneClickIntegrationForm from './Magento2OneClickIntegrationForm.tsx'
-import Magento2ModeSelectionButton from './Magento2ModeSelectionButton.tsx'
+import Magento2ManualIntegrationForm from './Magento2ManualIntegrationForm'
+import Magento2OneClickIntegrationForm from './Magento2OneClickIntegrationForm'
+import Magento2ModeSelectionButton from './Magento2ModeSelectionButton'
 
 type Props = {
-    integration: Map<*, *>,
-    isUpdate: boolean,
-    actions: Object,
-    loading: Object,
-
-    redirectUri: string,
-
-    // Router
-    location: Object,
-
-    // Actions
-    notify: typeof notify,
-}
+    integration: Map<any, any>
+    isUpdate: boolean
+    loading: Map<any, any>
+    redirectUri: string
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 
 type State = {
-    isManual: boolean,
-    isInitialized: boolean,
+    isManual: boolean
+    isInitialized: boolean
 }
 
 export class Magento2IntegrationDetail extends React.Component<Props, State> {
@@ -54,12 +48,14 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
     componentDidMount() {
         // display message from url
         const {location, isUpdate} = this.props
-        const message = parse(location.search).message
-        const status = parse(location.search).message_type || 'info'
+        const message = parse(location.search).message as string
+        const status =
+            (parse(location.search).message_type as NotificationStatus) ||
+            NotificationStatus.Info
         this.setState({isInitialized: !isUpdate})
 
         if (message) {
-            this.props.notify({
+            void this.props.notify({
                 status,
                 message: decodeURIComponent(message.replace(/\+/g, ' ')),
             })
@@ -77,9 +73,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                 parse(nextProps.location.search).action === 'authentication'
 
             if (isAuthenticating) {
-                nextProps.actions.triggerCreateSuccess(
-                    nextProps.integration.toJS()
-                )
+                this.props.triggerCreateSuccess(nextProps.integration.toJS())
             }
         }
     }
@@ -101,7 +95,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
     }
 
     render() {
-        const {actions, integration, isUpdate, loading} = this.props
+        const {integration, isUpdate, loading} = this.props
 
         const isSubmitting = !!loading.get('updateIntegration')
 
@@ -262,14 +256,12 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                 <Magento2ManualIntegrationForm
                                     integration={integration}
                                     isUpdate={isUpdate}
-                                    actions={actions}
                                     isSubmitting={isSubmitting}
                                 />
                             ) : (
                                 <Magento2OneClickIntegrationForm
                                     integration={integration}
                                     isUpdate={isUpdate}
-                                    actions={actions}
                                     isSubmitting={isSubmitting}
                                     redirectUri={this.props.redirectUri}
                                 />
@@ -282,4 +274,9 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(connect(null, {notify})(Magento2IntegrationDetail))
+const connector = connect(null, {
+    notify,
+    triggerCreateSuccess,
+})
+
+export default withRouter(connector(Magento2IntegrationDetail))

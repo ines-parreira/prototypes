@@ -68,11 +68,11 @@ jest.mock('../components/http/HTTPIntegrationList.js', () => () => (
     <div>HTTPIntegrationList</div>
 ))
 jest.mock(
-    '../components/http/HTTPIntegrationOverview/HTTPIntegrationOverview.js',
+    '../components/http/HTTPIntegrationOverview/HTTPIntegrationOverview',
     () => () => <div>HTTPIntegrationOverview</div>
 )
 jest.mock(
-    '../components/http/HTTPIntegrationEvents/HTTPIntegrationEvents.js',
+    '../components/http/HTTPIntegrationEvents/HTTPIntegrationEvents',
     () => () => <div>HTTPIntegrationEvents</div>
 )
 jest.mock(
@@ -170,20 +170,20 @@ jest.mock(
     () => () => <div>CampaignDetail</div>
 )
 
-jest.mock('../components/smooch/SmoochIntegrationDetail.js', () => () => (
+jest.mock('../components/smooch/SmoochIntegrationDetail', () => () => (
     <div>SmoochIntegrationDetail</div>
 ))
-jest.mock('../components/smooch/SmoochIntegrationList.js', () => () => (
+jest.mock('../components/smooch/SmoochIntegrationList', () => () => (
     <div>SmoochIntegrationList</div>
 ))
-jest.mock('../components/smooch/SmoochIntegrationPreferences.js', () => () => (
+jest.mock('../components/smooch/SmoochIntegrationPreferences', () => () => (
     <div>SmoochIntegrationPreferences</div>
 ))
 
 jest.mock('../components/shopify/ShopifyIntegrationList.js', () => () => (
     <div>ShopifyIntegrationList</div>
 ))
-jest.mock('../components/shopify/ShopifyIntegrationDetail.js', () => () => (
+jest.mock('../components/shopify/ShopifyIntegrationDetail', () => () => (
     <div>ShopifyIntegrationDetail</div>
 ))
 
@@ -194,17 +194,17 @@ jest.mock('../components/klaviyo/KlaviyoIntegrationDetail', () => () => (
     <div>KlaviyoIntegrationDetail</div>
 ))
 
-jest.mock('../components/recharge/RechargeIntegrationList.js', () => () => (
+jest.mock('../components/recharge/RechargeIntegrationList', () => () => (
     <div>RechargeIntegrationList</div>
 ))
-jest.mock('../components/recharge/RechargeIntegrationDetail.js', () => () => (
+jest.mock('../components/recharge/RechargeIntegrationDetail', () => () => (
     <div>RechargeIntegrationDetail</div>
 ))
 
-jest.mock('../components/smile/SmileIntegrationList.js', () => () => (
+jest.mock('../components/smile/SmileIntegrationList', () => () => (
     <div>SmileIntegrationList</div>
 ))
-jest.mock('../components/smile/SmileIntegrationDetail.js', () => () => (
+jest.mock('../components/smile/SmileIntegrationDetail', () => () => (
     <div>SmileIntegrationDetail</div>
 ))
 
@@ -215,10 +215,10 @@ jest.mock('../components/yotpo/YotpoIntegrationDetail', () => () => (
     <div>YotpoIntegrationDetail</div>
 ))
 
-jest.mock('../components/magento2/Magento2IntegrationDetail.js', () => () => (
+jest.mock('../components/magento2/Magento2IntegrationDetail', () => () => (
     <div>Magento2IntegrationDetail</div>
 ))
-jest.mock('../components/magento2/Magento2IntegrationList.js', () => () => (
+jest.mock('../components/magento2/Magento2IntegrationList', () => () => (
     <div>Magento2IntegrationList</div>
 ))
 

@@ -1,32 +1,26 @@
-// @flow
 import React from 'react'
-import {List, type Map} from 'immutable'
+import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Button} from 'reactstrap'
-import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
-import Carousel from '../../../common/Carousel'
+import {IntegrationType} from '../../../../../models/integration/types'
+import Carousel from '../../../common/Carousel.js'
+
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon.tsx'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
+import ForwardIcon from '../ForwardIcon'
 
 type Props = {
-    integrations: List,
-    redirectUri: string,
-
-    loading: Object,
-    activate: (number) => Promise<*>,
+    integrations: List<Map<any, any>>
+    redirectUri: string
+    loading: Map<any, any>
 }
 
 type State = {
-    isLightboxOpen: boolean,
-    currentImage: number,
+    isLightboxOpen: boolean
+    currentImage: number
 }
 
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-})
 export default class SmileIntegrationList extends React.Component<
     Props,
     State
@@ -36,7 +30,7 @@ export default class SmileIntegrationList extends React.Component<
         currentImage: 0,
     }
 
-    _toggleLightbox = (selectedImageId: ?number) => {
+    _toggleLightbox = (selectedImageId?: number) => {
         this.setState({
             isLightboxOpen: !this.state.isLightboxOpen,
             currentImage: selectedImageId || 0,
@@ -48,14 +42,14 @@ export default class SmileIntegrationList extends React.Component<
     }
 
     _onLogin = () => {
-        window.location = this.props.redirectUri
+        window.location.href = this.props.redirectUri
     }
 
     render() {
         const {integrations, loading, redirectUri} = this.props
         const smileIntegrations = integrations.filter(
-            (v) => v.get('type') === 'smile'
-        )
+            (v) => v!.get('type') === IntegrationType.SmileIntegrationType
+        ) as List<Map<any, any>>
         const imagesUrl = [
             `${
                 window.GORGIAS_ASSETS_URL || ''
@@ -83,7 +77,10 @@ export default class SmileIntegrationList extends React.Component<
 
                 <Carousel
                     imagesUrl={imagesUrl}
-                    onImageClick={({index}) => this._toggleLightbox(index)}
+                    // $TsFixMe remove type when Carousel is migrated
+                    onImageClick={({index}: {index: number}) =>
+                        this._toggleLightbox(index)
+                    }
                 />
 
                 <Lightbox
@@ -110,10 +107,10 @@ export default class SmileIntegrationList extends React.Component<
             </div>
         )
 
-        const integrationToItemDisplay = (integration: Map<*, *>) => {
-            const editLink = `/app/settings/integrations/smile/${integration.get(
-                'id'
-            )}`
+        const integrationToItemDisplay = (integration: Map<any, any>) => {
+            const editLink = `/app/settings/integrations/smile/${
+                integration.get('id') as number
+            }`
             const isSubmitting = loading.get('updateIntegration')
             const isDisabled = integration.get('deactivated_datetime')
             return (
@@ -147,7 +144,7 @@ export default class SmileIntegrationList extends React.Component<
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType="smile"
+                integrationType={IntegrationType.SmileIntegrationType}
                 integrations={smileIntegrations}
                 createIntegration={this._onLogin}
                 createIntegrationButtonContent="Add Smile account"

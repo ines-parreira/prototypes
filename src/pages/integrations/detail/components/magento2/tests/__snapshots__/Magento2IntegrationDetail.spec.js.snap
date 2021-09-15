@@ -78,13 +78,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
           </Link>
         </p>
         <Connect(Magento2OneClickIntegrationForm)
-          actions={
-            Object {
-              "activateIntegration": [MockFunction],
-              "deactivateIntegration": [MockFunction],
-              "deleteIntegration": [MockFunction],
-            }
-          }
           integration={
             Immutable.Map {
               "id": 1,
@@ -249,13 +242,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           />
         </div>
         <Connect(Magento2OneClickIntegrationForm)
-          actions={
-            Object {
-              "activateIntegration": [MockFunction],
-              "deactivateIntegration": [MockFunction],
-              "deleteIntegration": [MockFunction],
-            }
-          }
           integration={Immutable.Map {}}
           isSubmitting={false}
           isUpdate={false}
@@ -386,13 +372,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           </p>
         </Alert>
         <Connect(Magento2OneClickIntegrationForm)
-          actions={
-            Object {
-              "activateIntegration": [MockFunction],
-              "deactivateIntegration": [MockFunction],
-              "deleteIntegration": [MockFunction],
-            }
-          }
           integration={
             Immutable.Map {
               "id": 1,
@@ -556,13 +535,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
           />
         </div>
         <Connect(Magento2OneClickIntegrationForm)
-          actions={
-            Object {
-              "activateIntegration": [MockFunction],
-              "deactivateIntegration": [MockFunction],
-              "deleteIntegration": [MockFunction],
-            }
-          }
           integration={Immutable.Map {}}
           isSubmitting={false}
           isUpdate={false}
@@ -652,13 +624,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
           </Link>
         </p>
         <Connect(Magento2OneClickIntegrationForm)
-          actions={
-            Object {
-              "activateIntegration": [MockFunction],
-              "deactivateIntegration": [MockFunction],
-              "deleteIntegration": [MockFunction],
-            }
-          }
           integration={
             Immutable.Map {
               "id": 1,

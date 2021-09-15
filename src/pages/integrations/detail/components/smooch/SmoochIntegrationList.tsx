@@ -1,45 +1,40 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {Link, withRouter} from 'react-router-dom'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {parse} from 'query-string'
+import {List, Map} from 'immutable'
 
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
+import * as integrationsActions from '../../../../../state/integrations/actions'
+import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {IntegrationType} from '../../../../../models/integration/types'
+
+import history from '../../../../history'
+import ToggleButton from '../../../../common/components/ToggleButton'
+
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon.tsx'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-import {notify} from '../../../../../state/notifications/actions.ts'
-import history from '../../../../history.ts'
+import ForwardIcon from '../ForwardIcon'
 
-@withRouter
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-    notify,
-})
-export default class SmoochIntegrationList extends React.Component {
-    static propTypes = {
-        integrations: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
-        notify: PropTypes.func.isRequired,
-        redirectUri: PropTypes.string.isRequired,
-        activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
-    }
+type Props = {
+    integrations: List<Map<any, any>>
+    loading: Map<any, any>
+    redirectUri: string
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 
+export class SmoochIntegrationList extends Component<Props> {
     _onLogin = () => {
         window.location.href = this.props.redirectUri
     }
 
     componentDidMount() {
         // display message from url
-        const {message, message_type: status = 'info'} = parse(
+        const {message, message_type: status = NotificationStatus.Info} = parse(
             this.props.location.search
-        )
+        ) as {message: string; message_type: NotificationStatus}
 
         if (message) {
-            this.props.notify({
+            void this.props.notify({
                 status,
                 title: message.replace(/\+/g, ' '),
             })
@@ -74,17 +69,17 @@ export default class SmoochIntegrationList extends React.Component {
             </div>
         )
 
-        const integrationToItemDisplay = (int) => {
-            const toggleIntegration = (value) => {
+        const integrationToItemDisplay = (int: Map<any, any>) => {
+            const toggleIntegration = (value: boolean) => {
                 const integrationId = int.get('id')
                 return value
                     ? this.props.activate(integrationId)
                     : this.props.deactivate(integrationId)
             }
 
-            const editLink = `/app/settings/integrations/smooch/${int.get(
-                'id'
-            )}/overview`
+            const editLink = `/app/settings/integrations/smooch/${
+                int.get('id') as number
+            }/overview`
             const isDisabled = int.get('deactivated_datetime')
 
             return (
@@ -111,11 +106,15 @@ export default class SmoochIntegrationList extends React.Component {
 
         return (
             <IntegrationList
-                integrationType="smooch"
+                integrationType={IntegrationType.SmoochIntegrationType}
                 longTypeDescription={longTypeDescription}
-                integrations={integrations.filter(
-                    (v) => v.get('type') === 'smooch'
-                )}
+                integrations={
+                    integrations.filter(
+                        (v) =>
+                            v!.get('type') ===
+                            IntegrationType.SmoochIntegrationType
+                    ) as List<Map<any, any>>
+                }
                 createIntegration={this._onLogin}
                 createIntegrationButtonContent="Add a Smooch account"
                 integrationToItemDisplay={integrationToItemDisplay}
@@ -124,3 +123,11 @@ export default class SmoochIntegrationList extends React.Component {
         )
     }
 }
+
+const connector = connect(null, {
+    activate: integrationsActions.activateIntegration,
+    deactivate: integrationsActions.deactivateIntegration,
+    notify,
+})
+
+export default withRouter(connector(SmoochIntegrationList))

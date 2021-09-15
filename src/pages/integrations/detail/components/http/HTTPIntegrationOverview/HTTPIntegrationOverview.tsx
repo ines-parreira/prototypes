@@ -1,72 +1,70 @@
-// @flow
-import React from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import classNames from 'classnames'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
-import {Container, Form, FormGroup, FormText, Label, Button} from 'reactstrap'
+import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {
-    AVAILABLE_HTTP_METHODS,
-    FORM_CONTENT_TYPE,
-    HTTP_METHOD_GET,
-    JSON_CONTENT_TYPE,
-} from '../../../../../../config.ts'
 import {
     TICKET_CREATED,
     TICKET_MESSAGE_CREATED,
     TICKET_UPDATED,
-} from '../../../../../../constants/event.ts'
+} from '../../../../../../constants/event'
 import {
     toJS,
     validateWebhookURL,
     validateWebhookURLToPattern,
-} from '../../../../../../utils.ts'
+} from '../../../../../../utils'
+import {
+    activateIntegration,
+    deactivateIntegration,
+    deleteIntegration,
+    updateOrCreateIntegration,
+} from '../../../../../../state/integrations/actions'
 
-import Loader from '../../../../../common/components/Loader/Loader.tsx'
-import ObjectListField from '../ObjectListField'
-import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
+import Loader from '../../../../../common/components/Loader/Loader'
+import ObjectListField from '../ObjectListField.js'
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
-import BooleanField from '../../../../../common/forms/BooleanField'
+import BooleanField from '../../../../../common/forms/BooleanField.js'
 
-import {DEFAULT_FORM} from './constants'
+import {ContentType, HttpMethod} from '../../../../../../models/api/types'
+
+import {DEFAULT_FORM} from './constants.js'
 import JSONBody from './JSONBody'
-import {validateHeaderName} from './httpHeaderValidation'
+import {validateHeaderName} from './httpHeaderValidation.js'
 
 type Props = {
-    integration: Map<*, *>,
-    isUpdate: boolean,
-    actions: Object,
-    loading: Map<*, *>,
-}
+    integration: Map<any, any>
+    isUpdate: boolean
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isTestShown: boolean,
-    name: string,
-    description: string,
-    url: string,
-    method: string,
-    requestContentType: string,
-    responseContentType: string,
-    ticketCreated: boolean,
-    ticketUpdated: boolean,
-    ticketMessageCreated: boolean,
-    headers: Array<Object>,
-    form: string | Object | Array<Object>,
+    description: string
+    form: string | Record<string, unknown> | Array<Record<string, unknown>>
+    headers: Array<Record<string, unknown>>
+    isTestShown: boolean
+    method: string
+    name: string
+    requestContentType: string
+    responseContentType: string
+    ticketCreated: boolean
+    ticketMessageCreated: boolean
+    ticketUpdated: boolean
+    url: string
 }
 
-export default class HTTPIntegrationOverview extends React.Component<
-    Props,
-    State
-> {
-    state = {
+export class HTTPIntegrationOverview extends Component<Props, State> {
+    state: State = {
         isTestShown: false,
         name: '',
         description: '',
         url: '',
-        method: HTTP_METHOD_GET,
-        requestContentType: JSON_CONTENT_TYPE,
-        responseContentType: JSON_CONTENT_TYPE,
+        method: HttpMethod.Get,
+        requestContentType: ContentType.Json,
+        responseContentType: ContentType.Json,
         ticketCreated: true,
         ticketUpdated: true,
         ticketMessageCreated: true,
@@ -74,7 +72,7 @@ export default class HTTPIntegrationOverview extends React.Component<
         form: '',
     }
 
-    isInitialized: boolean
+    isInitialized: boolean | undefined
 
     componentWillMount() {
         const {integration, isUpdate, loading} = this.props
@@ -101,19 +99,23 @@ export default class HTTPIntegrationOverview extends React.Component<
         }
     }
 
-    _getIntegration = (integration: Map<*, *>) => {
-        let isJsonBody =
+    _getIntegration = (integration: Map<any, any>) => {
+        const isJsonBody =
             integration.getIn(['http', 'request_content_type']) ===
-            JSON_CONTENT_TYPE
-        let formData = toJS(integration.getIn(['http', 'form']))
+            ContentType.Json
+        let formData: State['form'] = toJS(integration.getIn(['http', 'form']))
         if (!isJsonBody) {
-            formData = this._objectToParameters(formData)
+            formData = this._objectToParameters(
+                formData as Record<string, unknown>
+            )
         }
-        const headers = integration.getIn(['http', 'headers'])
+        const headers = integration.getIn(['http', 'headers']) as Map<any, any>
         return {
             name: integration.get('name'),
             description: integration.get('description') || '',
-            headers: this._objectToParameters(headers ? headers.toJS() : {}),
+            headers: this._objectToParameters(
+                headers ? (headers.toJS() as Record<string, unknown>) : {}
+            ),
             url: integration.getIn(['http', 'url']),
             method: integration.getIn(['http', 'method']),
             requestContentType: integration.getIn([
@@ -146,14 +148,15 @@ export default class HTTPIntegrationOverview extends React.Component<
     }
 
     _onRequestContentTypeChange(value: string) {
-        const {form} = this.state
+        const form = this.state.form
 
-        if (value !== JSON_CONTENT_TYPE) {
+        if (value !== ContentType.Json) {
             this.setState({
                 form:
                     form instanceof Object
-                        ? // $FlowFixMe
-                          this._objectToParameters(form)
+                        ? this._objectToParameters(
+                              form as Record<string, unknown>
+                          )
                         : form,
                 requestContentType: value,
             })
@@ -170,13 +173,12 @@ export default class HTTPIntegrationOverview extends React.Component<
 
     /**
      * Transform an object like {key1: value1} into parameter format {key: key1, value: value1}
-     * @param object
-     * @returns {Array}
-     * @private
      */
-    _objectToParameters(object: Object = {}): Array<*> {
+    _objectToParameters(
+        object: Record<string, unknown> = {}
+    ): Array<Record<string, unknown>> {
         const obj = object || {}
-        const params = []
+        const params: Array<Record<string, unknown>> = []
         _forIn(obj, (value, key) => {
             params.push({
                 key,
@@ -188,31 +190,30 @@ export default class HTTPIntegrationOverview extends React.Component<
 
     /**
      * Transform a parameter format like {key: key1, value: value1} into object {key1: value1}
-     * @param params
-     * @returns {*|{}}
-     * @private
      */
-    _parametersToObject(params: Array<*> = []): Object {
+    _parametersToObject(
+        params: Array<Record<string, unknown>> = []
+    ): Record<string, unknown> {
         if (!params) {
             return {}
         }
         return params.reduce((reduction, param) => {
             const newReduction = reduction
-            newReduction[param.key] = param.value
+            newReduction[param.key as string] = param.value
             return newReduction
         }, {})
     }
 
-    _handleSubmit = (evt: Event) => {
+    _handleSubmit = (evt: SyntheticEvent<HTMLFormElement>) => {
         evt.preventDefault()
 
         let form = this.state.form
 
-        if (this.state.requestContentType !== JSON_CONTENT_TYPE) {
+        if (this.state.requestContentType !== ContentType.Json) {
             form = form instanceof Array ? this._parametersToObject(form) : form
         }
 
-        const integration = {
+        const integration: Record<string, unknown> = {
             type: 'http',
             name: this.state.name,
             description: this.state.description,
@@ -234,21 +235,21 @@ export default class HTTPIntegrationOverview extends React.Component<
 
         // if update, set ids for server
         if (this.props.isUpdate) {
-            //$FlowFixMe -- doesn't support adding properties to object literals
             integration.id = this.props.integration.get('id')
-            //$FlowFixMe -- doesn't support adding properties to object literals
-            integration.http.id = this.props.integration.getIn(['http', 'id'])
+            ;(integration.http as Record<
+                string,
+                unknown
+            >).id = this.props.integration.getIn(['http', 'id'])
         }
 
-        return this.props.actions.updateOrCreateIntegration(fromJS(integration))
+        return this.props.updateOrCreateIntegration(fromJS(integration))
     }
 
-    _validateHeaderName = (inputType: string, value: string): ?string => {
+    _validateHeaderName = (inputType: string, value: string): Maybe<string> => {
         /*
             Method is passed as a 'validate' function to all key and value fields of the ObjectListField class.
-        Because we only want to validate the header name (key) fields, we have to check if the inputType is 'key'.
-
-        inputType: string: ['key', 'value']
+            Because we only want to validate the header name (key) fields, we have to check if the inputType is 'key'.
+            inputType: string: ['key', 'value']
         */
 
         if (inputType === 'key' && value && !validateHeaderName(value)) {
@@ -260,13 +261,12 @@ export default class HTTPIntegrationOverview extends React.Component<
         const {isUpdate, integration} = this.props
         const {method, form} = this.state
 
-        let stateUpdate = {method: newMethod}
+        const stateUpdate: Record<string, unknown> = {method: newMethod}
 
-        const savedMethodIsGet = !!(
-            integration.getIn(['http', 'method']) === HTTP_METHOD_GET
-        )
+        const savedMethodIsGet =
+            integration.getIn(['http', 'method']) === HttpMethod.Get
         const isSwitchingFromGetToOther =
-            method === HTTP_METHOD_GET && newMethod !== HTTP_METHOD_GET
+            method === HttpMethod.Get && newMethod !== HttpMethod.Get
         const formIsEmpty = !form || _isEmpty(form)
 
         if (
@@ -274,15 +274,21 @@ export default class HTTPIntegrationOverview extends React.Component<
             isSwitchingFromGetToOther &&
             formIsEmpty
         ) {
-            //$FlowFixMe -- doesn't support adding properties to object literals
             stateUpdate.form = DEFAULT_FORM
         }
 
-        this.setState(stateUpdate)
+        this.setState(stateUpdate as State)
     }
 
     render() {
-        const {actions, integration, isUpdate, loading} = this.props
+        const {
+            integration,
+            isUpdate,
+            loading,
+            activateIntegration,
+            deactivateIntegration,
+            deleteIntegration,
+        } = this.props
         const {
             method,
             name,
@@ -291,11 +297,12 @@ export default class HTTPIntegrationOverview extends React.Component<
             requestContentType,
             responseContentType,
             headers,
-            form,
             ticketCreated,
             ticketUpdated,
             ticketMessageCreated,
         } = this.state
+
+        const form = this.state.form
 
         const isSubmitting = this._isSubmitting()
 
@@ -320,7 +327,6 @@ export default class HTTPIntegrationOverview extends React.Component<
                         </a>{' '}
                         or contact us.
                     </p>
-
                     <Form onSubmit={this._handleSubmit}>
                         <InputField
                             type="text"
@@ -352,7 +358,7 @@ export default class HTTPIntegrationOverview extends React.Component<
                                 type="checkbox"
                                 label="Ticket created"
                                 value={ticketCreated}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({ticketCreated: value})
                                 }
                             />
@@ -361,7 +367,7 @@ export default class HTTPIntegrationOverview extends React.Component<
                                 type="checkbox"
                                 label="Ticket updated"
                                 value={ticketUpdated}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({ticketUpdated: value})
                                 }
                             />
@@ -370,7 +376,7 @@ export default class HTTPIntegrationOverview extends React.Component<
                                 type="checkbox"
                                 label="Ticket message created"
                                 value={ticketMessageCreated}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this.setState({ticketMessageCreated: value})
                                 }
                             />
@@ -411,13 +417,13 @@ export default class HTTPIntegrationOverview extends React.Component<
                             onChange={this._setMethod}
                             required
                         >
-                            {AVAILABLE_HTTP_METHODS.map((method) => (
+                            {Object.values(HttpMethod).map((method) => (
                                 <option key={method} value={method}>
                                     {method}
                                 </option>
                             ))}
                         </InputField>
-                        {method !== HTTP_METHOD_GET && (
+                        {method !== HttpMethod.Get && (
                             <InputField
                                 type="select"
                                 name="http.request_content_type"
@@ -428,11 +434,11 @@ export default class HTTPIntegrationOverview extends React.Component<
                                     this._onRequestContentTypeChange(value)
                                 }
                             >
-                                <option value={JSON_CONTENT_TYPE}>
-                                    {JSON_CONTENT_TYPE}
+                                <option value={ContentType.Json}>
+                                    {ContentType.Json}
                                 </option>
-                                <option value={FORM_CONTENT_TYPE}>
-                                    {FORM_CONTENT_TYPE}
+                                <option value={ContentType.Form}>
+                                    {ContentType.Form}
                                 </option>
                             </InputField>
                         )}
@@ -446,41 +452,41 @@ export default class HTTPIntegrationOverview extends React.Component<
                             }
                             required
                         >
-                            <option value={JSON_CONTENT_TYPE}>
-                                {JSON_CONTENT_TYPE}
+                            <option value={ContentType.Json}>
+                                {ContentType.Json}
                             </option>
                         </InputField>
                         <FormGroup>
                             <ObjectListField
-                                name="http.headers"
                                 title="Header"
                                 fieldName="header"
                                 fields={headers}
                                 validate={this._validateHeaderName}
-                                onChange={(value) =>
-                                    this.setState({headers: value})
-                                }
+                                onChange={(
+                                    value: Array<Record<string, unknown>>
+                                ) => this.setState({headers: value})}
                             />
                         </FormGroup>
 
-                        {method !== HTTP_METHOD_GET &&
-                            (requestContentType === JSON_CONTENT_TYPE ? (
+                        {method !== HttpMethod.Get &&
+                            (requestContentType === ContentType.Json ? (
                                 <JSONBody
                                     form={form}
-                                    onChange={(form) => this.setState({form})}
+                                    onChange={(form: State['form']) =>
+                                        this.setState({form})
+                                    }
                                 />
                             ) : (
                                 <FormGroup>
                                     <ObjectListField
-                                        name="http.form"
                                         fieldName="field"
                                         title="Form field"
                                         fields={
                                             form instanceof Array ? form : []
                                         }
-                                        onChange={(form) =>
-                                            this.setState({form})
-                                        }
+                                        onChange={(
+                                            form: Array<Record<string, unknown>>
+                                        ) => this.setState({form})}
                                     />
                                 </FormGroup>
                             ))}
@@ -496,7 +502,6 @@ export default class HTTPIntegrationOverview extends React.Component<
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </Button>
-
                             {isUpdate && isActive && (
                                 <Button
                                     type="button"
@@ -506,7 +511,7 @@ export default class HTTPIntegrationOverview extends React.Component<
                                         'btn-loading': isSubmitting,
                                     })}
                                     onClick={() =>
-                                        actions.deactivateIntegration(
+                                        deactivateIntegration(
                                             integration.get('id')
                                         )
                                     }
@@ -524,7 +529,7 @@ export default class HTTPIntegrationOverview extends React.Component<
                                         'btn-loading': isSubmitting,
                                     })}
                                     onClick={() =>
-                                        actions.activateIntegration(
+                                        activateIntegration(
                                             integration.get('id')
                                         )
                                     }
@@ -532,13 +537,12 @@ export default class HTTPIntegrationOverview extends React.Component<
                                     Re-activate integration
                                 </Button>
                             )}
-
                             {isUpdate && (
                                 <ConfirmButton
                                     className="float-right"
                                     color="secondary"
                                     confirm={() =>
-                                        actions.deleteIntegration(integration)
+                                        deleteIntegration(integration)
                                     }
                                     content="Are you sure you want to delete this integration?"
                                 >
@@ -555,3 +559,12 @@ export default class HTTPIntegrationOverview extends React.Component<
         )
     }
 }
+
+const connector = connect(null, {
+    activateIntegration,
+    deactivateIntegration,
+    deleteIntegration,
+    updateOrCreateIntegration,
+})
+
+export default connector(HTTPIntegrationOverview)

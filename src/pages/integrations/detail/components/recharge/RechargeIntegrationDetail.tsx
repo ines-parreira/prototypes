@@ -1,7 +1,6 @@
-// @flow
 import React from 'react'
-import type {List, Map} from 'immutable'
-import {Link, withRouter} from 'react-router-dom'
+import {List, Map} from 'immutable'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import {
     Alert,
@@ -14,29 +13,27 @@ import {
     Row,
 } from 'reactstrap'
 
-import * as integrationHelpers from '../../../../../state/integrations/helpers.ts'
+import {connect, ConnectedProps} from 'react-redux'
 
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
+import * as integrationHelpers from '../../../../../state/integrations/helpers'
+import {deleteIntegration} from '../../../../../state/integrations/actions'
 
+import Loader from '../../../../common/components/Loader/Loader'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
+import PageHeader from '../../../../common/components/PageHeader'
 
 type Props = {
-    integration: Object,
-    shopifyIntegrations: List,
-    actions: Object,
-    loading: Object,
-    redirectUri: string,
-
-    // Router
-    location: Object,
-    match: Object,
-}
+    integration: Map<any, any>
+    shopifyIntegrations: List<Map<any, any>>
+    loading: Map<any, any>
+    redirectUri: string
+} & RouteComponentProps<{integrationId: string}> &
+    ConnectedProps<typeof connector>
 
 type State = {
-    store_name: string,
-    integrationLoading?: boolean,
+    store_name: string
+    integrationLoading?: boolean
 }
 
 export class RechargeIntegrationDetail extends React.Component<Props, State> {
@@ -71,7 +68,12 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
     }
 
     render() {
-        const {actions, integration, shopifyIntegrations, loading} = this.props
+        const {
+            deleteIntegration,
+            integration,
+            shopifyIntegrations,
+            loading,
+        } = this.props
         const isUpdate = this.props.match.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
@@ -182,7 +184,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                     key={idx}
                                                     onClick={() =>
                                                         this._installForShopifyStore(
-                                                            integration
+                                                            integration!
                                                         )
                                                     }
                                                     className={classNames(
@@ -191,7 +193,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                             'btn-loading':
                                                                 this.state
                                                                     .integrationLoading ===
-                                                                integration.get(
+                                                                integration!.get(
                                                                     'id'
                                                                 ),
                                                         }
@@ -206,7 +208,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                         )}
                                                     />
                                                     Install Recharge for{' '}
-                                                    {integration.get('name')}
+                                                    {integration!.get('name')}
                                                 </Button>
                                             )
                                         }
@@ -248,9 +250,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                         color="secondary"
                                         id={integration.get('id')}
                                         confirm={() =>
-                                            actions.deleteIntegration(
-                                                integration
-                                            )
+                                            deleteIntegration(integration)
                                         }
                                         content="Are you sure you want to delete this integration?"
                                     >
@@ -269,4 +269,8 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(RechargeIntegrationDetail)
+const connector = connect(null, {
+    deleteIntegration,
+})
+
+export default withRouter(connector(RechargeIntegrationDetail))

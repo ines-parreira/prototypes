@@ -11,11 +11,7 @@ export const getIntegrationsByTypes = (
         types.includes(inte.get('type', ''))
     ) as List<any>
 
-export const getIntegrationConfig = (
-    type: string
-): Maybe<
-    typeof INTEGRATION_TYPE_DESCRIPTIONS[keyof typeof INTEGRATION_TYPE_DESCRIPTIONS]
-> => {
+export const getIntegrationConfig = (type: string) => {
     return _find(INTEGRATION_TYPE_DESCRIPTIONS, {type})
 }
 

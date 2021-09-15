@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {ShopifyIntegrationDetail} from '../ShopifyIntegrationDetail'
+import {ShopifyIntegrationDetail} from '../ShopifyIntegrationDetail.tsx'
 
 describe('ShopifyIntegrationDetail', () => {
     const commonProps = {

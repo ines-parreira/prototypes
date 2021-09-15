@@ -5,7 +5,7 @@ import {List, Map} from 'immutable'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import history from '../../../../history'
 import ForwardIcon from '../ForwardIcon'
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 import shopifyLogo from '../../../../../../img/integrations/shopify.png'
 import warningIcon from '../../../../../../img/icons/warning.svg'
 import Tooltip from '../../../../common/components/Tooltip'
@@ -120,11 +120,13 @@ function GorgiasChatIntegrationList({
         <IntegrationList
             integrationType={IntegrationType.GorgiasChatIntegrationType}
             longTypeDescription={longTypeDescription}
-            integrations={integrations.filter(
-                (integration) =>
-                    integration?.get('type') ===
-                    IntegrationType.GorgiasChatIntegrationType
-            )}
+            integrations={
+                integrations.filter(
+                    (integration) =>
+                        integration?.get('type') ===
+                        IntegrationType.GorgiasChatIntegrationType
+                ) as List<Map<any, any>>
+            }
             createIntegration={() =>
                 history.push(
                     `/app/settings/integrations/${IntegrationType.GorgiasChatIntegrationType}/new`

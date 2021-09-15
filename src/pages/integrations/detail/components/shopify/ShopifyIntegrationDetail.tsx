@@ -1,57 +1,55 @@
-// @flow
-import React from 'react'
-import {Link, withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
+import React, {SyntheticEvent} from 'react'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
-import {type Map} from 'immutable'
+import {Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
-    Form,
-    Button,
     Breadcrumb,
     BreadcrumbItem,
-    Container,
-    Row,
+    Button,
     Col,
+    Container,
+    Form,
     Label,
+    Row,
 } from 'reactstrap'
 import {parse} from 'query-string'
 
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
-import BooleanField from '../../../../common/forms/BooleanField'
+import Loader from '../../../../common/components/Loader/Loader'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
+import BooleanField from '../../../../common/forms/BooleanField.js'
 import InputField from '../../../../common/forms/InputField'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
+import PageHeader from '../../../../common/components/PageHeader'
 
-import * as utils from '../../../../../utils.ts'
+import * as utils from '../../../../../utils'
 
-import {notify} from '../../../../../state/notifications/actions.ts'
-import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
-import history from '../../../../history.ts'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {notify} from '../../../../../state/notifications/actions'
+import {makeGetShopifyIntegrationByShopName} from '../../../../../state/integrations/selectors'
+import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
+import history from '../../../../history'
+import {
+    deleteIntegration,
+    fetchIntegration,
+    triggerCreateSuccess,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
+import {RootState} from '../../../../../state/types'
 
 type Props = {
-    integration: Map<*, *>,
-    isUpdate: boolean,
-    actions: Object,
-    loading: Object,
-
-    redirectUri: string,
-
-    getExistingShopifyIntegration: (string) => Map<*, *>,
-
-    // Router
-    location: Object,
-
-    // Actions
-    notify: typeof notify,
-}
+    integration: Map<any, any>
+    isUpdate: boolean
+    loading: Map<any, any>
+    redirectUri: string
+} & RouteComponentProps<any, any, {search: string}> &
+    ConnectedProps<typeof connector>
 
 type State = {
-    name: string,
-    syncCustomerNotes: boolean,
-    isInitialized: boolean,
+    name: string
+    syncCustomerNotes: boolean
+    isInitialized: boolean
 }
 
 export class ShopifyIntegrationDetail extends React.Component<Props, State> {
@@ -64,21 +62,23 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
     componentDidMount() {
         // display message from url
         const {location, isUpdate} = this.props
-        const message = parse(location.search).message
-        const status = parse(location.search).message_type || 'info'
+        const message = parse(location.search).message as string
+        const status =
+            (parse(location.search).message_type as NotificationStatus) ||
+            NotificationStatus.Info
         const error = parse(location.search).error
         this.setState({isInitialized: !isUpdate})
 
         if (error === 'need_scope_update') {
-            this.props.notify({
-                status: 'error',
+            void this.props.notify({
+                status: NotificationStatus.Error,
                 message:
                     'You need to update your app permissions in order to do that.',
             })
         }
 
         if (message) {
-            this.props.notify({
+            void this.props.notify({
                 status,
                 message: decodeURIComponent(message.replace(/\+/g, ' ')),
             })
@@ -100,16 +100,15 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
             if (isAuthenticating) {
                 if (authenticationRequired) {
-                    setTimeout(
-                        nextProps.actions.fetchIntegration(
+                    setTimeout(() => {
+                        void this.props.fetchIntegration(
                             nextProps.integration.get('id'),
                             nextProps.integration.get('type'),
                             true
-                        ),
-                        3000
-                    )
+                        )
+                    }, 3000)
                 } else {
-                    nextProps.actions.triggerCreateSuccess(
+                    this.props.triggerCreateSuccess(
                         nextProps.integration.toJS()
                     )
                 }
@@ -137,7 +136,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
         }
     }
 
-    _handleCreate = (evt: Event): void => {
+    _handleCreate = (evt: SyntheticEvent<HTMLFormElement>): void => {
         evt.preventDefault()
         window.location.href = this.props.redirectUri.replace(
             '{shop_name}',
@@ -145,11 +144,11 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
         )
     }
 
-    _handleUpdate = (evt: Event): void => {
+    _handleUpdate = (evt: SyntheticEvent<HTMLFormElement>): void => {
         evt.preventDefault()
-        const {integration, actions} = this.props
+        const {integration} = this.props
 
-        actions.updateOrCreateIntegration(
+        void this.props.updateOrCreateIntegration(
             integration.mergeDeep({
                 meta: {
                     sync_customer_notes: this.state.syncCustomerNotes,
@@ -168,7 +167,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
     render() {
         const {
-            actions,
+            deleteIntegration,
             integration,
             isUpdate,
             loading,
@@ -321,7 +320,8 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                             name="sync_customer_notes"
                                             type="checkbox"
                                             value={syncCustomerNotes}
-                                            onChange={(value) =>
+                                            //$TsFixMe remove once BooleanField is migrated
+                                            onChange={(value: boolean) =>
                                                 this.setState({
                                                     syncCustomerNotes: value,
                                                 })
@@ -417,9 +417,9 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                             className="float-right"
                                             color="secondary"
                                             confirm={() =>
-                                                actions.deleteIntegration(
+                                                (deleteIntegration(
                                                     integration
-                                                )
+                                                ) as unknown) as Promise<void>
                                             }
                                             content="Are you sure you want to delete this integration?"
                                         >
@@ -439,15 +439,21 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(
-    connect(
-        (state) => {
-            return {
-                getExistingShopifyIntegration: integrationSelectors.makeGetShopifyIntegrationByShopName(
-                    state
-                ),
-            }
-        },
-        {notify}
-    )(ShopifyIntegrationDetail)
+const connector = connect(
+    (state: RootState) => {
+        return {
+            getExistingShopifyIntegration: makeGetShopifyIntegrationByShopName(
+                state
+            ),
+        }
+    },
+    {
+        notify,
+        deleteIntegration,
+        fetchIntegration,
+        triggerCreateSuccess,
+        updateOrCreateIntegration,
+    }
 )
+
+export default withRouter(connector(ShopifyIntegrationDetail))

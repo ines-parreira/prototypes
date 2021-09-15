@@ -1,50 +1,33 @@
-// @flow
 import React from 'react'
-import type {List} from 'immutable'
+import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Button, Alert} from 'reactstrap'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import Lightbox from 'react-images'
 
-import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon.tsx'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
-import history from '../../../../history.ts'
+import {getRedirectUri} from '../../../../../state/integrations/selectors'
+import {IntegrationType} from '../../../../../models/integration/types'
+import {RootState} from '../../../../../state/types'
 
-import Carousel from './../../../common/Carousel'
+import history from '../../../../history'
+
+import IntegrationList from '../IntegrationList'
+import ForwardIcon from '../ForwardIcon'
+
+import Carousel from './../../../common/Carousel.js'
 
 type Props = {
-    integrations: List,
-    shopifyIntegrations: List,
-    loading: Object,
-
-    activate: typeof integrationsActions.activateIntegration,
-
-    redirectUri: string,
-}
+    integrations: List<Map<any, any>>
+    shopifyIntegrations: List<any>
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isLightboxOpen: boolean,
-    currentImage: number,
+    isLightboxOpen: boolean
+    currentImage: number
 }
 
-@connect(
-    (state) => {
-        return {
-            redirectUri: integrationsSelectors.getRedirectUri('recharge')(
-                state
-            ),
-        }
-    },
-    {
-        activate: integrationsActions.activateIntegration,
-    }
-)
-export default class RechargeIntegrationList extends React.Component<
-    Props,
-    State
-> {
+export class RechargeIntegrationList extends React.Component<Props, State> {
     state = {
         isLightboxOpen: false,
         currentImage: 0,
@@ -68,8 +51,8 @@ export default class RechargeIntegrationList extends React.Component<
     render() {
         const {integrations, loading, redirectUri} = this.props
         const rechargeIntegrations = integrations.filter(
-            (v) => v.get('type') === 'recharge'
-        )
+            (v) => v!.get('type') === IntegrationType.RechargeIntegrationType
+        ) as List<Map<any, any>>
 
         const imagesUrl = [
             `${
@@ -112,7 +95,10 @@ export default class RechargeIntegrationList extends React.Component<
 
                 <Carousel
                     imagesUrl={imagesUrl}
-                    onImageClick={({index}) => this._toggleLightbox(index)}
+                    // $TsFixMe remove type when Carousel is migrated
+                    onImageClick={({index}: {index: number}) =>
+                        this._toggleLightbox(index)
+                    }
                 />
 
                 <Lightbox
@@ -139,10 +125,10 @@ export default class RechargeIntegrationList extends React.Component<
             </div>
         )
 
-        const integrationToItemDisplay = (int) => {
-            const editLink = `/app/settings/integrations/recharge/${int.get(
-                'id'
-            )}`
+        const integrationToItemDisplay = (int: Map<any, any>) => {
+            const editLink = `/app/settings/integrations/recharge/${
+                int.get('id') as number
+            }`
             const shopifyShopName = int.getIn(['meta', 'store_name'])
             const reactivateUrl = redirectUri
                 .concat('?store_name=')
@@ -179,7 +165,7 @@ export default class RechargeIntegrationList extends React.Component<
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType="recharge"
+                integrationType={IntegrationType.RechargeIntegrationType}
                 integrations={rechargeIntegrations}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/recharge/new')
@@ -192,3 +178,13 @@ export default class RechargeIntegrationList extends React.Component<
         )
     }
 }
+
+const connector = connect((state: RootState) => {
+    return {
+        redirectUri: getRedirectUri(IntegrationType.RechargeIntegrationType)(
+            state
+        ),
+    }
+})
+
+export default connector(RechargeIntegrationList)

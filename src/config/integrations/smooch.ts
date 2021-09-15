@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
 import {Language} from '../../constants/languages'
 
@@ -13,4 +13,4 @@ export const SMOOCH_LANGUAGE_OPTIONS = fromJS([
     {value: Language.Dutch, label: 'Dutch'},
     {value: Language.German, label: 'German'},
     {value: Language.Norwegian, label: 'Norwegian'},
-])
+]) as List<Map<any, any>>

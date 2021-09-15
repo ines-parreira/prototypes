@@ -1,31 +1,22 @@
-import React, {FormEvent} from 'react'
-
+import React, {FormEvent, useCallback} from 'react'
 import {Form} from 'reactstrap'
-
 import {fromJS, Map} from 'immutable'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
+
+import {makeGetMagento2IntegrationByStoreUrl} from '../../../../../state/integrations/selectors'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import {RootState} from '../../../../../state/types'
 
 import InputField from '../../../../common/forms/InputField.js'
-
-import * as integrationSelectors from '../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../state/types'
 
 import Magento2IntegrationActionButtons from './Magento2IntegrationActionButtons'
 
 type Props = {
     integration: Map<string, any>
-    actions: {
-        updateOrCreateIntegration: (
-            integration: Map<string, any>
-        ) => Promise<void>
-        activateIntegration: (integration: Map<string, any>) => Promise<void>
-        deleteIntegration: (integration: Map<string, any>) => Promise<void>
-    }
     isUpdate: boolean
     isSubmitting: boolean
     redirectUri: string
-    getExistingMagento2Integration: (arg0: string) => Map<any, any>
-}
+} & ConnectedProps<typeof connector>
 
 const handleCreate = (
     values: {storeURL: string},
@@ -39,28 +30,11 @@ const handleCreate = (
     )
 }
 
-const handleUpdate = (
-    values: {adminURLSuffix: string},
-    integration: Map<string, any>,
-    actions: Props['actions']
-): void => {
-    const meta: Map<string, any> = integration.get('meta')
-    void actions.updateOrCreateIntegration(
-        integration.merge({
-            meta: meta.merge({
-                admin_url_suffix: values.adminURLSuffix,
-                is_manual: false,
-                auth: null,
-            }),
-        })
-    )
-}
-
 export const Magento2OneClickIntegrationForm = ({
     integration,
     isUpdate,
     isSubmitting,
-    actions,
+    updateOrCreateIntegration,
     redirectUri,
     getExistingMagento2Integration,
 }: Props) => {
@@ -82,13 +56,29 @@ export const Magento2OneClickIntegrationForm = ({
 
     const submitIsDisabled = isSubmitting || !!error
 
+    const handleUpdate = useCallback(
+        (values: {adminURLSuffix: string}): void => {
+            const meta: Map<string, any> = integration.get('meta')
+            void updateOrCreateIntegration(
+                integration.merge({
+                    meta: meta.merge({
+                        admin_url_suffix: values.adminURLSuffix,
+                        is_manual: false,
+                        auth: null,
+                    }),
+                })
+            )
+        },
+        [integration]
+    )
+
     return (
         <Form
             onSubmit={(event: FormEvent) => {
                 event.preventDefault()
 
                 if (isUpdate) {
-                    handleUpdate(values, integration, actions)
+                    handleUpdate(values)
                 } else {
                     handleCreate(values, redirectUri)
                 }
@@ -143,7 +133,6 @@ export const Magento2OneClickIntegrationForm = ({
                 isUpdate={isUpdate}
                 isSubmitting={isSubmitting}
                 submitIsDisabled={submitIsDisabled}
-                actions={actions}
                 integration={integration}
                 redirectUri={redirectUri}
             />
@@ -151,12 +140,15 @@ export const Magento2OneClickIntegrationForm = ({
     )
 }
 
-const mapStateToProps = (state: RootState) => {
-    return {
-        getExistingMagento2Integration: integrationSelectors.makeGetMagento2IntegrationByStoreUrl(
-            state
-        ),
-    }
-}
+const connector = connect(
+    (state: RootState) => {
+        return {
+            getExistingMagento2Integration: makeGetMagento2IntegrationByStoreUrl(
+                state
+            ),
+        }
+    },
+    {updateOrCreateIntegration}
+)
 
-export default connect(mapStateToProps)(Magento2OneClickIntegrationForm)
+export default connector(Magento2OneClickIntegrationForm)

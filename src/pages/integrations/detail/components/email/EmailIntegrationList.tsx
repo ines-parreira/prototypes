@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
 import ForwardIcon from '../ForwardIcon'
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 import outlookImg from '../../../../../../img/integrations/outlook.png'
@@ -137,7 +137,7 @@ export default class EmailIntegrationList extends Component<Props> {
 
         return (
             <IntegrationList
-                integrationType="email"
+                integrationType={IntegrationType.EmailIntegrationType}
                 integrations={getIntegrationsByTypes(
                     integrations,
                     EMAIL_INTEGRATION_TYPES

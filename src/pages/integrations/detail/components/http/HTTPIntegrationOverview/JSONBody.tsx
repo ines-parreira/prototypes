@@ -1,22 +1,28 @@
-// @flow
 import React from 'react'
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
 import {FormGroup, FormText, Label} from 'reactstrap'
 
-import Select from '../../../../../common/components/ast/widget/ReactSelect.tsx'
-import Tooltip from '../../../../../common/components/Tooltip.tsx'
-import JsonField from '../../../../../common/forms/JsonField'
+import Select from '../../../../../common/components/ast/widget/ReactSelect'
+import Tooltip from '../../../../../common/components/Tooltip'
+import JsonField from '../../../../../common/forms/JsonField.js'
 
-import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants'
+import {SelectableOption} from '../../../../../common/forms/SelectField/types'
+
+import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants.js'
 
 type Props = {
-    form: string | Object | Array<*>,
-    onChange: (string | Object | Array<*>) => void,
+    form: string | Record<string, unknown> | Array<Record<string, unknown>>
+    onChange: (
+        value: string | Record<string, unknown> | Array<Record<string, unknown>>
+    ) => void
 }
 
 type State = {
-    cachedForm: string | Object | Array<*>,
+    cachedForm:
+        | string
+        | Record<string, unknown>
+        | Array<Record<string, unknown>>
 }
 
 export default class JSONBody extends React.Component<Props, State> {
@@ -38,18 +44,20 @@ export default class JSONBody extends React.Component<Props, State> {
         }
     }
 
-    _onDropdownChange = (form: Object | string) => {
+    _onDropdownChange = (form: Record<string, unknown> | string) => {
         this.props.onChange(
             _isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form
         )
     }
 
-    _onJSONChange = (form: Object) => {
+    _onJSONChange = (form: State['cachedForm']) => {
         this.setState({cachedForm: form})
         this.props.onChange(form)
     }
 
-    _formIsPresetOption = (form: string | Object | Array<*>): boolean => {
+    _formIsPresetOption = (
+        form: string | Record<string, unknown> | Array<Record<string, unknown>>
+    ): boolean => {
         const presetOptionsValues = this.presetOptions.map(
             (option) => option.value
         )
@@ -61,7 +69,9 @@ export default class JSONBody extends React.Component<Props, State> {
     render() {
         const {form} = this.props
 
-        let dropdownValue = this._formIsPresetOption(form) ? form : DEFAULT_FORM
+        const dropdownValue = this._formIsPresetOption(form)
+            ? (form as Record<string, unknown> | string)
+            : DEFAULT_FORM
 
         return (
             <FormGroup>
@@ -81,9 +91,9 @@ export default class JSONBody extends React.Component<Props, State> {
                 </Tooltip>
                 <div className="mb-2">
                     <Select
-                        options={this.presetOptions}
+                        options={this.presetOptions as SelectableOption[]}
                         onChange={this._onDropdownChange}
-                        value={dropdownValue}
+                        value={dropdownValue as any}
                     />
                 </div>
                 {_isEqual(dropdownValue, DEFAULT_FORM) ? (

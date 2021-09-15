@@ -1,27 +1,21 @@
 import React from 'react'
 import {Form} from 'reactstrap'
-
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import {fromJS, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 
 import InputField from '../../../../common/forms/InputField.js'
 import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 
 import Magento2IntegrationActionButtons from './Magento2IntegrationActionButtons'
 
 type Props = {
     integration: Map<string, any>
-    actions: {
-        updateOrCreateIntegration: (
-            integration: Map<string, any>
-        ) => Promise<void>
-        activateIntegration: (integration: Map<string, any>) => Promise<void>
-        deleteIntegration: (integration: Map<string, any>) => Promise<void>
-    }
     isUpdate: boolean
     isSubmitting: boolean
-}
+} & ConnectedProps<typeof connector>
 
 const authInitialValues = {
     consumerKey: '',
@@ -34,7 +28,7 @@ const placeholder = 'Hidden for security reasons'
 
 export const Magento2ManualIntegrationForm = ({
     integration,
-    actions,
+    updateOrCreateIntegration,
     isUpdate,
     isSubmitting,
 }: Props) => {
@@ -81,21 +75,18 @@ export const Magento2ManualIntegrationForm = ({
                         is_manual: true,
                     },
                 }
-                void actions
-                    .updateOrCreateIntegration(integration.mergeDeep(data))
-                    .then((response) => {
-                        const error = _get(response, 'error')
+                void updateOrCreateIntegration(
+                    integration.mergeDeep(data)
+                ).then((response) => {
+                    const error = _get(response, 'error')
 
-                        if (error) {
-                            const {meta} = _get(
-                                error,
-                                'response.data.error.data'
-                            )
-                            if (meta) {
-                                setErrors(meta)
-                            }
+                    if (error) {
+                        const {meta} = _get(error, 'response.data.error.data')
+                        if (meta) {
+                            setErrors(meta)
                         }
-                    })
+                    }
+                })
             }}
         >
             <div className="mb-4">
@@ -197,7 +188,6 @@ export const Magento2ManualIntegrationForm = ({
 
             <Magento2IntegrationActionButtons
                 integration={integration}
-                actions={actions}
                 isUpdate={isUpdate}
                 isSubmitting={isSubmitting}
                 submitIsDisabled={false}
@@ -206,4 +196,6 @@ export const Magento2ManualIntegrationForm = ({
     )
 }
 
-export default Magento2ManualIntegrationForm
+const connector = connect(null, {updateOrCreateIntegration})
+
+export default connector(Magento2ManualIntegrationForm)

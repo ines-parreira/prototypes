@@ -1,2 +1,2 @@
-import HTTPIntegrationOverview from './HTTPIntegrationOverview'
+import HTTPIntegrationOverview from './HTTPIntegrationOverview.tsx'
 export default HTTPIntegrationOverview

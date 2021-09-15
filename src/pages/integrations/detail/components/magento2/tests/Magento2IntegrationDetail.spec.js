@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {Magento2IntegrationDetail} from '../Magento2IntegrationDetail'
+import {Magento2IntegrationDetail} from '../Magento2IntegrationDetail.tsx'
 
 describe('<Magento2IntegrationDetail/>', () => {
     const commonProps = {

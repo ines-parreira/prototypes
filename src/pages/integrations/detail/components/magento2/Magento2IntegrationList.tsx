@@ -1,36 +1,31 @@
-// @flow
-import React from 'react'
-import {type Map, type List} from 'immutable'
+import React, {Component} from 'react'
+import {Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
 
 import {Button} from 'reactstrap'
 
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
-import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-import history from '../../../../history.ts'
+import {IntegrationType} from '../../../../../models/integration/types'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
+import history from '../../../../history'
 import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../ForwardIcon.tsx'
+import ForwardIcon from '../ForwardIcon'
 
 type Props = {
-    integrations: List<Map<*, *>>,
-    loading: Map<*, *>,
-    actions: {
-        updateOrCreateIntegration: (
-            integration: Map<string, any>
-        ) => Promise<void>,
-    },
-    redirectUri: string,
+    integrations: List<Map<any, any>>
+    loading: Map<any, any>
+    redirectUri: string
 }
 
-export class Magento2IntegrationList extends React.Component<Props> {
+export class Magento2IntegrationList extends Component<Props> {
     _onReactivateOneClick = (
-        integration: List<Map<*, *>>,
+        integration: Map<any, any>,
         redirectUri: string
     ) => {
-        const adminUrlSuffix = integration.getIn(['meta', 'admin_url_suffix'])
-        const url = integration.getIn(['meta', 'store_url'])
+        const adminUrlSuffix = integration.getIn([
+            'meta',
+            'admin_url_suffix',
+        ]) as string
+        const url = integration.getIn(['meta', 'store_url']) as string
         window.location.href = redirectUri.concat(
             `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`
         )
@@ -68,10 +63,10 @@ export class Magento2IntegrationList extends React.Component<Props> {
             </div>
         )
 
-        const integrationToItemDisplay = (integration) => {
-            const editLink = `/app/settings/integrations/magento2/${integration.get(
-                'id'
-            )}`
+        const integrationToItemDisplay = (integration: Map<any, any>) => {
+            const editLink = `/app/settings/integrations/magento2/${
+                integration.get('id') as number
+            }`
             const isSubmitting = loading.get('updateIntegration')
             const isDisabled = integration.get('deactivated_datetime')
             const isManual = integration.getIn(['meta', 'is_manual'])
@@ -108,7 +103,6 @@ export class Magento2IntegrationList extends React.Component<Props> {
                             </Button>
                         </td>
                     ) : null}
-
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />
                     </td>
@@ -118,13 +112,14 @@ export class Magento2IntegrationList extends React.Component<Props> {
 
         const magento2Integrations = integrations.filter(
             (integration) =>
-                integration.get('type') === MAGENTO2_INTEGRATION_TYPE
-        )
+                integration!.get('type') ===
+                IntegrationType.Magento2IntegrationType
+        ) as List<Map<any, any>>
 
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType={MAGENTO2_INTEGRATION_TYPE}
+                integrationType={IntegrationType.Magento2IntegrationType}
                 integrations={magento2Integrations}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/magento2/new')
@@ -137,6 +132,4 @@ export class Magento2IntegrationList extends React.Component<Props> {
     }
 }
 
-export default connect(null, {
-    activate: integrationsActions.activateIntegration,
-})(Magento2IntegrationList)
+export default Magento2IntegrationList

@@ -3,17 +3,17 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
-import Magento2ManualIntegrationForm from '../Magento2ManualIntegrationForm.tsx'
+import {Magento2ManualIntegrationForm} from '../Magento2ManualIntegrationForm.tsx'
+
+jest.mock('../Magento2IntegrationActionButtons', () => {
+    const {Magento2IntegrationActionButtons} = jest.requireActual(
+        '../Magento2IntegrationActionButtons'
+    )
+
+    return Magento2IntegrationActionButtons
+})
 
 describe('<Magento2ManualIntegrationForm/>', () => {
-    const commonProps = {
-        actions: {
-            activateIntegration: jest.fn(),
-            deactivateIntegration: jest.fn(),
-            deleteIntegration: jest.fn(),
-        },
-    }
-
     describe('render()', () => {
         it('should render the page to create a new manual integration', () => {
             const {container} = render(
@@ -22,7 +22,7 @@ describe('<Magento2ManualIntegrationForm/>', () => {
                     submitIsDisabled={false}
                     integration={fromJS({})}
                     isUpdate={false}
-                    {...commonProps}
+                    updateOrCreateIntegration={jest.fn()}
                 />
             )
 

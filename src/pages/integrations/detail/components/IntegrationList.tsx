@@ -1,67 +1,58 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {Link, withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
+import React, {ReactNode} from 'react'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
+import {connect, ConnectedProps} from 'react-redux'
 import {
+    Alert,
     Breadcrumb,
     BreadcrumbItem,
-    Table,
     Button,
     Container,
-    Alert,
+    Table,
 } from 'reactstrap'
 import {parse} from 'query-string'
 import moment from 'moment'
+import {List, Map} from 'immutable'
 
-import {getIntegrationConfig} from '../../../../state/integrations/helpers.ts'
-import {notify} from '../../../../state/notifications/actions.ts'
-import PageHeader from '../../../common/components/PageHeader.tsx'
+import {getIntegrationConfig} from '../../../../state/integrations/helpers'
+import {notify} from '../../../../state/notifications/actions'
+import PageHeader from '../../../common/components/PageHeader'
 
-import {
-    SMOOCH_INSIDE_INTEGRATION_TYPE,
-    AIRCALL_INTEGRATION_TYPE,
-} from '../../../../constants/integration.ts'
+import {IntegrationType} from '../../../../models/integration/types'
 
-import NoIntegration from './NoIntegration'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
+import NoIntegration from './NoIntegration.js'
+
+type Props = {
+    integrationType: IntegrationType
+    integrations: List<Map<any, any>>
+    createIntegration: () => void
+    createIntegrationButtonClassName?: string
+    createIntegrationButtonContent: ReactNode
+    createIntegrationButtonOnClick?: () => void
+    longTypeDescription?: ReactNode
+    loading: Map<any, any>
+    alert?: ReactNode
+    integrationToItemDisplay: (integration: Map<any, any>) => ReactNode
+    createIntegrationButtonHidden: boolean
+} & RouteComponentProps &
+    ConnectedProps<typeof connector>
 /**
  * A generic component to edit integrations of a given type.
  * We can then have specific components for each integration type using this one.
  */
-@connect(null, {
-    notify,
-})
-class IntegrationList extends React.Component {
-    static propTypes = {
-        integrationType: PropTypes.string.isRequired, // The type of the integrations we're displaying
-        integrations: PropTypes.object.isRequired, // The integrations for the relevant type only
-        createIntegration: PropTypes.func.isRequired, // The callback to create a new integration for this type.
-        createIntegrationButtonClassName: PropTypes.string, // custom class name for the create integration button
-        createIntegrationButtonContent: PropTypes.node.isRequired, // The content of the button to create a new integration
-        createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
-        longTypeDescription: PropTypes.node,
-        loading: PropTypes.object.isRequired, // A map for different loading status(es)
-        alert: PropTypes.node,
-        // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
-        integrationToItemDisplay: PropTypes.func.isRequired,
-        createIntegrationButtonHidden: PropTypes.bool.isRequired,
-
-        // Router
-        location: PropTypes.object.isRequired,
-        params: PropTypes.object.isRequired,
-
-        // Actions
-        notify: PropTypes.func.isRequired,
-    }
-
-    static defaultProps = {
+class IntegrationList extends React.Component<Props> {
+    static defaultProps: Pick<Props, 'createIntegrationButtonHidden'> = {
         createIntegrationButtonHidden: false,
     }
 
     onButtonClick = () => {
-        if (this.props.integrationType === SMOOCH_INSIDE_INTEGRATION_TYPE) {
-            this.props.notify({
-                status: 'error',
+        if (
+            this.props.integrationType ===
+            IntegrationType.SmoochInsideIntegrationType
+        ) {
+            void this.props.notify({
+                status: NotificationStatus.Error,
                 message:
                     'Cannot create a chat integration because it is deprecated. ' +
                     'Please use the new chat integration instead.',
@@ -75,15 +66,20 @@ class IntegrationList extends React.Component {
         this.props.createIntegration()
     }
 
-    displayAircallWebhookWarning = (integrationType, integrations) => {
-        if (integrationType !== AIRCALL_INTEGRATION_TYPE) {
+    displayAircallWebhookWarning = (
+        integrationType: IntegrationType,
+        integrations: List<Map<any, any>>
+    ) => {
+        if (integrationType !== IntegrationType.AircallIntegrationType) {
             return
         }
 
         const maxDate = moment('2021-05-20')
 
         const olderIntegrations = integrations.filter((integration) => {
-            return moment(integration.get('created_datetime')).isBefore(maxDate)
+            return moment(integration!.get('created_datetime')).isBefore(
+                maxDate
+            )
         })
 
         if (olderIntegrations.size > 0) {
@@ -99,8 +95,8 @@ class IntegrationList extends React.Component {
 
     componentWillMount() {
         if (parse(this.props.location.search).status === 'create-error') {
-            this.props.notify({
-                status: 'error',
+            void this.props.notify({
+                status: NotificationStatus.Error,
                 message: `Something went wrong while creating your integration. Please wait a few minutes and ' +
                     'try again. If the problem persists, contact us at ${window.GORGIAS_SUPPORT_EMAIL}.`,
             })
@@ -119,7 +115,7 @@ class IntegrationList extends React.Component {
             alert,
         } = this.props
 
-        const integrationTitle = getIntegrationConfig(integrationType).title
+        const integrationTitle = getIntegrationConfig(integrationType)!.title
 
         return (
             <div className="w-100">
@@ -172,7 +168,9 @@ class IntegrationList extends React.Component {
                         <tbody>
                             {integrations
                                 .valueSeq()
-                                .map(integrationToItemDisplay)}
+                                .map((integration) =>
+                                    integrationToItemDisplay(integration!)
+                                )}
                         </tbody>
                     </Table>
                 )}
@@ -181,4 +179,8 @@ class IntegrationList extends React.Component {
     }
 }
 
-export default withRouter(IntegrationList)
+const connector = connect(null, {
+    notify,
+})
+
+export default withRouter(connector(IntegrationList))

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import IntegrationList from '../IntegrationList'
+import IntegrationList from '../IntegrationList.tsx'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import history from '../../../../history.ts'
 

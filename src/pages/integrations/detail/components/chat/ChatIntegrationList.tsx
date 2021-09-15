@@ -10,7 +10,7 @@ import {
 } from '../../../../../state/integrations/actions'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import history from '../../../../history'
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import {IntegrationType} from '../../../../../models/integration/types'
 
@@ -111,11 +111,13 @@ export class ChatIntegrationListContainer extends Component<Props> {
             <IntegrationList
                 integrationType={IntegrationType.SmoochInsideIntegrationType}
                 longTypeDescription={longTypeDescription()}
-                integrations={integrations.filter(
-                    (integration) =>
-                        integration!.get('type') ===
-                        IntegrationType.SmoochInsideIntegrationType
-                )}
+                integrations={
+                    integrations.filter(
+                        (integration) =>
+                            integration!.get('type') ===
+                            IntegrationType.SmoochInsideIntegrationType
+                    ) as List<Map<any, any>>
+                }
                 createIntegration={() =>
                     history.push('/app/settings/integrations/smooch_inside/new')
                 }

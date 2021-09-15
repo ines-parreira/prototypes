@@ -37,24 +37,24 @@ import GorgiasChatIntegrationSelfService from './components/gorgias_chat/Gorgias
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList.js'
 
-import Magento2IntegrationDetail from './components/magento2/Magento2IntegrationDetail.js'
-import Magento2IntegrationList from './components/magento2/Magento2IntegrationList.js'
+import Magento2IntegrationDetail from './components/magento2/Magento2IntegrationDetail'
+import Magento2IntegrationList from './components/magento2/Magento2IntegrationList'
 
-import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail.js'
-import SmoochIntegrationList from './components/smooch/SmoochIntegrationList.js'
-import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationPreferences.js'
+import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
+import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
+import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationPreferences'
 
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList.js'
-import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail.js'
+import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
 
 import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
 import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
 
-import RechargeIntegrationList from './components/recharge/RechargeIntegrationList.js'
-import RechargeIntegrationDetail from './components/recharge/RechargeIntegrationDetail.js'
+import RechargeIntegrationList from './components/recharge/RechargeIntegrationList'
+import RechargeIntegrationDetail from './components/recharge/RechargeIntegrationDetail'
 
-import SmileIntegrationList from './components/smile/SmileIntegrationList.js'
-import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail.js'
+import SmileIntegrationList from './components/smile/SmileIntegrationList'
+import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
 
 import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList'
 import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail'
@@ -77,10 +77,10 @@ import ChatIntegrationPreferences from './components/chat/ChatIntegrationPrefere
 import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall/ChatIntegrationInstall'
 import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail.js'
 
-import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview.js'
-import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPIntegrationEvents.js'
+import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
+import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPIntegrationEvents'
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent.js'
-import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout.js'
+import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
 import PhoneIntegrationList from './components/phone/PhoneIntegrationList'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
@@ -328,12 +328,6 @@ export const IntegrationDetailContainer = ({
                             <HTTPIntegrationLayout
                                 integration={integration}
                                 isUpdate={isUpdate}
-                                urlParams={{
-                                    extra,
-                                    integrationId,
-                                    integrationType,
-                                    subId,
-                                }}
                             >
                                 <HTTPIntegrationEvent
                                     integrationId={integrationId}
@@ -347,12 +341,6 @@ export const IntegrationDetailContainer = ({
                         <HTTPIntegrationLayout
                             integration={integration}
                             isUpdate={isUpdate}
-                            urlParams={{
-                                extra,
-                                integrationId,
-                                integrationType,
-                                subId,
-                            }}
                         >
                             <HTTPIntegrationEvents
                                 integrationId={integrationId}
@@ -365,15 +353,8 @@ export const IntegrationDetailContainer = ({
                     <HTTPIntegrationLayout
                         integration={integration}
                         isUpdate={isUpdate}
-                        urlParams={{
-                            extra,
-                            integrationId,
-                            integrationType,
-                            subId,
-                        }}
                     >
                         <HTTPIntegrationOverview
-                            actions={actions}
                             integration={integration}
                             isUpdate={isUpdate}
                             loading={loading}
@@ -555,8 +536,6 @@ export const IntegrationDetailContainer = ({
                 if (extra === Tab.Preferences) {
                     return (
                         <SmoochIntegrationPreferences
-                            actions={actions}
-                            loading={loading}
                             integration={integration}
                         />
                     )
@@ -565,7 +544,6 @@ export const IntegrationDetailContainer = ({
                 return (
                     <SmoochIntegrationDetail
                         integration={integration}
-                        actions={actions}
                         loading={loading}
                     />
                 )
@@ -573,7 +551,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <SmoochIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                     redirectUri={redirectUri}
@@ -584,7 +561,6 @@ export const IntegrationDetailContainer = ({
             if (!!integrationId) {
                 return (
                     <ShopifyIntegrationDetail
-                        actions={actions}
                         integration={integration}
                         isUpdate={isUpdate}
                         loading={loading}
@@ -643,12 +619,10 @@ export const IntegrationDetailContainer = ({
             if (!!integrationId) {
                 return (
                     <RechargeIntegrationDetail
-                        actions={actions}
                         integration={integration}
                         shopifyIntegrations={getEligibleShopifyIntegrationsFor(
                             IntegrationType.RechargeIntegrationType
                         )}
-                        isUpdate={isUpdate}
                         loading={loading}
                         redirectUri={redirectUri}
                     />
@@ -657,7 +631,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <RechargeIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     shopifyIntegrations={getEligibleShopifyIntegrationsFor(
                         IntegrationType.RechargeIntegrationType
@@ -670,7 +643,6 @@ export const IntegrationDetailContainer = ({
             if (!!integrationId) {
                 return (
                     <SmileIntegrationDetail
-                        actions={actions}
                         integration={integration}
                         loading={loading}
                         redirectUri={redirectUri}
@@ -680,7 +652,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <SmileIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                     redirectUri={redirectUri}
@@ -711,7 +682,6 @@ export const IntegrationDetailContainer = ({
             if (!!integrationId) {
                 return (
                     <Magento2IntegrationDetail
-                        actions={actions}
                         integration={integration}
                         isUpdate={isUpdate}
                         loading={loading}
@@ -722,7 +692,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <Magento2IntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                     redirectUri={redirectUri}

@@ -1,2 +1,2 @@
-import HTTPIntegrationLayout from './HTTPIntegrationLayout'
+import HTTPIntegrationLayout from './HTTPIntegrationLayout.tsx'
 export default HTTPIntegrationLayout

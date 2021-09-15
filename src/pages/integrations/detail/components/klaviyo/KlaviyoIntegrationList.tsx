@@ -3,11 +3,12 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 
+import {IntegrationType} from '../../../../../models/integration/types'
+
 import history from '../../../../history'
 
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
 
 type Props = {
     integrations: List<Map<string, unknown>>
@@ -61,10 +62,14 @@ const KlaviyoIntegrationList = (props: Props) => {
     return (
         <IntegrationList
             longTypeDescription={longTypeDescription}
-            integrationType="klaviyo"
-            integrations={integrations.filter(
-                (item) => item?.get('type') === KLAVIYO_INTEGRATION_TYPE
-            )}
+            integrationType={IntegrationType.KlaviyoIntegrationType}
+            integrations={
+                integrations.filter(
+                    (item) =>
+                        item?.get('type') ===
+                        IntegrationType.KlaviyoIntegrationType
+                ) as List<Map<any, any>>
+            }
             createIntegration={() => {
                 history.push('/app/settings/integrations/klaviyo/new')
             }}

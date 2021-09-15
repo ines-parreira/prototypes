@@ -3,7 +3,7 @@ import {List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {IntegrationType} from '../../../../../models/integration/types'
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 import history from '../../../../history'
 import {RootState} from '../../../../../state/types'
 import {getCurrentAccountFeatures} from '../../../../../state/currentAccount/selectors'
@@ -27,7 +27,7 @@ export function PhoneIntegrationList({
     const phoneIntegrations = integrations.filter(
         (integration) =>
             integration?.get('type') === IntegrationType.PhoneIntegrationType
-    )
+    ) as List<Map<any, any>>
     const isLimitReached = phoneIntegrations.size >= maxIntegrations
     const longTypeDescription =
         'Chat with your customers over the phone from Gorgias.'

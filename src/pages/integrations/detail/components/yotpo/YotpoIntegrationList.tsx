@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 import {Button} from 'reactstrap'
 
 import {IntegrationType} from '../../../../../models/integration/types'
-import IntegrationList from '../IntegrationList.js'
+import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
 type IReceivedProps = {
@@ -24,7 +24,7 @@ export default class YotpoIntegrationList extends React.Component<
 
         const yotpoIntegrations = integrations.filter(
             (v) => v?.get('type') === IntegrationType.YotpoIntegrationType
-        )
+        ) as List<Map<any, any>>
 
         const longTypeDescription = (
             <div>
@@ -87,7 +87,7 @@ export default class YotpoIntegrationList extends React.Component<
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType="yotpo"
+                integrationType={IntegrationType.YotpoIntegrationType}
                 integrations={yotpoIntegrations}
                 createIntegration={() =>
                     (window.location.href = this.props.redirectUri)

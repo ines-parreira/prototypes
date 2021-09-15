@@ -6,7 +6,7 @@ import Lightbox from 'react-images'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
-import IntegrationList from '../IntegrationList'
+import IntegrationList from '../IntegrationList.tsx'
 import ForwardIcon from '../ForwardIcon.tsx'
 import history from '../../../../history.ts'
 

@@ -1,9 +1,8 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
 
@@ -13,25 +12,24 @@ import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
-} from '../../../../../config/integrations/index.ts'
+} from '../../../../../config/integrations/index'
 
-import {updateOrCreateIntegration} from '../../../../../state/integrations/actions.ts'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
-import RadioField from '../../../../common/forms/RadioField.tsx'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import PageHeader from '../../../../common/components/PageHeader'
+import ToggleButton from '../../../../common/components/ToggleButton'
+import RadioField from '../../../../common/forms/RadioField'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
 type Props = {
-    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
-    integration: Map<*, *>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    autoResponderEnabled: boolean,
-    autoResponderReply: string,
-    isUpdating: boolean,
-    isInitialized: boolean,
+    autoResponderEnabled: boolean
+    autoResponderReply: string
+    isUpdating: boolean
+    isInitialized: boolean
 }
 
 export class SmoochIntegrationPreferences extends React.Component<
@@ -45,8 +43,8 @@ export class SmoochIntegrationPreferences extends React.Component<
         isInitialized: false,
     }
 
-    _initState = (integration: Map<*, *>) => {
-        this.setState(
+    _initState = (integration: Map<any, any>) => {
+        this.setState<never>(
             _omitBy(
                 {
                     autoResponderEnabled: integration.getIn([
@@ -88,15 +86,16 @@ export class SmoochIntegrationPreferences extends React.Component<
         this.setState({autoResponderReply: value})
     }
 
-    _submitPreferences = async (event: SyntheticEvent<*>) => {
+    _submitPreferences = async (event: React.SyntheticEvent<any>) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
 
         this.setState({isUpdating: true})
 
-        const existingMeta = integration.get('meta') || fromJS({})
+        const existingMeta: Map<any, any> =
+            integration.get('meta') || fromJS({})
 
-        let payload = fromJS({
+        const payload = fromJS({
             id: integration.get('id'),
             meta: existingMeta.mergeDeep({
                 preferences: {
@@ -228,6 +227,8 @@ export class SmoochIntegrationPreferences extends React.Component<
     }
 }
 
-export default connect(null, {
+const connector = connect(null, {
     updateOrCreateIntegration,
-})(SmoochIntegrationPreferences)
+})
+
+export default connector(SmoochIntegrationPreferences)
