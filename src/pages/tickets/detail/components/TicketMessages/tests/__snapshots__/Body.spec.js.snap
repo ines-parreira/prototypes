@@ -370,3 +370,672 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
   </div>
 </Body>
 `;
+
+exports[`Body should display the Twitter quoted tweet card if there's matching metadata 1`] = `
+<Body
+  message={
+    Object {
+      "actions": null,
+      "attachments": Array [
+        Object {
+          "content_type": "image/jpeg",
+          "name": "E-pZxm5XoAAmsSo.jpg",
+          "public": true,
+          "size": 106372,
+          "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg",
+        },
+        Object {
+          "content_type": "image/jpeg",
+          "name": "E-pZxm8WUAAixnh.jpg",
+          "public": true,
+          "size": 99954,
+          "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm8WUAAixnh-bce2000a-0440-4388-afa1-5e087ceede0c.jpg",
+        },
+      ],
+      "body_html": "si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG",
+      "body_text": "si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG",
+      "channel": "twitter",
+      "created_datetime": "2021-09-07T01:51:41+00:00",
+      "external_id": "1435058157764685824",
+      "failed_datetime": null,
+      "from_agent": false,
+      "id": 1231,
+      "integration_id": 18,
+      "intents": Array [],
+      "isMessage": true,
+      "last_sending_error": undefined,
+      "message_id": undefined,
+      "meta": Object {
+        "quoted_tweet": Object {
+          "attachments": Array [
+            Object {
+              "content_type": "image/jpeg",
+              "name": "E-osiPxWYAEyISV.jpg",
+              "public": true,
+              "size": 86337,
+              "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
+            },
+            Object {
+              "content_type": "image/jpeg",
+              "name": "E-osiP0X0AAKVWI.jpg",
+              "public": true,
+              "size": 157366,
+              "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
+            },
+            Object {
+              "content_type": "image/jpeg",
+              "name": "E-osiPxXIAI2cwW.jpg",
+              "public": true,
+              "size": 277127,
+              "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
+            },
+          ],
+          "id": "1435008444520615940",
+          "text": "pictures &lt;3 https://t.co/FcqJwG9tbn",
+          "user": Object {
+            "id": "1377919371503415307",
+            "name": "Ionut Gorgias",
+            "username": "GorgiasIonut",
+          },
+        },
+      },
+      "opened_datetime": null,
+      "public": true,
+      "receiver": Object {
+        "email": "support@acme.gorgias.io",
+        "firstname": "Gorgias",
+        "id": 5,
+        "lastname": "Bot",
+        "meta": null,
+        "name": "Gorgias Bot",
+      },
+      "rule_id": null,
+      "sender": Object {
+        "email": "",
+        "firstname": "DexterIonut",
+        "id": 67,
+        "lastname": "",
+        "meta": Object {
+          "name_set_via": "twitter",
+        },
+        "name": "DexterIonut",
+      },
+      "sent_datetime": "2021-09-07T01:51:41+00:00",
+      "source": Object {
+        "extra": Object {
+          "conversation_id": "1435058157764685824",
+          "parent_id": undefined,
+        },
+        "from": Object {
+          "address": "2721310995",
+          "name": "DexterIonut",
+        },
+        "to": Array [
+          Object {
+            "address": "1377919371503415307",
+            "name": "GorgiasIonut",
+          },
+        ],
+        "type": "twitter-quoted-tweet",
+      },
+      "stripped_html": null,
+      "stripped_signature": null,
+      "stripped_text": null,
+      "subject": "bla",
+      "ticket_id": 377,
+      "uri": "/api/tickets/377/messages/1231/",
+      "via": "twitter",
+    }
+  }
+>
+  <div
+    className="component"
+  >
+    <Content
+      html="si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG"
+      strippedHtml={null}
+      strippedText={null}
+      text="si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG"
+    >
+      <div>
+        <div
+          className=""
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "si! more! <a href=\\"https://t.co/PcepQOiI6X\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">https://t.co/PcepQOiI6X</a> <a href=\\"https://t.co/F62lVxUXgG\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">https://t.co/F62lVxUXgG</a>",
+            }
+          }
+        />
+      </div>
+    </Content>
+    <Container
+      className=" px-0 ml-n2"
+      tag="div"
+    >
+      <div
+        className=" px-0 ml-n2 container"
+      >
+        <Row
+          className="m-0"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <div
+            className="m-0 row"
+          >
+            <Col
+              className="p-0"
+              md="9"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <div
+                className="p-0 col-md-9"
+              >
+                <TicketMessageEmbeddedCard
+                  attachments={
+                    Immutable.List [
+                      Immutable.Map {
+                        "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
+                        "name": "E-osiPxWYAEyISV.jpg",
+                        "size": 86337,
+                        "content_type": "image/jpeg",
+                        "public": true,
+                      },
+                      Immutable.Map {
+                        "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
+                        "name": "E-osiP0X0AAKVWI.jpg",
+                        "size": 157366,
+                        "content_type": "image/jpeg",
+                        "public": true,
+                      },
+                      Immutable.Map {
+                        "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
+                        "name": "E-osiPxXIAI2cwW.jpg",
+                        "size": 277127,
+                        "content_type": "image/jpeg",
+                        "public": true,
+                      },
+                    ]
+                  }
+                  externalId="1435008444520615940"
+                  integrationId={18}
+                  messageText="pictures &lt;3 https://t.co/FcqJwG9tbn"
+                  sender={
+                    Object {
+                      "email": "",
+                      "firstname": "Ionut Gorgias",
+                      "id": 1377919371503415300,
+                      "lastname": "",
+                      "meta": Object {
+                        "profile_picture_url": "",
+                      },
+                      "name": "Ionut Gorgias",
+                    }
+                  }
+                  source={
+                    Object {
+                      "extra": Object {
+                        "conversation_id": "1435058157764685824",
+                      },
+                      "from": Object {
+                        "address": "1377919371503415307",
+                        "name": "GorgiasIonut",
+                      },
+                      "to": Array [
+                        Object {
+                          "address": "",
+                          "name": "",
+                        },
+                      ],
+                      "type": "twitter-tweet",
+                    }
+                  }
+                  textBelowAvatar={true}
+                >
+                  <GenericCard>
+                    <Card
+                      className="genericCard"
+                      tag="div"
+                    >
+                      <div
+                        className="genericCard card"
+                      >
+                        <CardBody
+                          tag="div"
+                        >
+                          <div
+                            className="card-body"
+                          >
+                            <Row
+                              tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
+                            >
+                              <div
+                                className="row"
+                              >
+                                <Col
+                                  className="verticalCenter"
+                                  md="12"
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
+                                >
+                                  <div
+                                    className="verticalCenter col-md-12"
+                                  >
+                                    <div
+                                      className="mr-2"
+                                    >
+                                      <Avatar
+                                        email=""
+                                        name="Ionut Gorgias"
+                                        size={36}
+                                        style={Object {}}
+                                        url=""
+                                      >
+                                        <div
+                                          className="component"
+                                          style={
+                                            Object {
+                                              "height": "36px",
+                                              "width": "36px",
+                                            }
+                                          }
+                                        >
+                                          <div
+                                            className="initials"
+                                            style={
+                                              Object {
+                                                "fontSize": "15px",
+                                                "height": "36px",
+                                                "width": "36px",
+                                              }
+                                            }
+                                          >
+                                            <span
+                                              style={
+                                                Object {
+                                                  "lineHeight": "38px",
+                                                }
+                                              }
+                                            >
+                                              IG
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </Avatar>
+                                    </div>
+                                    <div
+                                      className="verticalCenter"
+                                    >
+                                      <div
+                                        className="customerNameBody"
+                                      >
+                                        Ionut Gorgias
+                                         
+                                      </div>
+                                      <div>
+                                        <span
+                                          className="source"
+                                        >
+                                          <SourceIcon
+                                            className="uncolored"
+                                            type="twitter-tweet"
+                                          >
+                                            <i
+                                              className="icon d-inline-block icon-custom icon-twitter uncolored"
+                                            />
+                                          </SourceIcon>
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <Meta
+                                          externalId="1435008444520615940"
+                                          integrationId={18}
+                                          source={
+                                            Object {
+                                              "extra": Object {
+                                                "conversation_id": "1435058157764685824",
+                                              },
+                                              "from": Object {
+                                                "address": "1377919371503415307",
+                                                "name": "GorgiasIonut",
+                                              },
+                                              "to": Array [
+                                                Object {
+                                                  "address": "",
+                                                  "name": "",
+                                                },
+                                              ],
+                                              "type": "twitter-tweet",
+                                            }
+                                          }
+                                          via=""
+                                        >
+                                          <From
+                                            key="ref-widget"
+                                            label="go to"
+                                          >
+                                            <span
+                                              className="from"
+                                            >
+                                              <span
+                                                className="fromLabel"
+                                              >
+                                                go to
+                                              </span>
+                                               
+                                              <span
+                                                className="fromValue"
+                                              >
+                                                <a
+                                                  href="https://twitter.com/GorgiasIonut/status/1435008444520615940"
+                                                  rel="noopener noreferrer"
+                                                  target="_blank"
+                                                  title="https://twitter.com/GorgiasIonut/status/1435008444520615940"
+                                                >
+                                                  tweet
+                                                </a>
+                                              </span>
+                                            </span>
+                                          </From>
+                                        </Meta>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                            <Row
+                              className="mt-2"
+                              tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
+                            >
+                              <div
+                                className="mt-2 row"
+                              >
+                                <Col
+                                  md="12"
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
+                                >
+                                  <div
+                                    className="col-md-12"
+                                  >
+                                    <span
+                                      className="textBlock"
+                                    >
+                                      pictures &lt;3 https://t.co/FcqJwG9tbn
+                                    </span>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                            <Row
+                              className="mt-2"
+                              tag="div"
+                              widths={
+                                Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ]
+                              }
+                            >
+                              <div
+                                className="mt-2 row"
+                              >
+                                <Col
+                                  md="12"
+                                  tag="div"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
+                                >
+                                  <div
+                                    className="col-md-12"
+                                  >
+                                    <TicketAttachments
+                                      attachments={
+                                        Immutable.List [
+                                          Immutable.Map {
+                                            "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
+                                            "name": "E-osiPxWYAEyISV.jpg",
+                                            "size": 86337,
+                                            "content_type": "image/jpeg",
+                                            "public": true,
+                                          },
+                                          Immutable.Map {
+                                            "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
+                                            "name": "E-osiP0X0AAKVWI.jpg",
+                                            "size": 157366,
+                                            "content_type": "image/jpeg",
+                                            "public": true,
+                                          },
+                                          Immutable.Map {
+                                            "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
+                                            "name": "E-osiPxXIAI2cwW.jpg",
+                                            "size": 277127,
+                                            "content_type": "image/jpeg",
+                                            "public": true,
+                                          },
+                                        ]
+                                      }
+                                      removable={false}
+                                    >
+                                      <div
+                                        className="component"
+                                      >
+                                        <a
+                                          className="item hasPreview"
+                                          href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg"
+                                          key="0"
+                                          onClick={[Function]}
+                                          rel="noopener noreferrer"
+                                          style={
+                                            Object {
+                                              "backgroundImage": "url(http://proxy-url/120x80,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg)",
+                                            }
+                                          }
+                                          target="_blank"
+                                        >
+                                          <div
+                                            className="itemMeta"
+                                          >
+                                            <div
+                                              className="metaName"
+                                            >
+                                              E-osiPxWYAEyISV.jpg
+                                            </div>
+                                            <div
+                                              className="metaType"
+                                            >
+                                              <i
+                                                className="material-icons md-2"
+                                              >
+                                                photo_library
+                                              </i>
+                                            </div>
+                                          </div>
+                                        </a>
+                                        <a
+                                          className="item hasPreview"
+                                          href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg"
+                                          key="1"
+                                          onClick={[Function]}
+                                          rel="noopener noreferrer"
+                                          style={
+                                            Object {
+                                              "backgroundImage": "url(http://proxy-url/120x80,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg)",
+                                            }
+                                          }
+                                          target="_blank"
+                                        >
+                                          <div
+                                            className="itemMeta"
+                                          >
+                                            <div
+                                              className="metaName"
+                                            >
+                                              E-osiP0X0AAKVWI.jpg
+                                            </div>
+                                            <div
+                                              className="metaType"
+                                            >
+                                              <i
+                                                className="material-icons md-2"
+                                              >
+                                                photo_library
+                                              </i>
+                                            </div>
+                                          </div>
+                                        </a>
+                                        <a
+                                          className="item hasPreview"
+                                          href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg"
+                                          key="2"
+                                          onClick={[Function]}
+                                          rel="noopener noreferrer"
+                                          style={
+                                            Object {
+                                              "backgroundImage": "url(http://proxy-url/120x80,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg)",
+                                            }
+                                          }
+                                          target="_blank"
+                                        >
+                                          <div
+                                            className="itemMeta"
+                                          >
+                                            <div
+                                              className="metaName"
+                                            >
+                                              E-osiPxXIAI2cwW.jpg
+                                            </div>
+                                            <div
+                                              className="metaType"
+                                            >
+                                              <i
+                                                className="material-icons md-2"
+                                              >
+                                                photo_library
+                                              </i>
+                                            </div>
+                                          </div>
+                                        </a>
+                                        <Lightbox
+                                          backdropClosesModal={true}
+                                          closeButtonTitle="Close (Esc)"
+                                          currentImage={0}
+                                          enableKeyboardInput={true}
+                                          imageCountSeparator=" of "
+                                          images={
+                                            Array [
+                                              Object {
+                                                "caption": "E-osiPxWYAEyISV.jpg",
+                                                "src": "http://proxy-url/cw-1,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
+                                              },
+                                              Object {
+                                                "caption": "E-osiP0X0AAKVWI.jpg",
+                                                "src": "http://proxy-url/cw-1,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
+                                              },
+                                              Object {
+                                                "caption": "E-osiPxXIAI2cwW.jpg",
+                                                "src": "http://proxy-url/cw-1,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
+                                              },
+                                            ]
+                                          }
+                                          isOpen={false}
+                                          leftArrowTitle="Previous (Left arrow key)"
+                                          onClickNext={[Function]}
+                                          onClickPrev={[Function]}
+                                          onClickShowNextImage={true}
+                                          onClickThumbnail={[Function]}
+                                          onClose={[Function]}
+                                          preloadNextImage={true}
+                                          rightArrowTitle="Next (Right arrow key)"
+                                          showCloseButton={true}
+                                          showImageCount={true}
+                                          showThumbnails={true}
+                                          theme={Object {}}
+                                          thumbnailOffset={2}
+                                          width={1024}
+                                        >
+                                          <Portal />
+                                        </Lightbox>
+                                      </div>
+                                    </TicketAttachments>
+                                  </div>
+                                </Col>
+                              </div>
+                            </Row>
+                          </div>
+                        </CardBody>
+                      </div>
+                    </Card>
+                  </GenericCard>
+                </TicketMessageEmbeddedCard>
+              </div>
+            </Col>
+          </div>
+        </Row>
+      </div>
+    </Container>
+  </div>
+</Body>
+`;

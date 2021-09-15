@@ -74,6 +74,8 @@ export const YOTPO_REVIEW_PUBLIC_COMMENT_SOURCE =
 export const YOTPO_REVIEW_PRIVATE_COMMENT_SOURCE =
     TicketMessageSourceType.YotpoReviewPrivateComment
 export const TWITTER_TWEET_SOURCE = TicketMessageSourceType.TwitterTweet
+export const TWITTER_QUOTED_TWEET_SOURCE =
+    TicketMessageSourceType.TwitterQuotedTweet
 
 export const SOURCE_TYPES = Object.values(TicketMessageSourceType)
 
@@ -98,6 +100,7 @@ export const USABLE_SOURCE_TYPES = [
     YOTPO_REVIEW_PUBLIC_COMMENT_SOURCE,
     YOTPO_REVIEW_PRIVATE_COMMENT_SOURCE,
     TWITTER_TWEET_SOURCE,
+    TWITTER_QUOTED_TWEET_SOURCE,
 ]
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
@@ -330,7 +333,10 @@ export function sourceTypeToChannel(
         return TicketChannel.Phone
     }
 
-    if (sourceType === TicketMessageSourceType.TwitterTweet) {
+    if (
+        sourceType === TicketMessageSourceType.TwitterTweet ||
+        sourceType === TicketMessageSourceType.TwitterQuotedTweet
+    ) {
         return TicketChannel.Twitter
     }
 
@@ -381,6 +387,10 @@ export function responseSourceType(
 
     if (lastSourceType === TicketMessageSourceType.InstagramMentionMedia) {
         return TicketMessageSourceType.InstagramMentionComment
+    }
+
+    if (lastSourceType === TicketMessageSourceType.TwitterQuotedTweet) {
+        return TicketMessageSourceType.TwitterTweet
     }
 
     if (lastSourceType === TicketMessageSourceType.YotpoReview) {

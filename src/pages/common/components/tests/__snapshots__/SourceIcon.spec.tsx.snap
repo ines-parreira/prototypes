@@ -124,6 +124,12 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 17`] = `
 />
 `;
 
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 18`] = `
+<i
+  className="icon d-inline-block icon-custom icon-twitter"
+/>
+`;
+
 exports[`SourceIcon component should show default icon 1`] = `
 <i
   className="icon d-inline-block material-icons"

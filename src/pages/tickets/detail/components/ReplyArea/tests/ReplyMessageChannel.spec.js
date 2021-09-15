@@ -15,6 +15,7 @@ import {
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
     TWITTER_TWEET_SOURCE,
+    TWITTER_QUOTED_TWEET_SOURCE,
     YOTPO_REVIEW_SOURCE,
 } from '../../../../../../config/ticket.ts'
 import {ReplyMessageChannelContainer} from '../ReplyMessageChannel.tsx'
@@ -82,6 +83,7 @@ describe('ReplyMessageChannel component', () => {
         INSTAGRAM_MEDIA_SOURCE,
         INSTAGRAM_COMMENT_SOURCE,
         TWITTER_TWEET_SOURCE,
+        TWITTER_QUOTED_TWEET_SOURCE,
         YOTPO_REVIEW_SOURCE,
     ]
 

@@ -31,6 +31,7 @@ export enum TicketMessageSourceType {
     YotpoReviewPublicComment = 'yotpo-review-public-comment',
     YotpoReviewPrivateComment = 'yotpo-review-private-comment',
     TwitterTweet = 'twitter-tweet',
+    TwitterQuotedTweet = 'twitter-quoted-tweet',
 }
 
 export enum TicketStatus {
@@ -64,4 +65,5 @@ export enum TicketVia {
     Facebook = 'facebook',
     Twilio = 'twilio',
     Yotpo = 'yotpo',
+    Twitter = 'twitter',
 }

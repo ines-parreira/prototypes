@@ -1117,6 +1117,100 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
 </div>
 `;
 
+exports[`ReplyMessageChannel component existing ticket with message of type twitter-quoted-tweet 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="mt-1 mr-2"
+  >
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="dropdownToggle"
+        color=""
+        type="button"
+      >
+        <SourceIcon
+          className="md-2"
+          type="twitter-quoted-tweet"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email"
+          />
+          Reply via email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email-forward"
+          />
+          Forward by email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="twitter-tweet"
+          />
+          Reply via Twitter tweet
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="internal-note"
+          />
+          Leave an internal note
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="sourceLabel mt-1"
+  >
+    Internal note
+  </div>
+  <KeyboardShortcuts
+    keymap={
+      Object {
+        "FORWARD_REPLY": Object {
+          "action": [Function],
+          "key": "f",
+        },
+        "INTERNAL_NOTE_REPLY": Object {
+          "action": [Function],
+          "key": "i",
+        },
+      }
+    }
+    name="TicketDetailContainer"
+  />
+</div>
+`;
+
 exports[`ReplyMessageChannel component existing ticket with message of type twitter-tweet 1`] = `
 <div
   className="component"

@@ -107,6 +107,14 @@ export function getLastSameSourceTypeMessage(
                     TicketMessageSourceType.InstagramMentionMedia
             )
             .last() as Map<any, any>
+    } else if (!msg && sourceType === TicketMessageSourceType.TwitterTweet) {
+        return messages
+            .filter(
+                (m: Map<any, any>) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.TwitterQuotedTweet
+            )
+            .last() as Map<any, any>
     } else if (
         !msg &&
         sourceType === TicketMessageSourceType.YotpoReviewPublicComment
@@ -515,6 +523,13 @@ export function getNewMessageSender(
             return [
                 newMessageSourceType,
                 TicketMessageSourceType.InstagramMentionMedia,
+            ].includes(type)
+        } else if (
+            newMessageSourceType === TicketMessageSourceType.TwitterTweet
+        ) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.TwitterQuotedTweet,
             ].includes(type)
         } else if (
             newMessageSourceType ===

@@ -74,6 +74,7 @@ const sourceTypeToIcon = (
             break
         case TicketChannel.Twitter:
         case TicketMessageSourceType.TwitterTweet:
+        case TicketMessageSourceType.TwitterQuotedTweet:
             icon.custom = true
             icon.name = 'twitter'
             break

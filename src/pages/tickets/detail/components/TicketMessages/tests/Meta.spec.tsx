@@ -333,5 +333,50 @@ describe('ticket message meta', () => {
             expect(from.find('a').at(0).prop('href')).toEqual(toProfileLink)
             expect(from.find('a').at(1).prop('href')).toEqual(tweetPermalink)
         })
+
+        it('should display "retweeting @twitter_handle - go to tweet" link', () => {
+            const fromUsername = 'SmsBump'
+            const toUsername = 'gorgiasio'
+            const tweetId = '1400472973371445249'
+            const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
+            const toProfileLink = `https://twitter.com/${toUsername}`
+            const source = {
+                from: {name: fromUsername, address: '12346'},
+                to: [{name: toUsername, address: '12345'}],
+                extra: {
+                    parent_id: '1399880580741935107',
+                    conversation_id: '1399880580741935107',
+                },
+                type: TicketMessageSourceType.TwitterQuotedTweet,
+            }
+            const meta = {
+                quoted_tweet: {
+                    id: '1435008444520615940',
+                    text: 'pictures &lt;3 https://t.co/FcqJwG9tbn',
+                    user: {
+                        id: '12345',
+                        name: 'Gorgias Inc.',
+                        username: 'gorgiasio',
+                    },
+                    attachments: [],
+                },
+            }
+
+            const component = shallow(
+                <Meta
+                    externalId={tweetId}
+                    via={TicketChannel.Twitter}
+                    integrationId={118}
+                    source={source}
+                    meta={meta}
+                />
+            )
+
+            const from = component.find('From').dive()
+
+            expect(from.text()).toBe(`retweeting @${toUsername} - go to tweet`)
+            expect(from.find('a').at(0).prop('href')).toEqual(toProfileLink)
+            expect(from.find('a').at(1).prop('href')).toEqual(tweetPermalink)
+        })
     })
 })

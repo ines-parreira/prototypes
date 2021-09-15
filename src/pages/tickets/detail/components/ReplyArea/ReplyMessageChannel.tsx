@@ -174,7 +174,8 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             isTicketExisting && !!replyOptions.get('instagram-mention-comment')
         const suggestTwitterTweet =
             isTicketExisting &&
-            !!replyOptions.get(TicketMessageSourceType.TwitterTweet)
+            (!!replyOptions.get(TicketMessageSourceType.TwitterTweet) ||
+                !!replyOptions.get(TicketMessageSourceType.TwitterQuotedTweet))
         const suggestPhone =
             isTicketExisting &&
             hasPhoneIntegration &&

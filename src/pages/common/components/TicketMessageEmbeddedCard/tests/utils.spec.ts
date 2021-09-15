@@ -1,67 +1,13 @@
-import React from 'react'
-import {mount} from 'enzyme'
+import {mapQuotedTweetTicketMessageToEmbeddedCard} from '../utils'
 
-import Body from '../Body.tsx'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
-} from '../../../../../../business/types/ticket'
+} from '../../../../../business/types/ticket'
 
-describe('Body', () => {
-    it("should display the Facebook carousel if there's matching metadata", () => {
-        const component = mount(
-            <Body
-                message={{
-                    body_text: 'text http://gorgias.io/',
-                    body_html: '',
-                    meta: {
-                        facebook_carousel: [
-                            {
-                                type: 'template',
-                                payload: {
-                                    elements: [
-                                        {
-                                            title: 'Fixie bike',
-                                            buttons: [
-                                                {
-                                                    url:
-                                                        'https://sfbicycles.myshopify.com/products/fixie-bike',
-                                                    type: 'web_url',
-                                                    title: 'View details',
-                                                    webview_height_ratio:
-                                                        'tall',
-                                                },
-                                                {type: 'element_share'},
-                                                {
-                                                    url:
-                                                        'https://messenger-commerce.shopifyapps.com/redirect_to_cart',
-                                                    type: 'web_url',
-                                                    title: 'Buy now',
-                                                    webview_height_ratio:
-                                                        'tall',
-                                                },
-                                            ],
-                                            subtitle: '$200.00',
-                                            image_url:
-                                                'https://cdn.shopify.com/s/files/1/1632/0429/products',
-                                        },
-                                    ],
-                                    sharable: true,
-                                    template_type: 'generic',
-                                },
-                            },
-                        ],
-                    },
-                }}
-            />
-        )
-        expect(component).toMatchSnapshot()
-    })
-    it("should display the Twitter quoted tweet card if there's matching metadata", () => {
-        window.IMAGE_PROXY_URL = 'http://proxy-url/'
-        window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
-
+describe('TicketMessageEmbeddedCard utils', () => {
+    describe('mapQuotedTweetTicketMessageToEmbeddedCard()', () => {
         const quotedTweetTicketMessage = {
             sent_datetime: '2021-09-07T01:51:41+00:00',
             channel: TicketChannel.Twitter,
@@ -181,7 +127,13 @@ describe('Body', () => {
             isMessage: true,
             rule_id: null,
         }
-        const component = mount(<Body message={quotedTweetTicketMessage} />)
-        expect(component).toMatchSnapshot()
+
+        it('should map TicketMessage for Quoted Tweet to EmbeddedCard', () => {
+            expect(
+                mapQuotedTweetTicketMessageToEmbeddedCard(
+                    quotedTweetTicketMessage
+                )
+            ).toMatchSnapshot()
+        })
     })
 })

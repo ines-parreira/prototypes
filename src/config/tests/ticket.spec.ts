@@ -342,17 +342,41 @@ describe('Config: ticket', () => {
             )
         })
 
-        it('should return facebook mention comment channel if the last source is facebook mention post', () => {
-            const message = {
-                source: {type: TicketMessageSourceType.FacebookMentionPost},
-            } as TicketMessage
-            const messages: TicketMessage[] = [message]
-            const via = TicketVia.Facebook
+        it.each([
+            TicketMessageSourceType.FacebookMentionPost,
+            TicketMessageSourceType.FacebookMentionComment,
+        ])(
+            'should return facebook mention comment channel if the last source is facebook mention post',
+            (sourceType) => {
+                const message = {
+                    source: {type: sourceType},
+                } as TicketMessage
+                const messages: TicketMessage[] = [message]
+                const via = TicketVia.Facebook
 
-            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
-                TicketMessageSourceType.FacebookMentionComment
-            )
-        })
+                expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                    TicketMessageSourceType.FacebookMentionComment
+                )
+            }
+        )
+
+        it.each([
+            TicketMessageSourceType.TwitterQuotedTweet,
+            TicketMessageSourceType.TwitterTweet,
+        ])(
+            'should return twitter tweet source if the last source is twitter tweet or quoted tweet',
+            (sourceType) => {
+                const message = {
+                    source: {type: sourceType},
+                } as TicketMessage
+                const messages: TicketMessage[] = [message]
+                const via = TicketVia.Twitter
+
+                expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                    TicketMessageSourceType.TwitterTweet
+                )
+            }
+        )
     })
 
     describe('sourceTypeToChannel()', () => {
@@ -380,17 +404,30 @@ describe('Config: ticket', () => {
             expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
         })
 
-        it('should return the FacebookMention channel if the last not system message is from a Facebook Mention Post or Comment', () => {
-            const postChannel = ticketConfig.sourceTypeToChannel(
-                TicketMessageSourceType.FacebookMentionPost,
-                [{via: TicketVia.Facebook} as TicketMessage]
-            )
-            const commentChannel = ticketConfig.sourceTypeToChannel(
-                TicketMessageSourceType.FacebookMentionComment,
-                [{via: TicketVia.Facebook} as TicketMessage]
-            )
-            expect(postChannel).toBe(TicketChannel.FacebookMention)
-            expect(commentChannel).toBe(TicketChannel.FacebookMention)
-        })
+        it.each([
+            TicketMessageSourceType.FacebookMentionPost,
+            TicketMessageSourceType.FacebookMentionComment,
+        ])(
+            'should return the FacebookMention channel if the last not system message is from a Facebook Mention Post or Comment',
+            (sourceType) => {
+                const channel = ticketConfig.sourceTypeToChannel(sourceType, [
+                    {via: TicketVia.Facebook} as TicketMessage,
+                ])
+                expect(channel).toBe(TicketChannel.FacebookMention)
+            }
+        )
+
+        it.each([
+            TicketMessageSourceType.TwitterQuotedTweet,
+            TicketMessageSourceType.TwitterTweet,
+        ])(
+            'should return Twitter channel if the last not system message is from a Twitter Tweet or Quoted Tweet',
+            (sourceType) => {
+                const channel = ticketConfig.sourceTypeToChannel(sourceType, [
+                    {via: TicketVia.Twitter} as TicketMessage,
+                ])
+                expect(channel).toBe(TicketChannel.Twitter)
+            }
+        )
     })
 })

@@ -82,7 +82,7 @@ export type TicketMessage = {
     _internal?: {
         id: number
     }
-    isMessage: true
+    isMessage: boolean
     intents?: TicketMessageIntent[]
 }
 
@@ -177,6 +177,7 @@ export type Meta = {
     is_story_mention?: boolean
     is_story_reply?: boolean
     facebook_reactions?: FacebookReactions
+    quoted_tweet?: QuotedTweet
 }
 
 export type FacebookPrivateReply = {
@@ -222,4 +223,15 @@ export type FacebookCarouselTemplate = {
             }>
         }>
     }
+}
+
+export type QuotedTweet = {
+    id: string
+    text: string
+    user: {
+        id: string
+        name: string
+        username: string
+    }
+    attachments: Attachment[]
 }

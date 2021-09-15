@@ -28,7 +28,13 @@ import {
 } from '../../../business/types/ticket'
 import {RootState} from '../../types'
 
-import {emailTicket, facebookPost, smoochTicket} from './fixtures'
+import {
+    emailTicket,
+    facebookPost,
+    smoochTicket,
+    twitterQuotedTweet,
+    twitterTweet,
+} from './fixtures'
 
 jest.addMatchers(immutableMatchers)
 
@@ -458,6 +464,36 @@ describe('ticket utils', () => {
                 )
             ).toEqualImmutable(expected)
         })
+
+        it.each([
+            {
+                tweet: twitterTweet,
+                sourceType: TicketMessageSourceType.TwitterTweet,
+            },
+            {
+                tweet: twitterQuotedTweet,
+                sourceType: TicketMessageSourceType.TwitterQuotedTweet,
+            },
+        ])(
+            'should return `to` field from last message from customer (twitter tweet/quoted tweet)',
+            (testData) => {
+                // delete last message from agent
+                const expected = testData.tweet.getIn([
+                    'messages',
+                    0,
+                    'source',
+                    'to',
+                    0,
+                ])
+                expect(
+                    getNewMessageSender(
+                        testData.tweet,
+                        testData.sourceType,
+                        channels
+                    )
+                ).toEqualImmutable(expected)
+            }
+        )
 
         it('should return preferred channel', () => {
             // remove messages, to simulate a new ticket

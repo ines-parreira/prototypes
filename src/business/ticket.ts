@@ -132,6 +132,7 @@ export const TicketMessageSourceTypes = Object.freeze({
     PHONE: 'phone',
     SYSTEM_MESSAGE: 'system-message',
     TWITTER_TWEET: 'twitter-tweet',
+    TWITTER_QUOTED_TWEET: 'twitter-quoted-tweet',
 })
 
 //$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead

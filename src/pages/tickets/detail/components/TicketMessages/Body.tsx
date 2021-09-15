@@ -1,11 +1,19 @@
 import React from 'react'
+
+import {Col, Container, Row} from 'reactstrap'
+
 import classNamesBind from 'classnames/bind'
 
 import FacebookCarousel from '../FacebookCarousel'
 import {TicketMessage} from '../../../../../models/ticket/types'
 
-import css from './Body.less'
+import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
+
+import {mapQuotedTweetTicketMessageToEmbeddedCard} from '../../../../common/components/TicketMessageEmbeddedCard/utils'
+
 import Content from './Content'
+
+import css from './Body.less'
 
 const classNames = classNamesBind.bind(css)
 
@@ -29,8 +37,23 @@ const Body = (props: Props) => {
                 strippedHtml={message.stripped_html}
                 strippedText={message.stripped_text}
             />
+
             {message.meta && message.meta.facebook_carousel && (
                 <FacebookCarousel data={message.meta.facebook_carousel} />
+            )}
+
+            {message.meta && message.meta.quoted_tweet && (
+                <Container className={classNames(' px-0', 'ml-n2')}>
+                    <Row className="m-0">
+                        <Col md="9" className="p-0">
+                            <TicketMessageEmbeddedCard
+                                {...mapQuotedTweetTicketMessageToEmbeddedCard(
+                                    message
+                                )}
+                            />
+                        </Col>
+                    </Row>
+                </Container>
             )}
         </div>
     )

@@ -119,6 +119,7 @@ export const SOURCE_VALUE_PROP = {
     'instagram-mention-media': 'address',
     'instagram-mention-comment': 'address',
     'twitter-tweet': 'address',
+    'twitter-quoted-tweet': 'address',
     'yotpo-review-public-comment': 'address',
     'yotpo-review-private-comment': 'address',
 }
