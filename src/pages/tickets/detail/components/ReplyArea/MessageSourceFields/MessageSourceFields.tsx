@@ -197,7 +197,7 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
                                     onChange={({
                                         target,
                                     }: ChangeEvent<HTMLSelectElement>) => {
-                                        setSender(target.value)
+                                        dispatch(setSender(target.value))
                                     }}
                                 />
                             </div>
