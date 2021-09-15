@@ -31,6 +31,7 @@ import HelpCenterAppearanceView from '../../components/HelpCenterAppearanceView'
 import HelpCenterPreferencesView from '../../components/HelpCenterPreferencesView'
 import HelpCenterCustomizationView from '../../components/HelpCenterCustomizationView'
 import HelpCenterInstallationView from '../../components/HelpCenterInstallationView'
+import HelpCenterImportCsvColumnMatchingView from '../../components/HelpCenterImportCsvColumnMatchingView'
 
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
@@ -114,6 +115,10 @@ export const CurrentHelpCenter = (): JSX.Element => {
                     path={`${path}/installation`}
                     exact
                     component={HelpCenterInstallationView}
+                />
+                <Route
+                    path={`${path}/import/csv/column-matching`}
+                    component={HelpCenterImportCsvColumnMatchingView}
                 />
             </Switch>
         </>

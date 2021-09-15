@@ -1,0 +1,29 @@
+@import '~css/new/colors';
+
+:local {
+    .not-matched-mark {
+        color: @neutral4;
+    }
+
+    .matched-mark {
+        color: @blue;
+    }
+
+    .selector {
+        width: 100%;
+    }
+
+    .is-required {
+        font-weight: bold;
+
+        &::after {
+            content: ' *';
+            color: @red;
+        }
+    }
+
+    .cell {
+        // no idea why the BodyCell component thinks everything must be clickable, but we don't want this behavior
+        cursor: auto;
+    }
+}

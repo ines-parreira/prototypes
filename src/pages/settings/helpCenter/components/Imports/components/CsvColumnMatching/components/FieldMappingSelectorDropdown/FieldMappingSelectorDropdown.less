@@ -1,0 +1,42 @@
+@import '~css/new/colors';
+
+@select-padding: 14px;
+
+:local {
+    .selector {
+        padding: 0 @select-padding;
+    }
+
+    .selector-button {
+        background-color: white;
+        width: 100%;
+    }
+
+    .selector-button-inner {
+        text-align: left;
+        color: @neutral10;
+
+        box-sizing: border-box;
+        display: inline-block;
+        width: ~'calc(100% - (@{select-padding} * 2))';
+    }
+
+    .dropdown {
+        box-shadow: 0 0 5px rgba(21, 32, 101, 0.1);
+        height: auto;
+        margin-bottom: 1px;
+        margin-left: -1px;
+        max-height: 33vh;
+        overflow-x: hidden;
+        width: max-content;
+    }
+
+    .placeholder {
+        color: @neutral6;
+    }
+
+    .selected-mark {
+        float: right;
+        color: @neutral6;
+    }
+}

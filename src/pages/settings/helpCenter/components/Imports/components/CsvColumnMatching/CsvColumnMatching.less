@@ -1,0 +1,40 @@
+@import (reference) '~css/new/colors.less';
+
+:local {
+    th.table-language-header-cell {
+        position: sticky;
+        top: 0;
+        background-color: #f9f9f9;
+        padding: 16px;
+        font-weight: bold;
+        color: #1d365c;
+        z-index: 50;
+    }
+
+    .tooltip-target {
+        text-decoration: underline dotted;
+    }
+
+    .th-auto {
+        width: auto;
+    }
+
+    .th-max-20 {
+        max-width: 20%;
+    }
+
+    .csv-tooltip-inner {
+        padding: 8px;
+        max-width: 270px;
+        text-align: left;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 200;
+    }
+
+    .table {
+        & th,
+        & td {
+            cursor: auto;
+        }
+    }
+}

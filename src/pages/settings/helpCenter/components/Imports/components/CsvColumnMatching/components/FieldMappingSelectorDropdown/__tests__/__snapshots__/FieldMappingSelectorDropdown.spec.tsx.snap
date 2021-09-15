@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FieldMappingSelectorDropdown /> renders options 1`] = `
+<div
+  class="selector"
+>
+  <div
+    class="dropdown"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="selector-button dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <div
+        class="selector-button-inner"
+      >
+        <span
+          class="placeholder"
+        >
+          Select a header...
+        </span>
+      </div>
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <span>
+            <i
+              class="material-icons mr-2"
+            >
+              auto_awesome
+            </i>
+             Auto generate
+          </span>
+        </span>
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          article_id
+        </span>
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          article_title
+        </span>
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          article_body
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

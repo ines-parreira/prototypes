@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FieldRow /> renders field row 1`] = `
+<tr
+  class="row"
+>
+  <td>
+    <div
+      class="cellContent cell"
+    >
+      <i
+        class="material-icons matched-mark"
+      >
+        check_circle
+      </i>
+    </div>
+  </td>
+  <td>
+    <div
+      class="cellContent cell"
+    >
+      <div>
+        Article Title
+      </div>
+    </div>
+  </td>
+  <td>
+    <div
+      class="cellContent cell"
+    >
+      <div
+        class="selector selector"
+      >
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="selector-button dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <div
+              class="selector-button-inner"
+            >
+              article_name
+            </div>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                - No selection -
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                article_id
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                <i
+                  class="material-icons selected-mark"
+                >
+                  check
+                </i>
+                article_name
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </td>
+  <td>
+    <div
+      class="cellContent cell"
+    >
+      <ul>
+        <li>
+          What is Gorgias?
+        </li>
+        <li>
+          Customer data privacy
+        </li>
+      </ul>
+    </div>
+  </td>
+</tr>
+`;
