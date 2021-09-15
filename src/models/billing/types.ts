@@ -32,7 +32,8 @@ export type Plan = {
     amount: number
     integrations: number
     automation_addon_included?: boolean
+    automation_addon_amount?: number
     features: Record<AccountFeature, AccountFeatureMetadata>
-    features_prior_2021_09_01?: Record<AccountFeature, AccountFeatureMetadata>
+    features_prior_2021_09_20?: Record<AccountFeature, AccountFeatureMetadata>
     legacy_features?: Record<AccountFeature, AccountFeatureMetadata>
 }

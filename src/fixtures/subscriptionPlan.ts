@@ -27,6 +27,8 @@ export const basicPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    automation_addon_included: false,
+    automation_addon_amount: 1500,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: false},
@@ -71,7 +73,7 @@ export const basicPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_01: {
+    features_prior_2021_09_20: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: false},
         [AccountFeature.FacebookComment]: {enabled: false},
@@ -108,6 +110,8 @@ export const proPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    automation_addon_included: false,
+    automation_addon_amount: 7500,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -152,7 +156,7 @@ export const proPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_01: {
+    features_prior_2021_09_20: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -189,6 +193,8 @@ export const advancedPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    automation_addon_included: false,
+    automation_addon_amount: 19000,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -211,7 +217,7 @@ export const advancedPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_01: {
+    features_prior_2021_09_20: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -286,6 +292,8 @@ export const customPlan: Plan = {
     integrations: 200,
     public: true,
     custom: true,
+    automation_addon_included: false,
+    automation_addon_amount: 30000,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -308,7 +316,7 @@ export const customPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_01: {
+    features_prior_2021_09_20: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -345,6 +353,8 @@ export const legacyPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: false,
+    automation_addon_included: false,
+    automation_addon_amount: 1500,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -420,6 +430,8 @@ export const basicAutomationPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    automation_addon_included: true,
+    automation_addon_amount: 1500,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: false},
@@ -478,6 +490,8 @@ export const proAutomationPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    automation_addon_included: true,
+    automation_addon_amount: 7500,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
