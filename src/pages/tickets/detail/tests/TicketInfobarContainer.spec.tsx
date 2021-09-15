@@ -1,11 +1,24 @@
-import React from 'react'
-import {shallow} from 'enzyme'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
+import {renderWithRouter} from '../../../../utils/testing'
 import {TicketInfobarContainer} from '../TicketInfobarContainer'
+import Infobar from '../../../common/components/infobar/Infobar/Infobar'
 
 jest.addMatchers(immutableMatchers)
+jest.mock('../../../common/components/infobar/Infobar/Infobar', () => {
+    return ({customer, sources, widgets}: ComponentProps<typeof Infobar>) => {
+        return (
+            <div>
+                Infobar mock
+                <div>customer: {JSON.stringify(customer.toJS())}</div>
+                <div>sources: {JSON.stringify(sources.toJS())}</div>
+                <div>widgets: {JSON.stringify(widgets.toJS())}</div>
+            </div>
+        )
+    }
+})
 
 describe('TicketInfobarContainer component', () => {
     const minProps = {
@@ -32,14 +45,6 @@ describe('TicketInfobarContainer component', () => {
         },
         ticket: fromJS({}),
         widgets: fromJS({}),
-        match: {
-            params: {
-                ticketId: 'new',
-            },
-        },
-        location: {
-            search: '',
-        },
         sources: fromJS({
             ticket: fromJS({
                 customer: fromJS({}),
@@ -49,15 +54,27 @@ describe('TicketInfobarContainer component', () => {
     }
 
     it('should render infobar for new ticket', () => {
-        const component = shallow(<TicketInfobarContainer {...minProps} />)
+        const {container} = renderWithRouter(
+            <TicketInfobarContainer {...minProps} />,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should disable widget editing new tickets without customer', () => {
-        const component = shallow(<TicketInfobarContainer {...minProps} />)
+        const {container} = renderWithRouter(
+            <TicketInfobarContainer {...minProps} />,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
 
-        expect(component.prop('customer')).toEqualImmutable(fromJS({}))
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should allow widget editing new tickets with customer', () => {
@@ -67,12 +84,14 @@ describe('TicketInfobarContainer component', () => {
             }),
             customer: fromJS({}),
         })
-        const component = shallow(
-            <TicketInfobarContainer {...minProps} sources={sources} />
+        const {container} = renderWithRouter(
+            <TicketInfobarContainer {...minProps} sources={sources} />,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
         )
 
-        expect(component.prop('customer')).toEqualImmutable(
-            sources.getIn(['ticket', 'customer'])
-        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

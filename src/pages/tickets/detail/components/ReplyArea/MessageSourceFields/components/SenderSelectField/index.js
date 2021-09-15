@@ -1,1 +1,1 @@
-export default from './SenderSelectField'
+export default from './SenderSelectField.tsx'

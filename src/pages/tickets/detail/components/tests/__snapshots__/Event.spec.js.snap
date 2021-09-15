@@ -75,11 +75,6 @@ exports[`Event component should display correctly a failed event for a Recharge 
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card
@@ -206,11 +201,6 @@ exports[`Event component should display correctly a failed event for a Recharge 
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card
@@ -327,11 +317,6 @@ exports[`Event component should display correctly a failed event for a Shopify O
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card
@@ -448,11 +433,6 @@ exports[`Event component should display correctly a successful event for a Recha
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card
@@ -568,11 +548,6 @@ exports[`Event component should display correctly a successful event for a Recha
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card
@@ -678,11 +653,6 @@ exports[`Event component should display correctly a successful event for a Shopi
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card
@@ -788,11 +758,6 @@ exports[`Event component should display correctly a successful event for a Shopi
     <Connect(DatetimeLabelContainer)
       className="date text-faded"
       dateTime="2017-12-07T01:01:34.502206+00:00"
-      settings={
-        Object {
-          "position": "top left",
-        }
-      }
     />
   </div>
   <Card

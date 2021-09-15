@@ -1,18 +1,20 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import _noop from 'lodash/noop'
 
-import {isEmail} from '../../../../../../../../utils.ts'
+import {isEmail} from '../../../../../../../../utils'
 
-import MultiSelectAsyncField from './'
+import {ReceiverValue} from '../../../../../../../../state/ticket/utils'
+
+import MultiSelectAsyncField from './MultiSelectAsyncField'
 
 describe('MultiSelectAsyncField component', () => {
     const minProps = {
         value: [],
-        onChange: _noop,
-        loadOptions: _noop,
+        onChange: jest.fn(),
+        loadOptions: jest.fn(),
         allowCreate: true,
         allowCreateConstraint: isEmail,
+        placeholder: 'I am the placeholder',
     }
 
     it('empty items', () => {
@@ -25,9 +27,13 @@ describe('MultiSelectAsyncField component', () => {
         const values = [
             {
                 label: 'Michel',
+                name: 'Michel',
+                value: 'michel@gorgias.com',
             },
             {
                 label: 'Lucien',
+                name: 'Lucien',
+                value: 'lucien@gorgias.com',
             },
         ]
 
@@ -42,9 +48,13 @@ describe('MultiSelectAsyncField component', () => {
         const values = [
             {
                 label: 'Michel',
+                name: 'Michel',
+                value: 'michel@gorgias.com',
             },
             {
                 label: 'Lucien',
+                name: 'Lucien',
+                value: 'lucien@gorgias.com',
             },
         ]
 
@@ -67,13 +77,23 @@ describe('MultiSelectAsyncField component', () => {
         const options = [
             {
                 label: 'Michel',
+                name: 'Michel',
+                value: 'michel@gorgias.com',
             },
             {
                 label: 'Lucien',
+                name: 'Lucien',
+                value: 'lucien@gorgias.com',
             },
         ]
 
-        const loadOptions = jest.fn((_, callback) => callback(options))
+        const loadOptions = jest
+            .fn()
+            .mockImplementation(
+                (_, callback: (options: ReceiverValue[]) => void) => {
+                    callback(options)
+                }
+            )
 
         const component = shallow(
             <MultiSelectAsyncField {...minProps} loadOptions={loadOptions} />
@@ -88,13 +108,20 @@ describe('MultiSelectAsyncField component', () => {
         expect(component.state('options')).toEqual(options)
     })
 
-    it('add recipients on change input with multiples addresses', () => {
-        const onChange = jest.fn((values) => values)
+    it('add recipients on change input with multiple addresses', () => {
+        const onChange = jest.fn()
+        const value = [
+            {
+                label: 'Existing',
+                name: 'Existing',
+                value: 'existing@gorgias.io',
+            },
+        ]
 
         const component = shallow(
             <MultiSelectAsyncField
                 {...minProps}
-                value={[{value: 'existing@gorgias.io'}]}
+                value={value}
                 onChange={onChange}
             />
         )
@@ -104,15 +131,15 @@ describe('MultiSelectAsyncField component', () => {
             .first()
             .find('div > input')
             .simulate('change', {
-                preventDefault: _noop,
-                stopPropagation: _noop,
+                preventDefault: jest.fn(),
+                stopPropagation: jest.fn(),
                 target: {
                     value:
                         'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress',
                 },
             })
         expect(onChange).toBeCalledWith([
-            {value: 'existing@gorgias.io'},
+            value[0],
             {value: 'alex@gorgias.io'},
             {value: 'romain@gorgias.io', name: 'Romain'},
         ])

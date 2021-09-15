@@ -12,7 +12,7 @@ import facebookIcon from '../../../../../../img/integrations/facebook-dark-icon.
 import facebookMessengerIcon from '../../../../../../img/integrations/facebook-messenger-dark-event-icon.svg'
 import InstagramDirectMessageIcon from '../../../../../../img/integrations/Instagram-direct-message-blue.svg'
 import InstagramIcon from '../../../../../../img/integrations/instagram-icon-blue.svg'
-import {renderDetails} from '../Event.js'
+import {renderDetails} from '../Event'
 
 import css from './PrivateReplyEvent.less'
 import {

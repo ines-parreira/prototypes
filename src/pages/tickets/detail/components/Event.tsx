@@ -1,25 +1,25 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Button, Card, CardBody} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
-import {getActionByName} from '../../../../config/actions.ts'
-import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels.tsx'
-import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
+import {IntegrationType} from '../../../../models/integration/types'
+import {RootState} from '../../../../state/types'
+import {getActionByName} from '../../../../config/actions'
+import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
+import {humanizeString, stripErrorMessage} from '../../../../utils'
 
-import {getIntegrationById} from '../../../../state/integrations/selectors.ts'
-import {getIntegrationDataByIntegrationId} from '../../../../state/ticket/selectors.ts'
+import {getIntegrationById} from '../../../../state/integrations/selectors'
+import {getIntegrationDataByIntegrationId} from '../../../../state/ticket/selectors'
 
 import css from './Event.less'
 
-export function renderDetails(isError, eventData) {
-    const payload = eventData.get('payload') || fromJS({})
+export function renderDetails(isError: boolean, eventData: Map<any, any>) {
+    const payload = (eventData.get('payload') || fromJS({})) as Map<any, any>
     const content = []
 
     if (isError) {
@@ -45,7 +45,7 @@ export function renderDetails(isError, eventData) {
                             } else if (_isObject(value)) {
                                 formattedValue = (
                                     <JSONPretty
-                                        data={value.toJS()}
+                                        data={(value as Map<any, any>).toJS()}
                                         className="d-inline-flex"
                                     />
                                 )
@@ -69,15 +69,19 @@ export function renderDetails(isError, eventData) {
     return content
 }
 
-export class EventContainer extends React.Component {
-    static propTypes = {
-        integrationData: ImmutablePropTypes.map.isRequired,
-        event: ImmutablePropTypes.map.isRequired,
-        isLast: PropTypes.bool.isRequired,
-        integration: ImmutablePropTypes.map.isRequired,
-    }
+type OwnProps = {
+    event: Map<any, any>
+    isLast: boolean
+}
 
-    static defaultProps = {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+type State = {
+    showDetails: boolean
+}
+
+export class EventContainer extends React.Component<Props, State> {
+    static defaultProps: Pick<Props, 'isLast'> = {
         isLast: false,
     }
 
@@ -85,46 +89,41 @@ export class EventContainer extends React.Component {
         showDetails: false,
     }
 
-    _getOrder = (orderId) => {
+    _getOrder = (orderId: number) => {
         const {integrationData: data} = this.props
-        return (
-            (data.get('orders') || fromJS([])).find(
-                (order) => order.get('id').toString() === orderId.toString()
-            ) || fromJS({})
-        )
+        return (((data.get('orders') || fromJS([])) as List<any>).find(
+            (order: Map<any, any>) =>
+                (order.get('id') as number).toString() === orderId.toString()
+        ) || fromJS({})) as Map<any, any>
     }
 
-    _getItem = (orderId, itemId) => {
+    _getItem = (orderId: number, itemId: number) => {
         const order = this._getOrder(orderId)
-        return (
-            (order.get('line_items') || fromJS([])).find(
-                (item) => item.get('id').toString() === itemId.toString()
-            ) || fromJS({})
-        )
+        return (((order.get('line_items') || fromJS([])) as List<any>).find(
+            (item: Map<any, any>) =>
+                (item.get('id') as number).toString() === itemId.toString()
+        ) || fromJS({})) as Map<any, any>
     }
 
-    _getSubscription = (subscriptionId) => {
+    _getSubscription = (subscriptionId: number) => {
         const {integrationData: data} = this.props
-        return (
-            (data.get('subscriptions') || fromJS([])).find(
-                (subscription) =>
-                    subscription.get('id').toString() ===
-                    subscriptionId.toString()
-            ) || fromJS({})
-        )
+        return (((data.get('subscriptions') || fromJS([])) as List<any>).find(
+            (subscription: Map<any, any>) =>
+                (subscription.get('id') as number).toString() ===
+                subscriptionId.toString()
+        ) || fromJS({})) as Map<any, any>
     }
 
-    _getCharge = (chargeId) => {
+    _getCharge = (chargeId: number) => {
         const {integrationData: data} = this.props
-        return (
-            (data.get('charges') || fromJS([])).find(
-                (charge) => charge.get('id').toString() === chargeId.toString()
-            ) || fromJS({})
-        )
+        return (((data.get('charges') || fromJS([])) as List<any>).find(
+            (charge: Map<any, any>) =>
+                (charge.get('id') as number).toString() === chargeId.toString()
+        ) || fromJS({})) as Map<any, any>
     }
 
-    getDisplayableType(integrationType) {
-        if (integrationType === 'smooch_inside') {
+    getDisplayableType(integrationType: IntegrationType) {
+        if (integrationType === IntegrationType.SmoochInsideIntegrationType) {
             return 'chat'
         }
 
@@ -133,10 +132,13 @@ export class EventContainer extends React.Component {
 
     render() {
         const {event, isLast, integration, integrationData} = this.props
-        const user = event.get('user') || fromJS({})
+        const user = (event.get('user') || fromJS({})) as Map<any, any>
         const status = event.getIn(['data', 'status'])
         const actionName = event.getIn(['data', 'action_name'])
-        const payload = event.getIn(['data', 'payload']) || fromJS({})
+        const payload = (event.getIn(['data', 'payload']) || fromJS({})) as Map<
+            any,
+            any
+        >
 
         const isError = status === 'error'
         const isSuccess = !isError
@@ -152,7 +154,7 @@ export class EventContainer extends React.Component {
         let actionLabel = actionConfig.label
         let objectLabel = ''
         let objectLink = ''
-        let eventIcon = (
+        const eventIcon = (
             <div
                 className={classnames(css.icon, {
                     [css.danger]: isError,
@@ -164,51 +166,60 @@ export class EventContainer extends React.Component {
             </div>
         )
 
-        let shouldDisplayIntegration = true
+        const shouldDisplayIntegration = true
 
         if (hasIntegration) {
             if (integration.get('type') === 'shopify') {
-                const shopName = integration.getIn(['meta', 'shop_name'])
+                const shopName = integration.getIn([
+                    'meta',
+                    'shop_name',
+                ]) as string
                 const orderId = payload.get('order_id')
 
                 if (actionConfig.objectType === 'draftOrder') {
                     objectLabel += payload.get('draft_order_name')
-                    objectLink = `https://${shopName}.myshopify.com/admin/draft_orders/${payload.get(
-                        'draft_order_id'
-                    )}`
+                    objectLink = `https://${shopName}.myshopify.com/admin/draft_orders/${
+                        payload.get('draft_order_id') as number
+                    }`
                 } else if (orderId) {
                     const order = this._getOrder(orderId)
 
                     if (actionConfig.objectType === 'order') {
                         objectLabel += order.get('name')
-                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get(
-                            'id'
-                        )}`
+                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${
+                            order.get('id') as number
+                        }`
                     } else if (actionConfig.objectType === 'item') {
                         const item = this._getItem(
                             payload.get('order_id'),
                             payload.get('item_id')
                         )
-                        objectLabel += `${payload.get('quantity')} × ${item.get(
-                            'name'
-                        )}`
-                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get(
-                            'id'
-                        )}`
+                        objectLabel += `${
+                            payload.get('quantity') as number
+                        } × ${item.get('name') as string}`
+                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${
+                            order.get('id') as number
+                        }`
                     }
                 }
             } else if (integration.get('type') === 'recharge') {
-                const storeName = integration.getIn(['meta', 'store_name'])
-                const hash = integrationData.getIn(['customer', 'hash'])
+                const storeName = integration.getIn([
+                    'meta',
+                    'store_name',
+                ]) as string
+                const hash = integrationData.getIn([
+                    'customer',
+                    'hash',
+                ]) as string
 
                 if (actionConfig.objectType === 'subscription') {
                     const subscription = this._getSubscription(
                         payload.get('subscription_id')
                     )
                     objectLabel += subscription.get('id')
-                    objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${subscription.get(
-                        'id'
-                    )}`
+                    objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${
+                        subscription.get('id') as number
+                    }`
                 } else if (actionConfig.objectType === 'charge') {
                     const charge = this._getCharge(payload.get('charge_id'))
                     objectLabel += charge.get('id')
@@ -216,7 +227,9 @@ export class EventContainer extends React.Component {
                 }
             }
         } else {
-            actionLabel += ` #${payload.get('order_id')} (deleted integration)`
+            actionLabel += ` #${
+                payload.get('order_id') as number
+            } (deleted integration)`
         }
 
         return (
@@ -258,7 +271,7 @@ export class EventContainer extends React.Component {
 
                         <span className={css.filler}>by</span>
 
-                        <AgentLabel name={user.get('name')} />
+                        <AgentLabel name={user.get('name') as string} />
 
                         <Button
                             color="link"
@@ -280,9 +293,6 @@ export class EventContainer extends React.Component {
 
                     <DatetimeLabel
                         dateTime={event.get('created_datetime')}
-                        settings={{
-                            position: 'top left',
-                        }}
                         className={classnames(css.date, 'text-faded')}
                     />
                 </div>
@@ -301,7 +311,7 @@ export class EventContainer extends React.Component {
     }
 }
 
-const connector = connect((state, ownProps) => {
+const connector = connect((state: RootState, ownProps: OwnProps) => {
     const {event} = ownProps
 
     const integration = getIntegrationById(
@@ -310,7 +320,7 @@ const connector = connect((state, ownProps) => {
 
     return {
         integrationData: getIntegrationDataByIntegrationId(
-            integration.get('id', '').toString()
+            integration.get('id', '') as number
         )(state),
         integration,
     }

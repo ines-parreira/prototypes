@@ -1,16 +1,15 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import css from './HistoryButton.less'
 
 type Props = {
-    isHistoryDisplayed: boolean,
-    customerHistory: Map<*, *>,
-    toggleHistory: () => void,
-    customersIsLoading: (T: string) => boolean,
-    ticket: Map<*, *>,
+    isHistoryDisplayed: boolean
+    customerHistory: Map<any, any>
+    toggleHistory: () => void
+    customersIsLoading: (T: string) => boolean
+    ticket: Map<any, any>
 }
 
 const HistoryButton = (props: Props) => {
@@ -22,17 +21,19 @@ const HistoryButton = (props: Props) => {
         ticket,
     } = props
 
-    const ticketHistory = customerHistory.get('tickets') || fromJS([])
+    const ticketHistory = (customerHistory.get('tickets') ||
+        fromJS([])) as List<any>
     const ticketHistoryCount = ticketHistory.filter(
-        (t) => t.get('id') !== ticket.get('id')
+        (t: Map<any, any>) => t.get('id') !== ticket.get('id')
     ).size
 
-    const historyTickets = customerHistory.get('tickets') || fromJS([])
+    const historyTickets = (customerHistory.get('tickets') ||
+        fromJS([])) as List<any>
     const historyOpenedTickets = historyTickets
         // remove current ticket from history for the count
-        .filter((t) => t.get('id') !== ticket.get('id'))
+        .filter((t: Map<any, any>) => t.get('id') !== ticket.get('id'))
         // count only open and new tickets
-        .filter((t) => t.get('status') !== 'closed')
+        .filter((t: Map<any, any>) => t.get('status') !== 'closed')
     const count =
         historyOpenedTickets.size > 0
             ? historyOpenedTickets.size

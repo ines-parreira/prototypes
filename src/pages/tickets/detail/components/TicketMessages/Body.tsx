@@ -1,7 +1,7 @@
 import React from 'react'
 import classNamesBind from 'classnames/bind'
 
-import FacebookCarousel from '../FacebookCarousel.js'
+import FacebookCarousel from '../FacebookCarousel'
 import {TicketMessage} from '../../../../../models/ticket/types'
 
 import css from './Body.less'

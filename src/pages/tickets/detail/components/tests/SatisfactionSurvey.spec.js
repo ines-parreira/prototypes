@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import SatisfactionSurvey from '../SatisfactionSurvey'
+import SatisfactionSurvey from '../SatisfactionSurvey.tsx'
 
 describe('SatisfactionSurvey', () => {
     it('should display satisfaction survey', () => {

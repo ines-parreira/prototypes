@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {EventContainer} from '../Event'
+import {EventContainer} from '../Event.tsx'
 
 describe('Event component', () => {
     const rechargeIntegrationId = 2

@@ -1,8 +1,9 @@
 import React, {ComponentProps} from 'react'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import {SubmitArgs} from '../../TicketDetailContainer'
 import {TicketViewContainer} from '../TicketView'
 
 jest.mock('../TicketHeader', () => () => <div>TicketHeader</div>)
@@ -14,20 +15,11 @@ jest.mock('../ReplyArea/TicketReplyArea', () => () => (
 ))
 jest.mock(
     '../ReplyArea/TicketSubmitButtons',
-    () => ({
-        submit,
-    }: {
-        submit: (
-            status?: string | null,
-            next?: any,
-            action?: List<Map<any, any>> | null,
-            resetMessage?: boolean
-        ) => void
-    }) => (
+    () => ({submit}: {submit: (props: SubmitArgs) => void}) => (
         <button
             type="submit"
             data-testid="TicketSubmitButtons"
-            onClick={() => submit('closed', true)}
+            onClick={() => submit({status: 'closed', next: true})}
         >
             TicketSubmitButtons
         </button>
@@ -70,11 +62,11 @@ describe('<TicketView />', () => {
         const {getByTestId} = render(<TicketViewContainer {...minProps} />)
 
         userEvent.click(getByTestId('TicketSubmitButtons'))
-        expect(minProps.submit).toHaveBeenCalledWith(
-            'closed',
-            true,
-            undefined,
-            undefined
-        )
+        expect(minProps.submit).toHaveBeenCalledWith({
+            action: undefined,
+            next: true,
+            resetMessage: undefined,
+            status: 'closed',
+        })
     })
 })

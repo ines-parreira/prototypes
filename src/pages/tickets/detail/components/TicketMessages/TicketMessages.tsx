@@ -16,12 +16,11 @@ type Props = {
     messages: TicketMessage[]
     ticketId: number
     timezone: string
-    isLastReadMessage: boolean
     hasCursor: boolean
     lastMessageDatetimeAfterMount: Moment | null
-    setStatus?: () => void
+    setStatus?: (status: string) => void
     lastReadMessageId?: number
-    highlightedElements: HighlightedElements
+    highlightedElements: HighlightedElements | null
 }
 
 export default class TicketMessages extends React.Component<Props> {

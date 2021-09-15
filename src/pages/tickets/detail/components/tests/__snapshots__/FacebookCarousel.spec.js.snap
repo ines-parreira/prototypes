@@ -67,7 +67,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
           },
         ]
       }
-      slidesToShow="3"
+      slidesToShow={3}
     >
       <InnerSlider
         accessibility={true}

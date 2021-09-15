@@ -15,6 +15,7 @@ import {
     isForwardedMessage,
     persistLastSenderChannel,
     Receivers,
+    ReceiversValue,
     receiversStateFromValue,
     receiversValueFromState,
     replaceIntegrationVariables,
@@ -346,7 +347,7 @@ describe('ticket utils', () => {
     describe('receiversStateFromValue()', () => {
         expect(
             receiversStateFromValue(
-                (receiversValueExample as unknown) as Receivers,
+                (receiversValueExample as unknown) as ReceiversValue,
                 TicketMessageSourceType.Email
             )
         ).toEqual(receiversStateExample)

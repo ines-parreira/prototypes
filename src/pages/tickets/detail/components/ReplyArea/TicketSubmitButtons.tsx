@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import _sample from 'lodash/sample'
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
+import {Map} from 'immutable'
 
 import {RootState} from '../../../../../state/types'
 import shortcutManager from '../../../../../services/shortcutManager'
@@ -16,6 +16,7 @@ import {
 import {isReady} from '../../../../../state/newMessage/selectors'
 import Tooltip from '../../../../common/components/Tooltip'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+import {SubmitArgs} from '../../TicketDetailContainer'
 
 import css from './TicketSubmitButtons.less'
 
@@ -51,12 +52,7 @@ const TIPS = [
 /* eslint-enable */
 
 type Props = {
-    submit: (
-        status?: string,
-        next?: any,
-        action?: List<Map<any, any>>,
-        resetMessage?: boolean
-    ) => void
+    submit: (params: SubmitArgs) => void
     ticket: Map<any, any>
 } & ConnectedProps<typeof connector>
 
@@ -79,7 +75,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
             return
         }
 
-        this.props.submit(status, next)
+        this.props.submit({status, next})
     }
 
     hideTips = () => {
@@ -144,7 +140,6 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                         type="submit"
                         color="secondary"
                         disabled={disabled}
-                        tabIndex={6}
                         skip={hasTitle || isUpdating}
                         confirm={() => this.submit('closed', true)}
                         content={titleConfirmation}

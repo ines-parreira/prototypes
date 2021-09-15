@@ -1,43 +1,43 @@
-//@flow
-// $FlowFixMe
 import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import {fromJS, type List, type Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import {useAsyncFn, usePrevious} from 'react-use'
 import DocumentTitle from 'react-document-title'
 
-import useSearch from '../../../hooks/useSearch.ts'
-import pendingMessageManager from '../../../services/pendingMessageManager'
-import shortcutManager from '../../../services/shortcutManager/index.ts'
-import socketManager from '../../../services/socketManager'
-import {isAccountActive} from '../../../state/currentAccount/selectors.ts'
+import useSearch from '../../../hooks/useSearch'
+import {RootState} from '../../../state/types'
+import pendingMessageManager from '../../../services/pendingMessageManager/pendingMessageManager'
+import shortcutManager from '../../../services/shortcutManager'
+import socketManager from '../../../services/socketManager/socketManager'
+import {JoinEventType} from '../../../services/socketManager/types'
+import {isAccountActive} from '../../../state/currentAccount/selectors'
 import {
     fetchCustomer,
     fetchCustomerHistory,
-} from '../../../state/customers/actions.ts'
+} from '../../../state/customers/actions'
 import {
     getActiveCustomer,
     getCustomersState,
-} from '../../../state/customers/selectors.ts'
+} from '../../../state/customers/selectors'
 import {
     prepareTicketMessage,
     sendTicketMessage,
     setReceivers,
     submitTicket,
-} from '../../../state/newMessage/actions.ts'
+} from '../../../state/newMessage/actions'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
-} from '../../../state/newMessage/errors.ts'
+} from '../../../state/newMessage/errors'
 import {
     isReady,
     getNewMessageSource,
     getReceiversProperties,
-} from '../../../state/newMessage/selectors.ts'
-import {fetchTags} from '../../../state/tags/actions.ts'
+} from '../../../state/newMessage/selectors'
+import {fetchTags} from '../../../state/tags/actions'
 import {
     clearTicket,
     fetchTicket,
@@ -46,39 +46,20 @@ import {
     goToPrevTicket,
     setCustomer,
     setStatus,
-} from '../../../state/ticket/actions.ts'
-import {updateCursor} from '../../../state/tickets/actions.ts'
-import {getActiveView} from '../../../state/views/selectors.ts'
+} from '../../../state/ticket/actions'
+import {updateCursor} from '../../../state/tickets/actions'
+import {getActiveView} from '../../../state/views/selectors'
 
-import Loader from '../../common/components/Loader/Loader.tsx'
+import Loader from '../../common/components/Loader/Loader'
 
-import TicketView from './components/TicketView.tsx'
-import {updateMessageText} from './components/ReplyArea/TicketReplyEditor.tsx'
+import TicketView from './components/TicketView'
+import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
-type Props = {
-    activeCustomer: Map<any, any>,
-    activeView: Map<any, any>,
-    canSendMessage: boolean,
-    clearTicket: typeof clearTicket,
-    currentUser: Map<any, any>,
-    customers: Map<any, any>,
-    fetchCustomer: typeof fetchCustomer,
-    fetchCustomerHistory: typeof fetchCustomerHistory,
-    fetchTags: typeof fetchTags,
-    fetchTicket: typeof fetchTicket,
-    findAndSetCustomer: typeof findAndSetCustomer,
-    goToNextTicket: typeof goToNextTicket,
-    goToPrevTicket: typeof goToPrevTicket,
-    newMessage: Map<any, any>,
-    newMessageSource: Map<any, any>,
-    prepareTicketMessage: typeof prepareTicketMessage,
-    sendTicketMessage: typeof sendTicketMessage,
-    setCustomer: typeof setCustomer,
-    setReceivers: typeof setReceivers,
-    setStatus: typeof setStatus,
-    submitTicket: typeof submitTicket,
-    ticket: Map<any, any>,
-    updateCursor: typeof updateCursor,
+export type SubmitArgs = {
+    status?: string
+    next?: any
+    action?: string
+    resetMessage?: boolean
 }
 
 export const TicketDetailContainer = ({
@@ -105,9 +86,9 @@ export const TicketDetailContainer = ({
     submitTicket,
     ticket,
     updateCursor,
-}: Props) => {
-    const {ticketId: ticketIdParam} = useParams()
-    const {customer: customerId} = useSearch()
+}: ConnectedProps<typeof connector>) => {
+    const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
+    const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
 
     useEffect(() => {
@@ -116,24 +97,26 @@ export const TicketDetailContainer = ({
 
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 
-    const ticketId = useMemo(() => ticket.get('id'), [ticket])
-    const recipients = useMemo(() => newMessageSource.get('to') || fromJS([]), [
-        newMessageSource,
-    ])
-    const customer = useMemo(() => ticket.get('customer') || fromJS({}), [
-        ticket,
-    ])
+    const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
+    const recipients = useMemo(
+        () => (newMessageSource.get('to') || fromJS([])) as List<any>,
+        [newMessageSource]
+    )
+    const customer = useMemo(
+        () => (ticket.get('customer') || fromJS({})) as Map<any, any>,
+        [ticket]
+    )
     const prevCustomer = usePrevious(customer)
 
     useEffect(() => {
-        fetchTags()
+        void fetchTags()
 
         if (
             ticketIdParam === 'new' &&
             customerId &&
             activeCustomer.get('id') !== customerId
         ) {
-            fetchCustomer(customerId)
+            void fetchCustomer(customerId)
         }
 
         return () => {
@@ -142,11 +125,11 @@ export const TicketDetailContainer = ({
 
             // leaving ticket and request customer from socket io
             if (ticketIdParam && ticketIdParam !== 'new') {
-                socketManager.leave('ticket', ticketIdParam)
+                socketManager.leave(JoinEventType.Ticket, ticketIdParam)
             }
 
             if (customerId) {
-                socketManager.leave('customer', customerId)
+                socketManager.leave(JoinEventType.Customer, customerId)
             }
 
             clearTicket()
@@ -157,7 +140,7 @@ export const TicketDetailContainer = ({
         {loading: isGoToPrevOrNextTicketPending},
         goToPrevOrNextTicket,
     ] = useAsyncFn(
-        (direction: 'prev' | 'next') => {
+        async (direction: 'prev' | 'next') => {
             const ticketNumber = parseInt(ticketIdParam)
             clearTicket()
             return direction === 'prev'
@@ -167,12 +150,11 @@ export const TicketDetailContainer = ({
         [ticketIdParam]
     )
 
-    const submitNewMessage = async (
-        status: ?string,
-        next: any,
-        action: ?List<Map<any, any>>,
-        resetMessage: boolean
-    ) => {
+    const submitNewMessage = async ({
+        status,
+        action,
+        resetMessage = true,
+    }: SubmitArgs) => {
         try {
             const {
                 messageId,
@@ -181,7 +163,6 @@ export const TicketDetailContainer = ({
             } = await prepareTicketMessage(
                 status,
                 ticket.getIn(['state', 'appliedMacro', 'actions']),
-                action,
                 resetMessage
             )
 
@@ -213,12 +194,12 @@ export const TicketDetailContainer = ({
         }
     }
 
-    const submit = (
-        status: ?string,
-        next: any,
-        action: ?List<Map<any, any>>,
-        resetMessage: boolean = true
-    ) => {
+    const submit = ({
+        status,
+        next,
+        action,
+        resetMessage = true,
+    }: SubmitArgs) => {
         if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
             // We're already submitting something, we dont want to POST twice.
             // Or the ticket isn't dirty, and we don't want to send an empty message.
@@ -260,11 +241,11 @@ export const TicketDetailContainer = ({
                 resetMessage
             )
         } else {
-            promise = submitNewMessage(status, next, action, resetMessage)
+            promise = submitNewMessage({status, next, action, resetMessage})
         }
 
         if (status && promise) {
-            ;(promise: any).then(() => {
+            void promise.then(() => {
                 return handleStatusChange(status || '')
             })
         }
@@ -277,14 +258,14 @@ export const TicketDetailContainer = ({
             GO_BACK: {
                 action: () => {
                     if (!isGoToPrevOrNextTicketPending) {
-                        goToPrevOrNextTicket('prev')
+                        void goToPrevOrNextTicket('prev')
                     }
                 },
             },
             GO_FORWARD: {
                 action: () => {
                     if (!isGoToPrevOrNextTicketPending) {
-                        goToPrevOrNextTicket('next')
+                        void goToPrevOrNextTicket('next')
                     }
                 },
             },
@@ -295,7 +276,7 @@ export const TicketDetailContainer = ({
                         e.stopImmediatePropagation()
                     }
 
-                    submit()
+                    void submit({})
                 },
             },
             SUBMIT_CLOSE_TICKET: {
@@ -305,7 +286,7 @@ export const TicketDetailContainer = ({
                         e.stopImmediatePropagation()
                     }
 
-                    submit('closed', true)
+                    void submit({status: 'closed', next: true})
                 },
             },
         })
@@ -327,7 +308,7 @@ export const TicketDetailContainer = ({
                 return
             }
 
-            fetchCustomerHistory(customerId, {
+            void fetchCustomerHistory(customerId, {
                 successCondition: (state) =>
                     state.ticket.getIn(['customer', 'id']) === customerId,
             })
@@ -336,9 +317,9 @@ export const TicketDetailContainer = ({
 
     // if the ticket in the reducer is not the one asked, we fetch it and display it
     useEffect(() => {
-        if (ticket.get('id', '').toString() !== ticketIdParam) {
+        if ((ticket.get('id', '') as number).toString() !== ticketIdParam) {
             clearTicket()
-            fetchTicket(ticketIdParam || '')
+            void fetchTicket(ticketIdParam || '')
         }
 
         showTicket()
@@ -360,7 +341,7 @@ export const TicketDetailContainer = ({
                 !prevCustomer.equals(receiver)
             ) {
                 // set customer on ticket (to show in infobar and be used in macros)
-                setCustomer(receiver)
+                void setCustomer(receiver)
             }
         }
     }, [activeCustomer, customerId, prevCustomer, ticketIdParam])
@@ -379,14 +360,16 @@ export const TicketDetailContainer = ({
         // that there's now exactly one recipient,
         // set this recipient as customer of the ticket
         if (ticketIdParam === 'new' && recipients.size === 1) {
-            const recipient = recipients.first()
+            const recipient = recipients.first() as Map<any, any>
             let shouldSetCustomer = true
 
             // The recipient address may be in the channels of the customer, and not be in his customer.email address, so
             // to be sure we are not re-setting the same customer as customer of the current ticket, we need to check every channel of the
             // current customer.
             if (customer && !customer.isEmpty()) {
-                ;(customer.get('channels') || fromJS([])).forEach((channel) => {
+                ;((customer.get('channels') || fromJS([])) as List<
+                    any
+                >).forEach((channel: Map<any, any>) => {
                     if (
                         channel.get('type') === 'email' &&
                         channel.get('address') === recipient.get('address')
@@ -397,7 +380,7 @@ export const TicketDetailContainer = ({
             }
 
             if (shouldSetCustomer) {
-                findAndSetCustomer(recipient.get('address'))
+                void findAndSetCustomer(recipient.get('address'))
             }
         }
     }, [recipients])
@@ -411,7 +394,7 @@ export const TicketDetailContainer = ({
             recipients.isEmpty() &&
             newMessageSource.get('type') !== 'internal-note'
         ) {
-            setCustomer(null)
+            void setCustomer(null)
         }
     }, [recipients])
 
@@ -455,7 +438,7 @@ export const TicketDetailContainer = ({
             // If the history is open, we don't want to go to the next ticket
             if (!ticket.getIn(['_internal', 'displayHistory'])) {
                 const promise = hideTicket().then(clearTicket)
-                goToNextTicket(parseInt(ticketIdParamRef.current), promise)
+                void goToNextTicket(parseInt(ticketIdParamRef.current), promise)
             }
         })
     }
@@ -485,7 +468,7 @@ export const TicketDetailContainer = ({
 }
 
 const connector = connect(
-    (state) => ({
+    (state: RootState) => ({
         activeView: getActiveView(state),
         activeCustomer: getActiveCustomer(state),
         currentUser: state.currentUser,

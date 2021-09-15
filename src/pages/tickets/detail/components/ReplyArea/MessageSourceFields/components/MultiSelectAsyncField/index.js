@@ -1,2 +1,2 @@
-import MultiSelectAsyncField from './MultiSelectAsyncField'
+import MultiSelectAsyncField from './MultiSelectAsyncField.tsx'
 export default MultiSelectAsyncField

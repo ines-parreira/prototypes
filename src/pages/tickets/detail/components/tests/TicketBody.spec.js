@@ -3,7 +3,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {TicketBody} from '../TicketBody'
+import {TicketBody} from '../TicketBody.tsx'
 import {message} from '../../../../../models/ticket/tests/mocks.ts'
 import {
     INCOMING_PHONE_CALL,
@@ -12,7 +12,7 @@ import {
 } from '../../../../../constants/event.ts'
 import type {TicketMessage} from '../../../../../models/ticket'
 import TicketMessages from '../TicketMessages/TicketMessages.tsx'
-import Event from '../Event'
+import Event from '../Event.tsx'
 
 describe('TicketBody', () => {
     it('should display messages', () => {

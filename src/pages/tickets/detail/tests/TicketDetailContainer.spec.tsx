@@ -13,23 +13,24 @@ import {
 } from '../../../../utils/testing'
 import {initialState as currentUser} from '../../../../state/currentUser/reducers'
 import pendingMessageManager from '../../../../services/pendingMessageManager/pendingMessageManager'
-import {TicketDetailContainer} from '../TicketDetailContainer.js'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from '../../../../state/newMessage/errors'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
+import {TicketDetailContainer} from '../TicketDetailContainer'
+import TicketView from '../components/TicketView'
 
 jest.useFakeTimers()
 
 jest.mock('../../../../services/shortcutManager/shortcutManager')
 jest.mock(
     '../components/TicketView',
-    () => ({submit}: {submit: (param: string) => void}) => (
+    () => ({submit}: ComponentProps<typeof TicketView>) => (
         <div
             data-testid="TicketView-close"
             onClick={() => {
-                submit('closed')
+                submit({status: 'closed'})
             }}
         />
     )
@@ -187,7 +188,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should not go to next ticket when setting status=closed and history is open', () => {
-        ;(minProps.setStatus as jest.MockedFunction<
+        ;((minProps.setStatus as unknown) as jest.MockedFunction<
             (value: any, cb: () => void) => void
         >).mockImplementationOnce((v, cb) => {
             act(cb)
@@ -224,7 +225,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should go to next ticket when setting status=closed and history is closed', async () => {
-        ;(minProps.setStatus as jest.MockedFunction<
+        ;((minProps.setStatus as unknown) as jest.MockedFunction<
             (status: string, cb: () => void) => void
         >).mockImplementationOnce((v, cb) => {
             act(cb)
@@ -731,7 +732,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should defer sending new message when new message is of type email', async () => {
-        ;(minProps.prepareTicketMessage as jest.MockedFunction<
+        ;((minProps.prepareTicketMessage as unknown) as jest.MockedFunction<
             () => typeof preparedData
         >).mockReturnValueOnce(preparedData)
         const {getByTestId} = renderWithRouter(
@@ -790,7 +791,7 @@ describe('TicketDetailContainer component', () => {
             },
             type: 'foo',
         }
-        ;(minProps.prepareTicketMessage as jest.MockedFunction<
+        ;((minProps.prepareTicketMessage as unknown) as jest.MockedFunction<
             () => typeof preparedFacebookData
         >).mockReturnValueOnce(preparedFacebookData)
         const {getByTestId} = renderWithRouter(
@@ -822,7 +823,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should send a deferred message when sending a new deferred message', async () => {
-        ;(minProps.prepareTicketMessage as jest.MockedFunction<
+        ;((minProps.prepareTicketMessage as unknown) as jest.MockedFunction<
             () => typeof preparedData
         >).mockReturnValue(preparedData)
         const {getByTestId} = renderWithRouter(

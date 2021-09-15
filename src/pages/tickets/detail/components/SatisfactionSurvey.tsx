@@ -1,17 +1,17 @@
-// @flow
 import React from 'react'
 import pluralize from 'pluralize'
 import classnames from 'classnames'
+import {Map} from 'immutable'
 
-import {DatetimeLabel} from '../../../common/utils/labels.tsx'
+import {DatetimeLabel} from '../../../common/utils/labels'
 
 import css from './SatisfactionSurvey.less'
 import fullStar from './../../../../../img/satisfaction-survey/full-star.svg'
 
 type PropTypes = {
-    satisfactionSurvey: Object,
-    customer: Object,
-    isLast: boolean,
+    satisfactionSurvey: Map<any, any>
+    customer: Map<any, any>
+    isLast: boolean
 }
 
 export default class SatisfactionSurvey extends React.Component<PropTypes> {
@@ -46,7 +46,7 @@ export default class SatisfactionSurvey extends React.Component<PropTypes> {
 
     render() {
         const {satisfactionSurvey, isLast, customer} = this.props
-        const score = satisfactionSurvey.get('score')
+        const score = satisfactionSurvey.get('score') as number
 
         return (
             <div

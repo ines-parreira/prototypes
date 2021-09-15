@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
-import md5 from 'md5'
 import {connect, ConnectedProps} from 'react-redux'
 import {
     DropdownItem,
@@ -11,21 +10,16 @@ import {
 
 import {RootState} from '../../../../../state/types'
 import {KeymapActions} from '../../../../../services/shortcutManager/shortcutManager'
-import {
-    getChannelsByType,
-    hasIntegrationOfTypes,
-} from '../../../../../state/integrations/selectors'
+import {hasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
 import {prepare} from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {getMessages} from '../../../../../state/ticket/selectors'
-import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
 import SourceIcon from '../../../../common/components/SourceIcon'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import {IntegrationType} from '../../../../../models/integration/types'
 
-import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField.js'
-import MessageSourceFields from './MessageSourceFields/MessageSourceFields.js'
+import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField'
+import MessageSourceFields from './MessageSourceFields/MessageSourceFields'
 
 import css from './ReplyMessageChannel.less'
 
@@ -47,7 +41,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
 
     channelPickerRef: Maybe<HTMLDivElement>
     messageChannelRef: Maybe<HTMLDivElement>
-    multiSelectAsyncFieldRef?: any //$TsFixMe: type this once MultiSelectAsyncField is also migrated to TS
+    multiSelectAsyncFieldRef?: MultiSelectAsyncField | null
 
     componentDidMount() {
         window.addEventListener('click', this.updateMessageSourceFieldsOpening)
@@ -69,7 +63,6 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                 )
 
                 if (this.multiSelectAsyncFieldRef) {
-                    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
                     this.multiSelectAsyncFieldRef.focusInput()
                 }
             },
@@ -129,13 +122,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
     }
 
     renderReceiversArea = () => {
-        const {
-            ticket,
-            messages,
-            sourceType,
-            isNewMessagePublic,
-            accountChannels,
-        } = this.props
+        const {isNewMessagePublic} = this.props
 
         if (!isNewMessagePublic) {
             return (
@@ -145,46 +132,11 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             )
         }
 
-        // Here we add the hash of the source of the last message, because if the source changes, we want to trigger
-        // the re-set of the receivers of the new message.
-        const parentId = messages.isEmpty()
-            ? 'new'
-            : `${ticket.get('id', '') as string} - ${
-                  messages.last().get('id', '') as string
-              } - ${md5(messages.last().get('source') as string)}`
-
-        const disabledSources = [
-            TicketMessageSourceType.Api,
-            TicketMessageSourceType.Chat,
-            TicketMessageSourceType.FacebookMessage,
-            TicketMessageSourceType.FacebookMessenger,
-            TicketMessageSourceType.FacebookPost,
-            TicketMessageSourceType.FacebookMentionPost,
-            TicketMessageSourceType.InstagramAdComment,
-            TicketMessageSourceType.InstagramAdMedia,
-            TicketMessageSourceType.InstagramComment,
-            TicketMessageSourceType.InstagramMedia,
-            TicketMessageSourceType.InstagramDirectMessage, // TODO(check if we need this)
-        ]
-
-        const isInputEnabled =
-            !disabledSources.includes(this.props.sourceType) ||
-            !this.props.ticket.get('id')
-
         return (
             <MessageSourceFields
-                initialValues={guessReceiversFromTicket(
-                    ticket,
-                    sourceType,
-                    accountChannels
-                )}
-                enabled={isInputEnabled}
-                parentId={parentId.toString()}
                 canOpen={this.canChangeReceivers()}
-                isOpen={this.state.isReceiversAreaOpen}
-                inputRef={(ref: typeof MultiSelectAsyncField) =>
-                    (this.multiSelectAsyncFieldRef = ref)
-                }
+                isOpenDefault={this.state.isReceiversAreaOpen}
+                ref={(ref) => (this.multiSelectAsyncFieldRef = ref)}
             />
         )
     }
@@ -539,12 +491,9 @@ const connector = connect(
     (state: RootState) => {
         const sourceType = newMessageSelectors.getNewMessageType(state)
         return {
-            accountChannels: getChannelsByType(sourceType)(state),
-            channel: newMessageSelectors.getNewMessageChannel(state),
             hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
             isForward: newMessageSelectors.isForward(state),
             isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            messages: getMessages(state),
             sourceType,
             ticket: state.ticket,
             hasPhoneIntegration: hasIntegrationOfTypes(

@@ -1,1 +1,1 @@
-export default from './MessageSourceFields'
+export default from './MessageSourceFields.tsx'

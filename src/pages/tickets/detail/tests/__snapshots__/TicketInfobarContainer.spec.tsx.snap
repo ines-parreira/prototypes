@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TicketInfobarContainer component should allow widget editing new tickets with customer 1`] = `
+<div>
+  Infobar mock
+  <div>
+    customer: 
+    {"name":"Pizza Pepperoni"}
+  </div>
+  <div>
+    sources: 
+    {"ticket":{"customer":{"name":"Pizza Pepperoni"}},"customer":{}}
+  </div>
+  <div>
+    widgets: 
+    {}
+  </div>
+</div>
+`;
+
+exports[`TicketInfobarContainer component should disable widget editing new tickets without customer 1`] = `
+<div>
+  Infobar mock
+  <div>
+    customer: 
+    {}
+  </div>
+  <div>
+    sources: 
+    {"ticket":{"customer":{}},"customer":{}}
+  </div>
+  <div>
+    widgets: 
+    {}
+  </div>
+</div>
+`;
+
+exports[`TicketInfobarContainer component should render infobar for new ticket 1`] = `
+<div>
+  Infobar mock
+  <div>
+    customer: 
+    {}
+  </div>
+  <div>
+    sources: 
+    {"ticket":{"customer":{}},"customer":{}}
+  </div>
+  <div>
+    widgets: 
+    {}
+  </div>
+</div>
+`;

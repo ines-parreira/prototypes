@@ -29,27 +29,21 @@ import Timeline from '../../../common/components/timeline/Timeline'
 import appCss from '../../../App.less'
 import {hasIntegrationOfTypes} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
+import {SubmitArgs} from '../TicketDetailContainer'
 
-import HistoryButton from './HistoryButton.js'
+import HistoryButton from './HistoryButton'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import TicketReplyArea from './ReplyArea/TicketReplyArea'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
-import TicketBody from './TicketBody.js'
+import TicketBody from './TicketBody'
 import TicketHeader from './TicketHeader'
 import css from './TicketView.less'
-
-type StatusParams = [
-    string | undefined,
-    any,
-    List<Map<any, any>> | undefined,
-    boolean | undefined
-]
 
 type OwnProps = {
     hideTicket: () => Promise<void>
     isTicketHidden: boolean
-    submit: (...params: StatusParams) => any
+    submit: (params: SubmitArgs) => any
     setStatus?: (status: string) => any
 }
 
@@ -73,7 +67,7 @@ export const TicketViewContainer = ({
     ticketBody,
     toggleHistory,
 }: Props) => {
-    const statusParamsRef = useRef<StatusParams | []>([])
+    const statusParamsRef = useRef<SubmitArgs>({})
     const prevIsHistoryDisplayed = usePrevious(isHistoryDisplayed)
     const newMessageFormRef = useRef<HTMLFormElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
@@ -172,16 +166,16 @@ export const TicketViewContainer = ({
         }
     }, [ticketBody])
 
-    const handlePreSubmit = (
-        status?: string,
-        next?: any,
-        action?: List<Map<any, any>>,
-        resetMessage?: boolean
-    ) => {
+    const handlePreSubmit = ({
+        status,
+        next,
+        action,
+        resetMessage,
+    }: SubmitArgs) => {
         if (newMessageFormRef?.current?.checkValidity()) {
-            statusParamsRef.current = [status, next, action, resetMessage]
+            statusParamsRef.current = {status, next, action, resetMessage}
         } else {
-            statusParamsRef.current = []
+            statusParamsRef.current = {}
         }
     }
 
@@ -193,7 +187,8 @@ export const TicketViewContainer = ({
             return
         }
 
-        statusParamsRef.current.length && submit(...statusParamsRef.current)
+        Object.values(statusParamsRef.current).length &&
+            submit(statusParamsRef.current)
     }
 
     const handleHistoryToggle = () => {

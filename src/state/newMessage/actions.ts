@@ -737,7 +737,6 @@ function onMessageSent(dispatch: StoreDispatch) {
 export function prepareTicketMessage(
     status: Maybe<string>,
     macroActions: Maybe<MacroActions>,
-    action: Maybe<string>,
     resetMessage = true,
     retryMessage?: Map<any, any>
 ) {
@@ -958,7 +957,6 @@ export function retrySubmitTicketMessage(message: Map<any, any>) {
         return dispatch(
             prepareTicketMessage(
                 message.getIn(['_internal', 'status']),
-                null,
                 null,
                 false,
                 message

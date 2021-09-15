@@ -1,16 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {ChangeEventHandler} from 'react'
 import classnames from 'classnames'
+import {List} from 'immutable'
 
 import css from './SenderSelectField.less'
 
-const SenderSelectField = ({value, onChange, channels}) => (
+type Props = {
+    channels: List<any>
+    onChange: ChangeEventHandler<HTMLSelectElement>
+    value: string
+}
+
+const SenderSelectField = ({channels, onChange, value}: Props) => (
     <div className={css.field}>
         <i className={classnames('material-icons', css.arrow)}>
             keyboard_arrow_down
         </i>
         <select className={css.select} value={value} onChange={onChange}>
-            {channels.map((channel, index) => (
+            {channels.map((channel: Map<any, any>, index) => (
                 <option key={index} value={channel.get('address')}>
                     {channel.get('name')} ({channel.get('address')})
                 </option>
@@ -18,11 +24,5 @@ const SenderSelectField = ({value, onChange, channels}) => (
         </select>
     </div>
 )
-
-SenderSelectField.propTypes = {
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    channels: PropTypes.object.isRequired,
-}
 
 export default SenderSelectField

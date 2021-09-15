@@ -1,7 +1,6 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
-import _forEach from 'lodash/forEach'
 import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
@@ -30,17 +29,26 @@ import {TicketMessage} from '../../models/ticket/types'
 
 import {getProperty} from './selectors'
 
+export type Receiver = {
+    name: string
+    address: string
+    value?: string
+}
+
 export type Receivers = {
-    cc?: {
-        name: string
-        address: string
-        value?: string
-    }[]
-    to: {
-        name: string
-        address: string
-        value?: string
-    }[]
+    cc?: Receiver[]
+    to: Receiver[]
+}
+
+export type ReceiverValue = {
+    name: string
+    label: string
+    value: string
+}
+
+export type ReceiversValue = {
+    cc?: ReceiverValue[]
+    to: ReceiverValue[]
 }
 
 /**
@@ -253,9 +261,7 @@ export function guessReceiversFromTicket(
         to: cleanReceivers(toReceivers).toJS(),
     }
 
-    const cc: {name: string; address: string}[] | undefined = cleanReceivers(
-        ccReceivers
-    ).toJS()
+    const cc: Receiver[] | undefined = cleanReceivers(ccReceivers).toJS()
 
     // To avoid setting an empty `cc` field in every source
     if (cc && cc.length) {
@@ -306,25 +312,23 @@ export function receiversValueFromState(
     options: Receivers,
     sourceType: string
 ) {
-    _forEach(options, (receivers, index) => {
-        // @ts-ignore
-        options[index] = receivers!.map((receiver) => ({
+    return Object.entries(options).reduce((acc, [key, receivers]) => {
+        acc[key as keyof ReceiversValue] = receivers!.map((receiver) => ({
             name: receiver.name || '',
-            label: getPersonLabelFromSource(receiver, sourceType),
+            label: getPersonLabelFromSource(receiver, sourceType) as string,
             value: receiver.address || '',
         }))
-    })
-
-    return options
+        return acc
+    }, {} as ReceiversValue)
 }
 
 /**
  * Return receivers state (reducers) from value (to send to server and use on UI)
  */
 export function receiversStateFromValue(
-    value: Receivers,
+    value: ReceiversValue,
     sourceType: TicketMessageSourceType
-) {
+): Record<never, unknown> | Receivers {
     const valueProp = getValuePropFromSourceType(sourceType)
 
     if (!valueProp) {
@@ -333,15 +337,13 @@ export function receiversStateFromValue(
 
     const newValue = value || {}
 
-    _forEach(newValue, (receivers, index) => {
-        // @ts-ignore
-        newValue[index] = receivers!.map((receiver) => ({
+    return Object.entries(newValue).reduce((acc, [key, receivers]) => {
+        acc[key as keyof Receivers] = receivers!.map((receiver) => ({
             name: receiver.name || '',
             address: receiver.value || '',
         }))
-    })
-
-    return newValue
+        return acc
+    }, {} as Receivers)
 }
 
 /**

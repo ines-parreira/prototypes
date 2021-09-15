@@ -27,7 +27,6 @@ exports[`TicketSubmitButtons component empty ticket 1`] = `
       id="submit-and-close-button"
       loading={false}
       skip={false}
-      tabIndex={6}
       type="submit"
     >
       Send & Close

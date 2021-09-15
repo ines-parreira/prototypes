@@ -1426,17 +1426,9 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <Connect(MessageSourceFields)
+  <ForwardRef(MessageSourceFields)
     canOpen={true}
-    enabled={true}
-    initialValues={
-      Object {
-        "to": Array [],
-      }
-    }
-    inputRef={[Function]}
-    isOpen={false}
-    parentId="new"
+    isOpenDefault={false}
   />
   <KeyboardShortcuts
     keymap={

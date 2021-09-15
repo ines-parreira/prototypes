@@ -122,7 +122,7 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
               },
             ]
           }
-          slidesToShow="3"
+          slidesToShow={3}
         >
           <InnerSlider
             accessibility={true}

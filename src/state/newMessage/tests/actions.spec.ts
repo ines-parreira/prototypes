@@ -1154,8 +1154,7 @@ describe('actions', () => {
                     store.dispatch(
                         actions.prepareTicketMessage(
                             null,
-                            fromJS([macroAction]),
-                            null
+                            fromJS([macroAction])
                         )
                     )
                 ).rejects.toBeInstanceOf(TicketMessageActionValidationError)
@@ -1183,9 +1182,7 @@ describe('actions', () => {
                 })
 
                 await expect(
-                    store.dispatch(
-                        actions.prepareTicketMessage(null, null, null)
-                    )
+                    store.dispatch(actions.prepareTicketMessage(null, null))
                 ).rejects.toBeInstanceOf(TicketMessageInvalidSendDataError)
             })
         })
