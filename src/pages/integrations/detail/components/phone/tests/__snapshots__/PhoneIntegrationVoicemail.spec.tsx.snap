@@ -90,7 +90,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
@@ -142,6 +142,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
                 id="textToSpeechContent"
                 maxlength="1000"
                 name="text_to_speech_content"
+                rows="2"
               >
                 Hello world!
               </textarea>
@@ -174,7 +175,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
             </label>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Save changes
@@ -276,7 +277,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
@@ -328,6 +329,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
                 id="textToSpeechContent"
                 maxlength="1000"
                 name="text_to_speech_content"
+                rows="2"
               >
                 Hello world!
               </textarea>
@@ -360,7 +362,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
             </label>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Save changes
@@ -462,7 +464,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
@@ -564,7 +566,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
             </label>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Save changes

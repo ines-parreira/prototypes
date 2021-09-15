@@ -3,6 +3,7 @@ import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import {IntegrationType} from '../../../../../models/integration/types'
+import ForwardIcon from '../ForwardIcon'
 
 type Props = {
     integration: Map<string, any>
@@ -34,6 +35,9 @@ export default function PhoneIntegrationListItem({
                         </span>
                     </div>
                 </Link>
+            </td>
+            <td className="smallest align-middle">
+                <ForwardIcon href={editLink} />
             </td>
         </tr>
     )

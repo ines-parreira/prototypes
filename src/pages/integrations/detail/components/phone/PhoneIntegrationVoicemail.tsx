@@ -25,6 +25,7 @@ import BooleanField from '../../../../common/forms/BooleanField.js'
 import {notify} from '../../../../../state/notifications/actions'
 
 import {NotificationStatus} from '../../../../../state/notifications/types'
+import {countLines} from '../../../../../utils/string'
 
 import {updatePhoneVoicemailConfiguration} from './actions'
 
@@ -205,6 +206,10 @@ export function PhoneIntegrationVoicemail({
         (isTextToSpeechTypeSelected && textToSpeechContent) ||
         (isVoiceRecordingTypeSelected && voiceRecordingFilePath)
 
+    const textToSpeechLines = textToSpeechContent
+        ? countLines(textToSpeechContent)
+        : 0
+
     return (
         <div className="full-width">
             <PageHeader
@@ -250,7 +255,7 @@ export function PhoneIntegrationVoicemail({
                     </Col>
                 </Row>
                 <Row>
-                    <Col lg={6} xl={4}>
+                    <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>
                             {!!error && (
                                 <Alert color="danger">{error.toString()}</Alert>
@@ -343,6 +348,11 @@ export function PhoneIntegrationVoicemail({
                                                     event.target.value
                                                 )
                                             }}
+                                            rows={
+                                                textToSpeechLines > 2
+                                                    ? textToSpeechLines
+                                                    : 2
+                                            }
                                         />
                                     </Col>
                                 )}
@@ -364,7 +374,7 @@ export function PhoneIntegrationVoicemail({
                             <Button
                                 type="submit"
                                 color="success"
-                                className={classnames('mt-3', {
+                                className={classnames('mt-5', {
                                     'btn-loading': isLoading,
                                 })}
                                 disabled={isLoading || !displayCallerOptions}

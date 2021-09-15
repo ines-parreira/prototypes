@@ -27,5 +27,18 @@ exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
       </div>
     </a>
   </td>
+  <td
+    class="smallest align-middle"
+  >
+    <a
+      to="/app/settings/integrations/phone/1/preferences"
+    >
+      <i
+        class="material-icons md-2 align-middle icon-go-forward"
+      >
+        keyboard_arrow_right
+      </i>
+    </a>
+  </td>
 </tr>
 `;

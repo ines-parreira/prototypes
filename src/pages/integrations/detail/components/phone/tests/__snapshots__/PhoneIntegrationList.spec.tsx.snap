@@ -70,6 +70,19 @@ exports[`<PhoneIntegrationList/> render() should render 1`] = `
             </div>
           </a>
         </td>
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/phone/1/preferences"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -172,6 +185,19 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
             </div>
           </a>
         </td>
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/phone/1/preferences"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -264,6 +290,19 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
                 class="text-faded"
               />
             </div>
+          </a>
+        </td>
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/phone/1/preferences"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
           </a>
         </td>
       </tr>

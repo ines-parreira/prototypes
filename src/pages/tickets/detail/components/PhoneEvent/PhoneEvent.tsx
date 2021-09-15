@@ -1,6 +1,6 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useEffect} from 'react'
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import {DatetimeLabel} from '../../../../common/utils/labels'
@@ -61,10 +61,24 @@ type Props = {
 
 export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     const eventType = event.get('type')
+    const eventData = event.get('data', fromJS({})) as Map<string, any>
+    const callRecording = eventData.get('recording') as Map<string, any>
     const icon = icons.get(eventType) || null
+
     const [displayAdditionalInfo, setDisplayAdditionalInfo] = useState<boolean>(
         false
     )
+
+    useEffect(() => {
+        if (
+            eventType === PhoneIntegrationEvent.VoicemailRecording ||
+            (eventType === PhoneIntegrationEvent.CompletedPhoneCall &&
+                callRecording)
+        ) {
+            setDisplayAdditionalInfo(true)
+        }
+    }, [eventType, callRecording, setDisplayAdditionalInfo])
+
     const handleOpenTicketAdditionalInfo = useCallback(() => {
         setDisplayAdditionalInfo(!displayAdditionalInfo)
     }, [displayAdditionalInfo, setDisplayAdditionalInfo])

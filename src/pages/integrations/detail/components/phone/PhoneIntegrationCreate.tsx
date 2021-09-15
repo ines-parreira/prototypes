@@ -211,7 +211,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                     </Col>
                 </Row>
                 <Row>
-                    <Col lg={6} xl={4}>
+                    <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>
                             {!!error && (
                                 <Alert color="danger">{error.toString()}</Alert>
@@ -305,7 +305,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                             <Button
                                 type="submit"
                                 color="success"
-                                className={classnames('mt-3', {
+                                className={classnames('mt-5', {
                                     'btn-loading': isLoading,
                                 })}
                                 disabled={isLoading}

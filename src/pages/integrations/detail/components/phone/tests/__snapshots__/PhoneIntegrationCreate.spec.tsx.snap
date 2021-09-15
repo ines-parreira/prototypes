@@ -68,7 +68,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
@@ -301,7 +301,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
             </div>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Add phone number
@@ -381,7 +381,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
@@ -1147,7 +1147,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when a country and a s
             </div>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Add phone number
@@ -1227,7 +1227,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
@@ -1494,7 +1494,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when type "Toll-free" 
             </div>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Add phone number

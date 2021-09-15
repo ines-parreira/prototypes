@@ -43,7 +43,6 @@ describe('<PhoneEvent/>', () => {
 
         it.each([
             PhoneIntegrationEvent.VoicemailRecording,
-            PhoneIntegrationEvent.IncomingPhoneCall,
             PhoneIntegrationEvent.CompletedPhoneCall,
         ])('should render with opened details', (eventType) => {
             const event = fromJS({
@@ -55,12 +54,11 @@ describe('<PhoneEvent/>', () => {
                     },
                 },
             })
-            const {container, getByText} = render(
+            const {container} = render(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
                 </Provider>
             )
-            getByText('keyboard_arrow_down').click()
 
             expect(container.firstChild).toMatchSnapshot()
         })

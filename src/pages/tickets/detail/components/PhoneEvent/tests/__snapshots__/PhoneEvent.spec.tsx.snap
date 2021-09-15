@@ -200,9 +200,47 @@ exports[`<PhoneEvent/> render() should render with closed details 5`] = `
         <i
           class="material-icons blue eventDetailsIcon cursor-pointer"
         >
-          keyboard_arrow_down
+          keyboard_arrow_up
         </i>
       </span>
+    </div>
+  </div>
+  <div
+    class="eventDetails"
+  >
+    <div
+      class="content"
+    >
+      <div>
+        <b>
+          Phone number
+          :
+        </b>
+         
+      </div>
+      <div>
+        <b>
+          Duration:
+        </b>
+         
+        0min 0s
+      </div>
+      <div
+        class="d-flex flex-column"
+      >
+        <div
+          class="mb-3"
+        >
+          <b>
+            Voicemail:
+          </b>
+        </div>
+        <div>
+          <audio
+            controls=""
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -331,57 +369,6 @@ exports[`<PhoneEvent/> render() should render with opened details 2`] = `
         class="icon"
       >
         <img
-          alt="incoming-phone-call"
-          src="test-file-stub"
-        />
-      </div>
-      <span
-        class="actionName"
-      >
-        Incoming call from Michael Gorgias
-      </span>
-      <span>
-        <i
-          class="material-icons blue eventDetailsIcon cursor-pointer"
-        >
-          keyboard_arrow_up
-        </i>
-      </span>
-    </div>
-  </div>
-  <div
-    class="eventDetails"
-  >
-    <div
-      class="content"
-    >
-      <div>
-        <b>
-          Michael Gorgias
-          :
-        </b>
-         
-        +1 662 442 4075
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<PhoneEvent/> render() should render with opened details 3`] = `
-<div
-  class="component"
->
-  <div
-    class="event"
-  >
-    <div
-      class="content"
-    >
-      <div
-        class="icon"
-      >
-        <img
           alt="completed-phone-call"
           src="test-file-stub"
         />
@@ -395,32 +382,9 @@ exports[`<PhoneEvent/> render() should render with opened details 3`] = `
         <i
           class="material-icons blue eventDetailsIcon cursor-pointer"
         >
-          keyboard_arrow_up
+          keyboard_arrow_down
         </i>
       </span>
-    </div>
-  </div>
-  <div
-    class="eventDetails"
-  >
-    <div
-      class="content"
-    >
-      <div>
-        <b>
-          Michael Gorgias
-          :
-        </b>
-         
-        +1 662 442 4075
-      </div>
-      <div>
-        <b>
-          Duration:
-        </b>
-         
-        0min 0s
-      </div>
     </div>
   </div>
 </div>

@@ -195,7 +195,7 @@ export default function PhoneIntegrationPreferences({
 
             <Container fluid className="page-container">
                 <Row>
-                    <Col lg={6} xl={4}>
+                    <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>
                             {!!error && (
                                 <Alert color="danger">{error.toString()}</Alert>
@@ -288,7 +288,7 @@ export default function PhoneIntegrationPreferences({
                                     onChange={setRecordOutboundCalls}
                                 />
                             </FormGroup>
-                            <div className="mt-3">
+                            <div className="mt-5">
                                 <Button
                                     type="submit"
                                     color="success"
