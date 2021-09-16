@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleItemButtons /> rendering should handle deleting state 1`] = `
+<button
+  class="loading btn-loading btn btn-secondary disabled"
+  disabled=""
+  id="confirm-button-rule-item-delete"
+  type="button"
+>
+  <i
+    class="material-icons"
+  >
+    delete
+  </i>
+  Delete rule
+</button>
+`;
+
+exports[`<RuleItemButtons /> rendering should handle disabled duplicate 1`] = `
+<button
+  class="btn btn-success"
+  form="rule-form"
+  id="rule-item-save"
+  type="button"
+>
+  Update rule
+</button>
+`;
+
+exports[`<RuleItemButtons /> rendering should handle disabled duplicate 2`] = `
+<button
+  class="ml-3 btn btn-secondary disabled"
+  disabled=""
+  id="rule-item-duplicate"
+  type="submit"
+>
+  Duplicate rule
+</button>
+`;
+
+exports[`<RuleItemButtons /> rendering should handle disabled submit 1`] = `
+<button
+  class="btn btn-success disabled"
+  disabled=""
+  form="rule-form"
+  id="rule-item-save"
+  type="button"
+>
+  Update rule
+</button>
+`;
+
+exports[`<RuleItemButtons /> rendering should handle disabled submit 2`] = `
+<button
+  class="ml-3 btn btn-secondary"
+  id="rule-item-duplicate"
+  type="submit"
+>
+  Duplicate rule
+</button>
+`;
+
+exports[`<RuleItemButtons /> rendering should render the default buttons for created 1`] = `
+<div
+  class="buttons-container"
+>
+  <div>
+    <button
+      class="btn btn-success"
+      form="rule-form"
+      id="rule-item-save"
+      type="button"
+    >
+      Create rule
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<RuleItemButtons /> rendering should render the default buttons for update 1`] = `
+<div
+  class="buttons-container"
+>
+  <div>
+    <button
+      class="btn btn-success"
+      form="rule-form"
+      id="rule-item-save"
+      type="button"
+    >
+      Update rule
+    </button>
+    <button
+      class="ml-3 btn btn-secondary"
+      id="rule-item-duplicate"
+      type="submit"
+    >
+      Duplicate rule
+    </button>
+  </div>
+  <div>
+    <div
+      class="component d-inline-block ml-2 delete-button"
+      id="rule-item-delete"
+    >
+      <button
+        class="btn btn-secondary"
+        id="confirm-button-rule-item-delete"
+        type="button"
+      >
+        <i
+          class="material-icons"
+        >
+          delete
+        </i>
+        Delete rule
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 import Hoverable from '../../Hoverable'
 
 import Statement from './Statement'

@@ -1,10 +1,6 @@
 import esprima from 'esprima'
-import {Map} from 'immutable'
 
-import {
-    ObjectExpressionPropertyKey,
-    RuleOperation,
-} from '../../state/rules/types'
+import {ObjectExpressionPropertyKey} from '../../state/rules/types'
 
 export enum IdentifierCategoryKey {
     Message = 'message',
@@ -134,12 +130,4 @@ export enum RuleType {
 export type RulePriority = {
     id: number
     priority: number
-}
-
-export type RuleASTPayload = {
-    id: number
-    schemas: Map<any, any>
-    value: Maybe<string | Record<string, unknown>>
-    operation: RuleOperation
-    path: string[]
 }

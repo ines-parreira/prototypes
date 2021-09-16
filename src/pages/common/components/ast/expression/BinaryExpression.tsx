@@ -3,7 +3,7 @@ import {List, Map} from 'immutable'
 
 import Widget from '../Widget'
 import {getSyntaxTreeLeaves} from '../utils.js'
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 
 import Expression from './Expression'
 

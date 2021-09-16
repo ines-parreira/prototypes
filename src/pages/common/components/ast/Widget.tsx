@@ -26,7 +26,7 @@ import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
 import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
 import {RuleOperation} from '../../../../state/rules/types'
-import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../settings/rules/RulesSettingsForm'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 
@@ -177,8 +177,9 @@ export class Widget extends Component<Props, State> {
         const {textFieldParent} = this.state
 
         // fill the text field with the text version
+        let ast
         if (textFieldParent) {
-            actions.modifyCodeAST(
+            ast = actions.modifyCodeAST(
                 textFieldParent as any,
                 getPlainText(contentState),
                 RuleOperation.Update
@@ -188,7 +189,8 @@ export class Widget extends Component<Props, State> {
         return actions.modifyCodeAST(
             parent,
             convertToHTML(contentState),
-            RuleOperation.Update
+            RuleOperation.Update,
+            ast
         )
     }
 

@@ -1,0 +1,39 @@
+@import '~css/new/colors';
+
+:local {
+    .pageHeader {
+        color: @blue;
+        cursor: pointer;
+        text-weight: 600;
+    }
+    .container {
+        max-width: 1200px;
+        margin-left: 0px;
+
+        .label {
+            color: @indigo;
+            font-weight: 600;
+            size: 14px;
+        }
+
+        .labelName::after {
+            content: '*';
+            color: @red;
+            margin-left: 4px;
+        }
+
+        .ruleContainer {
+            background-color: #f8f9fc;
+            border-radius: 4px;
+            padding: 16px 16px 8px 16px;
+            border: 1px solid @neutral3;
+            input::placeholder {
+                color: @neutral8 !important;
+            }
+        }
+        .toggleButtonContainer {
+            display: flex;
+            padding: 8px 0px;
+        }
+    }
+}

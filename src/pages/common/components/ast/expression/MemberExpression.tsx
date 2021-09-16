@@ -19,12 +19,12 @@ import {
 } from '../../../../../models/rule/utils'
 import {RootState} from '../../../../../state/types'
 import {getIconFromUrl} from '../../../../../state/integrations/helpers'
-import {ruleUpdated} from '../../../../../state/entities/rules/actions'
 import {
     ObjectExpressionPropertyKey,
     Rule,
 } from '../../../../../state/rules/types'
 import {makeHasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 import RuleSelect from '../widget/RuleSelect'
 
 import css from './MemberExpression.less'
@@ -35,6 +35,7 @@ type OwnProps = {
     rule: Map<any, any>
     parent: List<any>
     filteredIntegrationTypes?: IntegrationType[]
+    actions: RuleItemActions
 }
 
 export function MemberExpressionContainer({
@@ -43,13 +44,13 @@ export function MemberExpressionContainer({
     property,
     rule,
     parent,
-    ruleUpdated,
     filteredIntegrationTypes = [
         IntegrationType.ShopifyIntegrationType,
         IntegrationType.Magento2IntegrationType,
         IntegrationType.RechargeIntegrationType,
         IntegrationType.SmileIntegrationType,
     ],
+    actions,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [
         selectedCategory,
@@ -83,7 +84,12 @@ export function MemberExpressionContainer({
 
     const handleSelect = useCallback(
         (value) => {
-            ruleUpdated(getFormattedRule(rule, value, parent).toJS() as Rule)
+            const {code, code_ast} = getFormattedRule(
+                rule,
+                value,
+                parent
+            ).toJS() as Rule
+            actions.setRuleCode(code, code_ast)
             setSelectedCategory(null)
         },
         [rule, parent]
@@ -225,13 +231,8 @@ export function MemberExpressionContainer({
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        hasIntegrationType: makeHasIntegrationOfTypes(state),
-    }),
-    {
-        ruleUpdated,
-    }
-)
+const connector = connect((state: RootState) => ({
+    hasIntegrationType: makeHasIntegrationOfTypes(state),
+}))
 
 export default connector(MemberExpressionContainer)

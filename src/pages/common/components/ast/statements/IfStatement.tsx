@@ -3,7 +3,7 @@ import {Map, List} from 'immutable'
 
 import classnames from 'classnames'
 
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 import AddActionOrIfStatement from '../operations/AddActionOrIfStatement'
 import AddLogicalCondition from '../operations/AddLogicalCondition'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'

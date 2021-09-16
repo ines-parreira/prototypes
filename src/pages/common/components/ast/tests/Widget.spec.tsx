@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 
 import {Widget} from '../Widget'
 import _schemas from '../../../../../fixtures/openapi.json'
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 
 import _astCodeEq from './fixtures/astCodeEq.json'
 import _astCodeContains from './fixtures/astCodeContains.json'
@@ -228,6 +228,7 @@ describe('ast', () => {
                 actions = {
                     modifyCodeAST: modifyCodeASTSpy,
                     getCondition,
+                    setRuleCode: jest.fn(),
                 }
             })
 

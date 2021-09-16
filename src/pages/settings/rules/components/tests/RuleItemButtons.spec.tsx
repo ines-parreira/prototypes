@@ -6,38 +6,38 @@ import RuleItemButtons from '../RuleItemButtons'
 describe('<RuleItemButtons />', () => {
     const minProps: ComponentProps<typeof RuleItemButtons> = {
         ruleId: 1,
-        shouldDisplayError: false,
-        isSubmitDisabled: false,
-        isResetting: false,
+        canSubmit: true,
+        canDuplicate: true,
         isDeleting: false,
         onDuplicate: jest.fn(),
-        onReset: jest.fn(),
         onDelete: jest.fn(),
+        onSubmit: jest.fn(),
     }
 
     describe('rendering', () => {
-        it('should render the default buttons', () => {
+        it('should render the default buttons for update', () => {
             const {container} = render(<RuleItemButtons {...minProps} />)
             expect(container.firstChild).toMatchSnapshot()
         })
-        it('should handle displaying an error', () => {
-            const {queryByText} = render(
-                <RuleItemButtons {...minProps} shouldDisplayError />
+        it('should render the default buttons for created', () => {
+            const {container} = render(
+                <RuleItemButtons {...minProps} ruleId={undefined} />
             )
-            expect(queryByText(/\* name cannot be empty/i)).not.toBeNull()
+            expect(container.firstChild).toMatchSnapshot()
         })
-        it('should handle disabling submit', () => {
+        it('should handle disabled submit', () => {
             const {queryByText} = render(
-                <RuleItemButtons {...minProps} isSubmitDisabled />
+                <RuleItemButtons {...minProps} canSubmit={false} />
             )
-            expect(queryByText(/save rule/i)).toMatchSnapshot()
+            expect(queryByText(/update rule/i)).toMatchSnapshot()
             expect(queryByText(/duplicate rule/i)).toMatchSnapshot()
         })
-        it('should handle resetting state', () => {
+        it('should handle disabled duplicate', () => {
             const {queryByText} = render(
-                <RuleItemButtons {...minProps} isResetting />
+                <RuleItemButtons {...minProps} canDuplicate={false} />
             )
-            expect(queryByText(/discard changes/i)).toMatchSnapshot()
+            expect(queryByText(/update rule/i)).toMatchSnapshot()
+            expect(queryByText(/duplicate rule/i)).toMatchSnapshot()
         })
         it('should handle deleting state', () => {
             const {queryByText} = render(
@@ -52,12 +52,6 @@ describe('<RuleItemButtons />', () => {
             const {getByText} = render(<RuleItemButtons {...minProps} />)
             fireEvent.click(getByText(/duplicate rule/i))
             expect(minProps.onDuplicate).toHaveBeenCalled()
-        })
-        it('should call onReset on clicks', () => {
-            const {getByText} = render(<RuleItemButtons {...minProps} />)
-            fireEvent.click(getByText(/discard changes/i))
-            fireEvent.click(getByText(/confirm/i))
-            expect(minProps.onReset).toHaveBeenCalled()
         })
         it('should call onDelete on clicks', () => {
             const {getByText} = render(<RuleItemButtons {...minProps} />)

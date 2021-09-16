@@ -7,8 +7,8 @@ import {
 } from '../../../../state/rules/utils.ts'
 import {getCode, getAST, toJS, toImmutable} from '../../../../utils.ts'
 
-export const BASIC_PADDING = 59
-export const PADDING_STEP = 15
+export const BASIC_PADDING = 0
+export const PADDING_STEP = 18
 
 /**
  * Compute the left padding of rules elements.

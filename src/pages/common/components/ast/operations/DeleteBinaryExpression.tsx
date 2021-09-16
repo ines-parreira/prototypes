@@ -1,7 +1,7 @@
 import React from 'react'
 import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 import {RuleOperation} from '../../../../../state/rules/types'
 
 type Props = {

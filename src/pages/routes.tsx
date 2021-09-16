@@ -14,7 +14,6 @@ import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbar from './tickets/navbar/TicketNavbar'
 import TicketListContainer from './tickets/list/TicketListContainer'
-import RuleContainer from './settings/rules/list/RuleContainer'
 import SelfServiceContainer from './settings/selfService/SelfServiceContainer'
 import CustomerListContainer from './customers/list/CustomerListContainer.js'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
@@ -43,6 +42,8 @@ import ImportZendeskCreate from './settings/importData/zendesk/ImportZendeskCrea
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
+import RulesView from './settings/rules/RulesView'
+import RulesSettingsForm from './settings/rules/RulesSettingsForm'
 import TeamList from './settings/users/List'
 import TeamForm from './settings/users/Form'
 import TeamsList from './settings/teams/List'
@@ -385,14 +386,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 />
             )}
             <Route path={`${path}/macros`} render={MacrosSettingsRoutes} />
-            <Route
-                path={`${path}/rules`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(RuleContainer, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
+            <Route path={`${path}/rules`} render={RulesSettingsRoute} />
             <Route
                 path={`${path}/self-service`}
                 render={SelfServiceSettingsRoutes}
@@ -652,6 +646,43 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         MacrosSettingsForm,
+                        AGENT_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(RulesView, AGENT_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        RulesSettingsForm,
+                        AGENT_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:ruleId`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        RulesSettingsForm,
                         AGENT_ROLE
                     ),
                     navbar: SettingsNavbarContainer,

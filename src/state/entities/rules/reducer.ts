@@ -1,6 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit'
 
-import {updateCodeAst} from '../../../pages/common/components/ast/utils.js'
 import {Rule, RulePriority} from '../../../models/rule/types'
 
 import {RulesState} from './types'
@@ -11,7 +10,6 @@ import {
     ruleUpdated,
     rulesFetched,
     rulesReordered,
-    ruleAstUpdated,
 } from './actions'
 
 const initialState: RulesState = {}
@@ -42,22 +40,6 @@ const rulesReducer = createReducer<RulesState>(initialState, (builder) =>
                     priority: rulePriority.priority,
                 }
             })
-        })
-        .addCase(ruleAstUpdated, (state, {payload}) => {
-            const {path, value, operation, schemas, id} = payload
-            const rule = {...state[id.toString()]}
-            const updatedCodeAST = updateCodeAst(
-                schemas,
-                rule.code_ast,
-                path,
-                value,
-                operation
-            )
-            state[id.toString()] = {
-                ...rule,
-                code: updatedCodeAST.code,
-                code_ast: updatedCodeAST.ast,
-            }
         })
 )
 

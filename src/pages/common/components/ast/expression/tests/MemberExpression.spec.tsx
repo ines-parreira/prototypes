@@ -95,9 +95,9 @@ describe('<MemberExpression/>', () => {
         actions: {
             modifyCodeAST: jest.fn(),
             getCondition: jest.fn(),
+            setRuleCode: jest.fn(),
         },
         parent: fromJS(['body', 0, 'test', 'arguments', 0]),
-        ruleUpdated: jest.fn(),
         hasIntegrationType: () => jest.fn().mockReturnValue(true),
     } as unknown) as ComponentProps<typeof MemberExpressionContainer>
 
@@ -122,8 +122,8 @@ describe('<MemberExpression/>', () => {
         fireEvent.click(getByText('Shopify Last Order'))
         fireEvent.click(getByText('Fulfillment status'))
         expect(
-            (minProps.ruleUpdated as jest.MockedFunction<
-                typeof minProps.ruleUpdated
+            (minProps.actions.setRuleCode as jest.MockedFunction<
+                typeof minProps.actions.setRuleCode
             >).mock.calls
         ).toMatchSnapshot()
     })

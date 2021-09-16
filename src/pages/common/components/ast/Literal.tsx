@@ -1,7 +1,7 @@
 import React from 'react'
 import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../settings/rules/RulesSettingsForm'
 import {UNARY_OPERATORS} from '../../../../config'
 
 import Errors from './Errors'

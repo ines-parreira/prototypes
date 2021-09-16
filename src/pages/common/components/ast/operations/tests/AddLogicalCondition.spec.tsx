@@ -1,7 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
-import _noop from 'lodash/noop'
 
 import {AddLogicalCondition} from '../AddLogicalCondition'
 import {toJS} from '../../../../../../utils'
@@ -29,12 +28,13 @@ describe('AddLogicalCondition component', () => {
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
-                    modifyCodeAST: _noop,
+                    modifyCodeAST: jest.fn(),
                     getCondition: (path) =>
                         (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
                             any,
                             any
                         >) || fromJS({}),
+                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />
@@ -60,12 +60,13 @@ describe('AddLogicalCondition component', () => {
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
-                    modifyCodeAST: _noop,
+                    modifyCodeAST: jest.fn(),
                     getCondition: (path) =>
                         (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
                             any,
                             any
                         >) || fromJS({}),
+                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />
@@ -91,12 +92,13 @@ describe('AddLogicalCondition component', () => {
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
-                    modifyCodeAST: _noop,
+                    modifyCodeAST: jest.fn(),
                     getCondition: (path) =>
                         (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
                             any,
                             any
                         >) || fromJS({}),
+                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />
@@ -125,12 +127,13 @@ describe('AddLogicalCondition component', () => {
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
-                    modifyCodeAST: _noop,
+                    modifyCodeAST: jest.fn(),
                     getCondition: (path) =>
                         (rule.getIn(['code_ast'].concat(toJS(path))) as Map<
                             any,
                             any
                         >) || fromJS({}),
+                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />

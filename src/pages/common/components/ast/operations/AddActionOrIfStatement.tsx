@@ -9,7 +9,7 @@ import {
 } from 'reactstrap'
 
 import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 import Hoverable from '../../Hoverable'
 import {computeLeftPadding} from '../utils.js'
 

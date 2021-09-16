@@ -4,12 +4,12 @@ import {Map} from 'immutable'
 
 import {toImmutable, isImmutable} from '../../utils'
 
-import {Rule} from './types'
+import {Rule, RuleDraft} from './types'
 
 /**
  * Return array of event types of a rule (ex: ['ticket-updated', 'ticket-created'])
  */
-export const eventTypes = (rule: Rule): Array<string> => {
+export const eventTypes = (rule: Rule | RuleDraft): Array<string> => {
     const ruleMap = toImmutable<Map<any, any>>(rule)
 
     // if not an immutable map

@@ -153,11 +153,7 @@ export class AuditLogEventContainer extends Component<Props> {
             <>
                 <ActionName>
                     Rule "
-                    <a
-                        href={`/app/settings/rules?ruleId=${
-                            data.get('id') as number
-                        }`}
-                    >
+                    <a href={`/app/settings/rules/${data.get('id') as number}`}>
                         {data.get('name')}
                     </a>
                     " executed

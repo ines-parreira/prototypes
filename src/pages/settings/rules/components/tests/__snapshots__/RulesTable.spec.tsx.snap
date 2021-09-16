@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RulesView/> should render the rule views 1`] = `
+<div
+  class="rule-category"
+>
+  <table
+    class="table table-hover"
+  >
+    <thead
+      class="text-faded border-0 tableHeader"
+    >
+      <tr>
+        <td />
+        <td>
+          rule
+        </td>
+        <td />
+        <td>
+          last updated
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td />
+        <td>
+          name
+        </td>
+        <td />
+        <td>
+          last updated
+        </td>
+      </tr>
+      <tr>
+        <td />
+        <td>
+          name
+        </td>
+        <td />
+        <td>
+          last updated
+        </td>
+      </tr>
+      <tr>
+        <td />
+        <td>
+          name
+        </td>
+        <td />
+        <td>
+          last updated
+        </td>
+      </tr>
+      <tr>
+        <td />
+        <td>
+          name
+        </td>
+        <td />
+        <td>
+          last updated
+        </td>
+      </tr>
+      <tr>
+        <td />
+        <td>
+          name
+        </td>
+        <td />
+        <td>
+          last updated
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

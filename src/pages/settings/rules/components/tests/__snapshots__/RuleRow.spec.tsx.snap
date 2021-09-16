@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleRow /> should render a row with a rule 1`] = `
+<tr
+  class="draggable row"
+  data-id="1"
+  id="1"
+>
+  <td
+    class="smallest align-middle"
+  >
+    <i
+      class="material-icons text-faded drag-handle dragHandle"
+    >
+      drag_indicator
+    </i>
+  </td>
+  <td
+    class="smallest align-middle position-relative"
+  >
+    <label
+      class="switch"
+    >
+      <input
+        checked=""
+        readonly=""
+        type="checkbox"
+      />
+      <div
+        class="slider"
+      />
+    </label>
+    <div
+      class="toggleActivation"
+      id="toggle-data-1"
+    />
+  </td>
+  <td
+    class="link-full-td align-middle middle-column"
+    id="rule-name-1"
+  >
+    <div
+      class="ruleCell"
+    >
+      <span
+        class="mr-2 name"
+      >
+        my rule
+      </span>
+    </div>
+  </td>
+  <td
+    class="align-middle text-faded"
+  >
+    2020-01-01
+  </td>
+  <td
+    class="align-middle smallest actions"
+  >
+    <button
+      class="mr-1 btn-transparent btn btn-secondary"
+      title="Duplicate rule"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        file_copy
+      </i>
+    </button>
+    <button
+      class="deleteButton mr-1 btn-transparent btn btn-secondary"
+      id="delete-rule-1"
+      title="Delete rule"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        delete
+      </i>
+    </button>
+  </td>
+</tr>
+`;

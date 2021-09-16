@@ -1,5 +1,3 @@
-import {fromJS} from 'immutable'
-
 import {
     ruleCreated,
     ruleDeleted,
@@ -7,18 +5,10 @@ import {
     ruleUpdated,
     rulesFetched,
     rulesReordered,
-    ruleAstUpdated,
 } from '../actions'
 import reducer from '../reducer'
-import _schemas from '../../../../fixtures/openapi.json'
-import {RuleOperation} from '../../../rules/types'
 
-import {
-    rules as rulesFixtures,
-    emptyRule as ruleFixture,
-} from '../../../../fixtures/rule'
-
-import _codeAST from '../../../../pages/common/components/ast/tests/fixtures/astCodeContains.json'
+import {rules as rulesFixtures} from '../../../../fixtures/rule'
 
 describe('rule reducer', () => {
     describe('createRule action', () => {
@@ -74,25 +64,6 @@ describe('rule reducer', () => {
                 rulesReordered([{id: rulesFixtures[0].id, priority: 200}])
             )
             expect(newState[rulesFixtures[0].id].priority).toBe(200)
-        })
-    })
-
-    describe('updateCodeAst action', () => {
-        it('should update the code and code ast of a rule', () => {
-            const rule = {...ruleFixture, code_ast: _codeAST, id: 1}
-            const path = fromJS(['body', 0, 'test', 'callee', 'name'])
-            const state = {'1': rule}
-            const newState = reducer(
-                state,
-                ruleAstUpdated({
-                    id: 1,
-                    schemas: fromJS(_schemas),
-                    path,
-                    value: 'notContainsAll',
-                    operation: 'UPDATE' as RuleOperation,
-                })
-            )
-            expect(newState['1']).toMatchSnapshot()
         })
     })
 })

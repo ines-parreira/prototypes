@@ -21,6 +21,7 @@ type Props = {
     children?: ReactNode
     className?: string
     color?: string
+    onToggle?: (e: MouseEvent) => void
     confirm?: () => void | Promise<any>
     confirmColor?: string
     containerElement?: string | HTMLElement | React.RefObject<HTMLElement>
@@ -32,11 +33,13 @@ type Props = {
     title?: string
     type?: 'button' | 'submit'
     skip?: boolean
+    buttonTitle?: string
 } & Pick<ButtonProps, KnownKeys<ButtonProps>>
 
 const ConfirmButton = ({
     buttonClassName,
     className = '',
+    buttonTitle,
     children = null,
     confirm = _noop,
     confirmColor = 'success',
@@ -119,6 +122,7 @@ const ConfirmButton = ({
                 className={classnames(buttonClassName, {
                     [`${css.loading} btn-loading`]: isLoading,
                 })}
+                title={buttonTitle}
                 {...buttonProps}
             >
                 {children}

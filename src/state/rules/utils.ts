@@ -18,6 +18,7 @@ import {
     DeprecatedOperator,
     ObjectExpression,
     ObjectExpressionProperty,
+    RuleDraft,
     TimedeltaOperator,
 } from './types'
 
@@ -537,4 +538,15 @@ export function getObjectExpression(
     )
 
     return {type: 'ObjectExpression', properties}
+}
+
+export function getEmptyRule(): RuleDraft {
+    return {
+        name: 'New rule',
+        description: '',
+        code: '',
+        code_ast: getAST(''),
+        event_types: 'ticket-created',
+        deactivated_datetime: null,
+    } as RuleDraft
 }

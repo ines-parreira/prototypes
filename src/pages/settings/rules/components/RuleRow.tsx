@@ -1,0 +1,303 @@
+import React, {useMemo, useState} from 'react'
+import {useAsyncFn} from 'react-use'
+import moment from 'moment'
+import classnames from 'classnames'
+import {Badge, Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
+
+import ToggleButton from '../../../common/components/ToggleButton'
+import type {Rule} from '../../../../state/rules/types'
+import {
+    activateRule,
+    deactivateRule,
+    createRule,
+    deleteRule,
+} from '../../../../models/rule/resources'
+import {
+    ruleCreated,
+    ruleUpdated,
+    ruleDeleted,
+} from '../../../../state/entities/rules/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {notify} from '../../../../state/notifications/actions'
+import history from '../../../history'
+
+import css from './RuleRow.less'
+
+type Props = {
+    rule: Rule
+    canDuplicate: boolean
+}
+
+export function RuleRow({
+    rule,
+    canDuplicate,
+    notify,
+    ruleCreated,
+    ruleDeleted,
+    ruleUpdated,
+}: Props & ConnectedProps<typeof connector>) {
+    const [isDescriptionOpen, setDescriptionOpen] = useState(false)
+    const [showToggleConfirmation, setShowToggleConfirmation] = useState(false)
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
+
+    const toggleShowToggleConfirmation = () => {
+        setShowToggleConfirmation(!showToggleConfirmation)
+    }
+
+    const toggleShowDeleteConfirmation = () => {
+        setShowDeleteConfirmation(!showDeleteConfirmation)
+    }
+
+    const handleDuplicate = async () => {
+        if (canDuplicate) {
+            try {
+                const newRule = await createRule({
+                    name: `${rule.name} - copy`,
+                    description: rule.description,
+                    event_types: rule.event_types,
+                    code: rule.code,
+                    code_ast: rule.code_ast,
+                    deactivated_datetime: null,
+                })
+                ruleCreated(newRule)
+                history.push(`/app/settings/rules/${newRule.id}`)
+                void notify({
+                    message: 'Rule duplicated successfully',
+                    status: NotificationStatus.Success,
+                })
+            } catch (error) {
+                void notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to duplicate rule',
+                })
+            }
+        } else {
+            void notify({
+                message:
+                    'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
+                status: NotificationStatus.Error,
+            })
+        }
+    }
+
+    const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
+        try {
+            await deleteRule(rule.id)
+            ruleDeleted(rule.id)
+            void notify({
+                status: NotificationStatus.Success,
+                message: `Successfully deleted rule ${rule.name}`,
+            })
+        } catch (error) {
+            void notify({
+                status: NotificationStatus.Error,
+                message: 'Failed to delete rule',
+            })
+        }
+    })
+
+    const handleActivate = async () => {
+        try {
+            const res = await activateRule(rule)
+            ruleUpdated(res)
+            void notify({
+                status: NotificationStatus.Success,
+                message: 'Rule activated successfully',
+            })
+        } catch (error) {
+            void notify({
+                status: NotificationStatus.Error,
+                message: 'Unable to deactivate rule',
+            })
+        }
+    }
+
+    const handleDeactivate = async () => {
+        try {
+            const res = await deactivateRule(rule)
+            ruleUpdated(res)
+            void notify({
+                status: NotificationStatus.Success,
+                message: 'Rule deactivated successfully',
+            })
+        } catch (error) {
+            void notify({
+                status: NotificationStatus.Error,
+                message: 'Unable to deactivate rule',
+            })
+        }
+        toggleShowToggleConfirmation()
+    }
+
+    const toggleActivation = async () => {
+        const checked = !!rule.deactivated_datetime
+        if (checked) {
+            await handleActivate()
+        } else {
+            toggleShowToggleConfirmation()
+        }
+    }
+
+    const formattedUpdatedDate = useMemo(
+        () => moment(rule.updated_datetime).format('YYYY-MM-DD'),
+        [rule]
+    )
+
+    const toggleId = useMemo(() => `toggle-data-${rule.id}`, [rule])
+
+    return (
+        <>
+            <tr
+                id={rule.id.toString()}
+                key={rule.id}
+                data-id={rule.id} // dragging info
+                className={classnames('draggable', css.row)}
+                onMouseEnter={() => setDescriptionOpen(true)}
+                onMouseLeave={() => setDescriptionOpen(false)}
+                onClick={() => history.push(`/app/settings/rules/${rule.id}`)}
+            >
+                <td
+                    className="smallest align-middle"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <i
+                        className={classnames(
+                            'material-icons text-faded drag-handle',
+                            css.dragHandle
+                        )}
+                    >
+                        drag_indicator
+                    </i>
+                </td>
+
+                <td className="smallest align-middle position-relative">
+                    <ToggleButton
+                        value={!rule.deactivated_datetime}
+                        onChange={toggleActivation}
+                        stopPropagation
+                    />
+                    <div className={css.toggleActivation} id={toggleId} />
+                </td>
+
+                <td
+                    className={classnames(
+                        'link-full-td',
+                        'align-middle',
+                        css['middle-column']
+                    )}
+                    id={`rule-name-${rule.id}`}
+                >
+                    <div className={css.ruleCell}>
+                        <span className={classnames('mr-2', css.name)}>
+                            {rule.name}
+                        </span>
+                        {rule.type === 'system' && (
+                            <Badge className="ml-2" color="danger">
+                                <i className="material-icons mr-2">warning</i>
+                                SYSTEM
+                            </Badge>
+                        )}
+                    </div>
+                </td>
+                <td className={classnames('align-middle text-faded')}>
+                    {formattedUpdatedDate}
+                </td>
+                <td
+                    className={classnames('align-middle smallest', css.actions)}
+                >
+                    <Button
+                        className={classnames('mr-1 btn-transparent')}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            void handleDuplicate()
+                        }}
+                        title="Duplicate rule"
+                    >
+                        <i className="material-icons">file_copy</i>
+                    </Button>
+                    <Button
+                        className={classnames(
+                            css.deleteButton,
+                            'mr-1 btn-transparent',
+                            {['btn-loading']: isDeleting}
+                        )}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            toggleShowDeleteConfirmation()
+                        }}
+                        title="Delete rule"
+                        id={`delete-rule-${rule.id}`}
+                    >
+                        <i className="material-icons">delete</i>
+                    </Button>
+                </td>
+                {rule.description ? (
+                    <Popover
+                        placement="top"
+                        isOpen={isDescriptionOpen}
+                        target={`rule-name-${rule.id}`}
+                        trigger="legacy"
+                        className={css.descriptionPopover}
+                    >
+                        <PopoverBody>
+                            <div className={css.popoverHeader}>
+                                Rule description
+                            </div>
+                            <div className={css.descriptionWrapper}>
+                                <div className={css.popoverBody}>
+                                    {rule.description}
+                                </div>
+                            </div>
+                        </PopoverBody>
+                    </Popover>
+                ) : null}
+            </tr>
+            <Popover
+                isOpen={showDeleteConfirmation}
+                placement="left"
+                target={`delete-rule-${rule.id}`}
+                toggle={toggleShowDeleteConfirmation}
+                trigger="legacy"
+            >
+                <PopoverHeader>Are you sure?</PopoverHeader>
+                <PopoverBody>
+                    <p>
+                        You are about to delete <b>{rule.name || 'this'}</b>{' '}
+                        rule.
+                    </p>
+                    <Button color="danger" onClick={handleDelete} type="submit">
+                        Confirm
+                    </Button>
+                </PopoverBody>
+            </Popover>
+            <Popover
+                position="bottom"
+                isOpen={showToggleConfirmation}
+                target={toggleId}
+                toggle={toggleShowToggleConfirmation}
+                trigger="legacy"
+            >
+                <PopoverHeader>Are you sure?</PopoverHeader>
+                <PopoverBody>
+                    <p>You are about to deactivate {rule.name} rule.</p>
+
+                    <Button
+                        type="submit"
+                        color="danger"
+                        onClick={handleDeactivate}
+                    >
+                        Confirm
+                    </Button>
+                </PopoverBody>
+            </Popover>
+        </>
+    )
+}
+const connector = connect(null, {
+    ruleCreated,
+    ruleUpdated,
+    ruleDeleted,
+    notify,
+})
+export default connector(RuleRow)

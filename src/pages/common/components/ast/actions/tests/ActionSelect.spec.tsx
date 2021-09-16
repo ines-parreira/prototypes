@@ -8,6 +8,7 @@ const commonProps = {
     actions: {
         modifyCodeAST: jest.fn(),
         getCondition: jest.fn(),
+        setRuleCode: jest.fn(),
     },
     parent: fromJS(['body', 0, 'expression']),
     value: 'addTags',

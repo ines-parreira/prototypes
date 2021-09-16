@@ -2,7 +2,7 @@ import {List, Map} from 'immutable'
 import React, {ComponentType} from 'react'
 import {connect} from 'react-redux'
 
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
 import {RootState} from '../../../../../state/types'
 import UnknownSyntax from '../UnknownSyntax'
 

@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RulesView/> should render the rule views 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Rules
+    </h1>
+    <div>
+      <a
+        to="/app/settings/rules/new"
+      >
+        <button
+          class="float-right btn btn-success"
+        >
+          Create new rule
+        </button>
+      </a>
+    </div>
+  </div>
+  <div
+    class="page-container description container-fluid"
+  >
+    <div
+      class="mb-3"
+    >
+      <p>
+        Rules provide a way to automatically perform actions on tickets, like tagging, assigning or even responding. Hover a row to show the rule description. Learn more about how to setup rules
+         
+        <a
+          href="https://docs.gorgias.com/rules"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          in our docs
+        </a>
+        .
+      </p>
+      <p>
+        Rules are executed depending on triggering events and in the order they are listed on this page.
+         
+        <a
+          href="https://docs.gorgias.com/rules/rules-faq"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more about rules execution
+        </a>
+        .
+      </p>
+    </div>
+    <div>
+      <div
+        class="preview"
+      >
+        <div
+          class="screenshot"
+        >
+          <img
+            alt="video preview"
+            src="https://img.youtube.com/vi/0fIboyInGDg/0.jpg"
+          />
+          <i
+            class="material-icons playIcon"
+          >
+            play_circle_filled_white
+          </i>
+          <div
+            class="iconBackground"
+          />
+        </div>
+        <div
+          class="title"
+        >
+          Working with rules
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="inner"
+      style="min-height: 500px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;

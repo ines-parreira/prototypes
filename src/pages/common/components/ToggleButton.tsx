@@ -11,10 +11,14 @@ type Props = {
     className?: string
     label?: string
     name?: string
+    stopPropagation?: boolean
 }
 
 export default class ToggleButton extends Component<Props> {
     _onChange = (event: MouseEvent) => {
+        if (this.props.stopPropagation) {
+            event.stopPropagation()
+        }
         event.preventDefault()
         if (!this.props.disabled) {
             this.props.onChange(!this.props.value, event)

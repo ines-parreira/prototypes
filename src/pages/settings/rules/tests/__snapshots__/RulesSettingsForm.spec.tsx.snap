@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleSettingsForm /> rendering should render a filled form when rule id after fetched 1`] = `Array []`;
+
+exports[`<RuleSettingsForm /> rendering should render a filled form when rule id after fetched 2`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <span
+            class="pageHeader"
+          >
+            Rules
+          </span>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          New rule
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container container-fluid"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RuleSettingsForm /> rendering should render a loader when rule id before fetched 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <span
+            class="pageHeader"
+          >
+            Rules
+          </span>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          New rule
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container container-fluid"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RuleSettingsForm /> rendering should render an empty form when no rule id 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <span
+            class="pageHeader"
+          >
+            Rules
+          </span>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add rule
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="page-container container container-fluid"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {AddActionOrIfStatement} from '../AddActionOrIfStatement'
-import {RuleItemActions} from '../../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {RuleItemActions} from '../../../../../settings/rules/RulesSettingsForm'
 
 describe('AddActionOrIfStatement component', () => {
     const commonProps = {

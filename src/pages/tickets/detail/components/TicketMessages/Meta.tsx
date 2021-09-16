@@ -274,7 +274,7 @@ export default function Meta(props: Props) {
 
     if (props.via === 'rule' && props.ruleId) {
         sentViaLabel = 'Rule'
-        sentViaLink = `/app/settings/rules?ruleId=${props.ruleId}`
+        sentViaLink = `/app/settings/rules/${props.ruleId}`
     } else if (meta && meta.campaign_id && props.integrationId) {
         sentViaLabel = 'Campaign'
 
