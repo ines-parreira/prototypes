@@ -367,6 +367,7 @@ export const HelpCenterCategory = ({
             fullscreen={false}
             isLoading={isLoading}
             portalRootId="app-root"
+            onBackdropClick={onClose}
         >
             {isOpen && content()}
         </Drawer>

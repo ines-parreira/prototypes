@@ -3,6 +3,9 @@
 exports[`<HelpCenterEditModal/> should display the component correctly 1`] = `
 <div>
   <div
+    class="backdrop"
+  />
+  <div
     class="modal opened"
   >
     Modal content
@@ -12,6 +15,9 @@ exports[`<HelpCenterEditModal/> should display the component correctly 1`] = `
 
 exports[`<HelpCenterEditModal/> should display the component in fullscreen mode correctly 1`] = `
 <div>
+  <div
+    class="backdrop"
+  />
   <div
     class="modal fullscreen opened"
   >

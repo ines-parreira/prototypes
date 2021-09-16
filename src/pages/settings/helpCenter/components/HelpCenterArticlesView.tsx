@@ -666,6 +666,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         }
                         isLoading={isArticleLoading}
                         portalRootId="app-root"
+                        onBackdropClick={() => setEditModal(null)}
                     >
                         {getEditModalContent()}
                     </HelpCenterEditModal>

@@ -3,6 +3,9 @@
 exports[`<Drawer/> should display the component correctly 1`] = `
 <div>
   <div
+    class="backdrop"
+  />
+  <div
     class="drawer opened"
     data-testid="test"
   >
@@ -13,6 +16,9 @@ exports[`<Drawer/> should display the component correctly 1`] = `
 
 exports[`<Drawer/> should display the component in fullscreen mode correctly 1`] = `
 <div>
+  <div
+    class="backdrop"
+  />
   <div
     class="drawer fullscreen opened"
     data-testid="test"

@@ -13,6 +13,7 @@ type Props = {
     fullscreen: boolean
     children: React.ReactNode | null
     isLoading: boolean
+    onBackdropClick?: () => void
 }
 
 export const HelpCenterEditModal = ({
@@ -21,6 +22,7 @@ export const HelpCenterEditModal = ({
     fullscreen,
     portalRootId,
     isLoading,
+    onBackdropClick,
 }: Props) => {
     const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
 
@@ -29,22 +31,25 @@ export const HelpCenterEditModal = ({
     }, [portalRootId])
 
     const modal = (
-        <div
-            className={classnames({
-                [css.modal]: true,
-                [css.fullscreen]: open && fullscreen,
-                [css.opened]: open,
-                [css.closed]: !open,
-            })}
-        >
-            {isLoading ? (
-                <Container fluid className="page-container">
-                    <Loader />
-                </Container>
-            ) : (
-                children
-            )}
-        </div>
+        <>
+            {open && <div className="backdrop" onClick={onBackdropClick} />}
+            <div
+                className={classnames({
+                    [css.modal]: true,
+                    [css.fullscreen]: open && fullscreen,
+                    [css.opened]: open,
+                    [css.closed]: !open,
+                })}
+            >
+                {isLoading ? (
+                    <Container fluid className="page-container">
+                        <Loader />
+                    </Container>
+                ) : (
+                    children
+                )}
+            </div>
+        </>
     )
 
     return (portalRoot && ReactDOM.createPortal(modal, portalRoot)) || modal

@@ -43,6 +43,7 @@ type Props = {
     fullscreen: boolean
     children: React.ReactNode | null
     isLoading: boolean
+    onBackdropClick?: () => void
 }
 
 const Drawer = ({
@@ -52,6 +53,7 @@ const Drawer = ({
     fullscreen,
     portalRootId,
     isLoading,
+    onBackdropClick,
 }: Props): JSX.Element => {
     const [portalRoot, setPortalRoot] = React.useState<HTMLElement | null>(null)
 
@@ -60,27 +62,30 @@ const Drawer = ({
     }, [portalRootId])
 
     const modal = (
-        <div
-            data-testid={name}
-            className={classNames({
-                [css.drawer]: true,
-                [css.fullscreen]: fullscreen,
-                [css.opened]: open,
-                [css.closed]: !open,
-            })}
-        >
-            {isLoading ? (
-                <Container
-                    data-testid="spinner-loader"
-                    fluid
-                    className="page-container"
-                >
-                    <Loader />
-                </Container>
-            ) : (
-                children
-            )}
-        </div>
+        <>
+            {open && <div onClick={onBackdropClick} className="backdrop" />}
+            <div
+                data-testid={name}
+                className={classNames({
+                    [css.drawer]: true,
+                    [css.fullscreen]: fullscreen,
+                    [css.opened]: open,
+                    [css.closed]: !open,
+                })}
+            >
+                {isLoading ? (
+                    <Container
+                        data-testid="spinner-loader"
+                        fluid
+                        className="page-container"
+                    >
+                        <Loader />
+                    </Container>
+                ) : (
+                    children
+                )}
+            </div>
+        </>
     )
 
     return (portalRoot && ReactDOM.createPortal(modal, portalRoot)) || modal
