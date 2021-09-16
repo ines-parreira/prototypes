@@ -26,11 +26,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
       >
         <span>
           <span>
-            <span
+            <img
+              alt="en-US"
               class="flag-emoji"
-            >
-              🇺🇸
-            </span>
+              src="test-file-stub"
+            />
             <span>
               English - USA
             </span>
@@ -83,11 +83,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="fr-FR"
                 class="flag-emoji"
-              >
-                🇫🇷
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 French - France
               </span>
@@ -100,11 +100,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="fr-CA"
                 class="flag-emoji"
-              >
-                🇨🇦
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 French - Canada
               </span>
@@ -117,11 +117,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="cs-CZ"
                 class="flag-emoji"
-              >
-                🇨🇿
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Czech - Czech Republic
               </span>
@@ -134,11 +134,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="da-DK"
                 class="flag-emoji"
-              >
-                🇩🇰
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Danish - Denmark
               </span>
@@ -151,11 +151,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="nl-NL"
                 class="flag-emoji"
-              >
-                🇳🇱
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Dutch - Netherlands
               </span>
@@ -168,11 +168,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="de-DE"
                 class="flag-emoji"
-              >
-                🇩🇪
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 German - Germany
               </span>
@@ -185,11 +185,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="it-IT"
                 class="flag-emoji"
-              >
-                🇮🇹
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Italian - Italy
               </span>
@@ -202,11 +202,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="no-NO"
                 class="flag-emoji"
-              >
-                🇳🇴
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Norwegian - Norway
               </span>
@@ -219,11 +219,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="es-ES"
                 class="flag-emoji"
-              >
-                🇪🇸
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Spanish - Spain
               </span>
@@ -236,11 +236,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
             type="button"
           >
             <span>
-              <span
+              <img
+                alt="sv-SE"
                 class="flag-emoji"
-              >
-                🇸🇪
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 Swedish - Sweden
               </span>
@@ -352,11 +352,11 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
           colspan="4"
         >
           <span>
-            <span
+            <img
+              alt="en-US"
               class="flag-emoji"
-            >
-              🇺🇸
-            </span>
+              src="test-file-stub"
+            />
             <span>
               English - USA
             </span>
