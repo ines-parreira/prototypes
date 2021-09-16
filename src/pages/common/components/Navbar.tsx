@@ -140,6 +140,10 @@ export class Navbar extends React.Component<Props, State> {
                             message: 'widget rendered',
                         })
                     })
+                    .catch((error: Error) => {
+                        // https://linear.app/gorgias/issue/COR-1285/error-error-while-retrieving-publication-data-for-project
+                        reportError(error)
+                    })
             } catch (error) {
                 // https://linear.app/gorgias/issue/COR-1272/typeerror-windownoticeablerenderthen-is-not-a-function
                 reportError(error)
