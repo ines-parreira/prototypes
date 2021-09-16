@@ -360,7 +360,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
             </div>
           </div>
           <button
-            class="mt-3 btn btn-success"
+            class="mt-5 btn btn-success"
             type="submit"
           >
             Add phone number
@@ -440,7 +440,7 @@ exports[`<PhoneIntegrationCreate/> render() should render when IVR function is s
       class="row"
     >
       <div
-        class="col-lg-6 col-xl-4"
+        class="col-lg-6 col-xl-7"
       >
         <form
           class=""
