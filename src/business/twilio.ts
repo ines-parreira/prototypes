@@ -13,3 +13,8 @@ export enum PhoneCountry {
     CA = 'CA',
     US = 'US',
 }
+
+export enum PhoneFunction {
+    STANDARD = 'standard',
+    IVR = 'ivr',
+}

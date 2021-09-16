@@ -21,8 +21,13 @@ import {IntegrationType} from '../../../../../models/integration/types'
 import EmojiTextInput from '../../../../common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from '../../../../common/forms/SelectField/SelectField'
 import type {Option} from '../../../../common/forms/SelectField/types'
-import {PhoneCountry, PhoneType} from '../../../../../business/twilio'
+import {
+    PhoneCountry,
+    PhoneFunction,
+    PhoneType,
+} from '../../../../../business/twilio'
 
+import rawPhoneFunctionOptions from './options/functions.json'
 import rawCountryOptions from './options/countries.json'
 import rawTypeOptions from './options/types.json'
 import rawStateOptions from './options/states.json'
@@ -42,6 +47,7 @@ interface AreaCodeOptionsByState {
     [key: string]: AreaCodeOptions
 }
 
+const phoneFunctionOptions: Option[] = rawPhoneFunctionOptions
 const countryOptions: Option[] = rawCountryOptions
 const typeOptions: Option[] = rawTypeOptions
 const stateOptions: StateOptions = rawStateOptions
@@ -62,6 +68,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
     const [error, setError] = useState<Error | null>(null)
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
+    const [phoneFunction, setPhoneFunction] = useState(PhoneFunction.STANDARD)
     const [country, setCountry] = useState('')
     const [phoneType, setPhoneType] = useState('')
     const [state, setState] = useState('')
@@ -115,6 +122,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                         name: title,
                         meta: {
                             emoji,
+                            function: phoneFunction,
                             country,
                             type: phoneType,
                             state,
@@ -142,6 +150,7 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
         [
             title,
             emoji,
+            phoneFunction,
             country,
             phoneType,
             state,
@@ -231,6 +240,24 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                     required
                                     onChange={setTitle}
                                     onEmojiChange={setEmoji}
+                                />
+                            </FormGroup>
+                            <FormGroup className="d-none">
+                                <Label
+                                    htmlFor="phoneFunction"
+                                    className="control-label"
+                                >
+                                    Function
+                                </Label>
+                                <SelectField
+                                    id="phoneFunction"
+                                    value={phoneFunction}
+                                    onChange={(value) => {
+                                        setPhoneFunction(value as PhoneFunction)
+                                    }}
+                                    options={phoneFunctionOptions}
+                                    fullWidth
+                                    required
                                 />
                             </FormGroup>
                             <FormGroup>

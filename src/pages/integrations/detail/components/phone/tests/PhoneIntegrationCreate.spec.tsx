@@ -19,6 +19,17 @@ describe('<PhoneIntegrationCreate/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render when IVR function is selected', () => {
+            const {container, getByText} = render(
+                <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
+            )
+
+            // Select function "IVR"
+            fireEvent.click(getByText('Interactive Voice Response (IVR)'))
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it('should render when a country and a state are selected', () => {
             const {container, getByText} = render(
                 <PhoneIntegrationCreate actions={{updateOrCreateIntegration}} />
