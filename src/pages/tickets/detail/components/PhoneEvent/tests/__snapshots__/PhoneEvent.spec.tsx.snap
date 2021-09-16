@@ -96,7 +96,7 @@ exports[`<PhoneEvent/> render() should render with closed details 2`] = `
       <span
         class="actionName"
       >
-        Outgoing call
+        Outgoing call placed
       </span>
       <span>
         <i

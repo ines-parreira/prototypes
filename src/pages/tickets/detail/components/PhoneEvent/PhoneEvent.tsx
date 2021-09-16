@@ -28,7 +28,7 @@ const icons = new window.Map<string, string>([
 
 const names = new window.Map<string, string>([
     [PhoneIntegrationEvent.IncomingPhoneCall, 'Incoming call'],
-    [PhoneIntegrationEvent.OutgoingPhoneCall, 'Outgoing call'],
+    [PhoneIntegrationEvent.OutgoingPhoneCall, 'Outgoing call placed'],
     [PhoneIntegrationEvent.CompletedPhoneCall, 'Call ended'],
     [PhoneIntegrationEvent.MissedPhoneCall, 'Missed call'],
     [PhoneIntegrationEvent.PhoneCallAnswered, 'Call answered'],
