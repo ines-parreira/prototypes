@@ -1,1 +1,1 @@
-export default from './FacebookIntegrationCustomerChat'
+export default from './FacebookIntegrationCustomerChat.tsx'

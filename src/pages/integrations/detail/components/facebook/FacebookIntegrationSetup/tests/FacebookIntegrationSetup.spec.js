@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
+import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup.tsx'
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -24,7 +24,7 @@ import {
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
     READ_PAGE_MAILBOXES,
-} from '../../utils'
+} from '../../utils.tsx'
 
 const allPermissions = [
     PAGES_MANAGE_ADS,
@@ -50,11 +50,9 @@ describe('FacebookIntegrationSetup', () => {
         loading: fromJS({
             updateIntegration: false,
         }),
-        actions: {
-            fetchFacebookOnboardingIntegrations: () => Promise.resolve(),
-            activateFacebookOnboardingPage: () => Promise.resolve(),
-            fetchIntegrations: () => Promise.resolve(),
-        },
+        fetchFacebookOnboardingIntegrations: () => Promise.resolve(),
+        activateFacebookOnboardingPage: () => Promise.resolve(),
+        fetchIntegrations: () => Promise.resolve(),
         integrations: fromJS([]),
         pagination: fromJS({
             page: 1,

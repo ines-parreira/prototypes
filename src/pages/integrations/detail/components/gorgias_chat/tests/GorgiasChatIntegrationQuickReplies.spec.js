@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import GorgiasChatIntegrationQuickReplies, {
     GorgiasChatIntegrationQuickRepliesComponent,
-} from '../GorgiasChatIntegrationQuickReplies'
+} from '../GorgiasChatIntegrationQuickReplies.tsx'
 
 const mockStore = configureMockStore([thunk])
 

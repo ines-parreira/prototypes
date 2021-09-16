@@ -36,31 +36,30 @@ jest.mock(
     () => () => <div>EmailIntegrationCreateCustom</div>
 )
 jest.mock(
-    '../components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup.js',
+    '../components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup',
     () => () => <div>OutlookIntegrationSetup</div>
 )
 
-jest.mock('../components/facebook/FacebookIntegrationDetail.js', () => () => (
+jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
     <div>FacebookIntegrationDetail</div>
 ))
 jest.mock(
     '../components/facebook/FacebookIntegrationList/FacebookIntegrationList.js',
     () => () => <div>FacebookIntegrationList</div>
 )
+jest.mock('../components/facebook/FacebookIntegrationPreferences', () => () => (
+    <div>FacebookIntegrationPreferences</div>
+))
 jest.mock(
-    '../components/facebook/FacebookIntegrationPreferences.js',
-    () => () => <div>FacebookIntegrationPreferences</div>
-)
-jest.mock(
-    '../components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds.js',
+    '../components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds',
     () => () => <div>FacebookIntegrationInstagramAds</div>
 )
 jest.mock(
-    '../components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.js',
+    '../components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup',
     () => () => <div>FacebookIntegrationSetup</div>
 )
 jest.mock(
-    '../components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat.js',
+    '../components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat',
     () => () => <div>FacebookIntegrationCustomerChat</div>
 )
 
@@ -100,11 +99,11 @@ jest.mock('../components/gorgias_chat/GorgiasChatIntegrationList', () => () => (
     <div>GorgiasChatIntegrationList</div>
 ))
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationPreferences.js',
+    '../components/gorgias_chat/GorgiasChatIntegrationPreferences',
     () => () => <div>GorgiasChatIntegrationPreferences</div>
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies.js',
+    '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies',
     () => () => <div>GorgiasChatIntegrationQuickReplies</div>
 )
 jest.mock(

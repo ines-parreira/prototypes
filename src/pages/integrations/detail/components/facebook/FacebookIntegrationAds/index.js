@@ -1,1 +1,1 @@
-export default from './FacebookIntegrationInstagramAds'
+export default from './FacebookIntegrationInstagramAds.tsx'

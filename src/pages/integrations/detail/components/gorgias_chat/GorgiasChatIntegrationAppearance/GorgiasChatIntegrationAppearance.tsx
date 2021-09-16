@@ -47,7 +47,7 @@ import Loader from '../../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RadioField from '../../../../../common/forms/RadioField'
 
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation.js'
+import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'
 import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent.js'
 

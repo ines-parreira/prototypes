@@ -1,19 +1,18 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 
-import Avatar from '../../../../../common/components/Avatar'
+import Avatar from '../../../../../common/components/Avatar/Avatar'
 
 import css from './CampaignPreview.less'
 
 type Props = {
-    html?: ?string,
-    authorName?: ?string,
-    authorAvatarUrl?: ?string,
-    mainColor?: ?string,
-    translatedTexts: Object,
+    html: string
+    authorName?: string
+    authorAvatarUrl?: string
+    mainColor?: string
+    translatedTexts: Record<string, string>
 }
 
-export default class CampaignPreview extends React.Component<Props> {
+export default class CampaignPreview extends Component<Props> {
     render() {
         const {
             html,
@@ -23,7 +22,7 @@ export default class CampaignPreview extends React.Component<Props> {
             translatedTexts,
         } = this.props
 
-        const _bgColor = (color) => ({backgroundColor: color})
+        const _bgColor = (color?: string) => ({backgroundColor: color})
 
         return (
             <div className={css.preview}>

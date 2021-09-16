@@ -1,22 +1,21 @@
-// @flow
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {createBrowserHistory, type History} from 'history'
+import {createBrowserHistory, History} from 'history'
 import {Router, Route} from 'react-router-dom'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-import {FacebookIntegrationListContainer} from '../FacebookIntegrationList'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
+import {FacebookIntegrationListContainer} from '../FacebookIntegrationList.js'
 
 const RouterWrapper = ({
     history,
     children,
 }: {
-    history?: History,
-    children?: Node,
+    history?: History
+    children?: ReactNode
 }) => {
     let historyInstance = history
     if (!historyInstance) {

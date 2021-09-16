@@ -1,26 +1,26 @@
-// @flow
 import axios from 'axios'
 
-import {notify} from '../../../../../../state/notifications/actions.ts'
+import {notify} from '../../../../../../state/notifications/actions'
 import {
     addFacebookAdsLoadingAd,
     removeFacebookAdsLoadingAd,
     setFacebookAdsInternals,
     setFacebookAdsLoading,
     updateFacebookAdsActiveAd,
-} from '../../../../../../state/facebookAds/actions.ts'
-import type {Dispatch} from '../../../../../../state/types'
+} from '../../../../../../state/facebookAds/actions'
+import {StoreDispatch} from '../../../../../../state/types'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
 
-export const fetchAds = () => async (dispatch: Dispatch) => {
+export const fetchAds = () => async (dispatch: StoreDispatch) => {
     try {
         dispatch(setFacebookAdsLoading(true))
         const response = await axios.get('/integrations/facebook/fads/state/')
         dispatch(setFacebookAdsInternals(response.data))
     } catch (e) {
-        dispatch(
+        void dispatch(
             notify({
-                status: 'error',
-                title: e.message,
+                status: NotificationStatus.Error,
+                title: (e as {message: string}).message,
             })
         )
     } finally {
@@ -32,7 +32,7 @@ export const updateAd = (
     integrationId: number,
     adId: string,
     isActive: boolean
-) => async (dispatch: Dispatch) => {
+) => async (dispatch: StoreDispatch) => {
     try {
         dispatch(addFacebookAdsLoadingAd(adId))
 
@@ -44,10 +44,10 @@ export const updateAd = (
 
         dispatch(updateFacebookAdsActiveAd(integrationId, adId, isActive))
     } catch (e) {
-        dispatch(
+        void dispatch(
             notify({
-                status: 'error',
-                title: e.message,
+                status: NotificationStatus.Error,
+                title: (e as {message: string}).message,
             })
         )
     } finally {

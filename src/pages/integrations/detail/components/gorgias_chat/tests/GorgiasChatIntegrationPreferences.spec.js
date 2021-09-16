@@ -19,7 +19,7 @@ import {
     GorgiasChatIntegrationPreferencesComponent,
     PREVIEW_AUTO_RESPONDER,
     PREVIEW_EMAIL_CAPTURE,
-} from '../GorgiasChatIntegrationPreferences'
+} from '../GorgiasChatIntegrationPreferences.tsx'
 
 describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('componentDidMount()', () => {

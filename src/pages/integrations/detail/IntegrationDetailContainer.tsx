@@ -17,22 +17,22 @@ import {compare} from '../../../utils'
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
 
-import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup.js'
+import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup'
 
-import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail.js'
+import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList.js'
-import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences.js'
-import FacebookIntegrationInstagramAds from './components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds.js'
-import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.js'
-import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat.js'
+import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
+import FacebookIntegrationInstagramAds from './components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds'
+import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
+import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
 import GorgiasChatCampaignDetail from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatCampaignDetail.js'
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.js'
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
-import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences.js'
-import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies.js'
+import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
+import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList.js'
@@ -195,12 +195,7 @@ export const IntegrationDetailContainer = ({
         case IntegrationType.EmailIntegrationType:
             if (!!integrationId) {
                 if (integrationId === 'setup') {
-                    return (
-                        <OutlookIntegrationSetup
-                            actions={actions}
-                            loading={loading}
-                        />
-                    )
+                    return <OutlookIntegrationSetup loading={loading} />
                 }
 
                 if (isUpdate) {
@@ -266,19 +261,12 @@ export const IntegrationDetailContainer = ({
         case IntegrationType.FacebookIntegrationType:
             if (!!integrationId) {
                 if (integrationId === 'setup') {
-                    return (
-                        <FacebookIntegrationSetup
-                            actions={actions}
-                            loading={loading}
-                        />
-                    )
+                    return <FacebookIntegrationSetup loading={loading} />
                 }
 
                 if (extra === Tab.FacebookCustomerChat) {
                     return (
                         <FacebookIntegrationCustomerChat
-                            actions={actions}
-                            loading={loading}
                             integration={integration}
                         />
                     )
@@ -287,8 +275,6 @@ export const IntegrationDetailContainer = ({
                 if (extra === Tab.Preferences) {
                     return (
                         <FacebookIntegrationPreferences
-                            actions={actions}
-                            loading={loading}
                             integration={integration}
                         />
                     )
@@ -305,7 +291,6 @@ export const IntegrationDetailContainer = ({
 
                 return (
                     <FacebookIntegrationDetail
-                        actions={actions}
                         integration={integration}
                         loading={loading}
                     />
@@ -385,8 +370,6 @@ export const IntegrationDetailContainer = ({
                 if (extra === Tab.Preferences) {
                     return (
                         <GorgiasChatIntegrationPreferences
-                            actions={actions}
-                            loading={loading}
                             integration={integration}
                         />
                     )

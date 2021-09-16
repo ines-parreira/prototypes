@@ -108,7 +108,7 @@ export type Integration = {
     id: number
     locked_datetime: Maybe<string>
     mappings: Maybe<{id: number}[]>
-    meta: Record<string, unknown>
+    meta: IntegrationMeta
     name: string
     type: IntegrationType
     updated_datetime: string
@@ -116,6 +116,30 @@ export type Integration = {
     user: {
         id: number
     }
+}
+
+type IntegrationMeta = {
+    [key: string]: unknown
+    app_id?: string
+    campaigns?: Campaign[]
+    language?: string
+    preferences?: Record<string, unknown>
+    shopify_integration_ids?: string[]
+}
+
+type Campaign = {
+    id: string
+    message: {
+        author?: {
+            avatar_url: string
+            email: string
+            name: string
+        }
+        html: string
+        text: string
+    }
+    name: string
+    triggers: Record<string, unknown>
 }
 
 export type DomainDNSRecord = {

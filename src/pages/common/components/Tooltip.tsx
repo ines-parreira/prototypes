@@ -12,6 +12,7 @@ type Props = {
     disabled?: boolean
     offset?: string | number
     boundariesElement?: string | Element
+    arrowClassName?: string
 } & Pick<UncontrolledTooltipProps, KnownKeys<UncontrolledTooltipProps>>
 
 export default function Tooltip({

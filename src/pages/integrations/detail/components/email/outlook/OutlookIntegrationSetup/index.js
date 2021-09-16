@@ -1,1 +1,1 @@
-export default from './OutlookIntegrationSetup'
+export default from './OutlookIntegrationSetup.tsx'

@@ -10,7 +10,7 @@ import {
 } from '../../../../../../config/integrations/index.ts'
 import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'
+import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences.tsx'
 
 describe('<FacebookIntegrationPreferences/>', () => {
     describe('componentWillMount()', () => {

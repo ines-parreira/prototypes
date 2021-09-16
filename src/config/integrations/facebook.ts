@@ -21,4 +21,4 @@ export const FACEBOOK_MENTION_ENABLED_DOMAINS = fromJS([
     'acme',
     'walter-test',
     'facebooktest',
-])
+]) as List<any>

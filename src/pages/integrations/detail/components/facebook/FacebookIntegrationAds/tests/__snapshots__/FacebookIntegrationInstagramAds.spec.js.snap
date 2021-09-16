@@ -829,7 +829,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                           className="color-NaN progress-bar-striped legendColor"
                         />
                         integration 1
-                         (
+                         
+                        (
                         2
                          
                         active ads)

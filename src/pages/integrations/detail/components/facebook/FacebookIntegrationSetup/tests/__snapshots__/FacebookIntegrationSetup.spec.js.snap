@@ -345,7 +345,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={false}
@@ -358,7 +357,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         />
                       </tr>
                     </tbody>
@@ -600,7 +598,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -613,7 +610,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <UpgradeButton
                             className="ml-1 py-0 px-1"
@@ -871,7 +867,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -884,7 +879,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -1182,7 +1176,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -1195,7 +1188,6 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <UpgradeButton
                             className="ml-1 py-0 px-1"
@@ -1707,7 +1699,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -1720,7 +1711,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         />
                       </tr>
                     </tbody>
@@ -1962,7 +1952,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -1975,7 +1964,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -2900,7 +2888,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -2913,7 +2900,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -3408,7 +3394,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -3421,7 +3406,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -3740,7 +3724,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -3753,7 +3736,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -4072,7 +4054,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -4085,7 +4066,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -4580,7 +4560,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -4593,7 +4572,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -5088,7 +5066,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -5101,7 +5078,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -5596,7 +5572,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -5609,7 +5584,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -6104,7 +6078,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={false}
@@ -6117,7 +6090,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         />
                       </tr>
                     </tbody>
@@ -6581,7 +6553,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={true}
@@ -6594,7 +6565,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <Alert
                             className="ml-1 py-1 mt-3"
@@ -7265,7 +7235,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                       <tr>
                         <td
                           className="pl-0"
-                          td={true}
                         >
                           <BooleanField
                             disabled={false}
@@ -7278,7 +7247,6 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         </td>
                         <td
                           className="pl-0"
-                          td={true}
                         />
                       </tr>
                     </tbody>

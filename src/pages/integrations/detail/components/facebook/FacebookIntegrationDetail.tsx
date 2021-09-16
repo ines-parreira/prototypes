@@ -1,8 +1,7 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
 import {
     Alert,
@@ -13,63 +12,61 @@ import {
     Container,
 } from 'reactstrap'
 
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
     FACEBOOK_MENTION_ENABLED_DOMAINS,
-} from '../../../../../config/integrations/facebook.ts'
-
-import InputField from '../../../../common/forms/InputField'
-import BooleanField from '../../../../common/forms/BooleanField'
-import Loader from '../../../../common/components/Loader/Loader.tsx'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
-import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
-
+} from '../../../../../config/integrations/facebook'
+import InputField from '../../../../common/forms/InputField.js'
+import BooleanField from '../../../../common/forms/BooleanField.js'
+import Loader from '../../../../common/components/Loader/Loader'
+import PageHeader from '../../../../common/components/PageHeader'
+import ConfirmButton from '../../../../common/components/ConfirmButton'
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
-
-import * as billingSelectors from '../../../../../state/billing/selectors.ts'
-
-import {AccountFeature} from '../../../../../state/currentAccount/types.ts'
+import * as billingSelectors from '../../../../../state/billing/selectors'
+import {AccountFeature} from '../../../../../state/currentAccount/types'
+import {RootState} from '../../../../../state/types'
+import {
+    deleteIntegration,
+    updateOrCreateIntegration,
+} from '../../../../../state/integrations/actions'
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
-import FacebookLoginButton from './FacebookLoginButton'
+import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton'
 import {
     canEnableMetaSetting,
+    FacebookRole,
     getFacebookUserTypeByRoles,
     getInstagramDMSettingsInlineComponent,
     getInstagramDMSettingStatus,
     hasFacebookRole,
     InstagramDMSettingStatus,
-    MODERATE_ROLE,
 } from './utils'
 
 type Props = {
-    integration: Map<*, *>,
-    actions: Object,
-    loading: Map<*, *>,
-    currentAccount: Map<string, any>,
-    currentPlan: Object,
-}
+    integration: Map<any, any>
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
     settings: {
-        posts_enabled: boolean,
-        mentions_enabled: boolean,
-        recommendations_enabled: boolean,
-        messenger_enabled: boolean,
-        import_history_enabled: boolean,
-        instagram_comments_enabled: boolean,
-        instagram_mentions_enabled: boolean,
-        instagram_ads_enabled: boolean,
-        instagram_direct_message_enabled: boolean,
-    },
-    language: string,
-    askDisableConfirmation: boolean,
+        posts_enabled: boolean
+        mentions_enabled: boolean
+        recommendations_enabled: boolean
+        messenger_enabled: boolean
+        import_history_enabled: boolean
+        instagram_comments_enabled: boolean
+        instagram_mentions_enabled: boolean
+        instagram_ads_enabled: boolean
+        instagram_direct_message_enabled: boolean
+    }
+    language: string
+    askDisableConfirmation: boolean
 }
 
-export class FacebookIntegrationDetail extends React.Component<Props, State> {
+export class FacebookIntegrationDetail extends Component<Props, State> {
     state = {
         settings: {
             posts_enabled: true,
@@ -86,11 +83,14 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
         askDisableConfirmation: false,
     }
 
-    _updateState = (integration: Map<*, *>) => {
-        const settings = integration.getIn(['meta', 'settings'], fromJS({}))
+    _updateState = (integration: Map<any, any>) => {
+        const settings: Map<any, any> = integration.getIn(
+            ['meta', 'settings'],
+            fromJS({})
+        )
         const language = integration.getIn(['meta', 'language'])
 
-        const newState = {}
+        const newState: Partial<State> = {}
 
         if (!settings.isEmpty()) {
             newState.settings = {
@@ -122,7 +122,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
             newState.language = language
         }
 
-        this.setState(newState)
+        this.setState(newState as State)
     }
 
     componentWillMount() {
@@ -147,34 +147,45 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
         })
     }
 
-    _handleSubmit = (event: SyntheticEvent<*>) => {
+    _handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault()
-        const {actions, integration} = this.props
+        const {integration, updateOrCreateIntegration} = this.props
         const {settings, language} = this.state
         const updated = integration.mergeDeep({
             meta: {language, settings},
         })
-        actions.updateOrCreateIntegration(updated)
+        void updateOrCreateIntegration(updated)
     }
 
     render() {
         const {
             integration,
             loading,
-            actions,
             currentAccount,
             currentPlan,
+            deleteIntegration,
         } = this.props
 
-        const integrationMeta = integration.get('meta') || fromJS({})
+        const integrationMeta: Map<any, any> =
+            integration.get('meta') || fromJS({})
 
-        let userRoles = integration.getIn(['meta', 'roles'])
-        userRoles = userRoles ? userRoles.split(',') : []
+        let userRoles: string | undefined | FacebookRole[] = integration.getIn([
+            'meta',
+            'roles',
+        ]) as string | undefined
+        userRoles = userRoles ? (userRoles.split(',') as FacebookRole[]) : []
 
-        let userPermissions = integration.getIn(['meta', 'oauth', 'scope'])
-        userPermissions = userPermissions ? userPermissions.split(',') : []
+        let userPermissions: string | undefined | string[] = integration.getIn([
+            'meta',
+            'oauth',
+            'scope',
+        ]) as string | undefined
+        userPermissions =
+            typeof userPermissions === 'string'
+                ? userPermissions.split(',')
+                : []
 
-        const canModerate = hasFacebookRole(userRoles, MODERATE_ROLE)
+        const canModerate = hasFacebookRole(userRoles, FacebookRole.Moderate)
 
         const instagramIsDisabled = !integration.getIn([
             'meta',
@@ -229,7 +240,6 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
 
         //Todo(@Mehdi): change this when the feature is available for all accounts
         const instagramDMSettingStatus = getInstagramDMSettingStatus(
-            // $FlowFixMe
             canEnableInstagramDirectMessage,
             integration
         )
@@ -375,7 +385,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                 type="checkbox"
                                 label="Enable Messenger"
                                 value={this.state.settings.messenger_enabled}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'messenger_enabled'
@@ -388,7 +398,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                 type="checkbox"
                                 label="Enable Facebook posts, comments and ads comments"
                                 value={this.state.settings.posts_enabled}
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'posts_enabled'
@@ -402,7 +412,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                     type="checkbox"
                                     label="Enable Facebook mentions"
                                     value={this.state.settings.mentions_enabled}
-                                    onChange={(value) =>
+                                    onChange={(value: boolean) =>
                                         this._onSettingChange(
                                             value,
                                             'mentions_enabled'
@@ -418,7 +428,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                 value={
                                     this.state.settings.recommendations_enabled
                                 }
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'recommendations_enabled'
@@ -435,7 +445,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                     this.state.settings
                                         .instagram_comments_enabled
                                 }
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'instagram_comments_enabled'
@@ -454,7 +464,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                     this.state.settings
                                         .instagram_mentions_enabled
                                 }
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'instagram_mentions_enabled'
@@ -477,7 +487,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                                     this.state.settings
                                                         .instagram_direct_message_enabled
                                                 }
-                                                onChange={(value) =>
+                                                onChange={(value: boolean) =>
                                                     this._onSettingChange(
                                                         value,
                                                         'instagram_direct_message_enabled'
@@ -504,7 +514,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                 value={
                                     this.state.settings.instagram_ads_enabled
                                 }
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'instagram_ads_enabled'
@@ -522,7 +532,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                                 value={
                                     this.state.settings.import_history_enabled
                                 }
-                                onChange={(value) =>
+                                onChange={(value: boolean) =>
                                     this._onSettingChange(
                                         value,
                                         'import_history_enabled'
@@ -540,14 +550,16 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                         onChange={(language) => this.setState({language})}
                         label="Language"
                     >
-                        {FACEBOOK_LANGUAGE_OPTIONS.map((option) => (
-                            <option
-                                key={option.get('value')}
-                                value={option.get('value')}
-                            >
-                                {option.get('label')}
-                            </option>
-                        ))}
+                        {FACEBOOK_LANGUAGE_OPTIONS.map(
+                            (option: Map<any, any>) => (
+                                <option
+                                    key={option.get('value')}
+                                    value={option.get('value')}
+                                >
+                                    {option.get('label')}
+                                </option>
+                            )
+                        )}
                     </InputField>
 
                     <div>
@@ -567,9 +579,7 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
                             color="secondary"
                             className="float-right"
                             content="Are you sure you want to delete this integration?"
-                            confirm={() =>
-                                actions.deleteIntegration(integration)
-                            }
+                            confirm={() => deleteIntegration(integration)}
                             disabled={isSubmitting}
                         >
                             <i className="material-icons mr-1 text-danger">
@@ -584,9 +594,15 @@ export class FacebookIntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    currentAccount: state.currentAccount,
-    currentPlan: billingSelectors.getCurrentPlan(state),
-})
+const connector = connect(
+    (state: RootState) => ({
+        currentAccount: state.currentAccount,
+        currentPlan: billingSelectors.getCurrentPlan(state),
+    }),
+    {
+        updateOrCreateIntegration,
+        deleteIntegration,
+    }
+)
 
-export default connect(mapStateToProps)(FacebookIntegrationDetail)
+export default connector(FacebookIntegrationDetail)

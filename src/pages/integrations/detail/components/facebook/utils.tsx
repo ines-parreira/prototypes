@@ -1,12 +1,10 @@
-// @flow
 import React from 'react'
 import {Alert} from 'reactstrap'
+import {Map} from 'immutable'
 
-import type {Map} from 'immutable'
-
-import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton.tsx'
-import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker.ts'
-import {AccountFeature} from '../../../../../state/currentAccount/types.ts'
+import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton'
+import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker'
+import {AccountFeature} from '../../../../../state/currentAccount/types'
 
 // PERMISSIONS in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features#permissions
@@ -90,6 +88,13 @@ export const PERMISSIONS_PER_INTEGRATION_META_SETTING = {
 
 // TASKS in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features#tasks
+export enum FacebookRole {
+    Advertise = 'ADVERTISE',
+    Analyze = 'ANALYZE',
+    CreateContent = 'CREATE_CONTENT',
+    Manage = 'MANAGE',
+    Moderate = 'MODERATE',
+}
 export const ADVERTISE_ROLE = 'ADVERTISE'
 export const ANALYZE_ROLE = 'ANALYZE'
 export const CREATE_CONTENT_ROLE = 'CREATE_CONTENT'
@@ -98,28 +103,41 @@ export const MODERATE_ROLE = 'MODERATE'
 
 // User types in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features
+export enum FacebookUserType {
+    Admin = 'Admin',
+    Advertiser = 'Advertiser',
+    Analyst = 'Analyst',
+    Editor = 'Editor',
+    Moderator = 'Moderator',
+}
 const ADMIN_USER_TYPE = {
-    name: 'Admin',
-    roles: [
-        ADVERTISE_ROLE,
-        ANALYZE_ROLE,
-        CREATE_CONTENT_ROLE,
-        MANAGE_ROLE,
-        MODERATE_ROLE,
-    ],
+    name: FacebookUserType.Admin,
+    roles: Object.values(FacebookRole),
 }
 const ADVERTISER_USER_TYPE = {
-    name: 'Advertiser',
-    roles: [ADVERTISE_ROLE, ANALYZE_ROLE],
+    name: FacebookUserType.Advertiser,
+    roles: [FacebookRole.Advertise, FacebookRole.Analyze],
 }
-const ANALYST_USER_TYPE = {name: 'Analyst', roles: [ANALYZE_ROLE]}
+const ANALYST_USER_TYPE = {
+    name: FacebookUserType.Analyst,
+    roles: [FacebookRole.Analyze],
+}
 const EDITOR_USER_TYPE = {
-    name: 'Editor',
-    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, CREATE_CONTENT_ROLE, MODERATE_ROLE],
+    name: FacebookUserType.Editor,
+    roles: [
+        FacebookRole.Advertise,
+        FacebookRole.Analyze,
+        FacebookRole.CreateContent,
+        FacebookRole.Moderate,
+    ],
 }
 const MODERATOR_USER_TYPE = {
-    name: 'Moderator',
-    roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE],
+    name: FacebookUserType.Moderator,
+    roles: [
+        FacebookRole.Advertise,
+        FacebookRole.Analyze,
+        FacebookRole.Moderate,
+    ],
 }
 
 // Ordered by number of roles high to low
@@ -134,10 +152,8 @@ export const FACEBOOK_USER_TYPES = [
 /**
  * Check if provided all the userRoles are the same with all the roles of a certain
  * user type and return it's name
- * @param userRoles
- * @returns {string|*}
  */
-export function getFacebookUserTypeByRoles(userRoles: string[]) {
+export function getFacebookUserTypeByRoles(userRoles: FacebookRole[]) {
     if (!userRoles) {
         return
     }
@@ -161,12 +177,13 @@ export function getFacebookUserTypeByRoles(userRoles: string[]) {
 
 /**
  * Check if has role
- * @param userRoles
- * @param roleToSearch
  */
-export function hasFacebookRole(userRoles: string[], roleToSearch: string) {
+export function hasFacebookRole(
+    userRoles: FacebookRole[],
+    roleToSearch: FacebookRole
+) {
     if (!userRoles) {
-        return
+        return false
     }
 
     return userRoles.includes(roleToSearch)
@@ -174,32 +191,34 @@ export function hasFacebookRole(userRoles: string[], roleToSearch: string) {
 
 /**
  * Return if the user has the right permissions to be able to enable meta settings
- * @param userPermissions
- * @param metaSetting
  */
 export function canEnableMetaSetting(
     userPermissions: string[],
     metaSetting: string
 ) {
     if (!userPermissions) {
-        return
+        return false
     }
 
+    // eslint-disable-next-line no-prototype-builtins
     if (!PERMISSIONS_PER_INTEGRATION_META_SETTING.hasOwnProperty(metaSetting)) {
-        return
+        return false
     }
 
     let counter = 0
-    PERMISSIONS_PER_INTEGRATION_META_SETTING[metaSetting].forEach(
-        (metaSettingPermission) => {
-            if (userPermissions.includes(metaSettingPermission)) {
-                counter++
-            }
+    PERMISSIONS_PER_INTEGRATION_META_SETTING[
+        metaSetting as keyof typeof PERMISSIONS_PER_INTEGRATION_META_SETTING
+    ].forEach((metaSettingPermission) => {
+        if (userPermissions.includes(metaSettingPermission)) {
+            counter++
         }
-    )
+    })
 
     return (
-        counter === PERMISSIONS_PER_INTEGRATION_META_SETTING[metaSetting].length
+        counter ===
+        PERMISSIONS_PER_INTEGRATION_META_SETTING[
+            metaSetting as keyof typeof PERMISSIONS_PER_INTEGRATION_META_SETTING
+        ].length
     )
 }
 
@@ -211,7 +230,7 @@ export const InstagramDMSettingStatus = {
 
 export function getInstagramDMSettingStatus(
     canEnableInstagramDirectMessage: boolean,
-    integration: Object
+    integration: Map<any, any>
 ) {
     if (!canEnableInstagramDirectMessage) {
         // User did not grant the permission so he should reconnect
@@ -236,8 +255,8 @@ export function getInstagramDMSettingStatus(
 
 export function getInstagramDMSettingsInlineComponent(
     instagramDMSettingStatus: number,
-    currentAccount: Map<string, any>,
-    currentPlan: Object
+    currentAccount: Map<any, any>,
+    currentPlan: Map<any, any>
 ) {
     const currentPlanHasInstagramDMFeature = currentPlan.getIn([
         'features',

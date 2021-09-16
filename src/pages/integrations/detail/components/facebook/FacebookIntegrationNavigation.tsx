@@ -1,18 +1,17 @@
-// @flow
-import React from 'react'
-import {type Map} from 'immutable'
+import React, {Component} from 'react'
+import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
 
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
-    integration: Map<*, *>,
+    integration: Map<any, any>
 }
 
-export default class FacebookIntegrationNavigation extends React.Component<Props> {
+export default class FacebookIntegrationNavigation extends Component<Props> {
     render() {
         const {integration} = this.props
-        const integrationId = integration.get('id')
+        const integrationId: number = integration.get('id')
         const baseURL = `/app/settings/integrations/facebook/${integrationId}`
         const instagramAdsEnabled = integration.getIn([
             'meta',

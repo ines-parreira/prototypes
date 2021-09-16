@@ -2,15 +2,13 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {OutlookIntegrationSetupContainer} from '../OutlookIntegrationSetup'
+import {OutlookIntegrationSetupContainer} from '../OutlookIntegrationSetup.tsx'
 
 describe('<OutlookIntegrationSetup/>', () => {
     describe('render()', () => {
         const minProps = {
-            actions: {
-                activateOnboardingIntegrations: jest.fn(),
-                fetchOutlookOnboardingIntegrations: () => Promise.resolve(),
-            },
+            activateOnboardingIntegrations: jest.fn(),
+            fetchOutlookOnboardingIntegrations: () => Promise.resolve(),
             integrations: fromJS([]),
             loading: fromJS({
                 updateIntegration: false,

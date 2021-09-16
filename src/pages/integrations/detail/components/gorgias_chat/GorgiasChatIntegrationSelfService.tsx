@@ -8,7 +8,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 
 import history from '../../../../history'
 
-import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation.js'
+import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 
 type OwnProps = {
     integration: Map<any, any>

@@ -35,7 +35,7 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
 
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation.tsx'
 
 import {
     CAMPAIGNS_TRIGGER_KEYS,
@@ -44,7 +44,7 @@ import {
 } from '../../../../../../config/integrations/gorgias_chat.ts'
 import history from '../../../../../history.ts'
 
-import CampaignPreview from './CampaignPreview'
+import CampaignPreview from './CampaignPreview.tsx'
 import css from './GorgiasChatCampaignDetail.less'
 
 /**

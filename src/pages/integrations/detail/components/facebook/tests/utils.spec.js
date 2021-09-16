@@ -4,7 +4,7 @@ import {
     hasFacebookRole,
     MODERATE_ROLE,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
-} from '../utils'
+} from '../utils.tsx'
 
 const {FACEBOOK_USER_TYPES} = require('../utils')
 const {getFacebookUserTypeByRoles} = require('../utils')
@@ -59,16 +59,16 @@ describe('facebook roles and permissions utils', () => {
     })
 
     describe('canEnableMetaSetting', () => {
-        it('should return nothing because no userPermissions', () => {
+        it('should return false because no userPermissions', () => {
             const canEnable = canEnableMetaSetting(undefined)
 
-            expect(canEnable).toBeUndefined()
+            expect(canEnable).toBe(false)
         })
 
-        it('should return nothing because no meta setting property', () => {
+        it('should return false because no meta setting property', () => {
             const canEnable = canEnableMetaSetting([], 'foo')
 
-            expect(canEnable).toBeUndefined()
+            expect(canEnable).toBe(false)
         })
 
         it.each([

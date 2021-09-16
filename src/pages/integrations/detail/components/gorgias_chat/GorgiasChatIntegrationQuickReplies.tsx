@@ -1,7 +1,6 @@
-// @flow
-import React from 'react'
+import React, {Component, FormEvent} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {
     Breadcrumb,
@@ -14,37 +13,36 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
-import PageHeader from '../../../../common/components/PageHeader.tsx'
-import BooleanField from '../../../../common/forms/BooleanField'
-import ListField from '../../../../common/forms/ListField.tsx'
-import {updateOrCreateIntegration} from '../../../../../state/integrations/actions.ts'
+import PageHeader from '../../../../common/components/PageHeader'
+import BooleanField from '../../../../common/forms/BooleanField.js'
+import ListField from '../../../../common/forms/ListField'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
-} from '../../../../../config/integrations/gorgias_chat.ts'
+} from '../../../../../config/integrations/gorgias_chat'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from './GorgiasChatIntegrationPreview'
-import QuickRepliesPreview from './GorgiasChatIntegrationPreview/QuickReplies'
+import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'
+import QuickRepliesPreview from './GorgiasChatIntegrationPreview/QuickReplies.js'
 
 type Props = {
-    integration: Map<*, *>,
-    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    quickReplies: List<string>,
-    quickRepliesEnabled: boolean,
-    isUpdating: boolean,
-    isInitialized: boolean,
+    quickReplies: List<string>
+    quickRepliesEnabled: boolean
+    isUpdating: boolean
+    isInitialized: boolean
 }
 
-export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component<
+export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     Props,
     State
 > {
-    state = {
+    state: State = {
         quickReplies: fromJS([]),
         quickRepliesEnabled: false,
         isUpdating: false,
@@ -53,9 +51,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
 
     _initState = () => {
         const {integration} = this.props
-        const quickRepliesState =
+        const quickRepliesState: Map<any, any> =
             integration.getIn(['meta', 'quick_replies']) || fromJS({})
-        let quickReplies = quickRepliesState.get('replies') || fromJS([])
+        let quickReplies: List<any> =
+            quickRepliesState.get('replies') || fromJS([])
 
         // If quickRepliesState is empty, it means this integration never had any quick replies set for it, so we
         // want to set the default as examples
@@ -82,18 +81,19 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
         }
     }
 
-    _submit = (event: Object) => {
+    _submit = (event: FormEvent) => {
         event.preventDefault()
         const {updateOrCreateIntegration, integration} = this.props
 
         this.setState({isUpdating: true})
 
-        const existingMeta = integration.get('meta') || fromJS({})
+        const existingMeta: Map<any, any> =
+            integration.get('meta') || fromJS({})
         const trimmedQuickReplies = this.state.quickReplies.map(
-            (quickReplies) => quickReplies.trim()
-        )
+            (quickReplies) => quickReplies!.trim()
+        ) as List<any>
 
-        let payload = fromJS({
+        const payload = fromJS({
             id: integration.get('id'),
             meta: existingMeta.set(
                 'quick_replies',
@@ -106,7 +106,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
 
         this.setState({quickReplies: trimmedQuickReplies})
 
-        return updateOrCreateIntegration(payload)
+        return (updateOrCreateIntegration(payload) as Promise<void>)
             .then(() => this.setState({isUpdating: false}))
             .catch(() => this.setState({isUpdating: false}))
     }
@@ -127,9 +127,9 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}`}
+                                    to={`/app/settings/integrations/${
+                                        integration.get('type') as string
+                                    }`}
                                 >
                                     Chat
                                 </Link>
@@ -161,7 +161,9 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
                                             type="checkbox"
                                             label="Enable quick replies"
                                             value={quickRepliesEnabled}
-                                            onChange={(quickRepliesEnabled) =>
+                                            onChange={(
+                                                quickRepliesEnabled: boolean
+                                            ) =>
                                                 this.setState({
                                                     quickRepliesEnabled,
                                                 })
@@ -229,6 +231,8 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
     }
 }
 
-export default connect(null, {
+const connector = connect(null, {
     updateOrCreateIntegration,
-})(GorgiasChatIntegrationQuickRepliesComponent)
+})
+
+export default connector(GorgiasChatIntegrationQuickRepliesComponent)

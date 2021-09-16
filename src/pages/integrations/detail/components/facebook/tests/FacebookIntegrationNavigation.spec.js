@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {mount} from 'enzyme'
 
-import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
+import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation.tsx'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 
 describe('<FacebookIntegrationNavigation/>', () => {

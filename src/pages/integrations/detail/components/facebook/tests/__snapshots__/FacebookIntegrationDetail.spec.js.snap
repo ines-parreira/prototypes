@@ -311,7 +311,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -644,7 +644,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -1017,7 +1017,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -1350,7 +1350,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -1738,7 +1738,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -2131,7 +2131,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -2524,7 +2524,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -2917,7 +2917,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -3310,7 +3310,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -3698,7 +3698,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -4086,7 +4086,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -4474,7 +4474,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -4863,7 +4863,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -5012,12 +5012,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <br />
         If you just associated the page with an Instagram account, please
          
-        <Connect(FacebookLoginButton)
+        <Connect(FacebookLoginButtonContainer)
           link={true}
           reconnect={true}
         >
           click here to update your integrations
-        </Connect(FacebookLoginButton)>
+        </Connect(FacebookLoginButtonContainer)>
         .
       </Alert>
     </div>
@@ -5273,7 +5273,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -5666,7 +5666,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -6059,7 +6059,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -6452,7 +6452,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -6841,7 +6841,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -7230,7 +7230,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -7619,7 +7619,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -8008,7 +8008,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -8397,7 +8397,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -8786,7 +8786,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -9175,7 +9175,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -9564,7 +9564,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -9953,7 +9953,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -10342,7 +10342,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -10731,7 +10731,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -11120,7 +11120,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -11509,7 +11509,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -11898,7 +11898,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -12287,7 +12287,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -12676,7 +12676,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton
@@ -13010,7 +13010,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       >
         Save changes
       </Button>
-      <Connect(FacebookLoginButton)
+      <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
       <ConfirmButton

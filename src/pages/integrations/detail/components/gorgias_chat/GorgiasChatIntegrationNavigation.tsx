@@ -1,20 +1,19 @@
-// @flow
-import React from 'react'
-import {type Map} from 'immutable'
+import React, {Component} from 'react'
+import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
 
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar.tsx'
+import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import {IntegrationType} from '../../../../../models/integration/types'
 
 type Props = {
-    integration: Map<*, *>,
+    integration: Map<any, any>
 }
 
-export default class GorgiasChatIntegrationNavigation extends React.Component<Props> {
+export default class GorgiasChatIntegrationNavigation extends Component<Props> {
     render() {
         const {integration} = this.props
-        const integrationId = integration.get('id')
-        const baseURL = `/app/settings/integrations/${GORGIAS_CHAT_INTEGRATION_TYPE}/${integrationId}`
+        const integrationId: number = integration.get('id')
+        const baseURL = `/app/settings/integrations/${IntegrationType.GorgiasChatIntegrationType}/${integrationId}`
 
         return (
             <SecondaryNavbar>

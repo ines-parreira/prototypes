@@ -7,7 +7,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
 import configureStore from '../../../../../../../store/configureStore'
-import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat'
+import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat.tsx'
 
 jest.mock(
     '../../../../../common/InstallOnIntegrationsCard/InstallOnIntegrationsCard.tsx',

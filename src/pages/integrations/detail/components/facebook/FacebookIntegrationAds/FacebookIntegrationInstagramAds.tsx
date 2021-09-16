@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react'
+import React, {Component} from 'react'
 import {
     Alert,
     Breadcrumb,
@@ -12,44 +10,38 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import type {Map} from 'immutable'
-import {connect} from 'react-redux'
+import {Map, List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 
-import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors.ts'
+import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors'
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
+import PageHeader from '../../../../../common/components/PageHeader'
+import ToggleButton from '../../../../../common/components/ToggleButton'
 import {
     getFacebookIntegrationInternals,
     getFacebookIntegrationLoading,
     getFacebookIntegrationLoadingAds,
-} from '../../../../../../state/facebookAds/selectors.ts'
-import type {Dispatch} from '../../../../../../state/types'
-
-import Loader from '../../../../../common/components/Loader/Loader.tsx'
-
-import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
+} from '../../../../../../state/facebookAds/selectors'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+import Loader from '../../../../../common/components/Loader/Loader'
+import {DatetimeLabel} from '../../../../../common/utils/labels'
 
 import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationInstagramAds.less'
 import colors from './colors.less'
 
-type Props = {
-    loading: boolean,
-    integrations: Map<*, *>,
-    integration: Map<*, *>,
-    maxAccountAds: number,
-    internals: Map<*, *>,
-    loadingAds: Map<*, *>,
-    fetchAds: () => void,
-    updateAd: (adId: string, isActive: boolean) => void,
+type OwnProps = {
+    integration: Map<any, any>
+    integrations: List<any>
 }
 
-class FacebookIntegrationInstagramAds extends React.Component<Props> {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+class FacebookIntegrationInstagramAds extends Component<Props> {
     componentWillMount() {
         const {fetchAds} = this.props
-        fetchAds()
+        void fetchAds()
     }
 
     render() {
@@ -141,7 +133,7 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
 
         return internals.reduce(
             (total, internal) =>
-                total +
+                total! +
                 FacebookIntegrationInstagramAds.getIntegrationTotalAds(
                     internal
                 ),
@@ -149,17 +141,15 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
         )
     }
 
-    static getIntegrationTotalAds(internal: Map<*, *>): number {
-        return internal
-            .get('ads', [])
-            .reduce(
-                (total, internal) =>
-                    internal.get('is_active') ? total + 1 : total,
-                0
-            )
+    static getIntegrationTotalAds(internal: Map<any, any>): number {
+        return (internal.get('ads', []) as List<Map<any, any>>).reduce(
+            (total, internal) =>
+                internal!.get('is_active') ? total! + 1 : total!,
+            0
+        )
     }
 
-    _getInternal(key: string): ?Map<*, *> {
+    _getInternal(key: string): List<any> | null {
         const {integration} = this.props
 
         if (!integration || integration.isEmpty()) {
@@ -167,35 +157,36 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
         }
 
         const {internals} = this.props
-        const internal = internals.get(integration.get('id').toString())
+        const internal: Map<any, any> | undefined = internals.get(
+            (integration.get('id') as number).toString()
+        )
 
         if (!internal || internal.isEmpty()) {
             return null
         }
 
-        return internal.get(key).entrySeq()
+        return ((internal.get(key) as Map<
+            any,
+            any
+        >).entrySeq() as unknown) as List<any>
     }
 }
 
-const mapStateToProps = (state: Object) => ({
-    maxAccountAds: getFacebookMaxAccountAds(state),
-    loading: getFacebookIntegrationLoading(state),
-    internals: getFacebookIntegrationInternals(state),
-    loadingAds: getFacebookIntegrationLoadingAds(state),
-})
+const connector = connect(
+    (state: RootState) => ({
+        maxAccountAds: getFacebookMaxAccountAds(state),
+        loading: getFacebookIntegrationLoading(state),
+        internals: getFacebookIntegrationInternals(state),
+        loadingAds: getFacebookIntegrationLoadingAds(state),
+    }),
+    (dispatch: StoreDispatch, props: OwnProps) => ({
+        fetchAds: () => dispatch(fetchAds()),
+        updateAd: (id: string, isActive: boolean) =>
+            dispatch(updateAd(props.integration.get('id'), id, isActive)),
+    })
+)
 
-const mapDispatchToProps = (dispatch: Dispatch, props: Props) => ({
-    // $FlowFixMe
-    fetchAds: () => dispatch(fetchAds()),
-    updateAd: (id: string, isActive: boolean) =>
-        // $FlowFixMe
-        dispatch(updateAd(props.integration.get('id'), id, isActive)),
-})
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FacebookIntegrationInstagramAds)
+export default connector(FacebookIntegrationInstagramAds)
 
 // Alerts
 function UpgradePlanAlert() {
@@ -211,13 +202,13 @@ function UpgradePlanAlert() {
 
 // AdsOverviewCard
 type AdsOverviewCardProps = {
-    integrations: Map<*, *>,
-    maxAccountAds: number,
-    internals: Map<*, *>,
-    accountTotalAds: number,
+    integrations: List<any>
+    maxAccountAds: number
+    internals: Map<any, any>
+    accountTotalAds: number
 }
 
-class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
+class AdsOverviewCard extends Component<AdsOverviewCardProps> {
     render() {
         const {
             integrations,
@@ -243,9 +234,11 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                     </UncontrolledTooltip>
                 </div>
                 <Progress multi>
-                    {internals
-                        .entrySeq()
-                        .map(([integrationId, internal], index) => (
+                    {((internals.entrySeq() as unknown) as List<any>).map(
+                        (
+                            [integrationId, internal]: [string, Map<any, any>],
+                            index
+                        ) => (
                             <Progress
                                 key={`progress-${integrationId}`}
                                 id={`progress-${integrationId}`}
@@ -258,20 +251,23 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                                 className={
                                     colors[
                                         `color-${
-                                            index % Object.keys(colors).length
+                                            index! % Object.keys(colors).length
                                         }`
                                     ]
                                 }
                             />
-                        ))}
+                        )
+                    )}
                 </Progress>
                 <div className={css.legendContainer}>
-                    {internals
-                        .entrySeq()
-                        .map(([integrationId, internal], index) => {
+                    {((internals.entrySeq() as unknown) as List<any>).map(
+                        (
+                            [integrationId, internal]: [string, Map<any, any>],
+                            index
+                        ) => {
                             const integration = integrations.find(
                                 (integration) =>
-                                    integration.get('id') ===
+                                    (integration as Map<any, any>).get('id') ===
                                     parseInt(integrationId)
                             )
 
@@ -288,7 +284,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                                         className={classnames(
                                             colors[
                                                 `color-${
-                                                    index %
+                                                    index! %
                                                     Object.keys(colors).length
                                                 }`
                                             ],
@@ -296,14 +292,16 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                                             css.legendColor
                                         )}
                                     />
-                                    {integration.get('name')} (
+                                    {(integration as Map<any, any>).get('name')}{' '}
+                                    (
                                     {FacebookIntegrationInstagramAds.getIntegrationTotalAds(
                                         internal
                                     )}{' '}
                                     active ads)
                                 </div>
                             )
-                        })}
+                        }
+                    )}
                 </div>
             </Card>
         )
@@ -312,14 +310,14 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
 
 // AdsTable
 type AdsTableProps = {
-    ads: ?Map<*, *>,
-    loadingAds: Map<*, *>,
-    maxAccountAds: number,
-    accountTotalAds: number,
-    updateAd: (adId: string, isActive: boolean) => void,
+    ads: List<any> | null
+    loadingAds: List<any>
+    maxAccountAds: number
+    accountTotalAds: number
+    updateAd: (adId: string, isActive: boolean) => void
 }
 
-class AdsTable extends React.Component<AdsTableProps> {
+class AdsTable extends Component<AdsTableProps> {
     render() {
         const {ads, loadingAds, accountTotalAds, maxAccountAds} = this.props
 
@@ -331,13 +329,13 @@ class AdsTable extends React.Component<AdsTableProps> {
 
         // Sort ads by created datetime
         const sortedAds = ads
-            .map(([adId, ad]) => ad.set('id', adId))
+            .map(([adId, ad]: [string, Map<any, any>]) => ad.set('id', adId))
             .sort((a, b) => {
                 const aCreatedAt = new Date(a.get('created_datetime'))
                 const bCreatedAt = new Date(b.get('created_datetime'))
 
-                return bCreatedAt - aCreatedAt
-            })
+                return +bCreatedAt - +aCreatedAt
+            }) as List<any>
 
         return (
             <Table hover>
@@ -349,7 +347,7 @@ class AdsTable extends React.Component<AdsTableProps> {
                     </tr>
                 </thead>
                 <tbody>
-                    {sortedAds.map((ad) => (
+                    {sortedAds.map((ad: Map<any, any>) => (
                         <tr key={ad.get('id')} className={css.row}>
                             <td>
                                 <a

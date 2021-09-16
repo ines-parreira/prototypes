@@ -1,1 +1,1 @@
-export default from './FacebookIntegrationSetup'
+export default from './FacebookIntegrationSetup.tsx'

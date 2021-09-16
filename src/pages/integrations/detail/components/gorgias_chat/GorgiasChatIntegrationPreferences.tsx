@@ -1,12 +1,10 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
-import {fromJS, type List, type Map} from 'immutable'
-
+import {fromJS, Map} from 'immutable'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -22,29 +20,28 @@ import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
-} from '../../../../../config/integrations/index.ts'
-
+} from '../../../../../config/integrations/index'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
-} from '../../../../../config/integrations/gorgias_chat.ts'
-
-import {updateOrCreateIntegration} from '../../../../../state/integrations/actions.ts'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors.ts'
-import PageHeader from '../../../../common/components/PageHeader.tsx'
-import ToggleButton from '../../../../common/components/ToggleButton.tsx'
-import Tooltip from '../../../../common/components/Tooltip.tsx'
-import RadioField from '../../../../common/forms/RadioField.tsx'
-import SelectField from '../../../../common/forms/SelectField'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration.ts'
+} from '../../../../../config/integrations/gorgias_chat'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
+import PageHeader from '../../../../common/components/PageHeader'
+import ToggleButton from '../../../../common/components/ToggleButton'
+import Tooltip from '../../../../common/components/Tooltip'
+import RadioField from '../../../../common/forms/RadioField'
+import SelectField from '../../../../common/forms/SelectField/SelectField'
+import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration'
+import {RootState} from '../../../../../state/types'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from './GorgiasChatIntegrationPreview'
-import OptionalEmailCapturePreview from './GorgiasChatIntegrationPreview/OptionalEmailCapture'
-import RequiredEmailCapturePreview from './GorgiasChatIntegrationPreview/RequiredEmailCapture'
-import AutoResponderPreview from './GorgiasChatIntegrationPreview/AutoResponder'
+import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'
+import OptionalEmailCapturePreview from './GorgiasChatIntegrationPreview/OptionalEmailCapture.js'
+import RequiredEmailCapturePreview from './GorgiasChatIntegrationPreview/RequiredEmailCapture.js'
+import AutoResponderPreview from './GorgiasChatIntegrationPreview/AutoResponder.js'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [
@@ -70,19 +67,17 @@ export const PREVIEW_EMAIL_CAPTURE = 'email-capture'
 export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
 
 type Props = {
-    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
-    integration: Map<*, *>,
-    emailIntegrations: List<Map<*, *>>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    autoResponderEnabled: boolean,
-    autoResponderReply: string,
-    emailCaptureEnforcement: string,
-    isInitialized: boolean,
-    isUpdating: boolean,
-    preview: string,
-    linkedEmailIntegration: ?number,
+    autoResponderEnabled: boolean
+    autoResponderReply: string
+    emailCaptureEnforcement: string
+    isInitialized: boolean
+    isUpdating: boolean
+    preview: string
+    linkedEmailIntegration: number | null
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -104,7 +99,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         preview: PREVIEW_EMAIL_CAPTURE,
     }
 
-    _initState = (integration: Map<*, *>) => {
+    _initState = (integration: Map<any, any>) => {
         this.setState(
             _omitBy(
                 {
@@ -134,7 +129,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     isInitialized: true,
                 },
                 _isUndefined
-            )
+            ) as State
         )
     }
 
@@ -175,15 +170,16 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         this.setState({linkedEmailIntegration: integrationId})
     }
 
-    _submitPreferences = async (event: SyntheticEvent<*>) => {
+    _submitPreferences = async (event: React.SyntheticEvent) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
 
         this.setState({isUpdating: true})
 
-        const existingMeta = integration.get('meta') || fromJS({})
+        const existingMeta: Map<any, any> =
+            integration.get('meta') || fromJS({})
 
-        let payload = fromJS({
+        const payload = fromJS({
             id: integration.get('id'),
             meta: existingMeta.mergeDeep({
                 preferences: {
@@ -424,29 +420,34 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     </Label>
                                     <SelectField
                                         placeholder="Select an email integration"
-                                        // Typing of `SelectOption` is not correct and value cannot be `null`.
-                                        // $FlowFixMe
                                         value={linkedEmailIntegration}
                                         options={emailIntegrations
-                                            .map((integration) => ({
-                                                label:
-                                                    `${integration.get(
-                                                        'name'
-                                                    )} ` +
-                                                    `<${integration.getIn([
-                                                        'meta',
-                                                        'address',
-                                                    ])}>`,
-                                                value: integration.get('id'),
-                                            }))
+                                            .map(
+                                                (
+                                                    integration: Map<any, any>
+                                                ) => ({
+                                                    label:
+                                                        `${
+                                                            integration.get(
+                                                                'name'
+                                                            ) as string
+                                                        } ` +
+                                                        `<${
+                                                            integration.getIn([
+                                                                'meta',
+                                                                'address',
+                                                            ]) as string
+                                                        }>`,
+                                                    value: integration.get(
+                                                        'id'
+                                                    ),
+                                                })
+                                            )
                                             .toJS()}
                                         fullWidth
                                         onChange={(integrationId) => {
                                             this._setLinkedEmailIntegration(
-                                                // Typing of `SelectOption` is not correct and Flow thinks
-                                                // `integrationId` can be a string which is impossible in our case.
-                                                // $FlowFixMe
-                                                integrationId
+                                                integrationId as number
                                             )
                                         }}
                                     />
@@ -494,8 +495,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 }
 
-export default connect(
-    (state) => ({
+const connector = connect(
+    (state: RootState) => ({
         emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(
             state
         ),
@@ -503,4 +504,6 @@ export default connect(
     {
         updateOrCreateIntegration,
     }
-)(GorgiasChatIntegrationPreferencesComponent)
+)
+
+export default connector(GorgiasChatIntegrationPreferencesComponent)

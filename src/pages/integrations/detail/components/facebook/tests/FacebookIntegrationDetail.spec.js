@@ -12,7 +12,7 @@ import {
     DANISH_LANGUAGE,
     SPANISH_LANGUAGE,
 } from '../../../../../../constants/languages.ts'
-import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
+import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail.tsx'
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -35,13 +35,11 @@ import {
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
     READ_PAGE_MAILBOXES,
-} from '../utils'
+} from '../utils.tsx'
 
 const defaultProps = {
-    actions: {
-        updateOrCreateIntegration: jest.fn(),
-        deleteIntegration: jest.fn(),
-    },
+    updateOrCreateIntegration: jest.fn(),
+    deleteIntegration: jest.fn(),
     loading: fromJS({
         integration: null,
         updateIntegration: null,
@@ -403,11 +401,9 @@ describe('<FacebookIntegrationDetail/>', () => {
             component.instance()._handleSubmit({preventDefault: jest.fn()})
 
             expect(
-                defaultProps.actions.updateOrCreateIntegration
+                defaultProps.updateOrCreateIntegration
             ).toHaveBeenCalledTimes(1)
-            expect(
-                defaultProps.actions.updateOrCreateIntegration
-            ).toHaveBeenCalledWith(
+            expect(defaultProps.updateOrCreateIntegration).toHaveBeenCalledWith(
                 integration.mergeDeep({
                     meta: {language: DANISH_LANGUAGE, settings: newSettings},
                 })

@@ -1,11 +1,9 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {fromJS, type List, type Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
-
 import {
     Form,
     FormGroup,
@@ -16,65 +14,60 @@ import {
     Alert,
 } from 'reactstrap'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import history from '../../../../../history.ts'
-import Loader from '../../../../../common/components/Loader/Loader.tsx'
-import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import Pagination from '../../../../../common/components/Pagination.tsx'
-import BooleanField from '../../../../../common/forms/BooleanField'
-
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
-
+import history from '../../../../../history'
+import Loader from '../../../../../common/components/Loader/Loader'
+import ToggleButton from '../../../../../common/components/ToggleButton'
+import PageHeader from '../../../../../common/components/PageHeader'
+import Pagination from '../../../../../common/components/Pagination'
+import BooleanField from '../../../../../common/forms/BooleanField.js'
+import {
+    getOnboardingMeta,
+    getOnboardingIntegrations,
+} from '../../../../../../state/integrations/selectors'
 import pageIconDefault from '../../../../../../../img/integrations/facebook-page.png'
-
 import {
     canEnableMetaSetting,
+    FacebookRole,
     getFacebookUserTypeByRoles,
     getInstagramDMSettingsInlineComponent,
     getInstagramDMSettingStatus,
     hasFacebookRole,
     InstagramDMSettingStatus,
-    MODERATE_ROLE,
 } from '../utils'
-
-import * as billingSelectors from '../../../../../../state/billing/selectors.ts'
-
-import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
-
-import {FACEBOOK_MENTION_ENABLED_DOMAINS} from '../../../../../../config/integrations/facebook.ts'
+import {getCurrentPlan} from '../../../../../../state/billing/selectors'
+import {AccountFeature} from '../../../../../../state/currentAccount/types'
+import {FACEBOOK_MENTION_ENABLED_DOMAINS} from '../../../../../../config/integrations/facebook'
+import {IntegrationType} from '../../../../../../models/integration/types'
+import {RootState} from '../../../../../../state/types'
+import {
+    activateOnboardingIntegrations,
+    fetchFacebookOnboardingIntegrations,
+    fetchIntegrations,
+} from '../../../../../../state/integrations/actions'
 
 import css from './FacebookIntegrationSetup.less'
 
 type Props = {
-    integrations: List<Map<*, *>>,
-    pagination: Object,
-    actions: Object,
-    loading: Object,
-    currentAccount: Map<string, any>,
-    currentPlan: Object,
-}
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    selectedIntegrations: List<Map<*, *>>,
-    isLoading: boolean,
+    selectedIntegrations: List<Map<any, any>>
+    isLoading: boolean
 }
 
-export class FacebookIntegrationSetupContainer extends React.Component<
-    Props,
-    State
-> {
-    state = {
-        selectedIntegrations: fromJS({}),
+export class FacebookIntegrationSetupContainer extends Component<Props, State> {
+    state: State = {
+        selectedIntegrations: fromJS([]),
         isLoading: false,
     }
 
-    fetchInterval = null
+    fetchInterval: number | null = null
 
     componentWillMount() {
         this._fetchPage(this.props.pagination.get('page') || 1)
 
-        this.fetchInterval = setInterval(
+        this.fetchInterval = window.setInterval(
             () => this._fetchPage(this.props.pagination.get('page') || 1),
             3000
         )
@@ -86,27 +79,32 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         }
     }
 
-    _activateSelectedIntegrations = (evt: Event) => {
+    _activateSelectedIntegrations = (evt: FormEvent) => {
         evt.preventDefault()
-        const {actions} = this.props
+        const {activateOnboardingIntegrations} = this.props
         const {selectedIntegrations} = this.state
 
         const data = selectedIntegrations
+            .filter((integration) => !!integration)
             .map((integration) =>
-                fromJS(integration).set('deleted_datetime', null)
+                (fromJS(integration) as Map<any, any>).set(
+                    'deleted_datetime',
+                    null
+                )
             )
             .toList()
             .toJS()
 
-        actions
-            .activateOnboardingIntegrations(data, FACEBOOK_INTEGRATION_TYPE)
-            .then(() => actions.fetchIntegrations())
+        void activateOnboardingIntegrations(
+            data,
+            IntegrationType.FacebookIntegrationType
+        ).then(() => fetchIntegrations())
         history.push('/app/settings/integrations/facebook')
     }
 
-    _toggleIntegration = (integration: Map<*, *>, enable: boolean) => {
+    _toggleIntegration = (integration: Map<any, any>, enable: boolean) => {
         let {selectedIntegrations} = this.state
-        const id = integration.get('id')
+        const id: number = integration.get('id')
 
         const {currentPlan} = this.props
 
@@ -116,7 +114,11 @@ export class FacebookIntegrationSetupContainer extends React.Component<
             'enabled',
         ])
 
-        let userPermissions = integration.getIn(['meta', 'oauth', 'scope'])
+        let userPermissions: string | undefined | string[] = integration.getIn([
+            'meta',
+            'oauth',
+            'scope',
+        ]) as string | undefined
         userPermissions = userPermissions ? userPermissions.split(',') : []
 
         const canEnableMessenger = canEnableMetaSetting(
@@ -158,7 +160,6 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         if (enable) {
             // Todo(@Mehdi): change this when Instagram DM will be available to all accounts
             const instagramDMSettingStatus = getInstagramDMSettingStatus(
-                // $FlowFixMe
                 canEnableInstagramDirectMessage,
                 integration
             )
@@ -191,20 +192,22 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                 integration.setIn(['meta', 'settings'], fromJS(settings))
             )
         } else {
-            selectedIntegrations = selectedIntegrations.delete(id)
+            selectedIntegrations = selectedIntegrations.filter(
+                (value) => value!.get('id') === id
+            ) as List<Map<any, any>>
         }
 
         this.setState({selectedIntegrations})
     }
 
-    _getSettingValue = (id: number, key: string): boolean => {
+    _getSettingValue = (id: number, key: string) => {
         return (
-            this.state.selectedIntegrations.getIn([
+            (this.state.selectedIntegrations.getIn([
                 id,
                 'meta',
                 'settings',
                 key,
-            ]) || false
+            ]) as boolean) || false
         )
     }
 
@@ -217,12 +220,12 @@ export class FacebookIntegrationSetupContainer extends React.Component<
         })
     }
 
-    _fetchPage = (page: number, silent: boolean = true) => {
+    _fetchPage = (page: number, silent = true) => {
         if (!silent) {
             this.setState({isLoading: true})
         }
 
-        this.props.actions
+        void this.props
             .fetchFacebookOnboardingIntegrations(page, !silent)
             .then(() => {
                 if (!silent) {
@@ -259,17 +262,28 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                     {isLoading ? (
                         <Loader></Loader>
                     ) : (
-                        integrations.map((integration) => {
-                            const id = integration.get('id')
+                        integrations.map((integration: Map<any, any>) => {
+                            const id: number = integration.get('id')
 
-                            let userRoles = integration.getIn(['meta', 'roles'])
-                            userRoles = userRoles ? userRoles.split(',') : []
+                            let userRoles:
+                                | string
+                                | undefined
+                                | FacebookRole[] = integration.getIn([
+                                'meta',
+                                'roles',
+                            ]) as string | undefined
+                            userRoles = userRoles
+                                ? (userRoles.split(',') as FacebookRole[])
+                                : []
 
-                            let userPermissions = integration.getIn([
+                            let userPermissions:
+                                | string
+                                | undefined
+                                | string[] = integration.getIn([
                                 'meta',
                                 'oauth',
                                 'scope',
-                            ])
+                            ]) as string | undefined
                             userPermissions = userPermissions
                                 ? userPermissions.split(',')
                                 : []
@@ -279,10 +293,10 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                 'instagram',
                                 'id',
                             ])
-                            const pageEnabled = selectedIntegrations.has(id)
+                            const pageEnabled = !!selectedIntegrations.get(id)
                             const canModerate = hasFacebookRole(
                                 userRoles,
-                                MODERATE_ROLE
+                                FacebookRole.Moderate
                             )
 
                             const canEnableMessenger = canEnableMetaSetting(
@@ -327,7 +341,6 @@ export class FacebookIntegrationSetupContainer extends React.Component<
 
                             // Todo(@Mehdi): change this when the feature will be available to all accounts
                             const instagramDMSettingStatus = getInstagramDMSettingStatus(
-                                // $FlowFixMe
                                 canEnableInstagramDirectMessage,
                                 integration
                             )
@@ -521,7 +534,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             id,
                                                             'messenger_enabled'
                                                         )}
-                                                        onChange={(value) =>
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
                                                             this._setSettingValue(
                                                                 id,
                                                                 'messenger_enabled',
@@ -540,7 +555,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             id,
                                                             'posts_enabled'
                                                         )}
-                                                        onChange={(value) =>
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
                                                             this._setSettingValue(
                                                                 id,
                                                                 'posts_enabled',
@@ -560,7 +577,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                 id,
                                                                 'mentions_enabled'
                                                             )}
-                                                            onChange={(value) =>
+                                                            onChange={(
+                                                                value: boolean
+                                                            ) =>
                                                                 this._setSettingValue(
                                                                     id,
                                                                     'mentions_enabled',
@@ -580,7 +599,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             id,
                                                             'recommendations_enabled'
                                                         )}
-                                                        onChange={(value) =>
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
                                                             this._setSettingValue(
                                                                 id,
                                                                 'recommendations_enabled',
@@ -599,7 +620,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             id,
                                                             'instagram_comments_enabled'
                                                         )}
-                                                        onChange={(value) =>
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
                                                             this._setSettingValue(
                                                                 id,
                                                                 'instagram_comments_enabled',
@@ -619,7 +642,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             id,
                                                             'instagram_mentions_enabled'
                                                         )}
-                                                        onChange={(value) =>
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
                                                             this._setSettingValue(
                                                                 id,
                                                                 'instagram_mentions_enabled',
@@ -634,10 +659,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                     <table>
                                                         <tbody>
                                                             <tr>
-                                                                <td
-                                                                    td
-                                                                    className="pl-0"
-                                                                >
+                                                                <td className="pl-0">
                                                                     <BooleanField
                                                                         name={`${id}.instagram_direct_message_enabled`}
                                                                         type="checkbox"
@@ -647,7 +669,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                             'instagram_direct_message_enabled'
                                                                         )}
                                                                         onChange={(
-                                                                            value
+                                                                            value: boolean
                                                                         ) =>
                                                                             this._setSettingValue(
                                                                                 id,
@@ -662,10 +684,7 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                         }
                                                                     />
                                                                 </td>
-                                                                <td
-                                                                    td
-                                                                    className="pl-0"
-                                                                >
+                                                                <td className="pl-0">
                                                                     {!instagramIsDisabled &&
                                                                         instagramDMSettingsInlineComponent}
                                                                 </td>
@@ -680,7 +699,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                             id,
                                                             'instagram_ads_enabled'
                                                         )}
-                                                        onChange={(value) =>
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
                                                             this._setSettingValue(
                                                                 id,
                                                                 'instagram_ads_enabled',
@@ -709,7 +730,9 @@ export class FacebookIntegrationSetupContainer extends React.Component<
                                                                 id,
                                                                 'import_history_enabled'
                                                             )}
-                                                            onChange={(value) =>
+                                                            onChange={(
+                                                                value: boolean
+                                                            ) =>
                                                                 this._setSettingValue(
                                                                     id,
                                                                     'import_history_enabled',
@@ -800,15 +823,22 @@ export class FacebookIntegrationSetupContainer extends React.Component<
     }
 }
 
-const connector = connect((state) => ({
-    integrations: integrationsSelectors.getOnboardingIntegrations(
-        FACEBOOK_INTEGRATION_TYPE
-    )(state),
-    pagination: integrationsSelectors.getOnboardingMeta(
-        FACEBOOK_INTEGRATION_TYPE
-    )(state),
-    currentAccount: state.currentAccount,
-    currentPlan: billingSelectors.getCurrentPlan(state),
-}))
+const connector = connect(
+    (state: RootState) => ({
+        integrations: getOnboardingIntegrations(
+            IntegrationType.FacebookIntegrationType
+        )(state),
+        pagination: getOnboardingMeta(IntegrationType.FacebookIntegrationType)(
+            state
+        ),
+        currentAccount: state.currentAccount,
+        currentPlan: getCurrentPlan(state),
+    }),
+    {
+        activateOnboardingIntegrations,
+        fetchIntegrations,
+        fetchFacebookOnboardingIntegrations,
+    }
+)
 
 export default connector(FacebookIntegrationSetupContainer)

@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import FacebookLoginButton from '../FacebookLoginButton'
+import FacebookLoginButton from '../FacebookLoginButton.tsx'
 
 describe('FacebookLoginButton component', () => {
     let store

@@ -1,22 +1,19 @@
-// @flow
-
-import * as React from 'react'
+import React, {Component, ReactNode} from 'react'
 import {Button} from 'reactstrap'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
-import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors.ts'
+import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../state/types'
 
-type Props = {
-    redirectUri: string,
-    reconnect?: boolean,
-    link?: boolean,
-    children?: React.Node,
+type OwnProps = {
+    reconnect?: boolean
+    link?: boolean
+    children?: ReactNode
 }
 
-@connect((state, props) => ({
-    redirectUri: getFacebookRedirectUri(props.reconnect)(state),
-}))
-export default class FacebookLoginButton extends React.Component<Props> {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+export class FacebookLoginButtonContainer extends Component<Props> {
     static defaultProps = {
         reconnect: false,
         link: false,
@@ -45,3 +42,9 @@ export default class FacebookLoginButton extends React.Component<Props> {
         return link ? this.renderLink() : this.renderButton()
     }
 }
+
+const connector = connect((state: RootState, props: OwnProps) => ({
+    redirectUri: getFacebookRedirectUri(props.reconnect)(state),
+}))
+
+export default connector(FacebookLoginButtonContainer)

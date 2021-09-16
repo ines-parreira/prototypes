@@ -1,49 +1,51 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {Component, FormEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {fromJS, type List, type Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
-import {OUTLOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-import Loader from '../../../../../../common/components/Loader/Loader.tsx'
-import ToggleButton from '../../../../../../common/components/ToggleButton.tsx'
-import PageHeader from '../../../../../../common/components/PageHeader.tsx'
-import Pagination from '../../../../../../common/components/Pagination.tsx'
-import Search from '../../../../../../common/components/Search.tsx'
-import * as integrationsSelectors from '../../../../../../../state/integrations/selectors.ts'
-import history from '../../../../../../history.ts'
+import Loader from '../../../../../../common/components/Loader/Loader'
+import ToggleButton from '../../../../../../common/components/ToggleButton'
+import PageHeader from '../../../../../../common/components/PageHeader'
+import Pagination from '../../../../../../common/components/Pagination'
+import Search from '../../../../../../common/components/Search'
+import {
+    getOnboardingIntegrations,
+    getOnboardingMeta,
+} from '../../../../../../../state/integrations/selectors'
+import history from '../../../../../../history'
+import {IntegrationType} from '../../../../../../../models/integration/types'
+import {RootState} from '../../../../../../../state/types'
+import {
+    activateOnboardingIntegrations,
+    fetchIntegrations,
+    fetchOutlookOnboardingIntegrations,
+} from '../../../../../../../state/integrations/actions'
 
 type Props = {
-    integrations: List<Map<*, *>>,
-    pagination: Object,
-    actions: Object,
-    loading: Object,
-}
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
 
 type State = {
-    selectedIntegrations: List<Map<*, *>>,
-    isLoading: boolean,
-    filter: string,
+    selectedIntegrations: List<Map<any, any>>
+    isLoading: boolean
+    filter: string
 }
 
-export class OutlookIntegrationSetupContainer extends React.Component<
-    Props,
-    State
-> {
-    state = {
+export class OutlookIntegrationSetupContainer extends Component<Props, State> {
+    state: State = {
         selectedIntegrations: fromJS({}),
         isLoading: false,
         filter: '',
     }
 
-    fetchInterval = null
+    fetchInterval: number | null = null
 
     componentWillMount() {
         this._fetchPage(this.props.pagination.get('page') || 1)
 
-        this.fetchInterval = setInterval(
+        this.fetchInterval = window.setInterval(
             () => this._fetchPage(this.props.pagination.get('page') || 1),
             3000
         )
@@ -55,25 +57,29 @@ export class OutlookIntegrationSetupContainer extends React.Component<
         }
     }
 
-    _activateSelectedIntegrations = (evt: Event) => {
+    _activateSelectedIntegrations = (evt: FormEvent) => {
         evt.preventDefault()
-        const {actions} = this.props
+        const {activateOnboardingIntegrations, fetchIntegrations} = this.props
         const {selectedIntegrations} = this.state
 
         const data = selectedIntegrations
             .map((integration) =>
-                fromJS(integration).set('deleted_datetime', null)
+                (fromJS(integration) as Map<any, any>).set(
+                    'deleted_datetime',
+                    null
+                )
             )
             .toList()
             .toJS()
 
-        actions
-            .activateOnboardingIntegrations(data, OUTLOOK_INTEGRATION_TYPE)
-            .then(() => actions.fetchIntegrations())
+        void activateOnboardingIntegrations(
+            data,
+            IntegrationType.OutlookIntegrationType
+        ).then(() => fetchIntegrations())
         history.push('/app/settings/integrations/email')
     }
 
-    _toggleIntegration = (integration: Map<*, *>, enable: boolean) => {
+    _toggleIntegration = (integration: Map<any, any>, enable: boolean) => {
         let {selectedIntegrations} = this.state
         const id = integration.get('id')
 
@@ -86,20 +92,21 @@ export class OutlookIntegrationSetupContainer extends React.Component<
         this.setState({selectedIntegrations})
     }
 
-    _fetchPage = (page: number, silent: boolean = true) => {
+    _fetchPage = (page: number, silent = true) => {
+        const {fetchOutlookOnboardingIntegrations} = this.props
         const {filter} = this.state
 
         if (!silent) {
             this.setState({isLoading: true})
         }
 
-        this.props.actions
-            .fetchOutlookOnboardingIntegrations(page, !silent, filter)
-            .then(() => {
+        void fetchOutlookOnboardingIntegrations(page, !silent, filter).then(
+            () => {
                 if (!silent) {
                     this.setState({isLoading: false})
                 }
-            })
+            }
+        )
     }
 
     _onSearch = (filter: string) => {
@@ -127,12 +134,12 @@ export class OutlookIntegrationSetupContainer extends React.Component<
                 break
             default:
                 message = filter
-                    ? `We found ${pagination.get(
-                          'item_count'
-                      )} email addresses matching your current search filter. `
-                    : `We found ${pagination.get(
-                          'item_count'
-                      )} email addresses associated with your account. `
+                    ? `We found ${
+                          pagination.get('item_count') as number
+                      } email addresses matching your current search filter. `
+                    : `We found ${
+                          pagination.get('item_count') as number
+                      } email addresses associated with your account. `
 
                 message +=
                     'Please activate the ones you want to connect to Gorgias:'
@@ -191,46 +198,47 @@ export class OutlookIntegrationSetupContainer extends React.Component<
                                     {isLoading ? (
                                         <Loader />
                                     ) : (
-                                        integrations.map((integration) => {
-                                            const id = integration.get('id')
-                                            const integrationEnabled = selectedIntegrations.has(
-                                                id
-                                            )
-                                            const address = integration.getIn([
-                                                'meta',
-                                                'address',
-                                            ])
+                                        integrations.map(
+                                            (integration: Map<any, any>) => {
+                                                const id = integration.get('id')
+                                                const integrationEnabled = selectedIntegrations.has(
+                                                    id
+                                                )
+                                                const address = integration.getIn(
+                                                    ['meta', 'address']
+                                                )
 
-                                            return (
-                                                <div key={id}>
-                                                    <div className="d-flex flex-wrap flex-md-nowrap mb-2">
-                                                        <div className="mr-auto">
-                                                            <b className="mr-2">
-                                                                {integration.get(
-                                                                    'name'
-                                                                )}
-                                                            </b>
-                                                            <span className="text-faded">
-                                                                {address}
-                                                            </span>
+                                                return (
+                                                    <div key={id}>
+                                                        <div className="d-flex flex-wrap flex-md-nowrap mb-2">
+                                                            <div className="mr-auto">
+                                                                <b className="mr-2">
+                                                                    {integration.get(
+                                                                        'name'
+                                                                    )}
+                                                                </b>
+                                                                <span className="text-faded">
+                                                                    {address}
+                                                                </span>
+                                                            </div>
+                                                            <ToggleButton
+                                                                value={
+                                                                    integrationEnabled
+                                                                }
+                                                                onChange={(
+                                                                    value: boolean
+                                                                ) => {
+                                                                    this._toggleIntegration(
+                                                                        integration,
+                                                                        value
+                                                                    )
+                                                                }}
+                                                            />
                                                         </div>
-                                                        <ToggleButton
-                                                            value={
-                                                                integrationEnabled
-                                                            }
-                                                            onChange={(
-                                                                value
-                                                            ) => {
-                                                                this._toggleIntegration(
-                                                                    integration,
-                                                                    value
-                                                                )
-                                                            }}
-                                                        />
                                                     </div>
-                                                </div>
-                                            )
-                                        })
+                                                )
+                                            }
+                                        )
                                     )}
                                 </div>
                                 <Pagination
@@ -264,13 +272,20 @@ export class OutlookIntegrationSetupContainer extends React.Component<
     }
 }
 
-const connector = connect((state) => ({
-    integrations: integrationsSelectors.getOnboardingIntegrations(
-        OUTLOOK_INTEGRATION_TYPE
-    )(state),
-    pagination: integrationsSelectors.getOnboardingMeta(
-        OUTLOOK_INTEGRATION_TYPE
-    )(state),
-}))
+const connector = connect(
+    (state: RootState) => ({
+        integrations: getOnboardingIntegrations(
+            IntegrationType.OutlookIntegrationType
+        )(state),
+        pagination: getOnboardingMeta(IntegrationType.OutlookIntegrationType)(
+            state
+        ),
+    }),
+    {
+        activateOnboardingIntegrations,
+        fetchIntegrations,
+        fetchOutlookOnboardingIntegrations,
+    }
+)
 
 export default connector(OutlookIntegrationSetupContainer)

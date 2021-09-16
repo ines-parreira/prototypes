@@ -1,1 +1,1 @@
-export default from './FacebookLoginButton'
+export default from './FacebookLoginButton.tsx'
