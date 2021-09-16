@@ -1613,3 +1613,75 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
   />
 </div>
 `;
+
+exports[`ReplyMessageChannel component should render option "Make outbound call" for new ticket 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="mt-1 mr-2"
+  >
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="dropdownToggle"
+        color=""
+        type="button"
+      >
+        <SourceIcon
+          className="md-2"
+          type="email"
+        />
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="email"
+          />
+          Reply via email
+        </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="phone"
+          />
+          Make outbound call
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </div>
+  <div
+    className="sourceLabel mt-1"
+  >
+    Internal note
+  </div>
+  <KeyboardShortcuts
+    keymap={
+      Object {
+        "FORWARD_REPLY": Object {
+          "action": [Function],
+          "key": "f",
+        },
+        "INTERNAL_NOTE_REPLY": Object {
+          "action": [Function],
+          "key": "i",
+        },
+      }
+    }
+    name="TicketDetailContainer"
+  />
+</div>
+`;

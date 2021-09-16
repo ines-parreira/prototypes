@@ -1,5 +1,103 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<TicketView /> phone submit buttons should render on existing ticket page 1`] = `
+<div
+  class="page"
+>
+  <div
+    class="headerContainer"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="historyButtonContainer d-none d-md-flex align-items-top mt-4"
+      >
+        <button
+          class="component btn btn-light btn-circle"
+          disabled=""
+        >
+          <span>
+            <i
+              class="icon iconHistory material-icons md-2"
+            >
+              history
+            </i>
+            <i
+              class="icon iconArrowDown material-icons md-2"
+            >
+              arrow_downward
+            </i>
+          </span>
+        </button>
+      </div>
+      <div>
+        TicketHeader
+      </div>
+    </div>
+    <div
+      class="viewersBanner hidden"
+    />
+  </div>
+  <div
+    class="ticketContent"
+    tabindex="1"
+  >
+    <div>
+      TicketBody
+    </div>
+    <form
+      class="d-print-none newMessageForm"
+      id="ticket-reply-editor"
+    >
+      <div>
+        ReplyMessageChannel
+      </div>
+      <div>
+        PhoneTicketSubmitButtons
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<TicketView /> phone submit buttons should render on new ticket page 1`] = `
+<div
+  class="page"
+>
+  <div
+    class="headerContainer"
+  >
+    <div
+      class="d-flex"
+    >
+      <div>
+        TicketHeader
+      </div>
+    </div>
+    <div
+      class="viewersBanner hidden"
+    />
+  </div>
+  <div
+    class="ticketContent mt-3"
+    tabindex="1"
+  >
+    <form
+      class="d-print-none newMessageForm"
+      id="ticket-reply-editor"
+    >
+      <div>
+        ReplyMessageChannel
+      </div>
+      <div>
+        PhoneTicketSubmitButtons
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
 exports[`<TicketView /> should have the hidden classes 1`] = `
 <div
   class="page transition out fade right"

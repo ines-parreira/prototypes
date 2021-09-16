@@ -48,6 +48,7 @@ import {
     Message,
     NewMessage,
     ReplyAreaState,
+    SearchCustomerType,
     Ticket,
     UserSearchResult,
 } from './types'
@@ -484,13 +485,14 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
  */
 export const updatePotentialCustomers = (
     query: string,
+    type: SearchCustomerType = SearchCustomerType.UserChannelEmail,
     cancelToken?: CancelToken
 ) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> =>
     axios
         .post<ApiListResponse<UserSearchResult[], unknown>>(
             '/api/search/',
             {
-                type: 'user_channel_email',
+                type,
                 query,
             },
             {

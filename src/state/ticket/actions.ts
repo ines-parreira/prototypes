@@ -40,7 +40,7 @@ import {
     SocketEventType,
 } from '../../services/socketManager/types'
 import {Customer} from '../customers/types'
-import {UserSearchResult} from '../newMessage/types'
+import {SearchCustomerType, UserSearchResult} from '../newMessage/types'
 import {
     NotificationStatus,
     Notification,
@@ -1086,7 +1086,7 @@ export const findAndSetCustomer = (email: string) => (
 ): Promise<ReturnType<StoreDispatch>> =>
     axios
         .post<ApiListResponsePagination<UserSearchResult[]>>('/api/search/', {
-            type: 'user_channel_email',
+            type: SearchCustomerType.UserChannelEmail,
             query: email,
         })
         .then((json) => json?.data)

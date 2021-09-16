@@ -177,4 +177,18 @@ describe('ReplyMessageChannel component', () => {
         )
         expect(component).toMatchSnapshot()
     })
+
+    it('should render option "Make outbound call" for new ticket', () => {
+        const component = shallow(
+            <ReplyMessageChannelContainer
+                {...minProps}
+                ticket={fromJS({
+                    reply_options: {},
+                })}
+                messages={fromJS([])}
+                hasPhoneIntegration
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
 })

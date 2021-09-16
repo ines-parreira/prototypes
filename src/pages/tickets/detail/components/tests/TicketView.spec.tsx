@@ -5,13 +5,21 @@ import userEvent from '@testing-library/user-event'
 
 import {SubmitArgs} from '../../TicketDetailContainer'
 import {TicketViewContainer} from '../TicketView'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../../../business/types/ticket'
 
 jest.mock('../TicketHeader', () => () => <div>TicketHeader</div>)
+jest.mock('../TicketBody', () => () => <div>TicketBody</div>)
 jest.mock('../ReplyArea/ReplyMessageChannel', () => () => (
     <div>ReplyMessageChannel</div>
 ))
 jest.mock('../ReplyArea/TicketReplyArea', () => () => (
     <div>TicketReplyArea</div>
+))
+jest.mock('../ReplyArea/PhoneTicketSubmitButtons', () => () => (
+    <div>PhoneTicketSubmitButtons</div>
 ))
 jest.mock(
     '../ReplyArea/TicketSubmitButtons',
@@ -34,6 +42,7 @@ describe('<TicketView />', () => {
         customers: fromJS({}),
         customersIsLoading: jest.fn(),
         displayHistoryOnNextPage: jest.fn(),
+        hasPhoneIntegration: false,
         hideTicket: jest.fn(),
         isHistoryDisplayed: false,
         isTicketHidden: false,
@@ -56,6 +65,36 @@ describe('<TicketView />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    describe('phone submit buttons', () => {
+        it('should render on existing ticket page', () => {
+            const {container} = render(
+                <TicketViewContainer
+                    {...minProps}
+                    hasPhoneIntegration
+                    sourceType={TicketMessageSourceType.Phone}
+                    ticket={fromJS({
+                        id: 123,
+                        customer: {channels: [{type: TicketChannel.Phone}]},
+                    })}
+                />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render on new ticket page', () => {
+            const {container} = render(
+                <TicketViewContainer
+                    {...minProps}
+                    hasPhoneIntegration
+                    sourceType={TicketMessageSourceType.Phone}
+                />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 
     it('should call submit callback when submitting message', () => {

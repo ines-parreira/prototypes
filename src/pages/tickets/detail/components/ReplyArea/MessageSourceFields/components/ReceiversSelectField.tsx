@@ -1,6 +1,7 @@
 import React, {forwardRef} from 'react'
 import _debounce from 'lodash/debounce'
 import {CancelToken} from 'axios'
+import {isValidPhoneNumber} from 'libphonenumber-js'
 
 import {TicketMessageSourceType} from '../../../../../../../business/types/ticket'
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
@@ -15,6 +16,7 @@ import {
 } from '../../../../../../../state/ticket/utils'
 import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions'
 import {isEmail} from '../../../../../../../utils'
+import {SearchCustomerType} from '../../../../../../../state/newMessage/types'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
@@ -39,12 +41,21 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
     ) {
         const dispatch = useAppDispatch()
         const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
+        const searchType =
+            sourceType === TicketMessageSourceType.Phone
+                ? SearchCustomerType.UserChannelPhone
+                : SearchCustomerType.UserChannelEmail
 
         const [
             cancellableUpdatePotentialCustomers,
         ] = useCancellableRequest(
-            (cancelToken: CancelToken) => async (queryText: string) =>
-                await dispatch(updatePotentialCustomers(queryText, cancelToken))
+            (cancelToken: CancelToken) => async (
+                queryText: string,
+                searchType: SearchCustomerType
+            ) =>
+                await dispatch(
+                    updatePotentialCustomers(queryText, searchType, cancelToken)
+                )
         )
 
         const valueFromState = (options: Receiver[]) =>
@@ -69,7 +80,8 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                 }
 
                 const data = (await cancellableUpdatePotentialCustomers(
-                    queryText
+                    queryText,
+                    searchType
                 )) as Receiver[]
                 if (!data) {
                     return
@@ -82,6 +94,13 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         const placeholder = valueProp
             ? 'Search a customer...'
             : 'Sorry, no recipient for this type of message...'
+        const allowCreate =
+            sourceType === TicketMessageSourceType.Email ||
+            sourceType === TicketMessageSourceType.Phone
+        const allowCreateConstraint =
+            sourceType === TicketMessageSourceType.Phone
+                ? isValidPhoneNumber
+                : isEmail
 
         return (
             <MultiSelectAsyncField
@@ -91,8 +110,8 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                 loadOptions={search}
                 disabled={disabled}
                 required={required}
-                allowCreate={sourceType === 'email'}
-                allowCreateConstraint={isEmail}
+                allowCreate={allowCreate}
+                allowCreateConstraint={allowCreateConstraint}
                 placeholder={placeholder}
             />
         )

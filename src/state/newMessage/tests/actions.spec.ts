@@ -30,7 +30,7 @@ import {Integration, IntegrationType} from '../../../models/integration/types'
 import {ticket} from '../../../fixtures/ticket'
 import * as emailExtraUtils from '../emailExtraUtils'
 import {convertFromHTML} from '../../../utils/editor'
-import {ReplyAreaState} from '../types'
+import {ReplyAreaState, SearchCustomerType} from '../types'
 import {
     MacroActionType,
     MacroActionName,
@@ -1433,7 +1433,13 @@ describe('actions', () => {
             source.cancel()
 
             return store
-                .dispatch(actions.updatePotentialCustomers('foo', source.token))
+                .dispatch(
+                    actions.updatePotentialCustomers(
+                        'foo',
+                        SearchCustomerType.UserChannelEmail,
+                        source.token
+                    )
+                )
                 .then((res) => expect(res).toMatchSnapshot())
         })
     })

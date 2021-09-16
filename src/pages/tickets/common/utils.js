@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
 
 import {getValuePropFromSourceType} from '../../../state/ticket/utils.ts'
-
-import {getActionTemplate} from './../../../utils.ts'
+import {getActionTemplate} from '../../../utils.ts'
+import {EMAIL_SOURCE, PHONE_SOURCE} from '../../../config/ticket.ts'
 
 /**
  * Return the label of the given person
@@ -17,7 +17,7 @@ export function getPersonLabelFromSource(person, sourceType) {
     let label = person.name || address
 
     // if is email channel and has a name, show the address next to the name
-    if (sourceType === 'email') {
+    if (sourceType === EMAIL_SOURCE || sourceType === PHONE_SOURCE) {
         // shrink email address if too long
         if (address.length > 45) {
             address = `${address.slice(0, 20)}[...]${address.slice(

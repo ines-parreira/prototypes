@@ -177,9 +177,9 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             (!!replyOptions.get(TicketMessageSourceType.TwitterTweet) ||
                 !!replyOptions.get(TicketMessageSourceType.TwitterQuotedTweet))
         const suggestPhone =
-            isTicketExisting &&
             hasPhoneIntegration &&
-            !!replyOptions.get(TicketMessageSourceType.Phone)
+            (!isTicketExisting ||
+                !!replyOptions.get(TicketMessageSourceType.Phone))
         const suggestYotpoReview =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.YotpoReview)

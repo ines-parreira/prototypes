@@ -89,9 +89,9 @@ export const TicketViewContainer = ({
     const shouldRenderPhoneButtons = useMemo(
         () =>
             hasPhoneIntegration &&
-            hasPhoneChannel &&
-            sourceType === TicketMessageSourceType.Phone,
-        [hasPhoneIntegration, hasPhoneChannel, sourceType]
+            sourceType === TicketMessageSourceType.Phone &&
+            (!isExistingTicket || hasPhoneChannel),
+        [hasPhoneIntegration, hasPhoneChannel, sourceType, isExistingTicket]
     )
 
     const getMainContentElement = (

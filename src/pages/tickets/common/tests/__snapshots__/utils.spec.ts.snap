@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getPersonLabelFromSource() should return email label 1`] = `"Foo Bar (foo@bar.com)"`;
+
+exports[`getPersonLabelFromSource() should return phone label 1`] = `"Foo Bar (+14151235555)"`;
