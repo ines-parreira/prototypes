@@ -211,12 +211,12 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
                 class="language-bullet-item"
                 data-testid="locale-bullet-en-US"
               >
-                <span
+                <img
+                  alt="en-US"
                   class="flag-emoji"
                   data-testid="flag-en-US"
-                >
-                  🇺🇸
-                </span>
+                  src="test-file-stub"
+                />
               </div>
             </div>
           </div>
@@ -265,23 +265,23 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
                 class="language-bullet-item"
                 data-testid="locale-bullet-en-US"
               >
-                <span
+                <img
+                  alt="en-US"
                   class="flag-emoji"
                   data-testid="flag-en-US"
-                >
-                  🇺🇸
-                </span>
+                  src="test-file-stub"
+                />
               </div>
               <div
                 class="language-bullet-item"
                 data-testid="locale-bullet-de-DE"
               >
-                <span
+                <img
+                  alt="de-DE"
                   class="flag-emoji"
                   data-testid="flag-de-DE"
-                >
-                  🇩🇪
-                </span>
+                  src="test-file-stub"
+                />
               </div>
             </div>
           </div>
@@ -330,23 +330,23 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
                 class="language-bullet-item"
                 data-testid="locale-bullet-en-US"
               >
-                <span
+                <img
+                  alt="en-US"
                   class="flag-emoji"
                   data-testid="flag-en-US"
-                >
-                  🇺🇸
-                </span>
+                  src="test-file-stub"
+                />
               </div>
               <div
                 class="language-bullet-item"
                 data-testid="locale-bullet-fr-FR"
               >
-                <span
+                <img
+                  alt="fr-FR"
                   class="flag-emoji"
                   data-testid="flag-fr-FR"
-                >
-                  🇫🇷
-                </span>
+                  src="test-file-stub"
+                />
               </div>
             </div>
           </div>

@@ -1,18 +1,25 @@
-import React from 'react'
+import React, {FunctionComponent} from 'react'
 
 import {getEmojiFlag} from './utils'
 
 import css from './FlagLanguageItem.less'
 
-type Props = {
+type FlagLanguageItemProps = {
     code: string
     name: string
 }
 
-export const FlagLanguageItem = ({code, name}: Props) => {
+export const FlagLanguageItem: FunctionComponent<FlagLanguageItemProps> = ({
+    code,
+    name,
+}: FlagLanguageItemProps) => {
     return (
         <span>
-            <span className={css['flag-emoji']}>{getEmojiFlag(code)}</span>
+            <img
+                alt={code}
+                src={getEmojiFlag(code)}
+                className={css['flag-emoji']}
+            />
             <span>{name}</span>
         </span>
     )

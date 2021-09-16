@@ -10,11 +10,16 @@ import {
     Row,
     Col,
     Button,
+    Label,
 } from 'reactstrap'
+
+import {validLocaleCode} from '../../../../models/helpCenter/utils'
 
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
+import SelectField from '../../../common/forms/SelectField/SelectField'
+import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
 
 import {CreateHelpcenterDto} from '../../../../models/helpCenter/types'
 
@@ -25,8 +30,6 @@ import {notify as notifyAction} from '../../../../state/notifications/actions'
 import {useLocales} from '../hooks/useLocales'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {HELP_CENTER_BASE_PATH, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
-
-import LanguageSelect from './newView/LanguageSelect'
 
 import css from './HelpCenterNewView.less'
 
@@ -40,12 +43,17 @@ const initialFormState: CreateHelpcenterDto = {
 export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
     const history = useHistory()
     const location = useLocation()
-    const localeOptions = useLocales()
+    const locales = useLocales()
     const {client} = useHelpcenterApi()
     const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpcenterDto>(
         initialFormState
     )
     const [isLoading, setIsLoading] = useState(false)
+    const localeOptions = locales.map((locale) => ({
+        label: <FlagLanguageItem code={locale.code} name={locale.name} />,
+        text: locale.name,
+        value: locale.code,
+    }))
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -77,6 +85,13 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         } finally {
             setIsLoading(false)
         }
+    }
+
+    const handleOnSelect = (value: React.ReactText) => {
+        setNewHelpCenter((prevNewHelpCenter) => ({
+            ...prevNewHelpCenter,
+            default_locale: validLocaleCode(value),
+        }))
     }
 
     const resetForm = () => {
@@ -143,20 +158,25 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                                         )
                                     }
                                 />
-                                <LanguageSelect
-                                    label="Default language"
-                                    value={newHelpCenter.default_locale}
-                                    options={localeOptions}
-                                    className={css.formInput}
-                                    onChange={(default_locale) =>
-                                        setNewHelpCenter(
-                                            (prevNewHelpCenter) => ({
-                                                ...prevNewHelpCenter,
-                                                default_locale,
-                                            })
-                                        )
-                                    }
-                                />
+                                <Label
+                                    htmlFor="language-select"
+                                    className="control-label"
+                                >
+                                    Default language
+                                </Label>
+                                <div
+                                    id="language-select"
+                                    style={{marginBottom: 32}}
+                                >
+                                    <SelectField
+                                        options={localeOptions}
+                                        value={newHelpCenter.default_locale}
+                                        onChange={handleOnSelect}
+                                        style={{
+                                            display: 'inline-block',
+                                        }}
+                                    />
+                                </div>
                             </Col>
                         </Row>
                         <Button

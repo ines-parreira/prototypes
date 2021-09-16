@@ -73,45 +73,121 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                 This is going to be displayed whenever your logo isn’t available and also in search engines.
               </small>
             </div>
-            <div
-              class="InputField formInput form-group"
-              color=""
+            <label
+              class="control-label"
+              for="language-select"
             >
-              <label
-                class="control-label"
-                for="id-input-1"
-              >
-                Default language
-              </label>
+              Default language
+            </label>
+            <div
+              id="language-select"
+              style="margin-bottom: 32px;"
+            >
               <div
-                class=""
+                style="display: inline-block;"
               >
-                <select
-                  class="form-control"
-                  id="id-input-1"
-                  options="[object Object],[object Object],[object Object],[object Object]"
+                <div
+                  class="dropdown"
                 >
-                  <option
-                    value="en-US"
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
                   >
-                    🇺🇸 English - USA
-                  </option>
-                  <option
-                    value="fr-FR"
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <span
+                        class="label"
+                        style="min-width: 10px; opacity: 1;"
+                      >
+                        <span>
+                          <img
+                            alt="en-US"
+                            class="flag-emoji"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            English - USA
+                          </span>
+                        </span>
+                      </span>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        style="min-width: 10px;"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
                   >
-                    🇫🇷 French - France
-                  </option>
-                  <option
-                    value="fr-CA"
-                  >
-                    🇨🇦 French - Canada
-                  </option>
-                  <option
-                    value="cs-CZ"
-                  >
-                    🇨🇿 Czech - Czech Republic
-                  </option>
-                </select>
+                    
+                    <button
+                      class="option option--focused dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span>
+                          <img
+                            alt="fr-FR"
+                            class="flag-emoji"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            French - France
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span>
+                          <img
+                            alt="fr-CA"
+                            class="flag-emoji"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            French - Canada
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        <span>
+                          <img
+                            alt="cs-CZ"
+                            class="flag-emoji"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            Czech - Czech Republic
+                          </span>
+                        </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

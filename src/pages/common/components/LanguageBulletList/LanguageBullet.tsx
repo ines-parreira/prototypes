@@ -22,12 +22,12 @@ export const LanguageBullet = ({id, code, count = 0}: Props) => {
             className={css['language-bullet-item']}
         >
             {code ? (
-                <span
+                <img
+                    alt={code}
                     data-testid={`flag-${code}`}
                     className={css['flag-emoji']}
-                >
-                    {getEmojiFlag(code)}
-                </span>
+                    src={getEmojiFlag(code)}
+                />
             ) : (
                 `+${count}`
             )}

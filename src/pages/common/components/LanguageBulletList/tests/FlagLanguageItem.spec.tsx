@@ -5,11 +5,11 @@ import {FlagLanguageItem} from '../FlagLanguageItem'
 
 describe('<FlagLanguageItem />', () => {
     it('renders the emoji and name', () => {
-        const {getByText} = render(
+        const {getByText, getByAltText} = render(
             <FlagLanguageItem code="en-us" name="English - USA" />
         )
 
-        getByText('🇺🇸')
+        getByAltText('en-us')
         getByText('English - USA')
     })
 })

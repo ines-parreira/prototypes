@@ -24,11 +24,11 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`]
         >
           <span>
             <span>
-              <span
+              <img
+                alt="fr-FR"
                 class="flag-emoji"
-              >
-                🇫🇷
-              </span>
+                src="test-file-stub"
+              />
               <span>
                 French - France
               </span>
