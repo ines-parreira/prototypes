@@ -54,10 +54,20 @@ export const formatDuration = (value: number, precision = 9) => {
     const duration = moment.duration(value, 'seconds')
     let response = ''
     let curPrecision = 0
+    const months = duration.months()
     const days = duration.days()
     const hours = duration.hours()
     const minutes = duration.minutes()
     const seconds = duration.seconds()
+
+    if (months) {
+        response += `${months}mo `
+        curPrecision++
+
+        if (curPrecision >= precision) {
+            return response
+        }
+    }
 
     if (days) {
         response += `${days}d `

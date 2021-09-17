@@ -1401,7 +1401,7 @@ export const stats = toImmutable<
 })
 
 // Callbacks to format values of datasets or axes
-const formatDurationAxeCb = (value: number) => formatDuration(value, 1)
+const formatDurationAxeCb = (value: number) => formatDuration(value, 2)
 
 function formatDateAxeCb(this: Scale<any>, value: number) {
     return moment.unix(parseInt(this.getLabelForValue(value))).format('MMM Do')

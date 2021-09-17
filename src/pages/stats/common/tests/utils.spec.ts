@@ -1,7 +1,7 @@
 import {fromJS, Map} from 'immutable'
 
 import {TicketChannels} from '../../../../business/ticket'
-import {getStatsViewFilters} from '../utils'
+import {formatDuration, getStatsViewFilters} from '../utils'
 
 describe('stats components utils', () => {
     describe('getStatsViewFilters', () => {
@@ -52,6 +52,27 @@ describe('stats components utils', () => {
                 statsFilters
             )
             expect(viewFilters).toMatchSnapshot()
+        })
+    })
+    describe('formatDuration', () => {
+        it.each<[string, number, string]>([
+            ['second', 1, '1s'],
+            ['minute', 60, '1m '],
+            ['hour', 3600, '1h '],
+            ['day', 24 * 3600, '1d '],
+            ['month', 24 * 3600 * 31, '1mo '],
+        ])('should match template for %s', (testName, duration, expected) => {
+            expect(formatDuration(duration)).toBe(expected)
+        })
+        it.each<[number, string]>([
+            [1, '1mo '],
+            [2, '1mo 1d '],
+            [3, '1mo 1d 1h '],
+            [4, '1mo 1d 1h 1m '],
+            [5, '1mo 1d 1h 1m 1s'],
+        ])('should match template for precision %i', (precision, expected) => {
+            const duration = 24 * 3600 * 31 + 24 * 3600 + 3600 + 60 + 1
+            expect(formatDuration(duration, precision)).toBe(expected)
         })
     })
 })
