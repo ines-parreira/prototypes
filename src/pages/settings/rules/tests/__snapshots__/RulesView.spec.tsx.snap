@@ -28,7 +28,7 @@ exports[`<RulesView/> should render the rule views 1`] = `
     class="page-container description container-fluid"
   >
     <div
-      class="mb-3"
+      class="mb-3 header"
     >
       <p>
         Rules provide a way to automatically perform actions on tickets, like tagging, assigning or even responding. Hover a row to show the rule description. Learn more about how to setup rules

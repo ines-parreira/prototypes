@@ -357,6 +357,7 @@ export function RulesSettingsFormContainer({
     return (
         <div className="full-width">
             <PageHeader
+                className={css.breadcrumb}
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
@@ -442,9 +443,14 @@ export function RulesSettingsFormContainer({
                             </span>
                             <span>
                                 <Label
-                                    className={classnames(css.label, 'ml-2')}
+                                    className={classnames(
+                                        css.toggleLabel,
+                                        'ml-2'
+                                    )}
                                 >
-                                    Rule Status
+                                    {!ruleDraft.deactivated_datetime
+                                        ? 'Disable rule'
+                                        : 'Enable rule'}
                                 </Label>
                             </span>
                         </div>

@@ -7,7 +7,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="d-flex align-items-center justify-content-between flex-wrap page-header breadcrumb"
   >
     <nav
       aria-label="breadcrumb"
@@ -59,7 +59,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="d-flex align-items-center justify-content-between flex-wrap page-header breadcrumb"
   >
     <nav
       aria-label="breadcrumb"
@@ -111,7 +111,7 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    class="d-flex align-items-center justify-content-between flex-wrap page-header breadcrumb"
   >
     <nav
       aria-label="breadcrumb"

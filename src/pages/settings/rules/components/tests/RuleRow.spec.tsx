@@ -50,7 +50,7 @@ describe('<RuleRow />', () => {
         const {getByText, queryByText} = render(<RuleRow {...minProps} />)
         fireEvent.mouseEnter(getByText(ruleFixture.name))
         await waitFor(() => {
-            const popoverHeader = queryByText(/rule description/i)
+            const popoverHeader = queryByText(/foo/i)
             expect(popoverHeader).not.toBeNull()
         })
     })

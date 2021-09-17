@@ -241,9 +241,6 @@ export function RuleRow({
                         className={css.descriptionPopover}
                     >
                         <PopoverBody>
-                            <div className={css.popoverHeader}>
-                                Rule description
-                            </div>
                             <div className={css.descriptionWrapper}>
                                 <div className={css.popoverBody}>
                                     {rule.description}

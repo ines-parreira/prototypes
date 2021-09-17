@@ -65,7 +65,7 @@ export function RulesViewContainer({
                 fluid
                 className={classnames('page-container', css.description)}
             >
-                <div className="mb-3">
+                <div className={classnames('mb-3', css.header)}>
                     <p>
                         Rules provide a way to automatically perform actions on
                         tickets, like tagging, assigning or even responding.

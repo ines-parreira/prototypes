@@ -1,10 +1,12 @@
 @import '~css/new/colors';
 
 :local {
+    .breadcrumb {
+        overflow-x: hidden;
+    }
     .pageHeader {
         color: @blue;
         cursor: pointer;
-        text-weight: 600;
     }
     .container {
         max-width: 1200px;
@@ -12,8 +14,8 @@
 
         .label {
             color: @indigo;
-            font-weight: 600;
-            size: 14px;
+            font-weight: 500;
+            font-size: 17px;
         }
 
         .labelName::after {
@@ -30,6 +32,11 @@
             input::placeholder {
                 color: @neutral8 !important;
             }
+        }
+        .toggleLabel {
+            color: @indigo;
+            font-weight: 600;
+            font-size: 14px;
         }
         .toggleButtonContainer {
             display: flex;
