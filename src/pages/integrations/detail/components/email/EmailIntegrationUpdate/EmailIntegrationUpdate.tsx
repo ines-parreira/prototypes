@@ -18,6 +18,7 @@ import {
 } from 'reactstrap'
 
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
+
 import {
     getForwardingEmailAddress,
     getRedirectUri,
@@ -575,7 +576,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             className="float-right"
                             color="secondary"
                             confirm={() => deleteIntegration(integration)}
-                            content="Are you sure you want to delete this integration?"
+                            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                         >
                             <i className="material-icons mr-1 text-danger">
                                 delete

@@ -232,7 +232,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i

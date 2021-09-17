@@ -318,7 +318,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -651,7 +651,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -1024,7 +1024,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -1357,7 +1357,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -1745,7 +1745,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -2138,7 +2138,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -2531,7 +2531,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -2924,7 +2924,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -3317,7 +3317,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -3705,7 +3705,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -4093,7 +4093,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -4481,7 +4481,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -4870,7 +4870,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -5280,7 +5280,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -5673,7 +5673,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -6066,7 +6066,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -6459,7 +6459,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={true}
       >
         <i
@@ -6848,7 +6848,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -7237,7 +7237,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -7626,7 +7626,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -8015,7 +8015,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -8404,7 +8404,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -8793,7 +8793,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -9182,7 +9182,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -9571,7 +9571,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -9960,7 +9960,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -10349,7 +10349,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -10738,7 +10738,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -11127,7 +11127,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -11516,7 +11516,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -11905,7 +11905,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -12294,7 +12294,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -12683,7 +12683,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={false}
       >
         <i
@@ -13017,7 +13017,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        content="Are you sure you want to delete this integration?"
+        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
         disabled={true}
       >
         <i

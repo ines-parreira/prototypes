@@ -421,7 +421,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                     integration
                                                 ) as unknown) as Promise<void>
                                             }
-                                            content="Are you sure you want to delete this integration?"
+                                            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                         >
                                             <i className="material-icons mr-1 text-danger">
                                                 delete

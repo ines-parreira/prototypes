@@ -82,7 +82,7 @@ export const Magento2IntegrationActionButtons = ({
                     className="float-right"
                     color="secondary"
                     confirm={() => deleteIntegration(integration)}
-                    content="Are you sure you want to delete this integration?"
+                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                 >
                     <i className="material-icons mr-1 text-danger">delete</i>
                     Delete integration

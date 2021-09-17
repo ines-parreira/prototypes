@@ -23,7 +23,9 @@ import PageHeader from '../../../../common/components/PageHeader'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
+
 import {KLAVIYO_INTEGRATION_TYPE} from '../../../../../constants/integration'
+
 import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
     KLAVIYO_INITIAL_SYNC_SYNCING,
@@ -511,7 +513,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                     isSubmitting ||
                                                     isDeleting
                                                 }
-                                                content="Are you sure you want to delete this integration?"
+                                                content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                             >
                                                 <i className="material-icons mr-1 text-danger">
                                                     delete

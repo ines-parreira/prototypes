@@ -31,6 +31,7 @@ import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
 } from '../../../../../../config/integrations/smooch_inside'
+
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations/index'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
@@ -470,7 +471,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                         confirm={() =>
                                             deleteIntegration(integration)
                                         }
-                                        content="Are you sure you want to delete this integration?"
+                                        content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                     >
                                         <i className="material-icons mr-1 text-danger">
                                             delete

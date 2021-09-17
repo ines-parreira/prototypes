@@ -131,7 +131,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -250,7 +250,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -402,7 +402,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -555,7 +555,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
             disabled={true}
           >
             <i
@@ -708,7 +708,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
           >
             <i
               className="material-icons mr-1 text-danger"

@@ -133,7 +133,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
             disabled={false}
           >
             <i
@@ -255,7 +255,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
             disabled={false}
           >
             <i
@@ -369,7 +369,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
             disabled={false}
           >
             <i
@@ -483,7 +483,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
             disabled={true}
           >
             <i
@@ -597,7 +597,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            content="Are you sure you want to delete this integration?"
+            content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
             disabled={false}
           >
             <i

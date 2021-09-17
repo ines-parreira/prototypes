@@ -15,6 +15,7 @@ import {parse} from 'query-string'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
+
 import Loader from '../../../../common/components/Loader/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
@@ -207,7 +208,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                     confirm={() =>
                                         deleteIntegration(integration)
                                     }
-                                    content="Are you sure you want to delete this integration?"
+                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                     disabled={isSubmitting}
                                 >
                                     <i className="material-icons mr-1 text-danger">

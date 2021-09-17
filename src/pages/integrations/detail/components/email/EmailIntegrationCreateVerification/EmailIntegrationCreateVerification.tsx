@@ -195,7 +195,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     color="secondary"
                     disabled={this.state.isDisabled}
                     confirm={() => deleteIntegration(integration)}
-                    content="Are you sure you want to delete this integration?"
+                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                 >
                     <i className="material-icons mr-1 text-danger">delete</i>
                     Delete email address

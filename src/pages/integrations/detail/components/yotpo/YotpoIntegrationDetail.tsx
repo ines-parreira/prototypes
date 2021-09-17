@@ -165,7 +165,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                             integration
                                         )
                                     }
-                                    content="Are you sure you want to delete this integration?"
+                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                     disabled={!!isSubmitting}
                                 >
                                     <i className="material-icons mr-1 text-danger">

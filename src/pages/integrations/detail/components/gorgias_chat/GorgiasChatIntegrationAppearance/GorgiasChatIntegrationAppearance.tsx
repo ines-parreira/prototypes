@@ -33,6 +33,7 @@ import {
 } from '../../../../../../config/integrations/gorgias_chat'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {Language} from '../../../../../../constants/languages'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors'
 
@@ -55,8 +56,6 @@ import wrench from '../../../../../../../img/icons/wrench.svg'
 import storefront from '../../../../../../../img/icons/storefront.svg'
 
 import Tooltip from '../../../../../common/components/Tooltip'
-
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
@@ -643,7 +642,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             integration
                                         ) as unknown) as Promise<any>
                                     }
-                                    content="Are you sure you want to delete this integration?"
+                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                 >
                                     <i className="material-icons mr-1 text-danger">
                                         delete

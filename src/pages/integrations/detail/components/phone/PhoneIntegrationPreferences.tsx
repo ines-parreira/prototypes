@@ -304,7 +304,7 @@ export default function PhoneIntegrationPreferences({
                                     color="secondary"
                                     disabled={!isInitialized || isLoading}
                                     confirm={onDelete}
-                                    content="Are you sure you want to delete this phone number?"
+                                    content="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                 >
                                     <i className="material-icons mr-1 text-danger">
                                         delete
