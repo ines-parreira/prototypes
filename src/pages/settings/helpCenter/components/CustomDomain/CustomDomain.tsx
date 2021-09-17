@@ -22,6 +22,7 @@ import {
     ConnectionStatusProps,
 } from './components/ConnectionStatus'
 import {HelpText} from './components/HelpText'
+import {StatusCheck} from './components/StatusCheck'
 import css from './CustomDomain.less'
 
 const labels = {
@@ -304,7 +305,11 @@ export const CustomDomain = () => {
                     your subdomain.`}
                 </p>
             </div>
-
+            <HelpText
+                isHidden={
+                    !customDomainEnabled || currentDomain?.status === 'active'
+                }
+            />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
                     <InputField
@@ -324,7 +329,6 @@ export const CustomDomain = () => {
                 </div>
                 {renderConnection()}
             </div>
-
             {customDomainEnabled && !currentDomain?.status && (
                 <Button
                     color="success"
@@ -339,11 +343,10 @@ export const CustomDomain = () => {
                     )}
                 </Button>
             )}
-
-            <HelpText
+            <StatusCheck
                 isLoading={domainStatusDto.loading}
-                status={currentDomain?.status}
                 onCheckStatus={checkDomainStatus}
+                status={currentDomain?.status}
             />
         </section>
     )

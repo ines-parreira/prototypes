@@ -1,21 +1,15 @@
 import React from 'react'
 
-import {Button, Col, Row} from 'reactstrap'
-
 import {isProduction} from '../../../../../../../utils/environment'
-
-import Loader from '../../../../../../common/components/Loader/Loader'
 
 import css from '../../CustomDomain.less'
 
 type Props = {
-    isLoading?: boolean
-    status?: string
-    onCheckStatus: () => void
+    isHidden: boolean
 }
 
-export const HelpText = ({isLoading = false, status, onCheckStatus}: Props) => {
-    if (!status || status === 'active') {
+export const HelpText = ({isHidden}: Props): JSX.Element | null => {
+    if (isHidden) {
         return null
     }
 
@@ -35,32 +29,16 @@ export const HelpText = ({isLoading = false, status, onCheckStatus}: Props) => {
                     In your DNS manager, add a CNAME pointing to{' '}
                     <code>{dns}</code>
                 </p>
-            </div>
-            <div>
-                <Button
-                    className="mr-4"
-                    color="primary"
-                    disabled={isLoading}
-                    onClick={onCheckStatus}
-                >
-                    {isLoading ? (
-                        <Row noGutters data-testid="icon-loading">
-                            <Col className="mr-2">
-                                <Loader minHeight="16px" size="16px" />
-                            </Col>
-                            <Col>Checking...</Col>
-                        </Row>
-                    ) : (
-                        <>
-                            <span className="material-icons mr-2">wifi</span>
-                            Check Status
-                        </>
-                    )}
-                </Button>
-                <span>
-                    NOTE: It may take up to a few hours for DNS changes to take
-                    effect.
-                </span>
+                <p>
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://docs.gorgias.com/"
+                    >
+                        How do I do that?{' '}
+                        <span className={css.infoIcon}>&#9432;</span>
+                    </a>
+                </p>
             </div>
         </>
     )

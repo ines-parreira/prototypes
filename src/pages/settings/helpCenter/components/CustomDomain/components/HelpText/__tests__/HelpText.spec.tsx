@@ -5,20 +5,12 @@ import {HelpText} from '../HelpText'
 
 describe('<HelpText />', () => {
     it('matches snapshot', () => {
-        const {container} = render(
-            <HelpText status="pending" onCheckStatus={() => null} />
-        )
+        const {container} = render(<HelpText isHidden={false} />)
         expect(container).toMatchSnapshot()
     })
 
-    it('not renders if status is active or missing', () => {
-        const {rerender} = render(
-            <HelpText status="active" onCheckStatus={() => null} />
-        )
-
-        expect(screen.queryByTestId('domain-help')).toBeNull()
-
-        rerender(<HelpText onCheckStatus={() => null} />)
+    it('not renders if isHidden is true', () => {
+        render(<HelpText isHidden />)
 
         expect(screen.queryByTestId('domain-help')).toBeNull()
     })

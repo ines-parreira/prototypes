@@ -16,22 +16,21 @@ exports[`<HelpText /> matches snapshot 1`] = `
         clients.gorgias.rehab
       </code>
     </p>
-  </div>
-  <div>
-    <button
-      class="mr-4 btn btn-primary"
-      type="button"
-    >
-      <span
-        class="material-icons mr-2"
+    <p>
+      <a
+        href="https://docs.gorgias.com/"
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        wifi
-      </span>
-      Check Status
-    </button>
-    <span>
-      NOTE: It may take up to a few hours for DNS changes to take effect.
-    </span>
+        How do I do that?
+         
+        <span
+          class="infoIcon"
+        >
+          ⓘ
+        </span>
+      </a>
+    </p>
   </div>
 </div>
 `;
