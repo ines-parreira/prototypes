@@ -1,6 +1,5 @@
 import React from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import classNames from 'classnames'
 import {useSelector} from 'react-redux'
 import {Container, FormGroup, Button} from 'reactstrap'
 
@@ -30,6 +29,7 @@ import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 
 import css from './HelpCenterInstallationView.less'
+import {ImportSection} from './Imports/components/ImportSection'
 
 // type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
@@ -74,12 +74,6 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         ev: React.ChangeEvent<HTMLInputElement>
     ) => {
         setSubdomainValue(ev.target.value)
-    }
-
-    const handleOnReset = () => {
-        if (helpCenter) {
-            setSubdomainValue(helpCenter.subdomain)
-        }
     }
 
     const handleOnDeleteHelpcenter = () => {
@@ -165,19 +159,17 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     placeholder="brand-name"
                     onChange={handleOnChangeSubDomain}
                 />
+                <Button
+                    color="primary"
+                    className="mt-4"
+                    disabled={!validateNewSubdomain(subDomainValue, subdomain)}
+                    onClick={handleOnUpdateHelpCenter}
+                >
+                    Save Changes
+                </Button>
                 <CustomDomain />
+                <ImportSection />
                 <FormGroup className="mt-5">
-                    <Button
-                        color="primary"
-                        className="mr-2"
-                        disabled={
-                            !validateNewSubdomain(subDomainValue, subdomain)
-                        }
-                        onClick={handleOnUpdateHelpCenter}
-                    >
-                        Update Domain
-                    </Button>
-                    <Button onClick={handleOnReset}>Cancel</Button>
                     <ConfirmModalAction
                         actions={(onClose) => (
                             <div className={css['modal-actions']}>
@@ -203,10 +195,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     >
                         {(onClick) => (
                             <Button
-                                className={classNames(
-                                    css['delete-btn'],
-                                    'float-right'
-                                )}
+                                className={css['delete-btn']}
                                 onClick={onClick}
                             >
                                 <i className="material-icons">delete</i>

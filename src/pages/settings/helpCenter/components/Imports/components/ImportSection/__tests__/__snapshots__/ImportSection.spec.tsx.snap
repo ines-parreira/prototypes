@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ImportSection /> renders import modal 1`] = `
+<section
+  class="sectionWrapper"
+>
+  <h4>
+    Import articles from another help center
+  </h4>
+  <p>
+    You can import CSV files with your existing articles of another help center.
+  </p>
+  <button
+    class="btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons mr-2"
+    >
+      cloud_upload
+    </i>
+    Import Articles
+  </button>
+</section>
+`;

@@ -1,0 +1,42 @@
+@import '~css/new/colors';
+
+:local {
+    .sectionWrapper {
+        margin-top: 45px;
+    }
+
+    .modalFooter {
+        background-color: @neutral1;
+    }
+
+    .modalCloudIcon {
+        font-size: 32px;
+        color: @neutral6;
+        display: block;
+    }
+
+    .fileDropArea {
+        border: 2px dashed @neutral4;
+        background: @neutral1;
+        padding: 24px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .fileSelectedArea {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 24px;
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
+
+        & > div {
+            align-self: center;
+        }
+
+        & i {
+            color: @neutral10;
+        }
+    }
+}
