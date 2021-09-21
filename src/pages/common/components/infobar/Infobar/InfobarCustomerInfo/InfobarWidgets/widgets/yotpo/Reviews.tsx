@@ -64,7 +64,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
         return (
             <div className={css.titleContainer}>
                 <a
-                    className={(visible && css.title) || css.titleOff}
+                    className={css.title}
                     target={reviewSearchURL.target}
                     href={reviewSearchURL.url}
                 >

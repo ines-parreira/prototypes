@@ -27,7 +27,7 @@ export function CardContentYotpoReviewTopics({children}: Props) {
                     <span className={`material-icons ${css.favorite}`}>
                         favorite
                     </span>
-                    Top Topics
+                    Top Mentioned Topics
                 </span>
             </span>
             <span className={css.topics}>{topics}</span>

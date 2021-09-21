@@ -395,7 +395,7 @@ exports[`<TitleWrapper/> render() should render both visible and invisible revie
   className="titleContainer"
 >
   <a
-    className="titleOff"
+    className="title"
     href="#"
     target="_self"
   >
@@ -419,7 +419,7 @@ exports[`<TitleWrapper/> render() should render both visible and invisible revie
   className="titleContainer"
 >
   <a
-    className="titleOff"
+    className="title"
     href="#"
     target="_self"
   >

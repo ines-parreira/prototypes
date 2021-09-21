@@ -15,7 +15,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render children as a li
       >
         favorite
       </span>
-      Top Topics
+      Top Mentioned Topics
     </span>
   </span>
   <span
@@ -58,7 +58,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render correctly if chi
       >
         favorite
       </span>
-      Top Topics
+      Top Mentioned Topics
     </span>
   </span>
   <span
@@ -82,7 +82,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render correctly if chi
       >
         favorite
       </span>
-      Top Topics
+      Top Mentioned Topics
     </span>
   </span>
   <span
@@ -106,7 +106,7 @@ exports[`<CardContentYotpoReviewTopics/> render() should render correctly if chi
       >
         favorite
       </span>
-      Top Topics
+      Top Mentioned Topics
     </span>
   </span>
   <span
