@@ -1,9 +1,8 @@
-// @flow
 import React, {Component} from 'react'
 import {Map} from 'immutable'
 
 type Props = {
-    params?: Map<*, *>,
+    params?: Map<any, any>
 }
 
 export default class HTTPIntegrationEventParams extends Component<Props> {

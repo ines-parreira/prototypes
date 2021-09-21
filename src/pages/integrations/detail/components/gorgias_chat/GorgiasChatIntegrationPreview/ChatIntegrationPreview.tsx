@@ -1,41 +1,38 @@
-// @flow
-import React, {type Node} from 'react'
-import {type Map} from 'immutable'
+import React, {Component, ReactNode} from 'react'
+import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat.ts'
+} from '../../../../../../config/integrations/gorgias_chat'
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    name: string,
-    currentUser?: Map<*, *>,
-    introductionText?: string,
-    offlineIntroductionText?: string,
-    headerText?: string,
-    mainColor: string,
-    avatarType?: string,
-    avatarTeamPictureUrl?: string,
-
-    isOnline: boolean,
-    language?: string,
-
-    children: Node,
-    renderFooter: boolean,
+    name: string
+    currentUser?: Map<any, any>
+    introductionText?: string
+    offlineIntroductionText?: string
+    headerText?: string
+    mainColor: string
+    avatarType?: string
+    avatarTeamPictureUrl?: string
+    isOnline: boolean
+    language?: string
+    children: ReactNode
+    renderFooter: boolean
 }
 
-export default class ChatIntegrationPreview extends React.Component<Props> {
+export default class ChatIntegrationPreview extends Component<Props> {
     static defaultProps = {
         language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         renderFooter: true,
     }
 
     render() {
-        let {
+        const {
             name,
             introductionText,
             offlineIntroductionText,
@@ -49,13 +46,13 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
         } = this.props
 
         // Preserve the space which should be occupied by a string when the string is empty
-        const nonbreak = (str) => {
+        const nonbreak = (str?: string) => {
             return str || '\u00a0'
         }
 
         const offlineColor = '#A1A9B6'
 
-        const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
+        const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language!]
 
         return (
             <div className={css.preview}>

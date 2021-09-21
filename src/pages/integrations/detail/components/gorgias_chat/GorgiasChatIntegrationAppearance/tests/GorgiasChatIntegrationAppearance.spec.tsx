@@ -309,7 +309,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                       "introduction_text": "How can we help?",
                       "offline_introduction_text": "We'll be back tomorrow",
                       "avatar_type": "team-members",
-                      "avatar_team_picture_url": null,
+                      "avatar_team_picture_url": undefined,
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",

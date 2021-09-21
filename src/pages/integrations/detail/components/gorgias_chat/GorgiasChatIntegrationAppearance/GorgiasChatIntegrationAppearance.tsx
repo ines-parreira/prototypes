@@ -49,8 +49,8 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import RadioField from '../../../../../common/forms/RadioField'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'
-import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent.js'
+import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent'
 
 import wrench from '../../../../../../../img/icons/wrench.svg'
 import storefront from '../../../../../../../img/icons/storefront.svg'
@@ -72,7 +72,7 @@ export const defaultContent = {
     isOnline: true,
     language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
-    avatarTeamPictureUrl: null,
+    avatarTeamPictureUrl: undefined,
 }
 
 const avatarTypeOptions = [
@@ -107,7 +107,7 @@ type State = {
     isOnline: boolean
     language: string
     avatarType: string
-    avatarTeamPictureUrl: string | null
+    avatarTeamPictureUrl?: string
     showSelectStoreField: boolean
     isCopied: boolean
     isShopifyInstructions: boolean

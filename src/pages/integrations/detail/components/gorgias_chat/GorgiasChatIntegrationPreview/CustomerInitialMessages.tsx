@@ -1,4 +1,3 @@
-// @flow
 import classnames from 'classnames'
 import React from 'react'
 
@@ -7,8 +6,8 @@ import ConversationTimestamp from './ConversationTimestamp'
 import MessageTimestamp from './MessageTimestamp'
 
 type Props = {
-    conversationColor: string,
-    messages: string[],
+    conversationColor: string
+    messages: string[]
 }
 
 const CustomerInitialMessages = (props: Props) => (

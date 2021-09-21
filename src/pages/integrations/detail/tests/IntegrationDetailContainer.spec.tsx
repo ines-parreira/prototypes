@@ -75,7 +75,7 @@ jest.mock(
     () => () => <div>HTTPIntegrationEvents</div>
 )
 jest.mock(
-    '../components/http/HTTPIntegrationEvent/HTTPIntegrationEvent.js',
+    '../components/http/HTTPIntegrationEvent/HTTPIntegrationEvent',
     () => () => <div>HTTPIntegrationEvent</div>
 )
 
@@ -88,7 +88,7 @@ jest.mock(
     () => () => <div>GorgiasChatCampaignDetail</div>
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.js',
+    '../components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
     () => () => <div>GorgiasChatIntegrationCampaigns</div>
 )
 jest.mock(

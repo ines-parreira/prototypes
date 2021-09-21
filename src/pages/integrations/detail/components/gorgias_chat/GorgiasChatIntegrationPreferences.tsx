@@ -38,10 +38,10 @@ import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration'
 import {RootState} from '../../../../../state/types'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'
-import OptionalEmailCapturePreview from './GorgiasChatIntegrationPreview/OptionalEmailCapture.js'
+import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import OptionalEmailCapturePreview from './GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from './GorgiasChatIntegrationPreview/RequiredEmailCapture.js'
-import AutoResponderPreview from './GorgiasChatIntegrationPreview/AutoResponder.js'
+import AutoResponderPreview from './GorgiasChatIntegrationPreview/AutoResponder'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [

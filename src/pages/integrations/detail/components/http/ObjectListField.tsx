@@ -1,20 +1,21 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import _trim from 'lodash/trim'
 import _clone from 'lodash/clone'
 import {Row, Col, Button} from 'reactstrap'
 
-import InputField from '../../../../common/forms/InputField'
+import InputField from '../../../../common/forms/InputField.js'
+
+export type Field = {key: any; value: any}
 
 type Props = {
-    title: string,
-    fieldName: string,
-    fields: Array<any>,
-    validate?: Function,
-    onChange: (fields: Array<any>) => *,
+    title: string
+    fieldName: string
+    fields: Array<Field>
+    validate?: (key: string, value: string) => string | undefined
+    onChange: (fields: Array<Field>) => void
 }
 
-export default class ObjectListField extends React.Component<Props> {
+export default class ObjectListField extends Component<Props> {
     _add = () => {
         return this.props.onChange(
             _clone(this.props.fields).concat([
@@ -28,7 +29,7 @@ export default class ObjectListField extends React.Component<Props> {
 
     _update = (index: number, key: string, value: string) => {
         const fields = _clone(this.props.fields)
-        fields[index][key] = value
+        fields[index][key as keyof Field] = value
 
         return this.props.onChange(fields)
     }

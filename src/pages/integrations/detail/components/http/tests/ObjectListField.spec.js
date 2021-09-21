@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import ObjectListField from '../ObjectListField'
+import ObjectListField from '../ObjectListField.tsx'
 
 describe('ObjectListField component', () => {
     it('should display the field as empty', () => {

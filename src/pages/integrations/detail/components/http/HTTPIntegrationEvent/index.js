@@ -1,2 +1,2 @@
-import HTTPIntegrationEventContainer from './HTTPIntegrationEvent'
+import HTTPIntegrationEventContainer from './HTTPIntegrationEvent.tsx'
 export default HTTPIntegrationEventContainer

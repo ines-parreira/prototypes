@@ -1,26 +1,24 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {type Map, fromJS} from 'immutable'
-import {connect} from 'react-redux'
+import {Map, fromJS, List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
-import * as campaignActions from '../../../../../../state/campaigns/actions'
-import {AccountFeature} from '../../../../../../state/currentAccount/types.ts'
-import ToggleButton from '../../../../../common/components/ToggleButton.tsx'
-import PageHeader from '../../../../../common/components/PageHeader.tsx'
-import ForwardIcon from '../../ForwardIcon.tsx'
-import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation.tsx'
-import withPaywall from '../../../../../common/utils/withPaywall.tsx'
+import {updateCampaign} from '../../../../../../state/campaigns/actions.js'
+import {AccountFeature} from '../../../../../../state/currentAccount/types'
+import ToggleButton from '../../../../../common/components/ToggleButton'
+import PageHeader from '../../../../../common/components/PageHeader'
+import ForwardIcon from '../../ForwardIcon'
+import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import withPaywall from '../../../../../common/utils/withPaywall'
 
 type Props = {
-    integration: Map<*, *>,
-    updateCampaign: (Map<*, *>, Map<*, *>) => Promise<*>,
-}
+    integration: Map<any, any>
+} & ConnectedProps<typeof connector>
 
-export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Props> {
-    toggleCampaign = (campaign: Map<*, *>) => {
+export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
+    toggleCampaign = (campaign: Map<any, any>) => {
         const {updateCampaign, integration} = this.props
         let form = campaign
 
@@ -30,13 +28,14 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
             form = form.set('deactivated_datetime', moment.utc())
         }
 
-        updateCampaign(form, integration)
+        void updateCampaign(form, integration)
     }
 
     render() {
         const {integration} = this.props
 
-        const campaigns = integration.getIn(['meta', 'campaigns']) || fromJS([])
+        const campaigns: List<any> =
+            integration.getIn(['meta', 'campaigns']) || fromJS([])
 
         const CampaignsContent = () => (
             <>
@@ -56,17 +55,17 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                 {!campaigns.isEmpty() && (
                     <Table className="table-integrations mt-3" hover>
                         <tbody>
-                            {campaigns.map((campaign) => {
+                            {campaigns.map((campaign: Map<any, any>) => {
                                 const editLink =
-                                    `/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}/` +
-                                    `${integration.get(
-                                        'id'
-                                    )}/campaigns/${campaign.get('id')}`
+                                    `/app/settings/integrations/${
+                                        integration.get('type') as string
+                                    }/` +
+                                    `${
+                                        integration.get('id') as number
+                                    }/campaigns/${campaign.get('id') as number}`
 
                                 return (
-                                    <tr key={campaign.get('id')}>
+                                    <tr key={campaign.get('id') as number}>
                                         <td className="link-full-td">
                                             <Link to={editLink}>
                                                 <div>
@@ -118,9 +117,9 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}`}
+                                    to={`/app/settings/integrations/${
+                                        integration.get('type') as string
+                                    }`}
                                 >
                                     Chat
                                 </Link>
@@ -135,9 +134,10 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                         tag={Link}
                         color="success"
                         to={
-                            `/app/settings/integrations/${integration.get(
-                                'type'
-                            )}/` + `${integration.get('id')}/campaigns/new`
+                            `/app/settings/integrations/${
+                                integration.get('type') as string
+                            }/` +
+                            `${integration.get('id') as string}/campaigns/new`
                         }
                     >
                         Create campaign
@@ -151,6 +151,8 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
     }
 }
 
-export default connect(null, {
-    updateCampaign: campaignActions.updateCampaign,
-})(GorgiasChatIntegrationCampaignsComponent)
+const connector = connect(null, {
+    updateCampaign,
+})
+
+export default connector(GorgiasChatIntegrationCampaignsComponent)

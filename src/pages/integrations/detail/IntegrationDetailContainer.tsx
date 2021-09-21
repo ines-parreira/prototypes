@@ -28,7 +28,7 @@ import FacebookIntegrationCustomerChat from './components/facebook/FacebookInteg
 
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
 import GorgiasChatCampaignDetail from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatCampaignDetail.js'
-import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.js'
+import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
@@ -79,7 +79,7 @@ import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignD
 
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPIntegrationEvents'
-import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent.js'
+import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
 import PhoneIntegrationList from './components/phone/PhoneIntegrationList'
@@ -315,8 +315,8 @@ export const IntegrationDetailContainer = ({
                                 isUpdate={isUpdate}
                             >
                                 <HTTPIntegrationEvent
-                                    integrationId={integrationId}
-                                    eventId={subId}
+                                    integrationId={parseInt(integrationId)}
+                                    eventId={parseInt(subId)}
                                 />
                             </HTTPIntegrationLayout>
                         )

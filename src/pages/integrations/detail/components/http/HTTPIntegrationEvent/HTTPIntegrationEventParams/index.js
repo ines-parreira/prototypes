@@ -1,2 +1,2 @@
-import HTTPIntegrationEventParams from './HTTPIntegrationEventParams'
+import HTTPIntegrationEventParams from './HTTPIntegrationEventParams.tsx'
 export default HTTPIntegrationEventParams

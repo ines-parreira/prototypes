@@ -24,7 +24,7 @@ import {
 } from '../../../../../../state/integrations/actions'
 
 import Loader from '../../../../../common/components/Loader/Loader'
-import ObjectListField from '../ObjectListField.js'
+import ObjectListField, {Field} from '../ObjectListField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField.js'
@@ -44,7 +44,7 @@ type Props = {
 type State = {
     description: string
     form: string | Record<string, unknown> | Array<Record<string, unknown>>
-    headers: Array<Record<string, unknown>>
+    headers: Field[]
     isTestShown: boolean
     method: string
     name: string
@@ -174,9 +174,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
     /**
      * Transform an object like {key1: value1} into parameter format {key: key1, value: value1}
      */
-    _objectToParameters(
-        object: Record<string, unknown> = {}
-    ): Array<Record<string, unknown>> {
+    _objectToParameters(object: Record<string, unknown> = {}) {
         const obj = object || {}
         const params: Array<Record<string, unknown>> = []
         _forIn(obj, (value, key) => {
@@ -185,7 +183,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                 value,
             })
         })
-        return params
+        return params as Field[]
     }
 
     /**
@@ -245,7 +243,10 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
         return this.props.updateOrCreateIntegration(fromJS(integration))
     }
 
-    _validateHeaderName = (inputType: string, value: string): Maybe<string> => {
+    _validateHeaderName = (
+        inputType: string,
+        value: string
+    ): string | undefined => {
         /*
             Method is passed as a 'validate' function to all key and value fields of the ObjectListField class.
             Because we only want to validate the header name (key) fields, we have to check if the inputType is 'key'.
@@ -462,9 +463,9 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                 fieldName="header"
                                 fields={headers}
                                 validate={this._validateHeaderName}
-                                onChange={(
-                                    value: Array<Record<string, unknown>>
-                                ) => this.setState({headers: value})}
+                                onChange={(value: Field[]) =>
+                                    this.setState({headers: value})
+                                }
                             />
                         </FormGroup>
 
@@ -482,7 +483,9 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                         fieldName="field"
                                         title="Form field"
                                         fields={
-                                            form instanceof Array ? form : []
+                                            form instanceof Array
+                                                ? (form as any)
+                                                : []
                                         }
                                         onChange={(
                                             form: Array<Record<string, unknown>>

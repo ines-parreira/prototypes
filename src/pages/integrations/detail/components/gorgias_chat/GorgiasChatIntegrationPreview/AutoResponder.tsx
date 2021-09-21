@@ -1,21 +1,20 @@
-// @flow
-import React from 'react'
+import React, {Component} from 'react'
 import classnames from 'classnames'
 
-import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations/index.ts'
-import {GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/gorgias_chat.ts'
+import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations/index'
+import {GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/gorgias_chat'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
 
 type Props = {
-    conversationColor: string,
-    name?: string,
-    language?: string,
-    autoResponderReply?: string,
+    conversationColor: string
+    name?: string
+    language?: string
+    autoResponderReply?: string
 }
 
-export default class OptionalEmailCapture extends React.Component<Props> {
+export default class OptionalEmailCapture extends Component<Props> {
     render() {
         const {
             conversationColor,
@@ -55,7 +54,7 @@ export default class OptionalEmailCapture extends React.Component<Props> {
                                 'mb-2'
                             )}
                         >
-                            {translatedTexts[autoResponderReply]}
+                            {translatedTexts[autoResponderReply!]}
                         </div>
                     </div>
                 </div>

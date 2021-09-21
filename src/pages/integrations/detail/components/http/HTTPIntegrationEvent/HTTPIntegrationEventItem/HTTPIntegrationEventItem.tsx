@@ -1,10 +1,9 @@
-// @flow
-import React, {Component} from 'react'
+import React, {Component, ReactNode} from 'react'
 
 type Props = {
-    name: string,
-    value: any,
-    children: any,
+    name: string
+    value?: any
+    children?: ReactNode
 }
 
 export default class HTTPIntegrationEventItem extends Component<Props> {

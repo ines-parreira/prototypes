@@ -720,12 +720,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                     language="en-US"
                     mainColor="#123456"
                     name="my chat integration"
-                    quickReplies={
-                      Array [
-                        "Get order status",
-                        "Apply promo code",
-                      ]
-                    }
                     renderFooter={true}
                   >
                     <div
@@ -1660,12 +1654,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                     language="en-US"
                     mainColor="#123456"
                     name="my chat integration"
-                    quickReplies={
-                      Array [
-                        "foo",
-                        "bar",
-                      ]
-                    }
                     renderFooter={true}
                   >
                     <div

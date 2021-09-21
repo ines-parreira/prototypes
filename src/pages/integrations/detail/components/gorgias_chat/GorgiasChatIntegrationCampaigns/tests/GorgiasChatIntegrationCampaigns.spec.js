@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import GorgiasChatIntegrationCampaigns from '../GorgiasChatIntegrationCampaigns'
+import GorgiasChatIntegrationCampaigns from '../GorgiasChatIntegrationCampaigns.tsx'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

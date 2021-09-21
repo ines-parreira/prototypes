@@ -8,10 +8,10 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from '../../../../../../../config/integrations/gorgias_chat.ts'
 
-import AutoResponder from '../AutoResponder'
-import ChatIntegrationPreview from '../ChatIntegrationPreview'
-import MessageContent from '../MessageContent'
-import OptionalEmailCapture from '../OptionalEmailCapture'
+import AutoResponder from '../AutoResponder.tsx'
+import ChatIntegrationPreview from '../ChatIntegrationPreview.tsx'
+import MessageContent from '../MessageContent.tsx'
+import OptionalEmailCapture from '../OptionalEmailCapture.tsx'
 import RequiredEmailCapture from '../RequiredEmailCapture'
 
 const mainColor = '#123456'

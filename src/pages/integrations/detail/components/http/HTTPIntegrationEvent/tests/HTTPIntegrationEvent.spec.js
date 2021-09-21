@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {HTTPIntegrationEventContainer} from '../HTTPIntegrationEvent'
+import {HTTPIntegrationEventContainer} from '../HTTPIntegrationEvent.tsx'
 import {getMomentNow} from '../../../../../../../utils/date.ts'
 
 const HTTPEventWithHTMLResp = fromJS({

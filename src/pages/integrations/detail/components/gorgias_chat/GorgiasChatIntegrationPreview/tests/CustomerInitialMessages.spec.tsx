@@ -1,11 +1,10 @@
-// @flow
 import {mount} from 'enzyme'
 import React from 'react'
 
 import CustomerInitialMessages from '../CustomerInitialMessages'
 
-jest.spyOn(global.Date, 'now').mockImplementationOnce(
-    () => new Date('2019-01-26T12:34:56.000Z')
+jest.spyOn(global.Date, 'now').mockImplementationOnce(() =>
+    new Date('2019-01-26T12:34:56.000Z').getTime()
 )
 
 describe('<CustomerInitialMessages/>', () => {

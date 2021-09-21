@@ -24,8 +24,8 @@ import {
 } from '../../../../../config/integrations/gorgias_chat'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
-import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview.js'
-import QuickRepliesPreview from './GorgiasChatIntegrationPreview/QuickReplies.js'
+import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import QuickRepliesPreview from './GorgiasChatIntegrationPreview/QuickReplies'
 
 type Props = {
     integration: Map<any, any>
@@ -208,7 +208,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                     'decoration',
                                     'main_color',
                                 ])}
-                                quickReplies={this.state.quickReplies.toJS()}
                                 language={integration.getIn([
                                     'meta',
                                     'language',

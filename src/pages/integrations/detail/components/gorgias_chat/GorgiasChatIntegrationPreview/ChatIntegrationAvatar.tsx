@@ -1,17 +1,16 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
 
-import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/gorgias_chat.ts'
+import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/gorgias_chat'
 
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    avatarTeamPictureUrl?: string,
-    avatarType?: string,
-    isOnline: boolean,
-    mainColor: string,
-    offlineColor: string,
+    avatarTeamPictureUrl?: string
+    avatarType?: string
+    isOnline: boolean
+    mainColor: string
+    offlineColor: string
 }
 
 const ChatIntegrationAvatar = (props: Props) => {

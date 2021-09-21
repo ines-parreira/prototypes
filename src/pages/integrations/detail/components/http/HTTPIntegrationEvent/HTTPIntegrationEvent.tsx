@@ -1,31 +1,27 @@
-// @flow
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Badge, Col, Container, Row} from 'reactstrap'
 
-import {DatetimeLabel} from '../../../../../common/utils/labels.tsx'
-import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
-import InputField from '../../../../../common/forms/InputField'
-import Loader from '../../../../../common/components/Loader/Loader.tsx'
+import {DatetimeLabel} from '../../../../../common/utils/labels'
+import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel/HTTPStatusLabel'
+import InputField from '../../../../../common/forms/InputField.js'
+import Loader from '../../../../../common/components/Loader/Loader'
+import {countLines} from '../../../../../../utils/string'
+import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions'
+import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors'
+import {RootState} from '../../../../../../state/types'
 
-import {countLines} from '../../../../../../utils/string.ts'
-import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions.ts'
-import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors.ts'
-
-import HTTPParams from './HTTPIntegrationEventParams'
-import HTTPItem from './HTTPIntegrationEventItem'
-
+import HTTPParams from './HTTPIntegrationEventParams/HTTPIntegrationEventParams'
+import HTTPItem from './HTTPIntegrationEventItem/HTTPIntegrationEventItem'
 import css from './HTTPIntegrationEvent.less'
 
 type Props = {
-    eventId: number,
-    event?: Object,
-    fetchHTTPIntegrationEvent: (number, number) => Promise<*>,
-    integrationId: number,
-}
+    eventId: number
+    integrationId: number
+} & ConnectedProps<typeof connector>
 
 type State = {
-    isFetching?: boolean,
+    isFetching?: boolean
 }
 
 const DEFAULT_ERROR_MESSAGE =
@@ -39,7 +35,7 @@ const DEFAULT_ERROR_MESSAGE =
     'Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:\n\n'
 
 export class HTTPIntegrationEventContainer extends Component<Props, State> {
-    state = {}
+    state: State = {}
 
     _fetchEvent = (integrationId: number, eventId: number) => {
         if (!integrationId || !eventId) {
@@ -71,9 +67,9 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
             return <Loader />
         }
 
-        const request = event.get('request')
-        const response = event.get('response')
-        let responseError = response.get('error')
+        const request: Map<any, any> = event.get('request')
+        const response: Map<any, any> = event.get('response')
+        let responseError: string | undefined = response.get('error')
 
         if (!request) {
             return (
@@ -96,7 +92,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
         const responseHeaders = response.get('headers')
         const requestParams = request.get('params') || null
         const requestBody = request.get('body')
-        const requestMethod = request.get('method')
+        const requestMethod: string = request.get('method')
         let responseBody = response.get('body') || null
         let requestJSONBody = null
         let requestFormBody = null
@@ -242,12 +238,11 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+const connector = connect(
+    (state: RootState) => ({
         event: getHTTPIntegrationEvent(state),
-    }
-}
-
-export default connect(mapStateToProps, {fetchHTTPIntegrationEvent})(
-    HTTPIntegrationEventContainer
+    }),
+    {fetchHTTPIntegrationEvent}
 )
+
+export default connector(HTTPIntegrationEventContainer)
