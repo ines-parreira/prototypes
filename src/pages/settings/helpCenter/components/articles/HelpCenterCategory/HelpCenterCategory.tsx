@@ -256,7 +256,7 @@ export const HelpCenterCategory = ({
                             >
                                 {`https://${
                                     helpCenter?.subdomain as string
-                                }${HELP_CENTER_DOMAIN}/${slugValue}`}
+                                }${HELP_CENTER_DOMAIN}/${slugValue}/`}
                             </span>
                         </InputGroupAddon>
                         <Input

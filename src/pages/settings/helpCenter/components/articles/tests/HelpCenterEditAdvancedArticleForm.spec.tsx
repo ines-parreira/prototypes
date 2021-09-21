@@ -1,12 +1,19 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
 import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
 import {getTranslationResponseFixture} from '../../../fixtures/getTranslationResponse.fixture'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+
+const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const mockedOnChange = jest.fn()
 
 describe('<HelpCenterEditAdvancedArticleForm/>', () => {
+    const defaultState: Partial<RootState> = {}
+
     const translation = getTranslationResponseFixture
     const props = {
         articleId: 1,
@@ -21,14 +28,18 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
 
     it('should display the component correctly', () => {
         const {container} = render(
-            <HelpCenterEditAdvancedArticleForm {...props} />
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterEditAdvancedArticleForm {...props} />
+            </Provider>
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should trigger the onChange callback when updating form inputs', () => {
         const {getByRole} = render(
-            <HelpCenterEditAdvancedArticleForm {...props} />
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterEditAdvancedArticleForm {...props} />
+            </Provider>
         )
         const slugInput = getByRole('textbox', {name: /slug/i})
         fireEvent.change(slugInput, {target: {value: 'new slug'}})

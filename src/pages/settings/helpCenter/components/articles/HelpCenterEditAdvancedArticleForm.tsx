@@ -1,15 +1,18 @@
 import React from 'react'
+import copy from 'copy-to-clipboard'
 
-import InputField from '../../../../common/forms/InputField.js'
 import {HelpCenterArticleTranslation} from '../../../../../models/helpCenter/types'
-
+import InputField from '../../../../common/forms/InputField.js'
+import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {HELP_CENTER_DOMAIN} from '../../constants'
 import {slugify} from '../../utils/helpCenter.utils'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
 
 type Props = {
-    articleId?: number
+    articleId: number
     translation: HelpCenterArticleTranslation
     subdomain: string
     onChange: (translation: HelpCenterArticleTranslation) => void
@@ -20,7 +23,12 @@ export const HelpCenterEditAdvancedArticleForm = ({
     translation,
     subdomain,
     onChange,
-}: Props) => {
+}: Props): JSX.Element => {
+    const dispatch = useAppDispatch()
+
+    const slugPrefix = `https://${subdomain}${HELP_CENTER_DOMAIN}/`
+    const slugSuffix = `-${articleId}`
+
     const onEditArticle = (editKey: string) => (newValue: string) => {
         if (editKey === 'title') {
             onChange({
@@ -36,6 +44,17 @@ export const HelpCenterEditAdvancedArticleForm = ({
         })
     }
 
+    const copyURL = () => {
+        copy(`${slugPrefix}${translation.slug}${slugSuffix}`)
+
+        void dispatch(
+            notify({
+                message: "Successfully copied the article's URL",
+                status: NotificationStatus.Success,
+            })
+        )
+    }
+
     return (
         <div className={css.wrapper}>
             <InputField
@@ -46,15 +65,26 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 value={translation.title}
                 onChange={onEditArticle('title')}
             />
-            <InputField
-                required
-                type="text"
-                name="slug"
-                label="Slug"
-                leftAddon={`https://${subdomain}${HELP_CENTER_DOMAIN}/`}
-                value={translation.slug}
-                onChange={onEditArticle('slug')}
-            />
+            <div className={css.inputWrapper}>
+                <InputField
+                    required
+                    type="text"
+                    name="slug"
+                    label="Slug"
+                    leftAddon={slugPrefix}
+                    rightAddon={slugSuffix}
+                    value={translation.slug}
+                    onChange={onEditArticle('slug')}
+                />
+                <button
+                    type="button"
+                    onClick={copyURL}
+                    className={css.copyButton}
+                >
+                    Copy URL
+                    <i className="material-icons">content_copy</i>
+                </button>
+            </div>
             <InputField
                 type="textarea"
                 rows="2"

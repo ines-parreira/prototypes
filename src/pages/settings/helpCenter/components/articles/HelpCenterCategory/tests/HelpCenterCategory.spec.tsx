@@ -148,14 +148,14 @@ describe('<HelpCenterCategory>', () => {
         const {getByTestId} = render(<Example isOpen />)
 
         expect(getByTestId('slug-domain').textContent).toEqual(
-            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/en-us`
+            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/en-us/`
         )
 
         fireEvent.click(getByTestId('dropdown-select-trigger'))
         fireEvent.click(getByTestId('option-fr-FR'))
 
         expect(getByTestId('slug-domain').textContent).toEqual(
-            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/fr-fr`
+            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/fr-fr/`
         )
     })
 

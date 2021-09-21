@@ -28,35 +28,59 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
     </div>
     <div
-      class="InputField required form-group"
-      color=""
+      class="inputWrapper"
     >
-      <label
-        class="control-label"
-        for="id-slug"
-      >
-        Slug
-      </label>
       <div
-        class="input-group"
+        class="InputField required form-group"
+        color=""
       >
-        <span
-          class="input-group-append"
+        <label
+          class="control-label"
+          for="id-slug"
+        >
+          Slug
+        </label>
+        <div
+          class="input-group"
         >
           <span
-            class="input-group-text"
+            class="input-group-append"
           >
-            https://acme.gorgias.rehab/
+            <span
+              class="input-group-text"
+            >
+              https://acme.gorgias.rehab/
+            </span>
           </span>
-        </span>
-        <input
-          class="form-control"
-          id="id-slug"
-          required=""
-          type="text"
-          value="free-article"
-        />
+          <input
+            class="form-control"
+            id="id-slug"
+            required=""
+            type="text"
+            value="free-article"
+          />
+          <span
+            class="input-group-append"
+          >
+            <span
+              class="input-group-text"
+            >
+              -1
+            </span>
+          </span>
+        </div>
       </div>
+      <button
+        class="copyButton"
+        type="button"
+      >
+        Copy URL
+        <i
+          class="material-icons"
+        >
+          content_copy
+        </i>
+      </button>
     </div>
     <div
       class="InputField form-group"

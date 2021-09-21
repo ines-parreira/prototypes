@@ -8,9 +8,36 @@
         background-color: @neutral1;
         border-bottom: 1px solid @neutral4;
     }
+
     .articleIDHint {
         font-size: 14px;
         font-weight: 400;
         line-height: 20px;
+    }
+
+    .inputWrapper {
+        position: relative;
+    }
+
+    .copyButton {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: @blue;
+        background-color: transparent;
+        border: 0;
+        padding: 0 8px;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+
+        i {
+            margin-left: 4px;
+            font-size: 14px;
+        }
+    }
+
+    .copyButton:focus:not(:focus-visible) {
+        outline: none;
     }
 }
