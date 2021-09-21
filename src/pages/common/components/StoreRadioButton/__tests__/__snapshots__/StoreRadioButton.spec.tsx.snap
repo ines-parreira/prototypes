@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StoreRadioButton /> matches snapshot 1`] = `
+<div>
+  <button
+    class="container"
+  >
+    <div
+      class="iconContainer"
+    >
+      <img
+        alt="storefront"
+        src="test-file-stub"
+      />
+    </div>
+    <span
+      class="label"
+    >
+      Shopify Store
+    </span>
+  </button>
+</div>
+`;

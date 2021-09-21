@@ -393,7 +393,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             if (article?.translation && helpCenter?.subdomain) {
                 try {
                     copy(
-                        `https://${helpCenter.subdomain}.${HELP_CENTER_DOMAIN}/${article.translation.slug}-${article.id}`
+                        `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/${article.translation.slug}-${article.id}`
                     )
                     void dispatch(
                         notify({

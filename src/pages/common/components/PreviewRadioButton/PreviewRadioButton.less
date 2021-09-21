@@ -1,0 +1,50 @@
+@import '~css/new/colors.less';
+
+:local {
+    .wrapper {
+        width: 282px;
+        padding: 16px;
+        border: 1px solid @neutral4;
+        border-radius: 4px;
+
+        background-color: @neutral1;
+
+        color: @neutral10;
+        text-align: left;
+        box-sizing: border-box;
+
+        transition: background-color 350ms ease;
+
+        &:focus,
+        &:hover:not(.selected) {
+            background-color: @blue1;
+        }
+
+        &.selected {
+            border-color: @yotpoBlue;
+            box-shadow: inset 0px 0px 0px 1px @yotpoBlue;
+        }
+    }
+
+    .preview {
+        margin-bottom: 8px;
+    }
+
+    .label {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        margin-left: 18px;
+
+        font-weight: 600;
+    }
+
+    .text {
+        margin-left: 4px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

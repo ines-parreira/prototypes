@@ -2,16 +2,21 @@ import {
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
+import {isProduction} from '../../../utils/environment'
+
+import {HelpCenterThemes} from './types'
 
 export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 
+export const HELP_CENTER_DEFAULT_COLOR = '#4A8DF9'
+
+export const DEFAULT_THEME = HelpCenterThemes.LIGHT
+
 export const HELP_CENTER_LANGUAGE_DEFAULT: LocaleCode = 'en-US'
 
-export const HELP_CENTER_DOMAIN = window.location.hostname.includes(
-    '.gorgias.xyz'
-)
-    ? 'gorgias.rehab'
-    : 'gorgias.help'
+export const HELP_CENTER_DOMAIN = isProduction()
+    ? '.gorgias.help'
+    : '.gorgias.rehab'
 
 export const SOCIAL_NAVIGATION_LINKS: Record<
     string,

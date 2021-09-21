@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpText> matches snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <span
+      class="highlight"
+    >
+      Upload image
+    </span>
+    <span>
+      recommended size 1640 x 624
+    </span>
+  </div>
+</div>
+`;

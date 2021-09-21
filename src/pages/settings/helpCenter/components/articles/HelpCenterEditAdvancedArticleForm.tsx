@@ -51,7 +51,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 type="text"
                 name="slug"
                 label="Slug"
-                leftAddon={`https://${subdomain}.${HELP_CENTER_DOMAIN}/`}
+                leftAddon={`https://${subdomain}${HELP_CENTER_DOMAIN}/`}
                 value={translation.slug}
                 onChange={onEditArticle('slug')}
             />

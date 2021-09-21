@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import {NotificationStatus} from '../../../../state/notifications/types'
 
-type Props = {
+export type Props = {
     allowHTML: boolean
     closable: boolean
     dismissible: boolean

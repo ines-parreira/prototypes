@@ -35,15 +35,14 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
     </div>
     <div
       class="page-container container-fluid"
+      style="max-width: 680px; margin-left: 0px;"
     >
-      <form
-        class="mb-4"
-      >
+      <section>
         <div
           class="row"
         >
           <div
-            class="col-md-9"
+            class="col-md-6"
           >
             <div
               class="InputField formInput required form-group"
@@ -73,6 +72,63 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                 This is going to be displayed whenever your logo isn’t available and also in search engines.
               </small>
             </div>
+          </div>
+          <div
+            class="col-md-6"
+          >
+            <div
+              class="InputField subdomainInput form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-subdomain"
+              >
+                Subdomain
+              </label>
+              <div
+                class="input-group"
+              >
+                <input
+                  class="form-control"
+                  id="id-subdomain"
+                  type="text"
+                  value=""
+                />
+                <span
+                  class="input-group-append"
+                >
+                  <span
+                    class="input-group-text"
+                  >
+                    .gorgias.rehab
+                  </span>
+                </span>
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                This is the URL for your Help center. If you don't provide a value, we will generate one for you.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-12"
+          >
+            <h3>
+              Languages
+            </h3>
+            <p>
+              Choose the default language that will be used every time it’s not detected or as a second option if the selected language isn’t available.
+            </p>
+          </div>
+          <div
+            class="col-12"
+          >
             <label
               class="control-label"
               for="language-select"
@@ -192,21 +248,148 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
             </div>
           </div>
         </div>
-        <button
-          class="btn btn-success disabled"
-          disabled=""
-          type="submit"
+        <div
+          class="row"
         >
-          Add new Helpcenter
-        </button>
-        <button
-          class="cancelButton btn btn-secondary disabled"
-          disabled=""
-          type="button"
+          <div
+            class="col-12"
+          >
+            <h3>
+              Appearance
+            </h3>
+            <section
+              class="themes"
+            >
+              <h4>
+                Theme
+              </h4>
+              <p>
+                Select which theme you prefer to use in your help center.
+                <strong>
+                   This will affect the header & footer.
+                </strong>
+              </p>
+              <div
+                class="list"
+              >
+                <button
+                  aria-label="Light Theme"
+                  class="wrapper selected"
+                >
+                  <div
+                    class="preview"
+                  >
+                    <img
+                      alt="preview-light"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="label"
+                  >
+                    <input
+                      checked=""
+                      class="form-check-input"
+                      readonly=""
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    <span
+                      class="text"
+                    >
+                      Light Theme
+                    </span>
+                  </div>
+                </button>
+                <button
+                  aria-label="Dark Theme"
+                  class="wrapper"
+                >
+                  <div
+                    class="preview"
+                  >
+                    <img
+                      alt="preview-dark"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="label"
+                  >
+                    <input
+                      class="form-check-input"
+                      readonly=""
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    <span
+                      class="text"
+                    >
+                      Dark Theme
+                    </span>
+                  </div>
+                </button>
+              </div>
+              <div
+                class="InputField mt-3 form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-input-1"
+                >
+                  Primary Color
+                </label>
+                <div
+                  class=""
+                >
+                  <div
+                    class="d-inline-block"
+                  >
+                    <button
+                      class="button btn btn-secondary"
+                      id="color-picker-2"
+                      type="button"
+                    >
+                      <div
+                        class="color"
+                        style="background-color: rgb(74, 141, 249);"
+                      />
+                    </button>
+                  </div>
+                </div>
+                <small
+                  class="form-text text-muted"
+                >
+                  This will be used as your primary color in hyperlinks, pagination and icons.
+                </small>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div
+          class="pb-4 row"
         >
-          Cancel
-        </button>
-      </form>
+          <div
+            class="col"
+          >
+            <button
+              class="btn btn-success disabled"
+              disabled=""
+              type="button"
+            >
+              Add new Helpcenter
+            </button>
+            <button
+              class="cancelButton btn btn-secondary disabled"
+              disabled=""
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </div>

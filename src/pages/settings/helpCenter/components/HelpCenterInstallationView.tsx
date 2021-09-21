@@ -70,12 +70,6 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         }
     }, [helpCenter])
 
-    const handleOnChangeSubDomain = (
-        ev: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setSubdomainValue(ev.target.value)
-    }
-
     const handleOnDeleteHelpcenter = () => {
         if (isReady && client) {
             void client
@@ -154,10 +148,10 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
             >
                 <SubdomainSection
                     value={subDomainValue}
-                    href={`https://${subdomain}.${HELP_CENTER_DOMAIN}`}
+                    href={`https://${subdomain}${HELP_CENTER_DOMAIN}`}
                     hasError={!isValidSubdomain(subDomainValue)}
                     placeholder="brand-name"
-                    onChange={handleOnChangeSubDomain}
+                    onChange={setSubdomainValue}
                 />
                 <Button
                     color="primary"

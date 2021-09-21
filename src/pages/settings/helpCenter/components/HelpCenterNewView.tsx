@@ -1,17 +1,17 @@
 import classnames from 'classnames'
-import React, {useState, FormEvent} from 'react'
+import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
     Container,
-    Form,
     Row,
     Col,
     Button,
     Label,
 } from 'reactstrap'
+import produce from 'immer'
 
 import {validLocaleCode} from '../../../../models/helpCenter/utils'
 
@@ -27,17 +27,37 @@ import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify as notifyAction} from '../../../../state/notifications/actions'
 
+import {SubdomainInput} from '../components/SubdomainSection'
+
 import {useLocales} from '../hooks/useLocales'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
-import {HELP_CENTER_BASE_PATH, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
+import {isValidSubdomain} from '../utils/validations'
+
+import {
+    DEFAULT_THEME,
+    HELP_CENTER_BASE_PATH,
+    HELP_CENTER_DEFAULT_COLOR,
+    HELP_CENTER_LANGUAGE_DEFAULT,
+} from '../constants'
+import {HelpCenterThemes} from '../types'
+
+import {ThemeSwitch} from './ThemeSwitch'
 
 import css from './HelpCenterNewView.less'
 
 type Props = ConnectedProps<typeof connector>
 
-const initialFormState: CreateHelpcenterDto = {
+type CreateHelpCenterPayload = CreateHelpcenterDto & {
+    theme: HelpCenterThemes
+    primary_color: string
+}
+
+const initialFormState: CreateHelpCenterPayload = {
     name: '',
+    subdomain: '',
     default_locale: HELP_CENTER_LANGUAGE_DEFAULT,
+    theme: DEFAULT_THEME,
+    primary_color: HELP_CENTER_DEFAULT_COLOR,
 }
 
 export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
@@ -45,7 +65,7 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
     const location = useLocation()
     const locales = useLocales()
     const {client} = useHelpcenterApi()
-    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpcenterDto>(
+    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
         initialFormState
     )
     const [isLoading, setIsLoading] = useState(false)
@@ -55,17 +75,20 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         value: locale.code,
     }))
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-
+    const handleSubmit = async () => {
         if (!client) {
             return
         }
         setIsLoading(true)
         try {
+            const payload = produce(newHelpCenter, (draft) => {
+                if (draft.subdomain === '') {
+                    delete draft.subdomain
+                }
+            })
             const {data: createdHelpCenter} = await client.createHelpCenter(
                 null,
-                newHelpCenter
+                payload
             )
             helpCenterCreated(createdHelpCenter)
             resetForm()
@@ -112,12 +135,20 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         false
     )
 
-    const canSubmit = Object.keys(newHelpCenter).reduce(
-        (canSubmitAcc, currentKey) =>
-            canSubmitAcc &&
-            Boolean(newHelpCenter[currentKey as keyof CreateHelpcenterDto]),
-        true
-    )
+    const canSubmit = () => {
+        if (!newHelpCenter.name) {
+            return false
+        }
+
+        if (
+            newHelpCenter?.subdomain &&
+            !isValidSubdomain(newHelpCenter?.subdomain)
+        ) {
+            return false
+        }
+
+        return true
+    }
 
     return (
         <div className="full-width">
@@ -131,15 +162,19 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                     </Breadcrumb>
                 }
             />
-            <Container fluid className="page-container">
+            <Container
+                fluid
+                className="page-container"
+                style={{maxWidth: 680, marginLeft: 0}}
+            >
                 {isLoading ? (
                     <span data-testid="loading">
                         <Loader />
                     </span>
                 ) : (
-                    <Form className="mb-4" onSubmit={handleSubmit}>
+                    <section>
                         <Row>
-                            <Col md="9">
+                            <Col md="6">
                                 <InputField
                                     type="text"
                                     name="name"
@@ -158,6 +193,41 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                                         )
                                     }
                                 />
+                            </Col>
+                            <Col md="6">
+                                <SubdomainInput
+                                    help="This is the URL for your Help center. If you don't provide a value, we will generate one for you."
+                                    hasError={
+                                        newHelpCenter?.subdomain
+                                            ? !isValidSubdomain(
+                                                  newHelpCenter?.subdomain
+                                              )
+                                            : false
+                                    }
+                                    value={newHelpCenter?.subdomain}
+                                    onChange={(subdomain: string) =>
+                                        setNewHelpCenter(
+                                            (prevNewHelpCenter) => ({
+                                                ...prevNewHelpCenter,
+                                                subdomain,
+                                            })
+                                        )
+                                    }
+                                />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col xs={12}>
+                                <h3>Languages</h3>
+                                <p>
+                                    Choose the default language that will be
+                                    used every time it’s not detected or as a
+                                    second option if the selected language isn’t
+                                    available.
+                                </p>
+                            </Col>
+                            <Col xs={12}>
                                 <Label
                                     htmlFor="language-select"
                                     className="control-label"
@@ -179,21 +249,52 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                                 </div>
                             </Col>
                         </Row>
-                        <Button
-                            type="submit"
-                            color="success"
-                            disabled={!canSubmit}
-                        >
-                            Add new Helpcenter
-                        </Button>
-                        <Button
-                            className={css.cancelButton}
-                            onClick={resetForm}
-                            disabled={!canReset}
-                        >
-                            Cancel
-                        </Button>
-                    </Form>
+
+                        <Row>
+                            <Col xs={12}>
+                                <h3>Appearance</h3>
+                                <ThemeSwitch
+                                    selectedTheme={newHelpCenter.theme}
+                                    currentColor={newHelpCenter.primary_color}
+                                    onThemeChange={(theme) => {
+                                        setNewHelpCenter(
+                                            (prevNewHelpCenter) => ({
+                                                ...prevNewHelpCenter,
+                                                theme,
+                                            })
+                                        )
+                                    }}
+                                    onColorChange={(color) => {
+                                        setNewHelpCenter(
+                                            (prevNewHelpCenter) => ({
+                                                ...prevNewHelpCenter,
+                                                primary_color: color,
+                                            })
+                                        )
+                                    }}
+                                />
+                            </Col>
+                        </Row>
+
+                        <Row className="pb-4">
+                            <Col>
+                                <Button
+                                    color="success"
+                                    disabled={!canSubmit()}
+                                    onClick={handleSubmit}
+                                >
+                                    Add new Helpcenter
+                                </Button>
+                                <Button
+                                    className={css.cancelButton}
+                                    disabled={!canReset}
+                                    onClick={resetForm}
+                                >
+                                    Cancel
+                                </Button>
+                            </Col>
+                        </Row>
+                    </section>
                 )}
             </Container>
         </div>

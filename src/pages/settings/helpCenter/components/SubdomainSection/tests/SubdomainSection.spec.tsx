@@ -4,53 +4,34 @@ import {render} from '@testing-library/react'
 import {SubdomainSection} from '../SubdomainSection'
 import {HELP_CENTER_DOMAIN} from '../../../constants'
 
-function getInputFrom(
-    component: JSX.Element,
-    testId: string
-): HTMLInputElement {
-    const {getByTestId} = render(component)
-    return getByTestId(testId) as HTMLInputElement
+function getSubdomainInput(component: JSX.Element): HTMLInputElement {
+    const {getByRole} = render(component)
+    return getByRole('textbox') as HTMLInputElement
 }
 
 describe('<SubdomainSection />', () => {
-    it('renders the domain name', () => {
-        const {getByTestId} = render(
-            <SubdomainSection
-                value=""
-                href=""
-                domain="test.com"
-                onChange={jest.fn}
-            />
-        )
-        expect(getByTestId('domain-name').textContent).toEqual('test.com')
-    })
-
-    it('renders the default domain name if no domain is passed', () => {
-        const {getByTestId} = render(
+    it('renders the default domain name if no domain is passed', async () => {
+        const {findByText} = render(
             <SubdomainSection value="" href="" onChange={jest.fn} />
         )
-        expect(getByTestId('domain-name').textContent).toEqual(
-            HELP_CENTER_DOMAIN
-        )
+        await findByText(HELP_CENTER_DOMAIN)
     })
 
     it('renders the subdomain value in the input', () => {
-        const {value} = getInputFrom(
-            <SubdomainSection value="my-domain" href="" onChange={jest.fn} />,
-            'subdomain-input'
+        const {value} = getSubdomainInput(
+            <SubdomainSection value="my-domain" href="" onChange={jest.fn} />
         )
         expect(value).toEqual('my-domain')
     })
 
     it('renders the placeholder if value is missing', () => {
-        const {placeholder} = getInputFrom(
+        const {placeholder} = getSubdomainInput(
             <SubdomainSection
                 value=""
                 href=""
                 placeholder="input something"
                 onChange={jest.fn}
-            />,
-            'subdomain-input'
+            />
         )
         expect(placeholder).toEqual('input something')
     })

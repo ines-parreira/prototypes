@@ -79,7 +79,7 @@ exports[`<HelpCenterAppearanceView/> should call help center API on search toggl
     </nav>
     <div
       class="page-container container-fluid"
-      style="max-width: 680px; margin-left: 0px;"
+      style="max-width: 680px; margin-left: 0px; padding-bottom: 18px;"
     >
       <div
         class="heading"
@@ -88,34 +88,458 @@ exports[`<HelpCenterAppearanceView/> should call help center API on search toggl
           Appearance
         </h3>
       </div>
-      <div
-        class="form-group"
+      <section
+        class="logos"
       >
         <div
-          class="d-flex"
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            Standard Logo
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="primary_logo"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="content"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon"
+                      src="test-file-stub"
+                    />
+                    <div
+                      class="text"
+                    >
+                      <span>
+                        Drop your image here, or
+                      </span>
+                      <span
+                        class="browseInput"
+                      >
+                        browse
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            accept="image/jpeg,image/png"
+            id="primary_logo"
+            style="display: none;"
+            type="file"
+          />
+          <div
+            class="container"
+          >
+            <span
+              class="highlight"
+            >
+              Upload image
+            </span>
+            <span>
+              recommended size 1800 x 240
+            </span>
+          </div>
+        </div>
+        <div
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            White Logo
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="white_logo"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="content"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon"
+                      src="test-file-stub"
+                    />
+                    <div
+                      class="text"
+                    >
+                      <span>
+                        Drop your image here, or
+                      </span>
+                      <span
+                        class="browseInput"
+                      >
+                        browse
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            accept="image/jpeg,image/png"
+            id="white_logo"
+            style="display: none;"
+            type="file"
+          />
+          <div
+            class="container"
+          >
+            <span
+              class="highlight"
+            >
+              Upload image
+            </span>
+            <span>
+              recommended size 1800 x 240
+            </span>
+          </div>
+        </div>
+        <div
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            Favicon
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <div
+            class="input"
+          >
+            <label
+              class="wrapper"
+              data-testid="dropZone"
+              for="favicon"
+            >
+              <div
+                class="container small mr-4"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="content"
+                  />
+                </div>
+              </div>
+            </label>
+            <input
+              accept="image/png,image/jpeg,image/x-icon"
+              id="favicon"
+              style="display: none;"
+              type="file"
+            />
+            <label
+              for="faviconUpload"
+            >
+              <div
+                class="fakeBtn"
+              >
+                <span
+                  class="material-icons mr-2"
+                >
+                  attachment
+                </span>
+                Upload
+              </div>
+            </label>
+            <input
+              accept="image/png"
+              id="faviconUpload"
+              name="faviconUpload"
+              style="display: none;"
+              type="file"
+            />
+          </div>
+          <div
+            class="container"
+          >
+            <span>
+              Ideally a 64px square PNG
+            </span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="themes"
+      >
+        <h4>
+          Theme
+        </h4>
+        <p>
+          Select which theme you prefer to use in your help center.
+          <strong>
+             This will affect the header & footer.
+          </strong>
+        </p>
+        <div
+          class="list"
+        >
+          <button
+            aria-label="Light Theme"
+            class="wrapper selected"
+          >
+            <div
+              class="preview"
+            >
+              <img
+                alt="preview-light"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="label"
+            >
+              <input
+                checked=""
+                class="form-check-input"
+                readonly=""
+                tabindex="-1"
+                type="radio"
+              />
+              <span
+                class="text"
+              >
+                Light Theme
+              </span>
+            </div>
+          </button>
+          <button
+            aria-label="Dark Theme"
+            class="wrapper"
+          >
+            <div
+              class="preview"
+            >
+              <img
+                alt="preview-dark"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="label"
+            >
+              <input
+                class="form-check-input"
+                readonly=""
+                tabindex="-1"
+                type="radio"
+              />
+              <span
+                class="text"
+              >
+                Dark Theme
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="InputField mt-3 form-group"
+          color=""
         >
           <label
-            class="switch loading disabled"
+            class="control-label"
+            for="id-input-3"
           >
-            <input
-              disabled=""
-              readonly=""
-              type="checkbox"
-            />
+            Primary Color
+          </label>
+          <div
+            class=""
+          >
             <div
-              class="slider"
-            />
-          </label>
-          <label
-            class="control-label ml-2"
+              class="d-inline-block"
+            >
+              <button
+                class="button btn btn-secondary"
+                id="color-picker-4"
+                type="button"
+              >
+                <div
+                  class="color"
+                  style="background-color: rgb(74, 141, 249);"
+                />
+              </button>
+            </div>
+          </div>
+          <small
+            class="form-text text-muted"
           >
-            Enable search bar
-          </label>
+            This will be used as your primary color in hyperlinks, pagination and icons.
+          </small>
         </div>
-        <p>
-          This makes the search bar visible or not in your help center home page.
-        </p>
-      </div>
+      </section>
+      <section>
+        <div
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            Banner Background
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="banner_image"
+          >
+            <div
+              class="container"
+              style="width: 100%;"
+            >
+              <div
+                class="content"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon"
+                      src="test-file-stub"
+                    />
+                    <div
+                      class="text"
+                    >
+                      <span>
+                        Drop your image here, or
+                      </span>
+                      <span
+                        class="browseInput"
+                      >
+                        browse
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            accept="image/jpeg,image/png"
+            id="banner_image"
+            style="display: none;"
+            type="file"
+          />
+          <div
+            class="container"
+          >
+            <span
+              class="highlight"
+            >
+              Upload image
+            </span>
+            <span>
+              recommended size 1440 x 316
+            </span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="mt-5"
+      >
+        <div
+          class="form-group"
+        >
+          <div
+            class="d-flex"
+          >
+            <label
+              class="switch loading disabled"
+            >
+              <input
+                disabled=""
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+            <label
+              class="control-label ml-2"
+            >
+              Enable search bar
+            </label>
+          </div>
+          <p>
+            This makes the search bar visible or not in your help center home page.
+          </p>
+        </div>
+      </section>
+      <footer>
+        <div
+          class="mt-5 form-group"
+        >
+          <button
+            class="mr-2 btn btn-success disabled"
+            disabled=""
+            type="button"
+          >
+            Save Changes
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+      </footer>
     </div>
   </div>
 </div>
@@ -200,7 +624,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
     </nav>
     <div
       class="page-container container-fluid"
-      style="max-width: 680px; margin-left: 0px;"
+      style="max-width: 680px; margin-left: 0px; padding-bottom: 18px;"
     >
       <div
         class="heading"
@@ -209,33 +633,457 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
           Appearance
         </h3>
       </div>
-      <div
-        class="form-group"
+      <section
+        class="logos"
       >
         <div
-          class="d-flex"
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            Standard Logo
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="primary_logo"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="content"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon"
+                      src="test-file-stub"
+                    />
+                    <div
+                      class="text"
+                    >
+                      <span>
+                        Drop your image here, or
+                      </span>
+                      <span
+                        class="browseInput"
+                      >
+                        browse
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            accept="image/jpeg,image/png"
+            id="primary_logo"
+            style="display: none;"
+            type="file"
+          />
+          <div
+            class="container"
+          >
+            <span
+              class="highlight"
+            >
+              Upload image
+            </span>
+            <span>
+              recommended size 1800 x 240
+            </span>
+          </div>
+        </div>
+        <div
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            White Logo
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="white_logo"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="content"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon"
+                      src="test-file-stub"
+                    />
+                    <div
+                      class="text"
+                    >
+                      <span>
+                        Drop your image here, or
+                      </span>
+                      <span
+                        class="browseInput"
+                      >
+                        browse
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            accept="image/jpeg,image/png"
+            id="white_logo"
+            style="display: none;"
+            type="file"
+          />
+          <div
+            class="container"
+          >
+            <span
+              class="highlight"
+            >
+              Upload image
+            </span>
+            <span>
+              recommended size 1800 x 240
+            </span>
+          </div>
+        </div>
+        <div
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            Favicon
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <div
+            class="input"
+          >
+            <label
+              class="wrapper"
+              data-testid="dropZone"
+              for="favicon"
+            >
+              <div
+                class="container small mr-4"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="content"
+                  />
+                </div>
+              </div>
+            </label>
+            <input
+              accept="image/png,image/jpeg,image/x-icon"
+              id="favicon"
+              style="display: none;"
+              type="file"
+            />
+            <label
+              for="faviconUpload"
+            >
+              <div
+                class="fakeBtn"
+              >
+                <span
+                  class="material-icons mr-2"
+                >
+                  attachment
+                </span>
+                Upload
+              </div>
+            </label>
+            <input
+              accept="image/png"
+              id="faviconUpload"
+              name="faviconUpload"
+              style="display: none;"
+              type="file"
+            />
+          </div>
+          <div
+            class="container"
+          >
+            <span>
+              Ideally a 64px square PNG
+            </span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="themes"
+      >
+        <h4>
+          Theme
+        </h4>
+        <p>
+          Select which theme you prefer to use in your help center.
+          <strong>
+             This will affect the header & footer.
+          </strong>
+        </p>
+        <div
+          class="list"
+        >
+          <button
+            aria-label="Light Theme"
+            class="wrapper selected"
+          >
+            <div
+              class="preview"
+            >
+              <img
+                alt="preview-light"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="label"
+            >
+              <input
+                checked=""
+                class="form-check-input"
+                readonly=""
+                tabindex="-1"
+                type="radio"
+              />
+              <span
+                class="text"
+              >
+                Light Theme
+              </span>
+            </div>
+          </button>
+          <button
+            aria-label="Dark Theme"
+            class="wrapper"
+          >
+            <div
+              class="preview"
+            >
+              <img
+                alt="preview-dark"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="label"
+            >
+              <input
+                class="form-check-input"
+                readonly=""
+                tabindex="-1"
+                type="radio"
+              />
+              <span
+                class="text"
+              >
+                Dark Theme
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="InputField mt-3 form-group"
+          color=""
         >
           <label
-            class="switch"
+            class="control-label"
+            for="id-input-1"
           >
-            <input
-              readonly=""
-              type="checkbox"
-            />
+            Primary Color
+          </label>
+          <div
+            class=""
+          >
             <div
-              class="slider"
-            />
-          </label>
-          <label
-            class="control-label ml-2"
+              class="d-inline-block"
+            >
+              <button
+                class="button btn btn-secondary"
+                id="color-picker-2"
+                type="button"
+              >
+                <div
+                  class="color"
+                  style="background-color: rgb(74, 141, 249);"
+                />
+              </button>
+            </div>
+          </div>
+          <small
+            class="form-text text-muted"
           >
-            Enable search bar
-          </label>
+            This will be used as your primary color in hyperlinks, pagination and icons.
+          </small>
         </div>
-        <p>
-          This makes the search bar visible or not in your help center home page.
-        </p>
-      </div>
+      </section>
+      <section>
+        <div
+          class="container"
+        >
+          <div
+            class="container"
+          >
+            Banner Background
+            <i
+              class="help material-icons-outlined ml-2"
+              role="img"
+            >
+              info
+            </i>
+          </div>
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="banner_image"
+          >
+            <div
+              class="container"
+              style="width: 100%;"
+            >
+              <div
+                class="content"
+              >
+                <div
+                  class="content"
+                >
+                  <div
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon"
+                      src="test-file-stub"
+                    />
+                    <div
+                      class="text"
+                    >
+                      <span>
+                        Drop your image here, or
+                      </span>
+                      <span
+                        class="browseInput"
+                      >
+                        browse
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </label>
+          <input
+            accept="image/jpeg,image/png"
+            id="banner_image"
+            style="display: none;"
+            type="file"
+          />
+          <div
+            class="container"
+          >
+            <span
+              class="highlight"
+            >
+              Upload image
+            </span>
+            <span>
+              recommended size 1440 x 316
+            </span>
+          </div>
+        </div>
+      </section>
+      <section
+        class="mt-5"
+      >
+        <div
+          class="form-group"
+        >
+          <div
+            class="d-flex"
+          >
+            <label
+              class="switch"
+            >
+              <input
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+            <label
+              class="control-label ml-2"
+            >
+              Enable search bar
+            </label>
+          </div>
+          <p>
+            This makes the search bar visible or not in your help center home page.
+          </p>
+        </div>
+      </section>
+      <footer>
+        <div
+          class="mt-5 form-group"
+        >
+          <button
+            class="mr-2 btn btn-success disabled"
+            disabled=""
+            type="button"
+          >
+            Save Changes
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+      </footer>
     </div>
   </div>
 </div>

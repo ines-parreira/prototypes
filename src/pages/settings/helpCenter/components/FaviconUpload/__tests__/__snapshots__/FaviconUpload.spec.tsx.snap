@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FaviconUpload /> matches snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="container"
+    >
+      Favicon
+      <i
+        class="help material-icons-outlined ml-2"
+        role="img"
+      >
+        info
+      </i>
+    </div>
+    <div
+      class="input"
+    >
+      <label
+        class="wrapper"
+        data-testid="dropZone"
+        for="jest-file"
+      >
+        <div
+          class="container small mr-4"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="content"
+            />
+          </div>
+        </div>
+      </label>
+      <input
+        accept="image/png,image/jpeg,image/x-icon"
+        id="jest-file"
+        style="display: none;"
+        type="file"
+      />
+      <label
+        for="faviconUpload"
+      >
+        <div
+          class="fakeBtn"
+        >
+          <span
+            class="material-icons mr-2"
+          >
+            attachment
+          </span>
+          Upload
+        </div>
+      </label>
+      <input
+        accept="image/png"
+        id="faviconUpload"
+        name="faviconUpload"
+        style="display: none;"
+        type="file"
+      />
+    </div>
+    <div
+      class="container"
+    >
+      <span>
+        Ideally a 64px square PNG
+      </span>
+    </div>
+  </div>
+</div>
+`;

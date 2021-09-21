@@ -46,7 +46,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           <span
             class="input-group-text"
           >
-            https://acme.gorgias.help/
+            https://acme.gorgias.rehab/
           </span>
         </span>
         <input

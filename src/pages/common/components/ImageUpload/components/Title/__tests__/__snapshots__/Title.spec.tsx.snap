@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Title> matches snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    Standard logo
+  </div>
+</div>
+`;

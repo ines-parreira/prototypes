@@ -97,12 +97,12 @@ jest.mock('../../../hooks/useHelpcenterApi', () => {
                                 search_deactivated_datetime:
                                     '2021-05-17T18:21:42.022Z',
                                 algolia_api_key: null,
+                                primary_color: '#4A8DF9',
+                                theme: 'light',
                                 custom_domain_deactivated_datetime: custom_domain_deactivated
                                     ? '2021-07-29T10:41:10.343Z'
                                     : null,
                                 powered_by_deactivated_datetime: null,
-                                primary_color: '#4A8DF9',
-                                theme: 'light',
                             },
                         })
                     ),

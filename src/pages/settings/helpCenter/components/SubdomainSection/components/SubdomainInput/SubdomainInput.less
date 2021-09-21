@@ -1,0 +1,27 @@
+@import (reference) '~css/new/colors.less';
+
+:local {
+    .subdomainInput {
+        margin-bottom: 32px;
+
+        &.error {
+            input {
+                border-color: @red;
+                box-shadow: 0 0 0 0.2rem fade(@red, 10%);
+            }
+        }
+    }
+
+    .errorContainer {
+        position: absolute;
+        margin-top: 4px;
+    }
+
+    .errorMessage {
+        color: @red;
+
+        i {
+            margin-right: 4px;
+        }
+    }
+}

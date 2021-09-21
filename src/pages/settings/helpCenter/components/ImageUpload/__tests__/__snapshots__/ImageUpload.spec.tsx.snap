@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ImageUpload /> matches snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="container"
+    >
+      Standard Logo
+      <i
+        class="help material-icons-outlined ml-2"
+        role="img"
+      >
+        info
+      </i>
+    </div>
+    <label
+      class="wrapper"
+      data-testid="dropZone"
+      for="jest-file"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="wrapper"
+            >
+              <img
+                alt="upload"
+                class="icon"
+                src="test-file-stub"
+              />
+              <div
+                class="text"
+              >
+                <span>
+                  Drop your image here, or
+                </span>
+                <span
+                  class="browseInput"
+                >
+                  browse
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </label>
+    <input
+      accept="image/jpeg,image/png"
+      id="jest-file"
+      style="display: none;"
+      type="file"
+    />
+    <div
+      class="container"
+    >
+      <span
+        class="highlight"
+      >
+        Replace image
+      </span>
+      <span>
+        recommended size 1640 x 624
+      </span>
+    </div>
+  </div>
+</div>
+`;

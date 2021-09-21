@@ -84,4 +84,50 @@ describe('<HelpCenterAppearanceView/>', () => {
 
         expect(container).toMatchSnapshot()
     })
+
+    it('disables "Save Changes" button if there are no changes', () => {
+        const {getByRole, getByLabelText} = renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterAppearanceView />
+            </Provider>,
+            route
+        )
+
+        const saveBtn = getByRole('button', {
+            name: 'Save Changes',
+        }) as HTMLButtonElement
+
+        // Initial state is disabled
+        expect(saveBtn.disabled).toBeTruthy()
+
+        // Change one setting and expect the button to become active
+        fireEvent.click(getByLabelText('Dark Theme'))
+        expect(saveBtn.disabled).toBeFalsy()
+
+        // Change back the setting and expect the initial state
+        fireEvent.click(getByLabelText('Light Theme'))
+        expect(saveBtn.disabled).toBeTruthy()
+    })
+
+    it('restores the default state when "Cancel" is clicked', () => {
+        const {getByRole, getByLabelText} = renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterAppearanceView />
+            </Provider>,
+            route
+        )
+
+        const cancelBtn = getByRole('button', {
+            name: 'Cancel',
+        }) as HTMLButtonElement
+        const saveBtn = getByRole('button', {
+            name: 'Save Changes',
+        }) as HTMLButtonElement
+
+        fireEvent.click(getByLabelText('Dark Theme'))
+        expect(saveBtn.disabled).toBeFalsy()
+
+        fireEvent.click(cancelBtn)
+        expect(saveBtn.disabled).toBeTruthy()
+    })
 })

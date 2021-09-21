@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropText> matches snapshot 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <img
+      alt="upload"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="text"
+    >
+      <span>
+        Drop your image here, or
+      </span>
+      <span
+        class="browseInput"
+      >
+        browse
+      </span>
+    </div>
+  </div>
+</div>
+`;
