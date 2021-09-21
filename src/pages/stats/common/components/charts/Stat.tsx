@@ -7,6 +7,8 @@ import axios, {AxiosError, Canceler} from 'axios'
 import classnames from 'classnames'
 
 import * as tagsSelectors from '../../../../../state/tags/selectors'
+import * as segmentTracker from '../../../../../store/middlewares/segmentTracker.js'
+import {SegmentEvent} from '../../../../../store/middlewares/types/segmentTracker'
 import {
     TICKETS_PER_TAG,
     stats as statsConfig,
@@ -24,6 +26,8 @@ import {makeStatsFiltersSelector} from '../../../../../state/stats/selectors'
 import {TwoDimensionalChart} from '../../../../../models/stat/types'
 import {downloadStat} from '../../../../../models/stat/resources'
 import {getFetchingStatusByName} from '../../../../../state/ui/stats/selectors'
+import {getCurrentUser} from '../../../../../state/currentUser/selectors'
+import {getCurrentAccountState} from '../../../../../state/currentAccount/selectors'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat'
@@ -64,8 +68,13 @@ export class StatContainer extends Component<Props, State> {
     }
 
     _downloadStatistic = async () => {
-        const {name, filters, notify} = this.props
+        const {name, filters, currentUser, account, notify} = this.props
         this.setState({isDownloading: true})
+        segmentTracker.logEvent(SegmentEvent.StatDownloadClicked, {
+            name,
+            user_id: currentUser.get('id'),
+            account_domain: account.get('domain'),
+        })
         try {
             const cancelToken = axios.CancelToken.source()
             this.cancelDownloadStat = cancelToken.cancel
@@ -257,6 +266,8 @@ const connector = connect(
             stat: getStatDataByName(name)(state),
             filters: makeStatsFiltersSelector(match.params.view)(state),
             isFetching: getFetchingStatusByName(name)(state),
+            currentUser: getCurrentUser(state),
+            account: getCurrentAccountState(state),
         }
     },
     {notify}

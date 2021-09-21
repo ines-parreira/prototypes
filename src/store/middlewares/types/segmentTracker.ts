@@ -80,4 +80,5 @@ export enum SegmentEvent {
     GrammarlyEnabled = 'grammarly-enabled',
     UndoSentMessage = 'undo-sent-message',
     PaywallUpgradeButtonSelected = 'paywall-upgrade-button-selected',
+    StatDownloadClicked = 'stat-download-clicked',
 }

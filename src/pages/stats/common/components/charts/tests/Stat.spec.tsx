@@ -16,6 +16,10 @@ import client from '../../../../../../models/api/resources'
 import {Stat} from '../../../../../../models/stat/types'
 import * as fileUtils from '../../../../../../utils/file'
 import {StatContainer} from '../Stat'
+import {user} from '../../../../../../fixtures/users'
+import {account} from '../../../../../../fixtures/account'
+import {logEvent} from '../../../../../../store/middlewares/segmentTracker.js'
+import {SegmentEvent} from '../../../../../../store/middlewares/types/segmentTracker'
 
 jest.spyOn(fileUtils, 'saveFileAsDownloaded')
 
@@ -35,12 +39,16 @@ jest.mock('../PerHourPerWeekTableStat/PerHourPerWeekTableStat', () => () => (
 
 jest.mock('../../StatCurrentDate', () => () => <div>StatCurrentDate</div>)
 
+jest.mock('../../../../../../store/middlewares/segmentTracker.js')
+
 const minProps = {
     name: 'stat_name',
     tagColors: null,
     notify: jest.fn(),
     filters: fromJS({}),
     isFetching: false,
+    currentUser: fromJS(user),
+    account: fromJS(account),
     stat: {data: {label: 'Stat label'}} as Stat,
 }
 
@@ -116,6 +124,11 @@ describe('Stat', () => {
 
         fireEvent.click(getByText(/CSV/i))
         await waitFor(() => {
+            expect(logEvent).toBeCalledWith(SegmentEvent.StatDownloadClicked, {
+                account_domain: account['domain'],
+                name: TICKETS_CREATED_PER_CHANNEL_PER_DAY,
+                user_id: user['id'],
+            })
             expect(fileUtils.saveFileAsDownloaded).toHaveBeenNthCalledWith(
                 1,
                 `${TICKETS_CREATED_PER_CHANNEL_PER_DAY}.csv`,
