@@ -10,17 +10,32 @@ type Props = {
         onClick: () => void
     }[]
     children: ReactNode
+    icon?: string
     title: string
 }
 
-export default function NavbarBlock({actions, children, title}: Props) {
+export default function NavbarBlock({actions, children, icon, title}: Props) {
     const [isOpen, setOpen] = useState(false)
 
     return (
         <div>
             <div className="item">
                 <h4 className={css.header}>
-                    <div className={css.title}>{title}</div>
+                    <div className={css.title}>
+                        {icon && (
+                            <span className={css.iconWrapper}>
+                                <i
+                                    className={classnames(
+                                        'material-icons',
+                                        css.icon
+                                    )}
+                                >
+                                    {icon}
+                                </i>
+                            </span>
+                        )}
+                        {title}
+                    </div>
                     {actions && actions.length > 0 && (
                         <Dropdown
                             isOpen={isOpen}

@@ -3,6 +3,7 @@
 exports[`StatsNavbarView should render 1`] = `
 <Fragment>
   <NavbarBlock
+    icon="adjust"
     title="Live"
   >
     <div
@@ -10,7 +11,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Overview"
         to="/app/stats/live-overview"
@@ -19,7 +20,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Agents"
         to="/app/stats/live-agents"
@@ -29,6 +30,7 @@ exports[`StatsNavbarView should render 1`] = `
     </div>
   </NavbarBlock>
   <NavbarBlock
+    icon="insights"
     title="Support Performance"
   >
     <div
@@ -36,7 +38,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Overview"
         to="/app/stats/support-performance-overview"
@@ -45,7 +47,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Tags"
         to="/app/stats/tags"
@@ -54,7 +56,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Channels"
         to="/app/stats/channels"
@@ -63,7 +65,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Agents"
         to="/app/stats/support-performance-agents"
@@ -72,7 +74,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Satisfaction"
         to="/app/stats/satisfaction"
@@ -81,7 +83,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Revenue"
         to="/app/stats/revenue"
@@ -91,6 +93,7 @@ exports[`StatsNavbarView should render 1`] = `
     </div>
   </NavbarBlock>
   <NavbarBlock
+    icon="bolt"
     title="Automations"
   >
     <div
@@ -98,7 +101,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Overview"
         to="/app/stats/automation"
@@ -107,7 +110,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Macros"
         to="/app/stats/macros"
@@ -116,7 +119,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="item"
+        className="item item"
         exact={true}
         key="Intents"
         to="/app/stats/intents"

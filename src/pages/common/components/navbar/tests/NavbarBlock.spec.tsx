@@ -29,4 +29,14 @@ describe('<NavbarBlock/>', () => {
         component.find(DropdownToggle).simulate('click')
         expect(component).toMatchSnapshot()
     })
+
+    it('should render an icon', () => {
+        const component = shallow(
+            <NavbarBlock icon="adjust" {...minProps}>
+                foobar
+            </NavbarBlock>
+        )
+
+        expect(component).toMatchSnapshot()
+    })
 })

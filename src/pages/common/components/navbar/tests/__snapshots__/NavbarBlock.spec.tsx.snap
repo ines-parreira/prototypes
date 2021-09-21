@@ -58,6 +58,73 @@ exports[`<NavbarBlock/> should render 1`] = `
 </div>
 `;
 
+exports[`<NavbarBlock/> should render an icon 1`] = `
+<div>
+  <div
+    className="item"
+  >
+    <h4
+      className="header"
+    >
+      <div
+        className="title"
+      >
+        <span
+          className="iconWrapper"
+        >
+          <i
+            className="material-icons icon"
+          >
+            adjust
+          </i>
+        </span>
+        Foo
+      </div>
+      <Dropdown
+        a11y={true}
+        active={false}
+        addonType={false}
+        direction="down"
+        inNavbar={false}
+        isOpen={false}
+        nav={false}
+        setActiveFromChild={false}
+        toggle={[Function]}
+      >
+        <DropdownToggle
+          aria-haspopup={true}
+          className="toggle btn-transparent"
+          color="secondary"
+          type="button"
+        >
+          <i
+            className="material-icons"
+          >
+            add
+          </i>
+        </DropdownToggle>
+        <DropdownMenu
+          flip={true}
+          right={true}
+          tag="div"
+        >
+          <DropdownItem
+            className="action"
+            key="foo"
+            onClick={[MockFunction]}
+            tag="button"
+            toggle={true}
+          >
+            foo
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    </h4>
+    foobar
+  </div>
+</div>
+`;
+
 exports[`<NavbarBlock/> should toggle the menu on clicking the dropdown toggle 1`] = `
 <NavbarBlock
   actions={
