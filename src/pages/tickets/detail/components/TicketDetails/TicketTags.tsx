@@ -7,6 +7,7 @@ import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
+import {connect, ConnectedProps} from 'react-redux'
 
 import shortcutManager from '../../../../../services/shortcutManager/index'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
@@ -15,6 +16,9 @@ import {TagLabel} from '../../../../common/utils/labels'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../../../common/utils/withCancellableRequest'
+import {hasRole} from '../../../../../utils'
+import {UserRole} from '../../../../../config/types/user'
+import {RootState} from '../../../../../state/types'
 
 import css from './TicketTags.less'
 
@@ -32,7 +36,8 @@ type Props = OwnProps &
         'fieldEnumSearchCancellable',
         'cancelFieldEnumSearchCancellable',
         typeof fieldEnumSearch
-    >
+    > &
+    ConnectedProps<typeof connector>
 
 type State = {
     dropdownOpen: boolean
@@ -167,7 +172,7 @@ export class TicketTags extends Component<Props, State> {
     }
 
     displayMenu = () => {
-        const {ticketTags} = this.props
+        const {ticketTags, currentUser} = this.props
         const {search} = this.state
 
         if (this.state.isLoading) {
@@ -212,16 +217,26 @@ export class TicketTags extends Component<Props, State> {
                 options = options.push(<DropdownItem key="divider" divider />)
             }
 
-            options = options.push(
-                <DropdownItem
-                    key="create"
-                    ref={availableTags.isEmpty() ? this.tagRef : undefined}
-                    type="button"
-                    onClick={() => this.addTag(search)}
-                >
-                    <b>Create</b> {search}
-                </DropdownItem>
-            )
+            options = hasRole(currentUser, UserRole.Agent)
+                ? options.push(
+                      <DropdownItem
+                          key="create"
+                          ref={
+                              availableTags.isEmpty() ? this.tagRef : undefined
+                          }
+                          type="button"
+                          onClick={() => this.addTag(search)}
+                      >
+                          <b>Create</b> {search}
+                      </DropdownItem>
+                  )
+                : availableTags.isEmpty()
+                ? options.push(
+                      <DropdownItem key="not_found" disabled>
+                          Couldn't find the tag: {search}
+                      </DropdownItem>
+                  )
+                : options
         }
 
         return options
@@ -308,6 +323,10 @@ export class TicketTags extends Component<Props, State> {
     }
 }
 
+const connector = connect((state: RootState) => ({
+    currentUser: state.currentUser,
+}))
+
 export default withCancellableRequest<
     'fieldEnumSearchCancellable',
     'cancelFieldEnumSearchCancellable',
@@ -315,4 +334,4 @@ export default withCancellableRequest<
 >(
     'fieldEnumSearchCancellable',
     fieldEnumSearch
-)(TicketTags)
+)(connector(TicketTags))
