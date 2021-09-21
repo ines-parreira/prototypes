@@ -1,12 +1,12 @@
-import React from 'react'
 import {chain as _chain} from 'lodash'
+import React from 'react'
 
 import {Category} from '../../../../../models/helpCenter/types'
-
 import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
 import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
 
+import css from './CategoriesTable.less'
 import {
     CategoriesTableBody,
     TableBodyProps,
@@ -59,10 +59,10 @@ export const CategoriesTable = ({
     return (
         <TableWrapper>
             <TableHead>
-                <HeaderCell style={{width: 25}} />
-                <HeaderCell />
-                <HeaderCell style={{width: 124}} />
-                <HeaderCell style={{width: 160}} />
+                <HeaderCell style={{width: 25}} className={css.headerCell} />
+                <HeaderCell className={css.headerCell} />
+                <HeaderCell style={{width: 124}} className={css.headerCell} />
+                <HeaderCell style={{width: 160}} className={css.headerCell} />
             </TableHead>
             <CategoriesTableBody
                 categories={records}

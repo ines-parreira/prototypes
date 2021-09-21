@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -29,9 +29,9 @@ export const useArticles = (
             ? readArticlesInCategory(categoryId)
             : readUncategorizedArticles
     )
-    const [isLoading, setLoading] = React.useState(false)
+    const [isLoading, setLoading] = useState(false)
 
-    React.useEffect(() => {
+    useEffect(() => {
         async function init() {
             if (isReady && client) {
                 setLoading(true)

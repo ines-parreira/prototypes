@@ -19,8 +19,14 @@ import {
     changeViewLanguage,
     readViewLanguage,
 } from '../../../../state/helpCenter/ui'
-import {resetArticles} from '../../../../state/helpCenter/articles'
-import {resetCategories} from '../../../../state/helpCenter/categories'
+import {
+    readUncategorizedArticles,
+    resetArticles,
+} from '../../../../state/helpCenter/articles'
+import {
+    readCategories,
+    resetCategories,
+} from '../../../../state/helpCenter/categories'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
@@ -90,14 +96,14 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     ] = useState<HelpCenterArticleTranslation[] | null>(null)
     const localeOptions = useLocales()
     const [articleLanguage, setArticleLanguage] = useState(viewLanguage)
-    const [pendingDeleteLocale, setPendingDeleteLocale] = React.useState<
-        OptionItem
-    >()
+    const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
 
     const {client} = useHelpcenterApi()
     const helpCenter = useSelector(getCurrentHelpCenter)
+    const categories = useSelector(readCategories)
+    const uncategorizedArticles = useSelector(readUncategorizedArticles)
     const articlesActions = useArticlesActions()
     const {articles, isLoading} = useArticles(viewLanguage)
 
@@ -580,6 +586,9 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
     }
 
+    const showCreateFirst =
+        categories.length === 0 && uncategorizedArticles.length === 0
+
     return (
         <div className={classnames('full-width', css.wrapper)}>
             <PageHeader
@@ -622,15 +631,16 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 </Container>
             ) : (
                 <SupportedLocalesProvider>
-                    <Container fluid className="page-container">
-                        <CreateFirst
-                            title="Create your first article 📚"
-                            description="Write your first article to be displayed in your very own help
-                center."
-                            buttonText="Create Article"
-                            onClick={createArticle}
-                        />
-                    </Container>
+                    {showCreateFirst && (
+                        <Container fluid className="page-container">
+                            <CreateFirst
+                                title="Create your first article 📚"
+                                description="Write your first article to be displayed in your very own help center."
+                                buttonText="Create Article"
+                                onClick={createArticle}
+                            />
+                        </Container>
+                    )}
                     {helpCenter && (
                         <CategoriesViews
                             helpcenter={helpCenter}
