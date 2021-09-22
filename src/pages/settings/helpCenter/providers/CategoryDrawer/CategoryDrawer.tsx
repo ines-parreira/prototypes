@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 
@@ -30,22 +30,24 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
     const params = getParams() as Category & {isCreate?: boolean}
-
     const category = useSelector(getCategoryById(params?.id))
-    const actions = useCategoriesActions()
+    const categoriesActions = useCategoriesActions()
 
     const [translation, readTranslation] = useAsyncFn(
         (categoryId: number, locale: LocaleCode) => {
             if (category.available_locales.includes(locale)) {
-                return actions.getCategoryTranslation(categoryId, locale)
+                return categoriesActions.getCategoryTranslation(
+                    categoryId,
+                    locale
+                )
             }
 
             return Promise.resolve(undefined)
         },
-        [actions]
+        [categoriesActions]
     )
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (category?.id && category?.translation?.locale) {
             void readTranslation(category.id, category.translation.locale)
         }
@@ -58,14 +60,14 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
         try {
             if (category?.available_locales.includes(locale)) {
                 // Update translation
-                await actions.updateCategoryTranslation(
+                await categoriesActions.updateCategoryTranslation(
                     params.id,
                     locale,
                     payload
                 )
             } else {
                 // Create translation
-                await actions.createCategoryTranslation(params.id, {
+                await categoriesActions.createCategoryTranslation(params.id, {
                     title: payload?.title || '',
                     description: payload?.description || '',
                     slug: payload?.slug || '',
@@ -94,7 +96,7 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
 
     const handleOnCreate = async (payload: CreateCategoryDto) => {
         try {
-            await actions.createCategory(payload)
+            await categoriesActions.createCategory(payload)
 
             void dispatch(
                 notify({
@@ -117,7 +119,7 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
 
     const handleOnDelete = async (categoryId: number) => {
         try {
-            await actions.deleteCategory(categoryId)
+            await categoriesActions.deleteCategory(categoryId)
 
             void dispatch(
                 notify({
@@ -142,7 +144,10 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
         locale: LocaleCode
     ) => {
         try {
-            await actions.deleteCategoryTranslation(categoryId, locale)
+            await categoriesActions.deleteCategoryTranslation(
+                categoryId,
+                locale
+            )
 
             void dispatch(
                 notify({
@@ -169,6 +174,7 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
             category={category}
             helpCenter={helpCenter}
             isOpen={isOpen()}
+            canSave={!categoriesActions.isLoading}
             translation={translation.value}
             onLocaleChange={(locale) => {
                 if (category?.id) {

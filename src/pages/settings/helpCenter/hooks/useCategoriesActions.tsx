@@ -1,4 +1,5 @@
 import {chain as _chain} from 'lodash'
+import {useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import {
@@ -32,33 +33,38 @@ export const useCategoriesActions = () => {
     const dispatch = useAppDispatch()
     const {client} = useHelpcenterApi()
     const viewLanguage = useSelector(getViewLanguage)
+    const [isLoading, setIsLoading] = useState(false)
 
     return {
+        isLoading,
+
         async getCategoryTranslation(categoryId: number, locale: LocaleCode) {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            return client
-                .getCategory({
-                    help_center_id: helpCenterId,
-                    id: categoryId,
-                    locale,
-                })
-                .then((response) => {
-                    const {data} = response
+            setIsLoading(true)
 
-                    if (data?.translation) {
-                        return data.translation
-                    }
+            const {data} = await client.getCategory({
+                help_center_id: helpCenterId,
+                id: categoryId,
+                locale,
+            })
 
-                    throw new Error('Category translation missing')
-                })
+            setIsLoading(false)
+
+            if (!data?.translation) {
+                throw new Error('Category translation missing')
+            }
+
+            return data.translation
         },
 
         async createCategory(payload: CreateCategoryDto) {
             if (!client) throw new Error('HTTP client not initialized!')
 
+            setIsLoading(true)
+
             const newCategory = await client
-                ?.createCategory(
+                .createCategory(
                     {
                         help_center_id: helpCenterId,
                     },
@@ -81,6 +87,8 @@ export const useCategoriesActions = () => {
 
             dispatch(saveCategories([output]))
 
+            setIsLoading(false)
+
             return output
         },
 
@@ -90,6 +98,8 @@ export const useCategoriesActions = () => {
             payload: Partial<CategoryTranslation>
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const translation = await client
                 .updateCategoryTranslation(
@@ -109,6 +119,8 @@ export const useCategoriesActions = () => {
                 dispatch(updateCategoryTranslation(output))
             }
 
+            setIsLoading(false)
+
             return output
         },
 
@@ -117,6 +129,8 @@ export const useCategoriesActions = () => {
             payload: CreateCategoryTranslationBody
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const translation = await client.createCategoryTranslation(
                 {
@@ -135,11 +149,15 @@ export const useCategoriesActions = () => {
                 )
             }
 
+            setIsLoading(false)
+
             return translation
         },
 
         async updateCategoriesPositions(categories: Category[]) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const {
                 data: previousPositions,
@@ -174,6 +192,8 @@ export const useCategoriesActions = () => {
                 )
             )
 
+            setIsLoading(false)
+
             return positions
         },
 
@@ -182,6 +202,8 @@ export const useCategoriesActions = () => {
             locale: LocaleCode
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             await client.deleteCategoryTranslation({
                 help_center_id: helpCenterId,
@@ -194,10 +216,14 @@ export const useCategoriesActions = () => {
             if (locale === viewLanguage) {
                 dispatch(deleteCategory(categoryId))
             }
+
+            setIsLoading(false)
         },
 
         async deleteCategory(categoryId: number) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const response = await client.deleteCategory({
                 help_center_id: helpCenterId,
@@ -205,6 +231,8 @@ export const useCategoriesActions = () => {
             })
 
             dispatch(deleteCategory(categoryId))
+
+            setIsLoading(false)
 
             return response
         },

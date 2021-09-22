@@ -1,38 +1,40 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, {
+    ChangeEvent,
+    MouseEvent,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {useSelector} from 'react-redux'
-
+import classNames from 'classnames'
 import {
-    Input,
-    Label,
     Button,
     FormGroup,
     FormText,
-    InputGroupAddon,
+    Input,
     InputGroup,
+    InputGroupAddon,
+    Label,
 } from 'reactstrap'
 
 import {
-    HelpCenter,
-    CategoryTranslation,
-    LocaleCode,
-    CreateCategoryDto,
     Category,
+    CategoryTranslation,
+    CreateCategoryDto,
+    HelpCenter,
+    LocaleCode,
 } from '../../../../../../models/helpCenter/types'
 import {getViewLanguage} from '../../../../../../state/helpCenter/ui'
 
 import {Drawer} from '../../../../../common/components/Drawer'
-
-import {useLocales} from '../../../hooks/useLocales'
-import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
-
 import {
     HELP_CENTER_DOMAIN,
     HELP_CENTER_LANGUAGE_DEFAULT,
 } from '../../../constants'
+import {useLocales} from '../../../hooks/useLocales'
+import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
 import {slugify} from '../../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../../ConfirmationModal'
-
 import {
     ActionType,
     ArticleLanguageSelect,
@@ -45,6 +47,7 @@ type Props = {
     isOpen: boolean
     isCreate?: boolean
     isLoading: boolean
+    canSave: boolean
     helpCenter: HelpCenter | null
     category?: Category
     translation?: CategoryTranslation
@@ -60,6 +63,7 @@ export const HelpCenterCategory = ({
     isOpen,
     isCreate,
     isLoading,
+    canSave,
     translation,
     category,
     helpCenter,
@@ -73,24 +77,20 @@ export const HelpCenterCategory = ({
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
     const locales = useLocales()
-    const [title, setTitle] = React.useState('')
-    const [slug, setSlug] = React.useState('')
-    const [isPristineSlug, setPristineSlug] = React.useState(true)
-    const [description, setDescription] = React.useState('')
-    const [currentLocale, setCurrentLocale] = React.useState(viewLanguage)
-    const [pendingDeleteLocale, setPendingDeleteLocale] = React.useState<
-        OptionItem
-    >()
-    const [pendingDeleteCategory, setPendingDeleteCategory] = React.useState(
-        false
-    )
+    const [title, setTitle] = useState('')
+    const [slug, setSlug] = useState('')
+    const [isPristineSlug, setPristineSlug] = useState(true)
+    const [description, setDescription] = useState('')
+    const [currentLocale, setCurrentLocale] = useState(viewLanguage)
+    const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
+    const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
 
     const localeOptions = useLocaleSelectOptions(
         locales,
         helpCenter?.supported_locales || []
     )
 
-    const options: OptionItem[] = React.useMemo(
+    const options: OptionItem[] = useMemo(
         () =>
             localeOptions.map((option) => {
                 let isComplete = false
@@ -112,11 +112,11 @@ export const HelpCenterCategory = ({
         [category, localeOptions]
     )
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCurrentLocale(viewLanguage)
     }, [viewLanguage])
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isOpen && category?.id) {
             setTitle(translation?.title || '')
             setSlug(translation?.slug || '')
@@ -133,7 +133,7 @@ export const HelpCenterCategory = ({
     }, [isOpen, category, translation, viewLanguage])
 
     const handleOnClickAction = (
-        ev: React.MouseEvent,
+        ev: MouseEvent,
         action: ActionType,
         currentOption: OptionItem
     ) => {
@@ -150,7 +150,7 @@ export const HelpCenterCategory = ({
         }
     }
 
-    const handleOnChangeLocale = (ev: React.MouseEvent, value: LocaleCode) => {
+    const handleOnChangeLocale = (ev: MouseEvent, value: LocaleCode) => {
         setCurrentLocale(value)
         onLocaleChange(value)
     }
@@ -163,7 +163,7 @@ export const HelpCenterCategory = ({
         onClose()
     }
 
-    const handleChangeTitle = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeTitle = (ev: ChangeEvent<HTMLInputElement>) => {
         setTitle(ev.target.value)
 
         if (isPristineSlug) {
@@ -171,7 +171,7 @@ export const HelpCenterCategory = ({
         }
     }
 
-    const handleChangeSlug = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeSlug = (ev: ChangeEvent<HTMLInputElement>) => {
         setSlug(slugify(ev.target.value))
 
         if (isPristineSlug) {
@@ -179,37 +179,44 @@ export const HelpCenterCategory = ({
         }
     }
 
-    const handleChangeDescription = (
-        ev: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleChangeDescription = (ev: ChangeEvent<HTMLInputElement>) => {
         setDescription(ev.target.value)
     }
 
     const handleOnSave = () => {
         if (isCreate) {
-            onCreate &&
-                onCreate({
-                    translation: {
-                        title,
-                        slug,
-                        description,
-                        locale: currentLocale,
-                    },
-                })
-            return
-        }
-        onSave &&
-            onSave(
-                {
+            onCreate?.({
+                translation: {
                     title,
                     slug,
                     description,
+                    locale: currentLocale,
                 },
-                currentLocale
-            )
+            })
+
+            return
+        }
+
+        onSave?.(
+            {
+                title,
+                slug,
+                description,
+            },
+            currentLocale
+        )
     }
 
     const slugValue: string = String(currentLocale).toLowerCase()
+
+    const canSaveCategory = useMemo(
+        () =>
+            canSave &&
+            title.trim() !== '' &&
+            slug.trim() !== '' &&
+            description.trim() !== '',
+        [canSave, title, slug, description]
+    )
 
     const content = () => (
         <>
@@ -294,11 +301,7 @@ export const HelpCenterCategory = ({
                 <Button
                     data-testid="button-save"
                     color="primary"
-                    disabled={Boolean(
-                        title.trim() === '' ||
-                            slug.trim() === '' ||
-                            description.trim() === ''
-                    )}
+                    disabled={!canSaveCategory}
                     onClick={handleOnSave}
                 >
                     Save

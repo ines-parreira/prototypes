@@ -38,6 +38,7 @@ jest.mock('../../../../hooks/useLocales', () => ({
 
 type Props = {
     isOpen?: boolean
+    canSave?: boolean
     getCategory?: () => Promise<unknown>
 }
 
@@ -53,7 +54,7 @@ const defaultState: Partial<RootState> = {
     },
 }
 
-const Example = ({isOpen = false}: Props) => {
+const Example = ({isOpen = false, canSave = true}: Props) => {
     const [open, setOpen] = React.useState(isOpen)
 
     return (
@@ -64,6 +65,7 @@ const Example = ({isOpen = false}: Props) => {
             <HelpCenterCategory
                 isOpen={open}
                 isLoading={false}
+                canSave={canSave}
                 helpCenter={helpCenter}
                 onClose={() => setOpen(false)}
                 onLocaleChange={jest.fn()}
@@ -80,6 +82,7 @@ describe('<HelpCenterCategory>', () => {
                 <HelpCenterCategory
                     isOpen={false}
                     isLoading={false}
+                    canSave
                     helpCenter={helpCenter}
                     onClose={jest.fn()}
                     onLocaleChange={jest.fn()}
@@ -185,6 +188,33 @@ describe('<HelpCenterCategory>', () => {
             },
         })
         expect(button.disabled).toBeFalsy()
+    })
+
+    it('disables the Save button if canSave is false', () => {
+        const {getByLabelText, getByTestId} = render(
+            <Example isOpen canSave={false} />
+        )
+        const button = getByTestId('button-save') as HTMLButtonElement
+
+        expect(button.disabled).toBeTruthy()
+
+        fireEvent.change(getByTestId('title-input'), {
+            target: {
+                value: 'About us',
+            },
+        })
+        fireEvent.change(getByLabelText('Description'), {
+            target: {
+                value: '   ',
+            },
+        })
+        fireEvent.change(getByLabelText('Description'), {
+            target: {
+                value: 'some description',
+            },
+        })
+
+        expect(button.disabled).toBeTruthy()
     })
 
     it('resets the fields when isOpen changes to false', () => {

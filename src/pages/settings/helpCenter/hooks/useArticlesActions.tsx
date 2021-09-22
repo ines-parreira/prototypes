@@ -1,5 +1,6 @@
 import _isNumber from 'lodash/isNumber'
 import {chain as _chain} from 'lodash'
+import {useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -62,10 +63,15 @@ export const useArticlesActions = () => {
     const dispatch = useAppDispatch()
     const {client} = useHelpcenterApi()
     const viewLanguage = useSelector(getViewLanguage)
+    const [isLoading, setIsLoading] = useState(false)
 
     return {
+        isLoading,
+
         async createArticle(translation: CreateArticleDto['translation']) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const response = await client
                 .createArticle(
@@ -89,6 +95,8 @@ export const useArticlesActions = () => {
 
             dispatch(saveArticles([article]))
 
+            setIsLoading(false)
+
             return article
         },
 
@@ -97,6 +105,8 @@ export const useArticlesActions = () => {
             categoryId: number
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const response = await client
                 .createArticle(
@@ -121,11 +131,15 @@ export const useArticlesActions = () => {
 
             dispatch(saveArticles([article]))
 
+            setIsLoading(false)
+
             return article
         },
 
         async updateArticleTranslation(article: HelpCenterArticle) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const response = await client
                 .updateArticleTranslation(
@@ -152,11 +166,15 @@ export const useArticlesActions = () => {
                 dispatch(updateArticle(updatedArticle))
             }
 
+            setIsLoading(false)
+
             return updatedArticle
         },
 
         async createArticleTranslation(article: HelpCenterArticle) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const response = await client
                 .createArticleTranslation(
@@ -181,11 +199,15 @@ export const useArticlesActions = () => {
                 })
             )
 
+            setIsLoading(false)
+
             return response
         },
 
         async deleteArticle(articleId: number) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             const response = await client.deleteArticle({
                 help_center_id: helpCenterId,
@@ -193,6 +215,8 @@ export const useArticlesActions = () => {
             })
 
             dispatch(deleteArticle(articleId))
+
+            setIsLoading(false)
 
             return response
         },
@@ -203,12 +227,16 @@ export const useArticlesActions = () => {
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
+            setIsLoading(true)
+
             const response = await updatePositionRequest(client, articles, {
                 helpCenterId,
                 categoryId,
             })
 
             dispatch(updateArticlesOrder(response))
+
+            setIsLoading(false)
         },
 
         async updateUncategorizedArticlePosition(
@@ -216,17 +244,23 @@ export const useArticlesActions = () => {
         ) {
             if (!client) throw new Error('HTTP client not initialized!')
 
+            setIsLoading(true)
+
             const response = await updatePositionRequest(client, articles, {
                 helpCenterId,
             })
 
             dispatch(updateArticlesOrder(response))
 
+            setIsLoading(false)
+
             return response
         },
 
         async deleteArticleTranslation(articleId: number, locale: LocaleCode) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
 
             await client.deleteArticleTranslation({
                 help_center_id: helpCenterId,
@@ -239,6 +273,8 @@ export const useArticlesActions = () => {
             if (locale === viewLanguage) {
                 dispatch(deleteArticle(articleId))
             }
+
+            setIsLoading(false)
         },
 
         async cloneArticle(article: HelpCenterArticle) {
@@ -251,6 +287,8 @@ export const useArticlesActions = () => {
                 slug: `${article.translation.slug}-copy`,
                 title: `${article.translation.title} copy`,
             }
+
+            setIsLoading(true)
 
             const translations = await client
                 .listArticleTranslations({
@@ -297,6 +335,8 @@ export const useArticlesActions = () => {
                     ),
                 })
             )
+
+            setIsLoading(false)
 
             return duplicateArticle
         },

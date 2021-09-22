@@ -214,7 +214,8 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
     const canSaveArticle: boolean = useMemo(() => {
         const currentTranslation = selectedArticle?.translation
-        if (!currentTranslation) {
+
+        if (articlesActions.isLoading || !currentTranslation) {
             return false
         }
 
@@ -228,7 +229,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             (key) => currentTranslation[key] !== savedTranslation[key]
         )
         return filledRequired && hasBeenChanged
-    }, [selectedArticle, savedTranslation])
+    }, [articlesActions.isLoading, selectedArticle, savedTranslation])
 
     const onArticleChange = React.useCallback(
         (translation: HelpCenterArticleTranslation, counters) => {
