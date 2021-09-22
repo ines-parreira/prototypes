@@ -2,15 +2,16 @@ import {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {LocaleCode} from '../../../../models/helpCenter/types'
+import {
+    HelpCenterArticle,
+    LocaleCode,
+} from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
-
 import {
     readArticlesInCategory,
     readUncategorizedArticles,
     saveArticles,
 } from '../../../../state/helpCenter/articles'
-
 import {HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
 
 import {useHelpcenterApi} from './useHelpcenterApi'
@@ -19,7 +20,10 @@ import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 export const useArticles = (
     locale: LocaleCode = HELP_CENTER_LANGUAGE_DEFAULT,
     categoryId?: number
-) => {
+): {
+    articles: HelpCenterArticle[]
+    isLoading: boolean
+} => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
     const {isReady, client} = useHelpcenterApi()

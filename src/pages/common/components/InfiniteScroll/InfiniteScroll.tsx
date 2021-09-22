@@ -7,10 +7,11 @@ import css from './InfiniteScroll.less'
 
 type Props = {
     children: ReactNode
-    className: string
+    className?: string
     onLoad: () => Promise<void>
     shouldLoadMore: boolean
     threshold?: number
+    loaderSize?: number
 }
 
 const InfiniteScroll = ({
@@ -19,34 +20,42 @@ const InfiniteScroll = ({
     onLoad = () => Promise.resolve(),
     shouldLoadMore = true,
     threshold = 50,
-}: Props) => {
+    loaderSize = 40,
+}: Props): JSX.Element => {
     const [isLoading, setIsLoading] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-        void handleLoad()
-    }, [shouldLoadMore])
-
     const handleLoad = useCallback(async () => {
-        if (!shouldLoadMore || isLoading || !ref.current) {
+        const {current} = ref
+
+        if (!shouldLoadMore || isLoading || !current) {
             return
         }
 
-        const containerScroll = ref.current.scrollTop + ref.current.clientHeight
+        const {clientHeight, scrollHeight, scrollTop} = current
+
+        const containerScroll = scrollTop + clientHeight
 
         if (
             containerScroll !== 0 &&
-            ref.current.scrollHeight !== 0 &&
-            containerScroll + threshold >= ref.current.scrollHeight
+            scrollHeight !== 0 &&
+            (clientHeight === scrollHeight ||
+                containerScroll + threshold >= scrollHeight)
         ) {
             setIsLoading(true)
             await onLoad()
             setIsLoading(false)
         }
-    }, [isLoading, ref.current, setIsLoading, shouldLoadMore])
+    }, [isLoading, onLoad, setIsLoading, shouldLoadMore, threshold])
+
+    useEffect(() => {
+        void handleLoad()
+    }, [handleLoad])
 
     return (
         <div
+            ref={ref}
+            onScroll={handleLoad}
             className={classnames(
                 css.component,
                 {
@@ -54,11 +63,13 @@ const InfiniteScroll = ({
                 },
                 className
             )}
-            ref={ref}
-            onScroll={handleLoad}
         >
             {children}
-            <Loader className={css.loader} minHeight="0" />
+            <Loader
+                className={css.loader}
+                minHeight="0"
+                size={`${loaderSize}px`}
+            />
         </div>
     )
 }

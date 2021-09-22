@@ -223,13 +223,13 @@ describe('useCategoriesActions', () => {
         })
     })
 
-    describe('updateCategoriesPosition()', () => {
+    describe('updateCategoriesPositions()', () => {
         it('dispatches updateCategoriesOrder action', async () => {
             const {result} = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateCategoriesPosition([
+            await result.current.updateCategoriesPositions([
                 createCategoryFromDto(getSingleCategoryEnglish, 1),
             ])
 

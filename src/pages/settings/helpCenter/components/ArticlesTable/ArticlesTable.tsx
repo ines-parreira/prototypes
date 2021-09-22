@@ -75,7 +75,7 @@ export const ArticlesTable = ({
     }
 
     const handleOnReorderFinish = () => {
-        onReorderFinish && onReorderFinish(categoryId, records)
+        onReorderFinish?.(categoryId, records)
     }
 
     return (

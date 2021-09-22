@@ -80,3 +80,5 @@ export const ARTICLE_ROW_ACTIONS = [
         icon: 'link',
     },
 ]
+
+export const CATEGORIES_PER_PAGE = 30

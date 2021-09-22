@@ -25,7 +25,8 @@
         margin-right: 16px;
     }
 
-    .row {
+    .row,
+    .droppable-row {
         background-color: @white;
 
         &:hover {
@@ -34,6 +35,13 @@
             .actions {
                 opacity: 1;
             }
+        }
+    }
+
+    .droppable-row {
+        .cell {
+            font-weight: 600;
+            font-style: normal;
         }
     }
 
@@ -49,9 +57,10 @@
         cursor: default;
     }
 
-    .category-cell {
+    .cell {
         color: @neutral10;
-        font-weight: 600;
+        font-weight: 400;
+        font-style: italic;
         font-size: 14px;
         line-height: 20px;
 

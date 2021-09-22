@@ -14,7 +14,7 @@ import {
     saveCategories,
 } from '../../../../../state/helpCenter/categories'
 
-import {useHelpcenterCategories} from '../useHelpcenterCategories'
+import {useHelpCenterCategories} from '../useHelpcenterCategories'
 
 jest.mock('../useHelpcenterApi', () => {
     return {
@@ -25,6 +25,10 @@ jest.mock('../useHelpcenterApi', () => {
                     Promise.resolve({
                         data: {
                             data: [],
+                            meta: {
+                                page: 1,
+                                nbPages: 1,
+                            },
                         },
                     }),
                 getCategoriesPositions: () => Promise.resolve({data: []}),
@@ -56,24 +60,26 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }: {
     children: Element
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
-describe('useHelpcenterCategories', () => {
+describe('useHelpCenterCategories', () => {
     afterEach(() => {
         jest.clearAllMocks()
     })
     it('finishes loading once the requests are done', async () => {
         const {result, waitForNextUpdate} = renderHook(
-            () => useHelpcenterCategories(1, 'en-US'),
+            () => useHelpCenterCategories(1, {locale: 'en-US'}),
             {
                 wrapper: dependencyWrapper,
             }
         )
         expect(result.current.isLoading).toBeTruthy()
+        expect(result.current.hasMore).toEqual(true)
         await waitForNextUpdate()
         expect(result.current.isLoading).toBeFalsy()
+        expect(result.current.hasMore).toEqual(false)
     })
     it('saves the categories once they are fetched', async () => {
         const {waitForNextUpdate} = renderHook(
-            () => useHelpcenterCategories(1, 'en-US'),
+            () => useHelpCenterCategories(1, {locale: 'en-US'}),
             {
                 wrapper: dependencyWrapper,
             }
@@ -82,7 +88,7 @@ describe('useHelpcenterCategories', () => {
         expect(saveCategories).toHaveBeenCalled()
     })
     it('uses the readCategories selector', () => {
-        renderHook(() => useHelpcenterCategories(1, 'en-US'), {
+        renderHook(() => useHelpCenterCategories(1, {locale: 'en-US'}), {
             wrapper: dependencyWrapper,
         })
         expect(readCategories).toHaveBeenCalled()

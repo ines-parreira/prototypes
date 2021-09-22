@@ -1,32 +1,37 @@
 import {chain as _chain} from 'lodash'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {Category} from '../../../../../models/helpCenter/types'
 import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
+import TableBody from '../../../../common/components/table/TableBody'
 import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
 
 import css from './CategoriesTable.less'
 import {
-    CategoriesTableBody,
-    TableBodyProps,
-} from './components/CategoriesTableBody'
+    CategoriesTableRow,
+    CategoriesTableRowProps,
+} from './components/CategoriesTableRow'
 
-type Props = Partial<TableBodyProps> & {
+export type CategoriesTableProps = Pick<
+    CategoriesTableRowProps,
+    'viewLanguage' | 'renderArticleList'
+> & {
+    categories?: Category[]
     onReorderFinish?: (categories: Category[]) => void
 }
 
 export const CategoriesTable = ({
     categories = [],
-    renderArticleList,
-    onRowClick,
+    viewLanguage,
     onReorderFinish,
-}: Props): JSX.Element => {
-    const [records, setRecords] = React.useState(
+    renderArticleList,
+}: CategoriesTableProps): JSX.Element => {
+    const [records, setRecords] = useState(
         _chain(categories).sortBy(['position']).value()
     )
 
-    React.useEffect(() => {
+    useEffect(() => {
         setRecords(_chain(categories).sortBy(['position']).value())
     }, [categories])
 
@@ -53,7 +58,7 @@ export const CategoriesTable = ({
     }
 
     const handleOnReorderFinish = () => {
-        onReorderFinish && onReorderFinish(records)
+        onReorderFinish?.(records)
     }
 
     return (
@@ -64,13 +69,28 @@ export const CategoriesTable = ({
                 <HeaderCell style={{width: 124}} className={css.headerCell} />
                 <HeaderCell style={{width: 160}} className={css.headerCell} />
             </TableHead>
-            <CategoriesTableBody
-                categories={records}
-                renderArticleList={renderArticleList}
-                onRowClick={onRowClick}
-                onMoveEntity={handleOnDropCategory}
-                onDropEntity={handleOnReorderFinish}
-            />
+            <TableBody className={css['main-table']}>
+                <CategoriesTableRow
+                    categoryId={-1}
+                    title="Uncategorized articles"
+                    viewLanguage={viewLanguage}
+                    renderArticleList={renderArticleList}
+                />
+                {records.map((category) => (
+                    <CategoriesTableRow
+                        key={category.id}
+                        categoryId={category.id}
+                        category={category}
+                        title={category.translation?.title}
+                        viewLanguage={
+                            category.translation?.locale || viewLanguage
+                        }
+                        renderArticleList={renderArticleList}
+                        onMoveEntity={handleOnDropCategory}
+                        onDropEntity={handleOnReorderFinish}
+                    />
+                ))}
+            </TableBody>
         </TableWrapper>
     )
 }

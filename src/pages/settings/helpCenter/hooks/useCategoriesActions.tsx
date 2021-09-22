@@ -138,24 +138,41 @@ export const useCategoriesActions = () => {
             return translation
         },
 
-        async updateCategoriesPosition(categories: Category[]) {
+        async updateCategoriesPositions(categories: Category[]) {
             if (!client) throw new Error('HTTP client not initialized!')
+
+            const {
+                data: previousPositions,
+            } = await client.getCategoriesPositions({
+                help_center_id: helpCenterId,
+            })
 
             const sortedCategories = _chain(categories)
                 .sortBy(['position'])
                 .map((category) => category.id)
                 .value()
 
+            // This allows to sort only a subset of categories (when using pagination for example)
+            const categoriesPositions = Array.from(
+                new Set([...sortedCategories, ...previousPositions])
+            )
+
             const positions = await client
                 .setCategoriesPositions(
                     {
                         help_center_id: helpCenterId,
                     },
-                    sortedCategories
+                    categoriesPositions
                 )
                 .then((response) => response.data)
 
-            dispatch(updateCategoriesOrder(positions))
+            dispatch(
+                updateCategoriesOrder(
+                    positions.filter((categoryId) =>
+                        sortedCategories.includes(categoryId)
+                    )
+                )
+            )
 
             return positions
         },

@@ -19,14 +19,8 @@ import {
     changeViewLanguage,
     readViewLanguage,
 } from '../../../../state/helpCenter/ui'
-import {
-    readUncategorizedArticles,
-    resetArticles,
-} from '../../../../state/helpCenter/articles'
-import {
-    readCategories,
-    resetCategories,
-} from '../../../../state/helpCenter/categories'
+import {resetArticles} from '../../../../state/helpCenter/articles'
+import {resetCategories} from '../../../../state/helpCenter/categories'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
@@ -49,16 +43,13 @@ import {SupportedLocalesProvider} from '../providers/SupportedLocales'
 import {CategoryDrawer} from '../providers/CategoryDrawer'
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useLocales} from '../hooks/useLocales'
-import {useArticles} from '../hooks/useArticles'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
 
 import {ArticlesTable} from './ArticlesTable'
-import CreateFirst from './articles/CreateFirst'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
-import HelpCenterArticleList from './articles/HelpCenterArticleList'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
 import HelpCenterEditArticleForm from './articles/HelpCenterEditArticleForm'
 import HelpCenterEditAdvancedArticleForm from './articles/HelpCenterEditAdvancedArticleForm'
@@ -102,10 +93,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
     const {client} = useHelpcenterApi()
     const helpCenter = useSelector(getCurrentHelpCenter)
-    const categories = useSelector(readCategories)
-    const uncategorizedArticles = useSelector(readUncategorizedArticles)
     const articlesActions = useArticlesActions()
-    const {articles, isLoading} = useArticles(viewLanguage)
 
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
@@ -586,9 +574,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
     }
 
-    const showCreateFirst =
-        categories.length === 0 && uncategorizedArticles.length === 0
-
     return (
         <div className={classnames('full-width', css.wrapper)}>
             <PageHeader
@@ -625,49 +610,29 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 </Button>
             </PageHeader>
             <HelpCenterNavigation helpcenterId={helpCenterId} />
-            {isLoading || helpCenter === null ? (
+            {!helpCenter ? (
                 <Container fluid className="page-container">
                     <Loader />
                 </Container>
             ) : (
                 <SupportedLocalesProvider>
-                    {showCreateFirst && (
-                        <Container fluid className="page-container">
-                            <CreateFirst
-                                title="Create your first article 📚"
-                                description="Write your first article to be displayed in your very own help center."
-                                buttonText="Create Article"
-                                onClick={createArticle}
+                    <CategoriesViews
+                        createArticle={createArticle}
+                        helpCenter={helpCenter}
+                        viewLanguage={viewLanguage}
+                        renderArticleList={(categoryId, articles) => (
+                            <ArticlesTable
+                                isNested
+                                categoryId={categoryId}
+                                list={articles}
+                                onClick={selectArticle}
+                                onReorderFinish={handleOnReorder}
+                                onClickSettings={editArticleSettings}
                             />
-                        </Container>
-                    )}
-                    {helpCenter && (
-                        <CategoriesViews
-                            helpcenter={helpCenter}
-                            currentViewLanguage={viewLanguage}
-                            renderArticleList={(category) => (
-                                <ArticlesTable
-                                    isNested
-                                    categoryId={category.id}
-                                    list={category.articles}
-                                    onClick={selectArticle}
-                                    onReorderFinish={handleOnReorder}
-                                    onClickSettings={editArticleSettings}
-                                />
-                            )}
-                        />
-                    )}
+                        )}
+                    />
 
-                    {articles.length > 0 && (
-                        <HelpCenterArticleList
-                            label="uncategorised articles"
-                            list={articles}
-                            onClick={selectArticle}
-                            onReorderFinish={handleOnReorder}
-                            onClickSettings={editArticleSettings}
-                        />
-                    )}
-                    {helpCenter && <CategoryDrawer helpCenter={helpCenter} />}
+                    <CategoryDrawer helpCenter={helpCenter} />
                     <HelpCenterEditModal
                         open={Boolean(editModal)}
                         fullscreen={

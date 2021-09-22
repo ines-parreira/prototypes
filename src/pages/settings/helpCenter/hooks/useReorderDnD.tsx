@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDrag, useDrop, DropTargetMonitor} from 'react-dnd'
 
-type DragItemRequired = {
+export type DragItemRequired = {
     type: string
     position: number
 }
