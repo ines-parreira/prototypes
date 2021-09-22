@@ -192,12 +192,43 @@ describe('ticket message meta', () => {
             const postId = '2750858871676052'
             const feedId = '19837193719213'
             const commentId = '18762371983'
+            const permalink = 'https://facebook.com/permalink'
             const source = {
                 extra: {
                     page_id: pageId,
                     post_id: `${feedId}_${postId}`,
                     parent_id: `${feedId}_${postId}`,
-                    permalink: 'https://facebook.com/permalink',
+                    permalink: permalink,
+                },
+                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                type: TicketMessageSourceType.FacebookMentionComment,
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+            }
+
+            const component = shallow(
+                <Meta
+                    via="facebook"
+                    integrationId={118}
+                    source={source}
+                    messageId={`${postId}_${commentId}`}
+                />
+            )
+
+            const from = component.find('From').dive()
+            expect(from.text()).toBe('go to comment')
+            expect(from.find('a').prop('href')).toEqual(permalink)
+        })
+
+        it('should display "go to comment" link for mention comments with no permalink', () => {
+            const pageId = '871900732905218'
+            const postId = '2750858871676052'
+            const feedId = '19837193719213'
+            const commentId = '18762371983'
+            const source = {
+                extra: {
+                    page_id: pageId,
+                    post_id: `${feedId}_${postId}`,
+                    parent_id: `${feedId}_${postId}`,
                 },
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
                 type: TicketMessageSourceType.FacebookMentionComment,

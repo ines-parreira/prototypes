@@ -365,6 +365,10 @@ export function responseSourceType(
         'type',
     ]) as TicketMessageSourceType
 
+    if (lastMessage.getIn(['source', 'extra', 'unfetchable']) as boolean) {
+        return TicketMessageSourceType.InternalNote
+    }
+
     if (lastSourceType === TicketMessageSourceType.FacebookPost) {
         return TicketMessageSourceType.FacebookComment
     }

@@ -268,11 +268,13 @@ export class SourceActionsFooter extends Component<Props> {
             return widgets
         }
 
+        const isUnfetchable = source?.extra?.unfetchable as boolean
         if (
             !source ||
             !source.type ||
             isMessageHidden ||
             isMessageDeleted ||
+            isUnfetchable ||
             [
                 TicketMessageSourceType.FacebookComment,
                 TicketMessageSourceType.FacebookMentionComment,

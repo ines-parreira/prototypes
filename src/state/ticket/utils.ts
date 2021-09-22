@@ -510,6 +510,14 @@ export function getNewMessageSender(
             ].includes(type)
         } else if (
             newMessageSourceType ===
+            TicketMessageSourceType.FacebookMentionComment
+        ) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.FacebookMentionPost,
+            ].includes(type)
+        } else if (
+            newMessageSourceType ===
             TicketMessageSourceType.FacebookReviewComment
         ) {
             return [

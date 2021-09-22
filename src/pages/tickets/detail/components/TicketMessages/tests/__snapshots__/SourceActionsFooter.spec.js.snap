@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<SourceActionsFooter/> should not render actions because it's an unfetchable mention comment 1`] = `null`;
+
 exports[`<SourceActionsFooter/> should not render any reactions because the message is deleted 1`] = `null`;
 
 exports[`<SourceActionsFooter/> should not render any reactions because the message is deleted 2`] = `null`;

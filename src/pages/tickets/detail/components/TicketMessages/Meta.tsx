@@ -192,10 +192,14 @@ export default function Meta(props: Props) {
                 link = `https://facebook.com/${source.extra.open_graph_story_id}/?comment_id=${commentId}`
             }
         } else if (!!messageId && isFacebookComment) {
-            const postId = getId(fullPostId!)
-            const commentId = getId(messageId)
             type = 'comment'
-            link = `https://facebook.com/${pageFeedId!}/posts/${postId}?comment_id=${commentId}`
+            if (!permalink) {
+                const postId = getId(fullPostId!)
+                const commentId = getId(messageId)
+                link = `https://facebook.com/${pageFeedId!}/posts/${postId}?comment_id=${commentId}`
+            } else {
+                link = permalink
+            }
         } else if (isTwitterRootTweet) {
             type = 'tweet'
             link = `https://twitter.com/${twitterFromUsername!}/status/${tweetId!}`

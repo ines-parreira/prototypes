@@ -152,6 +152,7 @@ export type Source = {
         open_graph_story_id?: string
         score?: number
         external_product_id?: string
+        unfetchable?: boolean
     }
 }
 

@@ -202,4 +202,22 @@ describe('<SourceActionsFooter/>', () => {
             expect(component).toMatchSnapshot()
         }
     )
+
+    it("should not render actions because it's an unfetchable mention comment", () => {
+        const facebookMessage = {...facebookMessageWithPageAndCustomerReactions}
+        facebookMessage.source.type = FACEBOOK_MENTION_COMMENT_SOURCE
+        facebookMessage.source.extra = {unfetchable: true}
+        const component = render(
+            <SourceActionsFooter
+                source={facebookMessage.source}
+                meta={facebookMessage.meta}
+                integrationId={facebookMessage.integration_id}
+                messageId={facebookMessage.message_id}
+                isMessageHidden={true}
+                isMessageDeleted={false}
+                store={store}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
 })
