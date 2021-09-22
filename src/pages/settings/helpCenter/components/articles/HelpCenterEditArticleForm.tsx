@@ -6,16 +6,28 @@ import HelpCenterEditor from './HelpCenterEditor/HelpCenterEditor'
 
 type Props = {
     translation: HelpCenterArticleTranslation
-    onChange: (translation: HelpCenterArticleTranslation) => void
+    onChange: (
+        translation: HelpCenterArticleTranslation,
+        extra?: {wordCount: number; charCount: number}
+    ) => void
 }
 
 export const HelpCenterEditArticleForm = ({translation, onChange}: Props) => {
-    const onEditArticleContent = (newValue: string) => {
-        onChange({
-            ...translation,
-            content: newValue,
-        })
-    }
+    const onEditArticleContent = React.useCallback(
+        (newValue: string, charCount: number, wordCount: number) => {
+            onChange(
+                {
+                    ...translation,
+                    content: newValue,
+                },
+                {
+                    charCount,
+                    wordCount,
+                }
+            )
+        },
+        [onChange]
+    )
 
     return (
         <HelpCenterEditor

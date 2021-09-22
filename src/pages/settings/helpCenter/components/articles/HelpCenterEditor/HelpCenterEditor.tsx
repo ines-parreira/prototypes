@@ -10,6 +10,8 @@ import {
     insertAtomicBlocksForImagesEntities,
     draftToMarkdown,
     markdownToDraft,
+    getCharCount,
+    getWordCount,
 } from './utils'
 import {toolbarConfig} from './components/HelpCenterEditorToolbar.config'
 import css from './HelpCenterEditor.less'
@@ -19,40 +21,38 @@ type Props = {
     articleId?: number
     locale: LocaleCode
     value?: string
-    onChange: (value: string) => void
+    onChange: (value: string, charCount: number, wordCount: number) => void
 }
 
-const HelpCenterEditor = ({articleId, locale, value = '', onChange}: Props) => {
-    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+const transformValueToEditorState = (innerValue: string) => {
+    const rawData = markdownToDraft(innerValue)
+    const rawDataWithImagesBlocks = insertAtomicBlocksForImagesEntities(rawData)
+    const contentState = convertFromRaw(rawDataWithImagesBlocks)
+    const newEditorState = EditorState.createWithContent(contentState)
+    return newEditorState
+}
 
-    const transformValueToEditorState = React.useCallback(
-        (innerValue: string) => {
-            const rawData = markdownToDraft(innerValue)
-            const rawDataWithImagesBlocks = insertAtomicBlocksForImagesEntities(
-                rawData
-            )
-            const contentState = convertFromRaw(rawDataWithImagesBlocks)
-            const newEditorState = EditorState.createWithContent(contentState)
-            setEditorState(newEditorState)
-        },
-        []
-    )
+const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     useEffect(() => {
         if (_isUndefined(articleId)) {
             setEditorState(EditorState.createEmpty())
         } else {
-            transformValueToEditorState(value)
+            setEditorState(transformValueToEditorState(value))
         }
-    }, [articleId, locale])
+    }, [articleId])
 
-    const onEditorChange = (editorState: EditorState) => {
-        setEditorState(editorState)
+    useEffect(() => {
         const content = editorState.getCurrentContent()
         const rawObject = convertToRaw(content)
-        const markdownString = draftToMarkdown(rawObject)
-        onChange(markdownString)
-    }
+        const text = content.getPlainText('')
+        onChange(
+            draftToMarkdown(rawObject),
+            getCharCount(text),
+            getWordCount(text)
+        )
+    }, [editorState, onChange])
 
     return (
         <Editor
@@ -61,7 +61,7 @@ const HelpCenterEditor = ({articleId, locale, value = '', onChange}: Props) => {
             editorClassName={css['editor']}
             toolbarClassName={css['toolbar']}
             toolbar={toolbarConfig}
-            onEditorStateChange={onEditorChange}
+            onEditorStateChange={setEditorState}
         />
     )
 }

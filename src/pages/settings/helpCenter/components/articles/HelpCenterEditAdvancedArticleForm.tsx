@@ -75,6 +75,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     rightAddon={slugSuffix}
                     value={translation.slug}
                     onChange={onEditArticle('slug')}
+                    help="This is your article's link."
                 />
                 <button
                     type="button"
@@ -92,6 +93,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 label="Description"
                 value={translation.excerpt}
                 onChange={onEditArticle('excerpt')}
+                help="Displayed under the title of this article inside your help center."
             />
             {articleId && (
                 <i

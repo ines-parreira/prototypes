@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import moment from 'moment'
-import React from 'react'
+import React, {MouseEvent} from 'react'
 
 import Loader from '../../../common/components/Loader/Loader'
 import BodyCell from '../../../common/components/table/cells/BodyCell'
@@ -12,17 +12,17 @@ import TableHead from '../../../common/components/table/TableHead'
 import TableWrapper from '../../../common/components/table/TableWrapper'
 import {LanguageList} from '../../../common/components/LanguageBulletList'
 import {HelpCenter, HelpCenterLocale} from '../../../../models/helpCenter/types'
-// import ToggleButton from '../../../common/components/ToggleButton'
+import ToggleButton from '../../../common/components/ToggleButton'
 
 import css from './HelpCenterTable.less'
 
-type OwnProps = {
+type HelpCentersTableProps = {
     isLoading: boolean
     list: HelpCenter[]
     locales: {
         [key: string]: HelpCenterLocale
     }
-    // toggle: (helpCenterId: number, toggle: boolean) => void
+    onToggle: (helpCenterId: number, toggle: boolean) => void
     onClick: (helpCenterId: number) => void
     // loadingHelpCenters: {[key: number]: boolean}
 }
@@ -31,19 +31,16 @@ export function HelpCentersTable({
     isLoading,
     list,
     locales,
-    // toggle,
+    onToggle,
     onClick,
-}: // loadingHelpCenters,
-OwnProps) {
-    // const toggleHelpCenter = (helpCenterId: number) => (
-    //     newToggleValue: boolean,
-    //     event?: MouseEvent
-    // ) => {
-    //     event?.stopPropagation()
-    //     toggle(helpCenterId, newToggleValue)
-
-    //     return null
-    // }
+}: HelpCentersTableProps) {
+    const handleToggle = (helpCenterId: number) => (
+        isToggled: boolean,
+        event?: MouseEvent
+    ): void => {
+        event?.stopPropagation()
+        onToggle(helpCenterId, isToggled)
+    }
 
     return (
         <TableWrapper>
@@ -67,12 +64,10 @@ OwnProps) {
                             name,
                             default_locale,
                             supported_locales,
-                            // deactivated_datetime,
+                            deactivated_datetime,
                             updated_datetime,
                         }) => {
-                            // const helpCenterEnabled = !Boolean(
-                            //     deactivated_datetime
-                            // )
+                            const activated = !Boolean(deactivated_datetime)
                             return (
                                 <TableBodyRow
                                     className={css.tableBodyRow}
@@ -102,11 +97,10 @@ OwnProps) {
                                             css.actions
                                         )}
                                     >
-                                        {/* <ToggleButton
-                                            value={helpCenterEnabled}
-                                            onChange={toggleHelpCenter(id)}
-                                            loading={loadingHelpCenters[id]}
-                                        /> */}
+                                        <ToggleButton
+                                            value={activated}
+                                            onChange={handleToggle(id)}
+                                        />
                                         <i
                                             className={classnames(
                                                 'material-icons',

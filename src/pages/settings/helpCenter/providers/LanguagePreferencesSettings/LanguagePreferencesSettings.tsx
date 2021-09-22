@@ -17,6 +17,7 @@ import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../constants'
 import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
 
 export type PreferencesState = {
+    name: string
     defaultLanguage: LocaleCode
     availableLanguages: LocaleCode[]
 }
@@ -34,9 +35,11 @@ type PreferencesContextApi = {
     savePreferences: () => Promise<unknown>
     resetPreferences: () => void
     arePreferencesChanged: () => boolean
+    areChangesValid: () => boolean
 }
 
 const defaultPreferences = {
+    name: '',
     defaultLanguage: HELP_CENTER_LANGUAGE_DEFAULT,
     availableLanguages: [],
 }
@@ -47,6 +50,7 @@ const PreferencesContext = React.createContext<PreferencesContextApi>({
     savePreferences: () => Promise.resolve(),
     resetPreferences: () => null,
     arePreferencesChanged: () => false,
+    areChangesValid: () => false,
 })
 
 //   This provider holds all the preference
@@ -60,7 +64,6 @@ export const LanguagePreferencesSettings = ({
         defaultPreferences
     )
     const helpCenter = useSelector(getCurrentHelpCenter)
-
     const {client} = useHelpcenterApi()
     const [, savePreferences] = useAsyncFn(() => {
         if (!client) {
@@ -70,6 +73,7 @@ export const LanguagePreferencesSettings = ({
             .updateHelpCenter(
                 {help_center_id: helpcenterId},
                 {
+                    name: preferences.name,
                     default_locale: preferences.defaultLanguage,
                     supported_locales: preferences.availableLanguages,
                 }
@@ -116,14 +120,20 @@ export const LanguagePreferencesSettings = ({
                     draftSettings.availableLanguages =
                         helpCenter.supported_locales
                 }
+                if (helpCenter.name) {
+                    draftSettings.name = helpCenter.name
+                }
             }
         }
-
         updatePreference(produce(preferences, updateFn))
     }, [helpCenter, preferences])
 
     const arePreferencesChanged = React.useCallback(() => {
         if (helpCenter?.default_locale !== preferences.defaultLanguage) {
+            return true
+        }
+
+        if (helpCenter?.name !== preferences.name) {
             return true
         }
 
@@ -146,6 +156,10 @@ export const LanguagePreferencesSettings = ({
         return false
     }, [helpCenter, preferences])
 
+    const areChangesValid = React.useCallback(() => {
+        return !!preferences.name
+    }, [preferences])
+
     React.useEffect(() => {
         updatePreferencesFromData()
     }, [helpCenter])
@@ -158,6 +172,7 @@ export const LanguagePreferencesSettings = ({
                 savePreferences,
                 resetPreferences: updatePreferencesFromData,
                 arePreferencesChanged,
+                areChangesValid,
             }}
         >
             {children}

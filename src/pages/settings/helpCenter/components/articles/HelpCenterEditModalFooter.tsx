@@ -13,12 +13,14 @@ import {ConfirmationModal} from '../ConfirmationModal'
 import css from './HelpCenterEditModalFooter.less'
 
 type Props = {
+    counters?: {charCount: number; wordCount: number}
     canSave: boolean
     onSave: () => void
     onDelete: () => void
 }
 
 export const HelpCenterEditModalFooter = ({
+    counters,
     canSave,
     onSave,
     onDelete,
@@ -61,6 +63,12 @@ export const HelpCenterEditModalFooter = ({
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
             </ButtonGroup>
+            {counters && (
+                <div className={css.counters}>
+                    <span>Words: {counters?.wordCount}</span>
+                    <span>Characters: {counters?.charCount}</span>
+                </div>
+            )}
             {pendingDeleteArticle && (
                 <ConfirmationModal
                     isOpen={!!pendingDeleteArticle}

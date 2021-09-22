@@ -1,3 +1,5 @@
+import punycode from 'punycode'
+
 import {
     draftToMarkdown as _draftToMarkdown,
     markdownToDraft as _markdownToDraft,
@@ -71,4 +73,18 @@ export const insertAtomicBlocksForImagesEntities = (
         blocks,
         entityMap,
     }
+}
+
+export const getCharCount = (plainText: string): number => {
+    const decodeUnicode = (str: string): number[] => punycode.ucs2.decode(str) // func to handle unicode characters
+    const regex = /(?:\r\n|\r|\n)/g // new line, carriage return, line feed
+    const cleanString = plainText.replace(regex, '').trim() // replace above characters w/ nothing
+    return decodeUnicode(cleanString).length
+}
+
+export const getWordCount = (plainText: string): number => {
+    const regex = /(?:\r\n|\r|\n)/g // new line, carriage return, line feed
+    const cleanString = plainText.replace(regex, ' ').trim() // replace above characters w/ space
+    const wordArray = cleanString.match(/\S+/g) // matches words according to whitespace
+    return wordArray ? wordArray.length : 0
 }

@@ -8,6 +8,7 @@ export const FooterActions = () => {
         savePreferences,
         resetPreferences,
         arePreferencesChanged,
+        areChangesValid,
     } = useLanguagePreferencesSettings()
     const $ref = React.createRef<HTMLElement>()
 
@@ -15,7 +16,7 @@ export const FooterActions = () => {
         <footer style={{marginTop: 64, display: 'inline-flex'}} ref={$ref}>
             <Button
                 color="success"
-                disabled={!arePreferencesChanged()}
+                disabled={!(arePreferencesChanged() && areChangesValid())}
                 onClick={savePreferences}
             >
                 Save Changes

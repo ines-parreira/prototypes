@@ -18,6 +18,7 @@ import {DefaultLanguageSelect} from '../DefaultLanguageSelect'
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 
 import {FooterActions} from './components/FooterActions'
+import {DisplayName} from './components/DisplayName'
 
 export const HelpCenterPreferencesView = () => {
     const helpcenterId = useHelpCenterIdParam()
@@ -53,6 +54,7 @@ export const HelpCenterPreferencesView = () => {
                     className="page-container"
                     style={{maxWidth: 680, marginLeft: 0}}
                 >
+                    <DisplayName />
                     <DefaultLanguageSelect localesAvailable={locales} />
                     <AvailableLanguagesTags availableLocales={locales} />
                     <FooterActions />

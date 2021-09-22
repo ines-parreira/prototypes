@@ -90,6 +90,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
+    const [counters, setCounters] = useState<{
+        charCount: number
+        wordCount: number
+    }>()
 
     const {client} = useHelpcenterApi()
     const helpCenter = useSelector(getCurrentHelpCenter)
@@ -226,6 +230,23 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         return filledRequired && hasBeenChanged
     }, [selectedArticle, savedTranslation])
 
+    const onArticleChange = React.useCallback(
+        (translation: HelpCenterArticleTranslation, counters) => {
+            setCounters(counters)
+            setSelectedArticle(
+                (prevSelectedArticle) =>
+                    prevSelectedArticle && {
+                        ...prevSelectedArticle,
+                        translation: {
+                            ...prevSelectedArticle.translation,
+                            content: translation.content,
+                        },
+                    }
+            )
+        },
+        []
+    )
+
     const getEditModalContent = () => {
         if (!selectedArticle?.translation || !helpCenter) {
             return null
@@ -277,25 +298,16 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                     }
                                     className={css.toggleModalBtn}
                                 >
-                                    Advanced Settings
+                                    <i className="material-icons">settings</i>
                                 </button>
                             }
                         />
                         <HelpCenterEditArticleForm
                             translation={selectedArticle.translation}
-                            onChange={(
-                                translation: HelpCenterArticleTranslation
-                            ) =>
-                                setSelectedArticle(
-                                    (prevSelectedArticle) =>
-                                        prevSelectedArticle && {
-                                            ...prevSelectedArticle,
-                                            translation,
-                                        }
-                                )
-                            }
+                            onChange={onArticleChange}
                         />
                         <HelpCenterEditModalFooter
+                            counters={counters}
                             canSave={canSaveArticle}
                             onSave={saveArticle}
                             onDelete={deleteArticle}
@@ -324,7 +336,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                     }
                                     className={css.toggleModalBtn}
                                 >
-                                    Edit Article
+                                    <i className="material-icons">edit</i>
                                 </button>
                             }
                             onClickAction={handleOnClickAction}
@@ -346,6 +358,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                             subdomain={helpCenter.subdomain}
                         />
                         <HelpCenterEditModalFooter
+                            counters={counters}
                             canSave={canSaveArticle}
                             onSave={saveArticle}
                             onDelete={deleteArticle}

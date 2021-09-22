@@ -10,12 +10,14 @@ import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtu
 
 describe('<HelpCenterTable/>', () => {
     const mockedOnClick = jest.fn()
+    const mockedOnToggle = jest.fn()
 
     const props = {
         isLoading: false,
         list: getHelpcentersResponseFixture,
         locales: _keyBy<HelpCenterLocale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
+        onToggle: mockedOnToggle,
     }
 
     beforeEach(() => {

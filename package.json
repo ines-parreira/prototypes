@@ -83,6 +83,7 @@
         "pluralize": "7.0.0",
         "promise-polyfill": "6.0.2",
         "prop-types": "15.6.2",
+        "punycode": "2.1.1",
         "push.js": "1.0.11",
         "query-string": "6.13.7",
         "react": "16.8.5",

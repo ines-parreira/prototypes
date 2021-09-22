@@ -3,6 +3,7 @@ import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Container, Button} from 'reactstrap'
+import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -86,6 +87,49 @@ export const HelpCenterStartView: FunctionComponent = () => {
         [helpCenterList, history, dispatch]
     )
 
+    const toggleActivation = useCallback(
+        async (helpCenterId: number, activated: boolean) => {
+            if (client) {
+                try {
+                    const helpcenterIndex = helpCenterList.findIndex(
+                        ({id}) => id === helpCenterId
+                    )
+                    const helpCenter = await client.updateHelpCenter(
+                        {help_center_id: helpCenterId},
+                        {
+                            deactivated: !activated,
+                        }
+                    )
+                    const helpCenterListUpdated = produce(
+                        helpCenterList,
+                        (helpCenters) => {
+                            helpCenters[helpcenterIndex] = helpCenter.data
+                        }
+                    )
+                    dispatch(helpCentersFetched(helpCenterListUpdated))
+                    void dispatch(
+                        notify({
+                            message: `Help center ${
+                                activated ? 'activated' : 'deactivated'
+                            }`,
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                } catch (e) {
+                    void dispatch(
+                        notify({
+                            message:
+                                'Something went wrong saving the help center',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    throw e
+                }
+            }
+        },
+        [helpCenterList, client, dispatch]
+    )
+
     return (
         <div className="full-width">
             <PageHeader title="Help Center">
@@ -113,6 +157,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
                 locales={localesByCode}
                 isLoading={helpCenterListResponse.loading}
                 onClick={navigateToArticles}
+                onToggle={toggleActivation}
             />
         </div>
     )

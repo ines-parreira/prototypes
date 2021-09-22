@@ -69,6 +69,11 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             </span>
           </span>
         </div>
+        <small
+          class="form-text text-muted"
+        >
+          This is your article's link.
+        </small>
       </div>
       <button
         class="copyButton"
@@ -103,6 +108,11 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           Paragraph lorem ipsum, Yiddish xylophone wonder.
         </textarea>
       </div>
+      <small
+        class="form-text text-muted"
+      >
+        Displayed under the title of this article inside your help center.
+      </small>
     </div>
     <i
       class="articleIDHint"
