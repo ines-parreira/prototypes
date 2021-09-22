@@ -154,8 +154,8 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                             ...selectedArticle,
                             translation,
                         })
-                        setSavedTranslation(translation || null)
                     }
+                    setSavedTranslation(translation || null)
                 } catch (err) {
                     void dispatch(
                         notify({
@@ -555,6 +555,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             )
             console.error(err)
         } finally {
+            setSavedTranslation(null)
             setSelectedArticle(null)
             setEditModal(null)
         }
