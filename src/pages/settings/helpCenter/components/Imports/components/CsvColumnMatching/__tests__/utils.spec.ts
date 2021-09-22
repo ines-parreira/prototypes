@@ -1,5 +1,9 @@
 import {GorgiasFieldsMappingsLocalized} from '../types'
-import {previewField, updateGorgiasFieldsMappingsLocalized} from '../utils'
+import {
+    gorgiasFieldsMappingsLocalizedToDto,
+    previewField,
+    updateGorgiasFieldsMappingsLocalized,
+} from '../utils'
 
 describe('CsvColumnMatching utils', () => {
     describe('updateGorgiasFieldsMappingsLocalized', () => {
@@ -252,6 +256,175 @@ describe('CsvColumnMatching utils', () => {
             )
 
             expect(preview).toEqual(['My content', 'Another content'])
+        })
+    })
+
+    describe('gorgiasFieldsMappingsLocalizedToDto', () => {
+        it('returns undefined for non-valid mappings', () => {
+            const mappings: GorgiasFieldsMappingsLocalized = [
+                {
+                    localeCode: 'en-US',
+                    mappings: {
+                        ArticleSlug: {
+                            source: {
+                                kind: 'AUTO_GENERATED',
+                            },
+                        },
+                    },
+                },
+            ]
+
+            expect(
+                gorgiasFieldsMappingsLocalizedToDto('http://file.com', mappings)
+            ).toEqual(undefined)
+        })
+
+        it('converts each localized mapping to the DTO object', () => {
+            const mappings: GorgiasFieldsMappingsLocalized = [
+                {
+                    localeCode: 'en-US',
+                    mappings: {
+                        ArticleExcerpt: {
+                            source: {
+                                kind: 'AUTO_GENERATED',
+                            },
+                        },
+                        ArticleTitle: {
+                            source: {
+                                kind: 'CSV_COLUMN',
+                                csv_column: 'article_title',
+                            },
+                        },
+                        ArticleContent: {
+                            source: {
+                                kind: 'CSV_COLUMN',
+                                csv_column: 'article_content',
+                            },
+                        },
+                        ArticleSlug: {
+                            source: {
+                                kind: 'AUTO_GENERATED',
+                            },
+                        },
+                        CategoryName: {
+                            source: {
+                                kind: 'CSV_COLUMN',
+                                csv_column: 'category_name',
+                            },
+                        },
+                        CategorySlug: {
+                            source: {
+                                kind: 'AUTO_GENERATED',
+                            },
+                        },
+                    },
+                },
+                {
+                    localeCode: 'fr-FR',
+                    mappings: {
+                        ArticleExcerpt: {
+                            source: {
+                                kind: 'AUTO_GENERATED',
+                            },
+                        },
+                        ArticleTitle: {
+                            source: {
+                                kind: 'CSV_COLUMN',
+                                csv_column: 'article_title_fr',
+                            },
+                        },
+                        ArticleSlug: {
+                            source: {
+                                kind: 'AUTO_GENERATED',
+                            },
+                        },
+                        ArticleContent: {
+                            source: {
+                                kind: 'CSV_COLUMN',
+                                csv_column: 'article_content_fr',
+                            },
+                        },
+                    },
+                },
+            ]
+
+            const expectedDto = {
+                article_columns: {
+                    locales: {
+                        'en-US': {
+                            content: {
+                                source: {
+                                    csv_column: 'article_content',
+                                    kind: 'CSV_COLUMN',
+                                },
+                            },
+                            excerpt: {
+                                source: {
+                                    kind: 'AUTO_GENERATED',
+                                },
+                            },
+                            slug: {
+                                source: {
+                                    kind: 'AUTO_GENERATED',
+                                },
+                            },
+                            title: {
+                                source: {
+                                    csv_column: 'article_title',
+                                    kind: 'CSV_COLUMN',
+                                },
+                            },
+                        },
+                        'fr-FR': {
+                            content: {
+                                source: {
+                                    csv_column: 'article_content_fr',
+                                    kind: 'CSV_COLUMN',
+                                },
+                            },
+                            excerpt: {
+                                source: {
+                                    kind: 'AUTO_GENERATED',
+                                },
+                            },
+                            slug: {
+                                source: {
+                                    kind: 'AUTO_GENERATED',
+                                },
+                            },
+                            title: {
+                                source: {
+                                    csv_column: 'article_title_fr',
+                                    kind: 'CSV_COLUMN',
+                                },
+                            },
+                        },
+                    },
+                },
+                category_columns: {
+                    locales: {
+                        'en-US': {
+                            description: undefined,
+                            name: {
+                                source: {
+                                    csv_column: 'category_name',
+                                    kind: 'CSV_COLUMN',
+                                },
+                            },
+                            slug: {
+                                source: {
+                                    kind: 'AUTO_GENERATED',
+                                },
+                            },
+                        },
+                    },
+                },
+                file_url: 'http://file.com',
+            }
+
+            expect(
+                gorgiasFieldsMappingsLocalizedToDto('http://file.com', mappings)
+            ).toEqual(expectedDto)
         })
     })
 })

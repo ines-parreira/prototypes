@@ -5,6 +5,7 @@ import {
 import {slugify} from '../../../../utils/helpCenter.utils'
 import {CsvSourceSoftware} from '../../types'
 import {guessCsvSourceSoftware} from '../../utils/guess-csv-source-software'
+import {Components} from '../../../../../../../../../../rest_api/help_center_api/client.generated'
 
 import {
     CsvColumnsByName,
@@ -268,4 +269,53 @@ export const initialMappings = (
                 },
             ]
     }
+}
+
+export const gorgiasFieldsMappingsLocalizedToDto = (
+    fileUrl: string,
+    mappings: GorgiasFieldsMappingsLocalized
+): Components.Schemas.ProcessCsvRequestDto | undefined => {
+    if (!mappingsComplete(mappings)) {
+        return undefined
+    }
+
+    const mappingsDto: Components.Schemas.ProcessCsvRequestDto = {
+        file_url: fileUrl,
+        article_columns: {
+            locales: {},
+        },
+        category_columns: {
+            locales: {},
+        },
+    }
+
+    mappings.forEach(({localeCode, mappings}) => {
+        // these checks are useless actually because mappingsComplete(mappings) already check that these values !== undefined
+        // but the TypeScript compiler doesn't detect it
+        if (
+            !mappings.ArticleTitle ||
+            !mappings.ArticleContent ||
+            !mappings.ArticleSlug
+        ) {
+            return
+        }
+
+        mappingsDto.article_columns.locales[localeCode] = {
+            title: mappings.ArticleTitle,
+            content: mappings.ArticleContent,
+            slug: mappings.ArticleSlug,
+            excerpt: mappings.ArticleSlug,
+        }
+
+        // category mappings are optional
+        if (mappings.CategoryName && mappings.CategorySlug) {
+            mappingsDto.category_columns.locales[localeCode] = {
+                name: mappings.CategoryName,
+                description: mappings.CategoryDescription,
+                slug: mappings.CategorySlug,
+            }
+        }
+    })
+
+    return mappingsDto
 }

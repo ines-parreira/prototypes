@@ -20,9 +20,19 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
+import {HELP_CENTER_BASE_PATH} from '../constants'
+
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
+import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
+import {gorgiasFieldsMappingsLocalizedToDto} from './Imports/components/CsvColumnMatching/utils'
+
+import {
+    importFailed,
+    importPartial,
+    importSuccessful,
+} from './Imports/utils/import-response-type'
 
 export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
     const locales = useLocales()
@@ -35,6 +45,7 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
     )
     const history = useHistory()
     const dispatch = useAppDispatch()
+    const [importInProgress, setImportInProgress] = useState(false)
 
     useEffect(() => {
         const queryString = parseQueryString(location.search)
@@ -83,12 +94,92 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
     }, [client, csvColumns, dispatch, isReady, fileUrl, helpCenter])
 
     // locales == [] can only occur if the locales haven't been retrieved yet
-    if (helpCenter === null || locales.length === 0 || csvColumns === null) {
+    if (
+        helpCenter === null ||
+        locales.length === 0 ||
+        csvColumns === null ||
+        client === undefined ||
+        !isReady ||
+        fileUrl === null
+    ) {
         return <Loader />
     }
 
-    const handleOnImport = () => {
-        // TODO: implemented in SS-810
+    const handleOnImport = async (mappings: GorgiasFieldsMappingsLocalized) => {
+        const mappingsDto = gorgiasFieldsMappingsLocalizedToDto(
+            fileUrl,
+            mappings
+        )
+
+        if (mappingsDto !== undefined) {
+            setImportInProgress(true)
+
+            try {
+                const response = await client.importCsv(
+                    {
+                        help_center_id: helpCenter.id,
+                    },
+                    mappingsDto
+                )
+
+                setImportInProgress(false)
+
+                const {report} = response.data
+                const baseHelpCenterPath = `${HELP_CENTER_BASE_PATH}/${helpCenter.id}`
+
+                if (importSuccessful(report)) {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: `Successfully imported ${report.num_imported_csv_rows}/${report.num_imported_csv_rows} articles.`,
+                        })
+                    )
+
+                    return history.push(`${baseHelpCenterPath}/articles`)
+                } else if (importPartial(report)) {
+                    const {
+                        num_erroneous_csv_rows,
+                        num_imported_csv_rows,
+                    } = report
+
+                    const totalRows =
+                        num_imported_csv_rows + num_erroneous_csv_rows
+
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: `${num_imported_csv_rows}/${totalRows} articles successfully imported. There was an error importing ${num_erroneous_csv_rows} articles. Download a file with just the missing articles, correct them and try uploading again to complete your import.`,
+                        })
+                    )
+
+                    return history.push(`${baseHelpCenterPath}/installation`)
+                } else if (importFailed(report)) {
+                    // should be else, not else if, but TypeScript fails to infer it
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message:
+                                'There was an error importing your CSV file. Please review it and try again.',
+                        })
+                    )
+
+                    return history.push(`${baseHelpCenterPath}/installation`)
+                }
+            } catch (e) {
+                setImportInProgress(false)
+
+                console.error(e)
+
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'An internal error occurred while importing the CSV, please try again later.',
+                        noAutoDismiss: true,
+                    })
+                )
+            }
+        }
     }
 
     const handleOnCancel = () => {
@@ -112,13 +203,17 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
                 }
             />
 
-            <CsvColumnMatching
-                csvColumns={csvColumns}
-                helpCenter={helpCenter}
-                locales={locales}
-                onCancel={handleOnCancel}
-                onImport={handleOnImport}
-            />
+            {importInProgress ? (
+                <Loader />
+            ) : (
+                <CsvColumnMatching
+                    csvColumns={csvColumns}
+                    helpCenter={helpCenter}
+                    locales={locales}
+                    onCancel={handleOnCancel}
+                    onImport={handleOnImport}
+                />
+            )}
         </div>
     )
 }
