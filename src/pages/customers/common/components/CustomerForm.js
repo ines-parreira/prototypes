@@ -234,7 +234,7 @@ class CustomerForm extends React.Component {
                         name="phone"
                         label="Phone numbers"
                         placeholder="+1 111 111 1111"
-                        addLabel="Add an phone number"
+                        addLabel="Add a phone number"
                         meta={{}}
                         fields={this.state.phone}
                         onChange={(phone) => this._updateField({phone})}
