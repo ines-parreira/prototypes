@@ -464,6 +464,9 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             selectedArticleTranslations.find(
                 ({locale: translationLocale}) => translationLocale === value
             ) || getNewTranslation(value)
+        if ((translation as HelpCenterArticleTranslation).article_id) {
+            setSavedTranslation(translation as HelpCenterArticleTranslation)
+        }
         setSelectedArticle(
             (prevSelectedArticle) =>
                 prevSelectedArticle &&
