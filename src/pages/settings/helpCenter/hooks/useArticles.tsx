@@ -8,8 +8,8 @@ import {
 } from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
 import {
-    readArticlesInCategory,
-    readUncategorizedArticles,
+    getArticlesInCategory,
+    getUncategorizedArticles,
     saveArticles,
 } from '../../../../state/helpCenter/articles'
 import {HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
@@ -30,8 +30,8 @@ export const useArticles = (
 
     const articles = useSelector(
         categoryId && categoryId >= 0
-            ? readArticlesInCategory(categoryId)
-            : readUncategorizedArticles
+            ? getArticlesInCategory(categoryId)
+            : getUncategorizedArticles
     )
     const [isLoading, setLoading] = useState(false)
 

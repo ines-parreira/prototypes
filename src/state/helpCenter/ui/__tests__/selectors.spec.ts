@@ -4,7 +4,7 @@ import {initialState as articlesState} from '../../articles/reducer'
 import {initialState as categoriesState} from '../../categories/reducer'
 import {initialState as uiState} from '../reducer'
 
-import {getCurrentHelpCenterId, readViewLanguage} from '../selectors'
+import {getCurrentHelpCenterId, getViewLanguage} from '../selectors'
 
 const store: Partial<StoreState> = {
     helpCenter: {
@@ -23,10 +23,10 @@ const nextStore: Partial<StoreState> = {
 }
 
 describe('Help Center/UI selectors', () => {
-    describe('readViewLanguage()', () => {
+    describe('getViewLanguage()', () => {
         it('reads the current language', () => {
-            expect(readViewLanguage(store as StoreState)).toEqual(null)
-            expect(readViewLanguage(nextStore as StoreState)).toEqual('en-US')
+            expect(getViewLanguage(store as StoreState)).toEqual(null)
+            expect(getViewLanguage(nextStore as StoreState)).toEqual('en-US')
         })
     })
 

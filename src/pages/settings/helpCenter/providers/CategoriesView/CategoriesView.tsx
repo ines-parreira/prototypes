@@ -12,7 +12,7 @@ import {
 import {CATEGORIES_PER_PAGE} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {useHelpCenterCategories} from '../../hooks/useHelpcenterCategories'
-import {readUncategorizedArticles} from '../../../../../state/helpCenter/articles'
+import {getUncategorizedArticles} from '../../../../../state/helpCenter/articles'
 
 type Props = Pick<
     CategoriesTableProps,
@@ -29,7 +29,7 @@ export const CategoriesViews = ({
     createArticle,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
-    const uncategorizedArticles = useSelector(readUncategorizedArticles)
+    const uncategorizedArticles = useSelector(getUncategorizedArticles)
 
     const {categories, hasMore, isLoading, fetchMore} = useHelpCenterCategories(
         helpCenter.id,

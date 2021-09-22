@@ -17,7 +17,7 @@ import {validLocaleCode} from '../../../../models/helpCenter/utils'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {
     changeViewLanguage,
-    readViewLanguage,
+    getViewLanguage,
 } from '../../../../state/helpCenter/ui'
 import {resetArticles} from '../../../../state/helpCenter/articles'
 import {resetCategories} from '../../../../state/helpCenter/categories'
@@ -69,7 +69,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
     const viewLanguage =
-        useSelector(readViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
+        useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
     const [editModal, setEditModal] = useState<HelpCenterModalContent | null>(
         null
     )

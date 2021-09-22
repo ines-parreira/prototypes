@@ -11,7 +11,7 @@ import {getCategoriesResponseEnglish} from '../../../../pages/settings/helpCente
 import {StoreState} from '../../../types'
 import {initialState as uiState} from '../../ui/reducer'
 
-import {readCategories, readCategoriesWithArticles} from '../selectors'
+import {getCategories, getCategoriesWithArticles} from '../selectors'
 
 const articlesResponse = getArticlesResponseFixture.data.map(
     createArticleFromDto
@@ -45,19 +45,19 @@ const emptyStore: Partial<StoreState> = {
     },
 }
 
-describe('readCategories()', () => {
+describe('getCategories()', () => {
     it('returns the categories as list', () => {
-        expect(readCategories(store as StoreState)).toEqual(categoriesResponse)
+        expect(getCategories(store as StoreState)).toEqual(categoriesResponse)
     })
 
     it('returns empty list when there are no categories', () => {
-        expect(readCategories(emptyStore as StoreState)).toEqual([])
+        expect(getCategories(emptyStore as StoreState)).toEqual([])
     })
 })
 
-describe('readCategoriesWithArticles()', () => {
+describe('getCategoriesWithArticles()', () => {
     it('returns the list of categories with articles', () => {
-        const output = readCategoriesWithArticles(store as StoreState)
+        const output = getCategoriesWithArticles(store as StoreState)
 
         output.forEach((category) => {
             expect(category.articles.length).toEqual(3)

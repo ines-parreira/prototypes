@@ -20,7 +20,7 @@ import {
     updateArticle,
     updateArticlesOrder,
 } from '../../../../state/helpCenter/articles'
-import {readViewLanguage} from '../../../../state/helpCenter/ui'
+import {getViewLanguage} from '../../../../state/helpCenter/ui'
 
 import {useHelpcenterApi} from './useHelpcenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
@@ -61,7 +61,7 @@ export const useArticlesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpcenterApi()
-    const viewLanguage = useSelector(readViewLanguage)
+    const viewLanguage = useSelector(getViewLanguage)
 
     return {
         async createArticle(translation: CreateArticleDto['translation']) {

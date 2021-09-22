@@ -1,13 +1,13 @@
 import {createSelector} from 'reselect'
 
-import {readHelpCenterStore} from '../selectors'
+import {getHelpCenterStore} from '../selectors'
 
 export const getHelpCenterUiState = createSelector(
-    readHelpCenterStore,
+    getHelpCenterStore,
     (store) => store.ui
 )
 
-export const readViewLanguage = createSelector(
+export const getViewLanguage = createSelector(
     getHelpCenterUiState,
     (state) => state.currentLanguage
 )

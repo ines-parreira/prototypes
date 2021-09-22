@@ -8,10 +8,10 @@ import {initialState as categoriesState} from '../../categories/reducer'
 import {initialState as uiState} from '../../ui/reducer'
 
 import {
-    readArticles,
-    readArticleById,
-    readArticlesInCategory,
-    readUncategorizedArticles,
+    getArticles,
+    getArticleById,
+    getArticlesInCategory,
+    getUncategorizedArticles,
 } from '../selectors'
 
 const articlesResponse = getArticlesResponseFixture.data.map(
@@ -38,37 +38,37 @@ const emptyStore: Partial<StoreState> = {
     },
 }
 
-describe('readArticles()', () => {
+describe('getArticles()', () => {
     it('returns the articles as list', () => {
-        expect(readArticles(store as StoreState)).toEqual(articlesResponse)
+        expect(getArticles(store as StoreState)).toEqual(articlesResponse)
     })
 
     it('returns empty list when there are on articles', () => {
-        expect(readArticles(emptyStore as StoreState)).toEqual([])
+        expect(getArticles(emptyStore as StoreState)).toEqual([])
     })
 })
 
-describe('readArticleById()', () => {
+describe('getArticleById()', () => {
     it('returns the article if it is found', () => {
-        expect(readArticleById(1)(store as StoreState)).toEqual(
+        expect(getArticleById(1)(store as StoreState)).toEqual(
             articlesResponse[0]
         )
     })
 
     it('returns undefined if it is not found', () => {
-        expect(readArticleById(999)(store as StoreState)).not.toBeDefined()
+        expect(getArticleById(999)(store as StoreState)).not.toBeDefined()
     })
 })
 
-describe('readArticlesInCategory()', () => {
+describe('getArticlesInCategory()', () => {
     it('returns the list of categories', () => {
-        expect(readArticlesInCategory(4)(store as StoreState)).toHaveLength(3)
+        expect(getArticlesInCategory(4)(store as StoreState)).toHaveLength(3)
     })
 })
 
-describe('readUncategorizedArticles', () => {
+describe('getUncategorizedArticles', () => {
     it('returns the articles without category', () => {
-        expect(readUncategorizedArticles(store as StoreState)).toEqual([
+        expect(getUncategorizedArticles(store as StoreState)).toEqual([
             articlesResponse[0],
         ])
     })

@@ -11,7 +11,7 @@ import {
 } from '../../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
-import {readCategory} from '../../../../../state/helpCenter/categories'
+import {getCategoryById} from '../../../../../state/helpCenter/categories'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {notify} from '../../../../../state/notifications/actions'
 
@@ -31,7 +31,7 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
     const params = getParams() as Category & {isCreate?: boolean}
 
-    const category = useSelector(readCategory(params?.id))
+    const category = useSelector(getCategoryById(params?.id))
     const actions = useCategoriesActions()
 
     const [translation, readTranslation] = useAsyncFn(

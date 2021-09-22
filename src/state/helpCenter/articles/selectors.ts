@@ -1,40 +1,39 @@
 import {createSelector} from 'reselect'
 
-import {readHelpCenterStore} from '../selectors'
-
-import {readViewLanguage} from '../ui/selectors'
+import {getHelpCenterStore} from '../selectors'
+import {getViewLanguage} from '../ui/selectors'
 
 const helpCenterArticlesStore = createSelector(
-    readHelpCenterStore,
+    getHelpCenterStore,
     (store) => store.articles
 )
 
-const readArticlesById = createSelector(
+const getArticlesById = createSelector(
     helpCenterArticlesStore,
     (store) => store.articlesById
 )
 
-export const readArticles = createSelector(
-    readArticlesById,
-    readViewLanguage,
+export const getArticles = createSelector(
+    getArticlesById,
+    getViewLanguage,
     (articles, locale) =>
         Object.values(articles).filter(
             (article) => article.translation?.locale === locale
         ) || []
 )
 
-export const readArticleById = (articleId: number) =>
-    createSelector(readArticlesById, (articles) => articles[articleId])
+export const getArticleById = (articleId: number) =>
+    createSelector(getArticlesById, (articles) => articles[articleId])
 
-export const readArticlesInCategory = (categoryId: number) =>
-    createSelector(readArticles, (articles) =>
+export const getArticlesInCategory = (categoryId: number) =>
+    createSelector(getArticles, (articles) =>
         articles.filter(
             (article) =>
                 article.category_id && article.category_id === categoryId
         )
     )
 
-export const readUncategorizedArticles = createSelector(
-    readArticles,
+export const getUncategorizedArticles = createSelector(
+    getArticles,
     (articles) => articles.filter((article) => article.category_id === null)
 )

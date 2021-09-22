@@ -16,7 +16,7 @@ import {notify} from '../../../../../state/notifications/actions'
 import {
     changeHelpCenterId,
     changeViewLanguage,
-    readViewLanguage,
+    getViewLanguage,
 } from '../../../../../state/helpCenter/ui'
 
 import Loader from '../../../../common/components/Loader/Loader'
@@ -41,7 +41,7 @@ export const CurrentHelpCenter = (): JSX.Element => {
     const helpCenterId = useHelpCenterIdParam()
 
     const {isLoading, error, data: helpCenter} = useCurrentHelpCenter()
-    const viewLanguage = useSelector(readViewLanguage)
+    const viewLanguage = useSelector(getViewLanguage)
 
     // ? If we access the help center via URL, set the current help center
     // ? and the default locale

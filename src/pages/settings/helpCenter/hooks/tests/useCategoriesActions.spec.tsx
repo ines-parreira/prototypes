@@ -110,7 +110,7 @@ jest.mock('../../../../../state/helpCenter/categories', () => ({
 }))
 
 jest.mock('../../../../../state/helpCenter/ui/selectors', () => ({
-    readViewLanguage: () => 'en-US',
+    getViewLanguage: () => 'en-US',
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

@@ -12,8 +12,8 @@ import {initialState as uiState} from '../../../../../state/helpCenter/ui/reduce
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 
 import {
-    readArticlesInCategory,
-    readUncategorizedArticles,
+    getArticlesInCategory,
+    getUncategorizedArticles,
     saveArticles,
 } from '../../../../../state/helpCenter/articles'
 
@@ -50,8 +50,8 @@ jest.mock('../useHelpcenterApi', () => {
 })
 
 jest.mock('../../../../../state/helpCenter/articles', () => ({
-    readUncategorizedArticles: jest.fn(),
-    readArticlesInCategory: jest.fn(),
+    getUncategorizedArticles: jest.fn(),
+    getArticlesInCategory: jest.fn(),
     saveArticles: jest.fn().mockReturnValue({
         type: 'HELPCENTER/ARTICLES/SAVE_ARTICLES',
         payload: {},
@@ -95,18 +95,18 @@ describe('useArticles', () => {
         await waitForNextUpdate()
         expect(saveArticles).toHaveBeenCalled()
     })
-    it('uses the readUncategorizedArticles selector if no category is passed', () => {
+    it('uses the getUncategorizedArticles selector if no category is passed', () => {
         renderHook(() => useArticles('en-US'), {
             wrapper: dependencyWrapper,
         })
-        expect(readUncategorizedArticles).toHaveBeenCalled()
-        expect(readArticlesInCategory).not.toHaveBeenCalled()
+        expect(getUncategorizedArticles).toHaveBeenCalled()
+        expect(getArticlesInCategory).not.toHaveBeenCalled()
     })
-    it('uses the readArticlesInCategory selector if category is passed', () => {
+    it('uses the getArticlesInCategory selector if category is passed', () => {
         renderHook(() => useArticles('en-US', 1), {
             wrapper: dependencyWrapper,
         })
-        expect(readUncategorizedArticles).not.toHaveBeenCalled()
-        expect(readArticlesInCategory).toHaveBeenCalled()
+        expect(getUncategorizedArticles).not.toHaveBeenCalled()
+        expect(getArticlesInCategory).toHaveBeenCalled()
     })
 })

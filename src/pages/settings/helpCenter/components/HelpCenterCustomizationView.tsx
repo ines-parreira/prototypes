@@ -12,7 +12,7 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import {
     changeViewLanguage,
-    readViewLanguage,
+    getViewLanguage,
 } from '../../../../state/helpCenter/ui'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify} from '../../../../state/notifications/actions'
@@ -53,7 +53,7 @@ export const HelpCenterCustomizationView = () => {
 
     const [links, setLinks] = React.useState<NavigationLinkDto[]>([])
     const selectedLocale =
-        useSelector(readViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
+        useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
 
     const localesOptions = useLocaleSelectOptions(
         locales,

@@ -22,7 +22,7 @@ import {
     updateCategoriesOrder,
     updateCategoryTranslation,
 } from '../../../../state/helpCenter/categories'
-import {readViewLanguage} from '../../../../state/helpCenter/ui'
+import {getViewLanguage} from '../../../../state/helpCenter/ui'
 
 import {useHelpcenterApi} from './useHelpcenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
@@ -31,7 +31,7 @@ export const useCategoriesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpcenterApi()
-    const viewLanguage = useSelector(readViewLanguage)
+    const viewLanguage = useSelector(getViewLanguage)
 
     return {
         async getCategoryTranslation(categoryId: number, locale: LocaleCode) {

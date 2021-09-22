@@ -10,7 +10,7 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {
-    readCategories,
+    getCategories,
     saveCategories,
 } from '../../../../../state/helpCenter/categories'
 
@@ -38,7 +38,7 @@ jest.mock('../useHelpcenterApi', () => {
 })
 
 jest.mock('../../../../../state/helpCenter/categories', () => ({
-    readCategories: jest.fn(),
+    getCategories: jest.fn(),
     saveCategories: jest.fn().mockReturnValue({
         type: 'HELPCENTER/CATEGORIES/SAVE_CATEGORIES',
         payload: {},
@@ -87,10 +87,10 @@ describe('useHelpCenterCategories', () => {
         await waitForNextUpdate()
         expect(saveCategories).toHaveBeenCalled()
     })
-    it('uses the readCategories selector', () => {
+    it('uses the getCategories selector', () => {
         renderHook(() => useHelpCenterCategories(1, {locale: 'en-US'}), {
             wrapper: dependencyWrapper,
         })
-        expect(readCategories).toHaveBeenCalled()
+        expect(getCategories).toHaveBeenCalled()
     })
 })

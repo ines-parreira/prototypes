@@ -6,7 +6,7 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {Category} from '../../../../models/helpCenter/types'
 import {createCategoryFromDto} from '../../../../models/helpCenter/utils'
 import {
-    readCategories,
+    getCategories,
     saveCategories,
 } from '../../../../state/helpCenter/categories'
 
@@ -29,7 +29,7 @@ export const useHelpCenterCategories = (
     queryParams: Omit<Paths.ListCategories.QueryParameters, 'page'>
 ): HelpCenterCategoriesHook => {
     const dispatch = useAppDispatch()
-    const categories = useSelector(readCategories)
+    const categories = useSelector(getCategories)
 
     const {client} = useHelpcenterApi()
     const [isLoading, setLoading] = useState(true)

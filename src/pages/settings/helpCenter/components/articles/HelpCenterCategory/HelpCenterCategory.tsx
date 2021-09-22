@@ -19,7 +19,7 @@ import {
     CreateCategoryDto,
     Category,
 } from '../../../../../../models/helpCenter/types'
-import {readViewLanguage} from '../../../../../../state/helpCenter/ui'
+import {getViewLanguage} from '../../../../../../state/helpCenter/ui'
 
 import {Drawer} from '../../../../../common/components/Drawer'
 
@@ -71,7 +71,7 @@ export const HelpCenterCategory = ({
     onDeleteTranslation,
 }: Props): JSX.Element => {
     const viewLanguage =
-        useSelector(readViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
+        useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
     const locales = useLocales()
     const [title, setTitle] = React.useState('')
     const [slug, setSlug] = React.useState('')
