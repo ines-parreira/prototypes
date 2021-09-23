@@ -2,20 +2,21 @@ import React, {useState, useEffect} from 'react'
 import _isUndefined from 'lodash/isUndefined'
 
 import {Editor} from 'react-draft-wysiwyg'
-import {EditorState, convertToRaw, convertFromRaw} from 'draft-js'
+import {ContentBlock, EditorState} from 'draft-js'
 
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 
 import {
-    insertAtomicBlocksForImagesEntities,
-    draftToMarkdown,
-    markdownToDraft,
+    convertToHTML,
+    convertFromHTML,
+    INJECTED_HTML_TYPE,
     getCharCount,
     getWordCount,
 } from './utils'
 import {toolbarConfig} from './components/HelpCenterEditorToolbar.config'
 import css from './HelpCenterEditor.less'
 import './react-draft-wysiwyg.css'
+import {InjectedHTMLBlockEditor} from './components/InjectedHTMLBlockEditor'
 
 type Props = {
     articleId?: number
@@ -24,15 +25,29 @@ type Props = {
     onChange: (value: string, charCount: number, wordCount: number) => void
 }
 
-const transformValueToEditorState = (innerValue: string) => {
-    const rawData = markdownToDraft(innerValue)
-    const rawDataWithImagesBlocks = insertAtomicBlocksForImagesEntities(rawData)
-    const contentState = convertFromRaw(rawDataWithImagesBlocks)
-    const newEditorState = EditorState.createWithContent(contentState)
-    return newEditorState
+const transformValueToEditorState = (innerValue: string) =>
+    EditorState.createWithContent(convertFromHTML(innerValue))
+
+const blockRenderer = (
+    contentBlock: ContentBlock,
+    config: unknown,
+    getEditorState: () => EditorState
+) => {
+    const type = contentBlock.getType()
+    if (type === 'atomic') {
+        const entity = getEditorState()
+            .getCurrentContent()
+            .getEntity(contentBlock.getEntityAt(0))
+        if (entity.getType() === INJECTED_HTML_TYPE) {
+            return {
+                component: InjectedHTMLBlockEditor,
+                editable: false,
+            }
+        }
+    }
 }
 
-const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
+const HelpCenterEditor = ({articleId, locale, value = '', onChange}: Props) => {
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     useEffect(() => {
@@ -41,17 +56,13 @@ const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
         } else {
             setEditorState(transformValueToEditorState(value))
         }
-    }, [articleId])
+    }, [articleId, locale])
 
     useEffect(() => {
         const content = editorState.getCurrentContent()
-        const rawObject = convertToRaw(content)
+        const htmlString = convertToHTML(content)
         const text = content.getPlainText('')
-        onChange(
-            draftToMarkdown(rawObject),
-            getCharCount(text),
-            getWordCount(text)
-        )
+        onChange(htmlString, getCharCount(text), getWordCount(text))
     }, [editorState, onChange])
 
     return (
@@ -62,6 +73,8 @@ const HelpCenterEditor = ({articleId, value = '', onChange}: Props) => {
             toolbarClassName={css['toolbar']}
             toolbar={toolbarConfig}
             onEditorStateChange={setEditorState}
+            // @ts-ignore the typing of `react-draft-wysiwyg`'s `customBlockRenderFunc` arguments prop is not correct
+            customBlockRenderFunc={blockRenderer}
         />
     )
 }

@@ -1,79 +1,139 @@
 import punycode from 'punycode'
 
 import {
-    draftToMarkdown as _draftToMarkdown,
-    markdownToDraft as _markdownToDraft,
-} from 'markdown-draft-js'
-import {RawDraftContentState} from 'draft-js'
+    convertToHTML as originalConvertToHTML,
+    convertFromHTML as originalConvertFromHTML,
+    IConvertFromHTMLConfig,
+} from 'draft-convert'
+import {ContentState} from 'draft-js'
 
-export const draftToMarkdown = (rawObject: RawDraftContentState): string =>
-    _draftToMarkdown(rawObject, {
-        entityItems: {
-            IMAGE: {
-                open: function () {
-                    return ''
-                },
-                close: function (entity) {
-                    if (!entity) {
-                        return ''
-                    }
-                    return `![](${(entity as {data: {src: string}}).data?.src})`
-                },
-            },
-        },
-    })
+export const INJECTED_HTML_TYPE = 'INJECTED_HTML'
+const SUPPORTED_TAGS = [
+    '#text',
+    'a',
+    'p',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'li',
+    'ol',
+    'ul',
+    'strong',
+    'em',
+    'blockquote',
+    'pre',
+    'code',
+    'image',
+    'figure',
+    'div',
+    'body',
+]
 
-export const markdownToDraft = (markdownString: string): RawDraftContentState =>
-    _markdownToDraft(markdownString, {
-        blockEntities: {
-            image: function (item) {
-                return {
-                    type: 'IMAGE',
-                    mutability: 'MUTABLE',
-                    data: {src: item?.src},
-                    text: ' ',
+export const convertToHTML = (contentState: ContentState): string =>
+    originalConvertToHTML({
+        entityToHTML: (entity, originalText) => {
+            if (entity.type === 'LINK') {
+                const url = entity.data.url
+                if (typeof url !== 'string') {
+                    throw new Error(
+                        `Entity of type 'LINK' was supposed to have an 'url'`
+                    )
                 }
-            },
-        },
-    })
-
-// When parsing the markdown string, "markdown-drafjs" creates the images entities in draftjs' raw data
-// and creates a block corresponding (with entityRanges.key)
-// To render the images correctly, "react-draft-wysiwyg" needs the images to be wrapped
-// in an "atomic" block.
-// This function loops on the image entities created and create an
-// 'atomic' block for each one of them
-export const insertAtomicBlocksForImagesEntities = (
-    rawData: RawDraftContentState
-): RawDraftContentState => {
-    const {blocks, entityMap} = rawData
-
-    Object.keys(entityMap).forEach((entityKey) => {
-        if (entityMap[entityKey].type === 'IMAGE') {
-            const eKey = parseInt(entityKey)
-            const blockKey = Object.keys(blocks).find((blockKey) => {
-                const bKey = parseInt(blockKey)
-                if (blocks[bKey].entityRanges[0]?.key === eKey) {
-                    return bKey
-                }
-            })
-            if (blockKey) {
-                const bKey = parseInt(blockKey)
-                blocks[bKey] = {
-                    ...blocks[bKey],
-                    type: 'atomic',
-                    text: ' ',
-                    entityRanges: [{offset: 0, length: 1, key: eKey}],
-                }
+                return `<a href="${url}">${originalText}</a>`
             }
-        }
-    })
+            if (entity.type === 'IMAGE') {
+                const src = entity.data.src
+                if (typeof src !== 'string') {
+                    throw new Error(
+                        `Entity  of type 'IMAGE' was supposed to have a 'src'`
+                    )
+                }
+                return `<img src="${src}" />`
+            }
+            if (entity.type === INJECTED_HTML_TYPE) {
+                const src = entity.data.src
+                if (typeof src !== 'string') {
+                    throw new Error(
+                        `Entity  of type 'INJECTED_HTML' was supposed to have a 'src'`
+                    )
+                }
+                return src
+            }
+            return originalText
+        },
+        blockToHTML: (block) => {
+            if (block.type === 'code') {
+                return {start: '<pre>', end: '</pre>'}
+            }
+            if (block.type === 'atomic') {
+                const contentBlock = contentState.getBlockForKey(block.key)
+                const entityKey = contentBlock.getEntityAt(0)
+                const entity = contentState.getEntity(entityKey)
+                if (entity.getType() === INJECTED_HTML_TYPE)
+                    return {start: '<div>', end: '</div>'}
+            }
+            return undefined
+        },
+    })(contentState)
 
-    return {
-        blocks,
-        entityMap,
-    }
-}
+const isUnsupportedNodeName = (nodeName: string): boolean =>
+    !SUPPORTED_TAGS.includes(nodeName.toLowerCase())
+
+export const convertFromHTML = (html: string): ContentState =>
+    originalConvertFromHTML({
+        htmlToEntity: (nodeName, node, createEntity) => {
+            if (nodeName === 'a') {
+                return createEntity('LINK', 'MUTABLE', {
+                    url: node.getAttribute('href'),
+                })
+            }
+            if (nodeName === 'img') {
+                return createEntity('IMAGE', 'MUTABLE', {
+                    src: node.getAttribute('src'),
+                })
+            }
+            if (isUnsupportedNodeName(nodeName)) {
+                const entity = createEntity(INJECTED_HTML_TYPE, 'MUTABLE', {
+                    src: node.outerHTML,
+                })
+                // we need to remove all children from the node so that they are not
+                // converted into blocks
+                while (node.firstChild) {
+                    node.removeChild(node.firstChild)
+                }
+                return entity
+            }
+        },
+        htmlToBlock: (nodeName, node) => {
+            const {firstChild} = node
+            if (
+                nodeName === 'figure' &&
+                firstChild instanceof HTMLElement &&
+                firstChild.nodeName === 'IMG'
+            ) {
+                return {type: 'atomic', data: {}}
+            }
+            if (nodeName === 'img') {
+                return {type: 'atomic', data: {}}
+            }
+            if (nodeName === 'pre') {
+                return {type: 'code', data: {}}
+            }
+            if (
+                nodeName === 'div' &&
+                firstChild instanceof HTMLElement &&
+                isUnsupportedNodeName(firstChild.nodeName)
+            ) {
+                return {type: 'atomic', data: {}}
+            }
+            if (isUnsupportedNodeName(nodeName)) {
+                return {type: 'atomic', data: {}}
+            }
+        },
+    } as IConvertFromHTMLConfig)(html)
 
 export const getCharCount = (plainText: string): number => {
     const decodeUnicode = (str: string): number[] => punycode.ucs2.decode(str) // func to handle unicode characters

@@ -4,6 +4,7 @@ import _kebabeCase from 'lodash/kebabCase'
 import {
     convertToHTML as _convertToHTML,
     convertFromHTML as _convertFromHTML,
+    IConvertFromHTMLConfig,
 } from 'draft-convert'
 import linkifyIt from 'linkify-it'
 import {
@@ -352,7 +353,7 @@ export function convertFromHTML(html: string): ContentState {
                 })
             }
         },
-    })(wrapper.innerHTML)
+    } as IConvertFromHTMLConfig)(wrapper.innerHTML)
 
     // line breaks for windows/linux/mac
     const lineBreaks = ['\r\n', '\n', '\r']
