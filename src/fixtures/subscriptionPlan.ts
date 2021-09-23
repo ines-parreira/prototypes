@@ -28,7 +28,7 @@ export const basicPlan: Plan = {
     integrations: 200,
     public: true,
     automation_addon_included: false,
-    automation_addon_amount: 1500,
+    automation_addon_equivalent_plan: 'basic-automation-monthly-usd-2',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: false},
@@ -111,7 +111,7 @@ export const proPlan: Plan = {
     integrations: 200,
     public: true,
     automation_addon_included: false,
-    automation_addon_amount: 7500,
+    automation_addon_equivalent_plan: 'pro-automation-monthly-usd-2',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -194,7 +194,7 @@ export const advancedPlan: Plan = {
     integrations: 200,
     public: true,
     automation_addon_included: false,
-    automation_addon_amount: 19000,
+    automation_addon_equivalent_plan: 'advanced-automation-monthly-usd-2',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -254,6 +254,7 @@ export const enterprisePlan: Plan = {
     limits: ticketLimits,
     integrations: 500,
     public: false,
+    automation_addon_equivalent_plan: null,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -293,7 +294,7 @@ export const customPlan: Plan = {
     public: true,
     custom: true,
     automation_addon_included: false,
-    automation_addon_amount: 30000,
+    automation_addon_equivalent_plan: 'custom-automation-monthly-usd-2',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -354,7 +355,7 @@ export const legacyPlan: Plan = {
     integrations: 200,
     public: false,
     automation_addon_included: false,
-    automation_addon_amount: 1500,
+    automation_addon_equivalent_plan: 'standard-automation-usd-1',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -393,6 +394,8 @@ export const customLegacyPlan: Plan = {
     integrations: 200,
     public: false,
     custom: true,
+    automation_addon_included: false,
+    automation_addon_equivalent_plan: null,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -431,7 +434,7 @@ export const basicAutomationPlan: Plan = {
     integrations: 200,
     public: true,
     automation_addon_included: true,
-    automation_addon_amount: 1500,
+    automation_addon_equivalent_plan: 'basic-monthly-usd-2',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: false},
@@ -491,7 +494,7 @@ export const proAutomationPlan: Plan = {
     integrations: 200,
     public: true,
     automation_addon_included: true,
-    automation_addon_amount: 7500,
+    automation_addon_equivalent_plan: 'pro-monthly-usd-2',
     features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
