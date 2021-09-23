@@ -39,20 +39,30 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="link-full-td align-middle middle-column"
     id="rule-name-1"
   >
-    <div
-      class="ruleCell"
+    <a
+      to="/app/settings/rules/1"
     >
-      <span
-        class="mr-2 name"
-      >
-        my rule
-      </span>
-    </div>
+      <div>
+        <span
+          class="mr-2 name"
+        >
+          my rule
+        </span>
+      </div>
+    </a>
   </td>
   <td
-    class="align-middle text-faded"
+    class="link-full-td align-middle"
   >
-    2020-01-01
+    <a
+      to="/app/settings/rules/1"
+    >
+      <div
+        class="text-faded"
+      >
+        2020-01-01
+      </div>
+    </a>
   </td>
   <td
     class="align-middle smallest actions"

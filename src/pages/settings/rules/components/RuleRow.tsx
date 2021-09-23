@@ -4,6 +4,7 @@ import moment from 'moment'
 import classnames from 'classnames'
 import {Badge, Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
+import {Link} from 'react-router-dom'
 
 import ToggleButton from '../../../common/components/ToggleButton'
 import type {Rule} from '../../../../state/rules/types'
@@ -145,6 +146,7 @@ export function RuleRow({
     )
 
     const toggleId = useMemo(() => `toggle-data-${rule.id}`, [rule])
+    const link = useMemo(() => `/app/settings/rules/${rule.id}`, [rule])
 
     return (
         <>
@@ -155,7 +157,6 @@ export function RuleRow({
                 className={classnames('draggable', css.row)}
                 onMouseEnter={() => setDescriptionOpen(true)}
                 onMouseLeave={() => setDescriptionOpen(false)}
-                onClick={() => history.push(`/app/settings/rules/${rule.id}`)}
             >
                 <td
                     className="smallest align-middle"
@@ -188,20 +189,28 @@ export function RuleRow({
                     )}
                     id={`rule-name-${rule.id}`}
                 >
-                    <div className={css.ruleCell}>
-                        <span className={classnames('mr-2', css.name)}>
-                            {rule.name}
-                        </span>
-                        {rule.type === 'system' && (
-                            <Badge className="ml-2" color="danger">
-                                <i className="material-icons mr-2">warning</i>
-                                SYSTEM
-                            </Badge>
-                        )}
-                    </div>
+                    <Link to={link}>
+                        <div>
+                            <span className={classnames('mr-2', css.name)}>
+                                {rule.name}
+                            </span>
+                            {rule.type === 'system' && (
+                                <Badge className="ml-2" color="danger">
+                                    <i className="material-icons mr-2">
+                                        warning
+                                    </i>
+                                    SYSTEM
+                                </Badge>
+                            )}
+                        </div>
+                    </Link>
                 </td>
-                <td className={classnames('align-middle text-faded')}>
-                    {formattedUpdatedDate}
+                <td className={classnames('link-full-td align-middle')}>
+                    <Link to={link}>
+                        <div className={'text-faded'}>
+                            {formattedUpdatedDate}
+                        </div>
+                    </Link>
                 </td>
                 <td
                     className={classnames('align-middle smallest', css.actions)}
