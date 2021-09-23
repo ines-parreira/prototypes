@@ -98,13 +98,22 @@ export function MacrosSettingsTableContainer({
             })
         }
     }
+
+    const defaultDescendingSort = [
+        MacroSortableProperties.Usage,
+        MacroSortableProperties.UpdatedDatetime,
+    ]
+
     const handleSortChange = (orderBy: MacroSortableProperties) => {
         onSortOptionsChange(
             orderBy,
-            orderBy !== sortOptions.orderBy ||
-                sortOptions.orderDir === OrderDirection.Desc
-                ? OrderDirection.Asc
-                : OrderDirection.Desc
+            orderBy === sortOptions.orderBy
+                ? sortOptions.orderDir === OrderDirection.Asc
+                    ? OrderDirection.Desc
+                    : OrderDirection.Asc
+                : defaultDescendingSort.includes(orderBy)
+                ? OrderDirection.Desc
+                : OrderDirection.Asc
         )
     }
 
