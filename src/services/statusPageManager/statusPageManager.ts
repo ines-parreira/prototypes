@@ -279,6 +279,19 @@ export class StatusPageManager {
         this.store.dispatch(removeNotification(MAINTENANCE_NOTIFICATION_ID))
 
         for (const maintenance of data.scheduled_maintenances) {
+            const clusters = maintenance.components.filter(
+                (component) => component.group_id === CLUSTER_GROUP_ID
+            )
+
+            if (
+                clusters.length &&
+                !clusters.find(
+                    (cluster) => cluster.name === window.GORGIAS_CLUSTER
+                )
+            ) {
+                return
+            }
+
             const now = moment()
             const scheduledFor = moment(maintenance.scheduled_for)
             const startsInMinutes = moment(maintenance.scheduled_for).diff(
