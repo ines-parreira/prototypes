@@ -11,4 +11,3 @@ export {
     updateMacro,
     deleteMacro,
 } from './resources.ts'
-export * from './types.js'

@@ -5,4 +5,3 @@ export {
     updateSection,
     deleteSection,
 } from './resources.ts'
-export * from './types.js'

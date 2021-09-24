@@ -1,23 +1,37 @@
-//@flow
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import _noop from 'lodash/noop'
+import _omit from 'lodash/omit'
 
-import {TicketBody} from '../TicketBody.tsx'
-import {message} from '../../../../../models/ticket/tests/mocks.ts'
+import {TicketBody} from '../TicketBody'
+import {message} from '../../../../../models/ticket/tests/mocks'
 import {
     INCOMING_PHONE_CALL,
     OUTGOING_PHONE_CALL,
     TICKET_ASSIGNED,
-} from '../../../../../constants/event.ts'
-import type {TicketMessage} from '../../../../../models/ticket'
-import TicketMessages from '../TicketMessages/TicketMessages.tsx'
-import Event from '../Event.tsx'
+} from '../../../../../constants/event'
+import {TicketMessage} from '../../../../../models/ticket/types'
+import TicketMessages from '../TicketMessages/TicketMessages'
+import Event from '../Event'
+import {TicketChannel} from '../../../../../business/types/ticket'
 
 describe('TicketBody', () => {
+    const commonProps = {
+        lastReadMessage: fromJS({
+            id: 1,
+        }),
+        ticket: fromJS({id: 1}),
+        setStatus: _noop,
+        currentUser: fromJS({
+            timezone: 'UTC',
+        }),
+    } as ComponentProps<typeof TicketBody>
+
     it('should display messages', () => {
         const component = shallow(
             <TicketBody
+                {...commonProps}
                 elements={fromJS([
                     {
                         ...message,
@@ -25,15 +39,6 @@ describe('TicketBody', () => {
                         created_datetime: '2017-07-01T18:00:00',
                     },
                 ])}
-                lastReadMessage={fromJS({
-                    id: 1,
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
             />
         )
 
@@ -43,6 +48,7 @@ describe('TicketBody', () => {
     it('should display events with messages', () => {
         const component = shallow(
             <TicketBody
+                {...commonProps}
                 elements={fromJS([
                     {
                         ...message,
@@ -56,15 +62,6 @@ describe('TicketBody', () => {
                         created_datetime: '2017-07-01T19:00:00',
                     },
                 ])}
-                lastReadMessage={fromJS({
-                    id: 1,
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
             />
         )
 
@@ -74,6 +71,7 @@ describe('TicketBody', () => {
     it('should display phone events', () => {
         const component = shallow(
             <TicketBody
+                {...commonProps}
                 elements={fromJS([
                     {
                         id: 1,
@@ -90,15 +88,6 @@ describe('TicketBody', () => {
                         type: OUTGOING_PHONE_CALL,
                     },
                 ])}
-                lastReadMessage={fromJS({
-                    id: 1,
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
             />
         )
 
@@ -108,6 +97,7 @@ describe('TicketBody', () => {
     it('should display and highlight the messages', () => {
         const component = shallow(
             <TicketBody
+                {...commonProps}
                 elements={fromJS([
                     {
                         ...message,
@@ -115,16 +105,6 @@ describe('TicketBody', () => {
                         created_datetime: '2017-07-01T18:00:00',
                     },
                 ])}
-                highlightedElements={{first: 1}}
-                lastReadMessage={fromJS({
-                    id: 1,
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
             />
         )
         component.setState({highlightedElements: {first: 1}})
@@ -135,6 +115,7 @@ describe('TicketBody', () => {
     it('should display and not highlight the messages', () => {
         const component = shallow(
             <TicketBody
+                {...commonProps}
                 elements={fromJS([
                     {
                         ...message,
@@ -142,16 +123,6 @@ describe('TicketBody', () => {
                         created_datetime: '2017-07-01T18:00:00',
                     },
                 ])}
-                highlightedElements={{first: 1}}
-                lastReadMessage={fromJS({
-                    id: 1,
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
             />
         )
         component.setState({highlightedElements: {first: 2}})
@@ -162,6 +133,7 @@ describe('TicketBody', () => {
     it('should display audit log events with messages', () => {
         const component = shallow(
             <TicketBody
+                {...commonProps}
                 elements={fromJS([
                     {
                         ...message,
@@ -181,15 +153,6 @@ describe('TicketBody', () => {
                         isEvent: true,
                     },
                 ])}
-                lastReadMessage={fromJS({
-                    id: 1,
-                })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
             />
         )
 
@@ -200,6 +163,7 @@ describe('TicketBody', () => {
         it('should pass `isLastReadMessage` only for the last read message', () => {
             const component = shallow(
                 <TicketBody
+                    {...commonProps}
                     elements={fromJS([
                         {
                             ...message,
@@ -217,15 +181,6 @@ describe('TicketBody', () => {
                             created_datetime: '2017-07-01T20:00:00',
                         },
                     ])}
-                    lastReadMessage={fromJS({
-                        id: 1,
-                    })}
-                    loadingState={fromJS([])}
-                    ticket={fromJS({id: 1})}
-                    setStatus={() => {}}
-                    currentUser={fromJS({
-                        timezone: 'UTC',
-                    })}
                 />
             )
 
@@ -235,6 +190,7 @@ describe('TicketBody', () => {
         it('should not pass `isLastReadMessage` for a new message', () => {
             const component = shallow(
                 <TicketBody
+                    {...commonProps}
                     elements={fromJS([
                         {
                             id: undefined,
@@ -244,12 +200,6 @@ describe('TicketBody', () => {
                     lastReadMessage={fromJS({
                         id: undefined,
                     })}
-                    loadingState={fromJS([])}
-                    ticket={fromJS({id: 1})}
-                    setStatus={() => {}}
-                    currentUser={fromJS({
-                        timezone: 'UTC',
-                    })}
                 />
             )
 
@@ -258,18 +208,13 @@ describe('TicketBody', () => {
     })
 
     describe('message grouping', () => {
-        const DefaultTicketBody = (props: {}) => (
+        const minProps = {..._omit(commonProps, ['lastReadMessage'])}
+        const DefaultTicketBody = (props: ComponentProps<any>) => (
             <TicketBody
                 lastReadMessage={fromJS({
                     id: undefined,
                 })}
-                loadingState={fromJS([])}
-                ticket={fromJS({id: 1})}
-                setStatus={() => {}}
-                currentUser={fromJS({
-                    timezone: 'UTC',
-                })}
-                messageGroupingChannels={['chat']}
+                messageGroupingChannels={[TicketChannel.Chat]}
                 messageGroupingDuration="PT5M"
                 {...props}
             />
@@ -277,7 +222,7 @@ describe('TicketBody', () => {
 
         const message1: TicketMessage = {
             ...message,
-            channel: 'chat',
+            channel: TicketChannel.Chat,
             created_datetime: '2018-01-01T12:00:00.000Z',
         }
 
@@ -288,7 +233,10 @@ describe('TicketBody', () => {
 
         it('should group messages if they have the same channel and ', () => {
             const component = shallow(
-                <DefaultTicketBody elements={fromJS([message1, message2])} />
+                <DefaultTicketBody
+                    {...minProps}
+                    elements={fromJS([message1, message2])}
+                />
             )
             const ticketMessages = component
                 .find(TicketBody)
@@ -300,6 +248,7 @@ describe('TicketBody', () => {
         it('should not group messages if they have different channels', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([
                         message1,
                         {
@@ -319,8 +268,9 @@ describe('TicketBody', () => {
         it('should not group messages if they have the same channel, but the channel is not grouped', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([message1, message2])}
-                    messageGroupingChannels={'mail'}
+                    messageGroupingChannels={[TicketChannel.Email]}
                 />
             )
             const ticketMessages = component
@@ -333,6 +283,7 @@ describe('TicketBody', () => {
         it('should not group messages if they do not fall into the grouping interval', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([
                         message1,
                         {
@@ -352,6 +303,7 @@ describe('TicketBody', () => {
         it('should not group elements if they are not messages', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([
                         message1,
                         {
@@ -370,6 +322,7 @@ describe('TicketBody', () => {
         it('should not group messages if they are not from the same sender', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([
                         message1,
                         {
@@ -389,6 +342,7 @@ describe('TicketBody', () => {
         it('should not merge the messages if one of them is private', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([
                         {
                             ...message1,
@@ -405,6 +359,7 @@ describe('TicketBody', () => {
         it('should not merge the messages if one is from agent and the second is not', () => {
             const component = shallow(
                 <DefaultTicketBody
+                    {...minProps}
                     elements={fromJS([
                         {
                             ...message1,

@@ -7,7 +7,7 @@ import {fromJS} from 'immutable'
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 import * as types from '../constants'
-import {UserSettingType} from '../../../config/types/user'
+import {UserSettingType} from '../../../config/types/user.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

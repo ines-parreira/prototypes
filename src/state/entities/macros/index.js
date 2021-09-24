@@ -13,5 +13,4 @@ export {
     MACRO_UPDATED,
     MACROS_FETCHED,
 } from './constants.ts'
-export * from './types.js'
 export {default} from './reducer.ts'

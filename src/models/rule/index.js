@@ -8,4 +8,3 @@ export {
     IDENTIFIER_VARIABLE_NAMES,
 } from './constants.ts'
 export {getCategoryFromPath, getFormattedRule, getAstPath} from './utils.ts'
-export * from './types.js'

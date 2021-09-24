@@ -19,7 +19,7 @@ import RichField from '../../../common/forms/RichField'
 
 import {isRichType} from '../../../../config/ticket.ts'
 import {sanitizeHtmlForFacebookMessenger} from '../../../../utils/html.ts'
-import {TicketMessageSourceType} from '../../../../business/types/ticket'
+import {TicketMessageSourceType} from '../../../../business/types/ticket.ts'
 
 import {getIconFromType} from './../../../../state/integrations/helpers.ts'
 import {getActionTemplate} from './../../../../utils.ts'

@@ -19,7 +19,7 @@ import InputField from '../../../../common/forms/InputField.js'
 import {getSortedIntegrationActionsNames} from '../../utils.js'
 import {Attachment, ActionTemplate} from '../../../../../types'
 import {getActionTemplate, humanizeString} from '../../../../../utils'
-import {RootState} from '../../../../../state/types.js'
+import {RootState} from '../../../../../state/types'
 import {IntegrationType} from '../../../../../models/integration/types'
 import {MacroActionName} from '../../../../../models/macroAction/types'
 

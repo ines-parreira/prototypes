@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {Form, Button} from 'reactstrap'
 import _pick from 'lodash/pick'
 
-import {IntegrationType} from '../../../../../../../../../models/integration/types'
+import {IntegrationType} from '../../../../../../../../../models/integration/types.ts'
 
 import InputField from '../../../../../../../forms/InputField'
 

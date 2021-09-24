@@ -7,4 +7,3 @@ export {
     updateTag,
     deleteTag,
 } from './resources.ts'
-export * from './types.js'

@@ -1,4 +1,3 @@
-export * from './types.js'
 export {
     isTicketMessage,
     isTicketEvent,

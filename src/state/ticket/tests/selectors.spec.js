@@ -3,7 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
-import {TicketVia} from '../../../business/types/ticket'
+import {TicketVia} from '../../../business/types/ticket.ts'
 
 jest.addMatchers(immutableMatchers)
 

@@ -8,4 +8,3 @@ export {
     isRuleExecutedType,
     isSystemRuleEvent,
 } from './predicates.ts'
-export * from './types.js'

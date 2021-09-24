@@ -18,8 +18,6 @@ import {Config, ActionName} from './types'
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
-export * from './types.js'
-
 export default function toolbarPlugin(config: Config) {
     const isLinkDisplayed = () =>
         Toolbar.isDisplayedAction(ActionName.Link, config.getDisplayedActions())

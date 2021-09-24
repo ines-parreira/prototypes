@@ -14,7 +14,7 @@ import {
 import {
     TicketChannel,
     TicketMessageSourceType,
-} from '../../../../../../business/types/ticket'
+} from '../../../../../../business/types/ticket.ts'
 import {sanitizeHtmlForFacebookMessenger} from '../../../../../../utils/html.ts'
 
 jest.mock('draft-js/lib/generateRandomKey', () =>

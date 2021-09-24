@@ -6,7 +6,7 @@ import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
-} from '../../../../../../business/types/ticket'
+} from '../../../../../../business/types/ticket.ts'
 
 describe('Body', () => {
     it("should display the Facebook carousel if there's matching metadata", () => {

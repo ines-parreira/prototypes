@@ -13,5 +13,4 @@ export {
     TAG_UPDATED,
     TAGS_FETCHED,
 } from './constants.ts'
-export * from './types.js'
 export {default} from './reducer.ts'

@@ -13,7 +13,7 @@ import {SYSTEM_VIEW_CATEGORY, ViewVisibility} from '../../../constants/view.ts'
 import {getExpirationTimeForCount} from '../../../config/views.tsx'
 import {initialState} from '../reducers.ts'
 import * as selectors from '../selectors.ts'
-import {UserSettingType} from '../../../config/types/user'
+import {UserSettingType} from '../../../config/types/user.ts'
 
 jest.addMatchers(immutableMatchers)
 
