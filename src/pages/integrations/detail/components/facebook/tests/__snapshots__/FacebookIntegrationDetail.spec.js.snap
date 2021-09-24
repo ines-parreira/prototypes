@@ -130,16 +130,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -447,16 +447,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -780,16 +780,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -1153,16 +1153,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -1526,16 +1526,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -1919,16 +1919,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -2312,16 +2312,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -2705,16 +2705,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -3098,16 +3098,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -3486,16 +3486,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -3874,16 +3874,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -4262,16 +4262,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -4656,15 +4656,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -5092,16 +5092,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -5454,16 +5454,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -5847,16 +5847,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -6240,16 +6240,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -6634,15 +6634,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -7023,15 +7023,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -7412,15 +7412,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -7801,15 +7801,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -8190,15 +8190,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -8579,15 +8579,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -8968,15 +8968,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -9357,15 +9357,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -9746,15 +9746,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -10135,15 +10135,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -10524,15 +10524,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -10913,15 +10913,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -11302,15 +11302,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -11691,15 +11691,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -12079,16 +12079,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           type="checkbox"
         />
         <BooleanField
-          disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          disabled={false}
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
-          disabled={false}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          disabled={true}
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -12469,15 +12469,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook mentions"
-          name="mentions_enabled"
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
         />
         <BooleanField
           disabled={true}
-          label="Enable Facebook recommendations"
-          name="recommendations_enabled"
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
         />
@@ -12839,6 +12839,14 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={true}
           label="Enable Facebook recommendations"
           name="recommendations_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          disabled={true}
+          label="Enable Facebook mentions"
+          name="mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}

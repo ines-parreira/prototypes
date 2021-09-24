@@ -17,7 +17,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
-    FACEBOOK_MENTION_ENABLED_DOMAINS,
 } from '../../../../../config/integrations/facebook'
 import InputField from '../../../../common/forms/InputField.js'
 import BooleanField from '../../../../common/forms/BooleanField.js'
@@ -265,10 +264,6 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
         if (loading.get('integration') || integration.isEmpty()) {
             return <Loader />
         }
-        const mentionEnabledDomain =
-            FACEBOOK_MENTION_ENABLED_DOMAINS.indexOf(
-                currentAccount.get('domain')
-            ) >= 0
 
         return (
             <div className="full-width">
@@ -406,21 +401,6 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                 }
                                 disabled={!canEnablePosts}
                             />
-                            {mentionEnabledDomain && (
-                                <BooleanField
-                                    name="mentions_enabled"
-                                    type="checkbox"
-                                    label="Enable Facebook mentions"
-                                    value={this.state.settings.mentions_enabled}
-                                    onChange={(value: boolean) =>
-                                        this._onSettingChange(
-                                            value,
-                                            'mentions_enabled'
-                                        )
-                                    }
-                                    disabled={!canEnableMentions}
-                                />
-                            )}
                             <BooleanField
                                 name="recommendations_enabled"
                                 type="checkbox"
@@ -436,7 +416,19 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                 }
                                 disabled={!canEnableRecommendations}
                             />
-
+                            <BooleanField
+                                name="mentions_enabled"
+                                type="checkbox"
+                                label="Enable Facebook mentions"
+                                value={this.state.settings.mentions_enabled}
+                                onChange={(value: boolean) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'mentions_enabled'
+                                    )
+                                }
+                                disabled={!canEnableMentions}
+                            />
                             <BooleanField
                                 name="instagram_comments_enabled"
                                 type="checkbox"

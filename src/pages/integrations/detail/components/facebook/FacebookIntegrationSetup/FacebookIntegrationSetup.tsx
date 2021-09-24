@@ -36,7 +36,6 @@ import {
 } from '../utils'
 import {getCurrentPlan} from '../../../../../../state/billing/selectors'
 import {AccountFeature} from '../../../../../../state/currentAccount/types'
-import {FACEBOOK_MENTION_ENABLED_DOMAINS} from '../../../../../../config/integrations/facebook'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import {RootState} from '../../../../../../state/types'
 import {
@@ -246,10 +245,6 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
         if (integrations.isEmpty()) {
             return null
         }
-        const mentionEnabledDomain =
-            FACEBOOK_MENTION_ENABLED_DOMAINS.indexOf(
-                currentAccount.get('domain')
-            ) >= 0
 
         return (
             <div className="mb-4">
@@ -568,29 +563,6 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                             !canEnablePosts
                                                         }
                                                     />
-                                                    {mentionEnabledDomain && (
-                                                        <BooleanField
-                                                            name={`${id}.mentions_enabled`}
-                                                            type="checkbox"
-                                                            label="Enable Facebook mentions"
-                                                            value={this._getSettingValue(
-                                                                id,
-                                                                'mentions_enabled'
-                                                            )}
-                                                            onChange={(
-                                                                value: boolean
-                                                            ) =>
-                                                                this._setSettingValue(
-                                                                    id,
-                                                                    'mentions_enabled',
-                                                                    value
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                !canEnableMentions
-                                                            }
-                                                        />
-                                                    )}
                                                     <BooleanField
                                                         name={`${id}.recommendations_enabled`}
                                                         type="checkbox"
@@ -610,6 +582,27 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                                         }
                                                         disabled={
                                                             !canEnableRecommendations
+                                                        }
+                                                    />
+                                                    <BooleanField
+                                                        name={`${id}.mentions_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Facebook mentions"
+                                                        value={this._getSettingValue(
+                                                            id,
+                                                            'mentions_enabled'
+                                                        )}
+                                                        onChange={(
+                                                            value: boolean
+                                                        ) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'mentions_enabled',
+                                                                value
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            !canEnableMentions
                                                         }
                                                     />
                                                     <BooleanField
