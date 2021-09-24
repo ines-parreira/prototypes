@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {useSelector} from 'react-redux'
 
 import {
-    TicketMessageSourceType,
+    TicketChannel,
     TicketStatus,
 } from '../../../../../../business/types/ticket'
 import SourceIcon from '../../../../../common/components/SourceIcon'
@@ -13,18 +13,35 @@ import {
     getTicketViewFieldPath,
 } from '../../../../../../config/views'
 import {ViewField} from '../../../../../../models/view/types'
-import {EqualityOperator} from '../../../../../../state/rules/types'
 import {getStatsViewFilters} from '../../../utils'
-import ViewLink from '../../../ViewLink'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker.js'
+import {EqualityOperator} from '../../../../../../state/rules/types'
+import ViewLink from '../../../ViewLink'
+import {TICKET_CHANNEL_NAMES} from '../../../../../../state/ticket/constants'
+import {
+    SegmentEvent,
+    StatViewLinkClickedStat,
+} from '../../../../../../store/middlewares/types/segmentTracker'
 
 import css from './TicketDetailsStat.less'
+
+const ASSIGNEE_FILTER_LEFT = getTicketViewFieldPath(
+    getTicketViewField(ViewField.Assignee)
+)
+
+const STATUS_FILTER = {
+    left: getTicketViewFieldPath(getTicketViewField(ViewField.Status)),
+    operator: EqualityOperator.Eq,
+    right: JSON.stringify(TicketStatus.Open),
+}
 
 type Props = {
     agentName: string
     agentId: number
     openTickets: number
-    channelsBreakdown: Record<TicketMessageSourceType, number>
+    channelsBreakdown: Record<TicketChannel, number>
+    assigneeFilterLeft?: string
+    statusFilter?: ViewFilter
 }
 
 export default function TicketDetailsStat({
@@ -34,37 +51,55 @@ export default function TicketDetailsStat({
     channelsBreakdown,
 }: Props) {
     const statsFilters = useSelector(getLiveAgentsStatsFilters)
-    const filters = useMemo<ViewFilter[]>(() => {
+
+    const assigneeFilter = useMemo<ViewFilter>(
+        () => ({
+            left: ASSIGNEE_FILTER_LEFT,
+            operator: EqualityOperator.Eq,
+            right: agentId,
+        }),
+        [agentId]
+    )
+
+    const baseFilters = useMemo<ViewFilter[]>(() => {
         const periodFilterLeft = getTicketViewFieldPath(
             getTicketViewField(ViewField.Closed)
         )
-        const assigneeFilterLeft = getTicketViewFieldPath(
-            getTicketViewField(ViewField.Assignee)
-        )
-        const statsViewFilters = getStatsViewFilters(
-            periodFilterLeft,
-            statsFilters
-        ).filter(
+        return getStatsViewFilters(periodFilterLeft, statsFilters).filter(
             (filter) =>
                 filter.left !== periodFilterLeft &&
-                filter.left !== assigneeFilterLeft
+                filter.left !== ASSIGNEE_FILTER_LEFT
         )
-        return [
-            {
-                left: assigneeFilterLeft,
-                operator: EqualityOperator.Eq,
-                right: agentId,
-            },
-            {
-                left: getTicketViewFieldPath(
-                    getTicketViewField(ViewField.Status)
-                ),
-                operator: EqualityOperator.Eq,
-                right: JSON.stringify(TicketStatus.Open),
-            },
-            ...statsViewFilters,
-        ]
-    }, [agentId, statsFilters])
+    }, [statsFilters])
+
+    const openTicketsFilters = useMemo<ViewFilter[]>(
+        () => [assigneeFilter, STATUS_FILTER, ...baseFilters],
+        [assigneeFilter, baseFilters]
+    )
+
+    const channelFilters = useMemo<Record<TicketChannel, ViewFilter[]>>(() => {
+        const channelFilterLeft = getTicketViewFieldPath(
+            getTicketViewField(ViewField.Channel)
+        )
+        return Object.values(TicketChannel).reduce(
+            (acc, channel) => ({
+                ...acc,
+                [channel]: [
+                    assigneeFilter,
+                    STATUS_FILTER,
+                    {
+                        left: channelFilterLeft,
+                        operator: EqualityOperator.Eq,
+                        right: JSON.stringify(channel),
+                    },
+                    ...baseFilters.filter(
+                        (filter) => filter.left !== channelFilterLeft
+                    ),
+                ],
+            }),
+            {} as Record<TicketChannel, ViewFilter[]>
+        )
+    }, [assigneeFilter, baseFilters])
 
     if (!openTickets) {
         return (
@@ -79,12 +114,13 @@ export default function TicketDetailsStat({
             <div className={css.openTickets}>
                 <ViewLink
                     viewName={`Open tickets assigned to: ${agentName}`}
-                    filters={filters}
+                    filters={openTicketsFilters}
                     onClick={() => {
                         segmentTracker.logEvent(
-                            segmentTracker.EVENTS.STAT_VIEW_LINK_CLICKED,
+                            SegmentEvent.StatViewLinkClicked,
                             {
-                                stat: 'tickets-open-per-agent-live',
+                                stat:
+                                    StatViewLinkClickedStat.TicketsOpenPerAgentLive,
                             }
                         )
                     }}
@@ -94,16 +130,31 @@ export default function TicketDetailsStat({
             </div>
             <div className={css.separator} />
             <div className={css.channelsBreakdown}>
-                {(Object.keys(
-                    channelsBreakdown
-                ) as TicketMessageSourceType[]).map((key) => {
-                    return channelsBreakdown[key] ? (
-                        <div key={key} className={css.channel}>
+                {(Object.entries(channelsBreakdown) as [
+                    TicketChannel,
+                    number
+                ][]).map(([channel, ticketsNumber]) => {
+                    return ticketsNumber ? (
+                        <div key={channel} className={css.channel}>
                             <SourceIcon
-                                type={key}
+                                type={channel}
                                 className={css.channelIcon}
                             />
-                            {channelsBreakdown[key]}
+                            <ViewLink
+                                viewName={`Open tickets assigned to: ${agentName}, channel: ${TICKET_CHANNEL_NAMES[channel]}`}
+                                filters={channelFilters[channel]}
+                                onClick={() => {
+                                    segmentTracker.logEvent(
+                                        SegmentEvent.StatViewLinkClicked,
+                                        {
+                                            stat:
+                                                StatViewLinkClickedStat.TicketsOpenPerAgentPerChannelLive,
+                                        }
+                                    )
+                                }}
+                            >
+                                {ticketsNumber}
+                            </ViewLink>
                         </div>
                     ) : null
                 })}

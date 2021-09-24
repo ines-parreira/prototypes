@@ -6,10 +6,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import TicketDetailsStat from '../TicketDetailsStat'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../../../../../business/types/ticket'
+import {TicketChannel} from '../../../../../../../business/types/ticket'
 import {RootState, StoreDispatch} from '../../../../../../../state/types'
 import {integrationsState} from '../../../../../../../fixtures/integrations'
 import {logEvent} from '../../../../../../../store/middlewares/segmentTracker.js'
@@ -54,12 +51,12 @@ describe('TicketDetailsStat', () => {
         agentId: 1,
         agentName: 'John Doe',
         openTickets: 0,
-        channelsBreakdown: Object.values(TicketMessageSourceType).reduce(
-            (acc, sourceType: TicketMessageSourceType) => {
-                acc[sourceType] = 0
+        channelsBreakdown: Object.values(TicketChannel).reduce(
+            (acc, channel) => {
+                acc[channel] = 0
                 return acc
             },
-            {} as Record<TicketMessageSourceType, number>
+            {} as Record<TicketChannel, number>
         ),
     }
 
@@ -84,8 +81,8 @@ describe('TicketDetailsStat', () => {
                     openTickets={21}
                     channelsBreakdown={{
                         ...minProps.channelsBreakdown,
-                        [TicketMessageSourceType.Chat]: 2,
-                        [TicketMessageSourceType.Email]: 19,
+                        [TicketChannel.Chat]: 2,
+                        [TicketChannel.Email]: 19,
                     }}
                 />
             </Provider>
@@ -93,22 +90,24 @@ describe('TicketDetailsStat', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should log event on open tickets click', () => {
-        const {getByTestId} = render(
+    it('should log event on view link click', () => {
+        const {getAllByTestId} = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketDetailsStat
                     {...minProps}
                     openTickets={21}
                     channelsBreakdown={{
                         ...minProps.channelsBreakdown,
-                        [TicketMessageSourceType.Chat]: 2,
-                        [TicketMessageSourceType.Email]: 19,
+                        [TicketChannel.Chat]: 2,
+                        [TicketChannel.Email]: 19,
                     }}
                 />
             </Provider>
         )
 
-        fireEvent.click(getByTestId('view-link'))
+        for (const element of getAllByTestId('view-link')) {
+            fireEvent.click(element)
+        }
 
         expect(logEventMock.mock.calls).toMatchSnapshot()
     })

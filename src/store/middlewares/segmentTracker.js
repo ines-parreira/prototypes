@@ -190,5 +190,4 @@ export const EVENTS = {
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
     GRAMMARLY_ENABLED: 'grammarly-enabled',
     UNDO_SENT_MESSAGE: 'undo-sent-message',
-    STAT_VIEW_LINK_CLICKED: 'stat-view-link-clicked',
 }

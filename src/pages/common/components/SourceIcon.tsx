@@ -9,7 +9,7 @@ import {
 } from '../../../business/types/ticket'
 
 type Props = {
-    type?: SourceType
+    type?: SourceType | IntegrationType | TicketChannel
     className?: string
     id?: string
 }

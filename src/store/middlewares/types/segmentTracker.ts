@@ -81,4 +81,13 @@ export enum SegmentEvent {
     UndoSentMessage = 'undo-sent-message',
     PaywallUpgradeButtonSelected = 'paywall-upgrade-button-selected',
     StatDownloadClicked = 'stat-download-clicked',
+    StatViewLinkClicked = 'stat-view-link-clicked',
+}
+
+export enum StatViewLinkClickedStat {
+    TicketsClosedPerAgentTotal = 'tickets-closed-per-agent-total',
+    TicketsCreatedPerChannelTotal = 'tickets-created-per-channel-total',
+    TicketsCreatedPerTagTotal = 'tickets-created-per-tag-total',
+    TicketsOpenPerAgentLive = 'tickets-open-per-agent-live',
+    TicketsOpenPerAgentPerChannelLive = 'tickets-open-per-agent-per-channel-live',
 }

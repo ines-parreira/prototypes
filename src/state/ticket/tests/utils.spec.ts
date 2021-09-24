@@ -1,5 +1,5 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration'
@@ -10,7 +10,6 @@ import {
     getOutboundCallFrom,
     getPreferredChannel,
     getSourceTypeOfResponse,
-    getTicketChannelFromName,
     guessReceiversFromTicket,
     isForwardedMessage,
     persistLastSenderChannel,
@@ -22,7 +21,6 @@ import {
 } from '../utils'
 import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils.js'
 import {
-    TicketChannel,
     TicketMessageSourceType,
     TicketVia,
 } from '../../../business/types/ticket'
@@ -984,18 +982,6 @@ describe('ticket utils', () => {
             const channel = getValidSender(2)
             const channels = fromJS([getValidSender(1), channel])
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
-        })
-    })
-
-    describe('getChannelFromName', () => {
-        it('should convert channel name to an existing TicketChannel', () => {
-            expect(getTicketChannelFromName('Instagram Ad Comment')).toBe(
-                TicketChannel.InstagramAdComment
-            )
-        })
-
-        it('should return null for an invalid ticket channel', () => {
-            expect(getTicketChannelFromName('Foo Bar Baz')).toBe(null)
         })
     })
 })

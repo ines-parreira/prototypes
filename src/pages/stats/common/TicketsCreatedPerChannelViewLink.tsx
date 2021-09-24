@@ -1,14 +1,19 @@
 import React, {ReactNode, useMemo} from 'react'
 import {useSelector} from 'react-redux'
+import _findKey from 'lodash/findKey'
 
 import {getChannelsStatsFilters} from '../../../state/stats/selectors'
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
 import {ViewFilter} from '../../../state/views/types'
 import {EqualityOperator} from '../../../state/rules/types'
-import {getTicketChannelFromName} from '../../../state/ticket/utils'
 import {reportError} from '../../../utils/errors'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {
+    SegmentEvent,
+    StatViewLinkClickedStat,
+} from '../../../store/middlewares/types/segmentTracker'
+import {TICKET_CHANNEL_NAMES} from '../../../state/ticket/constants'
 
 import ViewLink from './ViewLink'
 import {getStatsViewFilters} from './utils'
@@ -22,7 +27,10 @@ export default function TicketsCreatedPerChannelViewLink({
     children,
     channelName,
 }: Props) {
-    const channel = getTicketChannelFromName(channelName)
+    const channel = _findKey(
+        TICKET_CHANNEL_NAMES,
+        (name) => name === channelName
+    )
     const statsFilters = useSelector(getChannelsStatsFilters)
     const filters = useMemo(() => {
         const channelFilterLeft = getTicketViewFieldPath(
@@ -48,12 +56,9 @@ export default function TicketsCreatedPerChannelViewLink({
     return (
         <span
             onClick={() => {
-                segmentTracker.logEvent(
-                    segmentTracker.EVENTS.STAT_VIEW_LINK_CLICKED,
-                    {
-                        stat: 'tickets-created-per-channel-total',
-                    }
-                )
+                segmentTracker.logEvent(SegmentEvent.StatViewLinkClicked, {
+                    stat: StatViewLinkClickedStat.TicketsCreatedPerChannelTotal,
+                })
             }}
         >
             <ViewLink viewName={`Channel: ${channelName}`} filters={filters}>

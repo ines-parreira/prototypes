@@ -26,7 +26,7 @@ import {
 import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
-import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
+import {TicketChannel} from '../../../../../../business/types/ticket'
 
 import css from './TableStat.less'
 import TicketDetailsStat from './TicketDetailsStat'
@@ -76,7 +76,7 @@ export class TableStat extends Component<OwnProps & RouteComponentProps> {
                 const details = (metric.get('details') as Map<
                     any,
                     any
-                >)?.toJS() as Record<TicketMessageSourceType, number>
+                >)?.toJS() as Record<TicketChannel, number>
                 return (
                     <TicketDetailsStat
                         agentId={line.getIn(['0', 'value', 'id'])}

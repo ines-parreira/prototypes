@@ -1,11 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketDetailsStat should log event on open tickets click 1`] = `
+exports[`TicketDetailsStat should log event on view link click 1`] = `
 Array [
   Array [
     "stat-view-link-clicked",
     Object {
       "stat": "tickets-open-per-agent-live",
+    },
+  ],
+  Array [
+    "stat-view-link-clicked",
+    Object {
+      "stat": "tickets-open-per-agent-per-channel-live",
+    },
+  ],
+  Array [
+    "stat-view-link-clicked",
+    Object {
+      "stat": "tickets-open-per-agent-per-channel-live",
     },
   ],
 ]
@@ -76,7 +88,41 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
       >
         forum
       </i>
-      2
+      <a
+        data-testid="view-link"
+      >
+        <span
+          aria-label="view name"
+        >
+          Open tickets assigned to: John Doe, channel: Chat
+        </span>
+        <span
+          aria-label="filters"
+        >
+          [
+  {
+    "left": "ticket.assignee_user.id",
+    "operator": "eq",
+    "right": 1
+  },
+  {
+    "left": "ticket.status",
+    "operator": "eq",
+    "right": "\\"open\\""
+  },
+  {
+    "left": "ticket.channel",
+    "operator": "eq",
+    "right": "\\"chat\\""
+  }
+]
+        </span>
+        <span
+          aria-label="children"
+        >
+          2
+        </span>
+      </a>
     </div>
     <div
       class="channel"
@@ -86,7 +132,41 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
       >
         email
       </i>
-      19
+      <a
+        data-testid="view-link"
+      >
+        <span
+          aria-label="view name"
+        >
+          Open tickets assigned to: John Doe, channel: Email
+        </span>
+        <span
+          aria-label="filters"
+        >
+          [
+  {
+    "left": "ticket.assignee_user.id",
+    "operator": "eq",
+    "right": 1
+  },
+  {
+    "left": "ticket.status",
+    "operator": "eq",
+    "right": "\\"open\\""
+  },
+  {
+    "left": "ticket.channel",
+    "operator": "eq",
+    "right": "\\"email\\""
+  }
+]
+        </span>
+        <span
+          aria-label="children"
+        >
+          19
+        </span>
+      </a>
     </div>
   </div>
 </div>

@@ -6,6 +6,10 @@ import {getSupportPerformanceAgentsStatsFilters} from '../../../state/stats/sele
 import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
 import {ViewField} from '../../../models/view/types'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker.js'
+import {
+    SegmentEvent,
+    StatViewLinkClickedStat,
+} from '../../../store/middlewares/types/segmentTracker'
 import {getAgents} from '../../../state/agents/selectors'
 import {ViewFilter} from '../../../state/views/types'
 import {CollectionOperator, EqualityOperator} from '../../../state/rules/types'
@@ -57,12 +61,9 @@ export default function TicketsClosedPerAgentViewLink({
     return (
         <span
             onClick={() => {
-                segmentTracker.logEvent(
-                    segmentTracker.EVENTS.STAT_VIEW_LINK_CLICKED,
-                    {
-                        stat: 'tickets-closed-per-agent-total',
-                    }
-                )
+                segmentTracker.logEvent(SegmentEvent.StatViewLinkClicked, {
+                    stat: StatViewLinkClickedStat.TicketsClosedPerAgentTotal,
+                })
             }}
         >
             <ViewLink

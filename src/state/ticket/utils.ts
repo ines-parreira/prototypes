@@ -5,7 +5,6 @@ import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
-import _lowerFirst from 'lodash/lowerFirst'
 
 import {SOURCE_VALUE_PROP} from '../../config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
@@ -16,11 +15,7 @@ import {getActionTemplate, isImmutable, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 import {tryLocalStorage} from '../../services/common/utils'
 import * as responseUtils from '../newMessage/responseUtils'
-import {
-    TicketVia,
-    TicketMessageSourceType,
-    TicketChannel,
-} from '../../business/types/ticket'
+import {TicketVia, TicketMessageSourceType} from '../../business/types/ticket'
 import {PHONE_EVENTS} from '../../constants/event'
 import {notify as notifyAction} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
@@ -817,13 +812,4 @@ export const parseTimedelta = (timedelta: string) => {
         return moment.duration(Number(value), unit as any)
     }
     throw new Error(`${timedelta} is not a properly formatted timedelta`)
-}
-
-export const getTicketChannelFromName = (
-    channelName: string
-): TicketChannel | null => {
-    const channel = channelName.split(' ').map(_lowerFirst).join('-')
-    return Object.values<string>(TicketChannel).includes(channel)
-        ? (channel as TicketChannel)
-        : null
 }
