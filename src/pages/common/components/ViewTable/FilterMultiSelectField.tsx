@@ -6,7 +6,7 @@ import {fieldEnumSearch} from '../../../../state/views/actions'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../../common/utils/withCancellableRequest'
-import MultiSelectOptionsField from '../../forms/MultiSelectOptionsField/index.js'
+import MultiSelectOptionsField from '../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from '../../forms/MultiSelectOptionsField/types'
 import {FieldSearchResult} from '../../../../state/views/types'
 

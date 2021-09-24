@@ -1,6 +1,7 @@
 import Customer from './Customer.tsx'
 import Item from './Item'
-import {Order, ShippingAddress} from './Order'
+import Order from './Order/OrderWidget.tsx'
+import ShippingAddress from './Order/ShippingAddress.tsx'
 import Fulfillment from './Fulfillment.tsx'
 
 const shopify = (args) => {

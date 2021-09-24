@@ -3,7 +3,7 @@ import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
-import TableActions from '../TableActions'
+import TableActions from '../TableActions/TableActions.tsx'
 
 const defaultTags = fromJS([
     {

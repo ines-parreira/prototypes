@@ -3,7 +3,7 @@ import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
 import MultiSelectField from '../MultiSelectField.tsx'
-import MultiSelectOptionsField from '../MultiSelectOptionsField'
+import MultiSelectOptionsField from '../MultiSelectOptionsField/MultiSelectOptionsField.tsx'
 
 describe('MultiSelectField', () => {
     const options = [

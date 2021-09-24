@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
 import {view} from '../../../fixtures/views'
-import client from '../../api/index.js'
+import client from '../../api/resources'
 import {fetchViews, createView, updateView, deleteView} from '../resources'
 import {ViewDraft} from '../types'
 

@@ -23,7 +23,7 @@ import {getFinalCancelOrderPayload} from '../../../../../../../../../../../busin
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
-import RefundOrderForm from '../RefundOrderForm/index.js'
+import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
 import css from './CancelOrderModal.less'
 

@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../api/index.js'
+import client from '../../api/resources'
 import {
     fetchSelfServiceConfigurations,
     fetchSelfServiceConfiguration,

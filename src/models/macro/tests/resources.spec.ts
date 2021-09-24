@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
 import {macros as macrosFixtures} from '../../../fixtures/macro'
-import client from '../../api/index.js'
+import client from '../../api/resources'
 import {
     fetchMacros,
     fetchMacro,

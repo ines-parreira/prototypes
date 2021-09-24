@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {rules as rulesFixtures} from '../../../fixtures/rule'
-import client from '../../api/index.js'
+import client from '../../api/resources'
 import {
     fetchRules,
     fetchRule,

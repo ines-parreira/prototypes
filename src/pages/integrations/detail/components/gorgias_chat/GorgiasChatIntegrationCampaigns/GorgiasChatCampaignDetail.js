@@ -19,7 +19,7 @@ import {
 } from 'reactstrap'
 
 import InputField from '../../../../../common/forms/InputField'
-import SelectField from '../../../../../common/forms/SelectField'
+import SelectField from '../../../../../common/forms/SelectField/SelectField.tsx'
 import RichField from '../../../../../common/forms/RichField'
 import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
