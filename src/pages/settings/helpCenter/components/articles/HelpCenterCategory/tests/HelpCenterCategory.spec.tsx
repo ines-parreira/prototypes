@@ -150,15 +150,15 @@ describe('<HelpCenterCategory>', () => {
     it('changes the language in the slug domain', () => {
         const {getByTestId} = render(<Example isOpen />)
 
-        expect(getByTestId('slug-domain').textContent).toEqual(
-            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/en-us/`
+        expect(getByTestId('slug-prefix').textContent).toEqual(
+            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/en-US/articles/`
         )
 
         fireEvent.click(getByTestId('dropdown-select-trigger'))
         fireEvent.click(getByTestId('option-fr-FR'))
 
-        expect(getByTestId('slug-domain').textContent).toEqual(
-            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/fr-fr/`
+        expect(getByTestId('slug-prefix').textContent).toEqual(
+            `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
         )
     })
 

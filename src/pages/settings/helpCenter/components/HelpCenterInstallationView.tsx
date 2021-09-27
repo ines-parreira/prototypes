@@ -20,7 +20,7 @@ import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {isValidSubdomain} from '../utils/validations'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 
-import {HELP_CENTER_DOMAIN} from '../constants'
+import {getHelpCenterDomain} from '../utils/helpCenter.utils'
 
 import {SubdomainSection} from './SubdomainSection'
 import {CustomDomain} from './CustomDomain'
@@ -148,7 +148,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
             >
                 <SubdomainSection
                     value={subDomainValue}
-                    href={`https://${subdomain}${HELP_CENTER_DOMAIN}`}
+                    href={getHelpCenterDomain(subdomain)}
                     hasError={!isValidSubdomain(subDomainValue)}
                     placeholder="brand-name"
                     onChange={setSubdomainValue}

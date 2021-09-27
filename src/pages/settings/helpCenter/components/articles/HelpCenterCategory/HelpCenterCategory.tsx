@@ -16,6 +16,11 @@ import {
     InputGroupAddon,
     Label,
 } from 'reactstrap'
+import copy from 'copy-to-clipboard'
+
+import useAppDispatch from '../../../../../../hooks/useAppDispatch'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
+import {notify} from '../../../../../../state/notifications/actions'
 
 import {
     Category,
@@ -27,13 +32,10 @@ import {
 import {getViewLanguage} from '../../../../../../state/helpCenter/ui'
 
 import {Drawer} from '../../../../../common/components/Drawer'
-import {
-    HELP_CENTER_DOMAIN,
-    HELP_CENTER_LANGUAGE_DEFAULT,
-} from '../../../constants'
+import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../../constants'
 import {useLocales} from '../../../hooks/useLocales'
 import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
-import {slugify} from '../../../utils/helpCenter.utils'
+import {buildCategorySlug, slugify} from '../../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../../ConfirmationModal'
 import {
     ActionType,
@@ -48,7 +50,7 @@ type Props = {
     isCreate?: boolean
     isLoading: boolean
     canSave: boolean
-    helpCenter: HelpCenter | null
+    helpCenter: HelpCenter
     category?: Category
     translation?: CategoryTranslation
     onLocaleChange: (locale: LocaleCode) => void
@@ -74,6 +76,7 @@ export const HelpCenterCategory = ({
     onDelete,
     onDeleteTranslation,
 }: Props): JSX.Element => {
+    const dispatch = useAppDispatch()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
     const locales = useLocales()
@@ -87,7 +90,7 @@ export const HelpCenterCategory = ({
 
     const localeOptions = useLocaleSelectOptions(
         locales,
-        helpCenter?.supported_locales || []
+        helpCenter.supported_locales || []
     )
 
     const options: OptionItem[] = useMemo(
@@ -207,7 +210,18 @@ export const HelpCenterCategory = ({
         )
     }
 
-    const slugValue: string = String(currentLocale).toLowerCase()
+    const copyURL = () => {
+        const {subdomain} = helpCenter
+
+        copy(buildCategorySlug(subdomain, currentLocale, slug, category?.id))
+
+        void dispatch(
+            notify({
+                message: 'Successfully copied the link',
+                status: NotificationStatus.Success,
+            })
+        )
+    }
 
     const canSaveCategory = useMemo(
         () =>
@@ -255,15 +269,24 @@ export const HelpCenterCategory = ({
                 </FormGroup>
                 <FormGroup className={classNames(css.textfield, css.required)}>
                     <Label for="slug">Slug</Label>
+                    <button
+                        type="button"
+                        onClick={copyURL}
+                        className={css.copyButton}
+                    >
+                        Copy URL
+                        <i className="material-icons">content_copy</i>
+                    </button>
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <span
-                                data-testid="slug-domain"
-                                className={css['slug-domain']}
+                                data-testid="slug-prefix"
+                                className={css['slug-prefix']}
                             >
-                                {`https://${
-                                    helpCenter?.subdomain as string
-                                }${HELP_CENTER_DOMAIN}/${slugValue}/`}
+                                {buildCategorySlug(
+                                    helpCenter.subdomain,
+                                    currentLocale
+                                )}
                             </span>
                         </InputGroupAddon>
                         <Input
@@ -274,6 +297,16 @@ export const HelpCenterCategory = ({
                             placeholder="Category slug"
                             onChange={handleChangeSlug}
                         />
+                        {category?.id && (
+                            <InputGroupAddon addonType="append">
+                                <span
+                                    data-testid="slug-suffix"
+                                    className={css['slug-suffix']}
+                                >
+                                    -{category.id}
+                                </span>
+                            </InputGroupAddon>
+                        )}
                     </InputGroup>
                     <FormText>This is your category’s link.</FormText>
                 </FormGroup>

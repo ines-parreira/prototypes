@@ -6,13 +6,12 @@ import InputField from '../../../../common/forms/InputField.js'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {HELP_CENTER_DOMAIN} from '../../constants'
-import {slugify} from '../../utils/helpCenter.utils'
+import {buildArticleSlug, slugify} from '../../utils/helpCenter.utils'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
 
 type Props = {
-    articleId: number
+    articleId?: number
     translation: HelpCenterArticleTranslation
     subdomain: string
     onChange: (translation: HelpCenterArticleTranslation) => void
@@ -26,8 +25,8 @@ export const HelpCenterEditAdvancedArticleForm = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
-    const slugPrefix = `https://${subdomain}${HELP_CENTER_DOMAIN}/`
-    const slugSuffix = `-${articleId}`
+    const slugPrefix = buildArticleSlug(subdomain, translation.locale)
+    const slugSuffix = articleId ? `-${articleId.toString()}` : ''
 
     const onEditArticle = (editKey: string) => (newValue: string) => {
         if (editKey === 'title') {
@@ -45,11 +44,13 @@ export const HelpCenterEditAdvancedArticleForm = ({
     }
 
     const copyURL = () => {
-        copy(`${slugPrefix}${translation.slug}${slugSuffix}`)
+        const {locale, slug} = translation
+
+        copy(buildArticleSlug(subdomain, locale, slug, articleId))
 
         void dispatch(
             notify({
-                message: "Successfully copied the article's URL",
+                message: 'Successfully copied the link',
                 status: NotificationStatus.Success,
             })
         )
@@ -77,14 +78,16 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     onChange={onEditArticle('slug')}
                     help="This is your article's link."
                 />
-                <button
-                    type="button"
-                    onClick={copyURL}
-                    className={css.copyButton}
-                >
-                    Copy URL
-                    <i className="material-icons">content_copy</i>
-                </button>
+                {articleId && (
+                    <button
+                        type="button"
+                        onClick={copyURL}
+                        className={css.copyButton}
+                    >
+                        Copy URL
+                        <i className="material-icons">content_copy</i>
+                    </button>
+                )}
             </div>
             <InputField
                 type="textarea"

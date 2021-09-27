@@ -26,16 +26,13 @@ import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selec
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import {
-    MODALS,
-    HELP_CENTER_DOMAIN,
-    HELP_CENTER_LANGUAGE_DEFAULT,
-} from '../constants'
+import {MODALS, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
 
 import {
     getNewTranslation,
     articleRequiredFields,
     slugify,
+    buildArticleSlug,
 } from '../utils/helpCenter.utils'
 import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
 import {CategoriesViews} from '../providers/CategoriesView'
@@ -399,10 +396,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
         if (action === 'copyToClipboard') {
             if (article?.translation && helpCenter?.subdomain) {
+                const {locale, slug} = article.translation
+                const {subdomain} = helpCenter
+
                 try {
-                    copy(
-                        `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/${article.translation.slug}-${article.id}`
-                    )
+                    copy(buildArticleSlug(subdomain, locale, slug, article.id))
+
                     void dispatch(
                         notify({
                             message: 'Successfully copied the link',
