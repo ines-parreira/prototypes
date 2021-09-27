@@ -14,7 +14,7 @@ import {
     getIntegrationsConfig,
 } from '../../../state/integrations/selectors'
 
-import IntegrationList from './components/IntegrationList.js'
+import IntegrationList from './components/IntegrationList'
 
 export const IntegrationListContainer = ({
     activeIntegrations,

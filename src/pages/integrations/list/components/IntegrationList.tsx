@@ -1,25 +1,23 @@
-// @flow
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Alert, Container, Row, Col} from 'reactstrap'
+import {List, Map} from 'immutable'
 
-import type {List, Map} from 'immutable'
+import {IntegrationType} from '../../../../models/integration/types'
+import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls'
+import {toJS} from '../../../../utils'
+import PageHeader from '../../../common/components/PageHeader'
+import {isFeatureEnabled} from '../../../../utils/account'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
-import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls.ts'
-import {toJS} from '../../../../utils.ts'
-import PageHeader from '../../../common/components/PageHeader.tsx'
-import {isFeatureEnabled} from '../../../../utils/account.ts'
-
-import IntegrationListRow from './IntegrationListRow.tsx'
+import IntegrationListRow from './IntegrationListRow'
 
 type Props = {
-    integrations: List<Map<string, any>>,
-    integrationsConfig: List<Map<string, any>>,
-    currentPlan: Map<any, any>,
-    allowedIntegrations: number,
-    activeIntegrations: number,
-    plans: Map<any, any>,
+    integrations: List<Map<string, any>>
+    integrationsConfig: List<Map<string, any>>
+    currentPlan: Map<any, any>
+    allowedIntegrations: number
+    activeIntegrations: number
+    plans: Map<any, any>
 }
 
 export default class IntegrationList extends React.Component<Props> {
@@ -77,16 +75,19 @@ export default class IntegrationList extends React.Component<Props> {
         return this.props.integrations
             .filter(
                 (integration) =>
-                    integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+                    integration!.get('type') ===
+                    IntegrationType.SmoochInsideIntegrationType
             )
             .find(
                 (integration) =>
-                    integration.get('deactivated_datetime') === null ||
-                    integration.getIn([
+                    (integration!.get('deactivated_datetime') as
+                        | string
+                        | null) === null ||
+                    (integration!.getIn([
                         'meta',
                         'shopify_integration_ids',
                         'size',
-                    ])
+                    ]) as boolean)
             )
     }
 
@@ -122,16 +123,16 @@ export default class IntegrationList extends React.Component<Props> {
                 // do not return the smooch inside integration
                 // if there is no active integration of it
                 if (
-                    integration.get('type') ===
-                        SMOOCH_INSIDE_INTEGRATION_TYPE &&
+                    integration!.get('type') ===
+                        IntegrationType.SmoochInsideIntegrationType &&
                     !hasActiveSmoochInsideIntegrations
                 ) {
                     return false
                 }
-                return !integration.get('hide')
+                return !integration!.get('hide')
             })
             .map((integration) => {
-                const requiredFeature = integration.get('requiredFeature')
+                const requiredFeature = integration!.get('requiredFeature')
 
                 if (
                     requiredFeature &&
@@ -146,7 +147,10 @@ export default class IntegrationList extends React.Component<Props> {
                         requiredFeature,
                         toJS(plans)
                     )
-                    return integration.set('requiredPlanName', requiredPlanName)
+                    return integration!.set(
+                        'requiredPlanName',
+                        requiredPlanName
+                    )
                 }
                 return integration
             })
@@ -154,7 +158,6 @@ export default class IntegrationList extends React.Component<Props> {
         return (
             <div className="full-width">
                 <PageHeader title="Integrations" />
-
                 <Container fluid className="page-container">
                     <Row className="mb-4">
                         <Col md="10">
@@ -181,7 +184,7 @@ export default class IntegrationList extends React.Component<Props> {
                                 return (
                                     <IntegrationListRow
                                         key={index}
-                                        integrationConfig={config}
+                                        integrationConfig={config!}
                                     />
                                 )
                             })}
