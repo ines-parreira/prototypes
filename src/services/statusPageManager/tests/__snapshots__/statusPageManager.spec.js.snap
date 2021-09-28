@@ -204,6 +204,44 @@ Array [
 ]
 `;
 
+exports[`statusPageManager processScheduledMaintenances() cluster filtering should notify if matches the cluster 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-maintenance",
+      "message": "A scheduled maintenance for
+API affecting
+REST API started <em>a few seconds ago</em>.
+
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processScheduledMaintenances() cluster filtering should notify if matches the second cluster 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-maintenance",
+      "message": "A scheduled maintenance for
+API affecting
+REST API started <em>a few seconds ago</em>.
+
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
 exports[`statusPageManager processScheduledMaintenances() should dispatch notify or not according to completed status 1`] = `Array []`;
 
 exports[`statusPageManager processScheduledMaintenances() should dispatch notify or not according to in_progress status 1`] = `
