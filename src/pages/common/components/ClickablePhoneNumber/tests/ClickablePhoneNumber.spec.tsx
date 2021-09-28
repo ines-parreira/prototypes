@@ -24,6 +24,7 @@ describe('<ClickablePhoneNumber/>', () => {
             type: IntegrationType.PhoneIntegrationType,
             name: `My Phone Integration ${id}`,
             meta: {
+                emoji: '😀',
                 twilio: {
                     incoming_phone_number: {
                         phone_number: phoneNumber,

@@ -20,10 +20,10 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     tabindex="-1"
   >
     <h6
-      class="dropdown-header"
+      class="text-uppercase dropdown-header"
       tabindex="-1"
     >
-      Call with
+      Call via
     </h6>
     <button
       class="dropdown-item"
@@ -31,6 +31,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 1
        (
       +14151112222
@@ -42,6 +45,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 2
        (
       +14153334444
@@ -71,10 +77,10 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     tabindex="-1"
   >
     <h6
-      class="dropdown-header"
+      class="text-uppercase dropdown-header"
       tabindex="-1"
     >
-      Call with
+      Call via
     </h6>
     <button
       class="dropdown-item"
@@ -82,6 +88,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 1
        (
       +14151112222
@@ -111,10 +120,10 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     tabindex="-1"
   >
     <h6
-      class="dropdown-header"
+      class="text-uppercase dropdown-header"
       tabindex="-1"
     >
-      Call with
+      Call via
     </h6>
     <button
       class="btn-link disabled dropdown-item"
@@ -122,6 +131,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 1
        (
       +14151112222
@@ -133,6 +145,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 2
        (
       +14153334444
@@ -162,10 +177,10 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     tabindex="-1"
   >
     <h6
-      class="dropdown-header"
+      class="text-uppercase dropdown-header"
       tabindex="-1"
     >
-      Call with
+      Call via
     </h6>
     <button
       class="btn-link disabled dropdown-item"
@@ -173,6 +188,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 1
        (
       +14151112222
@@ -202,10 +220,10 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     tabindex="-1"
   >
     <h6
-      class="dropdown-header"
+      class="text-uppercase dropdown-header"
       tabindex="-1"
     >
-      Call with
+      Call via
     </h6>
     <button
       class="btn-link disabled dropdown-item"
@@ -213,6 +231,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 1
        (
       +14151112222
@@ -224,6 +245,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 2
        (
       +14153334444
@@ -253,10 +277,10 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     tabindex="-1"
   >
     <h6
-      class="dropdown-header"
+      class="text-uppercase dropdown-header"
       tabindex="-1"
     >
-      Call with
+      Call via
     </h6>
     <button
       class="btn-link disabled dropdown-item"
@@ -264,6 +288,9 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
       tabindex="0"
       type="button"
     >
+      😀
+       
+       
       My Phone Integration 1
        (
       +14151112222

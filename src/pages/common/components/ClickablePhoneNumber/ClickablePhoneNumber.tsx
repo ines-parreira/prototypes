@@ -79,8 +79,11 @@ const ClickablePhoneNumberContainer = ({
                 {address}
             </DropdownToggle>
             <DropdownMenu container="body" className={css.dropdownMenu}>
-                <DropdownItem header>Call with</DropdownItem>
+                <DropdownItem header className="text-uppercase">
+                    Call via
+                </DropdownItem>
                 {integrations.map((integration: Map<any, any>) => {
+                    const emoji = integration.getIn(['meta', 'emoji'])
                     const phoneNumber = integration.getIn([
                         'meta',
                         'twilio',
@@ -98,6 +101,7 @@ const ClickablePhoneNumberContainer = ({
                                 isDisabled ? null : onClick(integration)
                             }
                         >
+                            {emoji} {emoji && ' '}
                             {integration.get('name')} ({phoneNumber})
                         </DropdownItem>
                     )
