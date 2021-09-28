@@ -73,7 +73,7 @@ export const basicPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_20: {
+    legacy_automation_addon_features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: false},
         [AccountFeature.FacebookComment]: {enabled: false},
@@ -156,7 +156,7 @@ export const proPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_20: {
+    legacy_automation_addon_features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -217,7 +217,7 @@ export const advancedPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_20: {
+    legacy_automation_addon_features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -317,7 +317,7 @@ export const customPlan: Plan = {
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    features_prior_2021_09_20: {
+    legacy_automation_addon_features: {
         [AccountFeature.AutoAssignment]: {enabled: false},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},

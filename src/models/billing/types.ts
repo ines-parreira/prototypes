@@ -34,6 +34,9 @@ export type Plan = {
     automation_addon_included?: boolean
     automation_addon_equivalent_plan: string | null
     features: Record<AccountFeature, AccountFeatureMetadata>
-    features_prior_2021_09_20?: Record<AccountFeature, AccountFeatureMetadata>
+    legacy_automation_addon_features?: Record<
+        AccountFeature,
+        AccountFeatureMetadata
+    >
     legacy_features?: Record<AccountFeature, AccountFeatureMetadata>
 }
