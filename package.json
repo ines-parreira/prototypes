@@ -6,7 +6,7 @@
     "private": true,
     "repository": "https://github.com/gorgias/gorgias",
     "scripts": {
-        "types": "flow check g/static/private/js && tsc -p ./tsconfig.json --allowJs false --noEmit true",
+        "types": "tsc -p ./tsconfig.json --allowJs false --noEmit true",
         "eslint:all": "func() { eslint -c ./.eslintrc.js --quiet g/static/private/js/\"$1\"; }; func",
         "stylelint:less": "stylelint \"g/static/private/**/*.less\"",
         "lint": "run-p stylelint:less eslint:all",
@@ -189,7 +189,6 @@
         "enzyme-adapter-react-16": "1.14.0",
         "eslint": "7.4.0",
         "eslint-config-prettier": "6.11.0",
-        "eslint-plugin-flowtype": "3.11.1",
         "eslint-plugin-import": "2.18.0",
         "eslint-plugin-jsx-a11y": "6.2.1",
         "eslint-plugin-prettier": "3.1.4",

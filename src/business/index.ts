@@ -1,5 +1,3 @@
-// @flow
-
 /**
  * This folder contains the rules defining our business
  *
