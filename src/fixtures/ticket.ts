@@ -64,6 +64,7 @@ export const ticket: Ticket = {
             actions: null,
             failed_datetime: null,
             rule_id: null,
+            is_retriable: false,
             isMessage: true,
         },
     ],

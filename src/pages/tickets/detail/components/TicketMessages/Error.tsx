@@ -11,6 +11,7 @@ import * as TicketActions from '../../../../../state/ticket/actions'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'
 import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
 import {RootState} from '../../../../../state/types'
+import {sanitizeHtmlDefault} from '../../../../../utils/html'
 
 import css from './Error.less'
 
@@ -234,8 +235,11 @@ class Error extends Component<Props, State> {
                             error
                         </i>
                         <div className="text-danger mr-3 flex-grow mb-1 mb-md-0">
-                            {error}
-
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtmlDefault(error),
+                                }}
+                            />
                             <a
                                 className={css.toggleActions}
                                 onClick={this._toggleActions}

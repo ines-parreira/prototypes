@@ -45,7 +45,7 @@ const Errors = (props: Props) => {
                     messageId={message.id!}
                     ticketId={message.ticket_id || ticketId}
                     setStatus={setStatus}
-                    retry
+                    retry={message.is_retriable}
                     cancel
                 />
             )}

@@ -90,6 +90,7 @@ describe('TicketMessageEmbeddedCard utils', () => {
             opened_datetime: null,
             created_datetime: '2021-09-07T01:51:41+00:00',
             message_id: undefined,
+            is_retriable: true,
             stripped_html: null,
             stripped_text: null,
             sender: {

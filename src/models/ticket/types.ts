@@ -78,6 +78,7 @@ export type TicketMessage = {
     external_id: string | null
     failed_datetime: string | null
     opened_datetime: string | null
+    is_retriable: boolean
     sent_datetime?: string
     _internal?: {
         id: number
