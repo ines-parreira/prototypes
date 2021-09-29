@@ -5,24 +5,19 @@ import {FormGroup, FormText, Label} from 'reactstrap'
 
 import Select from '../../../../../common/components/ast/widget/ReactSelect'
 import Tooltip from '../../../../../common/components/Tooltip'
-import JsonField from '../../../../../common/forms/JsonField.js'
-
+import JsonField from '../../../../../common/forms/JsonField'
 import {SelectableOption} from '../../../../../common/forms/SelectField/types'
 
 import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants.js'
+import {HTTPForm} from './HTTPIntegrationOverview'
 
 type Props = {
-    form: string | Record<string, unknown> | Array<Record<string, unknown>>
-    onChange: (
-        value: string | Record<string, unknown> | Array<Record<string, unknown>>
-    ) => void
+    form: HTTPForm
+    onChange: (value: HTTPForm) => void
 }
 
 type State = {
-    cachedForm:
-        | string
-        | Record<string, unknown>
-        | Array<Record<string, unknown>>
+    cachedForm: HTTPForm
 }
 
 export default class JSONBody extends React.Component<Props, State> {
@@ -50,7 +45,7 @@ export default class JSONBody extends React.Component<Props, State> {
         )
     }
 
-    _onJSONChange = (form: State['cachedForm']) => {
+    _onJSONChange = (form: HTTPForm) => {
         this.setState({cachedForm: form})
         this.props.onChange(form)
     }

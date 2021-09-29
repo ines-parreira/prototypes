@@ -46,6 +46,6 @@ describe('ObjectListField component', () => {
         )
         expect(
             component.find('InputField').getElements()[0].props.pattern
-        ).toBeNull()
+        ).toBeUndefined()
     })
 })

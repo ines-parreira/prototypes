@@ -14,7 +14,7 @@ import ParametersEditor from '../ParametersEditor.tsx'
 
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
-import JsonField from '../../../../../common/forms/JsonField'
+import JsonField from '../../../../../common/forms/JsonField.tsx'
 
 import {
     validateWebhookURL,

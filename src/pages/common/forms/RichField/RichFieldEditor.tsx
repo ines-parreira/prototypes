@@ -89,7 +89,16 @@ type State = {
 }
 
 export class RichFieldEditor extends InputField<Props, State> {
-    static defaultProps = {
+    static defaultProps: Pick<
+        Props,
+        | 'emailExtraEnabled'
+        | 'notify'
+        | 'attachFiles'
+        | 'canDropFiles'
+        | 'canInsertInlineImages'
+        | 'isFocused'
+    > &
+        Pick<ComponentProps<typeof InputField>, 'type'> = {
         emailExtraEnabled: false,
         type: 'text',
         notify: () => Promise.resolve(),

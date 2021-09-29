@@ -316,7 +316,7 @@ export default class YourProfileView extends Component<Props, State> {
                                         key={this.state.profilePictureUrl}
                                         returnFiles={false}
                                         noPreview={true}
-                                        onChange={(picture_url) =>
+                                        onChange={(picture_url: string) =>
                                             this.setState(
                                                 {
                                                     profilePictureUrl: picture_url,

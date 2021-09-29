@@ -7,6 +7,7 @@ import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
 import {EditorState} from 'draft-js'
 import {Input} from 'reactstrap'
+import {InputType} from 'reactstrap/lib/Input'
 
 import DatePicker from '../../../common/forms/DatePicker'
 import InputField from '../../forms/InputField.js'
@@ -136,7 +137,11 @@ export class Widget extends Component<Props, State> {
         return actions.modifyCodeAST(parent, newValue, RuleOperation.Update)
     }
 
-    _input = (value: any, type = 'text', caseInsensitive = false) => {
+    _input = (
+        value: any,
+        type: InputType = 'text',
+        caseInsensitive = false
+    ) => {
         const {config = {}, className, compact} = this.props
 
         return (

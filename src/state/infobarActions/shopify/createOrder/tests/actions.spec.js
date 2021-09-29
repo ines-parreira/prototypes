@@ -278,7 +278,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
         let invoicePayload
         let onSuccess
 
-        const initTest = (error: boolean) => {
+        const initTest = (error) => {
             // Mock order creation
             draftOrderPayload = fromJS(shopifyDraftOrderPayloadFixture())
             invoicePayload = fromJS(shopifyInvoicePayloadFixture())

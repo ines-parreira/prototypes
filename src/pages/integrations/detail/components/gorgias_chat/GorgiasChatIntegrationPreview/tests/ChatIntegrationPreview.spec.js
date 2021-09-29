@@ -12,7 +12,7 @@ import AutoResponder from '../AutoResponder.tsx'
 import ChatIntegrationPreview from '../ChatIntegrationPreview.tsx'
 import MessageContent from '../MessageContent.tsx'
 import OptionalEmailCapture from '../OptionalEmailCapture.tsx'
-import RequiredEmailCapture from '../RequiredEmailCapture'
+import RequiredEmailCapture from '../RequiredEmailCapture.tsx'
 
 const mainColor = '#123456'
 const conversationColor = '#456789'

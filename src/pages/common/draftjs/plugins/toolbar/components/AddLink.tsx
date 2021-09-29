@@ -209,7 +209,7 @@ export class AddLinkContainer extends Component<Props> {
                         placeholder="https://help.domain.com/article"
                         onChange={this.props.onUrlChange}
                         value={this.props.url}
-                        autoFocus={this.props.text}
+                        autoFocus={!!this.props.text}
                     />
                     <Button
                         color="primary"

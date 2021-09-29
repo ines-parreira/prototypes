@@ -13,7 +13,7 @@ describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it.each([true, false])(
             'should render both visible and invisible reviews correctly',
-            (published: boolean) => {
+            (published) => {
                 const component = shallow(
                     <TitleWrapper
                         source={fromJS({source: {published: published}})}

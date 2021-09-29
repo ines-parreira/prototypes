@@ -40,7 +40,7 @@ import {RootState} from '../../../../../state/types'
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from './GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import OptionalEmailCapturePreview from './GorgiasChatIntegrationPreview/OptionalEmailCapture'
-import RequiredEmailCapturePreview from './GorgiasChatIntegrationPreview/RequiredEmailCapture.js'
+import RequiredEmailCapturePreview from './GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from './GorgiasChatIntegrationPreview/AutoResponder'
 import css from './GorgiasChatIntegrationPreferences.less'
 

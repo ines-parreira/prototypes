@@ -3,23 +3,23 @@ import React from 'react'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat.ts'
+} from '../../../../../../config/integrations/gorgias_chat'
 
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    language?: ?string,
-    conversationColor?: ?string,
+    language: Maybe<string>
+    conversationColor?: Maybe<string>
 }
 
 export default class RequiredEmailCapture extends React.Component<Props> {
-    static defaultProps = {
+    static defaultProps: Pick<Props, 'language'> = {
         language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     }
 
     render() {
         const {language, conversationColor} = this.props
-        const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
+        const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language!]
 
         return (
             <div className={css.requiredEmailCapture}>
@@ -41,7 +41,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                     />
                 </div>
                 <div className={css.buttonWrapper}>
-                    <button style={{backgroundColor: conversationColor}}>
+                    <button style={{backgroundColor: conversationColor!}}>
                         {translatedTexts.send}
                     </button>
                 </div>

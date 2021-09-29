@@ -22,7 +22,7 @@ import {Customer} from '../../../../../state/customers/types'
 
 import Loader from '../../Loader/Loader'
 import Tooltip from '../../Tooltip'
-import InfobarLayout from '../InfobarLayout.js'
+import InfobarLayout from '../InfobarLayout'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
 import Search from '../../Search'
 

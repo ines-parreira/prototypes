@@ -806,7 +806,7 @@ export function daysToHours(days = 0): number {
 /**
  * Function that wraps functionality for cheking webhook url and return a valid or invalid pattern
  */
-export const validateWebhookURLToPattern = (val: string): Maybe<string> => {
+export const validateWebhookURLToPattern = (val: string) => {
     if (validateWebhookURL(val)) {
         // Will look for "a" after the end of the string -> impossible
         return '$a'

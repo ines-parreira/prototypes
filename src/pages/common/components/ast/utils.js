@@ -15,7 +15,7 @@ export const PADDING_STEP = 18
  * @param depth: the nesting level of the element
  * @returns {string}: the string to use as paddingLeft style
  */
-export function computeLeftPadding(depth: number) {
+export function computeLeftPadding(depth) {
     return `${BASIC_PADDING + depth * PADDING_STEP}px`
 }
 

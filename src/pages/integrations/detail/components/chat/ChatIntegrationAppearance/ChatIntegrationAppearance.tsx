@@ -385,7 +385,9 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                             returnFiles={false}
                                                             noPreview={true}
                                                             onChange={(
-                                                                avatarTeamPictureUrl
+                                                                avatarTeamPictureUrl: Maybe<
+                                                                    string
+                                                                >
                                                             ) =>
                                                                 this.setState({
                                                                     avatarTeamPictureUrl,

@@ -1,28 +1,36 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 
-import {tryLocalStorage} from '../../../../services/common/utils.ts'
-import * as layoutSelectors from '../../../../state/layout/selectors.ts'
-import {ErrorBoundary} from '../../../ErrorBoundary.tsx'
+import {tryLocalStorage} from '../../../../services/common/utils'
+import * as layoutSelectors from '../../../../state/layout/selectors'
+import {RootState} from '../../../../state/types'
 
-import {getInfobarMinWidth, getInfobarWidth} from './utils.tsx'
+import {ErrorBoundary} from '../../../ErrorBoundary'
+
+import {getInfobarMinWidth, getInfobarWidth} from './utils'
 import css from './Infobar.less'
 
-@connect((state) => ({
-    isOpenedPanel: layoutSelectors.isOpenedPanel('infobar')(state),
-}))
-export default class InfobarLayout extends React.Component {
-    static propTypes = {
-        children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-        isOpenedPanel: PropTypes.bool.isRequired,
-        className: PropTypes.string,
-    }
+type Props = {
+    children?: ReactNode
+    className?: string
+} & ConnectedProps<typeof connector>
 
-    containerRef: ?HTMLDivElement
+type State = {
+    width: Maybe<number | string>
+}
 
-    constructor(props) {
+export class InfobarLayout extends React.Component<Props, State> {
+    private cursorX: number | null
+    private originalWidth: number
+    private readonly minWidth: number | undefined
+    private readonly maxWidth: number
+    private readonly classHandle: string
+    private readonly classActive: string
+
+    containerRef: Maybe<HTMLDivElement>
+
+    constructor(props: Props) {
         super(props)
 
         this.cursorX = null
@@ -50,13 +58,13 @@ export default class InfobarLayout extends React.Component {
         window.removeEventListener('mousemove', this.drag)
     }
 
-    dragStart = (e) => {
-        if (!e.target.classList.contains(this.classHandle)) {
+    dragStart = (e: MouseEvent) => {
+        if (!(e.target as HTMLElement).classList.contains(this.classHandle)) {
             return
         }
 
         this.cursorX = e.clientX
-        const computedStyle = window.getComputedStyle(this.containerRef)
+        const computedStyle = window.getComputedStyle(this.containerRef!)
 
         this.originalWidth = parseInt(
             computedStyle.getPropertyValue('width'),
@@ -71,11 +79,14 @@ export default class InfobarLayout extends React.Component {
         document.body.classList.remove(this.classActive)
 
         tryLocalStorage(() =>
-            window.localStorage.setItem('infobar-width', this.state.width)
+            window.localStorage.setItem(
+                'infobar-width',
+                this.state.width as string
+            )
         )
     }
 
-    drag = (e) => {
+    drag = (e: MouseEvent) => {
         if (this.cursorX === null) {
             return
         }
@@ -84,7 +95,7 @@ export default class InfobarLayout extends React.Component {
 
         // don't expand/shrink past min/max width.
         // for performance.
-        if (nextWidth > this.minWidth && nextWidth < this.maxWidth) {
+        if (nextWidth > this.minWidth! && nextWidth < this.maxWidth) {
             this.setState({
                 width: this.originalWidth + this.cursorX - e.clientX,
             })
@@ -93,7 +104,7 @@ export default class InfobarLayout extends React.Component {
 
     render() {
         const style = {
-            width: `${this.state.width}px`,
+            width: `${this.state.width!}px`,
         }
 
         return (
@@ -115,3 +126,9 @@ export default class InfobarLayout extends React.Component {
         )
     }
 }
+
+const connector = connect((state: RootState) => ({
+    isOpenedPanel: layoutSelectors.isOpenedPanel('infobar')(state),
+}))
+
+export default connector(InfobarLayout)

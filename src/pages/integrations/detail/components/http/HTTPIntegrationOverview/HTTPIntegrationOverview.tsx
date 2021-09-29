@@ -35,6 +35,11 @@ import {DEFAULT_FORM} from './constants.js'
 import JSONBody from './JSONBody'
 import {validateHeaderName} from './httpHeaderValidation.js'
 
+export type HTTPForm =
+    | string
+    | Record<string, unknown>
+    | Array<Record<string, unknown>>
+
 type Props = {
     integration: Map<any, any>
     isUpdate: boolean
@@ -43,7 +48,7 @@ type Props = {
 
 type State = {
     description: string
-    form: string | Record<string, unknown> | Array<Record<string, unknown>>
+    form: HTTPForm
     headers: Field[]
     isTestShown: boolean
     method: string
@@ -103,7 +108,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
         const isJsonBody =
             integration.getIn(['http', 'request_content_type']) ===
             ContentType.Json
-        let formData: State['form'] = toJS(integration.getIn(['http', 'form']))
+        let formData: HTTPForm = toJS(integration.getIn(['http', 'form']))
         if (!isJsonBody) {
             formData = this._objectToParameters(
                 formData as Record<string, unknown>
@@ -473,7 +478,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             (requestContentType === ContentType.Json ? (
                                 <JSONBody
                                     form={form}
-                                    onChange={(form: State['form']) =>
+                                    onChange={(form: HTTPForm) =>
                                         this.setState({form})
                                     }
                                 />

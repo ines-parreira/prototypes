@@ -134,7 +134,7 @@ export const Magento2ManualIntegrationForm = ({
                     key="input"
                     type="text"
                     name="consumerKey"
-                    placeholder={isUpdate ? placeholder : null}
+                    placeholder={isUpdate ? placeholder : undefined}
                     label="Consumer Key"
                     value={values.consumerKey}
                     onChange={(value: string) =>
@@ -148,7 +148,7 @@ export const Magento2ManualIntegrationForm = ({
                     key="input"
                     type="text"
                     name="consumerSecret"
-                    placeholder={isUpdate ? placeholder : null}
+                    placeholder={isUpdate ? placeholder : undefined}
                     label="Consumer Secret"
                     value={values.consumerSecret}
                     onChange={(value: string) =>
@@ -162,7 +162,7 @@ export const Magento2ManualIntegrationForm = ({
                     key="input"
                     type="text"
                     name="accessToken"
-                    placeholder={isUpdate ? placeholder : null}
+                    placeholder={isUpdate ? placeholder : undefined}
                     label="Access Token"
                     value={values.accessToken}
                     onChange={(value: string) =>
@@ -176,7 +176,7 @@ export const Magento2ManualIntegrationForm = ({
                     key="input"
                     type="text"
                     name="accessTokenSecret"
-                    placeholder={isUpdate ? placeholder : null}
+                    placeholder={isUpdate ? placeholder : undefined}
                     label="Access Token Secret"
                     value={values.accessTokenSecret}
                     onChange={(value: string) =>

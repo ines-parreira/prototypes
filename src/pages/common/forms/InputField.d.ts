@@ -1,6 +1,7 @@
 import {Component, ReactNode} from 'react'
+import {InputProps} from 'reactstrap'
 
-type OwnProps = {
+interface OwnProps extends InputProps {
     className?: string
     disabled?: boolean
     error?: string | null
@@ -12,8 +13,6 @@ type OwnProps = {
     value?: any
     children?: ReactNode
     inline?: boolean
-    placeholder?: ReactNode
-    type?: string
     leftAddon?: string
     rightAddon?: string
     caseInsensitive?: boolean
@@ -23,5 +22,6 @@ export default class InputField<Props, State> extends Component<
     OwnProps & Props,
     State
 > {
+    id?: string
     constructor(props: Props)
 }

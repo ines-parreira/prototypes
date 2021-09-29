@@ -8,7 +8,7 @@ import {
     FETCH_PREVIEW_CUSTOMER_SUCCESS,
 } from '../../../../../../state/infobar/constants.js'
 import Search from '../../../Search'
-import InfobarLayout from '../../InfobarLayout.js'
+import InfobarLayout from '../../InfobarLayout'
 import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import {Infobar} from '../Infobar'

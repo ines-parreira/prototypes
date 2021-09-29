@@ -62,7 +62,7 @@ export default class ObjectListField extends Component<Props> {
                                 pattern={
                                     validate
                                         ? validate('key', header.key)
-                                        : null
+                                        : undefined
                                 }
                                 onChange={(value) => {
                                     this._update(index, 'key', _trim(value))

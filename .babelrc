@@ -10,8 +10,7 @@
                 "loose": true
             }
         ],
-        "@babel/react",
-        "@babel/flow"
+        "@babel/react"
     ],
     "plugins": [
         [

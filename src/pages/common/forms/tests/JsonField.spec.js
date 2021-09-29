@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import JsonField from '../JsonField'
+import JsonField from '../JsonField.tsx'
 
 describe('JsonField', () => {
     const minProps = {

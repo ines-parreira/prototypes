@@ -97,7 +97,7 @@ export const HelpCenterEditorToolbarLink = ({
                         }))
                     }
                     value={currentLink.target}
-                    autoFocus={currentLink.title}
+                    autoFocus={!!currentLink.title}
                 />
                 <Button
                     color="primary"

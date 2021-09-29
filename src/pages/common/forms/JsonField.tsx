@@ -1,10 +1,21 @@
-import React from 'react'
+import React, {ChangeEvent} from 'react'
 import {Input, FormGroup} from 'reactstrap'
 
-import InputField from './InputField'
-import Errors from './Errors'
+import {HTTPForm} from '../../integrations/detail/components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 
-export default class JsonField extends InputField {
+import InputField from './InputField.js'
+import Errors from './Errors.js'
+
+type Props = {
+    value: HTTPForm
+}
+
+type State = {
+    isJsonValid: boolean
+    value: string
+}
+
+export default class JsonField extends InputField<Props, State> {
     defaultValue = '{}'
 
     state = {
@@ -14,7 +25,11 @@ export default class JsonField extends InputField {
 
     componentDidMount() {
         if (this.props.value) {
-            let text = JSON.stringify(this.props.value, undefined, 4)
+            let text: string | null = JSON.stringify(
+                this.props.value,
+                undefined,
+                4
+            )
 
             if (text === '""') {
                 text = null
@@ -27,7 +42,7 @@ export default class JsonField extends InputField {
         }
     }
 
-    _onChange = (evt: Event) => {
+    _onChange = (evt: ChangeEvent<HTMLInputElement>) => {
         const value = evt.target.value
         let isJsonValid = true
         let parsedValue = JSON.parse(this.defaultValue)
@@ -41,7 +56,7 @@ export default class JsonField extends InputField {
         }
 
         if (isJsonValid) {
-            this.props.onChange(parsedValue)
+            this.props.onChange!(parsedValue)
         }
 
         this.setState({
