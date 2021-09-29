@@ -3,6 +3,7 @@ import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import PhoneIntegrationListItem from '../PhoneIntegrationListItem'
+import {PhoneFunction} from '../../../../../../business/twilio'
 
 describe('<PhoneIntegrationListItem/>', () => {
     let integration: Map<string, any>
@@ -24,6 +25,19 @@ describe('<PhoneIntegrationListItem/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
+            const {container} = render(
+                <PhoneIntegrationListItem integration={integration} />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with IVR badge', () => {
+            integration = integration.setIn(
+                ['meta', 'function'],
+                PhoneFunction.IVR
+            )
+
             const {container} = render(
                 <PhoneIntegrationListItem integration={integration} />
             )

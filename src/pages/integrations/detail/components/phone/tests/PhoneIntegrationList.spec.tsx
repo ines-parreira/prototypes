@@ -33,6 +33,15 @@ describe('<PhoneIntegrationList/>', () => {
         const integration = {
             id: 1,
             type: IntegrationType.PhoneIntegrationType,
+            name: 'Fake phone integration',
+            meta: {
+                emoji: '🍏',
+                twilio: {
+                    incoming_phone_number: {
+                        friendly_name: '(415) 111-2222',
+                    },
+                },
+            },
         }
         integrations = fromJS([integration])
     })

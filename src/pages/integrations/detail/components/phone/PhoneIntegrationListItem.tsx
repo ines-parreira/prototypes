@@ -1,9 +1,14 @@
 import React from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
+import {Badge} from 'reactstrap'
+import classnames from 'classnames'
 
 import {IntegrationType} from '../../../../../models/integration/types'
+import {PhoneFunction} from '../../../../../business/twilio'
 import ForwardIcon from '../ForwardIcon'
+
+import css from './PhoneIntegrationListItem.less'
 
 type Props = {
     integration: Map<string, any>
@@ -14,6 +19,7 @@ export default function PhoneIntegrationListItem({
 }: Props): JSX.Element {
     const id: string = integration.get('id')
     const emoji = integration.getIn(['meta', 'emoji'])
+    const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.IVR
     const editLink = `/app/settings/integrations/${IntegrationType.PhoneIntegrationType}/${id}/preferences`
 
     return (
@@ -21,11 +27,16 @@ export default function PhoneIntegrationListItem({
             <td className="link-full-td">
                 <Link to={editLink}>
                     <div>
-                        <b className="mr-2">
+                        <b>
                             {!!emoji && <span className="mr-3">{emoji}</span>}
                             {integration.get('name')}
                         </b>
-                        <span className="text-faded">
+                        {isIvr && (
+                            <Badge className={classnames('ml-3', css.ivrBadge)}>
+                                IVR
+                            </Badge>
+                        )}
+                        <span className="text-faded ml-3">
                             {integration.getIn([
                                 'meta',
                                 'twilio',

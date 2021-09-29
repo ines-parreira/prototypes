@@ -9,9 +9,7 @@ exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
       to="/app/settings/integrations/phone/1/preferences"
     >
       <div>
-        <b
-          class="mr-2"
-        >
+        <b>
           <span
             class="mr-3"
           >
@@ -20,7 +18,53 @@ exports[`<PhoneIntegrationListItem/> render() should render 1`] = `
           Fake phone integration
         </b>
         <span
-          class="text-faded"
+          class="text-faded ml-3"
+        >
+          (415) 111-2222
+        </span>
+      </div>
+    </a>
+  </td>
+  <td
+    class="smallest align-middle"
+  >
+    <a
+      to="/app/settings/integrations/phone/1/preferences"
+    >
+      <i
+        class="material-icons md-2 align-middle icon-go-forward"
+      >
+        keyboard_arrow_right
+      </i>
+    </a>
+  </td>
+</tr>
+`;
+
+exports[`<PhoneIntegrationListItem/> render() should render with IVR badge 1`] = `
+<tr>
+  <td
+    class="link-full-td"
+  >
+    <a
+      to="/app/settings/integrations/phone/1/preferences"
+    >
+      <div>
+        <b>
+          <span
+            class="mr-3"
+          >
+            🍏
+          </span>
+          Fake phone integration
+        </b>
+        <span
+          class="ml-3 ivrBadge badge badge-secondary"
+        >
+          IVR
+        </span>
+        <span
+          class="text-faded ml-3"
         >
           (415) 111-2222
         </span>

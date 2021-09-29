@@ -61,12 +61,19 @@ exports[`<PhoneIntegrationList/> render() should render 1`] = `
             to="/app/settings/integrations/phone/1/preferences"
           >
             <div>
-              <b
-                class="mr-2"
-              />
+              <b>
+                <span
+                  class="mr-3"
+                >
+                  🍏
+                </span>
+                Fake phone integration
+              </b>
               <span
-                class="text-faded"
-              />
+                class="text-faded ml-3"
+              >
+                (415) 111-2222
+              </span>
             </div>
           </a>
         </td>
@@ -176,12 +183,19 @@ exports[`<PhoneIntegrationList/> render() should render with a warning message 1
             to="/app/settings/integrations/phone/1/preferences"
           >
             <div>
-              <b
-                class="mr-2"
-              />
+              <b>
+                <span
+                  class="mr-3"
+                >
+                  🍏
+                </span>
+                Fake phone integration
+              </b>
               <span
-                class="text-faded"
-              />
+                class="text-faded ml-3"
+              >
+                (415) 111-2222
+              </span>
             </div>
           </a>
         </td>
@@ -283,12 +297,19 @@ exports[`<PhoneIntegrationList/> render() should render with an error message an
             to="/app/settings/integrations/phone/1/preferences"
           >
             <div>
-              <b
-                class="mr-2"
-              />
+              <b>
+                <span
+                  class="mr-3"
+                >
+                  🍏
+                </span>
+                Fake phone integration
+              </b>
               <span
-                class="text-faded"
-              />
+                class="text-faded ml-3"
+              >
+                (415) 111-2222
+              </span>
             </div>
           </a>
         </td>
