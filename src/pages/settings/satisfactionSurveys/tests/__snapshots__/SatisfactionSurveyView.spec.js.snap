@@ -3095,13 +3095,12 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     <ButtonPopover
                                                                       icon="link"
                                                                       isActive={false}
-                                                                      isDisabled={false}
                                                                       isOpen={false}
                                                                       name="Insert link"
                                                                       onClose={[Function]}
                                                                       onOpen={[Function]}
                                                                     >
-                                                                      <Popover
+                                                                      <ForwardRef
                                                                         isOpen={false}
                                                                         trigger={
                                                                           <Button
@@ -3141,7 +3140,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                             className="popover top-left hidden"
                                                                           />
                                                                         </span>
-                                                                      </Popover>
+                                                                      </ForwardRef>
                                                                     </ButtonPopover>
                                                                   </AddLinkContainer>
                                                                 </Connect(AddLinkContainer)>
@@ -3156,14 +3155,12 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 >
                                                                   <ButtonPopover
                                                                     icon="insert_photo"
-                                                                    isActive={false}
-                                                                    isDisabled={false}
                                                                     isOpen={false}
                                                                     name="Insert image"
                                                                     onClose={[Function]}
                                                                     onOpen={[Function]}
                                                                   >
-                                                                    <Popover
+                                                                    <ForwardRef
                                                                       isOpen={false}
                                                                       trigger={
                                                                         <Button
@@ -3203,7 +3200,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           className="popover top-left hidden"
                                                                         />
                                                                       </span>
-                                                                    </Popover>
+                                                                    </ForwardRef>
                                                                   </ButtonPopover>
                                                                 </AddImage>
                                                                 <AddEmoji
@@ -3213,14 +3210,12 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   <ButtonPopover
                                                                     className="p-0 d-flex"
                                                                     icon="insert_emoticon"
-                                                                    isActive={false}
-                                                                    isDisabled={false}
                                                                     isOpen={false}
                                                                     name="Insert emoji"
                                                                     onClose={[Function]}
                                                                     onOpen={[Function]}
                                                                   >
-                                                                    <Popover
+                                                                    <ForwardRef
                                                                       className="p-0 d-flex"
                                                                       isOpen={false}
                                                                       trigger={
@@ -3261,7 +3256,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           className="p-0 d-flex popover top-left hidden"
                                                                         />
                                                                       </span>
-                                                                    </Popover>
+                                                                    </ForwardRef>
                                                                   </ButtonPopover>
                                                                 </AddEmoji>
                                                               </div>

@@ -1,5 +1,4 @@
-import React, {Component, ReactNode} from 'react'
-import * as ReactDOM from 'react-dom'
+import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
 
 import Button from './Button'
 import Popover from './Popover'
@@ -9,91 +8,81 @@ type Props = {
     icon: string
     children: ReactNode
     className?: string
-    isActive: boolean
-    isDisabled: boolean
-    isOpen: boolean
+    isActive?: boolean
+    isDisabled?: boolean
+    isOpen?: boolean
     onClose: () => void
     onOpen: () => void
 }
 
-export default class ButtonPopover extends Component<Props> {
-    static defaultProps = {
-        isActive: false,
-        isDisabled: false,
-        isOpen: false,
-    }
-
-    popover?: Popover | null
-
-    componentDidMount() {
-        if (this.props.isOpen) {
-            document.addEventListener('click', this._onDocumentClick)
+export default function ButtonPopover({
+    isActive = false,
+    isDisabled = false,
+    className,
+    isOpen = false,
+    children,
+    icon,
+    name,
+    onClose,
+    onOpen,
+}: Props) {
+    const popoverRef = useRef<HTMLSpanElement>(null)
+    const handleDocumentPointer = useCallback(
+        (e: MouseEvent | TouchEvent) => {
+            const target = e.target
+            const popoverEl = popoverRef.current
+            if (
+                isOpen &&
+                target &&
+                popoverEl &&
+                !popoverEl.contains(target as Node)
+            ) {
+                onClose()
+            }
+        },
+        [isOpen, onClose]
+    )
+    useEffect(() => {
+        if (isOpen) {
+            // consider using pointer events
+            document.body.addEventListener('mousedown', handleDocumentPointer)
+            document.body.addEventListener('touchstart', handleDocumentPointer)
         }
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('click', this._onDocumentClick)
-    }
-
-    componentDidUpdate(prevProps: Props) {
-        if (!prevProps.isOpen && this.props.isOpen) {
-            document.addEventListener('click', this._onDocumentClick)
+        return function cleanUp() {
+            document.body.removeEventListener(
+                'mousedown',
+                handleDocumentPointer
+            )
+            document.body.removeEventListener(
+                'touchstart',
+                handleDocumentPointer
+            )
         }
+    }, [isOpen, handleDocumentPointer])
 
-        if (prevProps.isOpen && !this.props.isOpen) {
-            document.removeEventListener('click', this._onDocumentClick)
-        }
-    }
-
-    _onDocumentClick = (e: MouseEvent) => {
-        if (!this.popover || !this.props.isOpen || !e.target) {
-            return
-        }
-
-        const target = (e.target as any) as Node
-        const popoverEl = ReactDOM.findDOMNode(this.popover)
-
-        if (popoverEl instanceof Element && !popoverEl.contains(target)) {
-            this.props.onClose()
-        }
-    }
-
-    _onButtonToggle = () => {
-        if (this.props.isOpen) {
-            this.props.onClose()
+    const handleButtonToggle = () => {
+        if (isOpen) {
+            onClose()
         } else {
-            this.props.onOpen()
+            onOpen()
         }
     }
-
-    render() {
-        const {
-            isActive,
-            isDisabled,
-            className,
-            isOpen,
-            children,
-            icon,
-            name,
-        } = this.props
-
-        return (
-            <Popover
-                trigger={
-                    <Button
-                        name={name}
-                        isActive={isActive}
-                        isDisabled={isDisabled}
-                        icon={icon}
-                        onToggle={this._onButtonToggle}
-                    />
-                }
-                className={className}
-                isOpen={isOpen}
-                ref={(el) => (this.popover = el)}
-            >
-                {children}
-            </Popover>
-        )
-    }
+    return (
+        <Popover
+            trigger={
+                <Button
+                    name={name}
+                    isActive={isActive}
+                    isDisabled={isDisabled}
+                    icon={icon}
+                    onToggle={handleButtonToggle}
+                />
+            }
+            className={className}
+            isOpen={isOpen}
+            ref={popoverRef}
+        >
+            {children}
+        </Popover>
+    )
 }

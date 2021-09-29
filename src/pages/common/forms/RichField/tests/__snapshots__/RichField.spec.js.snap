@@ -2738,13 +2738,12 @@ exports[`RichField should render default content state 1`] = `
                                         <ButtonPopover
                                           icon="link"
                                           isActive={false}
-                                          isDisabled={false}
                                           isOpen={false}
                                           name="Insert link"
                                           onClose={[Function]}
                                           onOpen={[Function]}
                                         >
-                                          <Popover
+                                          <ForwardRef
                                             isOpen={false}
                                             trigger={
                                               <Button
@@ -2784,7 +2783,7 @@ exports[`RichField should render default content state 1`] = `
                                                 className="popover top-left hidden"
                                               />
                                             </span>
-                                          </Popover>
+                                          </ForwardRef>
                                         </ButtonPopover>
                                       </AddLinkContainer>
                                     </Connect(AddLinkContainer)>
@@ -2799,14 +2798,12 @@ exports[`RichField should render default content state 1`] = `
                                     >
                                       <ButtonPopover
                                         icon="insert_photo"
-                                        isActive={false}
-                                        isDisabled={false}
                                         isOpen={false}
                                         name="Insert image"
                                         onClose={[Function]}
                                         onOpen={[Function]}
                                       >
-                                        <Popover
+                                        <ForwardRef
                                           isOpen={false}
                                           trigger={
                                             <Button
@@ -2846,7 +2843,7 @@ exports[`RichField should render default content state 1`] = `
                                               className="popover top-left hidden"
                                             />
                                           </span>
-                                        </Popover>
+                                        </ForwardRef>
                                       </ButtonPopover>
                                     </AddImage>
                                     <AddEmoji
@@ -2856,14 +2853,12 @@ exports[`RichField should render default content state 1`] = `
                                       <ButtonPopover
                                         className="p-0 d-flex"
                                         icon="insert_emoticon"
-                                        isActive={false}
-                                        isDisabled={false}
                                         isOpen={false}
                                         name="Insert emoji"
                                         onClose={[Function]}
                                         onOpen={[Function]}
                                       >
-                                        <Popover
+                                        <ForwardRef
                                           className="p-0 d-flex"
                                           isOpen={false}
                                           trigger={
@@ -2904,7 +2899,7 @@ exports[`RichField should render default content state 1`] = `
                                               className="p-0 d-flex popover top-left hidden"
                                             />
                                           </span>
-                                        </Popover>
+                                        </ForwardRef>
                                       </ButtonPopover>
                                     </AddEmoji>
                                   </div>
@@ -8312,13 +8307,12 @@ exports[`RichField should render immutable variable 1`] = `
                                         <ButtonPopover
                                           icon="link"
                                           isActive={false}
-                                          isDisabled={false}
                                           isOpen={false}
                                           name="Insert link"
                                           onClose={[Function]}
                                           onOpen={[Function]}
                                         >
-                                          <Popover
+                                          <ForwardRef
                                             isOpen={false}
                                             trigger={
                                               <Button
@@ -8358,7 +8352,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                 className="popover top-left hidden"
                                               />
                                             </span>
-                                          </Popover>
+                                          </ForwardRef>
                                         </ButtonPopover>
                                       </AddLinkContainer>
                                     </Connect(AddLinkContainer)>
@@ -8373,14 +8367,12 @@ exports[`RichField should render immutable variable 1`] = `
                                     >
                                       <ButtonPopover
                                         icon="insert_photo"
-                                        isActive={false}
-                                        isDisabled={false}
                                         isOpen={false}
                                         name="Insert image"
                                         onClose={[Function]}
                                         onOpen={[Function]}
                                       >
-                                        <Popover
+                                        <ForwardRef
                                           isOpen={false}
                                           trigger={
                                             <Button
@@ -8420,7 +8412,7 @@ exports[`RichField should render immutable variable 1`] = `
                                               className="popover top-left hidden"
                                             />
                                           </span>
-                                        </Popover>
+                                        </ForwardRef>
                                       </ButtonPopover>
                                     </AddImage>
                                     <AddEmoji
@@ -8430,14 +8422,12 @@ exports[`RichField should render immutable variable 1`] = `
                                       <ButtonPopover
                                         className="p-0 d-flex"
                                         icon="insert_emoticon"
-                                        isActive={false}
-                                        isDisabled={false}
                                         isOpen={false}
                                         name="Insert emoji"
                                         onClose={[Function]}
                                         onOpen={[Function]}
                                       >
-                                        <Popover
+                                        <ForwardRef
                                           className="p-0 d-flex"
                                           isOpen={false}
                                           trigger={
@@ -8478,7 +8468,7 @@ exports[`RichField should render immutable variable 1`] = `
                                               className="p-0 d-flex popover top-left hidden"
                                             />
                                           </span>
-                                        </Popover>
+                                        </ForwardRef>
                                       </ButtonPopover>
                                     </AddEmoji>
                                   </div>
@@ -11124,13 +11114,12 @@ exports[`RichField should render mutable variable 1`] = `
                                         <ButtonPopover
                                           icon="link"
                                           isActive={false}
-                                          isDisabled={false}
                                           isOpen={false}
                                           name="Insert link"
                                           onClose={[Function]}
                                           onOpen={[Function]}
                                         >
-                                          <Popover
+                                          <ForwardRef
                                             isOpen={false}
                                             trigger={
                                               <Button
@@ -11170,7 +11159,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                 className="popover top-left hidden"
                                               />
                                             </span>
-                                          </Popover>
+                                          </ForwardRef>
                                         </ButtonPopover>
                                       </AddLinkContainer>
                                     </Connect(AddLinkContainer)>
@@ -11185,14 +11174,12 @@ exports[`RichField should render mutable variable 1`] = `
                                     >
                                       <ButtonPopover
                                         icon="insert_photo"
-                                        isActive={false}
-                                        isDisabled={false}
                                         isOpen={false}
                                         name="Insert image"
                                         onClose={[Function]}
                                         onOpen={[Function]}
                                       >
-                                        <Popover
+                                        <ForwardRef
                                           isOpen={false}
                                           trigger={
                                             <Button
@@ -11232,7 +11219,7 @@ exports[`RichField should render mutable variable 1`] = `
                                               className="popover top-left hidden"
                                             />
                                           </span>
-                                        </Popover>
+                                        </ForwardRef>
                                       </ButtonPopover>
                                     </AddImage>
                                     <AddEmoji
@@ -11242,14 +11229,12 @@ exports[`RichField should render mutable variable 1`] = `
                                       <ButtonPopover
                                         className="p-0 d-flex"
                                         icon="insert_emoticon"
-                                        isActive={false}
-                                        isDisabled={false}
                                         isOpen={false}
                                         name="Insert emoji"
                                         onClose={[Function]}
                                         onOpen={[Function]}
                                       >
-                                        <Popover
+                                        <ForwardRef
                                           className="p-0 d-flex"
                                           isOpen={false}
                                           trigger={
@@ -11290,7 +11275,7 @@ exports[`RichField should render mutable variable 1`] = `
                                               className="p-0 d-flex popover top-left hidden"
                                             />
                                           </span>
-                                        </Popover>
+                                        </ForwardRef>
                                       </ButtonPopover>
                                     </AddEmoji>
                                   </div>
