@@ -41,19 +41,21 @@ export const CustomerDetailContainer = ({
 
     useEffect(() => {
         void (async () => {
-            const {resp} = await (fetchCustomer(customerId) as Promise<{
+            const result = await (fetchCustomer(customerId) as Promise<{
                 resp: Customer
             }>)
-            void fetchCustomerHistory(customerId as any, {
+            void fetchCustomerHistory(parseInt(customerId), {
                 successCondition() {
-                    return (resp.id || '').toString() === customerId.toString()
+                    return (
+                        (result.resp.id || '').toString() ===
+                        customerId.toString()
+                    )
                 },
             })
         })()
     }, [customerId])
 
-    const shouldDisplayLoader =
-        activeCustomer.isEmpty() || customersIsLoading('active')
+    const shouldDisplayLoader = customersIsLoading('active')
 
     return shouldDisplayLoader ? (
         <Loader message="Loading customer..." />

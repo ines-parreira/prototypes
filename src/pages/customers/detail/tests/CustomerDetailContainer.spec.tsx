@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {createBrowserHistory} from 'history'
 
 import {renderWithRouter} from '../../../../utils/testing'
@@ -79,7 +79,7 @@ describe('<CustomerDetailContainer />', () => {
         expect(minProps.fetchCustomer).toHaveBeenLastCalledWith('2')
     })
 
-    it('should display a loader when no active customer is provided', () => {
+    it('should display an unknown state when no active customer is provided', () => {
         const {getByText} = renderWithRouter(
             <CustomerDetailContainer {...minProps} />,
             {
@@ -87,11 +87,11 @@ describe('<CustomerDetailContainer />', () => {
                 route: '/foo/1',
             }
         )
-        expect(getByText(/Loading customer/i)).toBeTruthy()
+        expect(getByText(/Unknown customer/i)).toBeTruthy()
     })
 
     it('should display a loader when active customer is being loaded', () => {
-        const customersIsLoading = (type: string) => type === 'customer'
+        const customersIsLoading = (type: string) => type === 'active'
 
         const {getByText} = renderWithRouter(
             <CustomerDetailContainer
@@ -110,7 +110,7 @@ describe('<CustomerDetailContainer />', () => {
     it('should fetch history of customer', async () => {
         const activeCustomer = fromJS({
             id: 1,
-        })
+        }) as Map<any, any>
         renderWithRouter(
             <CustomerDetailContainer
                 {...minProps}
@@ -124,7 +124,7 @@ describe('<CustomerDetailContainer />', () => {
 
         await waitFor(() =>
             expect(minProps.fetchCustomerHistory).toHaveBeenCalledWith(
-                '1',
+                activeCustomer.get('id'),
                 expect.objectContaining({
                     successCondition: expect.any(Function),
                 })

@@ -3,10 +3,9 @@ import axios from 'axios'
 
 import _debounce from 'lodash/debounce'
 
-import {StoreDispatch} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
-
-import {onApiError} from '../editOrder/action'
+import {StoreDispatch} from '../../../types'
+import {onApiError} from '../../../utils'
 
 import {SET_LOADING, SET_ADDRESSES, SET_INITIAL_STATE} from './constants'
 
@@ -58,7 +57,13 @@ export const onInit = (
             return
         }
         onError && onError()
-        dispatch(onApiError(error, 'Error while feching edit addresses'))
+        dispatch(
+            onApiError(
+                error,
+                'Error while feching edit addresses',
+                setLoading(false)
+            )
+        )
     } finally {
         dispatch(setLoading(false))
     }

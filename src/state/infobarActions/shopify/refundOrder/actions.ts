@@ -1,6 +1,6 @@
 import {List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
-import axios, {AxiosError} from 'axios'
+import axios from 'axios'
 
 import {
     initRefundOrderLineItems,
@@ -14,9 +14,8 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js
 import {formatPrice} from '../../../../business/shopify/number'
 import type {StoreDispatch, RootState} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
-import {notify} from '../../../notifications/actions'
 import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
-import {NotificationStatus} from '../../../notifications/types'
+import {onApiError} from '../../../utils'
 
 import {
     SET_INITIAL_STATE,
@@ -131,7 +130,13 @@ export const onInit = (integrationId: number, order: Map<any, any>) => async (
         }
 
         console.error(error)
-        return dispatch(onApiError(error, 'Error while calculating refund'))
+        return dispatch(
+            onApiError(
+                error,
+                'Error while calculating refund',
+                setLoading(false)
+            )
+        )
     }
 }
 
@@ -227,30 +232,17 @@ export const calculateRefund = _debounce(
             }
 
             console.error(error)
-            return dispatch(onApiError(error, 'Error while calculating refund'))
+            return dispatch(
+                onApiError(
+                    error,
+                    'Error while calculating refund',
+                    setLoading(false)
+                )
+            )
         }
     },
     500
 )
-
-export const onApiError = (
-    error: AxiosError<{error?: {msg: string}}>,
-    defaultMessage: string
-) => (dispatch: StoreDispatch) => {
-    const message =
-        error.response && error.response.data && error.response.data.error
-            ? error.response.data.error.msg
-            : null
-
-    dispatch(setLoading(false))
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message: message || defaultMessage,
-            allowHTML: true,
-        })
-    )
-}
 
 export const onCancel = (via: string) => () => {
     getApi().cancelPendingRequests()

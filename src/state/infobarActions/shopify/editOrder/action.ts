@@ -1,7 +1,7 @@
 import type {Map} from 'immutable'
 import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
-import axios, {AxiosError} from 'axios'
+import axios from 'axios'
 
 import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {
@@ -17,12 +17,11 @@ import {
     Variant,
     EditOrderAction,
 } from '../../../../constants/integrations/types/shopify'
-import {RootState, StoreDispatch} from '../../../types'
-import GorgiasApi from '../../../../services/gorgiasApi'
-import {notify} from '../../../notifications/actions'
-import {NotificationStatus} from '../../../notifications/types'
-import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
 import {IntegrationDataItemType} from '../../../../models/integration/types'
+import GorgiasApi from '../../../../services/gorgiasApi'
+import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
+import {RootState, StoreDispatch} from '../../../types'
+import {onApiError} from '../../../utils'
 
 import {getEditOrderState} from './selectors'
 import {
@@ -141,7 +140,13 @@ const _initEditOrder = (
             return
         }
         onError && onError()
-        dispatch(onApiError(error, 'Error while beginning edit order'))
+        dispatch(
+            onApiError(
+                error,
+                'Error while beginning edit order',
+                setLoading(false)
+            )
+        )
     } finally {
         dispatch(setLoading(false))
     }
@@ -306,7 +311,13 @@ export const onPayloadChange = (
             return
         }
         onError && onError()
-        dispatch(onApiError(error, 'Error while calculating edit order'))
+        dispatch(
+            onApiError(
+                error,
+                'Error while calculating edit order',
+                setLoading(false)
+            )
+        )
     } finally {
         dispatch(setLoading(false))
     }
@@ -507,25 +518,3 @@ export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
     250
 )
-
-/**
- * Called in case of a Shopify api graphQl error
- */
-export const onApiError = (
-    error: AxiosError<{error?: {msg: string}}>,
-    defaultMessage: string
-) => (dispatch: StoreDispatch) => {
-    const message =
-        error.response && error.response.data && error.response.data.error
-            ? error.response.data.error.msg
-            : null
-
-    dispatch(setLoading(false))
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message: message || defaultMessage,
-            allowHTML: true,
-        })
-    )
-}

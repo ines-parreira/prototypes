@@ -227,13 +227,11 @@ export const Infobar = ({
             type: string
             resp: ApiListResponsePagination<Customer[]>
         }
-        if (result.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
+        if (result?.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
             setDisplaySelectedCustomer(true)
-            setIsFetchingCustomer(false)
             setSelectedCustomer(fromJS(result.resp))
-        } else {
-            setIsFetchingCustomer(false)
         }
+        setIsFetchingCustomer(false)
     }
 
     const onSearch = async (query: string) => {

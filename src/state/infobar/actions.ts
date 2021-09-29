@@ -9,6 +9,7 @@ import history from '../../pages/history'
 import {Customer} from '../customers/types'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
+import {onApiError} from '../utils'
 
 import * as constants from './constants.js'
 
@@ -95,13 +96,24 @@ export const fetchPreviewCustomer = (customerId: string) => (
                     resp,
                 })
             },
-            (error: AxiosError) => {
-                return dispatch({
+            (
+                error: AxiosError<{
+                    response?: {status: number}
+                    error?: {msg?: string}
+                }>
+            ) => {
+                const reason =
+                    "Couldn't fetch the customer. Please try again in a few minutes."
+                // TODO(customers-migration): remove these lines when the migration is done
+                if (error.response?.status === 404) {
+                    return dispatch(onApiError(error, reason))
+                }
+
+                return (dispatch({
                     type: constants.FETCH_PREVIEW_CUSTOMER_ERROR,
                     error,
-                    reason:
-                        "Couldn't fetch the customer. Please try again in a few minutes.",
-                })
+                    reason,
+                }) as unknown) as Promise<void>
             }
         )
 }

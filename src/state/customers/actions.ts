@@ -10,6 +10,7 @@ import {Ticket} from '../../models/ticket/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import type {StoreDispatch, RootState} from '../types'
+import {onApiError} from '../utils'
 
 import * as types from './constants.js'
 import {mergeChannels} from './helpers'
@@ -31,12 +32,26 @@ export function fetchCustomer(customerId: string) {
                         resp,
                     })
                 },
-                (error: AxiosError) => {
-                    return dispatch({
+                (
+                    error: AxiosError<{
+                        response?: {status: number}
+                        error?: {msg?: string}
+                    }>
+                ) => {
+                    const reason = 'Failed to fetch customer'
+                    // TODO(customers-migration): remove this condition when the migration is done
+                    if (error.response?.status === 404) {
+                        return dispatch(
+                            onApiError(error, reason, {
+                                type: types.FETCH_CUSTOMER_ERROR,
+                            })
+                        )
+                    }
+                    return (dispatch({
                         type: types.FETCH_CUSTOMER_ERROR,
                         error,
-                        reason: 'Failed to fetch customer',
-                    })
+                        reason,
+                    }) as unknown) as Promise<void>
                 }
             )
     }
@@ -204,21 +219,26 @@ export function fetchCustomerHistory(
 
                     return Promise.resolve(resp)
                 },
-                (error: AxiosError<{response?: {status: number}}>) => {
-                    // TODO(customers-migration): remove these lines when the migration is done
-                    if (
-                        error &&
-                        error.response &&
-                        error.response.status === 404
-                    ) {
-                        return Promise.resolve()
+                (
+                    error: AxiosError<{
+                        response?: {status: number}
+                        error?: {msg?: string}
+                    }>
+                ) => {
+                    const reason =
+                        "Couldn't fetch customer's tickets. Please try again in a few minutes."
+                    // TODO(customers-migration): remove this condition when the migration is done
+                    if (error.response?.status === 404) {
+                        return (dispatch(
+                            onApiError(error, reason, {
+                                type: types.FETCH_CUSTOMER_HISTORY_ERROR,
+                            })
+                        ) as unknown) as Promise<void>
                     }
-
                     return (dispatch({
                         type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                         error,
-                        reason:
-                            "Couldn't fetch customer's tickets. Please try again in a few minutes.",
+                        reason,
                     }) as unknown) as Promise<void>
                 }
             )

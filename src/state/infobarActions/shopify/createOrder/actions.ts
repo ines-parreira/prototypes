@@ -1,7 +1,7 @@
 import type {Map} from 'immutable'
 import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
-import axios, {AxiosError, AxiosResponse} from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
 import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {
@@ -19,20 +19,21 @@ import {
     formatPercentage,
     formatPrice,
 } from '../../../../business/shopify/number'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {
     AppliedDiscount,
     DiscountType,
     Product,
     Variant,
 } from '../../../../constants/integrations/types/shopify'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
 import {RootState, StoreDispatch} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {executeAction} from '../../../infobar/actions'
 import {notify} from '../../../notifications/actions'
 import {NotificationStatus} from '../../../notifications/types'
-import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
 import {IntegrationDataItemType} from '../../../../models/integration/types'
+import {onApiError} from '../../../utils'
 
 import {getCreateOrderState} from './selectors'
 import {
@@ -172,29 +173,16 @@ export const calculateDraftOrder = (
 
         console.error(error)
         onError && onError()
-        dispatch(onApiError(error, 'Error while calculating draft order'))
+        dispatch(
+            onApiError(
+                error,
+                'Error while calculating draft order',
+                setLoading(false)
+            )
+        )
     } finally {
         dispatch(setLoading(false))
     }
-}
-
-export const onApiError = (
-    error: AxiosError<{error?: {msg: string}}>,
-    defaultMessage: string
-) => (dispatch: StoreDispatch) => {
-    const message =
-        error.response && error.response.data && error.response.data.error
-            ? error.response.data.error.msg
-            : null
-
-    dispatch(setLoading(false))
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message: message || defaultMessage,
-            allowHTML: true,
-        })
-    )
 }
 
 export const loadProducts = async (
@@ -301,7 +289,13 @@ export const onCreateDraftOrder = (
         return draftOrder
     } catch (error) {
         console.error(error)
-        dispatch(onApiError(error, 'Error while creating draft order'))
+        dispatch(
+            onApiError(
+                error,
+                'Error while creating draft order',
+                setLoading(false)
+            )
+        )
     } finally {
         dispatch(setLoading(false))
     }
