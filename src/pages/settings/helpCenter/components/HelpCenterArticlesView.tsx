@@ -1,24 +1,24 @@
-import React, {FormEvent, useEffect, useState, useMemo} from 'react'
-import {useSelector} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
+import {useSelector} from 'react-redux'
+import {Button, Container} from 'reactstrap'
 
-import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField'
-import {notify} from '../../../../state/notifications/actions'
 import {
     HelpCenterArticle,
     HelpCenterArticleTranslation,
     LocaleCode,
 } from '../../../../models/helpCenter/types'
 import {validLocaleCode} from '../../../../models/helpCenter/utils'
-import {NotificationStatus} from '../../../../state/notifications/types'
 import {
     changeViewLanguage,
     getViewLanguage,
 } from '../../../../state/helpCenter/ui'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import Loader from '../../../common/components/Loader/Loader'
+import PageHeader from '../../../common/components/PageHeader'
+import SelectField from '../../../common/forms/SelectField/SelectField'
 import {resetArticles} from '../../../../state/helpCenter/articles'
 import {resetCategories} from '../../../../state/helpCenter/categories'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
@@ -26,36 +26,45 @@ import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selec
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
-import {MODALS, HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
-
 import {
-    getNewTranslation,
-    articleRequiredFields,
-    slugify,
-    buildArticleSlug,
-} from '../utils/helpCenter.utils'
+    MODALS,
+    HELP_CENTER_LANGUAGE_DEFAULT,
+    DRAWER_TRANSITION_DURATION_MS,
+} from '../constants'
+
 import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
-import {CategoriesViews} from '../providers/CategoriesView'
-import {SupportedLocalesProvider} from '../providers/SupportedLocales'
-import {CategoryDrawer} from '../providers/CategoryDrawer'
 import {useArticlesActions} from '../hooks/useArticlesActions'
-import {useLocales} from '../hooks/useLocales'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useLocales} from '../hooks/useLocales'
 import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
+import {CategoriesViews} from '../providers/CategoriesView'
+import {CategoryDrawer} from '../providers/CategoryDrawer'
+import {SupportedLocalesProvider} from '../providers/SupportedLocales'
+import {
+    articleOptionalFields,
+    articleRequiredFields,
+    buildArticleSlug,
+    getNewTranslation,
+    slugify,
+} from '../utils/helpCenter.utils'
 
+import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
+import HelpCenterEditAdvancedArticleForm from './articles/HelpCenterEditAdvancedArticleForm'
+import HelpCenterEditArticleForm from './articles/HelpCenterEditArticleForm'
+import HelpCenterEditModal from './articles/HelpCenterEditModal'
+import HelpCenterEditModalFooter from './articles/HelpCenterEditModalFooter'
+import HelpCenterEditModalHeader from './articles/HelpCenterEditModalHeader'
 import {ArticlesTable} from './ArticlesTable'
+import {ConfirmationModal} from './ConfirmationModal'
+import css from './HelpCenterArticlesView.less'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
-import HelpCenterEditModal from './articles/HelpCenterEditModal'
-import HelpCenterEditArticleForm from './articles/HelpCenterEditArticleForm'
-import HelpCenterEditAdvancedArticleForm from './articles/HelpCenterEditAdvancedArticleForm'
-import HelpCenterEditModalHeader from './articles/HelpCenterEditModalHeader'
-import HelpCenterEditModalFooter from './articles/HelpCenterEditModalFooter'
-import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 
-import css from './HelpCenterArticlesView.less'
-import {ConfirmationModal} from './ConfirmationModal'
+type HelpCenterModalState = {
+    opened: boolean
+    content: HelpCenterModalContent | null
+}
 
 enum HelpCenterModalContent {
     ARTICLE = 'article',
@@ -67,9 +76,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const helpCenterId = useHelpCenterIdParam()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
-    const [editModal, setEditModal] = useState<HelpCenterModalContent | null>(
-        null
-    )
+    const [editModal, setEditModal] = useState<HelpCenterModalState>({
+        opened: false,
+        content: null,
+    })
     const [
         selectedArticle,
         setSelectedArticle,
@@ -185,7 +195,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         articleModal.closeModal()
         setArticleLanguage(viewLanguage)
         setPendingDeleteLocale(undefined)
-        setEditModal(null)
+        setEditModal((prevState) => ({
+            ...prevState,
+            opened: false,
+        }))
     }
 
     const handleOnClickAction = (
@@ -222,9 +235,9 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         if (!savedTranslation) {
             return filledRequired
         }
-        const hasBeenChanged = articleRequiredFields.some(
-            (key) => currentTranslation[key] !== savedTranslation[key]
-        )
+        const hasBeenChanged = articleRequiredFields
+            .concat(articleOptionalFields)
+            .some((key) => currentTranslation[key] !== savedTranslation[key])
         return filledRequired && hasBeenChanged
     }, [articlesActions.isLoading, selectedArticle, savedTranslation])
 
@@ -249,7 +262,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         if (!selectedArticle?.translation || !helpCenter) {
             return null
         }
-        switch (editModal) {
+        switch (editModal.content) {
             case HelpCenterModalContent.ARTICLE:
                 return (
                     <span className={css.modalForm}>
@@ -290,9 +303,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                 <button
                                     type="button"
                                     onClick={() =>
-                                        setEditModal(
-                                            HelpCenterModalContent.ARTICLE_ADVANCED
-                                        )
+                                        setEditModal({
+                                            opened: true,
+                                            content:
+                                                HelpCenterModalContent.ARTICLE_ADVANCED,
+                                        })
                                     }
                                     className={css.toggleModalBtn}
                                 >
@@ -328,9 +343,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                 <button
                                     type="button"
                                     onClick={() =>
-                                        setEditModal(
-                                            HelpCenterModalContent.ARTICLE
-                                        )
+                                        setEditModal({
+                                            opened: true,
+                                            content:
+                                                HelpCenterModalContent.ARTICLE,
+                                        })
                                     }
                                     className={css.toggleModalBtn}
                                 >
@@ -378,10 +395,16 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         } as HelpCenterArticle)
     }
 
+    const createCategory = () => {
+        categoryModal.openModal(MODALS.CATEGORY, true, {
+            isCreate: true,
+        })
+    }
+
     const selectArticle = (article: HelpCenterArticle) => {
         setSelectedArticleTranslations(null)
         setSelectedArticle(article)
-        setEditModal(HelpCenterModalContent.ARTICLE)
+        setEditModal({opened: true, content: HelpCenterModalContent.ARTICLE})
     }
 
     const editArticleSettings = async (
@@ -391,7 +414,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         if (action === 'articleSettings') {
             setSelectedArticleTranslations(null)
             setSelectedArticle(article)
-            setEditModal(HelpCenterModalContent.ARTICLE_ADVANCED)
+            setEditModal({
+                opened: true,
+                content: HelpCenterModalContent.ARTICLE_ADVANCED,
+            })
         }
 
         if (action === 'copyToClipboard') {
@@ -509,7 +535,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     })
                 )
                 setSelectedArticle(null)
-                setEditModal(null)
+                setEditModal((prevState) => ({
+                    ...prevState,
+                    opened: false,
+                }))
             } catch (err) {
                 void dispatch(
                     notify({
@@ -542,7 +571,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     })
                 )
                 setSelectedArticle(null)
-                setEditModal(null)
+                setEditModal((prevState) => ({
+                    ...prevState,
+                    opened: false,
+                }))
             } catch (err) {
                 void dispatch(
                     notify({
@@ -573,7 +605,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         } finally {
             setSavedTranslation(null)
             setSelectedArticle(null)
-            setEditModal(null)
+            setEditModal((prevState) => ({
+                ...prevState,
+                opened: false,
+            }))
         }
     }
 
@@ -612,14 +647,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     }
                     style={{display: 'inline-block'}}
                 />
-                <Button
-                    className="mr-2"
-                    onClick={() =>
-                        categoryModal.openModal(MODALS.CATEGORY, true, {
-                            isCreate: true,
-                        })
-                    }
-                >
+                <Button className="mr-2" onClick={createCategory}>
                     Create Category
                 </Button>
                 <Button color="success" onClick={createArticle}>
@@ -634,9 +662,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             ) : (
                 <SupportedLocalesProvider>
                     <CategoriesViews
-                        createArticle={createArticle}
                         helpCenter={helpCenter}
                         viewLanguage={viewLanguage}
+                        createArticle={createArticle}
+                        createCategory={createCategory}
                         renderArticleList={(categoryId, articles) => (
                             <ArticlesTable
                                 isNested
@@ -651,14 +680,20 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
                     <CategoryDrawer helpCenter={helpCenter} />
                     <HelpCenterEditModal
-                        open={Boolean(editModal)}
+                        open={editModal.opened}
                         fullscreen={
                             fullscreenEditModal ||
                             screenSize === SCREEN_SIZE.SMALL
                         }
                         isLoading={isArticleLoading}
                         portalRootId="app-root"
-                        onBackdropClick={() => setEditModal(null)}
+                        onBackdropClick={() =>
+                            setEditModal((prevState) => ({
+                                ...prevState,
+                                opened: false,
+                            }))
+                        }
+                        transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
                     >
                         {getEditModalContent()}
                     </HelpCenterEditModal>

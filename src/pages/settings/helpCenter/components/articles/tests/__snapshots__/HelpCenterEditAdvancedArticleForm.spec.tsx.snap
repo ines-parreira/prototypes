@@ -95,7 +95,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         class="control-label"
         for="id-excerpt"
       >
-        Description
+        Excerpt
       </label>
       <div
         class=""

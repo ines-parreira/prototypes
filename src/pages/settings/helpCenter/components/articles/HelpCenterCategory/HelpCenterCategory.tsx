@@ -3,6 +3,7 @@ import React, {
     MouseEvent,
     useEffect,
     useMemo,
+    useRef,
     useState,
 } from 'react'
 import {useSelector} from 'react-redux'
@@ -32,7 +33,10 @@ import {
 import {getViewLanguage} from '../../../../../../state/helpCenter/ui'
 
 import {Drawer} from '../../../../../common/components/Drawer'
-import {HELP_CENTER_LANGUAGE_DEFAULT} from '../../../constants'
+import {
+    DRAWER_TRANSITION_DURATION_MS,
+    HELP_CENTER_LANGUAGE_DEFAULT,
+} from '../../../constants'
 import {useLocales} from '../../../hooks/useLocales'
 import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
 import {buildCategorySlug, slugify} from '../../../utils/helpCenter.utils'
@@ -87,6 +91,7 @@ export const HelpCenterCategory = ({
     const [currentLocale, setCurrentLocale] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
+    const categoryTitleRef = useRef<HTMLInputElement>(null)
 
     const localeOptions = useLocaleSelectOptions(
         locales,
@@ -134,6 +139,17 @@ export const HelpCenterCategory = ({
             setCurrentLocale(viewLanguage)
         }
     }, [isOpen, category, translation, viewLanguage])
+
+    // Only set the auto-focus after the drawer animation is finished
+    // Otherwise it breaks the animation
+    useEffect(() => {
+        if (isOpen) {
+            setTimeout(
+                () => categoryTitleRef.current?.focus(),
+                DRAWER_TRANSITION_DURATION_MS
+            )
+        }
+    }, [isOpen])
 
     const handleOnClickAction = (
         ev: MouseEvent,
@@ -224,12 +240,8 @@ export const HelpCenterCategory = ({
     }
 
     const canSaveCategory = useMemo(
-        () =>
-            canSave &&
-            title.trim() !== '' &&
-            slug.trim() !== '' &&
-            description.trim() !== '',
-        [canSave, title, slug, description]
+        () => canSave && title.trim() !== '' && slug.trim() !== '',
+        [canSave, title, slug]
     )
 
     const content = () => (
@@ -258,8 +270,8 @@ export const HelpCenterCategory = ({
                 <FormGroup className={classNames(css.textfield, css.required)}>
                     <Label for="title">Title</Label>
                     <Input
+                        innerRef={categoryTitleRef}
                         data-testid="title-input"
-                        autoFocus
                         name="title"
                         id="title"
                         value={title}
@@ -310,7 +322,7 @@ export const HelpCenterCategory = ({
                     </InputGroup>
                     <FormText>This is your category’s link.</FormText>
                 </FormGroup>
-                <FormGroup className={classNames(css.textfield, css.required)}>
+                <FormGroup className={css.textfield}>
                     <Label for="description">Description</Label>
                     <Input
                         name="description"
@@ -404,8 +416,9 @@ export const HelpCenterCategory = ({
             isLoading={isLoading}
             portalRootId="app-root"
             onBackdropClick={onClose}
+            transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
         >
-            {isOpen && content()}
+            {content()}
         </Drawer>
     )
 }

@@ -1,12 +1,18 @@
-import {HelpCenterClient} from '../../../../../../../rest_api/help_center_api'
+import {IsURLOptions} from 'validator/lib/isURL'
 
+import {HelpCenterClient} from '../../../../../../../rest_api/help_center_api'
 import {
     LocaleCode,
-    NavigationLinkDto,
     LocalNavigationLink,
     LocalSocialNavigationLink,
+    NavigationLinkDto,
     NavigationLinkMeta,
 } from '../../../../models/helpCenter/types'
+
+export const isURLOptions: IsURLOptions = {
+    require_host: true,
+    require_protocol: true,
+}
 
 export async function saveSocialLinks(
     client: HelpCenterClient,

@@ -69,16 +69,33 @@ export const ARTICLE_ROW_ACTIONS = [
     {
         name: 'articleSettings',
         icon: 'settings',
-        // tooltip: 'Article settings',
+        tooltip: 'Article settings.',
     },
     {
         name: 'duplicateArticle',
         icon: 'content_copy',
+        tooltip: 'Duplicate article.',
     },
     {
         name: 'copyToClipboard',
-        icon: 'link',
+        icon: 'insert_link',
+        tooltip: 'Copy link to clipboard.',
     },
 ]
 
 export const CATEGORIES_PER_PAGE = 30
+
+export const CATEGORY_ROW_ACTIONS = [
+    {
+        name: 'createInCategory',
+        icon: 'add_circle_outline',
+        tooltip: 'Compose article in category.',
+    },
+    {
+        name: 'categorySettings',
+        icon: 'settings',
+        tooltip: 'Category settings.',
+    },
+]
+
+export const DRAWER_TRANSITION_DURATION_MS = 300

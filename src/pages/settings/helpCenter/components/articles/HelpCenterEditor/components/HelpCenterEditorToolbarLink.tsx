@@ -72,6 +72,7 @@ export const HelpCenterEditorToolbarLink = ({
             isOpen={expanded}
             onOpen={() => setExpanded(true)}
             onClose={() => setExpanded(false)}
+            tooltip="Insert link"
         >
             <div>
                 <InputField

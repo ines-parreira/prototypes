@@ -331,7 +331,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                 </button>
               </div>
               <div
-                class="InputField mt-3 form-group"
+                class="InputField my-4 form-group"
                 color=""
               >
                 <label
@@ -368,7 +368,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
           </div>
         </div>
         <div
-          class="pb-4 row"
+          class="py-4 row"
         >
           <div
             class="col"

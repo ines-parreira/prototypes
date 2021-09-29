@@ -20,6 +20,17 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
+jest.mock('../../../../../hooks/useHelpcenterApi', () => {
+    return {
+        useHelpcenterApi: () => ({
+            isReady: true,
+            client: {
+                generateCsvTemplate: jest.fn(),
+            },
+        }),
+    }
+})
+
 describe('<ImportSection />', () => {
     let store: MockStoreEnhanced
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -54,9 +65,9 @@ describe('<ImportSection />', () => {
 
     describe('utils', () => {
         it.each([
-            [{size: 9000000}, false],
-            [{size: 10000000}, true],
-            [{size: 11000000}, true],
+            [{size: 900000}, false],
+            [{size: 1000000}, true],
+            [{size: 1100000}, true],
         ])(
             'fileIsTooBig returns true for files >= than 10MB',
             (file, expectedIsTooBig) => {

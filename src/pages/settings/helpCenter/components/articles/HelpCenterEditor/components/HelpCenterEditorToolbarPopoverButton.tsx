@@ -13,6 +13,7 @@ type Props = {
     onClose: () => void
     children: JSX.Element
     isOpen: boolean
+    tooltip?: string
 }
 
 export const HelpCenterEditorToolbarPopoverButton = ({
@@ -23,6 +24,7 @@ export const HelpCenterEditorToolbarPopoverButton = ({
     icon,
     children,
     isOpen,
+    tooltip,
 }: Props) => {
     useEffect(() => {
         if (isOpen) {
@@ -61,6 +63,7 @@ export const HelpCenterEditorToolbarPopoverButton = ({
                     active={active}
                     disabled={disabled}
                     onClick={toggle}
+                    tooltip={tooltip}
                 />
             }
             position="bottom-right"

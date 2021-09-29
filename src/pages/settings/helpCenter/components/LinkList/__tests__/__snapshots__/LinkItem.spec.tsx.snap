@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<LinkItem> matches snapshot 1`] = `
+exports[`<LinkItem> should display the link item 1`] = `
 <div>
   <div
     class="link-item"
@@ -27,6 +27,49 @@ exports[`<LinkItem> matches snapshot 1`] = `
         type="text"
         value="https://test.com"
       />
+    </div>
+    <i
+      class="material-icons"
+    >
+      close
+    </i>
+  </div>
+</div>
+`;
+
+exports[`<LinkItem> should display the link item with an error message 1`] = `
+<div>
+  <div
+    class="link-item"
+    data-testid="link-item-2"
+  >
+    <div
+      class="form-group"
+    >
+      <input
+        aria-invalid="false"
+        class="link-input form-control"
+        data-testid="link-item-label-2"
+        type="text"
+        value="Test link"
+      />
+    </div>
+    <div
+      class="form-group"
+    >
+      <input
+        aria-invalid="true"
+        class="link-input is-invalid form-control"
+        data-testid="link-item-value-2"
+        type="text"
+        value="test.com"
+      />
+      <div
+        class="invalid-feedback"
+        data-testid="link-item-value-error-2"
+      >
+        URL is invalid
+      </div>
     </div>
     <i
       class="material-icons"

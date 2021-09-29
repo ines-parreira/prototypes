@@ -3,6 +3,8 @@ import {useHistory, useLocation} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {parse as parseQueryString} from 'query-string'
 
+import {AxiosError} from 'axios'
+
 import {CsvColumnPreview} from '../../../../models/helpCenter/types'
 
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
@@ -33,6 +35,17 @@ import {
     importPartial,
     importSuccessful,
 } from './Imports/utils/import-response-type'
+
+const urlToInstallation = (
+    helpCenterId: number,
+    locationPathname: string
+): string => {
+    const helpCenterRootPath = locationPathname.split(
+        helpCenterId.toString()
+    )[0]
+
+    return `${helpCenterRootPath}${helpCenterId}/installation`
+}
 
 export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
     const locales = useLocales()
@@ -75,9 +88,33 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
                     {file_url: fileUrl}
                 )
                 .then((response) => {
-                    setCsvColumns(response.data.columns)
+                    if (response.data.result.status === 'FAILED') {
+                        const error =
+                            response.data.result.error === 'MALFORMED_FILE'
+                                ? 'the file is not valid'
+                                : 'internal error'
+
+                        void dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                message: `Could not analyse CSV file: ${error}`,
+                                noAutoDismiss: true,
+                            })
+                        )
+
+                        console.error('error analysing CSV file', {
+                            error,
+                            fileUrl,
+                        })
+
+                        history.push(
+                            urlToInstallation(helpCenter.id, location.pathname)
+                        )
+                    } else {
+                        setCsvColumns(response.data.result.columns)
+                    }
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
@@ -91,7 +128,16 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
                     })
                 })
         }
-    }, [client, csvColumns, dispatch, isReady, fileUrl, helpCenter])
+    }, [
+        client,
+        csvColumns,
+        dispatch,
+        history,
+        location.pathname,
+        isReady,
+        fileUrl,
+        helpCenter,
+    ])
 
     // locales == [] can only occur if the locales haven't been retrieved yet
     if (
@@ -183,13 +229,7 @@ export const HelpCenterImportCsvColumnMatchingView = (): JSX.Element | null => {
     }
 
     const handleOnCancel = () => {
-        const helpCenterRootPath = location.pathname.split(
-            helpCenter.id.toString()
-        )[0]
-
-        const pathToHelpCenterInstallation = `${helpCenterRootPath}${helpCenter.id}/installation`
-
-        history.push(pathToHelpCenterInstallation)
+        history.push(urlToInstallation(helpCenter.id, location.pathname))
     }
 
     return (

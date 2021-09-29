@@ -8,7 +8,10 @@ import css from '../../TableActions.less'
 export type ActionSchema = {
     icon: string
     name: string
-    tooltip?: string | React.ReactNode
+    tooltip?: {
+        content: string | React.ReactNode
+        target: string
+    }
 }
 
 type ActionProps = ActionSchema & {
@@ -21,12 +24,10 @@ export const Action = ({
     tooltip,
     onClick,
 }: ActionProps): JSX.Element => {
-    const $ref = React.createRef<HTMLSpanElement>()
-
     return (
         <>
             <span
-                ref={$ref}
+                id={tooltip?.target}
                 data-testid={name}
                 className={classNames(css.action, 'material-icons')}
                 onClick={(ev) => onClick(ev, name)}
@@ -34,8 +35,8 @@ export const Action = ({
                 {icon}
             </span>
             {tooltip && (
-                <Tooltip placement="top-end" target={$ref}>
-                    {tooltip}
+                <Tooltip placement="top-end" target={tooltip.target}>
+                    {tooltip.content}
                 </Tooltip>
             )}
         </>

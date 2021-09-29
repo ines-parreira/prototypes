@@ -276,7 +276,7 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                             </Col>
                         </Row>
 
-                        <Row className="pb-4">
+                        <Row className="py-4">
                             <Col>
                                 <Button
                                     color="success"

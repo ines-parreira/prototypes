@@ -5,6 +5,7 @@ import React, {
     FunctionComponent,
     useState,
     useEffect,
+    createRef,
 } from 'react'
 import classNames from 'classnames'
 
@@ -45,6 +46,7 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     onChangeFile,
     ...props
 }: ImageUploadProps) => {
+    const inputRef = createRef<HTMLInputElement>()
     const [localImage, setLocalImage] = useState<File>()
 
     const handleOnDropFile = (event: DragEvent) => {
@@ -140,15 +142,21 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
                 {title}
             </Title>
             <DropZone
-                accept="image/jpeg,image/png"
                 id={id}
+                accept="image/jpeg,image/png"
+                inputRef={inputRef}
                 style={isFluid ? {width: '100%'} : {}}
                 onDrop={handleOnDropFile}
                 onChange={handleOnChangeFile}
             >
                 {content}
             </DropZone>
-            {props.HelpText && <HelpText {...props.HelpText} />}
+            {props.HelpText && (
+                <HelpText
+                    {...props.HelpText}
+                    onHighlightClick={() => inputRef.current?.click()}
+                />
+            )}
         </div>
     )
 }

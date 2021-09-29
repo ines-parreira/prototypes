@@ -1,16 +1,17 @@
 import React from 'react'
+import produce, {Draft} from 'immer'
 import {chain as _chain} from 'lodash'
 import _defaults from 'lodash/defaults'
-import produce, {Draft} from 'immer'
 import isUrl from 'validator/lib/isURL'
 
 import {
+    LocaleCode,
     LocalNavigationLink,
     LocalSocialNavigationLink,
-    NavigationLinkGroup,
-    LocaleCode,
     NavigationLinkDto,
+    NavigationLinkGroup,
 } from '../../../../models/helpCenter/types'
+import {isURLOptions} from '../utils/navigationLinks'
 
 type Options = {
     allowEmpty: boolean
@@ -68,7 +69,7 @@ function isListValid<T extends LocalNavigationLink | LocalSocialNavigationLink>(
 ): boolean {
     return links.every((link) => {
         if (options.allowEmpty) {
-            return link.value ? isUrl(link.value) : true
+            return link.value ? isUrl(link.value, isURLOptions) : true
         }
 
         // If we have a Title with no URL, list is not valid
@@ -80,7 +81,7 @@ function isListValid<T extends LocalNavigationLink | LocalSocialNavigationLink>(
             return false
         }
 
-        return link.value ? isUrl(link.value) : true
+        return link.value ? isUrl(link.value, isURLOptions) : true
     })
 }
 

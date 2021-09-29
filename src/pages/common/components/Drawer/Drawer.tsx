@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
@@ -44,6 +44,8 @@ type Props = {
     children: React.ReactNode | null
     isLoading: boolean
     onBackdropClick?: () => void
+    transitionDurationMs?: number
+    containerZIndices?: [number, number]
 }
 
 const Drawer = ({
@@ -54,23 +56,49 @@ const Drawer = ({
     portalRootId,
     isLoading,
     onBackdropClick,
+    transitionDurationMs = 300,
+    containerZIndices = [5, -1],
 }: Props): JSX.Element => {
+    const [zIndexOpen, zIndexClosed] = containerZIndices
+    const [containerZIndex, setContainerZIndex] = useState(
+        open ? zIndexOpen : zIndexClosed
+    )
     const [portalRoot, setPortalRoot] = React.useState<HTMLElement | null>(null)
 
     React.useEffect(() => {
         portalRootId && setPortalRoot(document.getElementById(portalRootId))
     }, [portalRootId])
 
-    const modal = (
-        <>
-            {open && <div onClick={onBackdropClick} className="backdrop" />}
+    useEffect(() => {
+        if (open) {
+            setContainerZIndex(zIndexOpen)
+        }
+        // Wait for the transition to finish to change the container z-index
+        else {
+            setTimeout(
+                () => setContainerZIndex(zIndexClosed),
+                transitionDurationMs
+            )
+        }
+    }, [open])
+
+    const drawer = (
+        <div
+            className={css['drawer-container']}
+            style={{zIndex: containerZIndex}}
+        >
+            {containerZIndex === zIndexOpen && (
+                <div className="backdrop" onClick={onBackdropClick} />
+            )}
             <div
                 data-testid={name}
+                style={{
+                    transitionDuration: `${transitionDurationMs}ms`,
+                }}
                 className={classNames({
                     [css.drawer]: true,
                     [css.fullscreen]: fullscreen,
                     [css.opened]: open,
-                    [css.closed]: !open,
                 })}
             >
                 {isLoading ? (
@@ -85,10 +113,10 @@ const Drawer = ({
                     children
                 )}
             </div>
-        </>
+        </div>
     )
 
-    return (portalRoot && ReactDOM.createPortal(modal, portalRoot)) || modal
+    return (portalRoot && ReactDOM.createPortal(drawer, portalRoot)) || drawer
 }
 
 Drawer.Header = Header

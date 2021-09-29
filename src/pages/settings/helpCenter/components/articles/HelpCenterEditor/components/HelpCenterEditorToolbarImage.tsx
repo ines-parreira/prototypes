@@ -48,6 +48,7 @@ export const HelpCenterEditorToolbarImage = ({onChange}: Props) => {
             isOpen={expanded}
             onOpen={() => setExpanded(true)}
             onClose={() => setExpanded(false)}
+            tooltip="Insert image"
         >
             <>
                 <div className={css.menu}>

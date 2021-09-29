@@ -12,8 +12,10 @@ type Props = {
     portalRootId?: string
     fullscreen: boolean
     children: React.ReactNode | null
-    isLoading: boolean
     onBackdropClick?: () => void
+    isLoading: boolean
+    transitionDurationMs?: number
+    containerZIndices?: [number, number]
 }
 
 export const HelpCenterEditModal = ({
@@ -21,24 +23,50 @@ export const HelpCenterEditModal = ({
     open,
     fullscreen,
     portalRootId,
-    isLoading,
     onBackdropClick,
+    isLoading,
+    transitionDurationMs = 300,
+    containerZIndices = [5, -1],
 }: Props) => {
+    const [zIndexOpen, zIndexClosed] = containerZIndices
+    const [containerZIndex, setContainerZIndex] = useState(
+        open ? zIndexOpen : zIndexClosed
+    )
     const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
 
     useEffect(() => {
         portalRootId && setPortalRoot(document.getElementById(portalRootId))
     }, [portalRootId])
 
+    useEffect(() => {
+        if (open) {
+            setContainerZIndex(zIndexOpen)
+        }
+        // Wait for the transition to finish to change the container z-index
+        else {
+            setTimeout(
+                () => setContainerZIndex(containerZIndices[1]),
+                transitionDurationMs
+            )
+        }
+    }, [open])
+
     const modal = (
-        <>
-            {open && <div className="backdrop" onClick={onBackdropClick} />}
+        <div
+            className={css['modal-container']}
+            style={{zIndex: containerZIndex}}
+        >
+            {containerZIndex === zIndexOpen && (
+                <div className="backdrop" onClick={onBackdropClick} />
+            )}
             <div
+                style={{
+                    transitionDuration: `${transitionDurationMs}ms`,
+                }}
                 className={classnames({
                     [css.modal]: true,
                     [css.fullscreen]: open && fullscreen,
                     [css.opened]: open,
-                    [css.closed]: !open,
                 })}
             >
                 {isLoading ? (
@@ -49,7 +77,7 @@ export const HelpCenterEditModal = ({
                     children
                 )}
             </div>
-        </>
+        </div>
     )
 
     return (portalRoot && ReactDOM.createPortal(modal, portalRoot)) || modal

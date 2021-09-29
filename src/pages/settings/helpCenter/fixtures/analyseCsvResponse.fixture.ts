@@ -1,6 +1,7 @@
 import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
 
-export const analyseCsvResponse: Components.Schemas.AnalyseCsvResponseDto = {
+export const analyseCsvResponse: Components.Schemas.AnalyseCsvResponseSuccessDto = {
+    status: 'SUCCESS',
     num_rows: 273,
     columns: [
         {

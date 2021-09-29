@@ -2,7 +2,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {act, fireEvent, render} from '@testing-library/react'
+import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
 import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../fixtures/getHelpcenterResponse.fixture'
 
@@ -91,7 +91,7 @@ describe('<HelpCenterCategory>', () => {
             </Provider>
         )
 
-        expect(getByTestId('category-edit').className).toEqual('drawer closed')
+        expect(getByTestId('category-edit').className).toEqual('drawer')
     })
 
     it('appears when isOpen is true', () => {
@@ -100,11 +100,10 @@ describe('<HelpCenterCategory>', () => {
         expect(getByTestId('category-edit').className).toEqual('drawer opened')
     })
 
-    it('focuses the Title input when in view', () => {
+    it('focuses the Title input after drawer finish its transition', async () => {
         const {getByTestId} = render(<Example isOpen />)
         const titleInput = getByTestId('title-input')
-
-        expect(document.activeElement).toEqual(titleInput)
+        await waitFor(() => expect(document.activeElement).toEqual(titleInput))
     })
 
     describe('when the slug input is pristine', () => {
@@ -162,8 +161,8 @@ describe('<HelpCenterCategory>', () => {
         )
     })
 
-    it('disables the Save button if Title, Slug or Description are missing', () => {
-        const {getByLabelText, getByTestId} = render(<Example isOpen />)
+    it('disables the Save button if title or slug are missing', () => {
+        const {getByTestId} = render(<Example isOpen />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
         expect(button.disabled).toBeTruthy()
@@ -173,27 +172,20 @@ describe('<HelpCenterCategory>', () => {
                 value: 'About us',
             },
         })
-        expect(button.disabled).toBeTruthy()
 
-        fireEvent.change(getByLabelText('Description'), {
-            target: {
-                value: '   ',
-            },
-        })
-        expect(button.disabled).toBeTruthy()
-
-        fireEvent.change(getByLabelText('Description'), {
-            target: {
-                value: 'some description',
-            },
-        })
         expect(button.disabled).toBeFalsy()
+
+        fireEvent.change(getByTestId('slug-input'), {
+            target: {
+                value: '',
+            },
+        })
+
+        expect(button.disabled).toBeTruthy()
     })
 
     it('disables the Save button if canSave is false', () => {
-        const {getByLabelText, getByTestId} = render(
-            <Example isOpen canSave={false} />
-        )
+        const {getByTestId} = render(<Example isOpen canSave={false} />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
         expect(button.disabled).toBeTruthy()
@@ -201,16 +193,6 @@ describe('<HelpCenterCategory>', () => {
         fireEvent.change(getByTestId('title-input'), {
             target: {
                 value: 'About us',
-            },
-        })
-        fireEvent.change(getByLabelText('Description'), {
-            target: {
-                value: '   ',
-            },
-        })
-        fireEvent.change(getByLabelText('Description'), {
-            target: {
-                value: 'some description',
             },
         })
 

@@ -34,7 +34,7 @@ export const toolbarConfig = {
     },
     inline: {
         component: HelpCenterEditorToolbarInline,
-        options: inlineOptions,
+        options: inlineOptions.map(({name}) => name),
     },
     list: {
         component: HelpCenterEditorToolbarList,

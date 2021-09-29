@@ -4,7 +4,11 @@ import {HelpCenterEditorToolbarButton} from './HelpCenterEditorToolbarButton'
 import {HelpCenterEditorToolbarSeparator} from './HelpCenterEditorToolbarSeparator'
 
 // TODO : add 'underline' and 'strikethrough' later as it's not part of default markdown
-export const inlineOptions = ['bold', 'italic', 'monospace'] as const
+export const inlineOptions = [
+    {name: 'bold', tooltip: 'Bold'},
+    {name: 'italic', tooltip: 'Italic'},
+    {name: 'monospace', tooltip: 'Inline code'},
+] as const
 
 type Props = {
     onChange: (option: string, newValue: boolean) => void
@@ -23,16 +27,17 @@ export const HelpCenterEditorToolbarInline = ({
 }: Props) => {
     return (
         <>
-            {inlineOptions.map((option) => (
+            {inlineOptions.map(({name, tooltip}) => (
                 <HelpCenterEditorToolbarButton
-                    key={option}
-                    active={currentState[option]}
+                    key={name}
+                    active={currentState[name]}
                     icon={
-                        option === 'monospace'
+                        name === 'monospace'
                             ? 'integration_instructions'
-                            : `format_${option}`
+                            : `format_${name}`
                     }
-                    onClick={() => onChange(option, !currentState[option])}
+                    onClick={() => onChange(name, !currentState[name])}
+                    tooltip={tooltip}
                 />
             ))}
             <HelpCenterEditorToolbarSeparator />

@@ -7,6 +7,7 @@ import React, {
     useState,
     CSSProperties,
     ChangeEvent,
+    RefObject,
 } from 'react'
 import _toArray from 'lodash/toArray'
 import classNames from 'classnames'
@@ -14,6 +15,7 @@ import classNames from 'classnames'
 import css from './DropZone.less'
 
 export type DropZoneProps = {
+    id: string
     /**
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
      * @description
@@ -22,7 +24,7 @@ export type DropZoneProps = {
     accept?: string
     children?: ReactChild
     className?: string
-    id: string
+    inputRef?: RefObject<HTMLInputElement>
     name?: string
     size?: 'default' | 'small'
     style?: CSSProperties
@@ -36,10 +38,11 @@ export type DropZoneProps = {
 }
 
 export const DropZone: FunctionComponent<DropZoneProps> = ({
+    id,
     accept,
     children,
     className,
-    id,
+    inputRef = createRef<HTMLInputElement>(),
     name,
     size = 'default',
     style,
@@ -49,7 +52,6 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
     onChange,
 }: DropZoneProps) => {
     const dropZone = createRef<HTMLLabelElement>()
-    const inputRef = createRef<HTMLInputElement>()
     const [isDragging, setDragging] = useState(false)
     const [isDragRejected, setIsDragRejected] = useState(false)
 

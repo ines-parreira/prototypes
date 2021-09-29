@@ -20,7 +20,7 @@ import PageHeader from '../../../common/components/PageHeader'
 
 import {DEFAULT_THEME, HELP_CENTER_DEFAULT_COLOR} from '../constants'
 import {HelpCenterThemes, isHelpCenterTheme} from '../types'
-import {useFileUpload} from '../hooks/useFileUpload'
+import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 
@@ -230,6 +230,16 @@ export const HelpCenterAppearanceView: React.FC = () => {
         }
     }
 
+    const getImageUploadHighlightText = (
+        upload: FileUpload,
+        currentImage?: string | null
+    ) => {
+        return (upload.isTouched && upload.payload) ||
+            (!upload.isTouched && currentImage)
+            ? 'Replace image'
+            : 'Upload image'
+    }
+
     if (!helpCenter) {
         return null
     }
@@ -262,11 +272,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         title="Standard Logo"
                         info="Used in the main navigation when with the light theme."
                         HelpText={{
-                            highlight:
-                                primaryLogo.payload ||
+                            highlight: getImageUploadHighlightText(
+                                primaryLogo,
                                 helpCenter?.brand_logo_url
-                                    ? 'Replace image'
-                                    : 'Upload image',
+                            ),
                             text: 'recommended size 1800 x 240',
                         }}
                         onChangeFile={primaryLogo.changeFile}
@@ -279,11 +288,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         title="White Logo"
                         info="Used in the main navigation when with the dark theme."
                         HelpText={{
-                            highlight:
-                                whiteLogo.payload ||
+                            highlight: getImageUploadHighlightText(
+                                whiteLogo,
                                 helpCenter?.brand_logo_white_url
-                                    ? 'Replace image'
-                                    : 'Upload image',
+                            ),
                             text: 'recommended size 1800 x 240',
                         }}
                         onChangeFile={whiteLogo.changeFile}
@@ -312,11 +320,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         title="Banner Background"
                         info="Your banner is an image  that’s displayed on the top of your home page."
                         HelpText={{
-                            highlight:
-                                bannerImage.payload ||
+                            highlight: getImageUploadHighlightText(
+                                bannerImage,
                                 helpCenter?.banner_image_url
-                                    ? 'Replace image'
-                                    : 'Upload image',
+                            ),
                             text: 'recommended size 1440 x 316',
                         }}
                         onChangeFile={bannerImage.changeFile}

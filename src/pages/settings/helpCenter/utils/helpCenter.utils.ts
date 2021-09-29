@@ -9,6 +9,10 @@ export const articleRequiredFields: Partial<
     keyof HelpCenterArticleTranslation
 >[] = ['title', 'slug', 'content']
 
+export const articleOptionalFields: Partial<
+    keyof HelpCenterArticleTranslation
+>[] = ['excerpt']
+
 export const getNewTranslation = (
     locale: HelpCenterLocaleCode
 ): CreateArticleTranslationDto => ({

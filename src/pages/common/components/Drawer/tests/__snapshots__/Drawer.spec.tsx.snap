@@ -3,13 +3,19 @@
 exports[`<Drawer/> should display the component correctly 1`] = `
 <div>
   <div
-    class="backdrop"
-  />
-  <div
-    class="drawer opened"
-    data-testid="test"
+    class="drawer-container"
+    style="z-index: 5;"
   >
-    Modal content
+    <div
+      class="backdrop"
+    />
+    <div
+      class="drawer opened"
+      data-testid="test"
+      style="transition-duration: 300ms;"
+    >
+      Modal content
+    </div>
   </div>
 </div>
 `;
@@ -17,13 +23,19 @@ exports[`<Drawer/> should display the component correctly 1`] = `
 exports[`<Drawer/> should display the component in fullscreen mode correctly 1`] = `
 <div>
   <div
-    class="backdrop"
-  />
-  <div
-    class="drawer fullscreen opened"
-    data-testid="test"
+    class="drawer-container"
+    style="z-index: 5;"
   >
-    Modal content
+    <div
+      class="backdrop"
+    />
+    <div
+      class="drawer fullscreen opened"
+      data-testid="test"
+      style="transition-duration: 300ms;"
+    >
+      Modal content
+    </div>
   </div>
 </div>
 `;

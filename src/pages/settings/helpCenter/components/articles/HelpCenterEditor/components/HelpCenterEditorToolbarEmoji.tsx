@@ -23,6 +23,7 @@ export const HelpCenterEditorToolbarEmoji = ({onChange}: Props) => {
     return (
         <HelpCenterEditorToolbarPopoverButton
             icon="emoji_emotions"
+            tooltip="Emoji"
             isOpen={expanded}
             onOpen={() => setExpanded(true)}
             onClose={() => setExpanded(false)}

@@ -154,7 +154,7 @@ exports[`<HelpCenterAppearanceView/> should call help center API on search toggl
             class="container"
           >
             <span
-              class="highlight"
+              class="highlight clickable"
             >
               Upload image
             </span>
@@ -226,7 +226,7 @@ exports[`<HelpCenterAppearanceView/> should call help center API on search toggl
             class="container"
           >
             <span
-              class="highlight"
+              class="highlight clickable"
             >
               Upload image
             </span>
@@ -380,7 +380,7 @@ exports[`<HelpCenterAppearanceView/> should call help center API on search toggl
           </button>
         </div>
         <div
-          class="InputField mt-3 form-group"
+          class="InputField my-4 form-group"
           color=""
         >
           <label
@@ -479,7 +479,7 @@ exports[`<HelpCenterAppearanceView/> should call help center API on search toggl
             class="container"
           >
             <span
-              class="highlight"
+              class="highlight clickable"
             >
               Upload image
             </span>
@@ -699,7 +699,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             class="container"
           >
             <span
-              class="highlight"
+              class="highlight clickable"
             >
               Upload image
             </span>
@@ -771,7 +771,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             class="container"
           >
             <span
-              class="highlight"
+              class="highlight clickable"
             >
               Upload image
             </span>
@@ -925,7 +925,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
           </button>
         </div>
         <div
-          class="InputField mt-3 form-group"
+          class="InputField my-4 form-group"
           color=""
         >
           <label
@@ -1024,7 +1024,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             class="container"
           >
             <span
-              class="highlight"
+              class="highlight clickable"
             >
               Upload image
             </span>

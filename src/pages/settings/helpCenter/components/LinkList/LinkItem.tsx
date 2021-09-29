@@ -2,11 +2,13 @@ import React from 'react'
 import {FormFeedback, FormGroup, Input} from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
 
+import {isURLOptions} from '../../utils/navigationLinks'
+
 import css from './LinkItem.less'
 
 export type LinkEntity = {
     id: number
-    key: string
+    key?: string
     label: string
     value: string
 }
@@ -40,7 +42,7 @@ export const LinkItem = ({
 
     if (label && value === '') {
         valueErrMessage = 'Please enter a valid URL'
-    } else if (value !== '' && !isUrl(value)) {
+    } else if (value !== '' && !isUrl(value, isURLOptions)) {
         valueErrMessage = 'URL is invalid'
     }
 

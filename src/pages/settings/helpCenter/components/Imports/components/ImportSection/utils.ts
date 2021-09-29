@@ -1,6 +1,7 @@
+import {isDevelopment} from '../../../../../../../utils/environment'
 import {HELP_CENTER_BASE_PATH} from '../../../../constants'
 
-export const MAXIMUM_FILE_SIZE_MB = 10
+export const MAXIMUM_FILE_SIZE_MB = isDevelopment() ? 1 : 10
 
 export const fileIsTooBig = (file: Pick<File, 'size'>): boolean =>
     file.size / 1000000 >= MAXIMUM_FILE_SIZE_MB

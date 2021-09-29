@@ -1,18 +1,31 @@
 import React, {FunctionComponent} from 'react'
+import classNames from 'classnames'
 
 import css from './HelpText.less'
 
 export type HelpTextProps = {
-    highlight?: string
     text: string
+    highlight?: string
+    onHighlightClick?: () => void
 }
 
 export const HelpText: FunctionComponent<HelpTextProps> = ({
-    highlight,
     text,
+    highlight,
+    onHighlightClick,
 }: HelpTextProps) => (
     <div className={css.container}>
-        {highlight && <span className={css.highlight}>{highlight}</span>}
+        {highlight && (
+            <span
+                className={classNames({
+                    [css.highlight]: true,
+                    [css.clickable]: typeof onHighlightClick !== 'undefined',
+                })}
+                onClick={onHighlightClick}
+            >
+                {highlight}
+            </span>
+        )}
         <span>{text}</span>
     </div>
 )

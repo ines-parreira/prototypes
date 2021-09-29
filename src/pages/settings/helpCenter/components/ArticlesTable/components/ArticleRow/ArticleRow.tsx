@@ -111,7 +111,16 @@ export const ArticleRow = ({
             </BodyCell>
             <BodyCell width={120} innerClassName={css.actions}>
                 <TableActions
-                    actions={ARTICLE_ROW_ACTIONS}
+                    actions={ARTICLE_ROW_ACTIONS.map(
+                        ({icon, name, tooltip}) => ({
+                            icon,
+                            name,
+                            tooltip: {
+                                content: tooltip,
+                                target: `${name}-${article.id}`,
+                            },
+                        })
+                    )}
                     onClick={handleOnActionsClick}
                 />
             </BodyCell>

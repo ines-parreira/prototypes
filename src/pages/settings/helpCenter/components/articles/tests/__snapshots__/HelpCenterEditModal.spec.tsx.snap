@@ -3,12 +3,18 @@
 exports[`<HelpCenterEditModal/> should display the component correctly 1`] = `
 <div>
   <div
-    class="backdrop"
-  />
-  <div
-    class="modal opened"
+    class="modal-container"
+    style="z-index: 5;"
   >
-    Modal content
+    <div
+      class="backdrop"
+    />
+    <div
+      class="modal opened"
+      style="transition-duration: 300ms;"
+    >
+      Modal content
+    </div>
   </div>
 </div>
 `;
@@ -16,12 +22,18 @@ exports[`<HelpCenterEditModal/> should display the component correctly 1`] = `
 exports[`<HelpCenterEditModal/> should display the component in fullscreen mode correctly 1`] = `
 <div>
   <div
-    class="backdrop"
-  />
-  <div
-    class="modal fullscreen opened"
+    class="modal-container"
+    style="z-index: 5;"
   >
-    Modal content
+    <div
+      class="backdrop"
+    />
+    <div
+      class="modal fullscreen opened"
+      style="transition-duration: 300ms;"
+    >
+      Modal content
+    </div>
   </div>
 </div>
 `;

@@ -11,7 +11,8 @@ import {
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
-import {MODALS} from '../../../../constants'
+import Tooltip from '../../../../../../common/components/Tooltip'
+import {CATEGORY_ROW_ACTIONS, MODALS} from '../../../../constants'
 import {useArticles} from '../../../../hooks/useArticles'
 import {useSupportedLocales} from '../../../../providers/SupportedLocales'
 import {
@@ -31,6 +32,7 @@ type BaseCategoriesTableRowProps = {
     categoryId: number
     viewLanguage: LocaleCode
     title?: string
+    tooltip?: string
     renderArticleList?: (
         categoryId: number,
         articles: HelpCenterArticle[]
@@ -137,18 +139,16 @@ const DroppableCategoriesTableRow = ({
                 innerClassName={classNames(css.actions, bodyInnerClass)}
             >
                 <TableActions
-                    actions={[
-                        {
-                            name: 'createInCategory',
-                            icon: 'add_circle_outline',
-                            // tooltip: 'Compose article in category',
-                        },
-                        {
-                            name: 'categorySettings',
-                            icon: 'settings',
-                            // tooltip: 'Category settings',
-                        },
-                    ]}
+                    actions={CATEGORY_ROW_ACTIONS.map(
+                        ({name, icon, tooltip}) => ({
+                            name,
+                            icon,
+                            tooltip: {
+                                content: tooltip,
+                                target: `${name}-${category.id}`,
+                            },
+                        })
+                    )}
                     onClick={handleOnActionClick}
                 />
             </BodyCell>
@@ -161,6 +161,7 @@ export const CategoriesTableRow = ({
     viewLanguage,
     renderArticleList,
     title,
+    tooltip,
     ...props
 }: CategoriesTableRowProps): JSX.Element => {
     const [isOpen, setOpen] = useState(false)
@@ -193,7 +194,28 @@ export const CategoriesTableRow = ({
             onClick={() => setOpen(!isOpen)}
         >
             {caret}
-            {title && <span>{title}</span>}
+            {title && (
+                <span
+                    id={`category-title-${categoryId}`}
+                    className={classNames({
+                        [css['tooltip-underline']]: tooltip,
+                    })}
+                >
+                    {title}
+                </span>
+            )}
+            {title && tooltip && (
+                <Tooltip
+                    target={`category-title-${categoryId}`}
+                    placement="bottom-start"
+                    style={{
+                        textAlign: 'left',
+                        width: 180,
+                    }}
+                >
+                    {tooltip}
+                </Tooltip>
+            )}
             {countElement}
         </BodyCell>
     )

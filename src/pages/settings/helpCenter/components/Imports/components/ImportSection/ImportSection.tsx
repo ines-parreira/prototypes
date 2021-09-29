@@ -2,7 +2,7 @@ import classNames from 'classnames'
 
 import React, {ChangeEvent, useRef, useState} from 'react'
 import {useSelector} from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 
 import {fromJS, Map} from 'immutable'
@@ -16,6 +16,10 @@ import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
 import {getCurrentHelpCenter} from '../../../../../../../state/entities/helpCenters/selectors'
 
 import {uploadFiles} from '../../../../../../../utils'
+
+import {useHelpcenterApi} from '../../../../hooks/useHelpcenterApi'
+
+import {saveFileAsDownloaded} from '../../../../../../../utils/file'
 
 import css from './ImportSection.less'
 
@@ -49,8 +53,9 @@ export const ImportSection = (): JSX.Element | null => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const helpCenter = useSelector(getCurrentHelpCenter)
+    const {isReady, client} = useHelpcenterApi()
 
-    if (helpCenter === null) {
+    if (helpCenter === null || !isReady || client === undefined) {
         return null
     }
 
@@ -64,14 +69,6 @@ export const ImportSection = (): JSX.Element | null => {
 
             uploadFiles([file]).then(
                 (files) => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message:
-                                'The file is ready to be imported. Redirecting you to the import configuration page...',
-                        })
-                    )
-
                     // only one file was uploaded
                     const fileUrl = files[0].url
 
@@ -150,8 +147,6 @@ export const ImportSection = (): JSX.Element | null => {
             <p>
                 You can import CSV files with your existing articles of another
                 help center.
-                {/* TODO: in next linear issue: Download this CSV template to automatically match
-                fields. */}
             </p>
 
             <Button onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}>
@@ -231,17 +226,38 @@ export const ImportSection = (): JSX.Element | null => {
                                         href=""
                                         onClick={(ev) => {
                                             ev.preventDefault()
-                                            openFileDialog()
                                         }}
                                     >
                                         browse
                                     </a>
                                 </div>
                             )}
+
+                            <p className="m-0 mt-2">
+                                <Link
+                                    to="#"
+                                    onClick={async (e) => {
+                                        e.preventDefault()
+
+                                        const response = await client.generateCsvTemplate(
+                                            {
+                                                help_center_id: helpCenter.id,
+                                            }
+                                        )
+
+                                        saveFileAsDownloaded(
+                                            'template.csv',
+                                            response.data,
+                                            'text/csv'
+                                        )
+                                    }}
+                                >
+                                    Download this CSV template
+                                </Link>{' '}
+                                to automatically match fields.
+                            </p>
                         </div>
                     )}
-
-                    {/* TODO in next linear issue: Download this CSV template to automatically match fields. */}
                 </ModalBody>
                 <ModalFooter className={css.modalFooter}>
                     <Button

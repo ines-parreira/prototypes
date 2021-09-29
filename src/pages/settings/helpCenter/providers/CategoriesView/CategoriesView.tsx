@@ -1,10 +1,9 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
-import {Container} from 'reactstrap'
+import {Button, Container} from 'reactstrap'
 
 import {Category, HelpCenter} from '../../../../../models/helpCenter/types'
 import InfiniteScroll from '../../../../common/components/InfiniteScroll/InfiniteScroll'
-import CreateFirst from '../../components/articles/CreateFirst'
 import {
     CategoriesTable,
     CategoriesTableProps,
@@ -20,6 +19,7 @@ type Props = Pick<
 > & {
     helpCenter: HelpCenter
     createArticle: () => void
+    createCategory: () => void
 }
 
 export const CategoriesViews = ({
@@ -27,6 +27,7 @@ export const CategoriesViews = ({
     viewLanguage,
     renderArticleList,
     createArticle,
+    createCategory,
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
     const uncategorizedArticles = useSelector(getUncategorizedArticles)
@@ -51,12 +52,29 @@ export const CategoriesViews = ({
         <>
             {showCreateFirst && (
                 <Container fluid className="page-container">
-                    <CreateFirst
-                        title="Create your first article 📚"
-                        description="Write your first article to be displayed in your very own help center."
-                        buttonText="Create Article"
+                    <h1>
+                        Start your help center here&nbsp;
+                        <span aria-label="books" role="img">
+                            📚
+                        </span>
+                    </h1>
+                    <p>
+                        Write your first article or create your first category
+                        to be displayed in your very own help center.
+                    </p>
+                    <Button
+                        color="success"
                         onClick={createArticle}
-                    />
+                        className="mr-2"
+                    >
+                        <i className="material-icons-outlined mr-1">article</i>
+                        Create Article
+                    </Button>
+
+                    <Button onClick={createCategory}>
+                        <i className="material-icons mr-1">list</i>
+                        Create Category
+                    </Button>
                 </Container>
             )}
             <InfiniteScroll

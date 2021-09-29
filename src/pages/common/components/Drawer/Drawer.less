@@ -2,35 +2,37 @@
 @import (reference) '~css/backdrop';
 
 :local {
-    .drawer {
-        display: grid;
-        grid-template-rows: 64px auto 64px;
-        grid-template-areas:
-            'header'
-            'main'
-            'footer';
-
+    .drawer-container {
         position: absolute;
         top: 0;
-        right: 0;
+        left: 0;
+        width: 100%;
         height: 100%;
+        overflow: hidden;
 
-        background-color: @neutral1;
-
-        transition-property: right, width;
-        transition-duration: 0.5s;
-        transition-timing-function: ease;
-        box-shadow: 0px 4px 16px rgba(22, 22, 22, 0.24);
-        z-index: 5;
-
-        &.closed {
-            width: 0;
-        }
-        &.opened {
+        .drawer {
             width: 50vw;
-        }
-        &.fullscreen {
-            width: 100vw;
+            background-color: @neutral1;
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition-property: transform;
+            transition-timing-function: ease-in-out;
+            box-shadow: 0px 4px 16px rgba(22, 22, 22, 0.24);
+            z-index: 3;
+            right: -50vw;
+            display: grid;
+            grid-template-rows: 64px auto 64px;
+            grid-template-areas:
+                'header'
+                'main'
+                'footer';
+            &.opened {
+                transform: translateX(-50vw);
+            }
+            &.fullscreen {
+                width: 100vw;
+            }
         }
     }
 

@@ -3,7 +3,7 @@ import {useState} from 'react'
 import {uploadFiles} from '../../../../utils'
 import {Attachment} from '../../../../types'
 
-type useFileUploadApi = {
+export type FileUpload = {
     isTouched: boolean
     payload: File | undefined
     uploadFile: () => Promise<Attachment[]>
@@ -11,7 +11,7 @@ type useFileUploadApi = {
     discardFile: () => void
 }
 
-export function useFileUpload(): useFileUploadApi {
+export function useFileUpload(): FileUpload {
     const [isTouched, setIsTouched] = useState(false)
     const [localFile, setLocalFile] = useState<File>()
 

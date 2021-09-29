@@ -2,6 +2,7 @@ import React from 'react'
 import {FormFeedback, FormGroup, Input} from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
 
+import {isURLOptions} from '../../utils/navigationLinks'
 import {LinkEntity} from '../LinkList'
 
 import css from './SocialNavigationLinks.less'
@@ -22,7 +23,8 @@ export const SocialNavigationItem = ({
     logo,
     onBlur,
 }: Props): JSX.Element => {
-    const errMessage = value !== '' && !isUrl(value) ? 'URL is invalid' : ''
+    const errMessage =
+        value !== '' && !isUrl(value, isURLOptions) ? 'URL is invalid' : ''
     const [innerValue, setInnerValue] = React.useState(value)
 
     React.useEffect(() => {
