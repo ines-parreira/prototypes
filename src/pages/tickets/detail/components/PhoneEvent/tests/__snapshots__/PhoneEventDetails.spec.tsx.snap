@@ -61,6 +61,32 @@ exports[`<PhoneEventDetails/> render() should render completed call event detail
 </div>
 `;
 
+exports[`<PhoneEventDetails/> render() should render details for answered phone call event 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Phone number
+        :
+      </b>
+       
+      +1 662 442 4075
+    </div>
+    <div>
+      <b>
+        Forwarded to: 
+      </b>
+       
+      +1 66324002433
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEventDetails/> render() should render details for the rest of events 1`] = `
 <div
   class="eventDetails"

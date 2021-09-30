@@ -72,7 +72,6 @@ export default function PhoneEventDetails({
             const callRecordingMessage = callRecordingPath
                 ? callRecording.get('message')
                 : null
-
             content = (
                 <>
                     <div>
@@ -103,11 +102,22 @@ export default function PhoneEventDetails({
             break
         }
         default: {
+            const formattedForwardedPhoneNumber = parsePhoneNumber(
+                eventData.get('forwarded_to', '')
+            )?.formatInternational()
             content = (
-                <div>
-                    <b>{customerName ? customerName : 'Phone number'}:</b>{' '}
-                    {formattedCustomerPhoneNumber}
-                </div>
+                <>
+                    <div>
+                        <b>{customerName ? customerName : 'Phone number'}:</b>{' '}
+                        {formattedCustomerPhoneNumber}
+                    </div>
+                    {formattedForwardedPhoneNumber && (
+                        <div>
+                            <b>Forwarded to: </b>{' '}
+                            {formattedForwardedPhoneNumber}
+                        </div>
+                    )}
+                </>
             )
         }
     }

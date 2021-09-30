@@ -113,6 +113,26 @@ describe('<PhoneEventDetails/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render details for answered phone call event', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.PhoneCallAnswered,
+                data: {
+                    customer: {
+                        name: null,
+                        phone_number: '+16624424075',
+                    },
+                    forwarded_to: '+166324002433',
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it.each([
             PhoneIntegrationEvent.OutgoingPhoneCall,
             PhoneIntegrationEvent.IncomingPhoneCall,
