@@ -55,7 +55,7 @@ export const ImportDataContainer = (
                     enabled automatically.{' '}
                     <a
                         className="text-underline"
-                        href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk#how_does_import_work"
+                        href="https://docs.gorgias.com/helpdesk-migration/switching-from-zendesk"
                     >
                         Read more
                     </a>
