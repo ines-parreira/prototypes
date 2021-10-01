@@ -9,6 +9,7 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+        transition-property: z-index;
 
         .modal {
             width: 50vw;
@@ -29,12 +30,13 @@
                 top: 52px;
                 height: calc(~'100% - 52px');
             }
-        }
-        .opened {
-            transform: translateX(-50vw);
-        }
-        .fullscreen {
-            width: 100vw;
+
+            &.opened {
+                transform: translateX(-50vw);
+            }
+            &.fullscreen {
+                width: 100vw;
+            }
         }
     }
 }

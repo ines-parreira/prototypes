@@ -39,26 +39,18 @@ export const HelpCenterEditModal = ({
     }, [portalRootId])
 
     useEffect(() => {
-        if (open) {
-            setContainerZIndex(zIndexOpen)
-        }
-        // Wait for the transition to finish to change the container z-index
-        else {
-            setTimeout(
-                () => setContainerZIndex(containerZIndices[1]),
-                transitionDurationMs
-            )
-        }
+        setContainerZIndex(open ? zIndexOpen : zIndexClosed)
     }, [open])
 
     const modal = (
         <div
             className={css['modal-container']}
-            style={{zIndex: containerZIndex}}
+            style={{
+                zIndex: containerZIndex,
+                transitionDelay: open ? '0ms' : `${transitionDurationMs}ms`,
+            }}
         >
-            {containerZIndex === zIndexOpen && (
-                <div className="backdrop" onClick={onBackdropClick} />
-            )}
+            {open && <div className="backdrop" onClick={onBackdropClick} />}
             <div
                 style={{
                     transitionDuration: `${transitionDurationMs}ms`,

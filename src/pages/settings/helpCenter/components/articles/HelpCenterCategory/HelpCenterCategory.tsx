@@ -22,6 +22,7 @@ import copy from 'copy-to-clipboard'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {notify} from '../../../../../../state/notifications/actions'
+import {SCREEN_SIZE, useScreenSize} from '../../../../../../hooks/useScreenSize'
 
 import {
     Category,
@@ -92,6 +93,7 @@ export const HelpCenterCategory = ({
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
     const categoryTitleRef = useRef<HTMLInputElement>(null)
+    const screenSize = useScreenSize()
 
     const localeOptions = useLocaleSelectOptions(
         locales,
@@ -412,7 +414,7 @@ export const HelpCenterCategory = ({
         <Drawer
             name="category-edit"
             open={isOpen}
-            fullscreen={false}
+            fullscreen={screenSize === SCREEN_SIZE.SMALL}
             isLoading={isLoading}
             portalRootId="app-root"
             onBackdropClick={onClose}

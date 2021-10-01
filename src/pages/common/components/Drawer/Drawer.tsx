@@ -63,33 +63,25 @@ const Drawer = ({
     const [containerZIndex, setContainerZIndex] = useState(
         open ? zIndexOpen : zIndexClosed
     )
-    const [portalRoot, setPortalRoot] = React.useState<HTMLElement | null>(null)
+    const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
 
-    React.useEffect(() => {
+    useEffect(() => {
         portalRootId && setPortalRoot(document.getElementById(portalRootId))
     }, [portalRootId])
 
     useEffect(() => {
-        if (open) {
-            setContainerZIndex(zIndexOpen)
-        }
-        // Wait for the transition to finish to change the container z-index
-        else {
-            setTimeout(
-                () => setContainerZIndex(zIndexClosed),
-                transitionDurationMs
-            )
-        }
+        setContainerZIndex(open ? zIndexOpen : zIndexClosed)
     }, [open])
 
     const drawer = (
         <div
             className={css['drawer-container']}
-            style={{zIndex: containerZIndex}}
+            style={{
+                zIndex: containerZIndex,
+                transitionDelay: open ? '0ms' : `${transitionDurationMs}ms`,
+            }}
         >
-            {containerZIndex === zIndexOpen && (
-                <div className="backdrop" onClick={onBackdropClick} />
-            )}
+            {open && <div className="backdrop" onClick={onBackdropClick} />}
             <div
                 data-testid={name}
                 style={{
@@ -97,7 +89,7 @@ const Drawer = ({
                 }}
                 className={classNames({
                     [css.drawer]: true,
-                    [css.fullscreen]: fullscreen,
+                    [css.fullscreen]: open && fullscreen,
                     [css.opened]: open,
                 })}
             >

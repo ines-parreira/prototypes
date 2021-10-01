@@ -4,7 +4,7 @@ exports[`<Drawer/> should display the component correctly 1`] = `
 <div>
   <div
     class="drawer-container"
-    style="z-index: 5;"
+    style="z-index: 5; transition-delay: 0ms;"
   >
     <div
       class="backdrop"
@@ -24,7 +24,7 @@ exports[`<Drawer/> should display the component in fullscreen mode correctly 1`]
 <div>
   <div
     class="drawer-container"
-    style="z-index: 5;"
+    style="z-index: 5; transition-delay: 0ms;"
   >
     <div
       class="backdrop"
