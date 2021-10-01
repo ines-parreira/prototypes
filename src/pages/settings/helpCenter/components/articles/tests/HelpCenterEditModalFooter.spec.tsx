@@ -22,41 +22,34 @@ describe('<HelpCenterEditModalFooter/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    describe('dropdown button', () => {
-        it('should trigger onSave when clicking on save list item', () => {
-            const {getByRole} = render(
-                <HelpCenterEditModalFooter {...props} canSave={true} />
-            )
-            const dropdownBtn = getByRole('button', {name: /toggle dropdown/i})
-            fireEvent.click(dropdownBtn)
-            const saveItem = getByRole('menuitem', {name: /Save Article/i})
-            fireEvent.click(saveItem)
-            expect(mockedOnSave).toHaveBeenCalledTimes(1)
-        })
+    it('should trigger onSave when clicking on save button', () => {
+        const {getByRole} = render(
+            <HelpCenterEditModalFooter {...props} canSave={true} />
+        )
 
-        it('should trigger onDelete when confirming the delete action', () => {
-            const {getByRole, getByText} = render(
-                <HelpCenterEditModalFooter {...props} />
-            )
+        const saveItem = getByRole('button', {name: /Save Article/i})
+        fireEvent.click(saveItem)
 
-            const dropdownBtn = getByRole('button', {name: /toggle dropdown/i})
-            fireEvent.click(dropdownBtn)
+        expect(mockedOnSave).toHaveBeenCalledTimes(1)
+    })
 
-            const deleteItem = getByRole('menuitem', {name: /Delete Article/i})
-            fireEvent.click(deleteItem)
+    it('should trigger onDelete when confirming the delete action', () => {
+        const {getByRole, getByText} = render(
+            <HelpCenterEditModalFooter {...props} />
+        )
 
-            void waitFor(() =>
-                getByText('Are you sure you want to delete this article?')
-            )
+        const deleteItem = getByRole('button', {name: /Delete Article/i})
+        fireEvent.click(deleteItem)
 
-            const dialogModal = getByRole('dialog')
-            const confirmButton = within(dialogModal).getByText(
-                /Delete article/i
-            )
+        void waitFor(() =>
+            getByText('Are you sure you want to delete this article?')
+        )
 
-            fireEvent.click(confirmButton)
+        const dialogModal = getByRole('dialog')
+        const confirmButton = within(dialogModal).getByText(/Delete article/i)
 
-            expect(mockedOnDelete).toHaveBeenCalledTimes(1)
-        })
+        fireEvent.click(confirmButton)
+
+        expect(mockedOnDelete).toHaveBeenCalledTimes(1)
     })
 })

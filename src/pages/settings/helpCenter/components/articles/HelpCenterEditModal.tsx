@@ -27,7 +27,7 @@ export const HelpCenterEditModal = ({
     isLoading,
     transitionDurationMs = 300,
     containerZIndices = [5, -1],
-}: Props) => {
+}: Props): JSX.Element => {
     const [zIndexOpen, zIndexClosed] = containerZIndices
     const [containerZIndex, setContainerZIndex] = useState(
         open ? zIndexOpen : zIndexClosed

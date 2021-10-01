@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-    Button,
-    UncontrolledButtonDropdown,
-    DropdownMenu,
-    DropdownToggle,
-    DropdownItem,
-    ButtonGroup,
-} from 'reactstrap'
+import {Button} from 'reactstrap'
 
 import {ConfirmationModal} from '../ConfirmationModal'
 
@@ -36,7 +29,7 @@ export const HelpCenterEditModalFooter = ({
 
     return (
         <footer className={css.footer}>
-            <ButtonGroup>
+            <div>
                 <Button
                     disabled={!canSave}
                     color="primary"
@@ -45,24 +38,15 @@ export const HelpCenterEditModalFooter = ({
                 >
                     Save Article
                 </Button>
-                <UncontrolledButtonDropdown className={css.dropdownButton}>
-                    <DropdownToggle caret />
-                    <DropdownMenu className={css.dropdownMenu} right>
-                        <DropdownItem
-                            onClick={() => setPendingDeleteArticle(true)}
-                        >
-                            <span className={css.danger}>
-                                <i className="material-icons mr-2">delete</i>
-                                Delete Article
-                            </span>
-                        </DropdownItem>
-                        <DropdownItem disabled={!canSave} onClick={onSave}>
-                            <i className="material-icons mr-2">save</i>
-                            Save Article
-                        </DropdownItem>
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
-            </ButtonGroup>
+
+                <Button
+                    className={css['delete-btn']}
+                    onClick={() => setPendingDeleteArticle(true)}
+                >
+                    <i className="material-icons mr-2">delete</i>
+                    Delete Article
+                </Button>
+            </div>
             {counters && (
                 <div className={css.counters}>
                     <span>Words: {counters?.wordCount}</span>

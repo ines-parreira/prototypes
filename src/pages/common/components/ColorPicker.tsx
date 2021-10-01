@@ -6,7 +6,7 @@ import {DEFAULT_TAG_COLOR} from '../../../config'
 
 import css from './ColorPicker.less'
 
-const colors = [
+const defaultColors = [
     '#EB144C', // red
     '#FF6900', // orange
     '#FCB900', // yellow
@@ -35,7 +35,7 @@ type State = {
 
 export default class ColorPicker extends Component<Props, State> {
     static defaultProps: Pick<Props, 'colors'> = {
-        colors,
+        colors: defaultColors,
     }
 
     readonly uniqueId: string
@@ -65,7 +65,7 @@ export default class ColorPicker extends Component<Props, State> {
     }
 
     render() {
-        const {value} = this.props
+        const {value, colors} = this.props
         return (
             <div className="d-inline-block">
                 <Button
@@ -91,7 +91,7 @@ export default class ColorPicker extends Component<Props, State> {
                 >
                     <PopoverBody className={css['popover-content']}>
                         <div className={css.popup}>
-                            {colors.map((color) => {
+                            {(colors || defaultColors).map((color) => {
                                 return (
                                     <div
                                         key={color}

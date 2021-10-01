@@ -17,6 +17,7 @@ import {
 import {HelpCenterEditorToolbarLink} from './HelpCenterEditorToolbarLink'
 import {HelpCenterEditorToolbarImage} from './HelpCenterEditorToolbarImage'
 import {HelpCenterEditorToolbarEmoji} from './HelpCenterEditorToolbarEmoji'
+import {HelpCenterEditorToolbarColorPicker} from './HelpCenterEditorToolbarColorPicker'
 
 export const toolbarConfig = {
     options: [
@@ -24,6 +25,7 @@ export const toolbarConfig = {
         'blockType',
         'inline',
         'list',
+        'colorPicker',
         'image',
         'link',
         'emoji',
@@ -54,5 +56,8 @@ export const toolbarConfig = {
     },
     emoji: {
         component: HelpCenterEditorToolbarEmoji,
+    },
+    colorPicker: {
+        component: HelpCenterEditorToolbarColorPicker,
     },
 }

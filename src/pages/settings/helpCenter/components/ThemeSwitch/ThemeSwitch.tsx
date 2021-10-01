@@ -46,7 +46,6 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
             </div>
 
             <ColorField
-                className="my-4"
                 label="Primary Color"
                 help="This will be used as your primary color in hyperlinks, pagination and icons."
                 value={currentColor}
