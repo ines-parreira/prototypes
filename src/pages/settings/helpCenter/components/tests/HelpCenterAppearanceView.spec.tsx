@@ -65,6 +65,26 @@ describe('<HelpCenterAppearanceView/>', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('should call help center API on search toggle click', async () => {
+        const {container, findByRole} = renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterAppearanceView />
+            </Provider>,
+            route
+        )
+
+        const searchToggle = await findByRole('checkbox')
+
+        fireEvent.click(searchToggle)
+
+        expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith(
+            {help_center_id: 1},
+            {search_deactivated: false}
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
     it('disables "Save Changes" button if there are no changes', () => {
         const {getByRole, getByLabelText} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>

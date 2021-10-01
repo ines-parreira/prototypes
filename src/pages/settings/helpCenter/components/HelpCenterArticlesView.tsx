@@ -139,44 +139,45 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     useEffect(() => {
         async function updateSelectedArticleTranslations() {
             if (
-                !client ||
-                !helpCenter?.id ||
                 !selectedArticle?.id ||
-                isArticleLoading ||
-                selectedArticleTranslations
+                !helpCenter?.id ||
+                selectedArticleTranslations ||
+                !client
             ) {
                 return
             }
 
-            try {
-                setIsArticleLoading(true)
-                const {
-                    data: {data: translations},
-                } = await client.listArticleTranslations({
-                    help_center_id: helpCenter.id,
-                    article_id: selectedArticle.id,
-                })
-                const translation = translations.find(
-                    ({locale}) => locale === viewLanguage
-                )
-                if (translation) {
-                    setSelectedArticleTranslations(translations)
-                    setSelectedArticle({
-                        ...selectedArticle,
-                        translation,
+            if (client) {
+                try {
+                    setIsArticleLoading(true)
+                    const {
+                        data: {data: translations},
+                    } = await client.listArticleTranslations({
+                        help_center_id: helpCenter.id,
+                        article_id: selectedArticle.id,
                     })
+                    const translation = translations.find(
+                        ({locale}) => locale === viewLanguage
+                    )
+                    if (translation) {
+                        setSelectedArticleTranslations(translations)
+                        setSelectedArticle({
+                            ...selectedArticle,
+                            translation,
+                        })
+                    }
+                    setSavedTranslation(translation || null)
+                } catch (err) {
+                    void dispatch(
+                        notify({
+                            message: 'Failed to fetch article translations',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    console.error(err)
+                } finally {
+                    setIsArticleLoading(false)
                 }
-                setSavedTranslation(translation || null)
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch article translations',
-                        status: NotificationStatus.Error,
-                    })
-                )
-                console.error(err)
-            } finally {
-                setIsArticleLoading(false)
             }
         }
 
@@ -187,7 +188,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         viewLanguage,
         selectedArticle,
         selectedArticleTranslations,
-        isArticleLoading,
         dispatch,
     ])
 

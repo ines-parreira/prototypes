@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchToggle /> should display the search toggle 1`] = `
+<div>
+  <div
+    class="form-group"
+  >
+    <div
+      class="d-flex"
+    >
+      <label
+        class="switch"
+      >
+        <input
+          checked=""
+          readonly=""
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+      <label
+        class="control-label ml-2"
+      >
+        Enable search bar
+      </label>
+    </div>
+    <p>
+      This makes the search bar visible or not in your help center home page.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<SearchToggle /> should display the toggle loading 1`] = `
+<div>
+  <div
+    class="form-group"
+  >
+    <div
+      class="d-flex"
+    >
+      <label
+        class="switch loading disabled"
+      >
+        <input
+          checked=""
+          disabled=""
+          readonly=""
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+      <label
+        class="control-label ml-2"
+      >
+        Enable search bar
+      </label>
+    </div>
+    <p>
+      This makes the search bar visible or not in your help center home page.
+    </p>
+  </div>
+</div>
+`;

@@ -27,7 +27,7 @@ import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {FaviconUpload} from './FaviconUpload'
-import {UpdateToggle} from './UpdateToggle'
+import {SearchToggle} from './SearchToggle'
 import {ImageUpload} from './ImageUpload'
 import {ThemeSwitch} from './ThemeSwitch'
 
@@ -38,6 +38,38 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const helpCenterId = useHelpCenterIdParam()
     const helpCenter = useSelector(getCurrentHelpCenter)
     const {client} = useHelpcenterApi()
+
+    const [{loading: updating}, toggleSearch] = useAsyncFn(
+        async (toggleValue: boolean) => {
+            if (client) {
+                try {
+                    const {data} = await client.updateHelpCenter(
+                        {help_center_id: helpCenterId},
+                        {search_deactivated: !toggleValue}
+                    )
+
+                    void dispatch(helpCenterUpdated(data))
+
+                    void dispatch(
+                        notify({
+                            message: 'Help Center successfully updated',
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                } catch (err) {
+                    console.error(err)
+
+                    void dispatch(
+                        notify({
+                            message: "Couldn't update the Help Center",
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                }
+            }
+        },
+        [client]
+    )
     const helpCenterTheme: HelpCenterThemes =
         helpCenter?.theme && isHelpCenterTheme(helpCenter?.theme)
             ? helpCenter.theme
@@ -228,9 +260,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 className="page-container"
                 style={{maxWidth: 680, marginLeft: 0, paddingBottom: 18}}
             >
-                <div className={css.section}>
+                <div className={css.heading}>
                     <h3>Appearance</h3>
-                    <p>Set up your help center’s logo, color and theme.</p>
                 </div>
                 <section className={css.logos}>
                     <ImageUpload
@@ -279,7 +310,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     onThemeChange={setSelectedTheme}
                     onColorChange={setCurrentColor}
                 />
-                <section className={css.section}>
+                <section>
                     <ImageUpload
                         defaultPreview={helpCenter?.banner_image_url || ''}
                         file={bannerImage.payload}
@@ -298,24 +329,13 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         onChangeFile={bannerImage.changeFile}
                     />
                 </section>
-                <section>
-                    <h3>Other settings</h3>
-                    <UpdateToggle
-                        activated={
+                <section className="mt-5">
+                    <SearchToggle
+                        searchActivated={
                             helpCenter.search_deactivated_datetime === null
                         }
-                        label="Enable search bar"
-                        description="This makes the search bar visible or not in your help center
-                        home page."
-                        fieldName="search_deactivated"
-                    />
-                    <UpdateToggle
-                        activated={
-                            helpCenter.powered_by_deactivated_datetime === null
-                        }
-                        label="Powered by Gorgias"
-                        description="Turns on/off the ‘Powered by Gorgias’ label in your help center footer."
-                        fieldName="powered_by_deactivated"
+                        onToggle={toggleSearch}
+                        loading={updating}
                     />
                 </section>
                 <footer>

@@ -44,14 +44,9 @@ export const HelpCenterEditorToolbarPopoverButton = ({
         }
 
         const target = e.target as Node
-        const popoverInner = document.querySelector('.popover-inner') as Node
         const popoverEl = ReactDOM.findDOMNode(popover.current)
 
-        if (
-            popoverEl instanceof Element &&
-            !popoverEl.contains(target) &&
-            !popoverInner?.contains(target)
-        ) {
+        if (popoverEl instanceof Element && !popoverEl.contains(target)) {
             onClose()
         }
     }

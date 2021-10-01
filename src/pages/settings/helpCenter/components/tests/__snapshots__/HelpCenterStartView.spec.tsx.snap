@@ -45,19 +45,110 @@ exports[`<HelpCenterStartView/> should render the component 1`] = `
          about how to set it up.
       </p>
     </div>
-    <div
-      class="container"
+    <table
+      class="table"
     >
-      <div
-        class="inner"
-        style="min-height: 500px;"
+      <thead
+        class="tableHead"
       >
-        <i
-          class="icon-custom icon-circle-o-notch md-spin"
-          style="font-size: 40px;"
-        />
-      </div>
-    </div>
+        <tr
+          class="headerRow"
+        >
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Help Center name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Languages
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Last updated
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          />
+        </tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row"
+        >
+          <td
+            colspan="4"
+          >
+            <div
+              class="cellContent"
+            >
+              <div
+                class="container"
+              >
+                <div
+                  class="inner"
+                  style="min-height: 500px;"
+                >
+                  <i
+                    class="icon-custom icon-circle-o-notch md-spin"
+                    style="font-size: 40px;"
+                  />
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 `;

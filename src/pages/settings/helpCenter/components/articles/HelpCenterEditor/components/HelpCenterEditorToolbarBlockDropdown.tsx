@@ -19,6 +19,7 @@ export const blockOptions = [
     'H5',
     'H6',
     'Blockquote',
+    'Code',
 ] as const
 
 type Props = {

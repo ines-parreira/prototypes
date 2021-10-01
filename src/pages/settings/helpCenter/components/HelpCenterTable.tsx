@@ -1,10 +1,7 @@
-import React, {MouseEvent} from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
-import {Container} from 'reactstrap'
+import React, {MouseEvent} from 'react'
 
-import {HelpCenter, HelpCenterLocale} from '../../../../models/helpCenter/types'
-import {LanguageList} from '../../../common/components/LanguageBulletList'
 import Loader from '../../../common/components/Loader/Loader'
 import BodyCell from '../../../common/components/table/cells/BodyCell'
 import HeaderCell from '../../../common/components/table/cells/HeaderCell'
@@ -13,6 +10,8 @@ import TableBody from '../../../common/components/table/TableBody'
 import TableBodyRow from '../../../common/components/table/TableBodyRow'
 import TableHead from '../../../common/components/table/TableHead'
 import TableWrapper from '../../../common/components/table/TableWrapper'
+import {LanguageList} from '../../../common/components/LanguageBulletList'
+import {HelpCenter, HelpCenterLocale} from '../../../../models/helpCenter/types'
 import ToggleButton from '../../../common/components/ToggleButton'
 
 import css from './HelpCenterTable.less'
@@ -25,6 +24,7 @@ type HelpCentersTableProps = {
     }
     onToggle: (helpCenterId: number, toggle: boolean) => void
     onClick: (helpCenterId: number) => void
+    // loadingHelpCenters: {[key: number]: boolean}
 }
 
 export function HelpCentersTable({
@@ -33,25 +33,13 @@ export function HelpCentersTable({
     locales,
     onToggle,
     onClick,
-}: HelpCentersTableProps): JSX.Element {
+}: HelpCentersTableProps) {
     const handleToggle = (helpCenterId: number) => (
         isToggled: boolean,
         event?: MouseEvent
     ): void => {
         event?.stopPropagation()
         onToggle(helpCenterId, isToggled)
-    }
-
-    if (isLoading) {
-        return <Loader />
-    }
-
-    if (list.length === 0) {
-        return (
-            <Container fluid className="page-container">
-                <div>You have no help center at the moment.</div>
-            </Container>
-        )
     }
 
     return (
@@ -63,61 +51,69 @@ export function HelpCentersTable({
                 <HeaderCell />
             </TableHead>
             <TableBody>
-                {list.map(
-                    ({
-                        id,
-                        name,
-                        default_locale,
-                        supported_locales,
-                        deactivated_datetime,
-                        updated_datetime,
-                    }) => {
-                        const activated = !Boolean(deactivated_datetime)
-                        return (
-                            <TableBodyRow
-                                className={css.tableBodyRow}
-                                key={id}
-                                onClick={() => onClick(id)}
-                            >
-                                <BodyCell className={css.helpCenterName}>
-                                    {name}
-                                </BodyCell>
-                                <BodyCell>
-                                    <LanguageList
-                                        helpcenterId={id}
-                                        defaultLanguage={
-                                            locales[default_locale]
-                                        }
-                                        languageList={supported_locales.map(
-                                            (code) => locales[code]
-                                        )}
-                                    />
-                                </BodyCell>
-                                <BodyCell>
-                                    {moment(updated_datetime).format('L')}
-                                </BodyCell>
-                                <BodyCell
-                                    className={classnames(
-                                        'smallest',
-                                        css.actions
-                                    )}
+                {isLoading ? (
+                    <TableBodyRow>
+                        <BodyCell colSpan={4}>
+                            <Loader />
+                        </BodyCell>
+                    </TableBodyRow>
+                ) : (
+                    list.map(
+                        ({
+                            id,
+                            name,
+                            default_locale,
+                            supported_locales,
+                            deactivated_datetime,
+                            updated_datetime,
+                        }) => {
+                            const activated = !Boolean(deactivated_datetime)
+                            return (
+                                <TableBodyRow
+                                    className={css.tableBodyRow}
+                                    key={id}
+                                    onClick={() => onClick(id)}
                                 >
-                                    <ToggleButton
-                                        value={activated}
-                                        onChange={handleToggle(id)}
-                                    />
-                                    <i
+                                    <BodyCell className={css.helpCenterName}>
+                                        {name}
+                                    </BodyCell>
+                                    <BodyCell>
+                                        <LanguageList
+                                            helpcenterId={id}
+                                            defaultLanguage={
+                                                locales[default_locale]
+                                            }
+                                            languageList={supported_locales.map(
+                                                (code) => locales[code]
+                                            )}
+                                        />
+                                    </BodyCell>
+                                    <BodyCell>
+                                        {moment(updated_datetime).format('L')}
+                                    </BodyCell>
+                                    <BodyCell
                                         className={classnames(
-                                            'material-icons',
-                                            css.forwardIcon
+                                            'smallest',
+                                            css.actions
                                         )}
                                     >
-                                        keyboard_arrow_right
-                                    </i>
-                                </BodyCell>
-                            </TableBodyRow>
-                        )
-                    }
+                                        <ToggleButton
+                                            value={activated}
+                                            onChange={handleToggle(id)}
+                                        />
+                                        <i
+                                            className={classnames(
+                                                'material-icons',
+                                                css.forwardIcon
+                                            )}
+                                        >
+                                            keyboard_arrow_right
+                                        </i>
+                                    </BodyCell>
+                                </TableBodyRow>
+                            )
+                        }
+                    )
                 )}
             </TableBody>
         </TableWrapper>

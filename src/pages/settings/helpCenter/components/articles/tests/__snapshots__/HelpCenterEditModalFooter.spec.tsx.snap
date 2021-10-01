@@ -5,24 +5,69 @@ exports[`<HelpCenterEditModalFooter/> should display the component correctly 1`]
   <footer
     class="footer"
   >
-    <div>
+    <div
+      class="btn-group"
+      role="group"
+    >
       <button
         class="submitButton btn btn-primary"
         type="button"
       >
         Save Article
       </button>
-      <button
-        class="delete-btn btn btn-secondary"
-        type="button"
+      <div
+        class="dropdownButton btn-group"
       >
-        <i
-          class="material-icons mr-2"
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="dropdown-toggle btn btn-secondary"
+          type="button"
         >
-          delete
-        </i>
-        Delete Article
-      </button>
+          <span
+            class="sr-only"
+          >
+            Toggle Dropdown
+          </span>
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdownMenu dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="danger"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                delete
+              </i>
+              Delete Article
+            </span>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              save
+            </i>
+            Save Article
+          </button>
+        </div>
+      </div>
     </div>
   </footer>
 </div>

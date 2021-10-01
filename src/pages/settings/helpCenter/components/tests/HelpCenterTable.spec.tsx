@@ -42,11 +42,4 @@ describe('<HelpCenterTable/>', () => {
         fireEvent.click(tableRow)
         expect(mockedOnClick).toHaveBeenCalledWith(2)
     })
-
-    it('should display a message when list is empty', () => {
-        const {container} = render(
-            <HelpCenterTable {...props} isLoading={false} list={[]} />
-        )
-        expect(container).toMatchSnapshot()
-    })
 })
