@@ -1,7 +1,7 @@
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 import {
-    SET_TWILIO_CONNECTION,
+    SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RECORDING,
@@ -15,7 +15,7 @@ export type SetDeviceAction = {
 
 export type SetConnectionAction = {
     type: string
-    payload: Connection | null
+    payload: Call | null
 }
 
 export type SetIsDialingAction = {
@@ -46,12 +46,10 @@ export function setDevice(device: Device | null): SetDeviceAction {
     }
 }
 
-export function setConnection(
-    connection: Connection | null
-): SetConnectionAction {
+export function setCall(call: Call | null): SetConnectionAction {
     return {
-        type: SET_TWILIO_CONNECTION,
-        payload: connection,
+        type: SET_TWILIO_CALL,
+        payload: call,
     }
 }
 

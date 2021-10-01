@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {Button} from 'reactstrap'
 
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
@@ -10,16 +10,16 @@ import {useConnectionParameters} from '../hooks'
 import css from './OutgoingPhoneCall.less'
 
 type Props = {
-    connection: Connection
+    call: Call
 }
 
-export default function OutgoingPhoneCall({connection}: Props): JSX.Element {
-    const {onDisconnect} = useDisconnect(connection)
+export default function OutgoingPhoneCall({call}: Props): JSX.Element {
+    const {onDisconnect} = useDisconnect(call)
     const {
         integrationId,
         customerName,
         customerPhoneNumber,
-    } = useConnectionParameters(connection)
+    } = useConnectionParameters(call)
 
     return (
         <div data-testid="outgoing-phone-call" className={css.container}>
@@ -46,10 +46,10 @@ export default function OutgoingPhoneCall({connection}: Props): JSX.Element {
     )
 }
 
-function useDisconnect(connection: Connection) {
+function useDisconnect(call: Call) {
     const onDisconnect = useCallback(() => {
-        connection.disconnect()
-    }, [connection])
+        call.disconnect()
+    }, [call])
 
     return {onDisconnect}
 }

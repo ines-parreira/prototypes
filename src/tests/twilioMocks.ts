@@ -1,20 +1,20 @@
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 export const mockDevice = (): Partial<Device> => ({})
 
-const mockConnection = (): Partial<Connection> => ({
+const mockCall = (): Partial<Call> => ({
     isMuted: () => false,
     mute: jest.fn(),
     disconnect: jest.fn(),
     sendDigits: jest.fn(),
 })
 
-export const mockIncomingConnection = (
+export const mockIncomingCall = (
     integrationId = 1,
     ticketId = 2
-): Partial<Connection> => ({
-    ...mockConnection(),
-    direction: Connection.CallDirection.Incoming,
+): Partial<Call> => ({
+    ...mockCall(),
+    direction: Call.CallDirection.Incoming,
     customParameters: new Map([
         ['integration_id', integrationId.toString()],
         ['ticket_id', ticketId.toString()],
@@ -26,11 +26,9 @@ export const mockIncomingConnection = (
     ignore: jest.fn(),
 })
 
-export const mockOutgoingConnection = (
-    integrationId = 1
-): Partial<Connection> => ({
-    ...mockConnection(),
-    direction: Connection.CallDirection.Outgoing,
+export const mockOutgoingCall = (integrationId = 1): Partial<Call> => ({
+    ...mockCall(),
+    direction: Call.CallDirection.Outgoing,
     customParameters: new Map([
         ['integration_id', integrationId.toString()],
         ['customer_name', 'Bob'],

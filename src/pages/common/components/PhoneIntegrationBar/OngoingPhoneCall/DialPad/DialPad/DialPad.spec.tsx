@@ -1,9 +1,9 @@
 import React from 'react'
 import {fireEvent, render, findByTestId, waitFor} from '@testing-library/react'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {act} from 'react-hooks-testing-library'
 
-import {mockIncomingConnection} from '../../../../../../../tests/twilioMocks'
+import {mockIncomingCall} from '../../../../../../../tests/twilioMocks'
 import DialPad from '../DialPad'
 
 jest.mock('popper.js', () => {
@@ -24,18 +24,18 @@ jest.mock('popper.js', () => {
 
 describe('<DialPad/>', () => {
     it('should render as closed', async () => {
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
-        const {findByTestId} = render(<DialPad connection={connection} />)
+        const {findByTestId} = render(<DialPad call={call} />)
 
         await waitFor(() => findByTestId('dial-pad-button'))
         expect(document.body.children).toMatchSnapshot()
     })
 
     it('should render as open', async () => {
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<DialPad connection={connection} />)
+        const {getByTestId} = render(<DialPad call={call} />)
 
         act(() => {
             fireEvent.click(getByTestId('dial-pad-button'))
@@ -46,9 +46,9 @@ describe('<DialPad/>', () => {
     })
 
     it(`should render as open when 10 digits have been pressed`, async () => {
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<DialPad connection={connection} />)
+        const {getByTestId} = render(<DialPad call={call} />)
 
         act(() => {
             fireEvent.click(getByTestId('dial-pad-button'))
@@ -66,9 +66,9 @@ describe('<DialPad/>', () => {
     })
 
     it(`should render as open when 11 digits have been pressed`, async () => {
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<DialPad connection={connection} />)
+        const {getByTestId} = render(<DialPad call={call} />)
 
         act(() => {
             fireEvent.click(getByTestId('dial-pad-button'))
@@ -89,9 +89,9 @@ describe('<DialPad/>', () => {
 
     const digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '*', '0', '#']
     it.each(digits)('should send clicked digit', async (digit) => {
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
-        const {getByTestId} = render(<DialPad connection={connection} />)
+        const {getByTestId} = render(<DialPad call={call} />)
 
         act(() => {
             fireEvent.click(getByTestId('dial-pad-button'))
@@ -104,6 +104,6 @@ describe('<DialPad/>', () => {
             fireEvent.click(getByTestId(digitTestId))
         })
 
-        expect(connection.sendDigits).toHaveBeenCalledWith(digit)
+        expect(call.sendDigits).toHaveBeenCalledWith(digit)
     })
 })

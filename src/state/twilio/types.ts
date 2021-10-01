@@ -1,8 +1,8 @@
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 export type TwilioState = {
     device: Device | null
-    connection: Connection | null
+    call: Call | null
     isDialing: boolean
     isRinging: boolean
     isRecording: boolean

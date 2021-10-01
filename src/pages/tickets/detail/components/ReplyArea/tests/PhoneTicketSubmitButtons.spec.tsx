@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {Device} from 'twilio-client'
+import {Device} from '@twilio/voice-sdk'
 
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {mockDevice} from '../../../../../../tests/twilioMocks'

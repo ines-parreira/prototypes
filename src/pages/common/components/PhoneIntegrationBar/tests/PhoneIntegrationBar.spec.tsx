@@ -4,12 +4,12 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 import {
-    mockIncomingConnection,
+    mockIncomingCall,
     mockDevice,
-    mockOutgoingConnection,
+    mockOutgoingCall,
 } from '../../../../../tests/twilioMocks'
 import {SET_TWILIO_DEVICE} from '../../../../../state/twilio/constants'
 import {RootState, StoreDispatch} from '../../../../../state/types'
@@ -17,7 +17,7 @@ import {initialState} from '../../../../../state/twilio/reducers'
 import client from '../../../../../models/api/resources'
 import PhoneIntegrationBar from '../PhoneIntegrationBar'
 
-jest.mock('twilio-client')
+jest.mock('@twilio/voice-sdk')
 
 describe('<PhoneIntegrationBar/>', () => {
     let store: MockStoreEnhanced
@@ -33,7 +33,7 @@ describe('<PhoneIntegrationBar/>', () => {
         mockedServer.reset()
     })
 
-    it('should fetch token, set device and not render anything because there is no connection', async () => {
+    it('should fetch token, set device and not render anything because there is no call', async () => {
         store = mockStore({
             twilio: initialState,
         })
@@ -63,12 +63,12 @@ describe('<PhoneIntegrationBar/>', () => {
         })
     })
 
-    it('should render ringing call bar because there is an incoming connection', () => {
+    it('should render ringing call bar because there is an incoming call', () => {
         const device = mockDevice() as Device
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
         store = mockStore({
-            twilio: {...initialState, device, connection, isRinging: true},
+            twilio: {...initialState, device, call, isRinging: true},
         })
 
         const {findByTestId} = render(
@@ -80,12 +80,12 @@ describe('<PhoneIntegrationBar/>', () => {
         expect(findByTestId('incoming-phone-call')).toBeTruthy()
     })
 
-    it('should render outgoing call bar because there is an outgoing connection', () => {
+    it('should render outgoing call bar because there is an outgoing call', () => {
         const device = mockDevice() as Device
-        const connection = mockOutgoingConnection() as Connection
+        const call = mockOutgoingCall() as Call
 
         store = mockStore({
-            twilio: {...initialState, device, connection, isRinging: true},
+            twilio: {...initialState, device, call, isRinging: true},
         })
 
         const {findByTestId} = render(
@@ -97,12 +97,12 @@ describe('<PhoneIntegrationBar/>', () => {
         expect(findByTestId('outgoing-phone-call')).toBeTruthy()
     })
 
-    it('should render ongoing call bar because there is an ongoing connection', () => {
+    it('should render ongoing call bar because there is an ongoing call', () => {
         const device = mockDevice() as Device
-        const connection = mockIncomingConnection() as Connection
+        const call = mockIncomingCall() as Call
 
         store = mockStore({
-            twilio: {...initialState, device, connection, isRinging: false},
+            twilio: {...initialState, device, call, isRinging: false},
         })
 
         const {findByTestId} = render(

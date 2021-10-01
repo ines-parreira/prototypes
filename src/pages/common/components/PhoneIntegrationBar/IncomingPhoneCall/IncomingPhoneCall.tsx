@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useCallback} from 'react'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {Button} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
 
@@ -12,18 +12,18 @@ import {useConnectionParameters} from '../hooks'
 import css from './IncomingPhoneCall.less'
 
 type Props = {
-    connection: Connection
+    call: Call
 }
 
-export default function IncomingPhoneCall({connection}: Props): JSX.Element {
-    const {onAccept} = useAccept(connection)
-    const {onDecline} = useDecline(connection)
-    const {onOpenTicket} = useOpenTicket(connection)
+export default function IncomingPhoneCall({call}: Props): JSX.Element {
+    const {onAccept} = useAccept(call)
+    const {onDecline} = useDecline(call)
+    const {onOpenTicket} = useOpenTicket(call)
     const {
         integrationId,
         customerName,
         customerPhoneNumber,
-    } = useConnectionParameters(connection)
+    } = useConnectionParameters(call)
 
     return (
         <div
@@ -61,30 +61,30 @@ export default function IncomingPhoneCall({connection}: Props): JSX.Element {
     )
 }
 
-function useAccept(connection: Connection) {
+function useAccept(call: Call) {
     const onAccept = useCallback(() => {
-        connection.accept()
-    }, [connection])
+        call.accept()
+    }, [call])
 
     return {onAccept}
 }
 
-function useDecline(connection: Connection) {
+function useDecline(call: Call) {
     const onDecline = useCallback(
         (event: SyntheticEvent<HTMLButtonElement>) => {
             event.stopPropagation()
-            connection.ignore()
-            onIgnore(connection).catch(console.error)
+            call.ignore()
+            onIgnore(call).catch(console.error)
         },
-        [connection]
+        [call]
     )
 
     return {onDecline}
 }
 
-function useOpenTicket(connection: Connection) {
+function useOpenTicket(call: Call) {
     const history = useHistory()
-    const {ticketId} = useConnectionParameters(connection)
+    const {ticketId} = useConnectionParameters(call)
 
     const onOpenTicket = useCallback(() => {
         if (ticketId) {
@@ -95,12 +95,12 @@ function useOpenTicket(connection: Connection) {
     return {onOpenTicket}
 }
 
-async function onIgnore(connection: Connection) {
+async function onIgnore(call: Call) {
     try {
         const ticketId = parseInt(
-            connection.customParameters.get('ticket_id') as string
+            call.customParameters.get('ticket_id') as string
         )
-        const callSid = connection.customParameters.get('call_sid') as string
+        const callSid = call.customParameters.get('call_sid') as string
 
         await client.post('/integrations/phone/call/declined', {
             ticket_id: ticketId,

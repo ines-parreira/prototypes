@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from 'react'
 import {Button, Popover, PopoverBody} from 'reactstrap'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 
 import css from './DialPad.less'
 
 type Props = {
     className?: string
-    connection: Connection
+    call: Call
 }
 
 const MAX_OUTPUT_LENGTH = 10
@@ -25,8 +25,8 @@ const rows = [
     [['*'], ['0', '+'], ['#']],
 ]
 
-export default function DialPad({className, connection}: Props): JSX.Element {
-    const {isOpen, output, onToggle, onDigitClick} = useDialPad(connection)
+export default function DialPad({className, call}: Props): JSX.Element {
+    const {isOpen, output, onToggle, onDigitClick} = useDialPad(call)
     const formattedOutput =
         output.length > MAX_OUTPUT_LENGTH
             ? `...${output.substring(output.length - MAX_OUTPUT_LENGTH)}`
@@ -79,7 +79,7 @@ export default function DialPad({className, connection}: Props): JSX.Element {
     )
 }
 
-function useDialPad(connection: Connection) {
+function useDialPad(call: Call) {
     const [isOpen, setIsOpen] = useState(false)
     const [output, setOutput] = useState('')
 
@@ -94,10 +94,10 @@ function useDialPad(connection: Connection) {
                 return
             }
 
-            connection.sendDigits(digit)
+            call.sendDigits(digit)
             setOutput(output + digit)
         },
-        [connection, output, setOutput]
+        [call, output, setOutput]
     )
 
     return {isOpen, output, onToggle, onDigitClick}

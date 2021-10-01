@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 import {
-    setConnection,
+    setCall,
     setDevice,
     setIsDialing,
     setIsRinging,
@@ -19,35 +19,35 @@ type Props = ConnectedProps<typeof connector>
 
 function PhoneIntegrationBar({
     device,
-    connection,
+    call,
     isDialing,
     isRinging,
     setDevice,
-    setConnection,
+    setCall,
     setIsDialing,
     setIsRinging,
 }: Props): JSX.Element | null {
-    useDevice(device, setDevice, setConnection, setIsDialing, setIsRinging)
+    useDevice(device, setDevice, setCall, setIsDialing, setIsRinging)
 
-    if (!connection) {
+    if (!call) {
         return null
     }
 
     if (isDialing) {
-        return <OutgoingPhoneCall connection={connection} />
+        return <OutgoingPhoneCall call={call} />
     }
 
     if (isRinging) {
-        return <IncomingPhoneCall connection={connection} />
+        return <IncomingPhoneCall call={call} />
     }
 
-    return <OngoingPhoneCall connection={connection} />
+    return <OngoingPhoneCall call={call} />
 }
 
 const mapStateToProps = (state: RootState) => state.twilio
 const mapDispatchToProps = {
     setDevice,
-    setConnection,
+    setCall,
     setIsDialing,
     setIsRinging,
 }
@@ -57,7 +57,7 @@ export default connector(PhoneIntegrationBar)
 function useDevice(
     device: Device | null,
     setDevice: (device: Device | null) => void,
-    setConnection: (connection: Connection | null) => void,
+    setCall: (call: Call | null) => void,
     setIsDialing: (isDialing: boolean) => void,
     setIsRinging: (isRinging: boolean) => void
 ) {
@@ -75,7 +75,7 @@ function useDevice(
 
             const newDevice = instantiateDevice(
                 token,
-                setConnection,
+                setCall,
                 setIsDialing,
                 setIsRinging
             )
@@ -91,7 +91,7 @@ function useDevice(
                 setDevice(null)
             }
         }
-    }, [device, setConnection, setDevice, setIsDialing, setIsRinging])
+    }, [device, setCall, setDevice, setIsDialing, setIsRinging])
 }
 
 async function getToken(): Promise<string | null> {
@@ -102,28 +102,27 @@ async function getToken(): Promise<string | null> {
 
 function instantiateDevice(
     token: string,
-    setConnection: (connection: Connection | null) => void,
+    setCall: (call: Call | null) => void,
     setIsDialing: (isDialing: boolean) => void,
     setIsRinging: (isRinging: boolean) => void
 ): Device {
     const device = new Device(token, {
-        enableRingingState: true,
         closeProtection: true,
-        debug: true,
-        warnings: true,
-        codecPreferences: [Connection.Codec.Opus, Connection.Codec.PCMU],
+        codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
+        logLevel: 'debug',
     })
+
+    void device.register()
 
     const maxReconnectionAttempts = 10
     let reconnectionAttempts = 0
 
-    device.on('error', console.error)
-
-    device.on('ready', () => {
+    device.on(Device.EventName.Registered, () => {
         reconnectionAttempts = 0
     })
+    device.on(Device.EventName.Error, console.error)
 
-    device.on('offline', () => {
+    device.on(Device.EventName.Unregistered, () => {
         if (reconnectionAttempts > maxReconnectionAttempts) {
             console.error(
                 `Impossible to reconnect to Twilio after ${maxReconnectionAttempts} attempts`
@@ -138,56 +137,52 @@ function instantiateDevice(
             getToken()
                 .then((token) => {
                     if (token) {
-                        device.setup(token)
+                        device.updateToken(token)
                     }
                 })
                 .catch(console.error)
         }, timeout)
     })
 
-    device.on('connect', () => {
-        setIsDialing(false)
-    })
-
-    device.on('incoming', (connection: Connection) => {
+    device.on(Device.EventName.Incoming, (call: Call) => {
         setIsRinging(true)
-        setConnection(connection)
+        setCall(call)
 
-        connection.on('accept', () => {
+        call.on('accept', () => {
             setIsRinging(false)
-            onAccept(connection).catch(console.error)
+            onAccept(call).catch(console.error)
         })
 
-        connection.on('cancel', () => {
-            setConnection(null)
+        call.on('cancel', () => {
+            setCall(null)
             setIsRinging(false)
             onCancel().catch(console.error)
         })
 
-        connection.on('disconnect', () => {
-            setConnection(null)
+        call.on('disconnect', () => {
+            setCall(null)
             setIsRinging(false)
         })
 
-        connection.on('error', console.error)
+        call.on('error', console.error)
     })
 
     return device
 }
 
-async function onAccept(connection: Connection) {
+export async function onAccept(call: Call) {
     try {
         const integrationId = parseInt(
-            connection.customParameters.get('integration_id') as string
+            call.customParameters.get('integration_id') as string
         )
-        const customerPhoneNumber = connection.parameters.From
-        const customerName = connection.customParameters.get(
+        const customerPhoneNumber = call.parameters.From
+        const customerName = call.customParameters.get(
             'customer_name'
         ) as string
         const ticketId = parseInt(
-            connection.customParameters.get('ticket_id') as string
+            call.customParameters.get('ticket_id') as string
         )
-        const callSid = connection.customParameters.get('call_sid') as string
+        const callSid = call.customParameters.get('call_sid') as string
 
         await client.post('/integrations/phone/call/accepted', {
             integration_id: integrationId,
@@ -198,6 +193,7 @@ async function onAccept(connection: Connection) {
                 name: customerName,
             },
         })
+        setIsDialing(false)
     } catch (error) {
         console.error(error)
     }

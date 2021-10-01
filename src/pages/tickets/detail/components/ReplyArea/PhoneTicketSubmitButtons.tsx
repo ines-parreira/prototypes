@@ -4,14 +4,14 @@ import classnames from 'classnames'
 import {Button} from 'reactstrap'
 import {Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 import {getNewMessageSource} from '../../../../../state/newMessage/selectors'
 import {RootState} from '../../../../../state/types'
-import {setConnection, setIsDialing} from '../../../../../state/twilio/actions'
 import {getTicket} from '../../../../../state/ticket/selectors'
 import {getCurrentUser} from '../../../../../state/currentUser/selectors'
 import {useOutboundCall} from '../../../../../hooks/integrations/phone/useOutboundCall'
+import {setCall, setIsDialing} from '../../../../../state/twilio/actions'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -19,12 +19,12 @@ type Props = ConnectedProps<typeof connector>
 
 function PhoneTicketSubmitButtons({
     device,
-    connection,
+    call,
     source,
     ticketId,
     agentId,
     setIsDialing,
-    setConnection,
+    setCall,
 }: Props) {
     const {isValid, onSubmit} = useSubmit(
         device,
@@ -32,9 +32,9 @@ function PhoneTicketSubmitButtons({
         ticketId,
         agentId,
         setIsDialing,
-        setConnection
+        setCall
     )
-    const isDisabled = !device || !!connection || !isValid
+    const isDisabled = !device || !!call || !isValid
 
     return (
         <div
@@ -58,7 +58,7 @@ function PhoneTicketSubmitButtons({
 
 const mapStateToProps = (state: RootState) => ({
     device: state.twilio.device,
-    connection: state.twilio.connection,
+    call: state.twilio.call,
     source: getNewMessageSource(state),
     ticketId: getTicket(state).get('id'),
     agentId: getCurrentUser(state).get('id'),
@@ -66,7 +66,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = {
     setIsDialing,
-    setConnection,
+    setCall,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -78,7 +78,7 @@ function useSubmit(
     ticketId: number,
     agentId: number,
     setIsDialing: (isDialing: boolean) => void,
-    setConnection: (connection: Connection | null) => void
+    setCall: (call: Call | null) => void
 ) {
     const [fromAddress, setFromAddress] = useState<string>('')
     const [toAddress, setToAddress] = useState<string>('')
@@ -86,7 +86,7 @@ function useSubmit(
     const [integrationId, setIntegrationId] = useState<number>(0)
     const [isValid, setIsValid] = useState(false)
 
-    const onCall = useOutboundCall(device, setIsDialing, setConnection)
+    const onCall = useOutboundCall(device, setIsDialing, setCall)
     const options = {
         fromAddress,
         toAddress,
@@ -95,6 +95,7 @@ function useSubmit(
         ticketId,
         agentId,
     }
+
     const onSubmit = useCallback(() => {
         onCall(options)
     }, [onCall, options])

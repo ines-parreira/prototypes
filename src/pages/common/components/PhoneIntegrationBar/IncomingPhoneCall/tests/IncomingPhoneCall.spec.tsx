@@ -3,18 +3,18 @@ import {fireEvent, render} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import {Router} from 'react-router-dom'
 import {History} from 'history'
 
-import {mockIncomingConnection} from '../../../../../../tests/twilioMocks'
+import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
 import IncomingPhoneCall from '../IncomingPhoneCall'
 
-jest.mock('twilio-client')
+jest.mock('@twilio/voice-sdk')
 
 describe('<IncomingPhoneCall/>', () => {
     let store: MockStoreEnhanced
@@ -56,47 +56,36 @@ describe('<IncomingPhoneCall/>', () => {
     })
 
     it('should render', () => {
-        const connection = mockIncomingConnection(integrationId) as Connection
+        const call = mockIncomingCall(integrationId) as Call
 
-        const {container} = render(
-            <IncomingPhoneCall connection={connection} />,
-            {wrapper}
-        )
+        const {container} = render(<IncomingPhoneCall call={call} />, {wrapper})
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should accept call', () => {
-        const connection = mockIncomingConnection(
-            integrationId,
-            ticketId
-        ) as Connection
+        const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        const {getByTestId} = render(
-            <IncomingPhoneCall connection={connection} />,
-            {wrapper}
-        )
+        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
+            wrapper,
+        })
 
         fireEvent.click(getByTestId('accept-call-button'))
-        expect(connection.accept).toHaveBeenCalled()
+        expect(call.accept).toHaveBeenCalled()
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
 
     it('should decline call', (done) => {
-        const connection = mockIncomingConnection(
-            integrationId,
-            ticketId
-        ) as Connection
+        const call = mockIncomingCall(integrationId, ticketId) as Call
 
         mockedServer.onPost('/integrations/phone/call/declined').reply(201)
 
-        const {getByTestId} = render(
-            <IncomingPhoneCall connection={connection} />,
-            {wrapper}
-        )
+        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
+            wrapper,
+        })
 
         fireEvent.click(getByTestId('decline-call-button'))
-        expect(connection.ignore).toHaveBeenCalled()
+        expect(call.ignore).toHaveBeenCalled()
         expect(history.push).not.toHaveBeenCalled()
 
         process.nextTick(() => {
@@ -106,15 +95,11 @@ describe('<IncomingPhoneCall/>', () => {
     })
 
     it('should open ticket page', () => {
-        const connection = mockIncomingConnection(
-            integrationId,
-            ticketId
-        ) as Connection
+        const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        const {getByTestId} = render(
-            <IncomingPhoneCall connection={connection} />,
-            {wrapper}
-        )
+        const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
+            wrapper,
+        })
 
         fireEvent.click(getByTestId('incoming-phone-call'))
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)

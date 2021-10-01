@@ -1,14 +1,14 @@
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
-import {mockIncomingConnection, mockDevice} from '../../../tests/twilioMocks'
+import {mockIncomingCall, mockDevice} from '../../../tests/twilioMocks'
 
 import {
-    SET_TWILIO_CONNECTION,
+    SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RINGING,
 } from '../constants'
-import {setConnection, setDevice, setIsDialing, setIsRinging} from '../actions'
+import {setCall, setDevice, setIsDialing, setIsRinging} from '../actions'
 
 describe('Twilio actions', () => {
     describe('setDevice()', () => {
@@ -27,17 +27,17 @@ describe('Twilio actions', () => {
         )
     })
 
-    describe('setConnection()', () => {
-        const connection = mockIncomingConnection() as Connection
+    describe('setCall()', () => {
+        const call = mockIncomingCall() as Call
 
-        it.each([connection, null])(
-            'should return action with the given connection',
-            (connection) => {
-                const action = setConnection(connection)
+        it.each([call, null])(
+            'should return action with the given call',
+            (call) => {
+                const action = setCall(call)
 
                 expect(action).toEqual({
-                    type: SET_TWILIO_CONNECTION,
-                    payload: connection,
+                    type: SET_TWILIO_CALL,
+                    payload: call,
                 })
             }
         )

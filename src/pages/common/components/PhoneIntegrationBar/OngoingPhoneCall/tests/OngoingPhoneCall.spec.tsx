@@ -3,17 +3,17 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 
-import {mockIncomingConnection} from '../../../../../../tests/twilioMocks'
+import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
 import OngoingPhoneCall from '../OngoingPhoneCall'
 import {CallRecordingStatus} from '../../constants'
 
-jest.mock('twilio-client')
+jest.mock('@twilio/voice-sdk')
 
 describe('<OngoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
@@ -42,7 +42,7 @@ describe('<OngoingPhoneCall/>', () => {
         store = mockStore({
             twilio: {
                 device: null,
-                connection: null,
+                call: null,
                 isDialing: false,
                 isRinging: false,
                 isRecording: false,
@@ -54,11 +54,11 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should render', () => {
-        const connection = mockIncomingConnection(integrationId) as Connection
+        const call = mockIncomingCall(integrationId) as Call
 
         const {container} = render(
             <Provider store={store}>
-                <OngoingPhoneCall connection={connection} />
+                <OngoingPhoneCall call={call} />
             </Provider>
         )
 
@@ -66,33 +66,33 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should mute call', () => {
-        const connection = mockIncomingConnection(integrationId) as Connection
+        const call: Call = mockIncomingCall(integrationId) as Call
 
         const {getByTestId} = render(
             <Provider store={store}>
-                <OngoingPhoneCall connection={connection} />
+                <OngoingPhoneCall call={call} />
             </Provider>
         )
 
         fireEvent.click(getByTestId('mute-call-button'))
-        expect(connection.mute).toHaveBeenCalled()
+        expect(call.mute).toHaveBeenCalled()
     })
 
     it('should end call', () => {
-        const connection = mockIncomingConnection(integrationId) as Connection
+        const call = mockIncomingCall(integrationId) as Call
 
         const {getByTestId} = render(
             <Provider store={store}>
-                <OngoingPhoneCall connection={connection} />
+                <OngoingPhoneCall call={call} />
             </Provider>
         )
 
         fireEvent.click(getByTestId('end-call-button'))
-        expect(connection.disconnect).toHaveBeenCalled()
+        expect(call.disconnect).toHaveBeenCalled()
     })
 
     it('should start recording', async () => {
-        const connection = mockIncomingConnection(integrationId) as Connection
+        const call = mockIncomingCall(integrationId) as Call
 
         const url = `/api/integrations/${integrationId}/calls/fake-call-sid/recording`
 
@@ -102,7 +102,7 @@ describe('<OngoingPhoneCall/>', () => {
 
         const {getByTestId} = render(
             <Provider store={store}>
-                <OngoingPhoneCall connection={connection} />
+                <OngoingPhoneCall call={call} />
             </Provider>
         )
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useConnectionParameters() should return parameters for an incoming connection 1`] = `
+exports[`useConnectionParameters() should return parameters for an incoming call 1`] = `
 Object {
   "customerName": "Bob",
   "customerPhoneNumber": "+14158880101",
@@ -9,7 +9,7 @@ Object {
 }
 `;
 
-exports[`useConnectionParameters() should return parameters for an outgoing connection 1`] = `
+exports[`useConnectionParameters() should return parameters for an outgoing call 1`] = `
 Object {
   "customerName": "Bob",
   "customerPhoneNumber": "+14158880101",

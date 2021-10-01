@@ -1,9 +1,9 @@
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
-import {mockIncomingConnection, mockDevice} from '../../../tests/twilioMocks'
+import {mockIncomingCall, mockDevice} from '../../../tests/twilioMocks'
 
 import {
-    SET_TWILIO_CONNECTION,
+    SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RINGING,
@@ -22,15 +22,15 @@ describe('Twilio reducer', () => {
             expect(nextState.device).toBe(device)
         })
 
-        describe('SET_TWILIO_CONNECTION', () => {
-            it('should set connection', () => {
-                const connection = mockIncomingConnection() as Connection
+        describe('SET_TWILIO_CALL', () => {
+            it('should set call', () => {
+                const call = mockIncomingCall() as Call
                 const action = {
-                    type: SET_TWILIO_CONNECTION,
-                    payload: connection,
+                    type: SET_TWILIO_CALL,
+                    payload: call,
                 }
                 const nextState = reducer(initialState, action)
-                expect(nextState.connection).toBe(connection)
+                expect(nextState.call).toBe(call)
             })
         })
 

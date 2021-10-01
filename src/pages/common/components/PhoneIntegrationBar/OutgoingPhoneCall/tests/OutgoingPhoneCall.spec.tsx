@@ -3,14 +3,14 @@ import {fireEvent, render} from '@testing-library/react'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 
-import {mockOutgoingConnection} from '../../../../../../tests/twilioMocks'
+import {mockOutgoingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import OutgoingPhoneCall from '../OutgoingPhoneCall'
 
-jest.mock('twilio-client')
+jest.mock('@twilio/voice-sdk')
 
 describe('<OutgoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
@@ -36,11 +36,11 @@ describe('<OutgoingPhoneCall/>', () => {
     })
 
     it('should render', () => {
-        const connection = mockOutgoingConnection(integrationId) as Connection
+        const call = mockOutgoingCall(integrationId) as Call
 
         const {container} = render(
             <Provider store={store}>
-                <OutgoingPhoneCall connection={connection} />
+                <OutgoingPhoneCall call={call} />
             </Provider>
         )
 
@@ -48,15 +48,15 @@ describe('<OutgoingPhoneCall/>', () => {
     })
 
     it('should end call', () => {
-        const connection = mockOutgoingConnection(integrationId) as Connection
+        const call = mockOutgoingCall(integrationId) as Call
 
         const {getByTestId} = render(
             <Provider store={store}>
-                <OutgoingPhoneCall connection={connection} />
+                <OutgoingPhoneCall call={call} />
             </Provider>
         )
 
         fireEvent.click(getByTestId('end-call-button'))
-        expect(connection.disconnect).toHaveBeenCalled()
+        expect(call.disconnect).toHaveBeenCalled()
     })
 })

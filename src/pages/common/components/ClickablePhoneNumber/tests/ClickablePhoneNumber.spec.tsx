@@ -5,7 +5,7 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
 import {fromJS} from 'immutable'
-import {Device} from 'twilio-client'
+import {Device} from '@twilio/voice-sdk'
 
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {initialState} from '../../../../../state/twilio/reducers'

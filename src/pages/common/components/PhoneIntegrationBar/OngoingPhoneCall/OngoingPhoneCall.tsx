@@ -1,5 +1,5 @@
 import React, {useCallback, useState, useEffect} from 'react'
-import {Connection} from 'twilio-client'
+import {Call} from '@twilio/voice-sdk'
 import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
@@ -25,38 +25,36 @@ import DialPad from './DialPad/DialPad'
 import css from './OngoingPhoneCall.less'
 
 type OwnProps = {
-    connection: Connection
+    call: Call
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export function OngoingPhoneCall({
-    connection,
+    call,
     isRecording,
     setIsRecording,
     integration,
     notify,
 }: Props): JSX.Element {
-    const {isMuted, onToggleMute} = useMute(connection)
-    const {onDisconnect} = useDisconnect(connection)
+    const {isMuted, onToggleMute} = useMute(call)
+    const {onDisconnect} = useDisconnect(call)
     const {
         integrationId,
         customerName,
         customerPhoneNumber,
-    } = useConnectionParameters(connection)
+    } = useConnectionParameters(call)
 
     const {startRecording, isRequestPending} = useRecording(
-        connection,
+        call,
         isRecording,
         setIsRecording,
         notify
     )
 
     useEffect(() => {
-        const isInbound =
-            connection.direction === Connection.CallDirection.Incoming
-        const isOutbound =
-            connection.direction === Connection.CallDirection.Outgoing
+        const isInbound = call.direction === Call.CallDirection.Incoming
+        const isOutbound = call.direction === Call.CallDirection.Outgoing
 
         const isInboundAndRecordingEnabled =
             isInbound &&
@@ -78,7 +76,7 @@ export function OngoingPhoneCall({
                     name={customerName}
                     phoneNumber={customerPhoneNumber}
                 />
-                <DialPad className={css.dialPad} connection={connection} />
+                <DialPad className={css.dialPad} call={call} />
                 <Button
                     data-testid="mute-call-button"
                     className={css.mute}
@@ -119,27 +117,27 @@ export function OngoingPhoneCall({
     )
 }
 
-function useMute(connection: Connection) {
-    const [isMuted, setIsMuted] = useState(connection.isMuted())
+function useMute(call: Call) {
+    const [isMuted, setIsMuted] = useState(call.isMuted())
 
     const onToggleMute = useCallback(() => {
-        connection.mute(!isMuted)
+        call.mute(!isMuted)
         setIsMuted(!isMuted)
-    }, [connection, isMuted])
+    }, [call, isMuted])
 
     return {isMuted, onToggleMute}
 }
 
-function useDisconnect(connection: Connection) {
+function useDisconnect(call: Call) {
     const onDisconnect = useCallback(() => {
-        connection.disconnect()
-    }, [connection])
+        call.disconnect()
+    }, [call])
 
     return {onDisconnect}
 }
 
 function useRecording(
-    connection: Connection,
+    call: Call,
     isRecording: boolean,
     setIsRecording: (isRecording: boolean) => void,
     notify: (message: Notification) => Promise<unknown>
@@ -147,14 +145,14 @@ function useRecording(
     const [isRequestPending, setIsRequestPending] = useState(false)
 
     const startRecording = useCallback(async () => {
-        const customParams = connection.customParameters
+        const customParams = call.customParameters
         const integrationId = parseInt(
             customParams.get('integration_id') as string
         )
 
         const callSid = customParams.get('call_sid')
             ? (customParams.get('call_sid') as string)
-            : connection.parameters.CallSid
+            : call.parameters.CallSid
 
         const status = isRecording
             ? CallRecordingStatus.Paused
@@ -182,7 +180,7 @@ function useRecording(
         } finally {
             setIsRequestPending(false)
         }
-    }, [isRequestPending, isRecording, connection])
+    }, [isRequestPending, isRecording, call])
 
     return {
         startRecording,
@@ -193,7 +191,7 @@ function useRecording(
 
 const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     const integrationId = parseInt(
-        ownProps.connection.customParameters.get('integration_id') as string
+        ownProps.call.customParameters.get('integration_id') as string
     )
 
     const integration = integrationsSelectors.getIntegrationById(integrationId)(

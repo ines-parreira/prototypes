@@ -1374,10 +1374,25 @@
   dependencies:
     babel-runtime "^6.26.0"
 
-"@twilio/voice-errors@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@twilio/voice-errors/-/voice-errors-1.0.1.tgz#be84159d05593ec0c6d353ede742340436cc3e9e"
-  integrity sha512-iXzCuiOhNMhrr8DVjRRzI14YwGUIBM83kWSWcDktxmXim0Tz9xoCth4QFAQcMkNL2h9DlfXlob6noH+3h2iA4A==
+"@twilio/voice-errors@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@twilio/voice-errors/-/voice-errors-1.1.1.tgz#699848b5b28a35a219785103a1219edf90cbb41f"
+  integrity sha512-3IJzRhgAqsS3uW2PO7crUXEFxuFhggHeLvt/Q4hz7lrTLFChl37hWiImCMIaM5VHiybQi6ECVQsId2X8UdTr2A==
+  dependencies:
+    npm-run-all "^4.1.5"
+
+"@twilio/voice-sdk@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@twilio/voice-sdk/-/voice-sdk-2.0.1.tgz#b7d3beab2a39661da6738daebf1cadb1345bd37f"
+  integrity sha512-s/JApPh/pLstydmWtKSzbpHnwxEcBBsZNIj0dG2pDFrdDJ2+viuEOxeTy/anet7L6mS0koHvbRfNQiwfM3rkSw==
+  dependencies:
+    "@twilio/audioplayer" "1.0.6"
+    "@twilio/voice-errors" "1.1.1"
+    backoff "2.5.0"
+    loglevel "1.6.7"
+    rtcpeerconnection-shim "1.2.8"
+    ws "6.2.2"
+    xmlhttprequest "1.8.0"
 
 "@types/aria-query@^4.2.0":
   version "4.2.2"
@@ -8399,7 +8414,7 @@ normalize-url@^3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-3.3.0.tgz#b2e1c4dc4f7c6d57743df733a4f5978d18650559"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
 
-npm-run-all@4.1.5:
+npm-run-all@4.1.5, npm-run-all@^4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/npm-run-all/-/npm-run-all-4.1.5.tgz#04476202a15ee0e2e214080861bff12a51d98fba"
   integrity sha512-Oo82gJDAVcaMdi3nuoKFavkIHBRVqQ1qvMb+9LHk/cF4P6B2m8aP04hGf7oL6wZ9BuGwX1onlLhpuoofSyoQDQ==
@@ -11974,19 +11989,6 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-twilio-client@1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/twilio-client/-/twilio-client-1.14.0.tgz#b214341bf92d01ca25b98893db8b82eafaa2a76b"
-  integrity sha512-Xj5bU9HlF4EHpbYEHgCgZBrI4OSl5T+DdGIbt0849GHXiZYA8cl6f6AcQkBg7jLf8Ke+P3sVdlQ9epL3fH1oMw==
-  dependencies:
-    "@twilio/audioplayer" "1.0.6"
-    "@twilio/voice-errors" "1.0.1"
-    backoff "2.5.0"
-    loglevel "1.6.7"
-    rtcpeerconnection-shim "1.2.8"
-    ws "6.1.3"
-    xmlhttprequest "1.8.0"
-
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.4.0.tgz#07b8203bfa7056c0657050e3ccd2c37730bab8f1"
@@ -12672,10 +12674,10 @@ write@1.0.3:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@6.1.3:
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.3.tgz#d2d2e5f0e3c700ef2de89080ebc0ac6e1bf3a72d"
-  integrity sha512-tbSxiT+qJI223AP4iLfQbkbxkwdFcneYinM2+x46Gx2wgvbaOMO36czfdfVUBRTHvzAMRhDd98sA5d/BuWbQdg==
+ws@6.2.2, ws@^6.1.2:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.2.tgz#dd5cdbd57a9979916097652d78f1cc5faea0c32e"
+  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
 
@@ -12683,13 +12685,6 @@ ws@^5.2.0:
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/ws/-/ws-5.2.3.tgz#05541053414921bc29c63bee14b8b0dd50b07b3d"
   integrity sha512-jZArVERrMsKUatIdnLzqvcfydI85dvd/Fp1u/VOpfdDWQ4c9qWXe+VIeAbQ5FrDwciAkr+lzofXLz3Kuf26AOA==
-  dependencies:
-    async-limiter "~1.0.0"
-
-ws@^6.1.2:
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.2.tgz#dd5cdbd57a9979916097652d78f1cc5faea0c32e"
-  integrity sha512-zmhltoSR8u1cnDsD43TX59mzoMZsLKqUweyYBAIvTngR3shc0W6aOZylZmq/7hqyVxPdi+5Ud2QInblgyE72fw==
   dependencies:
     async-limiter "~1.0.0"
 

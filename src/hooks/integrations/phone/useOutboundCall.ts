@@ -1,5 +1,5 @@
 import {useCallback} from 'react'
-import {Connection, Device} from 'twilio-client'
+import {Call, Device} from '@twilio/voice-sdk'
 
 import {PhoneCallDirection} from '../../../business/twilio'
 import client from '../../../models/api/resources'
@@ -16,10 +16,10 @@ type Options = {
 export function useOutboundCall(
     device: Device | null,
     setIsDialing: (isDialing: boolean) => void,
-    setConnection: (connection: Connection | null) => void
+    setCall: (call: Call | null) => void
 ): (options: Options) => void {
     return useCallback(
-        ({
+        async ({
             fromAddress,
             toAddress,
             integrationId,
@@ -45,30 +45,34 @@ export function useOutboundCall(
                 params.original_ticket_id = ticketId.toString()
             }
 
-            const connection = device?.connect(params)
-            if (!connection) {
+            const call = await device?.connect({params: params})
+            if (!call) {
                 return
             }
 
-            connection.on('cancel', () => {
+            call.on('accept', () => {
                 setIsDialing(false)
-                setConnection(null)
+            })
+
+            call.on('cancel', () => {
+                setIsDialing(false)
+                setCall(null)
                 onDisconnect().catch(console.error)
             })
 
-            connection.on('disconnect', () => {
+            call.on('disconnect', () => {
                 setIsDialing(false)
-                setConnection(null)
+                setCall(null)
                 onDisconnect().catch(console.error)
             })
 
-            connection.on('error', console.error)
+            call.on('error', console.error)
 
             setIsDialing(true)
-            setConnection(connection)
+            setCall(call)
             onConnect().catch(console.error)
         },
-        [device, setIsDialing, setConnection]
+        [device, setIsDialing, setCall]
     )
 }
 
