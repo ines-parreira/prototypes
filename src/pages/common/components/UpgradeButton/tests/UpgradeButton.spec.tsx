@@ -20,4 +20,17 @@ describe('UpgradeButton', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should display with custom callback', () => {
+        const {container} = render(
+            <UpgradeButton
+                label="a label"
+                size="sm"
+                hasInvertedColors
+                className="button-class"
+                onClick={jest.fn()}
+            />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })

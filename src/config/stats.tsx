@@ -17,6 +17,8 @@ import TicketsClosedPerAgentViewLink from '../pages/stats/common/TicketsClosedPe
 import TicketsCreatedPerTagViewLink from '../pages/stats/common/TicketsCreatedPerTagViewLink'
 import TicketsCreatedPerChannelViewLink from '../pages/stats/common/TicketsCreatedPerChannelViewLink'
 
+import {AutomationAddOnStatsButton} from '../pages/stats/AutomationAddOnStatsButton'
+
 import css from './stats.less'
 
 // Available Stats. These names should match names in `g/stats/config`
@@ -1300,6 +1302,12 @@ export const stats = toImmutable<
                 tooltip:
                     'Percentage of customer interactions automated with Gorgias automation features. ' +
                     'The top 10% merchants of Gorgias are able to reach 33% of overall automation',
+            },
+            {
+                label: 'Get access to more automations',
+                name: 'more_automations',
+                // @ts-ignore
+                component: AutomationAddOnStatsButton,
             },
         ],
     },

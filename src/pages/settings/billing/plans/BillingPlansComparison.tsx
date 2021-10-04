@@ -7,11 +7,14 @@ import {useAsyncFn} from 'react-use'
 
 import {
     getCurrentPlan,
+    getEquivalentRegularCurrentPlan,
+    getHasAutomationAddOn,
     hasLegacyPlan,
     makeIsAllowedToChangePlan,
     getPlans,
 } from '../../../../state/billing/selectors'
 import {PlanInterval} from '../../../../models/billing/types'
+import {getEquivalentAutomationPlanId} from '../../../../models/billing/utils'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {Subscription} from '../../../../state/billing/types'
@@ -29,11 +32,13 @@ import EnterpriseComparisonPlanCard from './EnterpriseComparisonPlanCard'
 const PLAN_FEATURES_HEIGHT = 516
 
 type Props = {
+    isAutomationAddOnChecked?: boolean
     openedPlanModal?: string
     onSubscriptionChanged: (prevSubscription: Map<any, any>) => void
 }
 
 export default function BillingPlansComparison({
+    isAutomationAddOnChecked = false,
     openedPlanModal,
     onSubscriptionChanged,
 }: Props) {
@@ -41,6 +46,9 @@ export default function BillingPlansComparison({
     const plans = useSelector(getPlans)
     const accountHasLegacyPlan = useSelector(hasLegacyPlan)
     const currentPlan = useSelector(getCurrentPlan)
+    const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
+    const displayedCurrentPlan = regularCurrentPlan || currentPlan
+
     const currentSubscription = useSelector(getCurrentSubscription)
     const isAllowedToChangePlan = useSelector(makeIsAllowedToChangePlan)
     const [selectedInterval, setSelectedInterval] = useState<PlanInterval>(
@@ -51,7 +59,7 @@ export default function BillingPlansComparison({
         ? (plans.filter(
               (plan: Map<any, any>) =>
                   (plan.get('public') as boolean) &&
-                  plan.get('id') === currentPlan.get('id')
+                  plan.get('id') === displayedCurrentPlan.get('id')
           ) as Map<any, any>)
         : (plans.filter(
               (plan: Map<any, any>) =>
@@ -97,6 +105,21 @@ export default function BillingPlansComparison({
         [onSubscriptionChanged]
     )
 
+    const onPlanChange = (planId: string, isAutomationChecked: boolean) => {
+        const id = isAutomationChecked
+            ? getEquivalentAutomationPlanId(planId)
+            : planId
+        void handleSubscriptionUpdate(id)
+    }
+
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const [isAutomationChecked, setIsAutomationChecked] = useState(
+        hasAutomationAddOn || isAutomationAddOnChecked
+    )
+
+    const onAutomationChange = () =>
+        setIsAutomationChecked(!isAutomationChecked)
+
     return (
         <SynchronizedScrollTopProvider>
             <Container
@@ -133,8 +156,10 @@ export default function BillingPlansComparison({
                     <>
                         {accountHasLegacyPlan && (
                             <BillingComparisonPlanCard
-                                className="mt-4"
-                                plan={currentPlan.toJS()}
+                                className={classNames('mt-4', {
+                                    [css.planCard]: !isCustomPlan,
+                                })}
+                                plan={displayedCurrentPlan.toJS()}
                                 isCurrentPlan
                                 isUpdating={isSubscriptionUpdating}
                                 renderBody={(features) => (
@@ -144,6 +169,14 @@ export default function BillingPlansComparison({
                                         {features}
                                     </SynchronizedScrollTopContainer>
                                 )}
+                                isAutomationChecked={isAutomationChecked}
+                                onAutomationChange={onAutomationChange}
+                                onPlanChange={(isAutomationChecked) =>
+                                    onPlanChange(
+                                        displayedCurrentPlan.get('id'),
+                                        isAutomationChecked
+                                    )
+                                }
                             />
                         )}
                         {availablePlans
@@ -154,12 +187,17 @@ export default function BillingPlansComparison({
                                 ]
                                 const isCurrentPlan =
                                     !accountHasLegacyPlan &&
-                                    plan.get('id') === currentPlan.get('id')
+                                    plan.get('id') ===
+                                        displayedCurrentPlan.get('id')
                                 return [
                                     planId,
                                     <BillingComparisonPlanCard
                                         key={planId.split('-')[0]}
-                                        className="mt-4"
+                                        className={classNames('mt-4', {
+                                            [css.planCard]:
+                                                accountHasLegacyPlan &&
+                                                !isCustomPlan,
+                                        })}
                                         plan={plan.toJS()}
                                         isCurrentPlan={isCurrentPlan}
                                         isUpdating={isSubscriptionUpdating}
@@ -170,14 +208,19 @@ export default function BillingPlansComparison({
                                                 {features}
                                             </SynchronizedScrollTopContainer>
                                         )}
-                                        onPlanChange={() => {
-                                            void handleSubscriptionUpdate(
-                                                planId
+                                        onPlanChange={(isAutomationChecked) =>
+                                            onPlanChange(
+                                                planId,
+                                                isAutomationChecked
                                             )
-                                        }}
+                                        }
                                         defaultIsPlanChangeModalOpen={
                                             openedPlanModal === plan.get('name')
                                         }
+                                        isAutomationChecked={
+                                            isAutomationChecked
+                                        }
+                                        onAutomationChange={onAutomationChange}
                                     />,
                                 ]
                             })
@@ -185,7 +228,9 @@ export default function BillingPlansComparison({
                     </>
                     {!isCustomPlan && (
                         <EnterpriseComparisonPlanCard
-                            className="mt-4"
+                            className={classNames('mt-4', {
+                                [css.planCard]: accountHasLegacyPlan,
+                            })}
                             isUpdating={isSubscriptionUpdating}
                             defaultIsPlanChangeModalOpen={
                                 openedPlanModal === 'Enterprise'

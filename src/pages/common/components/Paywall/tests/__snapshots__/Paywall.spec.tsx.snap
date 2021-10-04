@@ -29,26 +29,29 @@ exports[`<Paywall /> should ask to upgrade custom plan when missing feature 1`] 
           <div
             class="mt-3 mb-5 d-inline-block"
           >
-            <a
+            <div
               class="d-flex align-items-center upgradeLink"
-              to="[object Object]"
             >
-              <button
-                class="upgradeButton btn btn-outline-warning"
-                type="button"
+              <a
+                to="[object Object]"
               >
-                <span
-                  class="mr-2 upgradeLabel"
+                <button
+                  class="upgradeButton btn btn-outline-warning"
+                  type="button"
                 >
-                  Upgrade to new Enterprise Plan
-                </span>
-                <img
-                  alt="upgrade-icon"
-                  class="upgradeIcon"
-                  src="test-file-stub"
-                />
-              </button>
-            </a>
+                  <span
+                    class="mr-2 upgradeLabel"
+                  >
+                    Upgrade to new Enterprise Plan
+                  </span>
+                  <img
+                    alt="upgrade-icon"
+                    class="upgradeIcon"
+                    src="test-file-stub"
+                  />
+                </button>
+              </a>
+            </div>
           </div>
           <p
             class="testimonialText"
@@ -128,26 +131,29 @@ exports[`<Paywall /> should ask to upgrade legacy plan into new plan 1`] = `
           <div
             class="mt-3 mb-5 d-inline-block"
           >
-            <a
+            <div
               class="d-flex align-items-center upgradeLink"
-              to="[object Object]"
             >
-              <button
-                class="upgradeButton btn btn-outline-warning"
-                type="button"
+              <a
+                to="[object Object]"
               >
-                <span
-                  class="mr-2 upgradeLabel"
+                <button
+                  class="upgradeButton btn btn-outline-warning"
+                  type="button"
                 >
-                  Upgrade to new Advanced Plan
-                </span>
-                <img
-                  alt="upgrade-icon"
-                  class="upgradeIcon"
-                  src="test-file-stub"
-                />
-              </button>
-            </a>
+                  <span
+                    class="mr-2 upgradeLabel"
+                  >
+                    Upgrade to new Advanced Plan
+                  </span>
+                  <img
+                    alt="upgrade-icon"
+                    class="upgradeIcon"
+                    src="test-file-stub"
+                  />
+                </button>
+              </a>
+            </div>
           </div>
           <p
             class="testimonialText"
@@ -227,26 +233,29 @@ exports[`<Paywall /> should render lightbox for the feature with a preview 1`] =
           <div
             class="mt-3 mb-5 d-inline-block"
           >
-            <a
+            <div
               class="d-flex align-items-center upgradeLink"
-              to="[object Object]"
             >
-              <button
-                class="upgradeButton btn btn-outline-warning"
-                type="button"
+              <a
+                to="[object Object]"
               >
-                <span
-                  class="mr-2 upgradeLabel"
+                <button
+                  class="upgradeButton btn btn-outline-warning"
+                  type="button"
                 >
-                  Upgrade to Advanced
-                </span>
-                <img
-                  alt="upgrade-icon"
-                  class="upgradeIcon"
-                  src="test-file-stub"
-                />
-              </button>
-            </a>
+                  <span
+                    class="mr-2 upgradeLabel"
+                  >
+                    Upgrade to Advanced
+                  </span>
+                  <img
+                    alt="upgrade-icon"
+                    class="upgradeIcon"
+                    src="test-file-stub"
+                  />
+                </button>
+              </a>
+            </div>
           </div>
           <p
             class="testimonialText"
@@ -348,26 +357,29 @@ exports[`<Paywall /> should render paywall screen for the feature 1`] = `
           <div
             class="mt-3 mb-5 d-inline-block"
           >
-            <a
+            <div
               class="d-flex align-items-center upgradeLink"
-              to="[object Object]"
             >
-              <button
-                class="upgradeButton btn btn-outline-warning"
-                type="button"
+              <a
+                to="[object Object]"
               >
-                <span
-                  class="mr-2 upgradeLabel"
+                <button
+                  class="upgradeButton btn btn-outline-warning"
+                  type="button"
                 >
-                  Upgrade to Advanced
-                </span>
-                <img
-                  alt="upgrade-icon"
-                  class="upgradeIcon"
-                  src="test-file-stub"
-                />
-              </button>
-            </a>
+                  <span
+                    class="mr-2 upgradeLabel"
+                  >
+                    Upgrade to Advanced
+                  </span>
+                  <img
+                    alt="upgrade-icon"
+                    class="upgradeIcon"
+                    src="test-file-stub"
+                  />
+                </button>
+              </a>
+            </div>
           </div>
           <p
             class="testimonialText"

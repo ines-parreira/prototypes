@@ -155,6 +155,12 @@ export default class KeyMetricStat extends Component<Props> {
                         const metricName = (metricConfig.get(
                             'api_resource_name'
                         ) || metricConfig.get('name')) as string
+
+                        const Component = metricConfig.get('component')
+                        if (Component) {
+                            return <Component />
+                        }
+
                         const metricTooltipId = `title-${metricName}-${index!}`
                         const valueTooltipId = `value-${metricName}-${index!}`
                         let previousStartDatetime = null

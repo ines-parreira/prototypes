@@ -22,7 +22,7 @@ type Props = {
     planName: string
     theme?: PlanCardTheme
     features: PlanCardFeature[]
-    price?: string
+    price?: ReactNode
     headerBadge?: ReactNode
     footer?: ReactNode
     className?: string
@@ -57,7 +57,7 @@ export default function PlanCard({
             <CardHeader className={css.planHeader}>
                 {headerBadge && <div>{headerBadge}</div>}
                 <div className={css.headerText}>
-                    <strong>{planName}</strong>
+                    <div className={css.planName}>{planName}</div>
                     {price && <span className={css.headerPrice}>{price}</span>}
                 </div>
             </CardHeader>

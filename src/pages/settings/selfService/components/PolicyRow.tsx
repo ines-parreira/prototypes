@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 
 import ToggleButton from '../../../common/components/ToggleButton'
 import {generateConfiguration} from '../utils/generateConfiguration'
@@ -14,11 +15,22 @@ import {
 import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
-
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
+import {getIconFromUrl} from '../../../../state/integrations/helpers'
+import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+import AutomationSubscriptionModal from '../../billing/automation/AutomationSubscriptionModal'
+import UpgradeButton from '../../../common/components/UpgradeButton'
 
 import css from './PreferencesView.less'
+
+// TODO: uncomment this once advanced track order is implemented
+// const automationTrackModal = getIconFromUrl(
+//     'paywalls/screens/automation_add_on_track_modal.png'
+// )
+const automationReportModal = getIconFromUrl(
+    'paywalls/screens/automation_add_on_report_modal.png'
+)
 
 interface Props {
     policyKey: PolicyKey
@@ -37,11 +49,19 @@ export const PolicyRow = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const [loading, setLoading] = useState(false)
+    const [modalImage, setModalImage] = useState('')
+    const [modalHeaderDescription, setModalHeaderDescription] = useState('')
+
+    const hasSelfServeAddOn = useSelector(getHasAutomationAddOn)
+
+    const [isAutomationModalOpened, setIsAutomationModalOpened] = useState(
+        false
+    )
 
     const integrationType: ShopType = integration.get('type')
     const shopName: string = integration.getIn(['meta', 'shop_name'])
 
-    const _onChange = async (value: boolean) => {
+    const onChange = async (value: boolean) => {
         setLoading(true)
 
         const baseConfiguration =
@@ -82,16 +102,34 @@ export const PolicyRow = ({
 
     return (
         <tr>
+            <td className="smallest align-middle">
+                <ToggleButton
+                    value={enabled}
+                    onChange={onChange}
+                    loading={loading}
+                />
+            </td>
             <td className={css.policyTd}>
+                <AutomationSubscriptionModal
+                    confirmLabel="Confirm"
+                    image={modalImage}
+                    headerDescription={modalHeaderDescription}
+                    isOpen={isAutomationModalOpened}
+                    onClose={() => setIsAutomationModalOpened(false)}
+                />
                 {policyKey === PolicyEnum.RETURN_ORDER_POLICY ? (
                     <Link
                         to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/returns`}
                     >
                         <div className={css.policyRowInfo}>
-                            <span className={css.policyName}>{policyName}</span>
-                            <span className={css.policyDescription}>
-                                {policyDescription}
-                            </span>
+                            <div className={css.content}>
+                                <span className={css.policyName}>
+                                    {policyName}
+                                </span>
+                                <span className={css.policyDescription}>
+                                    {policyDescription}
+                                </span>
+                            </div>
                         </div>
                     </Link>
                 ) : policyKey === PolicyEnum.CANCEL_ORDER_POLICY ? (
@@ -99,46 +137,76 @@ export const PolicyRow = ({
                         to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/cancellations`}
                     >
                         <div className={css.policyRowInfo}>
+                            <div className={css.content}>
+                                <span className={css.policyName}>
+                                    {policyName}
+                                </span>
+                                <span className={css.policyDescription}>
+                                    {policyDescription}
+                                </span>
+                            </div>
+                        </div>
+                    </Link>
+                ) : policyKey === PolicyEnum.REPORT_ISSUE_POLICY ? (
+                    <>
+                        {hasSelfServeAddOn ? (
+                            <Link
+                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
+                            >
+                                <div className={css.policyRowInfo}>
+                                    <div className={css.content}>
+                                        <span className={css.policyName}>
+                                            {policyName}
+                                        </span>
+                                        <span className={css.policyDescription}>
+                                            {policyDescription}
+                                        </span>
+                                    </div>
+                                </div>
+                            </Link>
+                        ) : (
+                            <div className={css.policyRowInfo}>
+                                <div className={css.content}>
+                                    <span className={css.policyName}>
+                                        {policyName}
+                                    </span>
+                                    <span className={css.policyDescription}>
+                                        {policyDescription}
+                                    </span>
+                                </div>
+                                <UpgradeButton
+                                    label="Get Automation Features"
+                                    onClick={() => {
+                                        setModalHeaderDescription(
+                                            'Access to next level features for self-service'
+                                        )
+                                        setModalImage(automationReportModal)
+                                        setIsAutomationModalOpened(true)
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className={css.policyRowInfo}>
+                        <div className={css.content}>
                             <span className={css.policyName}>{policyName}</span>
                             <span className={css.policyDescription}>
                                 {policyDescription}
                             </span>
                         </div>
-                    </Link>
-                ) : policyKey === PolicyEnum.REPORT_ISSUE_POLICY ? (
-                    // TODO: uncomment when automation add-on is released
-                    // <Link
-                    //     to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
-                    // >
-                    //     <div className={css.policyRowInfo}>
-                    //         <span className={css.policyName}>{policyName}</span>
-                    //         <span className={css.policyDescription}>
-                    //             {policyDescription}
-                    //         </span>
-                    //     </div>
-                    // </Link>
-                    <div className={css.policyRowInfo}>
-                        <span className={css.policyName}>{policyName}</span>
-                        <span className={css.policyDescription}>
-                            {policyDescription}
-                        </span>
-                    </div>
-                ) : (
-                    <div className={css.policyRowInfo}>
-                        <span className={css.policyName}>{policyName}</span>
-                        <span className={css.policyDescription}>
-                            {policyDescription}
-                        </span>
+                        {/*TODO: uncomment once advanced track order is implemented */}
+                        {/*{!hasSelfServeAddOn && (*/}
+                        {/*    <UpgradeButton*/}
+                        {/*        label="Get Automation Features"*/}
+                        {/*        onClick={() => {*/}
+                        {/*            setModalImage(automationTrackModal)*/}
+                        {/*            setIsAutomationModalOpened(true)*/}
+                        {/*        }}*/}
+                        {/*    />*/}
+                        {/*)}*/}
                     </div>
                 )}
-            </td>
-
-            <td className="smallest align-middle">
-                <ToggleButton
-                    value={enabled}
-                    onChange={_onChange}
-                    loading={loading}
-                />
             </td>
 
             <td className="smallest align-middle">
@@ -152,12 +220,12 @@ export const PolicyRow = ({
                         href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/returns`}
                     />
                 )}
-                {/* TODO: uncomment when automation add-on is released */}
-                {/*policyKey === PolicyEnum.REPORT_ISSUE_POLICY && (
-                    <ForwardIcon
-                        href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
-                    />
-                )*/}
+                {policyKey === PolicyEnum.REPORT_ISSUE_POLICY &&
+                    hasSelfServeAddOn && (
+                        <ForwardIcon
+                            href={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
+                        />
+                    )}
             </td>
         </tr>
     )

@@ -11,6 +11,8 @@ import {
 } from 'reactstrap'
 import classNames from 'classnames'
 
+import {useSelector} from 'react-redux'
+
 import PageHeader from '../../../common/components/PageHeader'
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import Loader from '../../../common/components/Loader/Loader'
@@ -33,6 +35,12 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
+import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
+
+import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+
 import {useConfigurationData} from './hooks'
 import css from './CancellationPolicyView.less'
 
@@ -44,6 +52,9 @@ export const CancellationsPolicyView = () => {
     }>()
 
     const {isLoadingConfig, configuration} = useConfigurationData()
+
+    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
 
     const [showDeleteButton, setShowDeleteButton] = useState(true)
 
@@ -153,6 +164,10 @@ export const CancellationsPolicyView = () => {
         } finally {
             setLoading(false)
         }
+    }
+
+    if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
+        return <GorgiasChatIntegrationSelfServicePaywall />
     }
 
     return (

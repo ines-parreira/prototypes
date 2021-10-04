@@ -10,7 +10,7 @@ import PageHeader from '../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import history from '../../history.ts'
 
-import BillingUsage from './BillingUsage'
+import BillingUsage from './BillingUsage.tsx'
 import BillingPaymentMethod from './BillingPaymentMethod'
 import BillingDetails from './details/BillingDetails.tsx'
 import BillingInvoices from './BillingInvoices.tsx'

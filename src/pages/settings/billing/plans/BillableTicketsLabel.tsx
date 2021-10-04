@@ -2,21 +2,26 @@ import React from 'react'
 import _uniqueId from 'lodash/uniqueId'
 
 import Tooltip from '../../../common/components/Tooltip'
+import {PlanWithCurrencySign} from '../../../../state/billing/types'
 
 import css from './BillableTicketsLabel.less'
 
 type Props = {
-    freeTickets: number
+    plan: PlanWithCurrencySign
+    costMultiplier?: number
 }
 
-export default function BillableTicketsLabel({freeTickets}: Props) {
+export default function BillableTicketsLabel({
+    plan,
+    costMultiplier = 100,
+}: Props) {
     const id = _uniqueId('billable-ticket-label-')
+    const costPerTicket = (plan.cost_per_ticket * costMultiplier).toFixed(2)
 
     return (
         <>
-            <b>{freeTickets}</b>{' '}
             <span id={id} className={css.billableTickets}>
-                billable tickets
+                {plan.free_tickets} billable tickets
             </span>{' '}
             included
             <Tooltip
@@ -24,9 +29,8 @@ export default function BillableTicketsLabel({freeTickets}: Props) {
                 placement="top-start"
                 innerClassName={css.tooltip}
             >
-                A billable ticket is a ticket that received a response either
-                from an agent or a rule. Only the ticket itself is billable,
-                additional messages in this ticket are not billable.
+                {plan.currencySign}
+                {costPerTicket} per {costMultiplier} extra tickets
             </Tooltip>
         </>
     )

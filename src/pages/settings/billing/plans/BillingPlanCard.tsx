@@ -5,6 +5,7 @@ import {RootState} from '../../../../state/types'
 import {PlanWithCurrencySign} from '../../../../state/billing/types'
 import {hasLegacyPlan} from '../../../../state/billing/selectors'
 import LegacyPlanBadge from '../../../common/components/LegacyPlanBadge'
+import SubscriptionAmount from '../../common/SubscriptionAmount'
 
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import {getPlanCardFeaturesForPlan} from './billingPlanFeatures'
@@ -59,11 +60,11 @@ export default function BillingPlanCard({
                 isCurrentPlan && accountHasLegacyFeatures
             )}
             price={
-                plan.amount
-                    ? `${plan.currencySign}${plan.amount} / ${
-                          plan.interval === 'month' ? 'mo' : 'yr'
-                      }`
-                    : undefined
+                <SubscriptionAmount
+                    amount={plan.amount}
+                    currency={plan.currency}
+                    interval={plan.interval}
+                />
             }
         />
     )

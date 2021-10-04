@@ -7,21 +7,8 @@ import * as accountFixtures from '../../../fixtures/account'
 import {AccountFeature, AccountSettingType} from '../types'
 import {RootState} from '../../types'
 
-jest.mock('moment-timezone', () => {
-    const moment: ((
-        date?: string,
-        format?: string
-    ) => Record<string, unknown>) & {
-        utc: (value: string) => unknown
-    } = jest.requireActual('moment-timezone')
-    const fn = () => moment('2019-09-03')
-    fn.utc = (value: string) =>
-        moment.utc(
-            `2019-09-03T${value.length === 5 ? value : `0${value}`}:00.000Z`
-        )
-
-    return fn
-})
+const DATE_TO_USE = new Date('2019-09-03')
+jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 
 jest.addMatchers(immutableMatchers)
 
@@ -345,7 +332,7 @@ describe('current account selectors', () => {
                         {
                             ...defaultState,
                             currentUser: fromJS({
-                                timezone: 'EU/Paris',
+                                timezone: 'Europe/Paris',
                             }),
                         },
                         ['settings'],
@@ -383,6 +370,36 @@ describe('current account selectors', () => {
                     )
                 )
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('hasAutomationLegacyFeatures()', () => {
+        it('should return false when account is created after 2021-10-04', () => {
+            expect(
+                selectors.hasAutomationLegacyFeatures(
+                    setStateWith(
+                        setStateWith(
+                            defaultState,
+                            ['current_subscription', 'status'],
+                            'active'
+                        ),
+                        ['created_datetime'],
+                        '2021-10-07'
+                    )
+                )
+            ).toBeFalsy()
+        })
+
+        it('should return true when account is not trialing and created before 2021-10-04', () => {
+            expect(
+                selectors.hasAutomationLegacyFeatures(
+                    setStateWith(
+                        defaultState,
+                        ['current_subscription', 'status'],
+                        'active'
+                    )
+                )
+            ).toBeTruthy()
         })
     })
 })

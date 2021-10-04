@@ -120,26 +120,29 @@ exports[`IntegrationListRow should display an integration with upgrade requireme
       <div
         class="ml-3 py-0 px-1"
       >
-        <a
+        <div
           class="d-flex align-items-center upgradeLink"
-          to="[object Object]"
         >
-          <button
-            class="upgradeButton sm invertedColors btn btn-outline-warning"
-            type="button"
+          <a
+            to="[object Object]"
           >
-            <span
-              class="mr-2 upgradeLabel sm"
+            <button
+              class="upgradeButton sm invertedColors btn btn-outline-warning"
+              type="button"
             >
-              Upgrade
-            </span>
-            <img
-              alt="upgrade-icon"
-              class="upgradeIcon sm"
-              src="test-file-stub"
-            />
-          </button>
-        </a>
+              <span
+                class="mr-2 upgradeLabel sm"
+              >
+                Upgrade
+              </span>
+              <img
+                alt="upgrade-icon"
+                class="upgradeIcon sm"
+                src="test-file-stub"
+              />
+            </button>
+          </a>
+        </div>
       </div>
     </div>
     this is a cool integration

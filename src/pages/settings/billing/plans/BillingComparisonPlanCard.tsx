@@ -1,4 +1,4 @@
-import React, {useState, ComponentProps, MouseEvent} from 'react'
+import React, {useEffect, useState, ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -6,18 +6,22 @@ import classNames from 'classnames'
 
 import {
     getCurrentPlan,
+    getEquivalentRegularCurrentPlan,
+    getHasAutomationAddOn,
+    getPlan,
     hasLegacyPlan,
 } from '../../../../state/billing/selectors'
 import {RootState} from '../../../../state/types'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
 import {isFeatureEnabled} from '../../../../utils/account'
 
-import {openChat} from '../../../../utils'
-
 import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
 import CurrentPlanBadge from './CurrentPlanBadge'
 import {PlanCardTheme} from './PlanCard'
+import RecurringPrices from './RecurringPrices'
+
+import css from './BillingComparisonPlanCard.less'
 
 const countFeatures = (features: AccountFeatures) =>
     Object.values(features).filter(isFeatureEnabled).length
@@ -25,7 +29,9 @@ const countFeatures = (features: AccountFeatures) =>
 type Props = {
     isUpdating: boolean
     defaultIsPlanChangeModalOpen?: boolean
-    onPlanChange?: () => void
+    onPlanChange?: (isModalAutomationChecked: boolean) => void
+    isAutomationChecked: boolean
+    onAutomationChange: () => void
 } & Omit<
     ComponentProps<typeof BillingPlanCard>,
     'footer' | 'headerBadge' | 'theme'
@@ -37,6 +43,8 @@ export default function BillingComparisonPlanCard({
     isUpdating,
     onPlanChange,
     defaultIsPlanChangeModalOpen = false,
+    isAutomationChecked,
+    onAutomationChange,
     ...billingCardProps
 }: Props) {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
@@ -44,32 +52,56 @@ export default function BillingComparisonPlanCard({
     )
     const isLegacyPlan = useSelector(hasLegacyPlan)
     const currentPlan = useSelector(getCurrentPlan)
+    const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
     const currentAccount = useSelector(
         (state: RootState) => state.currentAccount
     )
-    const isLegacyCustomPlan =
-        currentPlan.get('custom') && !currentPlan.get('public')
+
+    const equivalentAutomationPlan = useSelector(
+        getPlan(plan.automation_addon_equivalent_plan!)
+    )
+    const addOnAmount = equivalentAutomationPlan.get('amount')
+        ? Math.abs(equivalentAutomationPlan.get('amount') - plan.amount)
+        : '?'
+
+    const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
+        isAutomationChecked
+    )
+
+    useEffect(() => setModalIsAutomationChecked(isAutomationChecked), [
+        isAutomationChecked,
+    ])
+
     const accountHasLegacyFeatures = currentAccount.getIn(
         ['meta', 'has_legacy_features'],
         false
     )
     const hasLessFeatures =
+        regularCurrentPlan &&
         countFeatures(plan.features) <
-        countFeatures(
-            (currentPlan.get(
-                accountHasLegacyFeatures ? 'legacy_features' : 'features',
-                fromJS({})
-            ) as Map<any, any>).toJS()
-        )
+            countFeatures(
+                (regularCurrentPlan.get(
+                    accountHasLegacyFeatures ? 'legacy_features' : 'features',
+                    fromJS({})
+                ) as Map<any, any>).toJS()
+            )
     const isDowngrade =
         !isCurrentPlan &&
         !currentPlan.isEmpty() &&
         !isLegacyPlan &&
         hasLessFeatures
 
-    const canChoosePlan = !isCurrentPlan && !isUpdating
+    const isSwitchingToAutomation =
+        isCurrentPlan && !hasAutomationAddOn && isAutomationChecked
+
+    const canChoosePlan =
+        !isUpdating && (isSwitchingToAutomation || !isCurrentPlan)
+
     const switchPlanButtonText = isCurrentPlan
-        ? 'Current Plan'
+        ? hasAutomationAddOn || (!hasAutomationAddOn && !isAutomationChecked)
+            ? 'Current Plan'
+            : 'Add to Plan'
         : `${
               plan.name === currentPlan.get('name') ||
               (isLegacyPlan && hasLessFeatures)
@@ -102,6 +134,16 @@ export default function BillingComparisonPlanCard({
                 extra {costMultiplier} tickets
             </b>
             .
+        </>
+    ) : isSwitchingToAutomation ? (
+        <>
+            With <b>self-service</b>, let your customers{' '}
+            <b>track their orders, request a return or a cancel</b>, report an
+            issue (according to your customized workflows) in a click, 24/7!
+            Questions?{' '}
+            <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
+                <b>Get in touch!</b>
+            </a>
         </>
     ) : plan.id.includes('basic') ? (
         <>
@@ -143,65 +185,73 @@ export default function BillingComparisonPlanCard({
                 isCurrentPlan && <CurrentPlanBadge planName={plan.name} />
             }
             footer={
-                isLegacyCustomPlan ? (
+                <>
+                    <RecurringPrices
+                        addOnAmount={addOnAmount}
+                        plan={plan}
+                        isAutomationChecked={isAutomationChecked}
+                        onAutomationChange={onAutomationChange}
+                    />
                     <Button
-                        aria-label="Contact us"
+                        aria-label={switchPlanButtonText}
+                        className={classNames(css.footerButton, {
+                            'btn-loading': isUpdating,
+                        })}
                         color="link"
-                        onClick={(event: MouseEvent) => {
-                            openChat(event)
+                        disabled={!canChoosePlan}
+                        onClick={() => {
+                            if (canChoosePlan) {
+                                setIsPlanChangeModalOpen(!isPlanChangeModalOpen)
+                            }
                         }}
                     >
-                        Contact us
+                        {switchPlanButtonText}
                     </Button>
-                ) : (
-                    <>
-                        <Button
-                            aria-label={switchPlanButtonText}
-                            className={classNames({
-                                'btn-loading': isUpdating,
-                            })}
-                            color="link"
-                            disabled={!canChoosePlan}
-                            onClick={() => {
-                                if (canChoosePlan) {
-                                    setIsPlanChangeModalOpen(
-                                        !isPlanChangeModalOpen
-                                    )
+                    <ChangePlanModal
+                        header={
+                            isLegacyPlan
+                                ? 'Switch to our updated plans'
+                                : isDowngrade
+                                ? 'Are you sure you want to switch plans?'
+                                : isSwitchingToAutomation
+                                ? 'Leverage the power of automation 👏'
+                                : "We're happy to see you grow 👏"
+                        }
+                        isOpen={canChoosePlan && isPlanChangeModalOpen}
+                        isUpdating={isUpdating}
+                        onClose={() => {
+                            setIsPlanChangeModalOpen(false)
+                        }}
+                        onConfirm={() => {
+                            onPlanChange?.(isModalAutomationChecked)
+                            setIsPlanChangeModalOpen(false)
+                        }}
+                        description={description}
+                        renderComparedPlan={({className, renderBody}) => (
+                            <BillingPlanCard
+                                plan={plan}
+                                className={className}
+                                renderBody={renderBody}
+                                footer={
+                                    <RecurringPrices
+                                        addOnAmount={addOnAmount}
+                                        plan={plan}
+                                        isAutomationChecked={
+                                            isModalAutomationChecked
+                                        }
+                                        {...(!isSwitchingToAutomation && {
+                                            onAutomationChange: () =>
+                                                setModalIsAutomationChecked(
+                                                    !isModalAutomationChecked
+                                                ),
+                                        })}
+                                    />
                                 }
-                            }}
-                        >
-                            {switchPlanButtonText}
-                        </Button>
-                        <ChangePlanModal
-                            currentPlan={currentPlan}
-                            header={
-                                isLegacyPlan
-                                    ? 'Switch to our updated plans'
-                                    : isDowngrade
-                                    ? 'Are you sure you want to switch plans?'
-                                    : "We're happy to see you grow 👏"
-                            }
-                            isOpen={canChoosePlan && isPlanChangeModalOpen}
-                            isUpdating={isUpdating}
-                            onClose={() => {
-                                setIsPlanChangeModalOpen(false)
-                            }}
-                            onConfirm={() => {
-                                onPlanChange?.()
-                                setIsPlanChangeModalOpen(false)
-                            }}
-                            description={description}
-                            renderComparedPlan={({className, renderBody}) => (
-                                <BillingPlanCard
-                                    plan={plan}
-                                    className={className}
-                                    renderBody={renderBody}
-                                />
-                            )}
-                            confirmLabel="Confirm"
-                        />
-                    </>
-                )
+                            />
+                        )}
+                        confirmLabel="Confirm"
+                    />
+                </>
             }
         />
     )

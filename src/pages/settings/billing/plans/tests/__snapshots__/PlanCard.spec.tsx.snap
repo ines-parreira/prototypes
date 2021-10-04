@@ -10,9 +10,11 @@ exports[`<PlanCard /> should render custom body 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -35,9 +37,11 @@ exports[`<PlanCard /> should render the footer 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -97,9 +101,11 @@ exports[`<PlanCard /> should render the header badge 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -147,9 +153,11 @@ exports[`<PlanCard /> should render the plan card for Blue theme 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -197,9 +205,11 @@ exports[`<PlanCard /> should render the plan card for Gold theme 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -247,9 +257,11 @@ exports[`<PlanCard /> should render the plan card for Green theme 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -297,9 +309,11 @@ exports[`<PlanCard /> should render the plan card for Grey theme 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -347,9 +361,11 @@ exports[`<PlanCard /> should render the plan card for Navy theme 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
     </div>
   </div>
   <div
@@ -397,9 +413,11 @@ exports[`<PlanCard /> should render the price 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Foo plan
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >

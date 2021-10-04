@@ -10,13 +10,22 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Advanced
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $70000 / mo
+        <div
+          class="amount"
+        >
+          $70,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -39,76 +48,15 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
           </i>
         </span>
         <span>
-          <b>
-            3000
-          </b>
-           
           <span
             class="billableTickets"
             id="billable-ticket-label-2"
           >
-            billable tickets
+            3000
+             billable tickets
           </span>
            
           included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            20.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -124,7 +72,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li
@@ -343,13 +291,22 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Basic
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $6000 / mo
+        <div
+          class="amount"
+        >
+          $6,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -372,76 +329,15 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
-            350
-          </b>
-           
           <span
             class="billableTickets"
             id="billable-ticket-label-1"
           >
-            billable tickets
+            350
+             billable tickets
           </span>
            
           included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            25.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -457,7 +353,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li
@@ -673,13 +569,22 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Custom
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $54000 / mo
+        <div
+          class="amount"
+        >
+          $54,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -702,76 +607,15 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
-            2000
-          </b>
-           
           <span
             class="billableTickets"
             id="billable-ticket-label-4"
           >
-            billable tickets
+            2000
+             billable tickets
           </span>
            
           included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            23.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -787,7 +631,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li
@@ -1006,13 +850,22 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Enterprise
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $70000 / mo
+        <div
+          class="amount"
+        >
+          $70,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -1035,59 +888,10 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
           </i>
         </span>
         <span>
-          Discounted prices for
-           
+          Discounted prices for 
           <b>
-            volumes of 10.000+ billable tickets
+            volumes of 10k+ tickets
           </b>
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            beach_access
-          </i>
-        </span>
-        <span>
-          Premium support
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          Custom limit of integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -1103,7 +907,7 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li
@@ -1319,13 +1123,22 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Standard
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $3000 / mo
+        <div
+          class="amount"
+        >
+          $3,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -1348,76 +1161,15 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
-            350
-          </b>
-           
           <span
             class="billableTickets"
             id="billable-ticket-label-5"
           >
-            billable tickets
+            350
+             billable tickets
           </span>
            
           included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            25.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -1433,7 +1185,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li
@@ -1649,13 +1401,22 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Pro
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $30000 / mo
+        <div
+          class="amount"
+        >
+          $30,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -1678,76 +1439,15 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
           </i>
         </span>
         <span>
-          <b>
-            2000
-          </b>
-           
           <span
             class="billableTickets"
             id="billable-ticket-label-3"
           >
-            billable tickets
+            2000
+             billable tickets
           </span>
            
           included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            23.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -1763,7 +1463,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li
@@ -1984,7 +1684,7 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
         class="d-inline-flex cursor-pointer"
       >
         <span
-          class="d-inline-flex flex-row badge badge-danger"
+          class="d-inline-flex flex-row badge badge badge-danger"
         >
           <i
             class="material-icons"
@@ -2002,13 +1702,22 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
     <div
       class="headerText"
     >
-      <strong>
+      <div
+        class="planName"
+      >
         Basic
-      </strong>
+      </div>
       <span
         class="headerPrice"
       >
-        $6000 / mo
+        <div
+          class="amount"
+        >
+          $6,000
+           
+          / 
+          month
+        </div>
       </span>
     </div>
   </div>
@@ -2031,76 +1740,15 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
           </i>
         </span>
         <span>
-          <b>
-            350
-          </b>
-           
           <span
             class="billableTickets"
             id="billable-ticket-label-6"
           >
-            billable tickets
+            350
+             billable tickets
           </span>
            
           included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add
-          </i>
-        </span>
-        <span>
-          <b>
-            $
-            25.00
-          </b>
-           
-          per 
-          100
-           extra tickets
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            code
-          </i>
-        </span>
-        <span>
-          <b>
-            200
-          </b>
-           integrations
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up_alt
-          </i>
-        </span>
-        <span>
-          Social media integrations
         </span>
       </li>
       <li
@@ -2116,7 +1764,7 @@ exports[`<BillingPlanCard /> should render the legacy badge when account is curr
           </i>
         </span>
         <span>
-          Live chat
+          Social media & chat
         </span>
       </li>
       <li

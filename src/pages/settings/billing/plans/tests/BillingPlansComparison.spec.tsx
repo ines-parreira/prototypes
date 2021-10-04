@@ -13,6 +13,9 @@ import {
     basicPlan,
     legacyPlan,
     proPlan,
+    basicAutomationPlan,
+    proAutomationPlan,
+    advancedAutomationPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {account} from '../../../../../fixtures/account'
@@ -28,28 +31,47 @@ const notifyMock = notify as jest.MockedFunction<typeof notify>
 jest.mock('popper.js')
 jest.mock('../../../../../state/currentAccount/actions')
 jest.mock('../../../../../state/notifications/actions')
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 describe('<BillingPlansComparison />', () => {
-    const defaultPlans = [basicPlan, advancedPlan, proPlan].reduce(
-        (acc, plan) => {
-            const monthlyId = `${plan.name.toLowerCase()}-monthly`
-            const yearlyId = `${plan.name.toLowerCase()}-yearly`
-            return {
-                ...acc,
-                [monthlyId]: {
-                    ...plan,
-                    id: monthlyId,
-                    interval: PlanInterval.Month,
-                },
-                [yearlyId]: {
-                    ...plan,
-                    id: yearlyId,
-                    interval: PlanInterval.Year,
-                },
-            }
-        },
-        {} as Partial<Record<string, Plan>>
-    )
+    const defaultPlans = [
+        basicPlan,
+        advancedPlan,
+        proPlan,
+        basicAutomationPlan,
+        proAutomationPlan,
+        advancedAutomationPlan,
+    ].reduce((acc, plan) => {
+        let monthlyId
+        let yearlyId
+        if (plan.automation_addon_included) {
+            monthlyId = `${plan.name.toLowerCase()}-automation-monthly`
+            yearlyId = `${plan.name.toLowerCase()}-automation-yearly`
+        } else {
+            monthlyId = `${plan.name.toLowerCase()}-monthly`
+            yearlyId = `${plan.name.toLowerCase()}-yearly`
+        }
+        return {
+            ...acc,
+            [monthlyId]: {
+                ...plan,
+                id: monthlyId,
+                interval: PlanInterval.Month,
+                automation_addon_equivalent_plan: plan.automation_addon_included
+                    ? `${plan.name.toLowerCase()}-monthly`
+                    : `${plan.name.toLowerCase()}-automation-monthly`,
+            },
+            [yearlyId]: {
+                ...plan,
+                id: yearlyId,
+                interval: PlanInterval.Year,
+                automation_addon_equivalent_plan: plan.automation_addon_included
+                    ? `${plan.name.toLowerCase()}-yearly`
+                    : `${plan.name.toLowerCase()}-automation-yearly`,
+            },
+        }
+    }, {} as Partial<Record<string, Plan>>)
+
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
@@ -109,16 +131,22 @@ describe('<BillingPlansComparison />', () => {
         '%s interval',
         (interval) => {
             const monthlyPlans = (Object.values(defaultPlans) as Plan[]).filter(
-                (plan) => plan.interval === PlanInterval.Month
+                (plan) =>
+                    plan.interval === PlanInterval.Month &&
+                    !plan.automation_addon_included
             )
             const yearlyPlans = (Object.values(defaultPlans) as Plan[]).filter(
-                (plan) => plan.interval === PlanInterval.Year
+                (plan) =>
+                    plan.interval === PlanInterval.Year &&
+                    !plan.automation_addon_included
             )
             const currentPlan = (Object.values(defaultPlans) as Plan[]).find(
                 (plan) => plan.interval === interval
             )
 
-            it('should render only plans with the selected interval', () => {
+            it(`should render only plans with the selected interval for ${
+                currentPlan!.id
+            } plan`, () => {
                 const {queryAllByText} = render(
                     <Provider
                         store={mockStore({
@@ -132,11 +160,13 @@ describe('<BillingPlansComparison />', () => {
                         <BillingPlansComparison {...minProps} />
                     </Provider>
                 )
-                expect(queryAllByText(/\$\d+ \/ mo/)).toHaveLength(
-                    interval === PlanInterval.Month ? monthlyPlans.length : 0
+                expect(queryAllByText(/month/)).toHaveLength(
+                    interval === PlanInterval.Month
+                        ? monthlyPlans.length * 3
+                        : 0
                 )
-                expect(queryAllByText(/\$\d+ \/ yr/)).toHaveLength(
-                    interval === PlanInterval.Year ? yearlyPlans.length : 0
+                expect(queryAllByText(/year/)).toHaveLength(
+                    interval === PlanInterval.Year ? yearlyPlans.length * 3 : 0
                 )
             })
 
@@ -164,11 +194,13 @@ describe('<BillingPlansComparison />', () => {
                     })
                 )
 
-                expect(queryAllByText(/\$\d+ \/ mo/)).toHaveLength(
-                    interval === PlanInterval.Month ? 0 : monthlyPlans.length
+                expect(queryAllByText(/month/)).toHaveLength(
+                    interval === PlanInterval.Month
+                        ? 0
+                        : monthlyPlans.length * 3
                 )
-                expect(queryAllByText(/\$\d+ \/ yr/)).toHaveLength(
-                    interval === PlanInterval.Year ? 0 : yearlyPlans.length
+                expect(queryAllByText(/year/)).toHaveLength(
+                    interval === PlanInterval.Year ? 0 : yearlyPlans.length * 3
                 )
             })
         }
@@ -263,5 +295,51 @@ describe('<BillingPlansComparison />', () => {
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display disabled link to modal for current plan with automation add-on', () => {
+        const {getAllByLabelText, getByRole, container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            plan: `basic-automation-monthly`,
+                        },
+                    }),
+                })}
+            >
+                <BillingPlansComparison {...minProps} />
+            </Provider>
+        )
+
+        fireEvent.click(getAllByLabelText(/Automation/)[0])
+        expect(container.firstChild).toMatchSnapshot()
+
+        expect(getByRole('button', {name: 'Current Plan'})).toMatchSnapshot()
+    })
+
+    it('should update current plan without automation add-on to same plan with add-on', () => {
+        const {getAllByLabelText, getByText, getByRole} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingPlansComparison {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(getAllByLabelText(/Automation/)[0])
+
+        fireEvent.click(getByRole('button', {name: 'Add to Plan'}))
+        expect(
+            getByText(/track their orders, request a return or a cancel/)
+        ).toBeTruthy()
+
+        fireEvent.click(getByRole('button', {name: 'Confirm'}))
+        expect(updateSubscriptionMock).toHaveBeenLastCalledWith({
+            plan: defaultPlans['basic-monthly']!.id.replace(
+                /\-/,
+                '-automation-'
+            ),
+        })
     })
 })

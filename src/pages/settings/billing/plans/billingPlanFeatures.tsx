@@ -29,11 +29,7 @@ const getCommonPlanCardFeatures = ({
 }: GetCommonPlanCardFeaturesArgs): PlanCardFeature[] => {
     return [
         {
-            label: 'Social media integrations',
-            icon: <PlanFeatureMaterialIcon icon="thumb_up_alt" />,
-        },
-        {
-            label: 'Live chat',
+            label: 'Social media & chat',
             icon: <PlanFeatureMaterialIcon icon="forum" />,
         },
         {
@@ -129,18 +125,9 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
             icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
             label: (
                 <>
-                    Discounted prices for{' '}
-                    <b>volumes of 10.000+ billable tickets</b>
+                    Discounted prices for <b>volumes of 10k+ tickets</b>
                 </>
             ),
-        },
-        {
-            icon: <PlanFeatureMaterialIcon icon="beach_access" />,
-            label: 'Premium support',
-        },
-        {
-            icon: <PlanFeatureMaterialIcon icon="code" />,
-            label: 'Custom limit of integrations',
         },
     ]
     return enterpriseFeatures.concat(
@@ -159,8 +146,6 @@ export const getPlanCardFeaturesForPlan = (
     if (plan.id === 'enterprise') {
         return getEnterprisePlanCardFeatures()
     }
-    const costMultiplier = 100
-    const costPerTicket = (plan.cost_per_ticket * costMultiplier).toFixed(2)
     const planFeatures =
         plan[showPlanLegacyFeatures ? 'legacy_features' : 'features']
     const enabledFeatures = _pickBy(planFeatures, (featureMetadata) =>
@@ -172,27 +157,7 @@ export const getPlanCardFeaturesForPlan = (
     return ([
         {
             icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
-            label: <BillableTicketsLabel freeTickets={plan.free_tickets} />,
-        },
-        {
-            icon: <PlanFeatureMaterialIcon icon="playlist_add" />,
-            label: (
-                <>
-                    <b>
-                        {plan.currencySign}
-                        {costPerTicket}
-                    </b>{' '}
-                    per {costMultiplier} extra tickets
-                </>
-            ),
-        },
-        {
-            icon: <PlanFeatureMaterialIcon icon="code" />,
-            label: (
-                <>
-                    <b>{plan.integrations}</b> integrations
-                </>
-            ),
+            label: <BillableTicketsLabel plan={plan} />,
         },
     ] as PlanCardFeature[]).concat(
         getCommonPlanCardFeatures({

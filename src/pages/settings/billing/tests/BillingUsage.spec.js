@@ -1,94 +1,181 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 
-import {BillingUsage} from '../BillingUsage'
 import {account} from '../../../../fixtures/account.ts'
+import {billingState} from '../../../../fixtures/billing.ts'
+import {
+    advancedPlan,
+    basicPlan,
+    proPlan,
+} from '../../../../fixtures/subscriptionPlan.ts'
+import BillingUsage from '../BillingUsage.tsx'
 
 jest.mock('../../../common/components/LegacyPlanBanner', () => () => (
     <div>Legacy Plan Banner Mock</div>
 ))
+jest.mock('../../../../state/billing/actions.ts')
+
+const mockStore = configureMockStore([thunk])
 
 describe('<BillingUsage/>', () => {
-    let container
-    const currentAccount = fromJS(account)
-    let currentPlan = fromJS({
-        name: 'Pro',
-        free_tickets: 10,
-        integrations: 5,
-        interval: 'month',
-    })
-    let currentSubscription = fromJS({
-        start_datetime: '2018-01-01T10:10:10.480Z',
-    })
-    let activeIntegrations = fromJS([])
+    const defaultPlans = [basicPlan, proPlan, advancedPlan].reduce(
+        (acc, plan) => {
+            const id = `${plan.name.toLowerCase()}-monthly`
+            return {
+                ...acc,
+                [id]: {
+                    ...plan,
+                    id,
+                    interval: 'month',
+                },
+            }
+        },
+        {}
+    )
+
+    const defaultState = {
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                ...account.current_subscription,
+                plan: Object.values(defaultPlans)[1].id,
+                status: 'active',
+            },
+        }),
+        billing: fromJS({
+            ...billingState,
+            plans: defaultPlans,
+            currentUsage: fromJS({
+                meta: {
+                    start_datetime: '2010-10-10',
+                    end_datetime: '2010-10-11',
+                },
+                data: {
+                    cost: 10,
+                    tickets: 1000,
+                },
+            }),
+        }),
+        integrations: fromJS({
+            integrations: fromJS([]),
+        }),
+    }
+
     window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
 
-    let accountHasLegacyPlan =
-        !!currentAccount.getIn(['meta', 'has_legacy_features'], false) ||
-        (!currentPlan.get('public') && !currentPlan.get('custom'))
-
     beforeEach(() => {
-        // reactstrap popover needs to be in the dom
-        // https://github.com/reactstrap/reactstrap/issues/818
-        container = document.createElement('div')
-        document.body.appendChild(container)
+        jest.resetAllMocks()
     })
 
     it('should display loader', () => {
-        const component = mount(
-            <BillingUsage
-                currentAccount={fromJS({})}
-                currentUsage={fromJS({})}
-                fetchCurrentUsage={() => Promise.resolve()}
-            />
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingUsage />
+            </Provider>
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should load with empty props', () => {
-        const component = mount(
-            <BillingUsage
-                currentAccount={currentAccount}
-                currentPlan={currentPlan}
-                currentSubscription={currentSubscription}
-                activeIntegrations={activeIntegrations}
-                accountHasLegacyPlan={accountHasLegacyPlan}
-                currentUsage={fromJS({
-                    meta: {
-                        start_datetime: '2010-10-10',
-                        end_datetime: '2010-10-11',
-                    },
-                })}
-                fetchCurrentUsage={() => Promise.resolve()}
-            />,
-            {attachTo: container}
+    it('should load with empty props', async () => {
+        const {container, getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingUsage />
+            </Provider>
         )
-        component.setState({isLoading: false})
-        expect(component).toMatchSnapshot()
+        await waitFor(() => getByText('Usage & Plans'))
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should display price', () => {
-        const component = mount(
-            <BillingUsage
-                currentAccount={currentAccount}
-                currentPlan={currentPlan}
-                currentSubscription={currentSubscription}
-                accountHasLegacyPlan={accountHasLegacyPlan}
-                currentUsage={fromJS({
-                    meta: {
-                        start_datetime: '2010-10-10',
-                        end_datetime: '2010-10-11',
-                    },
-                    data: {
-                        cost: 10,
-                        tickets: 20,
-                    },
-                })}
-                fetchCurrentUsage={() => Promise.resolve()}
-            />
+    it('should display price', async () => {
+        const {container, getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingUsage />
+            </Provider>
         )
-        component.setState({isLoading: false})
-        expect(component).toMatchSnapshot()
+        await waitFor(() => getByText('Usage & Plans'))
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display warning progress bar', async () => {
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    billing: fromJS({
+                        ...billingState,
+                        plans: defaultPlans,
+                        currentUsage: {
+                            meta: {
+                                start_datetime: '2010-10-10',
+                                end_datetime: '2010-10-11',
+                            },
+                            data: {
+                                cost: 10,
+                                tickets: 2000,
+                            },
+                        },
+                    }),
+                })}
+            >
+                <BillingUsage />
+            </Provider>
+        )
+
+        await waitFor(() => getByText('Usage & Plans'))
+
+        expect(
+            document.getElementsByClassName('usage-progress')[0]
+        ).toMatchSnapshot()
+    })
+
+    it('should display danger progress bar', async () => {
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    billing: fromJS({
+                        ...billingState,
+                        plans: defaultPlans,
+                        currentUsage: {
+                            meta: {
+                                start_datetime: '2010-10-10',
+                                end_datetime: '2010-10-11',
+                            },
+                            data: {
+                                cost: 10,
+                                tickets: 3200,
+                            },
+                        },
+                    }),
+                })}
+            >
+                <BillingUsage />
+            </Provider>
+        )
+
+        await waitFor(() => getByText('Usage & Plans'))
+
+        expect(
+            document.getElementsByClassName('usage-progress')[0]
+        ).toMatchSnapshot()
+    })
+
+    it('should display tooltip', async () => {
+        const {findByText, getAllByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingUsage />
+            </Provider>
+        )
+        const tooltipTarget = await waitFor(
+            () => getAllByText('info_outline')[0]
+        )
+        fireEvent.mouseOver(tooltipTarget)
+
+        const tooltipElement = await findByText(/Number of tickets included/)
+        expect(tooltipElement).toMatchSnapshot()
     })
 })

@@ -2,13 +2,25 @@ import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 import userEvent from '@testing-library/user-event'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
-import {proPlan} from '../../../../../fixtures/subscriptionPlan'
+import {RootState, StoreDispatch} from '../../../../../state/types'
+import {
+    basicPlan,
+    proPlan,
+    advancedPlan,
+} from '../../../../../fixtures/subscriptionPlan'
+import {account} from '../../../../../fixtures/account'
+import {billingState} from '../../../../../fixtures/billing'
 import {PlanInterval} from '../../../../../models/billing/types'
 import SynchronizedScrollTopContainer from '../../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 
 import ChangePlanModal from '../ChangePlanModal'
 import BillingPlanCard from '../BillingPlanCard'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock(
     '../BillingPlanCard',
@@ -52,22 +64,50 @@ describe('<ChangePlanModal />', () => {
         onConfirm: jest.fn(),
         renderComparedPlan: () => <div>renderComparedPlan</div>,
     }
+    const plans = {
+        [basicPlan.id]: basicPlan,
+        [proPlan.id]: proPlan,
+        [advancedPlan.id]: advancedPlan,
+    }
+    const defaultState: Partial<RootState> = {
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                ...account.current_subscription,
+                plan: basicPlan.id,
+            },
+        }),
+        billing: fromJS({
+            ...billingState,
+            plans,
+        }),
+    }
 
     it('should not render the modal', () => {
         const {baseElement} = render(
-            <ChangePlanModal {...minProps} isOpen={false} />
+            <Provider store={mockStore(defaultState)}>
+                <ChangePlanModal {...minProps} isOpen={false} />
+            </Provider>
         )
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should render', () => {
-        const {baseElement} = render(<ChangePlanModal {...minProps} />)
+        const {baseElement} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ChangePlanModal {...minProps} />
+            </Provider>
+        )
 
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should call onConfirm callback when clicking on button', () => {
-        const {getByText} = render(<ChangePlanModal {...minProps} />)
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ChangePlanModal {...minProps} />
+            </Provider>
+        )
 
         userEvent.click(getByText('Confirm'))
         expect(minProps.onConfirm).toHaveBeenCalled()
@@ -75,7 +115,17 @@ describe('<ChangePlanModal />', () => {
 
     it('should display only compared plan when there is no current plan', () => {
         const {baseElement} = render(
-            <ChangePlanModal {...minProps} currentPlan={fromJS({})} />
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        ['current_subscription', 'plan'],
+                        'some-unknown-plan'
+                    ),
+                })}
+            >
+                <ChangePlanModal {...minProps} />
+            </Provider>
         )
 
         expect(baseElement).toMatchSnapshot()

@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return the amount of automation add-on 1`] = `20`;
+
+exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
+
+exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is also automation 1`] = `
+Immutable.Map {
+  "cost_per_ticket": 0.05,
+  "automation_addon_included": true,
+  "interval": "month",
+  "public": true,
+  "name": "Pro",
+  "trial_period_days": 14,
+  "currencySign": "$",
+  "order": 2,
+  "currency": "usd",
+  "free_tickets": 2000,
+  "automation_addon_equivalent_plan": "pro-monthly-usd-2",
+  "limits": Immutable.Map {
+    "default": 300,
+    "max": 400,
+    "min": 200,
+  },
+  "amount": 120,
+  "integrations": 10,
+}
+`;
+
+exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is regular 1`] = `
+Immutable.Map {
+  "cost_per_ticket": 0.05,
+  "automation_addon_included": true,
+  "interval": "month",
+  "public": true,
+  "name": "Pro",
+  "trial_period_days": 14,
+  "currencySign": "$",
+  "order": 2,
+  "currency": "usd",
+  "free_tickets": 2000,
+  "automation_addon_equivalent_plan": "pro-monthly-usd-2",
+  "limits": Immutable.Map {
+    "default": 300,
+    "max": 400,
+    "min": 200,
+  },
+  "amount": 120,
+  "integrations": 10,
+}
+`;
+
+exports[`billing selectors getEquivalentRegularCurrentPlan() should return regular plan when current plan is also regular 1`] = `
+Immutable.Map {
+  "cost_per_ticket": 0.05,
+  "automation_addon_included": false,
+  "interval": "month",
+  "public": true,
+  "name": "Pro",
+  "trial_period_days": 14,
+  "currencySign": "$",
+  "order": 2,
+  "currency": "usd",
+  "free_tickets": 2000,
+  "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+  "limits": Immutable.Map {
+    "default": 300,
+    "max": 400,
+    "min": 200,
+  },
+  "amount": 100,
+  "integrations": 10,
+}
+`;
+
+exports[`billing selectors getEquivalentRegularCurrentPlan() should return regular plan when current plan is automation 1`] = `
+Immutable.Map {
+  "cost_per_ticket": 0.05,
+  "automation_addon_included": false,
+  "interval": "month",
+  "public": true,
+  "name": "Pro",
+  "trial_period_days": 14,
+  "currencySign": "$",
+  "order": 2,
+  "currency": "usd",
+  "free_tickets": 2000,
+  "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+  "limits": Immutable.Map {
+    "default": 300,
+    "max": 400,
+    "min": 200,
+  },
+  "amount": 100,
+  "integrations": 10,
+}
+`;

@@ -3,24 +3,23 @@ import {Button} from 'reactstrap'
 import {useSelector} from 'react-redux'
 import classNames from 'classnames'
 
-import {
-    getCurrentPlan,
-    hasLegacyPlan,
-} from '../../../../state/billing/selectors'
+import {hasLegacyPlan} from '../../../../state/billing/selectors'
 import {openChat} from '../../../../utils'
 
-import BillingPlanCard from './BillingPlanCard'
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import ChangePlanModal from './ChangePlanModal'
 import {getEnterprisePlanCardFeatures} from './billingPlanFeatures'
+
+import css from './BillingComparisonPlanCard.less'
+import RecurringPrices from './RecurringPrices'
 
 type Props = {
     isUpdating: boolean
     defaultIsPlanChangeModalOpen?: boolean
     onPlanChange?: () => void
 } & Omit<
-    ComponentProps<typeof BillingPlanCard>,
-    'footer' | 'headerBadge' | 'theme' | 'plan'
+    ComponentProps<typeof PlanCard>,
+    'features' | 'footer' | 'headerBadge' | 'plan' | 'planName' | 'theme'
 >
 
 export default function EnterpriseComparisonPlanCard({
@@ -32,7 +31,6 @@ export default function EnterpriseComparisonPlanCard({
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
         defaultIsPlanChangeModalOpen
     )
-    const currentPlan = useSelector(getCurrentPlan)
     const isLegacyPlan = useSelector(hasLegacyPlan)
 
     const canChoosePlan = !isUpdating
@@ -48,9 +46,13 @@ export default function EnterpriseComparisonPlanCard({
             price="Custom price"
             footer={
                 <>
+                    <RecurringPrices
+                        addOnAmount="Custom price"
+                        plan={{id: 'enterprise'}}
+                    />
                     <Button
                         aria-label={switchPlanButtonText}
-                        className={classNames({
+                        className={classNames(css.footerButton, {
                             'btn-loading': isUpdating,
                         })}
                         color="link"
@@ -64,7 +66,6 @@ export default function EnterpriseComparisonPlanCard({
                         {switchPlanButtonText}
                     </Button>
                     <ChangePlanModal
-                        currentPlan={currentPlan}
                         description={
                             <>
                                 Our Enterprise plans are perfect for teams with
@@ -100,6 +101,12 @@ export default function EnterpriseComparisonPlanCard({
                                 price="Custom price"
                                 features={getEnterprisePlanCardFeatures()}
                                 renderBody={renderBody}
+                                footer={
+                                    <RecurringPrices
+                                        addOnAmount="Custom price"
+                                        plan={{id: 'enterprise'}}
+                                    />
+                                }
                             />
                         )}
                         confirmLabel="Get in touch"

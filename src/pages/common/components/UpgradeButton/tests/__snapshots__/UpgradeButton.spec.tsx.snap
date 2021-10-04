@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UpgradeButton should display with custom props 1`] = `
+exports[`UpgradeButton should display with custom callback 1`] = `
 <div
   class="button-class"
 >
-  <a
+  <div
     class="d-flex align-items-center upgradeLink"
-    to="[object Object]"
   >
     <button
       class="upgradeButton sm invertedColors btn btn-outline-warning"
@@ -23,7 +22,37 @@ exports[`UpgradeButton should display with custom props 1`] = `
         src="test-file-stub"
       />
     </button>
-  </a>
+  </div>
+</div>
+`;
+
+exports[`UpgradeButton should display with custom props 1`] = `
+<div
+  class="button-class"
+>
+  <div
+    class="d-flex align-items-center upgradeLink"
+  >
+    <a
+      to="[object Object]"
+    >
+      <button
+        class="upgradeButton sm invertedColors btn btn-outline-warning"
+        type="button"
+      >
+        <span
+          class="mr-2 upgradeLabel sm"
+        >
+          a label
+        </span>
+        <img
+          alt="upgrade-icon"
+          class="upgradeIcon sm"
+          src="test-file-stub"
+        />
+      </button>
+    </a>
+  </div>
 </div>
 `;
 
@@ -31,25 +60,28 @@ exports[`UpgradeButton should display with default props 1`] = `
 <div
   class=""
 >
-  <a
+  <div
     class="d-flex align-items-center upgradeLink"
-    to="[object Object]"
   >
-    <button
-      class="upgradeButton btn btn-outline-warning"
-      type="button"
+    <a
+      to="[object Object]"
     >
-      <span
-        class="mr-2 upgradeLabel"
+      <button
+        class="upgradeButton btn btn-outline-warning"
+        type="button"
       >
-        Upgrade
-      </span>
-      <img
-        alt="upgrade-icon"
-        class="upgradeIcon"
-        src="test-file-stub"
-      />
-    </button>
-  </a>
+        <span
+          class="mr-2 upgradeLabel"
+        >
+          Upgrade
+        </span>
+        <img
+          alt="upgrade-icon"
+          class="upgradeIcon"
+          src="test-file-stub"
+        />
+      </button>
+    </a>
+  </div>
 </div>
 `;

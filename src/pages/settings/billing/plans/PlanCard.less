@@ -30,6 +30,12 @@
         }
     }
 
+    .planName {
+        align-self: end;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
     .headerText {
         display: flex;
         justify-content: space-between;
@@ -63,7 +69,7 @@
         --feature-icon-color: @basic;
         --feature-icon-size: 20px;
         flex-shrink: 0;
-        background-color: #edf4ff;
+        background-color: @blue1;
         width: 36px;
         height: 36px;
         border-radius: 50%;
@@ -82,7 +88,8 @@
     }
 
     .cardFooter {
-        background-color: #fff;
+        background-color: @white;
+        padding: 0;
         text-align: center;
     }
 
@@ -95,21 +102,21 @@
 
     .blueTheme {
         .planHeader {
-            color: #fff;
+            color: @white;
             background-color: @basic;
         }
     }
 
     .navyTheme {
         .planHeader {
-            color: #fff;
+            color: @white;
             background-color: @pro;
         }
     }
 
     .greenTheme {
         .planHeader {
-            color: #fff;
+            color: @white;
             background-color: @advanced;
         }
     }
@@ -117,7 +124,7 @@
     .goldTheme {
         .planHeader {
             background-color: @enterprise;
-            color: #fff;
+            color: @white;
         }
     }
 }

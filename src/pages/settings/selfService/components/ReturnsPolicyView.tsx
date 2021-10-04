@@ -12,6 +12,8 @@ import {
 } from 'reactstrap'
 import classNames from 'classnames'
 
+import {useSelector} from 'react-redux'
+
 import PageHeader from '../../../common/components/PageHeader'
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import Loader from '../../../common/components/Loader/Loader'
@@ -29,8 +31,12 @@ import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
-import {useConfigurationData} from './hooks'
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
+import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+
 import css from './ReturnsPolicyView.less'
+import {useConfigurationData} from './hooks'
 
 export const ReturnsPolicyView = () => {
     const dispatch = useAppDispatch()
@@ -40,6 +46,9 @@ export const ReturnsPolicyView = () => {
     }>()
 
     const {isLoadingConfig, configuration} = useConfigurationData()
+
+    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
 
     const [
         eligibilityWindowCondition,
@@ -169,6 +178,10 @@ export const ReturnsPolicyView = () => {
         } finally {
             setLoading(false)
         }
+    }
+
+    if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
+        return <GorgiasChatIntegrationSelfServicePaywall />
     }
 
     return (

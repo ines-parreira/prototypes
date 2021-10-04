@@ -27,6 +27,8 @@ describe('CreditCard component', () => {
         setCreditCard: jest.fn(),
         setCurrentSubscription: jest.fn(),
         updateCreditCard: jest.fn(),
+        hasAutomationAddOn: false,
+        automationAddOnAmount: 0,
     } as unknown) as ComponentProps<typeof CreditCardContainer>
 
     it('should display loader while fetching stripe SDK', () => {
@@ -56,6 +58,56 @@ describe('CreditCard component', () => {
                 currentSubscription={fromJS({
                     status: 'active',
                 })}
+            />
+        )
+        component.setState({isStripeLoaded: true})
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render billing plan card when current plan is not active', () => {
+        const component = shallow(
+            <CreditCardContainer
+                {...minProps}
+                currentPlan={fromJS({
+                    name: 'basic',
+                    currencySign: '$',
+                    amount: 1000,
+                })}
+                regularCurrentPlan={fromJS({
+                    name: 'basic',
+                    currencySign: '$',
+                    amount: 1000,
+                })}
+                currentSubscription={fromJS({
+                    status: 'past_due',
+                })}
+            />
+        )
+        component.setState({isStripeLoaded: true})
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render billing plan card with automation footer when current plan is not active and has automation add-on', () => {
+        const component = shallow(
+            <CreditCardContainer
+                {...minProps}
+                currentPlan={fromJS({
+                    name: 'basic-automation',
+                    currencySign: '$',
+                    amount: 1000,
+                    automation_addon_included: true,
+                })}
+                currentSubscription={fromJS({
+                    status: 'past_due',
+                })}
+                regularCurrentPlan={fromJS({
+                    name: 'basic',
+                    currencySign: '$',
+                    amount: 800,
+                    automation_addon_included: true,
+                })}
+                hasAutomationAddOn={true}
+                automationAddOnAmount={200}
             />
         )
         component.setState({isStripeLoaded: true})

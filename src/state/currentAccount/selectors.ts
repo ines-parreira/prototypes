@@ -75,6 +75,18 @@ export const isTrialing = createSelector<RootState, boolean, Map<any, any>>(
     (state) => state.get('status') === 'trialing'
 )
 
+// see specs on automation add-on pricing https://linear.app/gorgias/issue/COR-1252#comment-7d58ba65
+// TODO: change date once the exact release is announced
+export const hasAutomationLegacyFeatures = createSelector<
+    RootState,
+    boolean,
+    Map<any, any>
+>(getCurrentAccountState, (state) =>
+    moment
+        .utc(state.get('created_datetime'))
+        .isBefore(moment.utc('2021-10-04T00:00:00Z'))
+)
+
 export const hasCreditCard = createSelector<RootState, boolean, Map<any, any>>(
     getCurrentAccountMeta,
     (state) => !!state.get('hasCreditCard')

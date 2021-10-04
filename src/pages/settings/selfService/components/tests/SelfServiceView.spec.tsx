@@ -82,6 +82,15 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 
 describe('<SelfServiceView/>', () => {
     const defaultState = {
+        currentAccount: fromJS({
+            features: {
+                automation_return_flow: {enabled: true},
+                automation_cancellations_flow: {enabled: true},
+                automation_track_order_flow: {enabled: true},
+                automation_report_issue_flow: {enabled: true},
+            },
+            created_datetime: '2021-08-01T00:00:00Z',
+        }),
         entities: {
             macros: {},
             rules: {},
@@ -93,30 +102,6 @@ describe('<SelfServiceView/>', () => {
             helpCenters: {},
             helpCenterArticles: {},
             selfServiceConfigurations: {},
-        },
-        ui: {
-            editor: {
-                isEditingLink: false,
-            },
-            stats: {
-                fetchingMap: {},
-            },
-            ticketNavbar: {
-                optimisticAccountSettings: {
-                    views: {},
-                    view_sections: {},
-                },
-                optimisticUserSettings: {
-                    views: {},
-                    view_sections: {},
-                },
-            },
-            views: {
-                activeViewId: 0,
-            },
-            selfServiceConfigurations: {
-                loading: false,
-            },
         },
         integrations: fromJS({}),
     }

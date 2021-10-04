@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationSection /> should render 1`] = `
+<div
+  class="card automation-card col-lg-4 card"
+>
+  <div
+    class="card-title card-title"
+  >
+    Automation
+    <div
+      class="amount automation-amount"
+    >
+      <b>
+        $20
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+  <div
+    class="card-body automation-card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        Leverage the power of 
+        <b>
+          self-service
+        </b>
+         and activate the new customized report issue workflows!
+      </p>
+    </div>
+    <div
+      class="upgrade-button"
+    >
+      <div
+        class="d-flex align-items-center upgradeLink"
+      >
+        <button
+          class="upgradeButton btn btn-outline-warning"
+          type="button"
+        >
+          <span
+            class="mr-2 upgradeLabel"
+          >
+            Subscribe
+          </span>
+          <img
+            alt="upgrade-icon"
+            class="upgradeIcon"
+            src="test-file-stub"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationSection /> should render for customers already with full add-on features 1`] = `
+<div
+  class="card automation-card col-lg-4 card"
+>
+  <div
+    class="card-title card-title"
+  >
+    Automation
+  </div>
+  <div
+    class="card-body automation-card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        You have access to
+         
+        <b>
+          <a
+            to="/app/settings/self-service"
+          >
+            self-service
+          </a>
+        </b>
+        ! You can activate:
+      </p>
+      <div>
+        <ul>
+          <li>
+            Tracking order flows
+          </li>
+          <li>
+            Custom report issue workflows
+          </li>
+          <li>
+            Return & Cancellations flows
+          </li>
+        </ul>
+      </div>
+    </div>
+    <button
+      class="align-self-end btn btn-secondary"
+      type="button"
+    >
+      Manage Add-On
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<AutomationSection /> should render for customers already with legacy add-on features 1`] = `
+<div
+  class="card automation-card col-lg-4 card"
+>
+  <div
+    class="card-title card-title"
+  >
+    Automation
+    <div
+      class="amount automation-amount"
+    >
+      <b>
+        $20
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+  <div
+    class="card-body automation-card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        Leverage the power of 
+        <b>
+          self-service
+        </b>
+         and activate the new customized report issue workflows!
+      </p>
+    </div>
+    <div
+      class="upgrade-button"
+    >
+      <div
+        class="d-flex align-items-center upgradeLink"
+      >
+        <button
+          class="upgradeButton btn btn-outline-warning"
+          type="button"
+        >
+          <span
+            class="mr-2 upgradeLabel"
+          >
+            Subscribe
+          </span>
+          <img
+            alt="upgrade-icon"
+            class="upgradeIcon"
+            src="test-file-stub"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationSection /> should render for trialing customers 1`] = `
+<div
+  class="card automation-card col-lg-4 card"
+>
+  <div
+    class="card-title card-title"
+  >
+    Automation
+    <div
+      class="amount automation-amount"
+    >
+      <b>
+        $20
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+  <div
+    class="card-body automation-card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        Leverage the power of 
+        <b>
+          self-service
+        </b>
+         and activate the new customized report issue workflows!
+      </p>
+    </div>
+    <div
+      class="upgrade-button"
+    >
+      <div
+        class="d-flex align-items-center upgradeLink"
+      >
+        <a
+          to="[object Object]"
+        >
+          <button
+            class="upgradeButton btn btn-outline-warning"
+            type="button"
+          >
+            <span
+              class="mr-2 upgradeLabel"
+            >
+              Subscribe
+            </span>
+            <img
+              alt="upgrade-icon"
+              class="upgradeIcon"
+              src="test-file-stub"
+            />
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;

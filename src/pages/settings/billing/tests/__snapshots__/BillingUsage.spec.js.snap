@@ -1,1187 +1,458 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BillingUsage/> should display loader 1`] = `
-<BillingUsage
-  currentAccount={Immutable.Map {}}
-  currentUsage={Immutable.Map {}}
-  fetchCurrentUsage={[Function]}
+exports[`<BillingUsage/> should display danger progress bar 1`] = `
+<div
+  class="usage-progress progress"
 >
-  <Loader
-    inline={false}
-    minHeight="500px"
-    size="40px"
+  <div
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="63"
+    class="progress-bar bg-primary"
+    role="progressbar"
+    style="width: 63%;"
+  />
+  <div
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="37"
+    class="progress-bar bg-danger"
+    role="progressbar"
+    style="width: 37%;"
+  />
+</div>
+`;
+
+exports[`<BillingUsage/> should display loader 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="inner"
+    style="min-height: 500px;"
   >
-    <div
-      className="container"
-    >
-      <div
-        className="inner"
-        style={
-          Object {
-            "minHeight": "500px",
-          }
-        }
-      >
-        <i
-          className="icon-custom icon-circle-o-notch md-spin"
-          style={
-            Object {
-              "fontSize": "40px",
-            }
-          }
-        />
-      </div>
-    </div>
-  </Loader>
-</BillingUsage>
+    <i
+      class="icon-custom icon-circle-o-notch md-spin"
+      style="font-size: 40px;"
+    />
+  </div>
+</div>
 `;
 
 exports[`<BillingUsage/> should display price 1`] = `
-<BillingUsage
-  accountHasLegacyPlan={true}
-  currentAccount={
-    Immutable.Map {
-      "settings": Immutable.List [
-        Immutable.Map {
-          "id": 2,
-          "type": "business-hours",
-          "data": Immutable.Map {
-            "business_hours": Immutable.List [
-              Immutable.Map {
-                "days": "1,2,3,4,5",
-                "from_time": "00:00",
-                "to_time": "01:00",
-              },
-              Immutable.Map {
-                "days": "7",
-                "from_time": "07:00",
-                "to_time": "22:00",
-              },
-            ],
-            "timezone": "US/Pacific",
-          },
-        },
-      ],
-      "current_subscription": Immutable.Map {
-        "trial_start_datetime": "2017-08-23T01:38:53+00:00",
-        "trial_end_datetime": "2017-09-06T01:38:53+00:00",
-        "plan": "team-usd-1",
-        "status": "trialing",
-        "start_datetime": "2017-08-23T01:38:53+00:00",
-      },
-      "domain": "acme",
-      "meta": Immutable.Map {},
-      "deactivated_datetime": null,
-      "stripe_id": "cus_BGKUKAzUbK1bix",
-      "user_id": 1,
-      "created_datetime": "2017-08-23T01:38:52.479339+00:00",
-      "status": Immutable.Map {
-        "status": "active",
-      },
-      "features": Immutable.Map {
-        "view_sharing": Immutable.Map {
-          "enabled": true,
-        },
-        "phone_integration": Immutable.Map {
-          "enabled": true,
-          "limit": 3,
-        },
-        "automation_cancellations_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "revenue_statistics": Immutable.Map {
-          "enabled": true,
-        },
-        "facebook_comment": Immutable.Map {
-          "enabled": true,
-        },
-        "satisfaction_surveys": Immutable.Map {
-          "enabled": true,
-        },
-        "user_roles": Immutable.Map {
-          "enabled": true,
-        },
-        "magento_integration": Immutable.Map {
-          "enabled": true,
-        },
-        "overview_live_statistics": Immutable.Map {
-          "enabled": true,
-        },
-        "instagram_comment": Immutable.Map {
-          "enabled": true,
-        },
-        "yotpo_integration": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_return_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "instagram_dm": Immutable.Map {
-          "enabled": true,
-        },
-        "teams": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_report_issue_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_self_service_statistics": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_track_order_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "chat_campaigns": Immutable.Map {
-          "enabled": true,
-        },
-        "auto_assignment": Immutable.Map {
-          "enabled": true,
-        },
-        "users_live_statistics": Immutable.Map {
-          "enabled": true,
-        },
-      },
-    }
-  }
-  currentPlan={
-    Immutable.Map {
-      "name": "Pro",
-      "free_tickets": 10,
-      "integrations": 5,
-      "interval": "month",
-    }
-  }
-  currentSubscription={
-    Immutable.Map {
-      "start_datetime": "2018-01-01T10:10:10.480Z",
-    }
-  }
-  currentUsage={
-    Immutable.Map {
-      "meta": Immutable.Map {
-        "start_datetime": "2010-10-10",
-        "end_datetime": "2010-10-11",
-      },
-      "data": Immutable.Map {
-        "cost": 10,
-        "tickets": 20,
-      },
-    }
-  }
-  fetchCurrentUsage={[Function]}
+<div
+  class="mb-5"
 >
+  <h4>
+    <i
+      class="material-icons"
+    >
+      insert_chart
+    </i>
+     Usage & Plans
+  </h4>
   <div
-    className="mb-5"
+    class="card-group card-group"
   >
-    <Component>
-      <div>
-        Legacy Plan Banner Mock
-      </div>
-    </Component>
-    <h4>
-      <i
-        className="material-icons"
-      >
-        insert_chart
-      </i>
-       Usage & Plans
-    </h4>
-    <CardGroup
-      className="mb-2"
-      tag="div"
+    <div
+      class="card-current-plan card card"
     >
       <div
-        className="mb-2 card-group"
+        class="card-title current-plan-title pro card-title"
       >
-        <Card
-          className="current-plan pro legacy"
-          tag="div"
+        <div>
+          Pro monthly plan
+        </div>
+        <span
+          class="currentPlanBadge badge badge-info"
         >
-          <div
-            className="current-plan pro legacy card"
-          >
-            <CardBody
-              tag="div"
-            >
-              <div
-                className="card-body"
-              >
-                <LegacyPlanBadge>
-                  <div
-                    className="d-inline-flex cursor-pointer"
-                  >
-                    <Badge
-                      className="d-inline-flex flex-row"
-                      color="danger"
-                      pill={false}
-                      tag="span"
-                    >
-                      <span
-                        className="d-inline-flex flex-row badge badge-danger"
-                      >
-                        <i
-                          className="material-icons"
-                        >
-                          warning
-                        </i>
-                        <div
-                          className="ml-1"
-                        >
-                          LEGACY PLAN
-                        </div>
-                      </span>
-                    </Badge>
-                  </div>
-                </LegacyPlanBadge>
-                <h4>
-                  Pro monthly plan
-                </h4>
-                <div>
-                  Your current subscription started on
-                   
-                  <strong>
-                    Jan 01
-                  </strong>
-                  .
-                </div>
-              </div>
-            </CardBody>
-          </div>
-        </Card>
-        <Card
-          className="text-center"
-          tag="div"
-        >
-          <div
-            className="text-center card"
-          >
-            <CardBody
-              tag="div"
-            >
-              <div
-                className="card-body"
-              >
-                <Row
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="row"
-                  >
-                    <Col
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="col-sm-3"
-                      >
-                        <div>
-                          <div
-                            className="usage-numbers"
-                          >
-                            20
-                            /
-                            10
-                             tickets
-                             
-                            <a
-                              id="current-period"
-                            >
-                              <i
-                                className="material-icons text-muted"
-                              >
-                                info_outline
-                              </i>
-                            </a>
-                          </div>
-                          <UncontrolledTooltip
-                            target="current-period"
-                          >
-                            <Tooltip
-                              autohide={true}
-                              isOpen={false}
-                              placement="top"
-                              placementPrefix="bs-tooltip"
-                              target="current-period"
-                              toggle={[Function]}
-                              trigger="hover focus"
-                            >
-                              <TooltipPopoverWrapper
-                                autohide={true}
-                                delay={
-                                  Object {
-                                    "hide": 50,
-                                    "show": 0,
-                                  }
-                                }
-                                fade={true}
-                                hideArrow={false}
-                                innerClassName="tooltip-inner"
-                                isOpen={false}
-                                placement="top"
-                                placementPrefix="bs-tooltip"
-                                popperClassName="tooltip show"
-                                target="current-period"
-                                toggle={[Function]}
-                                trigger="hover focus"
-                              />
-                            </Tooltip>
-                          </UncontrolledTooltip>
-                          <Progress
-                            barStyle={Object {}}
-                            className="usage-progress"
-                            max={100}
-                            min={0}
-                            multi={true}
-                            style={Object {}}
-                            tag="div"
-                            value={0}
-                          >
-                            <div
-                              className="usage-progress progress"
-                              style={Object {}}
-                            >
-                              <Progress
-                                bar={true}
-                                barStyle={Object {}}
-                                color="primary"
-                                max={100}
-                                min={0}
-                                style={Object {}}
-                                tag="div"
-                                value={50}
-                              >
-                                <div
-                                  aria-valuemax={100}
-                                  aria-valuemin={0}
-                                  aria-valuenow={50}
-                                  className="progress-bar bg-primary"
-                                  role="progressbar"
-                                  style={
-                                    Object {
-                                      "width": "50%",
-                                    }
-                                  }
-                                />
-                              </Progress>
-                              <Progress
-                                bar={true}
-                                barStyle={Object {}}
-                                color="danger"
-                                max={100}
-                                min={0}
-                                style={Object {}}
-                                tag="div"
-                                value={50}
-                              >
-                                <div
-                                  aria-valuemax={100}
-                                  aria-valuemin={0}
-                                  aria-valuenow={50}
-                                  className="progress-bar bg-danger"
-                                  role="progressbar"
-                                  style={
-                                    Object {
-                                      "width": "50%",
-                                    }
-                                  }
-                                />
-                              </Progress>
-                            </div>
-                          </Progress>
-                          <div>
-                            $
-                            10
-                             extra cost
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="col-sm-3"
-                      >
-                        <div>
-                          <div
-                            className="usage-numbers"
-                          >
-                            0
-                            /
-                            5
-                             
-                            <Link
-                              to="/app/settings/integrations"
-                            >
-                              <a
-                                to="/app/settings/integrations"
-                              >
-                                integrations
-                              </a>
-                            </Link>
-                             
-                            <a
-                              id="integrations-consumed"
-                            >
-                              <i
-                                className="material-icons text-muted"
-                              >
-                                info_outline
-                              </i>
-                            </a>
-                            <UncontrolledTooltip
-                              target="integrations-consumed"
-                            >
-                              <Tooltip
-                                autohide={true}
-                                isOpen={false}
-                                placement="top"
-                                placementPrefix="bs-tooltip"
-                                target="integrations-consumed"
-                                toggle={[Function]}
-                                trigger="hover focus"
-                              >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
-                                  delay={
-                                    Object {
-                                      "hide": 50,
-                                      "show": 0,
-                                    }
-                                  }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
-                                  placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
-                                  target="integrations-consumed"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
-                              </Tooltip>
-                            </UncontrolledTooltip>
-                          </div>
-                          <Progress
-                            barStyle={Object {}}
-                            className="usage-numbers"
-                            max={100}
-                            min={0}
-                            multi={true}
-                            style={Object {}}
-                            tag="div"
-                            value={0}
-                          >
-                            <div
-                              className="usage-numbers progress"
-                              style={Object {}}
-                            >
-                              <Progress
-                                bar={true}
-                                barStyle={Object {}}
-                                color="primary"
-                                max={100}
-                                min={0}
-                                style={Object {}}
-                                tag="div"
-                                value={100}
-                              >
-                                <div
-                                  aria-valuemax={100}
-                                  aria-valuemin={0}
-                                  aria-valuenow={100}
-                                  className="progress-bar bg-primary"
-                                  role="progressbar"
-                                  style={
-                                    Object {
-                                      "width": "100%",
-                                    }
-                                  }
-                                />
-                              </Progress>
-                            </div>
-                          </Progress>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col
-                      className="plan-usage-reset"
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="plan-usage-reset col-sm-3"
-                      >
-                        <div>
-                          <strong>
-                            Usage reset on:
-                          </strong>
-                        </div>
-                        <div>
-                          Oct 11
-                        </div>
-                      </div>
-                    </Col>
-                    <Col
-                      className="plan-button"
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="plan-button col-sm-3"
-                      >
-                        <Button
-                          color="primary"
-                          onClick={[Function]}
-                          tag="button"
-                        >
-                          <button
-                            aria-label={null}
-                            className="btn btn-primary"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            Update plan
-                          </button>
-                        </Button>
-                      </div>
-                    </Col>
-                  </div>
-                </Row>
-              </div>
-            </CardBody>
-          </div>
-        </Card>
+          CURRENT PLAN
+        </span>
       </div>
-    </CardGroup>
-    <p>
-      If you have any questions or if you want to unsubscribe, please contact us at
-       
-      <a
-        href="mailto:support@gorgias.com"
+      <div
+        class="card-body card-body"
       >
-        support@gorgias.com
-      </a>
-       
-      or
-       
-      <a
-        href=""
-        onClick={[Function]}
+        <div>
+          <div
+            class="ticket-numbers"
+          >
+            1,000
+            /
+            2,000
+             tickets
+             
+            <a
+              id="current-period"
+            >
+              <i
+                class="material-icons text-muted"
+              >
+                info_outline
+              </i>
+            </a>
+          </div>
+          <div
+            class="usage-progress progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="50"
+              class="progress-bar bg-primary"
+              role="progressbar"
+              style="width: 50%;"
+            />
+          </div>
+          <div
+            class="flex justify-content-between"
+          >
+            <div>
+              $
+              10
+               extra cost
+            </div>
+            <div>
+              <strong>
+                Usage reset on:
+              </strong>
+               
+              Oct 11
+            </div>
+          </div>
+        </div>
+        <div
+          class="integration-numbers"
+        >
+          0
+          /
+          200
+           
+          <b>
+            <a
+              to="/app/settings/integrations"
+            >
+              integrations
+            </a>
+          </b>
+           
+          <a
+            id="integrations-consumed"
+          >
+            <i
+              class="material-icons text-muted"
+            >
+              info_outline
+            </i>
+          </a>
+        </div>
+        <div
+          class="description"
+        >
+          <div>
+            Your current subscription started on
+             
+            <strong>
+              Aug 22
+            </strong>
+            .
+          </div>
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Update plan
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="card automation-card col-lg-4 card"
+    >
+      <div
+        class="card-title card-title"
       >
-        Live Chat
-      </a>
-      .
-    </p>
+        Automation
+      </div>
+      <div
+        class="card-body automation-card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            Leverage the power of 
+            <b>
+              self-service
+            </b>
+             and activate the new customized report issue workflows!
+          </p>
+        </div>
+        <div
+          class="upgrade-button"
+        >
+          <div
+            class="d-flex align-items-center upgradeLink"
+          >
+            <button
+              class="upgradeButton btn btn-outline-warning"
+              type="button"
+            >
+              <span
+                class="mr-2 upgradeLabel"
+              >
+                Subscribe
+              </span>
+              <img
+                alt="upgrade-icon"
+                class="upgradeIcon"
+                src="test-file-stub"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</BillingUsage>
+  <p>
+    If you have any questions or if you want to unsubscribe, please contact us at
+     
+    <a
+      href="mailto:support@gorgias.com"
+    >
+      support@gorgias.com
+    </a>
+     
+    or
+     
+    <a
+      href=""
+    >
+      Live Chat
+    </a>
+    .
+  </p>
+</div>
+`;
+
+exports[`<BillingUsage/> should display tooltip 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  Number of tickets included in your current plan VS total number of tickets used between:
+  <br />
+  Oct 10
+   and 
+  Oct 11
+</div>
+`;
+
+exports[`<BillingUsage/> should display warning progress bar 1`] = `
+<div
+  class="usage-progress progress"
+>
+  <div
+    aria-valuemax="100"
+    aria-valuemin="0"
+    aria-valuenow="100"
+    class="progress-bar bg-warning"
+    role="progressbar"
+    style="width: 100%;"
+  />
+</div>
 `;
 
 exports[`<BillingUsage/> should load with empty props 1`] = `
-<BillingUsage
-  accountHasLegacyPlan={true}
-  activeIntegrations={Immutable.List []}
-  currentAccount={
-    Immutable.Map {
-      "settings": Immutable.List [
-        Immutable.Map {
-          "id": 2,
-          "type": "business-hours",
-          "data": Immutable.Map {
-            "business_hours": Immutable.List [
-              Immutable.Map {
-                "days": "1,2,3,4,5",
-                "from_time": "00:00",
-                "to_time": "01:00",
-              },
-              Immutable.Map {
-                "days": "7",
-                "from_time": "07:00",
-                "to_time": "22:00",
-              },
-            ],
-            "timezone": "US/Pacific",
-          },
-        },
-      ],
-      "current_subscription": Immutable.Map {
-        "trial_start_datetime": "2017-08-23T01:38:53+00:00",
-        "trial_end_datetime": "2017-09-06T01:38:53+00:00",
-        "plan": "team-usd-1",
-        "status": "trialing",
-        "start_datetime": "2017-08-23T01:38:53+00:00",
-      },
-      "domain": "acme",
-      "meta": Immutable.Map {},
-      "deactivated_datetime": null,
-      "stripe_id": "cus_BGKUKAzUbK1bix",
-      "user_id": 1,
-      "created_datetime": "2017-08-23T01:38:52.479339+00:00",
-      "status": Immutable.Map {
-        "status": "active",
-      },
-      "features": Immutable.Map {
-        "view_sharing": Immutable.Map {
-          "enabled": true,
-        },
-        "phone_integration": Immutable.Map {
-          "enabled": true,
-          "limit": 3,
-        },
-        "automation_cancellations_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "revenue_statistics": Immutable.Map {
-          "enabled": true,
-        },
-        "facebook_comment": Immutable.Map {
-          "enabled": true,
-        },
-        "satisfaction_surveys": Immutable.Map {
-          "enabled": true,
-        },
-        "user_roles": Immutable.Map {
-          "enabled": true,
-        },
-        "magento_integration": Immutable.Map {
-          "enabled": true,
-        },
-        "overview_live_statistics": Immutable.Map {
-          "enabled": true,
-        },
-        "instagram_comment": Immutable.Map {
-          "enabled": true,
-        },
-        "yotpo_integration": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_return_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "instagram_dm": Immutable.Map {
-          "enabled": true,
-        },
-        "teams": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_report_issue_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_self_service_statistics": Immutable.Map {
-          "enabled": true,
-        },
-        "automation_track_order_flow": Immutable.Map {
-          "enabled": true,
-        },
-        "chat_campaigns": Immutable.Map {
-          "enabled": true,
-        },
-        "auto_assignment": Immutable.Map {
-          "enabled": true,
-        },
-        "users_live_statistics": Immutable.Map {
-          "enabled": true,
-        },
-      },
-    }
-  }
-  currentPlan={
-    Immutable.Map {
-      "name": "Pro",
-      "free_tickets": 10,
-      "integrations": 5,
-      "interval": "month",
-    }
-  }
-  currentSubscription={
-    Immutable.Map {
-      "start_datetime": "2018-01-01T10:10:10.480Z",
-    }
-  }
-  currentUsage={
-    Immutable.Map {
-      "meta": Immutable.Map {
-        "start_datetime": "2010-10-10",
-        "end_datetime": "2010-10-11",
-      },
-    }
-  }
-  fetchCurrentUsage={[Function]}
+<div
+  class="mb-5"
 >
+  <h4>
+    <i
+      class="material-icons"
+    >
+      insert_chart
+    </i>
+     Usage & Plans
+  </h4>
   <div
-    className="mb-5"
+    class="card-group card-group"
   >
-    <Component>
-      <div>
-        Legacy Plan Banner Mock
-      </div>
-    </Component>
-    <h4>
-      <i
-        className="material-icons"
-      >
-        insert_chart
-      </i>
-       Usage & Plans
-    </h4>
-    <CardGroup
-      className="mb-2"
-      tag="div"
+    <div
+      class="card-current-plan card card"
     >
       <div
-        className="mb-2 card-group"
+        class="card-title current-plan-title pro card-title"
       >
-        <Card
-          className="current-plan pro legacy"
-          tag="div"
+        <div>
+          Pro monthly plan
+        </div>
+        <span
+          class="currentPlanBadge badge badge-info"
         >
-          <div
-            className="current-plan pro legacy card"
-          >
-            <CardBody
-              tag="div"
-            >
-              <div
-                className="card-body"
-              >
-                <LegacyPlanBadge>
-                  <div
-                    className="d-inline-flex cursor-pointer"
-                  >
-                    <Badge
-                      className="d-inline-flex flex-row"
-                      color="danger"
-                      pill={false}
-                      tag="span"
-                    >
-                      <span
-                        className="d-inline-flex flex-row badge badge-danger"
-                      >
-                        <i
-                          className="material-icons"
-                        >
-                          warning
-                        </i>
-                        <div
-                          className="ml-1"
-                        >
-                          LEGACY PLAN
-                        </div>
-                      </span>
-                    </Badge>
-                  </div>
-                </LegacyPlanBadge>
-                <h4>
-                  Pro monthly plan
-                </h4>
-                <div>
-                  Your current subscription started on
-                   
-                  <strong>
-                    Jan 01
-                  </strong>
-                  .
-                </div>
-              </div>
-            </CardBody>
-          </div>
-        </Card>
-        <Card
-          className="text-center"
-          tag="div"
-        >
-          <div
-            className="text-center card"
-          >
-            <CardBody
-              tag="div"
-            >
-              <div
-                className="card-body"
-              >
-                <Row
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="row"
-                  >
-                    <Col
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="col-sm-3"
-                      >
-                        <div>
-                          <div
-                            className="usage-numbers"
-                          >
-                            0
-                            /
-                            10
-                             tickets
-                             
-                            <a
-                              id="current-period"
-                            >
-                              <i
-                                className="material-icons text-muted"
-                              >
-                                info_outline
-                              </i>
-                            </a>
-                          </div>
-                          <UncontrolledTooltip
-                            target="current-period"
-                          >
-                            <Tooltip
-                              autohide={true}
-                              isOpen={false}
-                              placement="top"
-                              placementPrefix="bs-tooltip"
-                              target="current-period"
-                              toggle={[Function]}
-                              trigger="hover focus"
-                            >
-                              <TooltipPopoverWrapper
-                                autohide={true}
-                                delay={
-                                  Object {
-                                    "hide": 50,
-                                    "show": 0,
-                                  }
-                                }
-                                fade={true}
-                                hideArrow={false}
-                                innerClassName="tooltip-inner"
-                                isOpen={false}
-                                placement="top"
-                                placementPrefix="bs-tooltip"
-                                popperClassName="tooltip show"
-                                target="current-period"
-                                toggle={[Function]}
-                                trigger="hover focus"
-                              />
-                            </Tooltip>
-                          </UncontrolledTooltip>
-                          <Progress
-                            barStyle={Object {}}
-                            className="usage-progress"
-                            max={100}
-                            min={0}
-                            multi={true}
-                            style={Object {}}
-                            tag="div"
-                            value={0}
-                          >
-                            <div
-                              className="usage-progress progress"
-                              style={Object {}}
-                            >
-                              <Progress
-                                bar={true}
-                                barStyle={Object {}}
-                                color="primary"
-                                max={100}
-                                min={0}
-                                style={Object {}}
-                                tag="div"
-                                value={100}
-                              >
-                                <div
-                                  aria-valuemax={100}
-                                  aria-valuemin={0}
-                                  aria-valuenow={100}
-                                  className="progress-bar bg-primary"
-                                  role="progressbar"
-                                  style={
-                                    Object {
-                                      "width": "100%",
-                                    }
-                                  }
-                                />
-                              </Progress>
-                            </div>
-                          </Progress>
-                          <div>
-                            $
-                            0
-                             extra cost
-                          </div>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="col-sm-3"
-                      >
-                        <div>
-                          <div
-                            className="usage-numbers"
-                          >
-                            0
-                            /
-                            5
-                             
-                            <Link
-                              to="/app/settings/integrations"
-                            >
-                              <a
-                                to="/app/settings/integrations"
-                              >
-                                integrations
-                              </a>
-                            </Link>
-                             
-                            <a
-                              id="integrations-consumed"
-                            >
-                              <i
-                                className="material-icons text-muted"
-                              >
-                                info_outline
-                              </i>
-                            </a>
-                            <UncontrolledTooltip
-                              target="integrations-consumed"
-                            >
-                              <Tooltip
-                                autohide={true}
-                                isOpen={false}
-                                placement="top"
-                                placementPrefix="bs-tooltip"
-                                target="integrations-consumed"
-                                toggle={[Function]}
-                                trigger="hover focus"
-                              >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
-                                  delay={
-                                    Object {
-                                      "hide": 50,
-                                      "show": 0,
-                                    }
-                                  }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
-                                  placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
-                                  target="integrations-consumed"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
-                              </Tooltip>
-                            </UncontrolledTooltip>
-                          </div>
-                          <Progress
-                            barStyle={Object {}}
-                            className="usage-numbers"
-                            max={100}
-                            min={0}
-                            multi={true}
-                            style={Object {}}
-                            tag="div"
-                            value={0}
-                          >
-                            <div
-                              className="usage-numbers progress"
-                              style={Object {}}
-                            >
-                              <Progress
-                                bar={true}
-                                barStyle={Object {}}
-                                color="primary"
-                                max={100}
-                                min={0}
-                                style={Object {}}
-                                tag="div"
-                                value={100}
-                              >
-                                <div
-                                  aria-valuemax={100}
-                                  aria-valuemin={0}
-                                  aria-valuenow={100}
-                                  className="progress-bar bg-primary"
-                                  role="progressbar"
-                                  style={
-                                    Object {
-                                      "width": "100%",
-                                    }
-                                  }
-                                />
-                              </Progress>
-                            </div>
-                          </Progress>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col
-                      className="plan-usage-reset"
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="plan-usage-reset col-sm-3"
-                      >
-                        <div>
-                          <strong>
-                            Usage reset on:
-                          </strong>
-                        </div>
-                        <div>
-                          Oct 11
-                        </div>
-                      </div>
-                    </Col>
-                    <Col
-                      className="plan-button"
-                      sm="3"
-                      tag="div"
-                      widths={
-                        Array [
-                          "xs",
-                          "sm",
-                          "md",
-                          "lg",
-                          "xl",
-                        ]
-                      }
-                    >
-                      <div
-                        className="plan-button col-sm-3"
-                      >
-                        <Button
-                          color="primary"
-                          onClick={[Function]}
-                          tag="button"
-                        >
-                          <button
-                            aria-label={null}
-                            className="btn btn-primary"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            Update plan
-                          </button>
-                        </Button>
-                      </div>
-                    </Col>
-                  </div>
-                </Row>
-              </div>
-            </CardBody>
-          </div>
-        </Card>
+          CURRENT PLAN
+        </span>
       </div>
-    </CardGroup>
-    <p>
-      If you have any questions or if you want to unsubscribe, please contact us at
-       
-      <a
-        href="mailto:support@gorgias.com"
+      <div
+        class="card-body card-body"
       >
-        support@gorgias.com
-      </a>
-       
-      or
-       
-      <a
-        href=""
-        onClick={[Function]}
+        <div>
+          <div
+            class="ticket-numbers"
+          >
+            1,000
+            /
+            2,000
+             tickets
+             
+            <a
+              id="current-period"
+            >
+              <i
+                class="material-icons text-muted"
+              >
+                info_outline
+              </i>
+            </a>
+          </div>
+          <div
+            class="usage-progress progress"
+          >
+            <div
+              aria-valuemax="100"
+              aria-valuemin="0"
+              aria-valuenow="50"
+              class="progress-bar bg-primary"
+              role="progressbar"
+              style="width: 50%;"
+            />
+          </div>
+          <div
+            class="flex justify-content-between"
+          >
+            <div>
+              $
+              10
+               extra cost
+            </div>
+            <div>
+              <strong>
+                Usage reset on:
+              </strong>
+               
+              Oct 11
+            </div>
+          </div>
+        </div>
+        <div
+          class="integration-numbers"
+        >
+          0
+          /
+          200
+           
+          <b>
+            <a
+              to="/app/settings/integrations"
+            >
+              integrations
+            </a>
+          </b>
+           
+          <a
+            id="integrations-consumed"
+          >
+            <i
+              class="material-icons text-muted"
+            >
+              info_outline
+            </i>
+          </a>
+        </div>
+        <div
+          class="description"
+        >
+          <div>
+            Your current subscription started on
+             
+            <strong>
+              Aug 22
+            </strong>
+            .
+          </div>
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Update plan
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="card automation-card col-lg-4 card"
+    >
+      <div
+        class="card-title card-title"
       >
-        Live Chat
-      </a>
-      .
-    </p>
+        Automation
+      </div>
+      <div
+        class="card-body automation-card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            Leverage the power of 
+            <b>
+              self-service
+            </b>
+             and activate the new customized report issue workflows!
+          </p>
+        </div>
+        <div
+          class="upgrade-button"
+        >
+          <div
+            class="d-flex align-items-center upgradeLink"
+          >
+            <button
+              class="upgradeButton btn btn-outline-warning"
+              type="button"
+            >
+              <span
+                class="mr-2 upgradeLabel"
+              >
+                Subscribe
+              </span>
+              <img
+                alt="upgrade-icon"
+                class="upgradeIcon"
+                src="test-file-stub"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</BillingUsage>
+  <p>
+    If you have any questions or if you want to unsubscribe, please contact us at
+     
+    <a
+      href="mailto:support@gorgias.com"
+    >
+      support@gorgias.com
+    </a>
+     
+    or
+     
+    <a
+      href=""
+    >
+      Live Chat
+    </a>
+    .
+  </p>
+</div>
 `;

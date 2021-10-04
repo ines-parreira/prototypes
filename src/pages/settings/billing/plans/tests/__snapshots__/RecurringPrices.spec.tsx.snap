@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RecurringPrices /> should render a string as amount 1`] = `
+<div>
+  <label
+    class="row automationRow form-check-label"
+    for="876"
+  >
+    <div
+      class="align-middle addOnName checkboxLabel"
+    >
+      <span
+        id="automation-text-876"
+      >
+        Automation
+      </span>
+    </div>
+    <i>
+      Amount
+    </i>
+  </label>
+  <div
+    class="row"
+  >
+    <div
+      class="mx-auto font-weight-normal font-italic"
+    >
+      Amount
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RecurringPrices /> should render formatted numbers as amount 1`] = `
+<div>
+  <label
+    class="row automationRow form-check-label"
+    for="876"
+  >
+    <input
+      class="form-check-input checkbox form-check-input"
+      id="876"
+      type="checkbox"
+    />
+    <div
+      class="align-middle addOnName checkboxLabel"
+    >
+      <span
+        id="automation-text-876"
+      >
+        Automation
+      </span>
+    </div>
+    <div
+      class="amount amount amountDisabled"
+    >
+      <b>
+        $45,612
+      </b>
+       
+      / 
+      month
+    </div>
+  </label>
+  <div
+    class="row"
+  >
+    <div>
+      Total
+    </div>
+    <div
+      class="amount amount"
+    >
+      <b>
+        $40,000
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RecurringPrices /> should render not editable variant 1`] = `
+<div>
+  <div
+    class="row automationRow"
+  >
+    <div
+      class="align-middle addOnName"
+    >
+      Automation
+    </div>
+    <div
+      class="amount amount"
+    >
+      <b>
+        $2,000
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div>
+      Total
+    </div>
+    <div
+      class="amount amount"
+    >
+      <b>
+        $42,000
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+</div>
+`;

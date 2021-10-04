@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {MouseEvent} from 'react'
 import {
     Alert,
     Breadcrumb,
@@ -9,11 +9,21 @@ import {
     Table,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
+import {useSelector} from 'react-redux'
+
+import classnames from 'classnames'
 
 import Tooltip from '../../../common/components/Tooltip'
 import PageHeader from '../../../common/components/PageHeader'
 import Loader from '../../../common/components/Loader/Loader'
 import {PolicyEnum} from '../../../../models/selfServiceConfiguration/types'
+import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
+import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+
+import upgradeIcon from '../../../../../img/icons/upgrade-icon.svg'
+
+import {openChat} from '../../../../utils'
 
 import {PolicyRow} from './PolicyRow'
 import {useConfigurationData} from './hooks'
@@ -25,6 +35,13 @@ export const PreferencesView = () => {
         integration,
         configuration,
     } = useConfigurationData()
+
+    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+
+    if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
+        return <GorgiasChatIntegrationSelfServicePaywall />
+    }
 
     return (
         <div className="full-width">
@@ -98,6 +115,81 @@ export const PreferencesView = () => {
                                             page to activate it.
                                         </Alert>
                                     ) : null}
+                                    {!hasAutomationAddOn ? (
+                                        <Alert
+                                            className={
+                                                css.alertBeforeAutomationContainer
+                                            }
+                                            color="info"
+                                        >
+                                            <div>
+                                                <img
+                                                    src={upgradeIcon}
+                                                    alt="upgrade-icon"
+                                                    className={classnames(
+                                                        css.upgradeIcon,
+                                                        'sm' && css['sm']
+                                                    )}
+                                                />
+                                                <span
+                                                    className={
+                                                        css.automationHelp
+                                                    }
+                                                >
+                                                    Speak to one of our
+                                                    specialists to learn more
+                                                    about our automation add-on!
+                                                </span>
+                                            </div>
+                                            <a
+                                                style={{cursor: 'pointer'}}
+                                                onClick={(
+                                                    event: MouseEvent
+                                                ) => {
+                                                    openChat(event)
+                                                }}
+                                            >
+                                                Contact Us
+                                            </a>
+                                        </Alert>
+                                    ) : (
+                                        <Alert
+                                            className={
+                                                css.alertPostAutomationContainer
+                                            }
+                                            color="info"
+                                        >
+                                            <div>
+                                                <i
+                                                    style={{
+                                                        marginRight: '17.67px',
+                                                    }}
+                                                    className="align-middle material-icons md-2"
+                                                >
+                                                    info
+                                                </i>
+                                                <span
+                                                    className={
+                                                        css.automationHelp
+                                                    }
+                                                >
+                                                    Do you want help from one of
+                                                    our agents to improve
+                                                    automations?
+                                                </span>
+                                            </div>
+                                            <a
+                                                style={{cursor: 'pointer'}}
+                                                onClick={(
+                                                    event: MouseEvent
+                                                ) => {
+                                                    openChat(event)
+                                                }}
+                                            >
+                                                Contact Us
+                                            </a>
+                                        </Alert>
+                                    )}
                                     <Table>
                                         <tbody>
                                             <PolicyRow

@@ -8,17 +8,32 @@ import {
     Button,
 } from 'reactstrap'
 import {Link, useRouteMatch} from 'react-router-dom'
+import {useSelector} from 'react-redux'
 
 import PageHeader from '../../../../common/components/PageHeader'
+import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
+import {getLoading} from '../../../../../state/ui/selfServiceConfigurations/selectors'
+import Loader from '../../../../common/components/Loader/Loader'
 
 import ReportIssueCasesList from './components/ReportIssueCasesList'
-
 import css from './ReportIssuePolicyView.less'
 
 const ReportIssuePolicyView: ComponentType = () => {
     const {
         params: {shopName, integrationType},
     } = useRouteMatch<{shopName: string; integrationType: string}>()
+
+    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const isLoading = useSelector(getLoading)
+
+    if (!hasAutomationAddOn) {
+        return <GorgiasChatIntegrationSelfServicePaywall />
+    }
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className="full-width">

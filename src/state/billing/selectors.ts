@@ -1,11 +1,14 @@
 import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
 
-import {getActiveIntegrations} from '../integrations/selectors'
-
-import {RootState} from '../types'
-import {getCurrentAccountState} from '../currentAccount/selectors'
+import {
+    getEquivalentAutomationPlanId,
+    getEquivalentRegularPlanId,
+} from '../../models/billing/utils'
 import {CurrentAccountState} from '../currentAccount/types'
+import {getCurrentAccountState} from '../currentAccount/selectors'
+import {getActiveIntegrations} from '../integrations/selectors'
+import {RootState} from '../types'
 
 import {BillingState} from './types'
 
@@ -16,7 +19,7 @@ export const getBillingState = (state: RootState): BillingState =>
 
 export const currentPlanId = createSelector<
     RootState,
-    string,
+    string | undefined,
     CurrentAccountState,
     BillingState
 >(
@@ -24,7 +27,7 @@ export const currentPlanId = createSelector<
     getBillingState,
     (currentAccountState, billingState) => {
         return (currentAccountState.getIn(['current_subscription', 'plan']) ||
-            billingState.get('futureSubscriptionPlan')) as string
+            billingState.get('futureSubscriptionPlan')) as string | undefined
     }
 )
 
@@ -46,18 +49,68 @@ export const getCurrentPlan = createSelector<
     RootState,
     Map<any, any>,
     Map<any, any>,
-    string
+    string | undefined
 >(
     getPlans,
     currentPlanId,
-    (p, id) => (p.get(id) as Map<any, any>) || fromJS({})
+    (p, id) => (p.get(id) || fromJS({})) as Map<any, any>
 )
 
 export const getPlan = (planId: string) =>
     createSelector<RootState, Map<any, any>, Map<any, any>>(
         getPlans,
-        (p) => (p.get(planId) as Map<any, any>) || fromJS({})
+        (p) => (p.get(planId) || fromJS({})) as Map<any, any>
     )
+
+export const getHasAutomationAddOn = createSelector<
+    RootState,
+    boolean,
+    Map<any, any>
+>(getCurrentPlan, (plan) => !!plan.get('automation_addon_included'))
+
+export const getEquivalentAutomationCurrentPlan = createSelector<
+    RootState,
+    Map<any, any> | undefined,
+    Map<any, any>,
+    string | undefined
+>(
+    getPlans,
+    currentPlanId,
+    (plans, id) =>
+        (id != null &&
+            (plans.get(getEquivalentAutomationPlanId(id)) as Map<any, any>)) ||
+        undefined
+)
+
+export const getEquivalentRegularCurrentPlan = createSelector<
+    RootState,
+    Map<any, any> | undefined,
+    Map<any, any>,
+    string | undefined
+>(
+    getPlans,
+    currentPlanId,
+    (plans, id) =>
+        (id != null &&
+            (plans.get(getEquivalentRegularPlanId(id)) as Map<any, any>)) ||
+        undefined
+)
+
+export const getAddOnAutomationAmountCurrentPlan = createSelector<
+    RootState,
+    number | undefined,
+    Map<any, any>,
+    Map<any, any>
+>(getCurrentPlan, getPlans, (currentPlan, plans) => {
+    const equivalentPlan: Map<any, any> = plans.get(
+        currentPlan.get('automation_addon_equivalent_plan')
+    )
+    if (!equivalentPlan) {
+        return undefined
+    }
+
+    return Math.abs(equivalentPlan.get('amount') - currentPlan.get('amount'))
+})
 
 export const invoices = createSelector<RootState, List<any>, BillingState>(
     getBillingState,
@@ -91,7 +144,7 @@ export const paymentMethod = createSelector<RootState, string, BillingState>(
     (billing) => (billing.get('paymentMethod') as string) || ''
 )
 
-export const currentUsage = createSelector<
+export const getCurrentUsage = createSelector<
     RootState,
     Map<any, any>,
     BillingState

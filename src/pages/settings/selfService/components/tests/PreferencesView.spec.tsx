@@ -14,6 +14,10 @@ import {
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from '../../../../../state/entities/selfServiceConfigurations/types'
+import {billingState} from '../../../../../fixtures/billing'
+import {account} from '../../../../../fixtures/account'
+import {basicPlan} from '../../../../../fixtures/subscriptionPlan'
+import {getEquivalentAutomationPlanId} from '../../../../../models/billing/utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const updateSelfServiceConfigurationMock = updateSelfServiceConfiguration as jest.MockedFunction<
@@ -80,10 +84,31 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 }
 
 describe('<SelfServicePreferencesView/>', () => {
+    const automationPlanId = getEquivalentAutomationPlanId(basicPlan.id)
     const shopifyIntegrations = createShopifyIntegrationFixtures(4)
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
     const defaultState = {
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                ...account.current_subscription,
+                plan: basicPlan.id,
+                status: 'active',
+            },
+        }),
+        billing: fromJS({
+            ...billingState,
+            plans: fromJS({
+                [basicPlan.id]: basicPlan,
+                [automationPlanId]: {
+                    ...basicPlan,
+                    id: automationPlanId,
+                    amount: basicPlan.amount + 2000,
+                    automation_addon_included: true,
+                },
+            }),
+        }),
         entities: {
             macros: {},
             rules: {},
@@ -95,27 +120,6 @@ describe('<SelfServicePreferencesView/>', () => {
             helpCenters: {},
             helpCenterArticles: {},
             selfServiceConfigurations: {},
-        },
-        ui: {
-            editor: {
-                isEditingLink: false,
-            },
-            stats: {
-                fetchingMap: {},
-            },
-            ticketNavbar: {
-                optimisticAccountSettings: {
-                    views: {},
-                    view_sections: {},
-                },
-                optimisticUserSettings: {
-                    views: {},
-                    view_sections: {},
-                },
-            },
-            views: {
-                activeViewId: 0,
-            },
         },
         integrations: fromJS({}),
     }

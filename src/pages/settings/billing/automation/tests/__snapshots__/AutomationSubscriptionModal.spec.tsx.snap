@@ -1,0 +1,190 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationSubscriptionModal /> should display image 1`] = `
+<img
+  alt="automation features"
+  class="image"
+  src="foo.png"
+/>
+`;
+
+exports[`<AutomationSubscriptionModal /> should display loader 1`] = `
+<button
+  class="btn-loading btn btn-primary"
+  type="button"
+>
+  I am sure
+</button>
+`;
+
+exports[`<AutomationSubscriptionModal /> should not render the modal 1`] = `
+<body>
+  <div />
+</body>
+`;
+
+exports[`<AutomationSubscriptionModal /> should render for customers already with full add-on features 1`] = `
+<div
+  class="footer footerUnsubscribe modal-footer"
+>
+  <button
+    class="btn btn-danger"
+    type="button"
+  >
+    Cancel subscription
+  </button>
+  <button
+    class="btn btn-secondary"
+    type="button"
+  >
+    OK
+  </button>
+</div>
+`;
+
+exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Confirm automation add-on subscription
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modalBody modal-body"
+            >
+              <div
+                class="description"
+              >
+                <div
+                  class="flex"
+                >
+                  <div>
+                    Activate 
+                    <b>
+                      the new custom report issue workflow
+                    </b>
+                     for self-service!
+                    <br />
+                    Questions?
+                     
+                    <a
+                      href="mailto:undefined"
+                    >
+                      <b>
+                        Get in touch!
+                      </b>
+                    </a>
+                  </div>
+                  <div
+                    class="amount"
+                  >
+                    <b>
+                      $20
+                    </b>
+                     
+                    / 
+                    month
+                  </div>
+                </div>
+                <div
+                  class="features"
+                >
+                  <li
+                    class="d-flex align-items-center featureListItem"
+                  >
+                    <span
+                      class="featureIcon mr-3"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        low_priority
+                      </i>
+                    </span>
+                    <span>
+                      Tracking, Return & Cancellation flows
+                    </span>
+                  </li>
+                  <li
+                    class="d-flex align-items-center featureListItem"
+                  >
+                    <span
+                      class="featureIcon mr-3"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        slow_motion_video
+                      </i>
+                    </span>
+                    <span>
+                      Custom report issue flows
+                    </span>
+                  </li>
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer modal-footer"
+            >
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary"
+                type="button"
+              >
+                I am sure
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
+`;

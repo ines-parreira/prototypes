@@ -30,6 +30,8 @@ export enum SocketEventType {
     SidUpdated = 'sid-updated',
     TicketMessageChatCreated = 'ticket-message-chat-created',
     TicketChatUpdated = 'ticket-chat-updated',
+    SelfServiceConfigurationsUpdated = 'self-service-configurations-updated',
+    SelfServiceConfigurationsUpdateStarted = 'self-service-configurations-update-started',
     EmailIntegrationVerified = 'email.integration-verified',
     EmailForwardingActivated = 'email.forwarding-activated',
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
@@ -49,6 +51,20 @@ export type CustomerUpdatedEvent = {
         type: 'customer-updated'
     }
     customer: Map<any, any>
+}
+
+export type SelfServiceConfigurationsUpdatedEvent = {
+    event: {
+        type: SocketEventType.SelfServiceConfigurationsUpdated
+    }
+    account: Account
+}
+
+export type SelfServiceConfigurationsUpdateStartedEvent = {
+    event: {
+        type: SocketEventType.SelfServiceConfigurationsUpdateStarted
+    }
+    account: Account
 }
 
 export type UserLocationUpdatedEvent = {
@@ -217,6 +233,8 @@ export type OutboundPhoneCallInitiated = {
 
 export type ServerMessage =
     | CustomerUpdatedEvent
+    | SelfServiceConfigurationsUpdatedEvent
+    | SelfServiceConfigurationsUpdateStartedEvent
     | UserLocationUpdatedEvent
     | UserTypingStatusUpdatedEvent
     | TicketUpdatedEvent

@@ -75,29 +75,33 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                
               about all existing order shipment statuses & corresponding available actions.
             </p>
+            <div
+              class="alertBeforeAutomationContainer alert alert-info fade"
+              role="alert"
+            >
+              <div>
+                <img
+                  alt="upgrade-icon"
+                  class="upgradeIcon sm"
+                  src="test-file-stub"
+                />
+                <span
+                  class="automationHelp"
+                >
+                  Speak to one of our specialists to learn more about our automation add-on!
+                </span>
+              </div>
+              <a
+                style="cursor: pointer;"
+              >
+                Contact Us
+              </a>
+            </div>
             <table
               class="table"
             >
               <tbody>
                 <tr>
-                  <td
-                    class="policyTd"
-                  >
-                    <div
-                      class="policyRowInfo"
-                    >
-                      <span
-                        class="policyName"
-                      >
-                        Track order
-                      </span>
-                      <span
-                        class="policyDescription"
-                      >
-                        Let customers track orders directly from the chat portal
-                      </span>
-                    </div>
-                  </td>
                   <td
                     class="smallest align-middle"
                   >
@@ -108,28 +112,32 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                     </div>
                   </td>
                   <td
-                    class="smallest align-middle"
-                  />
-                </tr>
-                <tr>
-                  <td
                     class="policyTd"
                   >
                     <div
                       class="policyRowInfo"
                     >
-                      <span
-                        class="policyName"
+                      <div
+                        class="content"
                       >
-                        Report issue
-                      </span>
-                      <span
-                        class="policyDescription"
-                      >
-                        Let customers report an issue with an order
-                      </span>
+                        <span
+                          class="policyName"
+                        >
+                          Track order
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers track orders directly from the chat portal
+                        </span>
+                      </div>
                     </div>
                   </td>
+                  <td
+                    class="smallest align-middle"
+                  />
+                </tr>
+                <tr>
                   <td
                     class="smallest align-middle"
                   >
@@ -140,10 +148,64 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                     </div>
                   </td>
                   <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Report issue
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers report an issue with an order
+                        </span>
+                      </div>
+                      <div
+                        class=""
+                      >
+                        <div
+                          class="d-flex align-items-center upgradeLink"
+                        >
+                          <button
+                            class="upgradeButton btn btn-outline-warning"
+                            type="button"
+                          >
+                            <span
+                              class="mr-2 upgradeLabel"
+                            >
+                              Get Automation Features
+                            </span>
+                            <img
+                              alt="upgrade-icon"
+                              class="upgradeIcon"
+                              src="test-file-stub"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
                     class="smallest align-middle"
                   />
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
                   <td
                     class="policyTd"
                   >
@@ -153,27 +215,22 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                       <div
                         class="policyRowInfo"
                       >
-                        <span
-                          class="policyName"
+                        <div
+                          class="content"
                         >
-                          Returns
-                        </span>
-                        <span
-                          class="policyDescription"
-                        >
-                          Let customers request returns directly from the chat portal
-                        </span>
+                          <span
+                            class="policyName"
+                          >
+                            Returns
+                          </span>
+                          <span
+                            class="policyDescription"
+                          >
+                            Let customers request returns directly from the chat portal
+                          </span>
+                        </div>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -191,6 +248,15 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                 </tr>
                 <tr>
                   <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
                     class="policyTd"
                   >
                     <a
@@ -199,27 +265,22 @@ exports[`<SelfServicePreferencesView/> ToggleButton.onChange() should deactivate
                       <div
                         class="policyRowInfo"
                       >
-                        <span
-                          class="policyName"
+                        <div
+                          class="content"
                         >
-                          Cancellations
-                        </span>
-                        <span
-                          class="policyDescription"
-                        >
-                          Let customers request order cancellations directly from the chat portal
-                        </span>
+                          <span
+                            class="policyName"
+                          >
+                            Cancellations
+                          </span>
+                          <span
+                            class="policyDescription"
+                          >
+                            Let customers request order cancellations directly from the chat portal
+                          </span>
+                        </div>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -320,29 +381,33 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                
               about all existing order shipment statuses & corresponding available actions.
             </p>
+            <div
+              class="alertBeforeAutomationContainer alert alert-info fade"
+              role="alert"
+            >
+              <div>
+                <img
+                  alt="upgrade-icon"
+                  class="upgradeIcon sm"
+                  src="test-file-stub"
+                />
+                <span
+                  class="automationHelp"
+                >
+                  Speak to one of our specialists to learn more about our automation add-on!
+                </span>
+              </div>
+              <a
+                style="cursor: pointer;"
+              >
+                Contact Us
+              </a>
+            </div>
             <table
               class="table"
             >
               <tbody>
                 <tr>
-                  <td
-                    class="policyTd"
-                  >
-                    <div
-                      class="policyRowInfo"
-                    >
-                      <span
-                        class="policyName"
-                      >
-                        Track order
-                      </span>
-                      <span
-                        class="policyDescription"
-                      >
-                        Let customers track orders directly from the chat portal
-                      </span>
-                    </div>
-                  </td>
                   <td
                     class="smallest align-middle"
                   >
@@ -353,28 +418,32 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                     </div>
                   </td>
                   <td
-                    class="smallest align-middle"
-                  />
-                </tr>
-                <tr>
-                  <td
                     class="policyTd"
                   >
                     <div
                       class="policyRowInfo"
                     >
-                      <span
-                        class="policyName"
+                      <div
+                        class="content"
                       >
-                        Report issue
-                      </span>
-                      <span
-                        class="policyDescription"
-                      >
-                        Let customers report an issue with an order
-                      </span>
+                        <span
+                          class="policyName"
+                        >
+                          Track order
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers track orders directly from the chat portal
+                        </span>
+                      </div>
                     </div>
                   </td>
+                  <td
+                    class="smallest align-middle"
+                  />
+                </tr>
+                <tr>
                   <td
                     class="smallest align-middle"
                   >
@@ -385,10 +454,64 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                     </div>
                   </td>
                   <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Report issue
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Let customers report an issue with an order
+                        </span>
+                      </div>
+                      <div
+                        class=""
+                      >
+                        <div
+                          class="d-flex align-items-center upgradeLink"
+                        >
+                          <button
+                            class="upgradeButton btn btn-outline-warning"
+                            type="button"
+                          >
+                            <span
+                              class="mr-2 upgradeLabel"
+                            >
+                              Get Automation Features
+                            </span>
+                            <img
+                              alt="upgrade-icon"
+                              class="upgradeIcon"
+                              src="test-file-stub"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
                     class="smallest align-middle"
                   />
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
                   <td
                     class="policyTd"
                   >
@@ -398,27 +521,22 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                       <div
                         class="policyRowInfo"
                       >
-                        <span
-                          class="policyName"
+                        <div
+                          class="content"
                         >
-                          Returns
-                        </span>
-                        <span
-                          class="policyDescription"
-                        >
-                          Let customers request returns directly from the chat portal
-                        </span>
+                          <span
+                            class="policyName"
+                          >
+                            Returns
+                          </span>
+                          <span
+                            class="policyDescription"
+                          >
+                            Let customers request returns directly from the chat portal
+                          </span>
+                        </div>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -436,6 +554,15 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                 </tr>
                 <tr>
                   <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
+                  <td
                     class="policyTd"
                   >
                     <a
@@ -444,27 +571,22 @@ exports[`<SelfServicePreferencesView/> render() should render the 4 policy rows,
                       <div
                         class="policyRowInfo"
                       >
-                        <span
-                          class="policyName"
+                        <div
+                          class="content"
                         >
-                          Cancellations
-                        </span>
-                        <span
-                          class="policyDescription"
-                        >
-                          Let customers request order cancellations directly from the chat portal
-                        </span>
+                          <span
+                            class="policyName"
+                          >
+                            Cancellations
+                          </span>
+                          <span
+                            class="policyDescription"
+                          >
+                            Let customers request order cancellations directly from the chat portal
+                          </span>
+                        </div>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"

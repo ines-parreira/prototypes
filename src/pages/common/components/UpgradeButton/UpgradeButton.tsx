@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Button} from 'reactstrap'
+import {Button as ReactstrapButton} from 'reactstrap'
 import classnames from 'classnames'
 
 import upgradeIcon from '../../../../../img/icons/upgrade-icon.svg'
@@ -11,21 +11,26 @@ import css from './UpgradeButton.less'
 
 type Size = 'sm'
 
-type Props = {
+type ButtonProps = {
     className?: string
-    hasInvertedColors?: boolean
     label?: string
+    onClick?: () => void
     size?: Size
-    state?: any
-    segmentEventToSend?: any
 }
+
+type Props = {
+    hasInvertedColors?: boolean
+    className?: string
+    segmentEventToSend?: Partial<SegmentEventToSend>
+    state?: any
+} & Omit<ButtonProps, 'className'>
 
 type SegmentEventToSend = {
     name: string
     props: any
 }
 
-function sendSegmentEvent(segmentEventToSend: SegmentEventToSend) {
+function sendSegmentEvent(segmentEventToSend?: Partial<SegmentEventToSend>) {
     if (
         segmentEventToSend &&
         Object.prototype.hasOwnProperty.call(segmentEventToSend, 'name') &&
@@ -38,55 +43,71 @@ function sendSegmentEvent(segmentEventToSend: SegmentEventToSend) {
     }
 }
 
+const Button = ({label, className, onClick, size}: ButtonProps) => (
+    <ReactstrapButton
+        outline
+        color="warning"
+        className={classnames(css.upgradeButton, size && css[size], className)}
+        onClick={onClick}
+    >
+        <span
+            className={classnames('mr-2', css.upgradeLabel, size && css[size])}
+        >
+            {label}
+        </span>
+        <img
+            src={upgradeIcon}
+            alt="upgrade-icon"
+            className={classnames(css.upgradeIcon, size && css[size])}
+        />
+    </ReactstrapButton>
+)
+
 const UpgradeButton = ({
     className = '',
     hasInvertedColors = false,
     label = 'Upgrade',
+    onClick,
     size,
     state = {},
     segmentEventToSend = {},
 }: Props) => {
     return (
         <div className={className}>
-            <Link
-                to={{pathname: '/app/settings/billing/plans', state}}
+            <div
                 className={classnames(
                     'd-flex',
                     'align-items-center',
                     css.upgradeLink
                 )}
             >
-                <Button
-                    outline
-                    color="warning"
-                    className={classnames(
-                        css.upgradeButton,
-                        size && css[size],
-                        {
+                {onClick ? (
+                    <Button
+                        className={classnames({
                             [css.invertedColors]: hasInvertedColors,
-                        }
-                    )}
-                    onClick={() => sendSegmentEvent(segmentEventToSend)}
-                >
-                    <span
-                        className={classnames(
-                            'mr-2',
-                            css.upgradeLabel,
-                            size && css[size]
-                        )}
-                    >
-                        {label}
-                    </span>
-                    <img
-                        src={upgradeIcon}
-                        alt="upgrade-icon"
-                        className={classnames(
-                            css.upgradeIcon,
-                            size && css[size]
-                        )}
+                        })}
+                        label={label}
+                        onClick={() => {
+                            sendSegmentEvent(segmentEventToSend)
+                            onClick()
+                        }}
+                        size={size}
                     />
-                </Button>
-            </Link>
+                ) : (
+                    <Link to={{pathname: '/app/settings/billing/plans', state}}>
+                        <Button
+                            className={classnames({
+                                [css.invertedColors]: hasInvertedColors,
+                            })}
+                            label={label}
+                            size={size}
+                            onClick={() => {
+                                sendSegmentEvent(segmentEventToSend)
+                            }}
+                        />
+                    </Link>
+                )}
+            </div>
         </div>
     )
 }

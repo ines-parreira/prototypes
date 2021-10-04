@@ -1,11 +1,51 @@
 @import 'colors';
-@import '../../../../css/new/colors';
+@import '~css/new/colors';
+@import '~css/new/mixins';
 
 :local {
-    .current-plan {
-        max-width: 270px;
-        color: #fff;
+    .card {
+        @media @mobiles, @tablets {
+            margin-left: 0 !important;
+        }
+
+        border-top-right-radius: 4px !important;
+        border-bottom-right-radius: 4px !important;
+
+        + .card {
+            border: @neutral4 1px solid;
+        }
+    }
+
+    .card-group {
+        margin-bottom: 16px;
+    }
+
+    .card-body {
+        color: @neutral8;
+        padding: 16px;
+    }
+
+    .card-current-plan {
+        @media @mobiles, @tablets {
+            flex: 0 0 100% !important;
+        }
+    }
+
+    .card-title {
+        align-items: center;
+        border-radius: 4px 4px 0 0;
+        display: flex;
+        font-size: 16px;
+        font-weight: 600;
+        height: 56px;
+        justify-content: space-between;
+        margin-bottom: 0;
+        padding: 0 16px;
+    }
+
+    .current-plan-title {
         background: @default;
+        color: @white;
 
         &.legacy {
             color: @neutral10;
@@ -13,27 +53,16 @@
         }
     }
 
-    .plan-usage-reset {
-        padding-top: 15px;
+    .ticket-numbers {
+        margin-bottom: 4px;
     }
 
-    .plan-button {
-        text-align: right;
-        padding-top: 20px;
-    }
-
-    .usage-numbers {
-        margin-bottom: 9px;
+    .integration-numbers {
+        margin: 24px 0;
     }
 
     .usage-progress {
-        margin-bottom: 9px;
-    }
-
-    .usagePlans {
-        position: relative;
-        max-width: 52%;
-        margin-bottom: 10px;
+        margin-bottom: 4px;
     }
 
     .free {
@@ -54,5 +83,12 @@
 
     .custom {
         background: @enterprise;
+    }
+
+    .description {
+        align-items: center;
+        color: @neutral10;
+        display: flex;
+        justify-content: space-between;
     }
 }

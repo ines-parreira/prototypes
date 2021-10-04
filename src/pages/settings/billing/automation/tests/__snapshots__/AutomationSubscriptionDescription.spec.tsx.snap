@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationSubscriptionDescription /> should render for customers already with full add-on features 1`] = `
+<div
+  class="description"
+>
+  <div
+    class="flex"
+  >
+    <div>
+      Your current subscription started on
+       
+      <b>
+        Aug 22
+      </b>
+      .
+      <br />
+      <br />
+      If you cancel now, you will loose access to self-service
+       
+      custom report issue flow 
+      immediately.
+    </div>
+    <div
+      class="amount"
+    >
+      <b>
+        $0
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationSubscriptionDescription /> should render for customers already with legacy add-on features 1`] = `
+<div
+  class="description"
+>
+  <div
+    class="flex"
+  >
+    <div>
+      Activate 
+      <b>
+        the new custom report issue workflow
+      </b>
+       for self-service!
+      <br />
+      Questions?
+       
+      <a
+        href="mailto:support@gorgias.com"
+      >
+        <b>
+          Get in touch!
+        </b>
+      </a>
+    </div>
+    <div
+      class="amount"
+    >
+      <b>
+        $20
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+  <div
+    class="features"
+  >
+    <li
+      class="d-flex align-items-center featureListItem"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="icon material-icons"
+        >
+          low_priority
+        </i>
+      </span>
+      <span>
+        Tracking, Return & Cancellation flows
+      </span>
+    </li>
+    <li
+      class="d-flex align-items-center featureListItem"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="icon material-icons"
+        >
+          slow_motion_video
+        </i>
+      </span>
+      <span>
+        Custom report issue flows
+      </span>
+    </li>
+  </div>
+</div>
+`;
+
+exports[`<AutomationSubscriptionDescription /> should render for customers without any addon features 1`] = `
+<div
+  class="description"
+>
+  <div
+    class="flex"
+  >
+    <div>
+      Unlock the 
+      <b>
+        self-service
+      </b>
+       features, to answer customers 
+      <b>
+        quickly, 24/7!
+      </b>
+      <br />
+      Questions?
+       
+      <a
+        href="mailto:support@gorgias.com"
+      >
+        <b>
+          Get in touch!
+        </b>
+      </a>
+    </div>
+    <div
+      class="amount"
+    >
+      <b>
+        $20
+      </b>
+       
+      / 
+      month
+    </div>
+  </div>
+  <div
+    class="features"
+  >
+    <li
+      class="d-flex align-items-center featureListItem"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="icon material-icons"
+        >
+          low_priority
+        </i>
+      </span>
+      <span>
+        Tracking, Return & Cancellation flows
+      </span>
+    </li>
+    <li
+      class="d-flex align-items-center featureListItem"
+    >
+      <span
+        class="featureIcon mr-3"
+      >
+        <i
+          class="icon material-icons"
+        >
+          slow_motion_video
+        </i>
+      </span>
+      <span>
+        Custom report issue flows
+      </span>
+    </li>
+  </div>
+</div>
+`;

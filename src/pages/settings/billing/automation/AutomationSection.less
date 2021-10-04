@@ -1,0 +1,67 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local {
+    .automation-card {
+        margin-left: 16px;
+        min-width: 260px;
+
+        @media @mobiles, @tablets {
+            margin-top: 16px;
+        }
+    }
+
+    .automation-amount {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .automation-card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card {
+        padding: 0;
+        margin-left: 16px !important;
+        border: @neutral4 1px solid !important;
+        border-top-left-radius: 4px !important;
+        border-bottom-left-radius: 4px !important;
+
+        @media @mobiles, @tablets {
+            margin-left: 0 !important;
+        }
+    }
+
+    .card-title {
+        align-items: center;
+        background: @neutral1;
+        border-radius: 4px 4px 0 0;
+        display: flex;
+        font-size: 16px;
+        font-weight: 600;
+        height: 56px;
+        justify-content: space-between;
+        margin-bottom: 0;
+        padding: 0 16px;
+    }
+
+    .description {
+        ul {
+            list-style: none;
+            padding-left: 1em;
+
+            > li:before {
+                display: inline-block;
+                content: '-';
+                width: 1em;
+                margin-left: -1em;
+            }
+        }
+    }
+
+    .upgrade-button {
+        align-self: flex-end;
+    }
+}

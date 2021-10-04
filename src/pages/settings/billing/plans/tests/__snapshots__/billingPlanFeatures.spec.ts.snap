@@ -7,36 +7,17 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <React.Fragment>
-      Discounted prices for
-       
+      Discounted prices for 
       <b>
-        volumes of 10.000+ billable tickets
+        volumes of 10k+ tickets
       </b>
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="beach_access"
-    />,
-    "label": "Premium support",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": "Custom limit of integrations",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -130,46 +111,169 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={3000}
+      plan={
+        Object {
+          "amount": 70000,
+          "automation_addon_equivalent_plan": "advanced-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.2,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 10,
+            },
+            "revenue_statistics": Object {
+              "enabled": true,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 3000,
+          "id": "advanced-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 10,
+            },
+            "revenue_statistics": Object {
+              "enabled": true,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Advanced",
+          "order": 3,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        20.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -263,46 +367,169 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={3000}
+      plan={
+        Object {
+          "amount": 70000,
+          "automation_addon_equivalent_plan": "advanced-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.2,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 10,
+            },
+            "revenue_statistics": Object {
+              "enabled": true,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 3000,
+          "id": "advanced-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 10,
+            },
+            "revenue_statistics": Object {
+              "enabled": true,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Advanced",
+          "order": 3,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        20.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -401,46 +628,232 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={350}
+      plan={
+        Object {
+          "amount": 6000,
+          "automation_addon_equivalent_plan": "basic-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.25,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": false,
+            },
+            "facebook_comment": Object {
+              "enabled": false,
+            },
+            "instagram_comment": Object {
+              "enabled": false,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": false,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": false,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": false,
+            },
+          },
+          "free_tickets": 350,
+          "id": "basic-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": false,
+            },
+            "facebook_comment": Object {
+              "enabled": false,
+            },
+            "instagram_comment": Object {
+              "enabled": false,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": false,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": false,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": false,
+            },
+          },
+          "legacy_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Basic",
+          "order": 1,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        25.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -534,46 +947,232 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={350}
+      plan={
+        Object {
+          "amount": 6000,
+          "automation_addon_equivalent_plan": "basic-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.25,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": false,
+            },
+            "facebook_comment": Object {
+              "enabled": false,
+            },
+            "instagram_comment": Object {
+              "enabled": false,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": false,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": false,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": false,
+            },
+          },
+          "free_tickets": 350,
+          "id": "basic-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": false,
+            },
+            "facebook_comment": Object {
+              "enabled": false,
+            },
+            "instagram_comment": Object {
+              "enabled": false,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": false,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": false,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": false,
+            },
+          },
+          "legacy_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": false,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Basic",
+          "order": 1,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        25.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -667,46 +1266,170 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={2000}
+      plan={
+        Object {
+          "amount": 54000,
+          "automation_addon_equivalent_plan": "custom-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.23,
+          "currency": "usd",
+          "currencySign": "$",
+          "custom": true,
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 50,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 2000,
+          "id": "custom-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 50,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Custom",
+          "order": 4,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        23.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -800,46 +1523,170 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={2000}
+      plan={
+        Object {
+          "amount": 54000,
+          "automation_addon_equivalent_plan": "custom-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.23,
+          "currency": "usd",
+          "currencySign": "$",
+          "custom": true,
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 50,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 2000,
+          "id": "custom-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 50,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Custom",
+          "order": 4,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        23.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -938,36 +1785,17 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <React.Fragment>
-      Discounted prices for
-       
+      Discounted prices for 
       <b>
-        volumes of 10.000+ billable tickets
+        volumes of 10k+ tickets
       </b>
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="beach_access"
-    />,
-    "label": "Premium support",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": "Custom limit of integrations",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1061,36 +1889,17 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <React.Fragment>
-      Discounted prices for
-       
+      Discounted prices for 
       <b>
-        volumes of 10.000+ billable tickets
+        volumes of 10k+ tickets
       </b>
     </React.Fragment>,
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="beach_access"
-    />,
-    "label": "Premium support",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": "Custom limit of integrations",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1184,46 +1993,232 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={2000}
+      plan={
+        Object {
+          "amount": 30000,
+          "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.23,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 2000,
+          "id": "pro-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "legacy_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "revenue_statistics": Object {
+              "enabled": true,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Pro",
+          "order": 2,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        23.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -1322,46 +2317,232 @@ Array [
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      freeTickets={2000}
+      plan={
+        Object {
+          "amount": 30000,
+          "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.23,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 2000,
+          "id": "pro-monthly-usd-2",
+          "integrations": 200,
+          "interval": "month",
+          "legacy_automation_addon_features": Object {
+            "auto_assignment": Object {
+              "enabled": false,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": false,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "legacy_features": Object {
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": true,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": true,
+            },
+            "automation_return_flow": Object {
+              "enabled": true,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": true,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": false,
+            },
+            "magento_integration": Object {
+              "enabled": true,
+            },
+            "overview_live_statistics": Object {
+              "enabled": false,
+            },
+            "phone_integration": Object {
+              "enabled": true,
+              "limit": 3,
+            },
+            "revenue_statistics": Object {
+              "enabled": true,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": true,
+            },
+            "user_roles": Object {
+              "enabled": true,
+            },
+            "users_live_statistics": Object {
+              "enabled": false,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "limits": Object {
+            "messages": Object {
+              "default": 1000,
+              "max": 1000,
+              "min": 800,
+            },
+            "tickets": Object {
+              "default": 350,
+              "max": 350,
+              "min": 300,
+            },
+          },
+          "name": "Pro",
+          "order": 2,
+          "public": true,
+          "trial_period_days": 7,
+        }
+      }
     />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add"
-    />,
-    "label": <React.Fragment>
-      <b>
-        $
-        23.00
-      </b>
-       
-      per 
-      100
-       extra tickets
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="code"
-    />,
-    "label": <React.Fragment>
-      <b>
-        200
-      </b>
-       integrations
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up_alt"
-    />,
-    "label": "Social media integrations",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="forum"
     />,
-    "label": "Live chat",
+    "label": "Social media & chat",
   },
   Object {
     "icon": <PlanFeatureMaterialIcon

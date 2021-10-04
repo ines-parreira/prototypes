@@ -73,6 +73,15 @@ describe('<CancellationsPolicyView/>', () => {
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
     const defaultState = {
+        currentAccount: fromJS({
+            features: {
+                automation_return_flow: {enabled: true},
+                automation_cancellations_flow: {enabled: true},
+                automation_track_order_flow: {enabled: true},
+                automation_report_issue_flow: {enabled: true},
+            },
+            created_datetime: '2021-08-01T00:00:00Z',
+        }),
         entities: {
             macros: {},
             rules: {},

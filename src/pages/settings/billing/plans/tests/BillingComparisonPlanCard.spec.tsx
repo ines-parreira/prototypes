@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
 
-import {Plan, PlanInterval} from '../../../../../models/billing/types'
+import {Plan} from '../../../../../models/billing/types'
 import {
     basicPlan,
     proPlan,
@@ -13,36 +13,53 @@ import {
     legacyPlan,
     customLegacyPlan,
     advancedPlan,
+    basicAutomationPlan,
+    proAutomationPlan,
+    advancedAutomationPlan,
+    legacyAutomationPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {account} from '../../../../../fixtures/account'
+import {billingState} from '../../../../../fixtures/billing'
 import * as billingSelectors from '../../../../../state/billing/selectors'
 import BillingComparisonPlanCard from '../BillingComparisonPlanCard'
 
 jest.mock('popper.js')
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<BillingComparisonPlanCard />', () => {
     let getCurrentPlanSpy: jest.SpyInstance
     let getHasLegacyPlan: jest.SpyInstance
-    const plans = [basicPlan, advancedPlan, proPlan].reduce((acc, plan) => {
-        const monthlyId = `${plan.name.toLowerCase()}-monthly`
-        const yearlyId = `${plan.name.toLowerCase()}-yearly`
-        return [
+
+    const plans = [
+        basicPlan,
+        advancedPlan,
+        proPlan,
+        basicAutomationPlan,
+        proAutomationPlan,
+        advancedAutomationPlan,
+        legacyAutomationPlan,
+    ]
+
+    const statePlans = [
+        basicPlan,
+        advancedPlan,
+        proPlan,
+        basicAutomationPlan,
+        proAutomationPlan,
+        advancedAutomationPlan,
+        legacyAutomationPlan,
+    ].reduce((acc, plan) => {
+        return {
             ...acc,
-            {
+            [plan.id]: {
                 ...plan,
-                id: monthlyId,
-                interval: PlanInterval.Month,
+                id: plan.id,
             },
-            {
-                ...plan,
-                id: yearlyId,
-                interval: PlanInterval.Year,
-            },
-        ]
-    }, [] as Plan[])
+        }
+    }, {} as Partial<Record<string, Plan>>)
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -60,14 +77,27 @@ describe('<BillingComparisonPlanCard />', () => {
     })
 
     const defaultState: Partial<RootState> = {
-        currentAccount: fromJS(account),
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                ...account.current_subscription,
+                status: 'active',
+                plan: 'pro-monthly-usd-2',
+            },
+        }),
+        billing: fromJS({
+            ...billingState,
+            plans: statePlans,
+        }),
     }
     const onPlanChangeMock = jest.fn()
     const minProps: ComponentProps<typeof BillingComparisonPlanCard> = {
-        plan: {...basicPlan, currencySign: '$'},
+        plan: {...basicPlan, currencySign: '$', amount: basicPlan.amount / 100},
         isCurrentPlan: false,
         isUpdating: false,
         onPlanChange: onPlanChangeMock,
+        isAutomationChecked: false,
+        onAutomationChange: jest.fn(),
     }
 
     it('should render current plan', () => {
@@ -86,6 +116,7 @@ describe('<BillingComparisonPlanCard />', () => {
         const {container} = render(
             <Provider
                 store={mockStore({
+                    ...defaultState,
                     currentAccount: fromJS({
                         ...account,
                         meta: {has_legacy_features: true},
@@ -114,7 +145,11 @@ describe('<BillingComparisonPlanCard />', () => {
                 <BillingComparisonPlanCard
                     {...minProps}
                     isCurrentPlan
-                    plan={{...plan, currencySign: '$'}}
+                    plan={{
+                        ...plan,
+                        amount: plan.amount / 100,
+                        currencySign: '$',
+                    }}
                 />
             </Provider>
         )
@@ -157,7 +192,11 @@ describe('<BillingComparisonPlanCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
-                    plan={{...proPlan, currencySign: '$'}}
+                    plan={{
+                        ...proPlan,
+                        currencySign: '$',
+                        amount: proPlan.amount / 100,
+                    }}
                 />
             </Provider>
         )
@@ -174,10 +213,26 @@ describe('<BillingComparisonPlanCard />', () => {
             () => fromJS(proPlan) as Map<any, any>
         )
         const {getByRole, getByText} = render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            status: 'active',
+                            plan: 'pro-monthly-usd-2',
+                        },
+                    }),
+                })}
+            >
                 <BillingComparisonPlanCard
                     {...minProps}
-                    plan={{...basicPlan, currencySign: '$'}}
+                    plan={{
+                        ...basicPlan,
+                        currencySign: '$',
+                        amount: basicPlan.amount / 100,
+                    }}
                 />
             </Provider>
         )
@@ -204,10 +259,26 @@ describe('<BillingComparisonPlanCard />', () => {
             )
 
             const {getByText} = render(
-                <Provider store={mockStore(defaultState)}>
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        currentAccount: fromJS({
+                            ...account,
+                            current_subscription: {
+                                ...account.current_subscription,
+                                status: 'active',
+                                plan: 'pro-monthly-usd-2',
+                            },
+                        }),
+                    })}
+                >
                     <BillingComparisonPlanCard
                         {...minProps}
-                        plan={{...(plan as Plan), currencySign: '$'}}
+                        plan={{
+                            ...(plan as Plan),
+                            currencySign: '$',
+                            amount: (plan as Plan).amount / 100,
+                        }}
                         defaultIsPlanChangeModalOpen={true}
                     />
                 </Provider>
@@ -241,7 +312,11 @@ describe('<BillingComparisonPlanCard />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <BillingComparisonPlanCard
                         {...minProps}
-                        plan={{...(plan as Plan), currencySign: '$'}}
+                        plan={{
+                            ...(plan as Plan),
+                            currencySign: '$',
+                            amount: (plan as Plan).amount / 100,
+                        }}
                         defaultIsPlanChangeModalOpen={true}
                     />
                 </Provider>

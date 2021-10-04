@@ -9,6 +9,7 @@ const PLAN_NAME_TO_BADGE_COLOR: Partial<Record<string, string>> = {
     Advanced: 'success',
     Custom: 'warning',
     Enterprise: 'warning',
+    Free: '#7f87d3',
 }
 
 type Props = {

@@ -1,5 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import {Badge} from 'reactstrap'
+import classnames from 'classnames'
 
 import Tooltip from './Tooltip'
 import css from './LegacyPlanBadge.less'
@@ -16,7 +17,10 @@ export default function LegacyPlanBadge() {
 
     return (
         <div className="d-inline-flex cursor-pointer" ref={handleRef}>
-            <Badge className="d-inline-flex flex-row" color="danger">
+            <Badge
+                className={classnames('d-inline-flex flex-row', css.badge)}
+                color="danger"
+            >
                 <i className="material-icons">warning</i>
                 <div className="ml-1">LEGACY PLAN</div>
             </Badge>

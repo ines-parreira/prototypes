@@ -18,7 +18,10 @@ import {AxiosError} from 'axios'
 
 import {setCreditCard} from '../../../../state/billing/actions'
 import {
+    getAddOnAutomationAmountCurrentPlan,
     getCurrentPlan as currentPlanSelector,
+    getEquivalentRegularCurrentPlan,
+    getHasAutomationAddOn,
     hasLegacyPlan as hasLegacyPlanSelector,
 } from '../../../../state/billing/selectors'
 import Loader from '../../../common/components/Loader/Loader'
@@ -38,12 +41,14 @@ import BillingPlanCard from '../plans/BillingPlanCard'
 import {RootState} from '../../../../state/types'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {CreditCard} from '../../../../state/billing/types'
+import RecurringPrices from '../plans/RecurringPrices'
 
 import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
     creditCardNormalizer,
 } from './utils.js'
+import css from './CreditCard.less'
 
 type Props = {
     updateCreditCard: () => void
@@ -290,6 +295,9 @@ export class CreditCardContainer extends Component<Props, State> {
     render() {
         const {
             currentPlan,
+            hasAutomationAddOn,
+            regularCurrentPlan,
+            automationAddOnAmount,
             currentSubscription,
             location,
             accountHasLegacyPlan,
@@ -342,11 +350,28 @@ export class CreditCardContainer extends Component<Props, State> {
                     )}
                     <Row>
                         {currentSubscription.get('status') !== 'active' &&
-                            !currentPlan.isEmpty() && (
+                            !currentPlan.isEmpty() &&
+                            regularCurrentPlan && (
                                 <Col sm={3}>
                                     <BillingPlanCard
-                                        plan={currentPlan.toJS()}
+                                        plan={regularCurrentPlan.toJS()}
                                         isCurrentPlan
+                                        renderBody={(features) => (
+                                            <div className={css.planCardBody}>
+                                                {features}
+                                            </div>
+                                        )}
+                                        footer={
+                                            hasAutomationAddOn && (
+                                                <RecurringPrices
+                                                    addOnAmount={
+                                                        automationAddOnAmount
+                                                    }
+                                                    plan={regularCurrentPlan.toJS()}
+                                                    editable={false}
+                                                />
+                                            )
+                                        }
                                     />
                                 </Col>
                             )}
@@ -463,6 +488,9 @@ export class CreditCardContainer extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         currentPlan: currentPlanSelector(state),
+        hasAutomationAddOn: getHasAutomationAddOn(state),
+        regularCurrentPlan: getEquivalentRegularCurrentPlan(state),
+        automationAddOnAmount: getAddOnAutomationAmountCurrentPlan(state),
         currentUser: state.currentUser,
         currentSubscription: currentAccountSelectors.getCurrentSubscription(
             state

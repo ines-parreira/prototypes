@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SubscriptionAmount /> should format amount 1`] = `
+<div
+  class="amount"
+>
+  €1,000
+   
+  / 
+  week
+</div>
+`;
+
+exports[`<SubscriptionAmount /> should render 1`] = `
+<div
+  class="amount"
+>
+   
+  / 
+  week
+</div>
+`;

@@ -9,12 +9,29 @@
         color: @neutral10;
     }
 
-    td.policyTd {
-        padding: 16px 2px;
+    .toggleButton {
+        align-items: center;
     }
 
     .policyRowInfo {
-        display: grid;
+        display: flex;
+        justify-content: space-between;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .policyName {
+                font-weight: 600;
+                color: @neutral10;
+            }
+
+            .policyDescription {
+                color: @neutral8;
+                margin-top: 8px;
+            }
+        }
     }
 
     .policyName {
@@ -25,5 +42,31 @@
     .policyDescription {
         color: @neutral8;
         margin-top: 8px;
+    }
+
+    .upgradeIcon {
+        &.sm {
+            font-size: 11px;
+            width: 13px;
+            height: 13px;
+
+            margin-right: 17px;
+        }
+    }
+
+    .automationHelp {
+        color: @neutral10;
+    }
+
+    .alertBeforeAutomationContainer {
+        display: flex;
+        justify-content: space-between;
+
+        border-color: @orange2;
+    }
+
+    .alertPostAutomationContainer {
+        .alertBeforeAutomationContainer;
+        border-color: @blue;
     }
 }

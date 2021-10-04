@@ -13,7 +13,11 @@ import css from './BillingPlans.less'
 import BillingPlansComparison from './BillingPlansComparison'
 
 type Props = ConnectedProps<typeof connector> &
-    RouteComponentProps<any, any, {openedPlanModal?: string}>
+    RouteComponentProps<
+        any,
+        any,
+        {isAutomationAddOnChecked?: boolean; openedPlanModal?: string}
+    >
 
 class BillingPlans extends React.Component<Props> {
     constructor(props: Props) {
@@ -54,6 +58,7 @@ class BillingPlans extends React.Component<Props> {
                     }
                 />
                 <BillingPlansComparison
+                    isAutomationAddOnChecked={state?.isAutomationAddOnChecked}
                     openedPlanModal={state?.openedPlanModal}
                     onSubscriptionChanged={this.handleSubscriptionChanged}
                 />

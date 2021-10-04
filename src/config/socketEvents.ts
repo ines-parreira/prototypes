@@ -63,6 +63,9 @@ import {
     viewUpdated,
 } from '../state/entities/views/actions'
 import history from '../pages/history'
+import {fetchSelfServiceConfigurations} from '../models/selfServiceConfiguration/resources'
+import {selfServiceConfigurationsFetched} from '../state/entities/selfServiceConfigurations/actions'
+import {setLoading} from '../state/ui/selfServiceConfigurations/actions'
 
 import {MAX_RECENT_CHATS} from './recentChats'
 import {
@@ -507,6 +510,34 @@ export const receivedEvents: ReceivedEvent[] = [
             ;((this as unknown) as SocketManager).send(
                 SocketEventType.SidUpdated
             )
+        },
+    },
+    {
+        name: SocketEventType.SelfServiceConfigurationsUpdateStarted,
+        onReceive: function () {
+            typeSafeReduxStore.dispatch(setLoading(true))
+        },
+    },
+    {
+        name: SocketEventType.SelfServiceConfigurationsUpdated,
+        onReceive: async function () {
+            typeSafeReduxStore.dispatch(setLoading(true))
+            try {
+                const res = await fetchSelfServiceConfigurations()
+                typeSafeReduxStore.dispatch(
+                    selfServiceConfigurationsFetched(res.data)
+                )
+            } catch (error) {
+                typeSafeReduxStore.dispatch(
+                    notificationsActions.notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Could not fetch Self-service configurations, please try again later.',
+                    }) as any
+                )
+            } finally {
+                typeSafeReduxStore.dispatch(setLoading(false))
+            }
         },
     },
     {

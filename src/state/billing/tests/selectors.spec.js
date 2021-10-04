@@ -89,8 +89,8 @@ describe('billing selectors', () => {
     })
 
     it('currentUsage', () => {
-        expect(selectors.currentUsage({})).toEqualImmutable(fromJS({}))
-        expect(selectors.currentUsage(state)).toEqualImmutable(
+        expect(selectors.getCurrentUsage({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getCurrentUsage(state)).toEqualImmutable(
             state.billing.get('currentUsage')
         )
     })
@@ -163,7 +163,7 @@ describe('billing selectors', () => {
     })
 
     describe('currentPlanId()', () => {
-        it('should return plan of the current subscription', () => {
+        it('should return undefined when no current subscription', () => {
             const state = {}
             expect(selectors.currentPlanId(state)).toEqual(undefined)
         })
@@ -186,6 +186,139 @@ describe('billing selectors', () => {
                 billing: fromJS({futureSubscriptionPlan: 'future-plan-123'}),
             }
             expect(selectors.currentPlanId(state)).toEqual('future-plan-123')
+        })
+    })
+
+    describe('getEquivalentAutomationCurrentPlan()', () => {
+        const regularPlan = 'pro-monthly-usd-2'
+        const automationPlan = 'pro-automation-monthly-usd-2'
+
+        it('should return undefined when no current plan', () => {
+            const state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: null,
+                }),
+            }
+            expect(selectors.getEquivalentAutomationCurrentPlan(state)).toBe(
+                undefined
+            )
+        })
+
+        it('should return automation plan when current plan is regular', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: regularPlan},
+                }),
+            }
+            expect(
+                selectors.getEquivalentAutomationCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return automation plan when current plan is also automation', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: automationPlan},
+                }),
+            }
+            expect(
+                selectors.getEquivalentAutomationCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('getEquivalentRegularCurrentPlan()', () => {
+        const regularPlan = 'pro-monthly-usd-2'
+        const automationPlan = 'pro-automation-monthly-usd-2'
+
+        it('should return undefined when no current plan', () => {
+            const state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: null,
+                }),
+            }
+            expect(selectors.getEquivalentRegularCurrentPlan(state)).toBe(
+                undefined
+            )
+        })
+
+        it('should return regular plan when current plan is also regular', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: regularPlan},
+                }),
+            }
+            expect(
+                selectors.getEquivalentRegularCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return regular plan when current plan is automation', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: automationPlan},
+                }),
+            }
+            expect(
+                selectors.getEquivalentRegularCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('getAddOnAutomationAmountCurrentPlan()', () => {
+        it('should return the amount of automation add-on', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationAmountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return undefined when equivalent plan does not exist', () => {
+            state = {
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    plans: {},
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        plan: 'pro-automation-monthly-usd-2',
+                    },
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationAmountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('getHasAutomationAddOn()', () => {
+        it('should return true', () => {
+            expect(
+                selectors.getHasAutomationAddOn({
+                    ...state,
+                    currentAccount: fromJS({
+                        current_subscription: {
+                            plan: 'pro-automation-monthly-usd-2',
+                        },
+                    }),
+                })
+            ).toBeTruthy()
+        })
+
+        it('should return false', () => {
+            expect(selectors.getHasAutomationAddOn(state)).toBeFalsy()
         })
     })
 })
