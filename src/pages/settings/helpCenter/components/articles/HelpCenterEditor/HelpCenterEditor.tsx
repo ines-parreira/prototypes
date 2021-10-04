@@ -1,241 +1,220 @@
-import React, {useState, useEffect} from 'react'
-import _isUndefined from 'lodash/isUndefined'
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/**
+ * TODO: Froala types are not complete, we will refine the types ourselves
+ */
+import React, {useEffect, useRef} from 'react'
 
-import {Editor} from 'react-draft-wysiwyg'
-import {
-    ContentBlock,
-    ContentState,
-    EditorState,
-    Modifier,
-    RichUtils,
-    DraftEditorCommand,
-    SelectionState,
-} from 'draft-js'
+import FroalaEditor from 'react-froala-wysiwyg'
 
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
+import {FROALA_KEY} from '../../../../../../config'
 
-import {
-    convertToHTML,
-    convertFromHTML,
-    INJECTED_HTML_TYPE,
-    VIDEO_TYPE,
-    getCharCount,
-    getWordCount,
-    CODE_BLOCK,
-} from './utils'
-import {toolbarConfig} from './components/HelpCenterEditorToolbar.config'
-import {InjectedHTMLBlockEditor} from './components/InjectedHTMLBlockEditor'
-import {CodeBlock} from './components/CodeBlock'
-import {CodeBlockToolbarButton} from './components/CodeBlockToolbarButton'
-import {InjectHtmlToolbarButton} from './components/InjectHtmlToolbarButton'
-import {CodeEditorContext} from './providers/CodeEditor'
-import {CustomVideoButton} from './components/HelpCenterEditorToolbarVideo'
-import {VideoBlockEditor} from './components/VideoBlockEditor'
+// Froala Editor basic JS
+import 'froala-editor/js/froala_editor.min.js'
+
+// Froala Editor plugins
+import 'froala-editor/js/plugins/align.min.js'
+import 'froala-editor/js/plugins/char_counter.min.js'
+import 'froala-editor/js/plugins/code_view.min.js'
+import 'froala-editor/js/plugins/colors.min.js'
+import 'froala-editor/js/plugins/draggable.min.js'
+import 'froala-editor/js/plugins/emoticons.min.js'
+import 'froala-editor/js/plugins/entities.min.js'
+import 'froala-editor/js/plugins/font_family.min.js'
+import 'froala-editor/js/plugins/font_size.min.js'
+import 'froala-editor/js/plugins/help.min.js'
+import 'froala-editor/js/plugins/image.min.js'
+import 'froala-editor/js/plugins/inline_style.min.js'
+import 'froala-editor/js/plugins/line_breaker.min.js'
+import 'froala-editor/js/plugins/line_height.min.js'
+import 'froala-editor/js/plugins/link.min.js'
+import 'froala-editor/js/plugins/lists.min.js'
+import 'froala-editor/js/plugins/paragraph_format.min.js'
+import 'froala-editor/js/plugins/paragraph_style.min.js'
+import 'froala-editor/js/plugins/quick_insert.min.js'
+import 'froala-editor/js/plugins/quote.min.js'
+import 'froala-editor/js/plugins/special_characters.min.js'
+import 'froala-editor/js/plugins/table.min.js'
+import 'froala-editor/js/plugins/url.min.js'
+import 'froala-editor/js/plugins/video.min.js'
+import 'froala-editor/js/plugins/word_paste.min.js'
+
+import {MAX_IMAGE_SIZE} from '../../../constants'
+
+import {uploadFiles} from '../../../../../../utils'
+import {notify} from '../../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../../state/notifications/types'
+import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 
 import css from './HelpCenterEditor.less'
-import './react-draft-wysiwyg.css'
 
 type Props = {
     articleId?: number
     locale: LocaleCode
     value?: string
-    onChange: (value: string, charCount: number, wordCount: number) => void
+    onChange: (value: string) => void
 }
 
-const transformValueToEditorState = (innerValue: string) =>
-    EditorState.createWithContent(convertFromHTML(innerValue))
+type FroalaEditorInstance = FroalaEditor & {
+    editorInitialized: boolean
+    /**
+     * Editor has these available methods https://froala.com/wysiwyg-editor/docs/methods/
+     */
+    editor: any
+}
 
-const HelpCenterEditor = ({articleId, locale, value = '', onChange}: Props) => {
-    const [editorState, setEditorState] = useState(EditorState.createEmpty())
-    const [openBlockKey, setOpenBlockKey] = useState('')
-
-    useEffect(() => {
-        if (_isUndefined(articleId)) {
-            setEditorState(EditorState.createEmpty())
-        } else {
-            setEditorState(transformValueToEditorState(value))
-        }
-    }, [articleId, locale])
+const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
+    const dispatch = useAppDispatch()
+    const editorRef = useRef<FroalaEditorInstance | null>(null)
 
     useEffect(() => {
-        const content = editorState.getCurrentContent()
-        const htmlString = convertToHTML(content)
-        const text = content.getPlainText('')
-        onChange(htmlString, getCharCount(text), getWordCount(text))
-    }, [editorState, onChange])
-
-    const onCodeEditorChange = (fragment: ContentState) => {
-        const newEditorState = EditorState.set(editorState, {
-            currentContent: fragment,
-        })
-        setEditorState(newEditorState)
-        setOpenBlockKey('')
-    }
-
-    const onVideoEditorDelete = (
-        atomicBlock: ContentBlock,
-        fragment: ContentState
-    ) => {
-        // Remove entities of current atomic block
-        const withoutAtomicEntity = Modifier.removeRange(
-            fragment,
-            new SelectionState({
-                anchorKey: atomicBlock.getKey(),
-                anchorOffset: 0,
-                focusKey: atomicBlock.getKey(),
-                focusOffset: atomicBlock.getLength(),
-            }),
-            'backward'
-        )
-
-        // Remove atomic block by overriding the current Immutable ContentState
-        const blockMap = withoutAtomicEntity
-            .getBlockMap()
-            .delete(atomicBlock.getKey())
-        const withoutAtomic = withoutAtomicEntity.merge({
-            blockMap,
-            selectionAfter: fragment.getSelectionAfter(),
-        }) as ContentState
-
-        const nextState = EditorState.push(
-            editorState,
-            withoutAtomic,
-            'remove-range'
-        )
-
-        setEditorState(nextState)
-    }
-
-    const onCodeEditorDelete = (
-        atomicBlock: ContentBlock,
-        fragment: ContentState
-    ) => {
-        // Remove entities of current atomic block
-        const withoutAtomicEntity = Modifier.removeRange(
-            fragment,
-            new SelectionState({
-                anchorKey: atomicBlock.getKey(),
-                anchorOffset: 0,
-                focusKey: atomicBlock.getKey(),
-                focusOffset: atomicBlock.getLength(),
-            }),
-            'backward'
-        )
-
-        // Remove atomic block by overriding the current Immutable ContentState
-        const blockMap = withoutAtomicEntity
-            .getBlockMap()
-            .delete(atomicBlock.getKey())
-        const withoutAtomic = withoutAtomicEntity.merge({
-            blockMap,
-            selectionAfter: fragment.getSelectionAfter(),
-        }) as ContentState
-
-        const nextState = EditorState.push(
-            editorState,
-            withoutAtomic,
-            'remove-range'
-        )
-
-        setEditorState(nextState)
-        setOpenBlockKey('')
-    }
-
-    const blockRenderer = (
-        contentBlock: ContentBlock,
-        config: unknown,
-        getEditorState: () => EditorState
-    ) => {
-        const type = contentBlock.getType()
-        if (type === 'atomic') {
-            const entity = getEditorState()
-                .getCurrentContent()
-                .getEntity(contentBlock.getEntityAt(0))
-
-            if (entity.getType() === CODE_BLOCK) {
-                return {
-                    editable: true,
-                    component: CodeBlock,
-                }
-            }
-
-            if (entity.getType() === INJECTED_HTML_TYPE) {
-                return {
-                    component: InjectedHTMLBlockEditor,
-                    editable: true,
-                }
-            }
-            if (entity.getType() === VIDEO_TYPE) {
-                return {
-                    component: VideoBlockEditor,
-                    editable: false,
-                    props: {
-                        onDelete: onVideoEditorDelete,
-                    },
-                }
-            }
+        if (editorRef.current && editorRef.current.editorInitialized) {
+            editorRef.current.getEditor().html.set(value)
         }
+    }, [locale])
+
+    const onModelChange = (newModel: string) => {
+        onChange(newModel)
     }
 
     return (
-        <CodeEditorContext.Provider
-            value={{
-                openBlockKey,
-                setBlockKey: setOpenBlockKey,
-                removeBlockKey: () => setOpenBlockKey(''),
-                saveContent: onCodeEditorChange,
-                removeContent: onCodeEditorDelete,
-            }}
-        >
-            <Editor
-                readOnly={openBlockKey !== ''}
-                editorState={editorState as any}
-                wrapperClassName={css['wrapper']}
-                editorClassName={css['editor']}
-                toolbarClassName={css['toolbar']}
-                toolbar={toolbarConfig}
-                onEditorStateChange={setEditorState}
-                toolbarCustomButtons={[
-                    <CodeBlockToolbarButton
-                        key="codeBlock"
-                        onChange={setEditorState}
-                        editorState={editorState}
-                    />,
-                    <InjectHtmlToolbarButton
-                        key="injectHtml"
-                        onChange={setEditorState}
-                        editorState={editorState}
-                    />,
-                    <CustomVideoButton
-                        key="custom-video-button"
-                        onChange={setEditorState}
-                        editorState={editorState}
-                    />,
-                ]}
-                handleKeyCommand={(
-                    command: DraftEditorCommand,
-                    state: EditorState
-                ) => {
-                    // ?   Handle the backspace to delete the custom widget.
-                    // ? Without this the backspace command will only be able to delete
-                    // ? text inside the editor, not the custom widget blocks.
-                    if (command === 'backspace') {
-                        const nextState = RichUtils.handleKeyCommand(
-                            state,
-                            command
-                        )
-                        if (nextState) {
-                            setEditorState(nextState)
-                            return 'handled'
+        <FroalaEditor
+            model={value}
+            ref={editorRef}
+            onModelChange={onModelChange}
+            tag="textarea"
+            config={{
+                /** Base froala editor config */
+                key: FROALA_KEY,
+                editorClass: css.froalaEditorWrapper,
+                attribution: false,
+                htmlRemoveTags: [], // IMPORTANT: prevent script tags from being removed
+                typingTimer: 150, // allows updating the model much faster
+                height: '100%',
+                heightMax: '100%',
+                /**
+                 * Image upload cf. https://froala.com/wysiwyg-editor/docs/concepts/image/upload/
+                 */
+                imageMaxSize: MAX_IMAGE_SIZE,
+                events: {
+                    'image.beforeUpload': function (images: FileList) {
+                        if (images.length === 0) {
+                            return false
                         }
-                    }
+                        void uploadFiles([images[0]])
+                            .then((res) => {
+                                if (!editorRef.current) {
+                                    // This should not happen, this is only for typescript to get this is not null
+                                    return false
+                                }
+                                // intercept the insertion of the image
+                                // else by default, froala uses base64 images
+                                const {url} = res[0]
 
-                    return 'not-handled'
-                }}
-                // @ts-ignore the typing of `react-draft-wysiwyg`'s `customBlockRenderFunc` arguments prop is not correct
-                customBlockRenderFunc={blockRenderer}
-            />
-        </CodeEditorContext.Provider>
+                                if (editorRef.current.getEditor()) {
+                                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                                    editorRef.current.getEditor().image.insert(
+                                        url,
+                                        false,
+                                        null,
+                                        // eslint-disable-next-line
+                                        editorRef.current
+                                            .getEditor()
+                                            .image.get(),
+                                        res
+                                    )
+                                }
+                            })
+                            .catch(() => {
+                                void dispatch(
+                                    notify({
+                                        message: 'Failed to upload the image',
+                                        status: NotificationStatus.Error,
+                                    })
+                                )
+                            })
+
+                        // return false so that Froala next actions won't be triggered
+                        return false
+                    },
+                },
+                toolbarButtons: {
+                    moreText: {
+                        buttons: [
+                            'bold',
+                            'italic',
+                            'underline',
+                            'strikeThrough',
+                            'subscript',
+                            'superscript',
+                            'fontFamily',
+                            'fontSize',
+                            'textColor',
+                            'backgroundColor',
+                            'inlineClass',
+                            'inlineStyle',
+                            'clearFormatting',
+                        ],
+                    },
+                    moreParagraph: {
+                        buttons: [
+                            'alignLeft',
+                            'alignCenter',
+                            'formatOLSimple',
+                            'alignRight',
+                            'alignJustify',
+                            'formatOL',
+                            'formatUL',
+                            'paragraphFormat',
+                            'paragraphStyle',
+                            'lineHeight',
+                            'outdent',
+                            'indent',
+                            'quote',
+                        ],
+                    },
+                    moreRich: {
+                        buttons: [
+                            'insertImage',
+                            'insertLink',
+                            'insertVideo',
+                            'insertTable',
+                            'emoticons',
+                            'specialCharacters',
+                            'insertHR',
+                        ],
+                    },
+                    moreMisc: {
+                        buttons: ['undo', 'redo', 'selectAll', 'html', 'help'],
+                        align: 'right',
+                        buttonsVisible: 2,
+                    },
+                },
+                videoInsertButtons: [
+                    'videoBack',
+                    '|',
+                    'videoByURL',
+                    'videoEmbed',
+                ],
+                videoUpload: false,
+                linkList: [
+                    {
+                        text: 'Google',
+                        href: 'https://google.com',
+                        target: '_blank',
+                        rel: 'nofollow',
+                    },
+                    {
+                        text: 'Facebook',
+                        href: 'https://facebook.com',
+                        target: '_blank',
+                        rel: 'nofollow',
+                    },
+                ],
+                emoticonsUseImage: false,
+            }}
+        />
     )
 }
 

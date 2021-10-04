@@ -1563,3 +1563,9 @@ export const DEFAULT_TAG_COLOR = '#8088D6'
 export const SENTIMENT_TYPE_UPPER_BOUND = 0.4
 
 export const SENTIMENT_TYPE_LOWER_BOUND = -0.4
+
+/**
+ * Text editor used in helpcenter
+ */
+export const FROALA_KEY =
+    'aLF3c1A7B5E5E3E2G2D2xROKLJKYHROLDXDRH1e1YYGRe1Bg1G3I3A2A5D6A3F2E4D2F2=='

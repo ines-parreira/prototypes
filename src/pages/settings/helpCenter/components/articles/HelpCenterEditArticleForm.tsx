@@ -14,17 +14,11 @@ type Props = {
 
 export const HelpCenterEditArticleForm = ({translation, onChange}: Props) => {
     const onEditArticleContent = React.useCallback(
-        (newValue: string, charCount: number, wordCount: number) => {
-            onChange(
-                {
-                    ...translation,
-                    content: newValue,
-                },
-                {
-                    charCount,
-                    wordCount,
-                }
-            )
+        (newValue: string) => {
+            onChange({
+                ...translation,
+                content: newValue,
+            })
         },
         [onChange]
     )
