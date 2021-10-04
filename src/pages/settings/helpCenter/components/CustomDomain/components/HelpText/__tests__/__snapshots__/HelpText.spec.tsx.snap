@@ -16,21 +16,18 @@ exports[`<HelpText /> matches snapshot 1`] = `
         clients.gorgias.rehab
       </code>
     </p>
-    <p>
-      <a
-        href="https://docs.gorgias.com/"
-        rel="noopener noreferrer"
-        target="_blank"
+    <a
+      href="https://docs.gorgias.com/faq/how-to-setup-a-custom-domain-for-you-help-center"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      How do I do that? 
+      <span
+        class="infoIcon"
       >
-        How do I do that?
-         
-        <span
-          class="infoIcon"
-        >
-          ⓘ
-        </span>
-      </a>
-    </p>
+        ⓘ
+      </span>
+    </a>
   </div>
 </div>
 `;

@@ -15,9 +15,10 @@ export const StatusCheck = ({
     onCheckStatus,
     status,
 }: Props): JSX.Element | null => {
-    if (!status || status === 'active') {
+    if (!status) {
         return null
     }
+
     return (
         <div data-testid="domain-status-check">
             <Button

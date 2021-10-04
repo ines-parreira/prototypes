@@ -6,23 +6,6 @@ exports[`<ConnectionStatus /> matches snapshot while loading 1`] = `
     class="container"
     data-testid="connection-status"
   >
-    <span
-      data-testid="icon-loading"
-    >
-      <div
-        class="container"
-      >
-        <div
-          class="inner"
-          style="min-height: 16px;"
-        >
-          <i
-            class="icon-custom icon-circle-o-notch md-spin"
-            style="font-size: 16px;"
-          />
-        </div>
-      </div>
-    </span>
     <span>
       Connecting
     </span>
@@ -57,9 +40,9 @@ exports[`<ConnectionStatus /> matches snapshot with status unknown 1`] = `
   >
     <span
       class="disconnected material-icons"
-      data-testid="icon-wifi_off"
+      data-testid="icon-error_outline"
     >
-      wifi_off
+      error_outline
     </span>
     <span>
       Error connecting

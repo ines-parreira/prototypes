@@ -1,37 +1,31 @@
 import React from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import classnames from 'classnames'
 import {useSelector} from 'react-redux'
-import {Container, FormGroup, Button} from 'reactstrap'
+import {useHistory, useLocation} from 'react-router-dom'
+import {Button, Container} from 'reactstrap'
 
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {notify} from '../../../../state/notifications/actions'
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     helpCenterDeleted,
     helpCenterUpdated,
 } from '../../../../state/entities/helpCenters/actions'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-
-import PageHeader from '../../../common/components/PageHeader'
+import {notify} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
 import {ConfirmModalAction} from '../../../common/components/ConfirmModalAction'
-
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
-
-import {isValidSubdomain} from '../utils/validations'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-
-import {getHelpCenterDomain} from '../utils/helpCenter.utils'
-
+import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField'
+import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {getHelpCenterDomain} from '../utils/helpCenter.utils'
+import {isValidSubdomain} from '../utils/validations'
 
-import {SubdomainSection} from './SubdomainSection'
 import {CustomDomain} from './CustomDomain'
-
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
-import {HelpCenterNavigation} from './HelpCenterNavigation'
-
 import css from './HelpCenterInstallationView.less'
+import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImportSection} from './Imports/components/ImportSection'
+import {SubdomainSection} from './SubdomainSection'
 
 // type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
@@ -151,25 +145,27 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
             <HelpCenterNavigation helpcenterId={helpCenterId} />
             <Container
                 fluid
-                className="page-container"
-                style={{maxWidth: 680, marginLeft: 0}}
+                className={classnames('page-container', css.container)}
             >
                 <SubdomainSection
                     value={subDomainValue}
                     href={getHelpCenterDomain(subdomain)}
                     placeholder="brand-name"
                     onChange={setSubdomainValue}
-                />
-                <Button
-                    color="primary"
-                    disabled={!validateNewSubdomain(subDomainValue, subdomain)}
-                    onClick={handleOnUpdateHelpCenter}
                 >
-                    Save Changes
-                </Button>
+                    <Button
+                        color="primary"
+                        disabled={
+                            !validateNewSubdomain(subDomainValue, subdomain)
+                        }
+                        onClick={handleOnUpdateHelpCenter}
+                    >
+                        Save Changes
+                    </Button>
+                </SubdomainSection>
                 <CustomDomain />
                 <ImportSection />
-                <FormGroup className="mt-5">
+                <section>
                     <ConfirmModalAction
                         actions={(onClose) => (
                             <div className={css['modal-actions']}>
@@ -236,7 +232,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                             </Button>
                         )}
                     </ConfirmModalAction>
-                </FormGroup>
+                </section>
             </Container>
         </div>
     )

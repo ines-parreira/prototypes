@@ -11,14 +11,8 @@ describe('<StatusCheck />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it("doesn't render if there's no status or status is 'active'", () => {
-        const {rerender} = render(
-            <StatusCheck status="active" onCheckStatus={() => null} />
-        )
-
-        expect(screen.queryByTestId('domain-status-check')).toBeNull()
-
-        rerender(<StatusCheck onCheckStatus={() => null} />)
+    it("doesn't render if there's no status", () => {
+        render(<StatusCheck onCheckStatus={() => null} />)
 
         expect(screen.queryByTestId('domain-status-check')).toBeNull()
     })

@@ -18,7 +18,7 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
         powered_by_deactivated_datetime: null,
         algolia_api_key: null,
-        custom_domain_deactivated_datetime: null,
+
         primary_color: '#4A8DF9',
         theme: 'light',
     },
@@ -35,7 +35,7 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         search_deactivated_datetime: null,
         powered_by_deactivated_datetime: '2021-05-17T18:22:42.022Z',
         algolia_api_key: null,
-        custom_domain_deactivated_datetime: null,
+
         primary_color: '#4A8DF9',
         theme: 'light',
     },
@@ -52,7 +52,7 @@ export const getHelpcentersResponseFixture: HelpCenter[] = [
         search_deactivated_datetime: null,
         powered_by_deactivated_datetime: null,
         algolia_api_key: null,
-        custom_domain_deactivated_datetime: null,
+
         primary_color: '#4A8DF9',
         theme: 'light',
     },
@@ -71,7 +71,6 @@ export const getSingleHelpcenterResponseFixture: HelpCenter = {
     search_deactivated_datetime: null,
     powered_by_deactivated_datetime: 'powered_by_deactivated_datetime',
     algolia_api_key: null,
-    custom_domain_deactivated_datetime: null,
     primary_color: '#4A8DF9',
     theme: 'light',
 }

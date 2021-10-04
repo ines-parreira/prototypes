@@ -141,7 +141,7 @@ export const ImportSection = (): JSX.Element | null => {
     const closeModal = () => setModalState(null)
 
     return (
-        <section className={css.sectionWrapper}>
+        <section>
             <h4>Import articles from another help center</h4>
 
             <p>

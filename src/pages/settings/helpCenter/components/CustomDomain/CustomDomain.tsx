@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
@@ -6,13 +6,11 @@ import {Button} from 'reactstrap/lib'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {CustomDomain as CustomDomainEntity} from '../../../../../models/helpCenter/types'
-import {helpCenterUpdated} from '../../../../../state/entities/helpCenters/actions'
 import {getCurrentHelpCenter} from '../../../../../state/entities/helpCenters/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {isProduction} from '../../../../../utils/environment'
 import Loader from '../../../../common/components/Loader/Loader'
-import ToggleButton from '../../../../common/components/ToggleButton'
 import InputField from '../../../../common/forms/InputField'
 import {useHelpcenterApi} from '../../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
@@ -27,15 +25,17 @@ import css from './CustomDomain.less'
 
 const labels = {
     active: 'Connected',
-    unknown: 'Error connecting',
-    pending: 'Connection in progress',
+    unknown: 'Validation error',
+    pending: 'Verification in progress',
 }
 
 const tooltips = {
     active:
-        'Everything working, you can now access your help center using your custom domain.',
-    unknown: 'Please make sure your DNS is correctly set up and try again.',
-    pending: 'We are configuring your help center, it can take up to 1 hour.',
+        'Everything is working, you can now access your help center using your custom domain.',
+    unknown:
+        'We were unable to connect to your custom domain, please check your DNS, try again or contact support.',
+    pending:
+        'We are validating your setup, make sure that your DNS is correctly set up. This can take up to one hour.',
 }
 
 export const CustomDomain = () => {
@@ -44,10 +44,8 @@ export const CustomDomain = () => {
     const helpCenterId = useHelpCenterIdParam()
     const helpCenter = useSelector(getCurrentHelpCenter)
 
-    const [domainValue, setDomainValue] = React.useState('')
-    const [currentDomain, setCurrentDomain] = React.useState<
-        CustomDomainEntity
-    >()
+    const [domainValue, setDomainValue] = useState('')
+    const [currentDomain, setCurrentDomain] = useState<CustomDomainEntity>()
 
     const [domainsDto, fetchDomains] = useAsyncFn(async () => {
         if (client) {
@@ -175,40 +173,7 @@ export const CustomDomain = () => {
         }
     }, [client, helpCenterId, currentDomain])
 
-    const [{loading: updating}, toggleCustomDomain] = useAsyncFn(
-        async (customDomainActivated: boolean) => {
-            if (client) {
-                try {
-                    const {data} = await client.updateHelpCenter(
-                        {help_center_id: helpCenterId},
-                        {custom_domain_deactivated: !customDomainActivated}
-                    )
-
-                    dispatch(helpCenterUpdated(data))
-
-                    void dispatch(
-                        notify({
-                            message: `Custom domain successfully ${
-                                customDomainActivated ? 'enabled' : 'disabled'
-                            }`,
-                            status: NotificationStatus.Success,
-                        })
-                    )
-                } catch (err) {
-                    void dispatch(
-                        notify({
-                            message: `Could not toggle custom domain feature`,
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                    console.error(err)
-                }
-            }
-        },
-        [client, helpCenterId]
-    )
-
-    React.useEffect(() => {
+    useEffect(() => {
         void fetchDomains()
     }, [client])
 
@@ -229,10 +194,6 @@ export const CustomDomain = () => {
         }
 
         void deleteDomain()
-    }
-
-    const handleOnToggleFeature = (customDomainActivated: boolean) => {
-        void toggleCustomDomain(customDomainActivated)
     }
 
     const renderConnection = () => {
@@ -284,21 +245,10 @@ export const CustomDomain = () => {
         return null
     }
 
-    const customDomainEnabled =
-        helpCenter.custom_domain_deactivated_datetime === null
-
     return (
-        <section className={css.domainWrapper}>
+        <section>
             <div>
-                <div className={css.titleContainer}>
-                    <ToggleButton
-                        value={customDomainEnabled}
-                        onChange={handleOnToggleFeature}
-                        disabled={updating}
-                        loading={updating}
-                    />
-                    <h4 className={css.title}>Custom Domain</h4>
-                </div>
+                <h4 className={css.title}>Custom Domain</h4>
                 <p>
                     {`Enabling a custom domain will create a redirection from your
                     ${domain} subdomain to this custom domain. This means
@@ -308,17 +258,13 @@ export const CustomDomain = () => {
             </div>
             <HelpText
                 isHidden={
-                    !customDomainEnabled || currentDomain?.status === 'active'
+                    domainsDto.loading || currentDomain?.status === 'active'
                 }
             />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
                     <InputField
-                        disabled={
-                            domainsDto.loading ||
-                            !customDomainEnabled ||
-                            !!currentDomain?.status
-                        }
+                        disabled={domainsDto.loading || !!currentDomain?.status}
                         help="Add a custom domain"
                         label="Custom domain"
                         name="domain"
@@ -330,7 +276,7 @@ export const CustomDomain = () => {
                 </div>
                 {renderConnection()}
             </div>
-            {customDomainEnabled && !currentDomain?.status && (
+            {!currentDomain?.status && (
                 <Button
                     color="success"
                     data-testid="create-domain-btn"

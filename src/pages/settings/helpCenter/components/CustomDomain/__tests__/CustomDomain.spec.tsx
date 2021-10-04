@@ -12,14 +12,11 @@ import {
     waitForElementToBeRemoved,
 } from '@testing-library/react'
 
-import * as types from '../../../../../../state/entities/helpCenters/constants'
 import {initialState as articlesState} from '../../../../../../state/helpCenter/articles/reducer'
 import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
 import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
-import {NotificationStatus} from '../../../../../../state/notifications/types'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import {getHelpcentersResponseFixture} from '../../../fixtures/getHelpcenterResponse.fixture'
-import {useHelpcenterApi} from '../../../hooks/useHelpcenterApi'
 import {CustomDomain} from '../CustomDomain'
 
 jest.mock('../../../hooks/useHelpCenterIdParam', () => {
@@ -80,32 +77,27 @@ jest.mock('../../../hooks/useHelpcenterApi', () => {
                             ],
                         },
                     }),
-                updateHelpCenter: jest
-                    .fn()
-                    .mockImplementation((_, {custom_domain_deactivated}) =>
-                        Promise.resolve({
-                            data: {
-                                id: 1,
-                                subdomain: 'acme',
-                                name: 'ACME Helpcenter',
-                                deactivated_datetime: null,
-                                created_datetime: '2021-05-17T18:21:42.022Z',
-                                updated_datetime: '2021-05-17T18:21:42.022Z',
-                                deleted_datetime: undefined,
-                                default_locale: 'en-US',
-                                supported_locales: ['en-US'],
-                                search_deactivated_datetime:
-                                    '2021-05-17T18:21:42.022Z',
-                                algolia_api_key: null,
-                                primary_color: '#4A8DF9',
-                                theme: 'light',
-                                custom_domain_deactivated_datetime: custom_domain_deactivated
-                                    ? '2021-07-29T10:41:10.343Z'
-                                    : null,
-                                powered_by_deactivated_datetime: null,
-                            },
-                        })
-                    ),
+                updateHelpCenter: jest.fn().mockImplementation(() =>
+                    Promise.resolve({
+                        data: {
+                            id: 1,
+                            subdomain: 'acme',
+                            name: 'ACME Helpcenter',
+                            deactivated_datetime: null,
+                            created_datetime: '2021-05-17T18:21:42.022Z',
+                            updated_datetime: '2021-05-17T18:21:42.022Z',
+                            deleted_datetime: undefined,
+                            default_locale: 'en-US',
+                            supported_locales: ['en-US'],
+                            search_deactivated_datetime:
+                                '2021-05-17T18:21:42.022Z',
+                            algolia_api_key: null,
+                            primary_color: '#4A8DF9',
+                            theme: 'light',
+                            powered_by_deactivated_datetime: null,
+                        },
+                    })
+                ),
             },
         }),
     }
@@ -150,50 +142,6 @@ describe('<CustomDomain />', () => {
         await waitFor(() => expect(input.disabled).toBeFalsy())
     })
 
-    it('disables custom domain feature', async () => {
-        const expectedActions = [
-            {
-                type: types.HELPCENTER_UPDATED,
-                payload: expect.objectContaining({
-                    ...getHelpcentersResponseFixture[0],
-                    custom_domain_deactivated_datetime: expect.any(String),
-                }),
-            },
-            {
-                type: 'ADD_NOTIFICATION',
-                payload: expect.objectContaining({
-                    message: 'Custom domain successfully disabled',
-                    status: NotificationStatus.Success,
-                }),
-            },
-        ]
-
-        render(<CustomDomain />, {wrapper: ReduxProvider})
-
-        const input = screen.queryByPlaceholderText(
-            'help.brand-name.com'
-        ) as HTMLInputElement
-
-        const toggle = screen.getByRole('checkbox')
-
-        await screen.findByTestId('create-domain-btn')
-
-        expect(input.disabled).toBeFalsy()
-
-        fireEvent.click(toggle)
-
-        await waitFor(() =>
-            expect(
-                useHelpcenterApi().client?.updateHelpCenter
-            ).toHaveBeenLastCalledWith(
-                {help_center_id: 1},
-                {custom_domain_deactivated: true}
-            )
-        )
-
-        expect(store.getActions()).toEqual(expectedActions)
-    })
-
     it('has Add Domain button enabled if custom domain feature is enabled and input has value', () => {
         render(<CustomDomain />, {wrapper: ReduxProvider})
 
@@ -226,7 +174,7 @@ describe('<CustomDomain />', () => {
             fireEvent.change(input, {target: {value: 'gorgias.help'}})
             fireEvent.click(addDomainBtn)
 
-            await screen.findByText('Connection in progress')
+            await screen.findByText('Verification in progress')
         })
     })
 
@@ -244,7 +192,7 @@ describe('<CustomDomain />', () => {
         fireEvent.change(input, {target: {value: 'gorgias.help'}})
         fireEvent.click(addDomainBtn)
 
-        await screen.findByText('Connection in progress')
+        await screen.findByText('Verification in progress')
 
         const checkStatusBtn = screen.queryByText(
             'Check Status'
@@ -252,7 +200,7 @@ describe('<CustomDomain />', () => {
 
         fireEvent.click(checkStatusBtn)
 
-        await screen.findByText('Error connecting')
+        await screen.findByText('Validation error')
     })
 
     it('removes the connection status when deleting the domain', async () => {

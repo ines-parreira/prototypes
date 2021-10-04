@@ -5,7 +5,6 @@ Object {
   "1": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:21:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "en-US",
     "deleted_datetime": undefined,
@@ -29,7 +28,6 @@ Object {
   "2": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:22:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "de-DE",
     "deleted_datetime": undefined,
@@ -54,7 +52,6 @@ Object {
   "1": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:21:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "en-US",
     "deleted_datetime": undefined,
@@ -78,7 +75,6 @@ Object {
   "1": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:21:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "en-US",
     "deleted_datetime": undefined,
@@ -97,7 +93,6 @@ Object {
   "2": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:22:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "de-DE",
     "deleted_datetime": undefined,
@@ -117,7 +112,6 @@ Object {
   "3": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:23:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "fr-FR",
     "deleted_datetime": undefined,
@@ -142,7 +136,6 @@ Object {
   "1": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:21:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "en-US",
     "deleted_datetime": undefined,
@@ -161,7 +154,6 @@ Object {
   "2": Object {
     "algolia_api_key": null,
     "created_datetime": "2021-05-17T18:22:42.022Z",
-    "custom_domain_deactivated_datetime": null,
     "deactivated_datetime": null,
     "default_locale": "de-DE",
     "deleted_datetime": undefined,

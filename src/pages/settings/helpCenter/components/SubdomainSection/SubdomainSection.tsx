@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 
 import {isValidSubdomain} from '../../utils/validations'
 
@@ -10,6 +10,7 @@ type Props = {
     href: string
     placeholder?: string
     onChange: (value: string) => void
+    children?: ReactNode
 }
 
 export const SubdomainSection = ({
@@ -17,9 +18,10 @@ export const SubdomainSection = ({
     href,
     placeholder,
     onChange,
+    children,
 }: Props): JSX.Element => {
     return (
-        <section className={css['subdomain-content']}>
+        <section className={css.container}>
             <div className={css.header}>
                 <div className={css.title}>Subdomain</div>
                 <a
@@ -43,6 +45,7 @@ export const SubdomainSection = ({
                 onChange={onChange}
                 isValid={isValidSubdomain(value)}
             />
+            {children}
         </section>
     )
 }

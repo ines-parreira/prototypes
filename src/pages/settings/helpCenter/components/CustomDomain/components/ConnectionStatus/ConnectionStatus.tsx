@@ -1,9 +1,8 @@
-import React from 'react'
+import React, {createRef} from 'react'
 import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
 import Tooltip from '../../../../../../common/components/Tooltip'
-import Loader from '../../../../../../common/components/Loader/Loader'
 
 import css from './ConnectionStatus.less'
 
@@ -21,13 +20,9 @@ export const ConnectionStatus = ({
     label,
     status,
     tooltip,
-}: ConnectionStatusProps) => {
-    const $ref = React.createRef<HTMLDivElement>()
-    let icon = 'wifi_off'
-
-    if (status === 'active') {
-        icon = 'wifi'
-    }
+}: ConnectionStatusProps): JSX.Element => {
+    const $ref = createRef<HTMLDivElement>()
+    const icon = status === 'active' ? 'wifi' : 'error_outline'
 
     const content =
         status === 'pending' ? (
@@ -35,9 +30,6 @@ export const ConnectionStatus = ({
                 className={classNames(css.container, className)}
                 data-testid="connection-status"
             >
-                <span data-testid="icon-loading">
-                    <Loader minHeight="16px" size="16px" />
-                </span>
                 <span ref={$ref}>{label}</span>
             </div>
         ) : (
@@ -68,7 +60,7 @@ export const ConnectionStatus = ({
                 <Tooltip
                     target={$ref}
                     placement="top-start"
-                    style={{maxWidth: 190}}
+                    style={{maxWidth: 190, textAlign: 'left'}}
                 >
                     {_capitalize(tooltip)}
                 </Tooltip>

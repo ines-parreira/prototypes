@@ -29,16 +29,14 @@ export const HelpText = ({isHidden}: Props): JSX.Element | null => {
                     In your DNS manager, add a CNAME pointing to{' '}
                     <code>{dns}</code>
                 </p>
-                <p>
-                    <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://docs.gorgias.com/"
-                    >
-                        How do I do that?{' '}
-                        <span className={css.infoIcon}>&#9432;</span>
-                    </a>
-                </p>
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://docs.gorgias.com/faq/how-to-setup-a-custom-domain-for-you-help-center"
+                >
+                    How do I do that?&nbsp;
+                    <span className={css.infoIcon}>&#9432;</span>
+                </a>
             </div>
         </>
     )

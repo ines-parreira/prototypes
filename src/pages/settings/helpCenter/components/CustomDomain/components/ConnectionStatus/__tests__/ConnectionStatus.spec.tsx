@@ -28,14 +28,11 @@ describe('<ConnectionStatus />', () => {
 
     it('renders the expected icon', () => {
         const {getByTestId, rerender} = render(
-            <ConnectionStatus status="pending" label="Connecting" />
+            <ConnectionStatus status="active" label="Connecting" />
         )
-        getByTestId('icon-loading')
-
-        rerender(<ConnectionStatus status="active" label="Connected" />)
         getByTestId('icon-wifi')
 
         rerender(<ConnectionStatus status="unknown" label="Error connecting" />)
-        getByTestId('icon-wifi_off')
+        getByTestId('icon-error_outline')
     })
 })
