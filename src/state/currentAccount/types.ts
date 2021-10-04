@@ -26,6 +26,7 @@ export enum AccountFeature {
     OverviewLiveStatistics = 'overview_live_statistics',
     MagentoIntegration = 'magento_integration',
     PhoneIntegration = 'phone_integration',
+    TwitterIntegration = 'twitter_integration',
     YotpoIntegration = 'yotpo_integration',
     RevenueStatistics = 'revenue_statistics',
     SatisfactionSurveys = 'satisfaction_surveys',

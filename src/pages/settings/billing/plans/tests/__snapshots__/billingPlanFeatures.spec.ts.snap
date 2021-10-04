@@ -169,6 +169,10 @@ Array [
             "teams": Object {
               "enabled": true,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -235,6 +239,10 @@ Array [
             },
             "teams": Object {
               "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
             },
             "user_roles": Object {
               "enabled": true,
@@ -425,6 +433,10 @@ Array [
             "teams": Object {
               "enabled": true,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -491,6 +503,10 @@ Array [
             },
             "teams": Object {
               "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
             },
             "user_roles": Object {
               "enabled": true,
@@ -686,6 +702,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": false,
             },
@@ -753,6 +773,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": false,
             },
@@ -815,6 +839,10 @@ Array [
             },
             "teams": Object {
               "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
             },
             "user_roles": Object {
               "enabled": true,
@@ -1005,6 +1033,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": false,
             },
@@ -1072,6 +1104,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": false,
             },
@@ -1134,6 +1170,10 @@ Array [
             },
             "teams": Object {
               "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
             },
             "user_roles": Object {
               "enabled": true,
@@ -1325,6 +1365,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": true,
+              "limit": 5,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -1391,6 +1435,10 @@ Array [
             },
             "teams": Object {
               "enabled": false,
+            },
+            "twitter_integration": Object {
+              "enabled": true,
+              "limit": 5,
             },
             "user_roles": Object {
               "enabled": true,
@@ -1582,6 +1630,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": true,
+              "limit": 5,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -1648,6 +1700,10 @@ Array [
             },
             "teams": Object {
               "enabled": false,
+            },
+            "twitter_integration": Object {
+              "enabled": true,
+              "limit": 5,
             },
             "user_roles": Object {
               "enabled": true,
@@ -2051,6 +2107,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -2118,6 +2178,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -2180,6 +2244,10 @@ Array [
             },
             "teams": Object {
               "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
             },
             "user_roles": Object {
               "enabled": true,
@@ -2375,6 +2443,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -2442,6 +2514,10 @@ Array [
             "teams": Object {
               "enabled": false,
             },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
             "user_roles": Object {
               "enabled": true,
             },
@@ -2504,6 +2580,10 @@ Array [
             },
             "teams": Object {
               "enabled": true,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
             },
             "user_roles": Object {
               "enabled": true,

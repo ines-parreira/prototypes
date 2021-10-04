@@ -7,8 +7,6 @@ import {IntegrationType} from '../../../../../../models/integration/types'
 
 describe('<TwitterIntegrationListItem/>', () => {
     let integration: Map<string, any>
-    let activateIntegration: jest.MockedFunction<any>
-    let deactivateIntegration: jest.MockedFunction<any>
 
     beforeEach(() => {
         integration = fromJS({
@@ -26,29 +24,12 @@ describe('<TwitterIntegrationListItem/>', () => {
                 },
             },
         })
-        activateIntegration = jest.fn()
-        deactivateIntegration = jest.fn()
     })
 
     describe('render()', () => {
-        it('should render checked', () => {
+        it('should render', () => {
             const {container} = render(
-                <TwitterIntegrationListItem
-                    integration={integration}
-                    actions={{activateIntegration, deactivateIntegration}}
-                />
-            )
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should render unchecked', () => {
-            integration = integration.set('deactivated_datetime', '2021-05-15')
-
-            const {container} = render(
-                <TwitterIntegrationListItem
-                    integration={integration}
-                    actions={{activateIntegration, deactivateIntegration}}
-                />
+                <TwitterIntegrationListItem integration={integration} />
             )
             expect(container.firstChild).toMatchSnapshot()
         })

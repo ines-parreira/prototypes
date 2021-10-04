@@ -1,12 +1,12 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import PhoneIntegrationListAlert from '../PhoneIntegrationListAlert'
+import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
 
-describe('<PhoneIntegrationListAlert/>', () => {
+describe('<IntegrationListLimitAlert/>', () => {
     it('should not render', () => {
         const {container} = render(
-            <PhoneIntegrationListAlert
+            <IntegrationListLimitAlert
                 totalIntegrations={0}
                 maxIntegrations={2}
             />
@@ -17,7 +17,7 @@ describe('<PhoneIntegrationListAlert/>', () => {
 
     it('should render a warning message', () => {
         const {container} = render(
-            <PhoneIntegrationListAlert
+            <IntegrationListLimitAlert
                 totalIntegrations={1}
                 maxIntegrations={2}
             />
@@ -28,7 +28,7 @@ describe('<PhoneIntegrationListAlert/>', () => {
 
     it('should render an error message', () => {
         const {container} = render(
-            <PhoneIntegrationListAlert
+            <IntegrationListLimitAlert
                 totalIntegrations={2}
                 maxIntegrations={2}
             />

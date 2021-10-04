@@ -7,6 +7,7 @@ import {IntegrationType} from '../../../../models/integration/types'
 import {getCheapestPlanNameForFeature} from '../../../../utils/paywalls'
 import {toJS} from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
+
 import {isFeatureEnabled} from '../../../../utils/account'
 
 import IntegrationListRow from './IntegrationListRow'
@@ -71,6 +72,20 @@ export default class IntegrationList extends React.Component<Props> {
         )
     }
 
+    _hasTwitterIntegrations = () => {
+        return this.props.integrations
+            .filter(
+                (integration) =>
+                    integration!.get('type') ===
+                    IntegrationType.TwitterIntegrationType
+            )
+            .find(
+                (integration) =>
+                    (integration!.get('deleted_datetime') as string | null) ===
+                    null
+            )
+    }
+
     _hasActiveSmoochInsideIntegrations = () => {
         return this.props.integrations
             .filter(
@@ -118,6 +133,7 @@ export default class IntegrationList extends React.Component<Props> {
     render() {
         const {currentPlan, integrationsConfig, plans} = this.props
         const hasActiveSmoochInsideIntegrations = this._hasActiveSmoochInsideIntegrations()
+        const hasTwitterIntegrations = this._hasTwitterIntegrations()
         const displayList = integrationsConfig
             .filter((integration) => {
                 // do not return the smooch inside integration
@@ -129,6 +145,7 @@ export default class IntegrationList extends React.Component<Props> {
                 ) {
                     return false
                 }
+
                 return !integration!.get('hide')
             })
             .map((integration) => {
@@ -147,6 +164,20 @@ export default class IntegrationList extends React.Component<Props> {
                         requiredFeature,
                         toJS(plans)
                     )
+
+                    // Kind of a hacky way because `plans` variable doesn't
+                    // contain the custom plans (Enterprise plans == Custom plans)
+                    if (
+                        !hasTwitterIntegrations &&
+                        integration!.get('type') ===
+                            IntegrationType.TwitterIntegrationType
+                    ) {
+                        return integration!.set(
+                            'requiredPlanName',
+                            'Enterprise'
+                        )
+                    }
+
                     return integration!.set(
                         'requiredPlanName',
                         requiredPlanName

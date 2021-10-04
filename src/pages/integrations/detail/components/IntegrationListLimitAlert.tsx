@@ -7,7 +7,7 @@ type Props = {
     maxIntegrations: number
 }
 
-export default function PhoneIntegrationListAlert({
+export default function IntegrationListLimitAlert({
     totalIntegrations,
     maxIntegrations,
 }: Props): JSX.Element | null {
@@ -25,8 +25,8 @@ export default function PhoneIntegrationListAlert({
         >
             <span className="d-flex align-items-center">
                 <i className="material-icons mr-2">info</i>
-                You have reached {totalIntegrations}/{maxIntegrations} numbers.
-                To add more, you must
+                You have reached {totalIntegrations}/{maxIntegrations}{' '}
+                integrations. To add more, you must
                 <Link to="/app/settings/billing/plans" className="ml-1 mr-1">
                     upgrade
                 </Link>

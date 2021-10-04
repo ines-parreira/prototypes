@@ -574,7 +574,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <TwitterIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                     redirectUri={redirectUri}

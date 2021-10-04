@@ -106,5 +106,26 @@ describe('<PhoneIntegrationList/>', () => {
 
             expect(container.firstChild).toMatchSnapshot()
         })
+
+        it('should render with empty list', () => {
+            integrations = fromJS([])
+            const store = mockStore(getState(99))
+
+            const {container} = render(
+                <PhoneIntegrationList
+                    integrations={integrations}
+                    loading={fromJS({})}
+                />,
+                {
+                    wrapper: (props) => (
+                        <Provider store={store}>
+                            <BrowserRouter>{props?.children}</BrowserRouter>
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })

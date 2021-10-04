@@ -52,6 +52,7 @@ export const account: Account = {
         [AccountFeature.UsersLiveStatistics]: {enabled: true},
         [AccountFeature.OverviewLiveStatistics]: {enabled: true},
         [AccountFeature.PhoneIntegration]: {enabled: true, limit: 3},
+        [AccountFeature.TwitterIntegration]: {enabled: true, limit: 2},
         [AccountFeature.MagentoIntegration]: {enabled: true},
         [AccountFeature.YotpoIntegration]: {enabled: true},
         [AccountFeature.RevenueStatistics]: {enabled: true},

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TwitterIntegrationListItem/> render() should render checked 1`] = `
+exports[`<TwitterIntegrationListItem/> render() should render 1`] = `
 <tr>
   <td
     class="link-full-td"
@@ -25,79 +25,6 @@ exports[`<TwitterIntegrationListItem/> render() should render checked 1`] = `
         </span>
       </div>
     </a>
-  </td>
-  <td
-    class="smallest align-middle"
-  >
-    <label
-      class="switch"
-    >
-      <input
-        checked=""
-        readonly=""
-        type="checkbox"
-      />
-      <div
-        class="slider"
-      />
-    </label>
-  </td>
-  <td
-    class="smallest align-middle"
-  >
-    <a
-      to="/app/settings/integrations/twitter/1"
-    >
-      <i
-        class="material-icons md-2 align-middle icon-go-forward"
-      >
-        keyboard_arrow_right
-      </i>
-    </a>
-  </td>
-</tr>
-`;
-
-exports[`<TwitterIntegrationListItem/> render() should render unchecked 1`] = `
-<tr>
-  <td
-    class="link-full-td"
-  >
-    <a
-      to="/app/settings/integrations/twitter/1"
-    >
-      <div>
-        <img
-          alt="twitter logo"
-          class="image rounded mr-3"
-          src="https://some-random-url.com/picture.jpeg"
-          width="32"
-        />
-        <b>
-          Fake twitter integration
-        </b>
-        <span
-          class="ml-3 text-faded"
-        >
-          @faketwitterintegration
-        </span>
-      </div>
-    </a>
-  </td>
-  <td
-    class="smallest align-middle"
-  >
-    <label
-      class="switch"
-    >
-      <input
-        readonly=""
-        type="checkbox"
-      />
-      <div
-        class="slider"
-      />
-    </label>
   </td>
   <td
     class="smallest align-middle"

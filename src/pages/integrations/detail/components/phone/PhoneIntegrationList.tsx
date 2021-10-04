@@ -9,8 +9,9 @@ import {RootState} from '../../../../../state/types'
 import {getCurrentAccountFeatures} from '../../../../../state/currentAccount/selectors'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
 
+import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
+
 import PhoneIntegrationListItem from './PhoneIntegrationListItem'
-import PhoneIntegrationListAlert from './PhoneIntegrationListAlert'
 
 type OwnProps = {
     integrations: List<Map<string, any>>
@@ -40,7 +41,7 @@ export function PhoneIntegrationList({
     )
 
     const alert = (
-        <PhoneIntegrationListAlert
+        <IntegrationListLimitAlert
             totalIntegrations={phoneIntegrations.size}
             maxIntegrations={maxIntegrations}
         />

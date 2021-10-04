@@ -150,37 +150,6 @@ export const DEFAULT_SOURCE_PATHS = {
  * Integration-related
  */
 
-/**
- * TODO(@ionut): remove this when public releasing the feature.
- */
-export function shouldHideTwitterIntegration() {
-    const isProd =
-        location.hostname.endsWith('.gorgias.io') ||
-        location.hostname.endsWith('.gorgias.com')
-    const allowedHostnames = [
-        'test-martin.gorgias.com',
-        'bloomsybox.gorgias.com',
-        'yumove.gorgias.com',
-        'zox.gorgias.com',
-        'bionicgym.gorgias.com',
-        'onefreshpillow.gorgias.com',
-        'acousticsounds.gorgias.com',
-        'facetheory.gorgias.com',
-        'craftginclub.gorgias.com',
-        'bagallerydeals.gorgias.com',
-        'manieredevoir.gorgias.com',
-        'ego.gorgias.com',
-        'bearaby.gorgias.com',
-        'frenchconnectionuk.gorgias.com',
-        'fittrack.gorgias.com',
-        'mhi.gorgias.com',
-        'criquetshirts.gorgias.com',
-        'bakehouse.gorgias.com',
-    ]
-
-    return isProd && !allowedHostnames.includes(location.hostname)
-}
-
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
@@ -245,7 +214,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description:
             'Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter',
         image: 'integrations/twitter.png',
-        hide: shouldHideTwitterIntegration(),
+        requiredFeature: AccountFeature.TwitterIntegration,
     },
     {
         type: IntegrationType.Magento2IntegrationType,
