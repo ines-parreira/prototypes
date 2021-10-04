@@ -3,7 +3,9 @@ import {useSelector} from 'react-redux'
 import {Button, Container} from 'reactstrap'
 
 import {Category, HelpCenter} from '../../../../../models/helpCenter/types'
+import {getUncategorizedArticles} from '../../../../../state/helpCenter/articles'
 import InfiniteScroll from '../../../../common/components/InfiniteScroll/InfiniteScroll'
+import Loader from '../../../../common/components/Loader/Loader'
 import {
     CategoriesTable,
     CategoriesTableProps,
@@ -11,7 +13,6 @@ import {
 import {CATEGORIES_PER_PAGE} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {useHelpCenterCategories} from '../../hooks/useHelpcenterCategories'
-import {getUncategorizedArticles} from '../../../../../state/helpCenter/articles'
 
 type Props = Pick<
     CategoriesTableProps,
@@ -47,6 +48,14 @@ export const CategoriesViews = ({
         !isLoading &&
         categories.length === 0 &&
         uncategorizedArticles.length === 0
+
+    if (isLoading && categories.length === 0) {
+        return (
+            <Container fluid className="page-container">
+                <Loader />
+            </Container>
+        )
+    }
 
     return (
         <>

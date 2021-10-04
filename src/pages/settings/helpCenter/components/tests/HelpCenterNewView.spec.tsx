@@ -108,15 +108,30 @@ describe('<HelpCenterNewView/>', () => {
             expect(submitButton.className).toMatch(/disabled/i)
         })
         it('should enable the submit button when all the required fields are filled', async () => {
-            const {findByRole} = renderWithRouter(
+            const {findByRole, getByRole} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
+
             const brandInput = await findByRole('textbox', {
                 name: /help center name/i,
             })
             fireEvent.change(brandInput, {target: {value: 'My brand'}})
+
+            const subdomainInput = getByRole('textbox', {
+                name: /subdomain/i,
+            }) as HTMLInputElement
+
+            expect(subdomainInput.value).toEqual('my-brand')
+
+            fireEvent.change(subdomainInput, {
+                target: {value: 'custom-subdomain'},
+            })
+            fireEvent.change(brandInput, {target: {value: 'My custom brand'}})
+
+            expect(subdomainInput.value).toEqual('custom-subdomain')
+
             const submitButton = await findByRole('button', {
                 name: /add new helpcenter/i,
             })

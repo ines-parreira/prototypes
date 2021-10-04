@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UpdateToggle /> should display the update toggle 1`] = `
+<div>
+  <div
+    class="form-group"
+  >
+    <div
+      class="d-flex"
+    >
+      <label
+        class="switch"
+      >
+        <input
+          checked=""
+          readonly=""
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+      </label>
+      <label
+        class="control-label ml-2"
+      >
+        label
+      </label>
+    </div>
+    <p>
+      description
+    </p>
+  </div>
+</div>
+`;

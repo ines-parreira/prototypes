@@ -7,11 +7,27 @@
             font-size: 15px;
             margin-right: 4px;
         }
+
+        &:disabled {
+            cursor: default;
+
+            i {
+                color: @lightGrey;
+            }
+        }
     }
 
     .modal-actions {
         display: flex;
         flex-grow: 1;
         justify-content: space-between;
+    }
+
+    .delete-modal-help-center {
+        color: @red;
+    }
+
+    .delete-modal-input {
+        margin: 0;
     }
 }

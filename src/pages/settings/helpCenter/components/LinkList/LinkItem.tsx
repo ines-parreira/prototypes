@@ -52,7 +52,7 @@ export const LinkItem = ({
 
     return (
         <div data-testid={`link-item-${id}`} className={css['link-item']}>
-            <FormGroup>
+            <FormGroup className={css.formGroup}>
                 <Input
                     value={label}
                     data-testid={`link-item-label-${id}`}
@@ -70,7 +70,7 @@ export const LinkItem = ({
                     </FormFeedback>
                 )}
             </FormGroup>
-            <FormGroup>
+            <FormGroup className={css.formGroup}>
                 <Input
                     value={value}
                     data-testid={`link-item-value-${id}`}
@@ -89,7 +89,7 @@ export const LinkItem = ({
                 )}
             </FormGroup>
             <i className="material-icons" onClick={() => onDelete(id)}>
-                close
+                delete
             </i>
         </div>
     )

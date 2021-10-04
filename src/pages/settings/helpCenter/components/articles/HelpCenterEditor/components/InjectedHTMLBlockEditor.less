@@ -1,18 +1,118 @@
 @import '~css/new/colors';
 
 :local {
-    .container {
-        border: 1px solid @neutral4;
-        border-radius: 4px;
-
-        margin-top: 24px;
-        margin-bottom: 24px;
-
+    .codeEditorWrapper {
+        width: 100%;
         padding: 16px;
-        pre {
-            border: 1px solid @neutral4;
-            border-radius: 4px;
-            background: @darkWhite;
+        border-radius: 4px;
+        border: 1px solid @neutral4;
+
+        box-sizing: border-box;
+    }
+
+    .codeEditorHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        height: 36px;
+
+        color: @neutral10;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 20px;
+
+        user-select: none;
+    }
+
+    .codeEditorFooter {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 16px;
+    }
+
+    .codeEditContainer {
+        position: relative;
+        height: 100%;
+        min-height: 120px;
+
+        margin: 16px 0 0 0;
+        padding: 0;
+
+        background: @neutral1;
+
+        border-radius: 4px;
+        border: 1px solid @neutral4;
+
+        &:not(pre) > code[class*='language-'],
+        pre[class*='language-'] {
+            background: transparent !important;
+            margin: 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            min-height: 120px;
+
+            overflow-y: clip;
+        }
+
+        code {
+            padding: 0 !important;
+        }
+    }
+
+    .codeInput,
+    .codeOutput {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+
+        padding: 6px 12px 0 12px !important;
+        border: none;
+        font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+        font-size: 0.8rem;
+        background: transparent;
+        white-space: pre-wrap;
+        line-height: 1.5em;
+        word-wrap: break-word;
+        font-size: 1rem;
+    }
+
+    .codeInput {
+        opacity: 1;
+        resize: none;
+    }
+
+    .codeOutput {
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .codeOutputPreview {
+        width: 100%;
+        height: 100%;
+        padding: 6px 12px 0 12px !important;
+    }
+
+    .warning {
+        display: flex;
+        align-items: center;
+
+        padding: 16px 20px;
+        border: 1px solid @orange;
+        border-radius: 4px;
+        margin-top: 16px;
+
+        color: @neutral10;
+
+        .warningIcon {
+            color: @orange;
+            font-size: 18px;
         }
     }
 }

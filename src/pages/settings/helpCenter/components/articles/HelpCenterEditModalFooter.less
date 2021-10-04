@@ -9,30 +9,19 @@
         display: flex;
         justify-content: space-between;
     }
-    .dropdownButton {
-        display: flex;
-    }
     .counters > span {
         padding-left: 15px;
-    }
-    .submitButton {
-        border: 1px solid @blue6;
-    }
-    .dropdownButton > button,
-    .dropdownButton > button:hover,
-    .dropdownButton > button:focus:not(:focus-visible),
-    .dropdownButton > button:active {
-        border: 1px solid @blue6 !important;
-        background-color: @blue !important;
-    }
-    .dropdownButton > button::after {
-        margin: 0;
-        color: white;
     }
     .dropdownMenu {
         margin-bottom: 7px;
     }
-    .danger {
-        color: @red;
+    .delete-btn {
+        margin-left: 8px;
+
+        i {
+            color: @red;
+            font-size: 15px;
+            margin-right: 4px;
+        }
     }
 }

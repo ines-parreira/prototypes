@@ -1,5 +1,5 @@
+import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
-import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {
@@ -12,27 +12,22 @@ import {
     Label,
 } from 'reactstrap'
 import produce from 'immer'
+import axios from 'axios'
 
 import {validLocaleCode} from '../../../../models/helpCenter/utils'
-
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
-
 import {CreateHelpcenterDto} from '../../../../models/helpCenter/types'
-
 import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify as notifyAction} from '../../../../state/notifications/actions'
-
 import {SubdomainInput} from '../components/SubdomainSection'
-
 import {useLocales} from '../hooks/useLocales'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {isValidSubdomain} from '../utils/validations'
-
 import {
     DEFAULT_THEME,
     HELP_CENTER_BASE_PATH,
@@ -40,9 +35,9 @@ import {
     HELP_CENTER_LANGUAGE_DEFAULT,
 } from '../constants'
 import {HelpCenterThemes} from '../types'
+import {slugify} from '../utils/helpCenter.utils'
 
 import {ThemeSwitch} from './ThemeSwitch'
-
 import css from './HelpCenterNewView.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -69,16 +64,35 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         initialFormState
     )
     const [isLoading, setIsLoading] = useState(false)
+    const [isPristineSubdomain, setPristineSubdomain] = useState(true)
+    const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const localeOptions = locales.map((locale) => ({
         label: <FlagLanguageItem code={locale.code} name={locale.name} />,
         text: locale.name,
         value: locale.code,
     }))
 
+    const checkSubdomainAvailability = async (subdomain: string) => {
+        if (client) {
+            try {
+                await client.checkHelpCenterWithSubdomainExists({subdomain})
+
+                setIsSubdomainAvailable(false)
+            } catch (err) {
+                if (axios.isAxiosError(err) && err.response?.status === 404) {
+                    setIsSubdomainAvailable(true)
+                } else {
+                    throw err
+                }
+            }
+        }
+    }
+
     const handleSubmit = async () => {
         if (!client) {
             return
         }
+
         setIsLoading(true)
         try {
             const payload = produce(newHelpCenter, (draft) => {
@@ -117,6 +131,27 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         }))
     }
 
+    const handleChangeName = (name: string) => {
+        setNewHelpCenter((prevNewHelpCenter) => ({
+            ...prevNewHelpCenter,
+            name,
+            subdomain: isPristineSubdomain
+                ? slugify(name)
+                : prevNewHelpCenter.subdomain,
+        }))
+    }
+
+    const handleChangeSubdomain = (subdomain: string) => {
+        setNewHelpCenter((prevNewHelpCenter) => ({
+            ...prevNewHelpCenter,
+            subdomain,
+        }))
+
+        if (isPristineSubdomain) {
+            setPristineSubdomain(false)
+        }
+    }
+
     const resetForm = () => {
         setNewHelpCenter(initialFormState)
     }
@@ -142,13 +177,25 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
 
         if (
             newHelpCenter?.subdomain &&
-            !isValidSubdomain(newHelpCenter?.subdomain)
+            (!isSubdomainAvailable ||
+                !isValidSubdomain(newHelpCenter?.subdomain))
         ) {
             return false
         }
 
         return true
     }
+
+    useEffect(() => {
+        setIsSubdomainAvailable(true)
+
+        if (
+            newHelpCenter?.subdomain &&
+            isValidSubdomain(newHelpCenter.subdomain)
+        ) {
+            void checkSubdomainAvailability(newHelpCenter.subdomain)
+        }
+    }, [newHelpCenter.subdomain])
 
     return (
         <div className="full-width">
@@ -184,34 +231,21 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                                     className={classnames(css.formInput)}
                                     required
                                     value={newHelpCenter.name}
-                                    onChange={(name: string) =>
-                                        setNewHelpCenter(
-                                            (prevNewHelpCenter) => ({
-                                                ...prevNewHelpCenter,
-                                                name,
-                                            })
-                                        )
-                                    }
+                                    onChange={handleChangeName}
                                 />
                             </Col>
                             <Col md="6">
                                 <SubdomainInput
                                     help="This is the URL for your Help center. If you don't provide a value, we will generate one for you."
-                                    hasError={
-                                        newHelpCenter?.subdomain
-                                            ? !isValidSubdomain(
-                                                  newHelpCenter?.subdomain
-                                              )
-                                            : false
-                                    }
                                     value={newHelpCenter?.subdomain}
-                                    onChange={(subdomain: string) =>
-                                        setNewHelpCenter(
-                                            (prevNewHelpCenter) => ({
-                                                ...prevNewHelpCenter,
-                                                subdomain,
-                                            })
-                                        )
+                                    onChange={handleChangeSubdomain}
+                                    isAvailable={isSubdomainAvailable}
+                                    isValid={
+                                        newHelpCenter?.subdomain
+                                            ? isValidSubdomain(
+                                                  newHelpCenter.subdomain
+                                              )
+                                            : true
                                     }
                                 />
                             </Col>

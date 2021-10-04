@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {SubdomainInput} from './components/SubdomainInput'
+import {isValidSubdomain} from '../../utils/validations'
 
+import {SubdomainInput} from './components/SubdomainInput'
 import css from './SubdomainSection.less'
 
 type Props = {
     value: string
-    hasError?: boolean
     href: string
     placeholder?: string
     onChange: (value: string) => void
@@ -14,15 +14,14 @@ type Props = {
 
 export const SubdomainSection = ({
     value,
-    hasError = false,
     href,
     placeholder,
     onChange,
-}: Props) => {
+}: Props): JSX.Element => {
     return (
         <section className={css['subdomain-content']}>
-            <div className={css.title}>
-                <h4>Subdomain</h4>
+            <div className={css.header}>
+                <div className={css.title}>Subdomain</div>
                 <a
                     className={css.anchor}
                     href={href}
@@ -39,10 +38,10 @@ export const SubdomainSection = ({
                 better match your needs.
             </p>
             <SubdomainInput
-                hasError={hasError}
-                placeholder={placeholder}
                 value={value}
+                placeholder={placeholder}
                 onChange={onChange}
+                isValid={isValidSubdomain(value)}
             />
         </section>
     )

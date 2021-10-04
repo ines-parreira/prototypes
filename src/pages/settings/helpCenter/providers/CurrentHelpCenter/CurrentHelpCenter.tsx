@@ -33,6 +33,8 @@ import HelpCenterCustomizationView from '../../components/HelpCenterCustomizatio
 import HelpCenterInstallationView from '../../components/HelpCenterInstallationView'
 import HelpCenterImportCsvColumnMatchingView from '../../components/HelpCenterImportCsvColumnMatchingView'
 
+import './CurrentHelpCenter.less'
+
 export const CurrentHelpCenter = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const {path} = useRouteMatch()

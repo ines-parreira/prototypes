@@ -107,7 +107,7 @@ export const ArticleLanguageSelect = ({
                 className={css.trigger}
                 onClick={onOpen}
             >
-                <span>{selectedOption?.label}</span>
+                <span className={css.label}>{selectedOption?.label}</span>
                 <span className="material-icons">arrow_drop_down</span>
             </button>
             {isOpen && (
@@ -119,7 +119,9 @@ export const ArticleLanguageSelect = ({
                                 data-testid={`option-${option.value}`}
                                 onClick={(ev) => handleOnSelect(ev, option)}
                             >
-                                <span>{option.label}</span>
+                                <span className={css.label}>
+                                    {option.label}
+                                </span>
                                 {renderActions(option)}
                             </li>
                         ))}

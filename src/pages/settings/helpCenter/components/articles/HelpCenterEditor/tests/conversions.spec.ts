@@ -7,7 +7,7 @@ import {
     Modifier,
 } from 'draft-js'
 
-import {convertFromHTML, convertToHTML} from '../utils'
+import {convertFromHTML, convertToHTML, VIDEO_TYPE} from '../utils'
 
 let mockDeterministicKey = 0
 jest.mock('draft-js/lib/generateRandomKey', () => {
@@ -18,6 +18,46 @@ beforeEach(() => {
 })
 
 describe('convertFromHTML', () => {
+    it('should understand videos', () => {
+        expect(
+            convertToRaw(
+                convertFromHTML(
+                    '<iframe width="630" height="394" src="https://www.loom.com/embed/f847480edb844e28b124927d3152546b" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>'
+                )
+            )
+        ).toMatchInlineSnapshot(`
+            Object {
+              "blocks": Array [
+                Object {
+                  "data": Object {},
+                  "depth": 0,
+                  "entityRanges": Array [
+                    Object {
+                      "key": 0,
+                      "length": 1,
+                      "offset": 0,
+                    },
+                  ],
+                  "inlineStyleRanges": Array [],
+                  "key": 1,
+                  "text": "a",
+                  "type": "atomic",
+                },
+              ],
+              "entityMap": Object {
+                "0": Object {
+                  "data": Object {
+                    "height": 394,
+                    "src": "https://www.loom.com/embed/f847480edb844e28b124927d3152546b",
+                    "width": 630,
+                  },
+                  "mutability": "IMMUTABLE",
+                  "type": "VIDEO",
+                },
+              },
+            }
+        `)
+    })
     it('should understand images', () => {
         expect(
             convertToRaw(
@@ -142,14 +182,28 @@ describe('convertFromHTML', () => {
                 Object {
                   "data": Object {},
                   "depth": 0,
-                  "entityRanges": Array [],
+                  "entityRanges": Array [
+                    Object {
+                      "key": 0,
+                      "length": 4,
+                      "offset": 0,
+                    },
+                  ],
                   "inlineStyleRanges": Array [],
                   "key": 1,
                   "text": "code",
-                  "type": "code",
+                  "type": "atomic",
                 },
               ],
-              "entityMap": Object {},
+              "entityMap": Object {
+                "0": Object {
+                  "data": Object {
+                    "code": "code",
+                  },
+                  "mutability": "MUTABLE",
+                  "type": "CODE_BLOCK",
+                },
+              },
             }
         `)
     })
@@ -158,7 +212,7 @@ describe('convertFromHTML', () => {
             convertToRaw(
                 convertFromHTML(
                     `<iframe width="630" height="394"
-    src="https://www.loom.com/embed/f847480edb844e28b124927d3152546b" frameborder="0" webkitallowfullscreen=""
+    src="https://www.loom.com/not-a-video" frameborder="0" webkitallowfullscreen=""
     mozallowfullscreen="" allowfullscreen=""></iframe>`
                 )
             )
@@ -184,7 +238,7 @@ describe('convertFromHTML', () => {
               "entityMap": Object {
                 "0": Object {
                   "data": Object {
-                    "src": "<iframe width=\\"630\\" height=\\"394\\" src=\\"https://www.loom.com/embed/f847480edb844e28b124927d3152546b\\" frameborder=\\"0\\" webkitallowfullscreen=\\"\\" mozallowfullscreen=\\"\\" allowfullscreen=\\"\\"></iframe>",
+                    "src": "<iframe width=\\"630\\" height=\\"394\\" src=\\"https://www.loom.com/not-a-video\\" frameborder=\\"0\\" webkitallowfullscreen=\\"\\" mozallowfullscreen=\\"\\" allowfullscreen=\\"\\"></iframe>",
                   },
                   "mutability": "MUTABLE",
                   "type": "INJECTED_HTML",
@@ -193,13 +247,12 @@ describe('convertFromHTML', () => {
             }
         `)
     })
-
     it('should understand iframes in divs as INJECTED_HTML (helpdoc)', () => {
         expect(
             convertToRaw(
                 convertFromHTML(
                     `<div class="hd--embed" data-provider="Loom" data-thumbnail=""><iframe width="630" height="394"
-    src="https://www.loom.com/embed/f847480edb844e28b124927d3152546b" frameborder="0" webkitallowfullscreen=""
+    src="https://www.loom.com/not-a-video" frameborder="0" webkitallowfullscreen=""
     mozallowfullscreen="" allowfullscreen=""></iframe></div>`
                 )
             )
@@ -225,7 +278,7 @@ describe('convertFromHTML', () => {
               "entityMap": Object {
                 "0": Object {
                   "data": Object {
-                    "src": "<iframe width=\\"630\\" height=\\"394\\" src=\\"https://www.loom.com/embed/f847480edb844e28b124927d3152546b\\" frameborder=\\"0\\" webkitallowfullscreen=\\"\\" mozallowfullscreen=\\"\\" allowfullscreen=\\"\\"></iframe>",
+                    "src": "<iframe width=\\"630\\" height=\\"394\\" src=\\"https://www.loom.com/not-a-video\\" frameborder=\\"0\\" webkitallowfullscreen=\\"\\" mozallowfullscreen=\\"\\" allowfullscreen=\\"\\"></iframe>",
                   },
                   "mutability": "MUTABLE",
                   "type": "INJECTED_HTML",
@@ -234,7 +287,6 @@ describe('convertFromHTML', () => {
             }
         `)
     })
-
     it('should understand random bytes of HTML', () => {
         expect(
             convertToRaw(
@@ -296,9 +348,39 @@ describe('convertFromHTML', () => {
             }
         `)
     })
+    it('should understand style', () => {
+        expect(
+            convertToRaw(
+                convertFromHTML(
+                    `<span style="color: #ff0000">This is a red text</span>`
+                )
+            )
+        ).toMatchInlineSnapshot(`
+                      Object {
+                        "blocks": Array [
+                          Object {
+                            "data": Object {},
+                            "depth": 0,
+                            "entityRanges": Array [],
+                            "inlineStyleRanges": Array [
+                              Object {
+                                "length": 18,
+                                "offset": 0,
+                                "style": "color-rgb(255, 0, 0)",
+                              },
+                            ],
+                            "key": 1,
+                            "text": "This is a red text",
+                            "type": "unstyled",
+                          },
+                        ],
+                        "entityMap": Object {},
+                      }
+              `)
+    })
 })
 
-const createDraftContentAndInserEntity = (
+const createDraftContentAndInsertEntity = (
     type: string,
     data: Record<string, unknown>
 ): ContentState => {
@@ -324,11 +406,53 @@ const createDraftContentAndInserEntity = (
     )
     return newEditorState.getCurrentContent()
 }
+
+const createContentFromRaw = (): ContentState => {
+    const content = convertFromRaw({
+        blocks: [
+            {
+                data: {},
+                depth: 0,
+                entityRanges: [],
+                inlineStyleRanges: [
+                    {
+                        length: 18,
+                        offset: 0,
+                        //@ts-ignore typing of style
+                        style: 'color-#ff0000',
+                    },
+                ],
+                key: '1',
+                text: 'This is a red text',
+                type: 'unstyled',
+            },
+        ],
+        entityMap: {},
+    })
+    const editorState = EditorState.createWithContent(content)
+    return editorState.getCurrentContent()
+}
+
 describe('convertToHTML', () => {
+    it('should convert video', () => {
+        expect(
+            convertToHTML(
+                createDraftContentAndInsertEntity(VIDEO_TYPE, {
+                    src: 'https://www.youtube.com/embed/E4t0mTFjNss',
+                    width: 500,
+                    height: 281,
+                })
+            )
+        ).toMatchInlineSnapshot(`
+            "<p></p><figure>
+                                <iframe width=500 height=281 src=\\"https://www.youtube.com/embed/E4t0mTFjNss\\" frameborder=\\"0\\" allowfullscreen></iframe>
+                            </figure><p></p>"
+        `)
+    })
     it('should convert images', () => {
         expect(
             convertToHTML(
-                createDraftContentAndInserEntity('IMAGE', {
+                createDraftContentAndInsertEntity('IMAGE', {
                     src:
                         'https://files.helpdocs.io/eQ5bRgGfSN/articles/bb8qfbt1mj/1588598197230/image.png',
                 })
@@ -359,13 +483,74 @@ describe('convertToHTML', () => {
     it('should convert raw HTML blocks', () => {
         expect(
             convertToHTML(
-                createDraftContentAndInserEntity('INJECTED_HTML', {
+                createDraftContentAndInsertEntity('INJECTED_HTML', {
                     src:
                         '<iframe width="630" height="394" src="https://www.loom.com/embed/f847480edb844e28b124927d3152546b" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>',
                 })
             )
         ).toMatchInlineSnapshot(
-            `"<p></p><div><iframe width=\\"630\\" height=\\"394\\" src=\\"https://www.loom.com/embed/f847480edb844e28b124927d3152546b\\" frameborder=\\"0\\" webkitallowfullscreen=\\"\\" mozallowfullscreen=\\"\\" allowfullscreen=\\"\\"></iframe></div><p></p>"`
+            `"<p></p><div data-widgetType=\\"injected-html\\"><iframe width=\\"630\\" height=\\"394\\" src=\\"https://www.loom.com/embed/f847480edb844e28b124927d3152546b\\" frameborder=\\"0\\" webkitallowfullscreen=\\"\\" mozallowfullscreen=\\"\\" allowfullscreen=\\"\\"></iframe></div><p></p>"`
+        )
+
+        expect(
+            convertToHTML(
+                createDraftContentAndInsertEntity('INJECTED_HTML', {
+                    src: `<div><script>console.log('injected2')</script></div>`,
+                })
+            )
+        ).toMatchInlineSnapshot(
+            `"<p></p><div data-widgetType=\\"injected-html\\"><div><script>console.log('injected2')</script></div></div><p></p>"`
+        )
+
+        expect(
+            convertToHTML(
+                createDraftContentAndInsertEntity('INJECTED_HTML', {
+                    src: `
+                  <table>
+                    <tr>
+                      <th>Company</th>
+                      <th>Contact</th>
+                      <th>Country</th>
+                    </tr>
+                    <tr>
+                      <td>Alfreds Futterkiste</td>
+                      <td>Maria Anders</td>
+                      <td>Germany</td>
+                    </tr>
+                    <tr>
+                      <td>Centro comercial Moctezuma</td>
+                      <td>Francisco Chang</td>
+                      <td>Mexico</td>
+                    </tr>
+                  </table>
+                  `,
+                })
+            )
+        ).toMatchInlineSnapshot(`
+            "<p></p><div data-widgetType=\\"injected-html\\">
+                              <table>
+                                <tr>
+                                  <th>Company</th>
+                                  <th>Contact</th>
+                                  <th>Country</th>
+                                </tr>
+                                <tr>
+                                  <td>Alfreds Futterkiste</td>
+                                  <td>Maria Anders</td>
+                                  <td>Germany</td>
+                                </tr>
+                                <tr>
+                                  <td>Centro comercial Moctezuma</td>
+                                  <td>Francisco Chang</td>
+                                  <td>Mexico</td>
+                                </tr>
+                              </table>
+                              </div><p></p>"
+        `)
+    })
+    it('should convert styling', () => {
+        expect(convertToHTML(createContentFromRaw())).toMatchInlineSnapshot(
+            `"<p><span style=\\"color: #ff0000\\">This is a red text</span></p>"`
         )
     })
 })

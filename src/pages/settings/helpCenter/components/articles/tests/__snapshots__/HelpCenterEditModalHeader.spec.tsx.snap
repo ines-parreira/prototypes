@@ -22,7 +22,9 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`]
           class="trigger"
           data-testid="dropdown-select-trigger"
         >
-          <span>
+          <span
+            class="label"
+          >
             <span>
               <img
                 alt="fr-FR"

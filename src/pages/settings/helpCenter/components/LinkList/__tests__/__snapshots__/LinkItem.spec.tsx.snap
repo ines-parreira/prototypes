@@ -7,7 +7,7 @@ exports[`<LinkItem> should display the link item 1`] = `
     data-testid="link-item-1"
   >
     <div
-      class="form-group"
+      class="formGroup form-group"
     >
       <input
         aria-invalid="false"
@@ -18,7 +18,7 @@ exports[`<LinkItem> should display the link item 1`] = `
       />
     </div>
     <div
-      class="form-group"
+      class="formGroup form-group"
     >
       <input
         aria-invalid="false"
@@ -31,7 +31,7 @@ exports[`<LinkItem> should display the link item 1`] = `
     <i
       class="material-icons"
     >
-      close
+      delete
     </i>
   </div>
 </div>
@@ -44,7 +44,7 @@ exports[`<LinkItem> should display the link item with an error message 1`] = `
     data-testid="link-item-2"
   >
     <div
-      class="form-group"
+      class="formGroup form-group"
     >
       <input
         aria-invalid="false"
@@ -55,7 +55,7 @@ exports[`<LinkItem> should display the link item with an error message 1`] = `
       />
     </div>
     <div
-      class="form-group"
+      class="formGroup form-group"
     >
       <input
         aria-invalid="true"
@@ -74,7 +74,7 @@ exports[`<LinkItem> should display the link item with an error message 1`] = `
     <i
       class="material-icons"
     >
-      close
+      delete
     </i>
   </div>
 </div>

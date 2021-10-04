@@ -40,9 +40,8 @@ describe('<SubdomainSection />', () => {
         it('renders the error message', () => {
             const {getByTestId} = render(
                 <SubdomainSection
-                    value="my-domain"
+                    value="my-domain;"
                     href=""
-                    hasError
                     onChange={jest.fn}
                 />
             )

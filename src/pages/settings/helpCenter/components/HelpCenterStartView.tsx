@@ -40,21 +40,13 @@ export const HelpCenterStartView: FunctionComponent = () => {
         () => _keyBy<HelpCenterLocale>(localeOptions, 'code'),
         [localeOptions]
     )
-    const [
-        helpCenterListResponse,
-        getHelpCentersList,
-    ] = useAsyncFn(async () => {
+    const [{loading}, getHelpCentersList] = useAsyncFn(async () => {
         if (client) {
-            const response = await client.listHelpCenters()
-            return response.data.data
-        }
-        return []
-    }, [client, dispatch])
-
-    useEffect(() => {
-        async function init() {
             try {
-                const helpCenters = await getHelpCentersList()
+                const {
+                    data: {data: helpCenters},
+                } = await client.listHelpCenters()
+
                 dispatch(helpCentersFetched(helpCenters))
             } catch (err) {
                 void dispatch(
@@ -66,9 +58,13 @@ export const HelpCenterStartView: FunctionComponent = () => {
                 console.error(err)
             }
         }
+    }, [client])
 
-        void init()
-    }, [dispatch, getHelpCentersList])
+    useEffect(() => {
+        if (!loading) {
+            void getHelpCentersList()
+        }
+    }, [getHelpCentersList])
 
     const navigateToArticles = useCallback(
         (helpCenterId: number) => {
@@ -155,7 +151,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
             <HelpCentersTable
                 list={helpCenterList}
                 locales={localesByCode}
-                isLoading={helpCenterListResponse.loading}
+                isLoading={loading}
                 onClick={navigateToArticles}
                 onToggle={toggleActivation}
             />

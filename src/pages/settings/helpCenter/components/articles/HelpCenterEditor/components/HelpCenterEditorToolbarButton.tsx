@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import classNames from 'classnames'
 
 import Tooltip from '../../../../../../common/components/Tooltip'
@@ -19,11 +19,13 @@ export const HelpCenterEditorToolbarButton = ({
     disabled,
     icon,
     tooltip,
-}: Props) => {
+}: Props): JSX.Element => {
+    const ref = useRef<HTMLButtonElement>(null)
+
     return (
         <>
             <button
-                id={`help-center-editor-${icon}`}
+                ref={ref}
                 disabled={disabled}
                 type="button"
                 className={classNames({
@@ -37,12 +39,11 @@ export const HelpCenterEditorToolbarButton = ({
             >
                 <i className="material-icons material-icons-outlined">{icon}</i>
             </button>
-            <Tooltip
-                target={`help-center-editor-${icon}`}
-                placement="top-start"
-            >
-                {tooltip}
-            </Tooltip>
+            {!disabled && tooltip && (
+                <Tooltip target={ref} placement="top-start">
+                    {tooltip}
+                </Tooltip>
+            )}
         </>
     )
 }

@@ -137,7 +137,8 @@ export const CustomDomain = () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: 'Could not add the domain.',
+                        message:
+                            'Could not add the domain. Please try again or contact support.',
                     })
                 )
             }

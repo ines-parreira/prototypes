@@ -331,7 +331,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                 </button>
               </div>
               <div
-                class="InputField my-4 form-group"
+                class="InputField form-group"
                 color=""
               >
                 <label

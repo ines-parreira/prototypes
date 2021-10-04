@@ -42,10 +42,11 @@ export const SocialNavigationItem = ({
                 <span data-testid={`${label}-label`}>{label}</span>
             </div>
             <div>
-                <FormGroup>
+                <FormGroup className={css.formGroup}>
                     <Input
                         className={css['social-input']}
                         value={innerValue}
+                        placeholder={`${label} page link`}
                         invalid={!!errMessage}
                         onChange={handleOnChangeValue}
                         onBlur={(ev) => {
