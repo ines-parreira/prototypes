@@ -30,11 +30,13 @@ type Props = RowEventListeners & {
     isNested?: boolean
     article: HelpCenterArticle
     categoryId: number
+    position: number
 }
 
 export const ArticleRow = ({
     isNested = false,
     article,
+    position,
     categoryId,
     onMoveEntity,
     onClickRow,
@@ -44,7 +46,7 @@ export const ArticleRow = ({
     const localesByCode = useSupportedLocales()
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
-            position: article?.position || 0,
+            position,
             id: article.id,
             type: `ARTICLE-${categoryId}`,
         },

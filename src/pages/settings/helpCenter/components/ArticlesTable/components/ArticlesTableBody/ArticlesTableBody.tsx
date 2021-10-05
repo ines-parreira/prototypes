@@ -23,12 +23,13 @@ export const ArticlesTableBody = ({
 }: Props): JSX.Element => {
     return (
         <TableBody>
-            {list.map((article) => (
+            {list.map((article, index) => (
                 <ArticleRow
                     key={article.id}
                     isNested={isNested}
                     categoryId={categoryId}
                     article={article}
+                    position={index}
                     onMoveEntity={onMoveEntity}
                     onDropEntity={onDropEntity}
                     onClickRow={onClickRow}

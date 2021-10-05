@@ -35,9 +35,7 @@ export const CategoriesTable = ({
     }, [categories])
 
     const handleOnDropCategory = (dragIndex: number, hoverIndex: number) => {
-        const dragRecord = records.find(
-            (category) => category.position === dragIndex
-        )
+        const dragRecord = records[dragIndex]
         let nextRecords = [...records]
 
         if (dragRecord) {
@@ -75,11 +73,12 @@ export const CategoriesTable = ({
                     renderArticleList={renderArticleList}
                     tooltip="Uncategorized articles will always be the last ones on the list in the live Help Center."
                 />
-                {records.map((category) => (
+                {records.map((category, index) => (
                     <CategoriesTableRow
                         key={category.id}
                         categoryId={category.id}
                         category={category}
+                        position={index}
                         title={category.translation?.title}
                         renderArticleList={renderArticleList}
                         onMoveEntity={handleOnDropCategory}

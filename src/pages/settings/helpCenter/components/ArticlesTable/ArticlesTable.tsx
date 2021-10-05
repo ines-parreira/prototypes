@@ -53,9 +53,7 @@ export const ArticlesTable = ({
     }
 
     const handleOnMoveArticle = (dragIndex: number, hoverIndex: number) => {
-        const dragRecord = records.find(
-            (article) => article.position === dragIndex
-        )
+        const dragRecord = records[dragIndex]
         let nextRecords = [...records]
 
         if (dragRecord) {

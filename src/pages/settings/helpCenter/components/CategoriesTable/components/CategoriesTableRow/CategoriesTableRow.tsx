@@ -25,7 +25,8 @@ import css from './CategoriesTableRow.less'
 
 export type CategoriesTableRowProps =
     | BaseCategoriesTableRowProps
-    | ({category: Category} & BaseCategoriesTableRowProps & RowEventListeners)
+    | ({category: Category; position: number} & BaseCategoriesTableRowProps &
+          RowEventListeners)
 
 type BaseCategoriesTableRowProps = {
     categoryId: number
@@ -63,6 +64,7 @@ type DroppableCategoriesTableRowProps = {
     headerCell: ReactElement
     bodyInnerClass: string
     onDragStart: () => void
+    position: number
 } & RowEventListeners
 
 const DroppableCategoriesTableRow = ({
@@ -72,6 +74,7 @@ const DroppableCategoriesTableRow = ({
     onDragStart,
     onMoveEntity,
     onDropEntity,
+    position,
 }: DroppableCategoriesTableRowProps) => {
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const localesByCode = useSupportedLocales()
@@ -118,7 +121,7 @@ const DroppableCategoriesTableRow = ({
             className={css['droppable-row']}
             dragItem={{
                 id: category.id,
-                position: category.position,
+                position,
                 type: DND_ENTITIES.CATEGORY,
             }}
             onDragStart={onDragStart}
