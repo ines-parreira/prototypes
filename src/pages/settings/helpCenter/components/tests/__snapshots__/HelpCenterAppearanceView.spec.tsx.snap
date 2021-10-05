@@ -114,7 +114,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             for="primary_logo"
           >
             <div
-              class="container"
+              class="container drop-zone"
             >
               <div
                 class="content"
@@ -186,7 +186,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             for="white_logo"
           >
             <div
-              class="container"
+              class="container drop-zone"
             >
               <div
                 class="content"
@@ -252,59 +252,49 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
               info
             </i>
           </div>
-          <div
-            class="input"
+          <label
+            class="wrapper"
+            data-testid="dropZone"
+            for="favicon"
           >
-            <label
-              class="wrapper"
-              data-testid="dropZone"
-              for="favicon"
+            <div
+              class="container small drop-zone drop-zone-small"
             >
               <div
-                class="container small mr-4"
+                class="content"
               >
                 <div
                   class="content"
                 >
                   <div
-                    class="content"
-                  />
+                    class="wrapper"
+                  >
+                    <img
+                      alt="upload"
+                      class="icon icon-small"
+                      src="test-file-stub"
+                    />
+                  </div>
                 </div>
               </div>
-            </label>
-            <input
-              accept="image/png,image/jpeg,image/x-icon"
-              id="favicon"
-              style="display: none;"
-              type="file"
-            />
-            <label
-              for="faviconUpload"
-            >
-              <div
-                class="fakeBtn"
-              >
-                <span
-                  class="material-icons mr-2"
-                >
-                  attachment
-                </span>
-                Upload
-              </div>
-            </label>
-            <input
-              accept="image/png"
-              id="faviconUpload"
-              name="faviconUpload"
-              style="display: none;"
-              type="file"
-            />
-          </div>
+            </div>
+          </label>
+          <input
+            accept="image/png,image/jpeg,image/x-icon"
+            id="favicon"
+            style="display: none;"
+            type="file"
+          />
           <div
             class="container"
           >
+            <span
+              class="highlight clickable"
+            >
+              Upload image
+            </span>
             <span>
-              Ideally a 64px square PNG
+              recommended size 64 x 64
             </span>
           </div>
         </div>
@@ -440,7 +430,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             for="banner_image"
           >
             <div
-              class="container"
+              class="container drop-zone"
               style="width: 100%;"
             >
               <div

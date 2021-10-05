@@ -26,7 +26,6 @@ import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
-import {FaviconUpload} from './FaviconUpload'
 import {UpdateToggle} from './UpdateToggle'
 import {ImageUpload} from './ImageUpload'
 import {ThemeSwitch} from './ThemeSwitch'
@@ -234,43 +233,54 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 </div>
                 <section className={css.logos}>
                     <ImageUpload
-                        defaultPreview={helpCenter?.brand_logo_url || ''}
-                        file={primaryLogo.payload}
                         id="primary_logo"
-                        isTouched={primaryLogo.isTouched}
                         title="Standard Logo"
                         info="Used in the main navigation when with the light theme."
-                        HelpText={{
+                        file={primaryLogo.payload}
+                        defaultPreview={helpCenter?.brand_logo_url || ''}
+                        onChangeFile={primaryLogo.changeFile}
+                        isTouched={primaryLogo.isTouched}
+                        helpTextProps={{
                             highlight: getImageUploadHighlightText(
                                 primaryLogo,
                                 helpCenter?.brand_logo_url
                             ),
                             text: 'recommended size 1800 x 240',
                         }}
-                        onChangeFile={primaryLogo.changeFile}
                     />
                     <ImageUpload
-                        defaultPreview={helpCenter?.brand_logo_white_url || ''}
-                        file={whiteLogo.payload}
                         id="white_logo"
-                        isTouched={whiteLogo.isTouched}
                         title="White Logo"
                         info="Used in the main navigation when with the dark theme."
-                        HelpText={{
+                        file={whiteLogo.payload}
+                        defaultPreview={helpCenter?.brand_logo_white_url || ''}
+                        onChangeFile={whiteLogo.changeFile}
+                        isTouched={whiteLogo.isTouched}
+                        helpTextProps={{
                             highlight: getImageUploadHighlightText(
                                 whiteLogo,
                                 helpCenter?.brand_logo_white_url
                             ),
                             text: 'recommended size 1800 x 240',
                         }}
-                        onChangeFile={whiteLogo.changeFile}
                     />
-                    <FaviconUpload
-                        defaultPreview={helpCenter?.favicon_url || ''}
-                        file={favicon.payload}
+                    <ImageUpload
                         id="favicon"
-                        isTouched={favicon.isTouched}
+                        title="Favicon"
+                        info="This is shown in each browser beside your website’s name."
+                        file={favicon.payload}
+                        defaultPreview={helpCenter?.favicon_url || ''}
                         onChangeFile={favicon.changeFile}
+                        isTouched={favicon.isTouched}
+                        helpTextProps={{
+                            highlight: getImageUploadHighlightText(
+                                favicon,
+                                helpCenter?.favicon_url
+                            ),
+                            text: 'recommended size 64 x 64',
+                        }}
+                        accept="image/png,image/jpeg,image/x-icon"
+                        size="small"
                     />
                 </section>
                 <ThemeSwitch
@@ -281,21 +291,21 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 />
                 <section className={css.section}>
                     <ImageUpload
-                        defaultPreview={helpCenter?.banner_image_url || ''}
-                        file={bannerImage.payload}
                         id="banner_image"
-                        isFluid
-                        isTouched={bannerImage.isTouched}
                         title="Banner Background"
                         info="Your banner is an image  that’s displayed on the top of your home page."
-                        HelpText={{
+                        file={bannerImage.payload}
+                        defaultPreview={helpCenter?.banner_image_url || ''}
+                        onChangeFile={bannerImage.changeFile}
+                        isTouched={bannerImage.isTouched}
+                        isFluid
+                        helpTextProps={{
                             highlight: getImageUploadHighlightText(
                                 bannerImage,
                                 helpCenter?.banner_image_url
                             ),
                             text: 'recommended size 1440 x 316',
                         }}
-                        onChangeFile={bannerImage.changeFile}
                     />
                 </section>
                 <section>

@@ -15,16 +15,16 @@ import {
     DropText,
     HelpText,
     HelpTextProps,
+    DropZoneProps,
 } from '../../../../common/components/ImageUpload'
 
 import css from './ImageUpload.less'
 
-export type ImageUploadProps = {
+export type ImageUploadProps = Pick<DropZoneProps, 'id' | 'accept' | 'size'> & {
     className?: string
     defaultPreview?: string
-    HelpText?: HelpTextProps
+    helpTextProps?: HelpTextProps
     file?: File
-    id: string
     isFluid?: boolean
     isTouched?: boolean
     info: string
@@ -38,13 +38,15 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     defaultPreview,
     file,
     info,
+    size,
     isFluid,
     isTouched = false,
     id,
     title,
     style,
     onChangeFile,
-    ...props
+    helpTextProps,
+    accept = 'image/jpeg,image/png',
 }: ImageUploadProps) => {
     const inputRef = createRef<HTMLInputElement>()
     const [localImage, setLocalImage] = useState<File>()
@@ -98,16 +100,16 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
 
     let content = (
         <div className={css.content}>
-            <DropText />
+            <DropText size={size} />
         </div>
     )
 
     if (!isTouched && defaultPreview) {
         content = (
             <>
-                <div className={css.close} onClickCapture={handleOnRemoveFile}>
-                    <span className="material-icons-outlined">close</span>
-                </div>
+                <span className={css.close} onClickCapture={handleOnRemoveFile}>
+                    <i className="material-icons-outlined">close</i>
+                </span>
                 <div className={css.content}>
                     <img
                         className={css.preview}
@@ -122,9 +124,9 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     if (localImage) {
         content = (
             <>
-                <div className={css.close} onClickCapture={handleOnRemoveFile}>
-                    <span className="material-icons-outlined">close</span>
-                </div>
+                <span className={css.close} onClickCapture={handleOnRemoveFile}>
+                    <i className="material-icons-outlined">close</i>
+                </span>
                 <div className={css.content}>
                     <img
                         className={css.preview}
@@ -143,17 +145,21 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
             </Title>
             <DropZone
                 id={id}
-                accept="image/jpeg,image/png"
+                accept={accept}
                 inputRef={inputRef}
+                size={size}
                 style={isFluid ? {width: '100%'} : {}}
                 onDrop={handleOnDropFile}
                 onChange={handleOnChangeFile}
+                className={classNames(css['drop-zone'], {
+                    [css['drop-zone-small']]: size === 'small',
+                })}
             >
                 {content}
             </DropZone>
-            {props.HelpText && (
+            {helpTextProps && (
                 <HelpText
-                    {...props.HelpText}
+                    {...helpTextProps}
                     onHighlightClick={() => inputRef.current?.click()}
                 />
             )}

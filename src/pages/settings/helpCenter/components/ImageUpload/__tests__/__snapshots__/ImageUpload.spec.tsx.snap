@@ -22,7 +22,7 @@ exports[`<ImageUpload /> matches snapshot 1`] = `
       for="jest-file"
     >
       <div
-        class="container"
+        class="container drop-zone"
       >
         <div
           class="content"
@@ -61,18 +61,6 @@ exports[`<ImageUpload /> matches snapshot 1`] = `
       style="display: none;"
       type="file"
     />
-    <div
-      class="container"
-    >
-      <span
-        class="highlight clickable"
-      >
-        Replace image
-      </span>
-      <span>
-        recommended size 1640 x 624
-      </span>
-    </div>
   </div>
 </div>
 `;
