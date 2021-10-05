@@ -20,7 +20,7 @@ import InputField from '../../../common/forms/InputField'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {getHelpCenterDomain} from '../utils/helpCenter.utils'
-import {isValidSubdomain} from '../utils/validations'
+import {getSubdomainValidationError} from '../utils/validations'
 
 import {CustomDomain} from './CustomDomain'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
@@ -140,10 +140,12 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         return null
     }
 
+    const subdomainError = getSubdomainValidationError(
+        subdomainValue,
+        isSubdomainAvailable
+    )
     const isNewSubdomainValid =
-        subdomainValue !== helpCenter.subdomain &&
-        isSubdomainAvailable &&
-        isValidSubdomain(subdomainValue)
+        !subdomainError && subdomainValue !== helpCenter.subdomain
 
     return (
         <div className="full-width">
@@ -165,8 +167,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     href={getHelpCenterDomain(helpCenter.subdomain)}
                     placeholder="brand-name"
                     onChange={setSubdomainValue}
-                    isAvailable={isSubdomainAvailable}
-                    isValid={isValidSubdomain(subdomainValue)}
+                    error={subdomainError}
                 >
                     <Button
                         color="primary"

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
@@ -28,7 +28,7 @@ import {notify as notifyAction} from '../../../../state/notifications/actions'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {useLocales} from '../hooks/useLocales'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
-import {isValidSubdomain} from '../utils/validations'
+import {getSubdomainValidationError} from '../utils/validations'
 import {
     DEFAULT_THEME,
     HELP_CENTER_BASE_PATH,
@@ -73,13 +73,20 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         value: locale.code,
     }))
 
+    const subdomainError = useMemo(
+        () =>
+            newHelpCenter?.subdomain
+                ? getSubdomainValidationError(
+                      newHelpCenter.subdomain,
+                      isSubdomainAvailable
+                  )
+                : null,
+        [newHelpCenter.subdomain, isSubdomainAvailable]
+    )
+
     const checkSubdomainAvailability = useCallback(
         _debounce(async () => {
-            if (
-                client &&
-                newHelpCenter.subdomain &&
-                isValidSubdomain(newHelpCenter.subdomain)
-            ) {
+            if (client && newHelpCenter.subdomain) {
                 try {
                     await client.checkHelpCenterWithSubdomainExists({
                         subdomain: newHelpCenter.subdomain,
@@ -190,21 +197,7 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         false
     )
 
-    const canSubmit = () => {
-        if (!newHelpCenter.name) {
-            return false
-        }
-
-        if (
-            newHelpCenter?.subdomain &&
-            (!isSubdomainAvailable ||
-                !isValidSubdomain(newHelpCenter?.subdomain))
-        ) {
-            return false
-        }
-
-        return true
-    }
+    const canSubmit = () => !!newHelpCenter.name && !subdomainError
 
     useEffect(() => {
         setIsSubdomainAvailable(true)
@@ -256,14 +249,7 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                                     help="This is the URL for your Help Center. If you don't provide a value, we will generate one for you."
                                     value={newHelpCenter?.subdomain}
                                     onChange={handleChangeSubdomain}
-                                    isAvailable={isSubdomainAvailable}
-                                    isValid={
-                                        newHelpCenter?.subdomain
-                                            ? isValidSubdomain(
-                                                  newHelpCenter.subdomain
-                                              )
-                                            : true
-                                    }
+                                    error={subdomainError}
                                 />
                             </Col>
                         </Row>

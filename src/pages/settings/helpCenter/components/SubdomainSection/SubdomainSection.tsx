@@ -5,7 +5,7 @@ import css from './SubdomainSection.less'
 
 type Props = Pick<
     SubdomainInputProps,
-    'value' | 'placeholder' | 'onChange' | 'isValid' | 'isAvailable'
+    'value' | 'placeholder' | 'onChange' | 'error'
 > & {
     href: string
     children?: ReactNode

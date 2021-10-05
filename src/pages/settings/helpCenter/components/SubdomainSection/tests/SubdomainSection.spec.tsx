@@ -46,7 +46,9 @@ describe('<SubdomainSection />', () => {
                     value="domain-test"
                     href=""
                     onChange={jest.fn}
-                    isValid={false}
+                    error={
+                        'Subdomain is invalid or contains forbidden keywords'
+                    }
                 />
             )
 

@@ -1,7 +1,32 @@
-import {isValidSubdomain} from '../validations'
+import {detectForbiddenDomain, isValidSubdomain} from '../validations'
+
+describe('detectForbiddenDomain()', () => {
+    it('returns no forbidden domain for subdomain "acme"', () => {
+        expect(detectForbiddenDomain('acme')).toEqual(null)
+    })
+
+    it('returns a forbidden domain for subdomain "acme-test"', () => {
+        expect(detectForbiddenDomain('acme-test')).toEqual('-test')
+    })
+
+    it('returns a forbidden domain for subdomain "admin"', () => {
+        expect(detectForbiddenDomain('admin')).toEqual('admin')
+    })
+
+    it.each(['shit', 'hell'])(
+        'returns a forbidden domain for subdomain containing forbidden words - %s',
+        (value) => {
+            expect(detectForbiddenDomain(value)).toEqual(value)
+        }
+    )
+})
 
 describe('isValidSubdomain()', () => {
-    it.each(['not a-subdomain', '', 'invalid-'])(
+    it('rejects empty subdomain', () => {
+        expect(isValidSubdomain('')).toEqual(false)
+    })
+
+    it.each(['--test--', 'not a-subdomain', 'invalid-'])(
         'rejects invalid subdomain - %s',
         (value) => {
             expect(isValidSubdomain(value)).toEqual(false)

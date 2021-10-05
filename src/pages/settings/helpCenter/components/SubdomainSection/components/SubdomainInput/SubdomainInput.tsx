@@ -1,9 +1,10 @@
-import React, {FunctionComponent, useMemo} from 'react'
+import React, {FunctionComponent} from 'react'
 import classNames from 'classnames'
 
 import Tooltip from '../../../../../../common/components/Tooltip'
 import InputField from '../../../../../../common/forms/InputField.js'
 import {HELP_CENTER_DOMAIN} from '../../../../constants'
+import {isValidSubdomain} from '../../../../utils/validations'
 
 import css from './SubdomainInput.less'
 
@@ -11,34 +12,34 @@ export type SubdomainInputProps = {
     label?: string
     help?: string
     name?: string
-    isValid?: boolean
-    isAvailable?: boolean
     placeholder?: string
     value?: string
     onChange: (value: string) => void
+    error?: string | null
 }
 
 export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
     label = 'Subdomain',
     help,
     name = 'subdomain',
-    isValid = true,
-    isAvailable = true,
     value,
     placeholder,
     onChange,
+    error,
 }: SubdomainInputProps) => {
-    const error = useMemo(() => {
-        if (!isValid) {
+    const renderHelp = () => {
+        if (!error) return help
+
+        if (typeof value === 'string' && !isValidSubdomain(value)) {
             return (
-                <div className={css.errorContainer}>
+                <div>
                     <span
-                        data-testid="error-message"
-                        className={css.errorMessage}
                         id="error-policy"
+                        className={css.errorMessage}
+                        data-testid="error-message"
                     >
                         <i className="material-icons">error_outline</i>
-                        Subdomain is invalid or contains forbidden keywords
+                        {error}
                     </span>
                     <Tooltip
                         target="error-policy"
@@ -56,16 +57,12 @@ export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
             )
         }
 
-        if (!isAvailable) {
-            return (
-                <p className={css.errorMessage}>
-                    This Help Center subdomain is already taken
-                </p>
-            )
-        }
-
-        return null
-    }, [isValid, isAvailable])
+        return (
+            <span className={css.errorMessage} data-testid="error-message">
+                {error}
+            </span>
+        )
+    }
 
     return (
         <InputField
@@ -75,7 +72,7 @@ export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
             type="text"
             name={name}
             label={label}
-            help={error || help}
+            help={renderHelp()}
             placeholder={placeholder}
             rightAddon={HELP_CENTER_DOMAIN}
             value={value}
