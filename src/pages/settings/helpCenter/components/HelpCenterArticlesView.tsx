@@ -505,17 +505,19 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         ev: React.MouseEvent,
         value: LocaleCode
     ) => {
-        if (!helpCenter || !selectedArticle || !selectedArticleTranslations) {
+        if (!helpCenter || !selectedArticle) {
             return
         }
 
         const translation =
-            selectedArticleTranslations.find(
+            selectedArticleTranslations?.find(
                 ({locale: translationLocale}) => translationLocale === value
             ) || getNewTranslation(value)
+
         if ((translation as HelpCenterArticleTranslation).article_id) {
             setSavedTranslation(translation as HelpCenterArticleTranslation)
         }
+
         setSelectedArticle(
             (prevSelectedArticle) =>
                 prevSelectedArticle &&
