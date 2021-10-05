@@ -15,7 +15,7 @@ import {
 
 export type CategoriesTableProps = Pick<
     CategoriesTableRowProps,
-    'viewLanguage' | 'renderArticleList'
+    'renderArticleList'
 > & {
     categories?: Category[]
     onReorderFinish?: (categories: Category[]) => void
@@ -23,7 +23,6 @@ export type CategoriesTableProps = Pick<
 
 export const CategoriesTable = ({
     categories = [],
-    viewLanguage,
     onReorderFinish,
     renderArticleList,
 }: CategoriesTableProps): JSX.Element => {
@@ -73,7 +72,6 @@ export const CategoriesTable = ({
                 <CategoriesTableRow
                     categoryId={-1}
                     title="Uncategorized articles"
-                    viewLanguage={viewLanguage}
                     renderArticleList={renderArticleList}
                     tooltip="Uncategorized articles will always be the last ones on the list in the live help center."
                 />
@@ -83,9 +81,6 @@ export const CategoriesTable = ({
                         categoryId={category.id}
                         category={category}
                         title={category.translation?.title}
-                        viewLanguage={
-                            category.translation?.locale || viewLanguage
-                        }
                         renderArticleList={renderArticleList}
                         onMoveEntity={handleOnDropCategory}
                         onDropEntity={handleOnReorderFinish}

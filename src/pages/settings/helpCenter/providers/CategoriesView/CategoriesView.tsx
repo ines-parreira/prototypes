@@ -14,10 +14,7 @@ import {CATEGORIES_PER_PAGE} from '../../constants'
 import {useCategoriesActions} from '../../hooks/useCategoriesActions'
 import {useHelpCenterCategories} from '../../hooks/useHelpcenterCategories'
 
-type Props = Pick<
-    CategoriesTableProps,
-    'viewLanguage' | 'renderArticleList'
-> & {
+type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
     createArticle: () => void
     createCategory: () => void
@@ -25,7 +22,6 @@ type Props = Pick<
 
 export const CategoriesViews = ({
     helpCenter,
-    viewLanguage,
     renderArticleList,
     createArticle,
     createCategory,
@@ -36,7 +32,6 @@ export const CategoriesViews = ({
     const {categories, hasMore, isLoading, fetchMore} = useHelpCenterCategories(
         helpCenter.id,
         {
-            locale: viewLanguage,
             per_page: CATEGORIES_PER_PAGE,
         }
     )
@@ -93,7 +88,6 @@ export const CategoriesViews = ({
             >
                 <CategoriesTable
                     categories={categories}
-                    viewLanguage={viewLanguage}
                     renderArticleList={renderArticleList}
                     onReorderFinish={handleOnReorder}
                 />

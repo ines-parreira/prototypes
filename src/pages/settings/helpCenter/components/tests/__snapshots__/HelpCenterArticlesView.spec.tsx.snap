@@ -9,51 +9,6 @@ exports[`<HelpCenterArticlesView/> should render the component 1`] = `
       class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
       <div>
-        <div
-          style="display: inline-block;"
-        >
-          <div
-            class="dropdown"
-          >
-            <div
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="mr-4"
-              data-toggle="dropdown"
-            >
-              <div
-                class="select dropdown-toggle"
-              >
-                <span
-                  class="label placeholder"
-                  style="min-width: 10px; opacity: 1;"
-                >
-                  Select an option
-                </span>
-                <input
-                  autocomplete="chrome-off"
-                  class="input"
-                  style="min-width: 10px;"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-            <div
-              aria-hidden="true"
-              class="options dropdown-menu"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="dropdown-header"
-                tabindex="-1"
-              >
-                No result
-              </h6>
-            </div>
-          </div>
-        </div>
         <button
           class="mr-2 btn btn-secondary"
           type="button"

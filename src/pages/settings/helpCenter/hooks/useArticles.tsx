@@ -2,23 +2,18 @@ import {useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {
-    HelpCenterArticle,
-    LocaleCode,
-} from '../../../../models/helpCenter/types'
+import {HelpCenterArticle} from '../../../../models/helpCenter/types'
 import {createArticleFromDto} from '../../../../models/helpCenter/utils'
 import {
     getArticlesInCategory,
     getUncategorizedArticles,
     saveArticles,
 } from '../../../../state/helpCenter/articles'
-import {HELP_CENTER_LANGUAGE_DEFAULT} from '../constants'
 
 import {useHelpcenterApi} from './useHelpcenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
 export const useArticles = (
-    locale: LocaleCode = HELP_CENTER_LANGUAGE_DEFAULT,
     categoryId?: number
 ): {
     articles: HelpCenterArticle[]
@@ -45,12 +40,10 @@ export const useArticles = (
                             ? client.listCategoryArticles({
                                   help_center_id: helpCenterId,
                                   category_id: categoryId,
-                                  locale,
                               })
                             : client.listArticles({
                                   help_center_id: helpCenterId,
                                   has_category: false,
-                                  locale,
                               })
                     const getPositionsResponse =
                         categoryId && categoryId >= 0
@@ -89,7 +82,7 @@ export const useArticles = (
         }
 
         void init()
-    }, [isReady, locale, categoryId])
+    }, [isReady, categoryId])
 
     return {
         articles,

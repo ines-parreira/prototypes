@@ -6,7 +6,6 @@ import {useModalManager} from '../../../../../../../hooks/useModalManager'
 import {
     Category,
     HelpCenterArticle,
-    LocaleCode,
 } from '../../../../../../../models/helpCenter/types'
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
@@ -30,7 +29,6 @@ export type CategoriesTableRowProps =
 
 type BaseCategoriesTableRowProps = {
     categoryId: number
-    viewLanguage: LocaleCode
     title?: string
     tooltip?: string
     renderArticleList?: (
@@ -158,14 +156,13 @@ const DroppableCategoriesTableRow = ({
 
 export const CategoriesTableRow = ({
     categoryId,
-    viewLanguage,
     renderArticleList,
     title,
     tooltip,
     ...props
 }: CategoriesTableRowProps): JSX.Element => {
     const [isOpen, setOpen] = useState(false)
-    const {articles, isLoading} = useArticles(viewLanguage, categoryId)
+    const {articles, isLoading} = useArticles(categoryId)
     const count = useMemo(() => articles.length, [articles])
 
     const bodyInnerClass = classNames({

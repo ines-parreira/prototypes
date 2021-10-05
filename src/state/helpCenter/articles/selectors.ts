@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect'
 
+import {HelpCenterArticle} from '../../../models/helpCenter/types'
 import {getHelpCenterStore} from '../selectors'
-import {getViewLanguage} from '../ui/selectors'
 
 const helpCenterArticlesStore = createSelector(
     getHelpCenterStore,
@@ -13,20 +13,15 @@ const getArticlesById = createSelector(
     (store) => store.articlesById
 )
 
-export const getArticles = createSelector(
-    getArticlesById,
-    getViewLanguage,
-    (articles, locale) =>
-        Object.values(articles).filter(
-            (article) => article.translation?.locale === locale
-        ) || []
+export const getArticles = createSelector(getArticlesById, (articles) =>
+    Object.values(articles)
 )
 
 export const getArticleById = (articleId: number) =>
     createSelector(getArticlesById, (articles) => articles[articleId])
 
 export const getArticlesInCategory = (categoryId: number) =>
-    createSelector(getArticles, (articles) =>
+    createSelector(getArticles, (articles: HelpCenterArticle[]) =>
         articles.filter(
             (article) =>
                 article.category_id && article.category_id === categoryId
@@ -35,5 +30,6 @@ export const getArticlesInCategory = (categoryId: number) =>
 
 export const getUncategorizedArticles = createSelector(
     getArticles,
-    (articles) => articles.filter((article) => article.category_id === null)
+    (articles: HelpCenterArticle[]) =>
+        articles.filter((article) => article.category_id === null)
 )

@@ -9,18 +9,13 @@ import {
     HelpCenterArticleTranslation,
     LocaleCode,
 } from '../../../../models/helpCenter/types'
-import {validLocaleCode} from '../../../../models/helpCenter/utils'
-import {
-    changeViewLanguage,
-    getViewLanguage,
-} from '../../../../state/helpCenter/ui'
+import {getViewLanguage} from '../../../../state/helpCenter/ui'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField'
-import {resetArticles} from '../../../../state/helpCenter/articles'
 import {resetCategories} from '../../../../state/helpCenter/categories'
+import {resetArticles} from '../../../../state/helpCenter/articles'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 
 import {useModalManager, Event} from '../../../../hooks/useModalManager'
@@ -36,8 +31,6 @@ import {SCREEN_SIZE, useScreenSize} from '../../../../hooks/useScreenSize'
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-import {useLocales} from '../hooks/useLocales'
-import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
 import {CategoriesViews} from '../providers/CategoriesView'
 import {CategoryDrawer} from '../providers/CategoryDrawer'
 import {SupportedLocalesProvider} from '../providers/SupportedLocales'
@@ -92,7 +85,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         selectedArticleTranslations,
         setSelectedArticleTranslations,
     ] = useState<HelpCenterArticleTranslation[] | null>(null)
-    const localeOptions = useLocales()
     const [articleLanguage, setArticleLanguage] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
@@ -110,11 +102,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const screenSize = useScreenSize()
-
-    const supportedLanguages = useLocaleSelectOptions(
-        localeOptions,
-        helpCenter?.supported_locales || []
-    )
 
     useEffect(() => {
         articleModal.on(MODALS.ARTICLE, Event.afterOpen, createArticle)
@@ -156,9 +143,15 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     help_center_id: helpCenter.id,
                     article_id: selectedArticle.id,
                 })
-                const translation = translations.find(
-                    ({locale}) => locale === viewLanguage
-                )
+                const firstSupportedLanguage = () =>
+                    translations.find(({locale}) =>
+                        (helpCenter?.supported_locales || []).includes(locale)
+                    )
+
+                const translation =
+                    translations?.find(({locale}) => locale === viewLanguage) ||
+                    firstSupportedLanguage()
+
                 if (translation) {
                     setSelectedArticleTranslations(translations)
                     setSelectedArticle({
@@ -638,15 +631,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     )
                 }
             >
-                <SelectField
-                    className="mr-4"
-                    options={supportedLanguages}
-                    value={viewLanguage}
-                    onChange={(value) =>
-                        dispatch(changeViewLanguage(validLocaleCode(value)))
-                    }
-                    style={{display: 'inline-block'}}
-                />
                 <Button className="mr-2" onClick={createCategory}>
                     Create Category
                 </Button>
@@ -663,7 +647,6 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 <SupportedLocalesProvider>
                     <CategoriesViews
                         helpCenter={helpCenter}
-                        viewLanguage={viewLanguage}
                         createArticle={createArticle}
                         createCategory={createCategory}
                         renderArticleList={(categoryId, articles) => (

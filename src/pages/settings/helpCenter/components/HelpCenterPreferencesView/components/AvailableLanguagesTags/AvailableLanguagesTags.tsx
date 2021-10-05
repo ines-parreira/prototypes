@@ -10,6 +10,7 @@ import Modal from '../../../../../../common/components/Modal'
 import {useLanguagePreferencesSettings} from '../../../../providers/LanguagePreferencesSettings'
 
 import {DynamicBadgeList, BadgeItemProps} from '../BadgeList'
+import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 
 import {transformToSelectOption, transformToSelectedLocale} from './utils'
 import css from './AvailableLanguagesTags.less'
@@ -110,7 +111,7 @@ export const AvailableLanguagesTags = ({availableLocales}: Props) => {
             />
             <Modal
                 isOpen={!!pendingLocale}
-                header="Are you sure you want to delete?"
+                header="Are you sure you want to delete this language?"
                 className={css['modal-centered']}
                 footer={
                     <div className={css['footer-actions']}>
@@ -129,10 +130,16 @@ export const AvailableLanguagesTags = ({availableLocales}: Props) => {
                 style={{width: 380}}
                 onClose={handleOnCancelDeleteLocale}
             >
-                <p>
-                    This action will remove all instances of the language and
-                    can’t be undone.
-                </p>
+                {pendingLocale && (
+                    <p>
+                        <FlagLanguageItem
+                            code={supportedLocales[pendingLocale.id].code}
+                            name={supportedLocales[pendingLocale.id].name}
+                        />{' '}
+                        content will not be available anymore until you add this
+                        language back again.
+                    </p>
+                )}
             </Modal>
         </section>
     )

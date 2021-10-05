@@ -78,32 +78,29 @@ describe('useArticles', () => {
         jest.clearAllMocks()
     })
     it('finishes loading once the requests are done', async () => {
-        const {result, waitForNextUpdate} = renderHook(
-            () => useArticles('en-US'),
-            {
-                wrapper: dependencyWrapper,
-            }
-        )
+        const {result, waitForNextUpdate} = renderHook(() => useArticles(), {
+            wrapper: dependencyWrapper,
+        })
         expect(result.current.isLoading).toBeTruthy()
         await waitForNextUpdate()
         expect(result.current.isLoading).toBeFalsy()
     })
     it('saves the articles once they are fetched', async () => {
-        const {waitForNextUpdate} = renderHook(() => useArticles('en-US'), {
+        const {waitForNextUpdate} = renderHook(() => useArticles(), {
             wrapper: dependencyWrapper,
         })
         await waitForNextUpdate()
         expect(saveArticles).toHaveBeenCalled()
     })
     it('uses the getUncategorizedArticles selector if no category is passed', () => {
-        renderHook(() => useArticles('en-US'), {
+        renderHook(() => useArticles(), {
             wrapper: dependencyWrapper,
         })
         expect(getUncategorizedArticles).toHaveBeenCalled()
         expect(getArticlesInCategory).not.toHaveBeenCalled()
     })
     it('uses the getArticlesInCategory selector if category is passed', () => {
-        renderHook(() => useArticles('en-US', 1), {
+        renderHook(() => useArticles(1), {
             wrapper: dependencyWrapper,
         })
         expect(getUncategorizedArticles).not.toHaveBeenCalled()

@@ -2,7 +2,6 @@ import {createSelector} from 'reselect'
 
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
-import {getViewLanguage} from '../ui/selectors'
 
 export const helpCenterCategoriesStore = createSelector(
     getHelpCenterStore,
@@ -14,13 +13,8 @@ const getCategoriesById = createSelector(
     (store) => store.categoriesById
 )
 
-export const getCategories = createSelector(
-    getCategoriesById,
-    getViewLanguage,
-    (categories, locale) =>
-        Object.values(categories).filter(
-            (category) => category.translation?.locale === locale
-        ) || []
+export const getCategories = createSelector(getCategoriesById, (categories) =>
+    Object.values(categories)
 )
 
 export const getCategoryById = (id: number) =>
