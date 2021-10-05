@@ -218,7 +218,7 @@ export const HelpCenterCustomizationView = () => {
             >
                 <NavSection
                     availableLocales={localesOptions}
-                    description="Change navigation elements at the top of the help center."
+                    description="Change navigation elements at the top of the Help Center."
                     items={headerNavigation.links}
                     name="header"
                     selectedLocale={selectedLocale}
@@ -232,7 +232,7 @@ export const HelpCenterCustomizationView = () => {
                 />
                 <NavSection
                     availableLocales={localesOptions}
-                    description="Change navigation elements at the bottom of the help center."
+                    description="Change navigation elements at the bottom of the Help Center."
                     items={footerNavigation.links}
                     name="footer"
                     selectedLocale={selectedLocale}

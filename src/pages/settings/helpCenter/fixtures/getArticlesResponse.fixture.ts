@@ -280,12 +280,12 @@ export const getArticlesResponseFixture: HelpCenterArticlesListPage = {
 export const getSingleArticleEnglish: HelpCenterArticle = {
     id: 1,
     category_id: null,
+    position: 0,
     help_center_id: 1,
     created_datetime: '2021-05-17T18:21:42.022Z',
     updated_datetime: '2021-05-17T18:21:42.022Z',
     deleted_datetime: undefined,
     available_locales: ['en-US'],
-    position: 0,
     translation: {
         title: 'Free article (EN)',
         excerpt: 'Paragraph lorem ipsum, Yiddish xylophone wonder.',

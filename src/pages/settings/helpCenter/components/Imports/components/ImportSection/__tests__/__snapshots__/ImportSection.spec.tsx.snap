@@ -3,10 +3,10 @@
 exports[`<ImportSection /> renders import modal 1`] = `
 <section>
   <h4>
-    Import articles from another help center
+    Import articles from another Help Center
   </h4>
   <p>
-    You can import CSV files with your existing articles of another help center.
+    You can import CSV files with your existing articles of another Help Center.
   </p>
   <button
     class="btn btn-secondary"

@@ -86,6 +86,7 @@ const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
             tag="textarea"
             config={{
                 /** Base froala editor config */
+                videoResponsive: true,
                 key: FROALA_KEY,
                 editorClass: css.froalaEditorWrapper,
                 attribution: false,

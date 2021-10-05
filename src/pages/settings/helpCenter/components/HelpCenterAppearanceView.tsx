@@ -230,7 +230,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
             >
                 <div className={css.section}>
                     <h3>Appearance</h3>
-                    <p>Set up your help center’s logo, color and theme.</p>
+                    <p>Set up your Help Center’s logo, color and theme.</p>
                 </div>
                 <section className={css.logos}>
                     <ImageUpload
@@ -305,7 +305,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             helpCenter.search_deactivated_datetime === null
                         }
                         label="Enable search bar"
-                        description="This makes the search bar visible or not in your help center
+                        description="This makes the search bar visible or not in your Help Center
                         home page."
                         fieldName="search_deactivated"
                     />
@@ -314,7 +314,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             helpCenter.powered_by_deactivated_datetime === null
                         }
                         label="Powered by Gorgias"
-                        description="Turns on/off the ‘Powered by Gorgias’ label in your help center footer."
+                        description="Turns on/off the ‘Powered by Gorgias’ label in your Help Center footer."
                         fieldName="powered_by_deactivated"
                     />
                 </section>

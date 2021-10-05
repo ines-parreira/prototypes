@@ -99,7 +99,7 @@ export const AvailableLanguagesTags = ({availableLocales}: Props) => {
         <section>
             <h5>Available languages</h5>
             <p>
-                You will be able to edit and customize your help center in
+                You will be able to edit and customize your Help Center in
                 regards to the languages added here.
             </p>
             <DynamicBadgeList

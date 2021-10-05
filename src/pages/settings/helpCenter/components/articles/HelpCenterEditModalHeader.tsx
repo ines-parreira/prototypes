@@ -5,23 +5,30 @@ import {
     ArticleLanguageSelect,
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
+
 import {
     HelpCenterArticle,
     LocaleCode,
+    HelpCenter,
 } from '../../../../../models/helpCenter/types'
 
 import {useLocaleSelectOptions} from '../../hooks/useLocaleSelectOptions'
 import {useLocales} from '../../hooks/useLocales'
 
+import ArticleCategorySelect from './ArticleCategorySelect'
+
 import css from './HelpCenterEditModalHeader.less'
 
 type Props = {
     title: string
+    helpCenter: HelpCenter
     language: LocaleCode
     isFullscreen?: boolean
     supportedLocales: LocaleCode[]
     selectedArticle: HelpCenterArticle
+    selectedCategory?: number | null
     onEditTitle?: (title: string) => void
+    onEditCategory?: (categoryId: number | null) => void
     onChangeLanguage: (ev: React.MouseEvent, value: LocaleCode) => void
     onResize?: () => void
     onClose: () => void
@@ -35,16 +42,19 @@ type Props = {
 
 export const HelpCenterEditModalHeader = ({
     title,
+    helpCenter,
     isFullscreen,
     language,
     supportedLocales,
     selectedArticle,
     onEditTitle,
+    onEditCategory,
     onClose,
     onResize,
     onChangeLanguage,
     onClickAction,
     toggleModalBtn,
+    selectedCategory,
 }: Props): JSX.Element => {
     const locales = useLocales()
     const localeOptions = useLocaleSelectOptions(locales, supportedLocales)
@@ -70,7 +80,7 @@ export const HelpCenterEditModalHeader = ({
             </button>
         )
 
-    const options = React.useMemo(
+    const localeSelectOptions = React.useMemo(
         () =>
             localeOptions.map((option) => {
                 let isComplete = false
@@ -108,7 +118,7 @@ export const HelpCenterEditModalHeader = ({
             <div className={css.headerControls}>
                 <ArticleLanguageSelect
                     selected={language}
-                    list={options}
+                    list={localeSelectOptions}
                     onSelect={onChangeLanguage}
                     onClickAction={onClickAction}
                 />
@@ -123,6 +133,19 @@ export const HelpCenterEditModalHeader = ({
                     <i className="material-icons mr-2">keyboard_tab</i>
                 </button>
             </div>
+            <div className={css.break} />
+            {onEditCategory && selectedCategory !== undefined && (
+                <div className={css.categorySelect}>
+                    <ArticleCategorySelect
+                        locale={language}
+                        helpCenterId={helpCenter.id}
+                        categoryId={selectedCategory}
+                        onChange={(value: number | null) => {
+                            onEditCategory(value)
+                        }}
+                    />
+                </div>
+            )}
         </header>
     )
 }

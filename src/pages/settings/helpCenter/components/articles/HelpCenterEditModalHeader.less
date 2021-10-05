@@ -6,6 +6,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 18px 16px;
+        flex-wrap: wrap;
     }
     .titleInput,
     .titleInput:disabled {
@@ -45,5 +46,12 @@
         color: @neutral10;
         font-size: 14px;
         line-height: 20px;
+    }
+    .break {
+        flex-basis: 100%;
+        height: 0;
+    }
+    .categorySelect {
+        width: 80%;
     }
 }

@@ -483,7 +483,11 @@ export default class SelectField extends Component<Props, State> {
                                         )
                                     }
 
-                                    const wrapperId = `dropdown_item_${item.value}`
+                                    const wrapperId = `dropdown_item_${
+                                        item.value !== null
+                                            ? item.value
+                                            : 'null'
+                                    }`
                                     const WrapperComponent = item.tooltipText
                                         ? 'div'
                                         : Fragment

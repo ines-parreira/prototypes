@@ -81,6 +81,9 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         savedTranslation,
         setSavedTranslation,
     ] = useState<HelpCenterArticleTranslation | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(
+        null
+    )
     const [
         selectedArticleTranslations,
         setSelectedArticleTranslations,
@@ -159,6 +162,9 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         translation,
                     })
                 }
+                if (selectedArticle.category_id !== undefined) {
+                    setSelectedCategory(selectedArticle.category_id)
+                }
                 setSavedTranslation(translation || null)
             } catch (err) {
                 void dispatch(
@@ -228,11 +234,22 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         if (!savedTranslation) {
             return filledRequired
         }
-        const hasBeenChanged = articleRequiredFields
+        const translationHasBeenChanged = articleRequiredFields
             .concat(articleOptionalFields)
             .some((key) => currentTranslation[key] !== savedTranslation[key])
-        return filledRequired && hasBeenChanged
-    }, [articlesActions.isLoading, selectedArticle, savedTranslation])
+        const categoryHasBeenChanged =
+            selectedArticle?.category_id !== selectedCategory
+
+        return (
+            filledRequired &&
+            (categoryHasBeenChanged || translationHasBeenChanged)
+        )
+    }, [
+        articlesActions.isLoading,
+        selectedArticle,
+        savedTranslation,
+        selectedCategory,
+    ])
 
     const onArticleChange = React.useCallback(
         (translation: HelpCenterArticleTranslation, counters) => {
@@ -261,6 +278,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     <span className={css.modalForm}>
                         <HelpCenterEditModalHeader
                             title={selectedArticle.translation.title}
+                            helpCenter={helpCenter}
                             isFullscreen={fullscreenEditModal}
                             selectedArticle={selectedArticle}
                             supportedLocales={
@@ -291,6 +309,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                         null
                                 )
                             }
+                            selectedCategory={selectedCategory}
+                            onEditCategory={(categoryId: number | null) => {
+                                setSelectedCategory(categoryId)
+                            }}
                             onClickAction={handleOnClickAction}
                             toggleModalBtn={
                                 <button
@@ -324,6 +346,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                 return (
                     <span className={css.modalForm}>
                         <HelpCenterEditModalHeader
+                            helpCenter={helpCenter}
                             language={articleLanguage}
                             selectedArticle={selectedArticle}
                             supportedLocales={
@@ -386,6 +409,13 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         selectArticle({
             translation: getNewTranslation(articleLanguage),
         } as HelpCenterArticle)
+
+        const categoryFromModalParams = articleModal.getParams()?.categoryId
+        if (categoryFromModalParams !== undefined) {
+            setSelectedCategory(articleModal.getParams()?.categoryId)
+        } else {
+            setSelectedCategory(null)
+        }
     }
 
     const createCategory = () => {
@@ -504,23 +534,14 @@ export const HelpCenterArticlesView = (): JSX.Element => {
             return
         }
 
-        const localeIsAvailable =
-            selectedArticle?.available_locales?.includes(
-                selectedArticle?.translation?.locale
-            ) || false
-
         // Update Article
         if (selectedArticle.id) {
             try {
-                if (localeIsAvailable) {
-                    await articlesActions.updateArticleTranslation(
-                        selectedArticle
-                    )
-                } else {
-                    await articlesActions.createArticleTranslation(
-                        selectedArticle
-                    )
-                }
+                await articlesActions.updateArticle(
+                    selectedArticle,
+                    selectedCategory
+                )
+
                 void dispatch(
                     notify({
                         message: 'Article successfully saved',
@@ -544,13 +565,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         }
         // Create Article
         else {
-            const articleModalParams = articleModal.getParams()
-
             try {
-                if (articleModalParams && articleModalParams?.categoryId >= 0) {
+                if (selectedCategory !== null) {
                     await articlesActions.createArticleInCategory(
                         selectedArticle.translation,
-                        articleModalParams.categoryId
+                        selectedCategory
                     )
                 } else {
                     await articlesActions.createArticle(

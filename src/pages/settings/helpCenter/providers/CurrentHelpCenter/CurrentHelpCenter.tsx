@@ -64,7 +64,7 @@ export const CurrentHelpCenter = (): JSX.Element => {
             const err: {statusCode: number} = error.response?.data
 
             if (err?.statusCode === 404) {
-                message = 'Help center not found!'
+                message = 'Help Center not found'
             }
         }
 

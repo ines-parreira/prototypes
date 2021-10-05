@@ -57,14 +57,14 @@ export const CategoriesViews = ({
             {showCreateFirst && (
                 <Container fluid className="page-container">
                     <h1>
-                        Start your help center here&nbsp;
+                        Start your Help Center here&nbsp;
                         <span aria-label="books" role="img">
                             📚
                         </span>
                     </h1>
                     <p>
                         Write your first article or create your first category
-                        to be displayed in your very own help center.
+                        to be displayed in your very own Help Center.
                     </p>
                     <Button
                         color="success"

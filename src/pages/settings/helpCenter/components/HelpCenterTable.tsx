@@ -49,7 +49,7 @@ export function HelpCentersTable({
     if (list.length === 0) {
         return (
             <Container fluid className="page-container">
-                <div>You have no help center at the moment.</div>
+                <div>You have no Help Center at the moment.</div>
             </Container>
         )
     }

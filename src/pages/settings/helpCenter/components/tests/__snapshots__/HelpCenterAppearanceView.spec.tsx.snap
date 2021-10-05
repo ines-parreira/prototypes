@@ -88,7 +88,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
           Appearance
         </h3>
         <p>
-          Set up your help center’s logo, color and theme.
+          Set up your Help Center’s logo, color and theme.
         </p>
       </div>
       <section
@@ -316,7 +316,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
           Theme
         </h4>
         <p>
-          Select which theme you prefer to use in your help center.
+          Select which theme you prefer to use in your Help Center.
           <strong>
              This will affect the header & footer.
           </strong>
@@ -522,7 +522,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             </label>
           </div>
           <p>
-            This makes the search bar visible or not in your help center home page.
+            This makes the search bar visible or not in your Help Center home page.
           </p>
         </div>
         <div
@@ -550,7 +550,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             </label>
           </div>
           <p>
-            Turns on/off the ‘Powered by Gorgias’ label in your help center footer.
+            Turns on/off the ‘Powered by Gorgias’ label in your Help Center footer.
           </p>
         </div>
       </section>

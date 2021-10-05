@@ -108,7 +108,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
               <small
                 class="form-text text-muted"
               >
-                This is the URL for your Help center. If you don't provide a value, we will generate one for you.
+                This is the URL for your Help Center. If you don't provide a value, we will generate one for you.
               </small>
             </div>
           </div>
@@ -264,7 +264,7 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
                 Theme
               </h4>
               <p>
-                Select which theme you prefer to use in your help center.
+                Select which theme you prefer to use in your Help Center.
                 <strong>
                    This will affect the header & footer.
                 </strong>

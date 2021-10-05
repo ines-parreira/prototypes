@@ -27,7 +27,7 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
         <section className={css.themes}>
             <h4>Theme</h4>
             <p>
-                Select which theme you prefer to use in your help center.
+                Select which theme you prefer to use in your Help Center.
                 <strong> This will affect the header & footer.</strong>
             </p>
             <div className={css.list}>

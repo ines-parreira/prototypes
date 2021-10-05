@@ -111,7 +111,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       <small
         class="form-text text-muted"
       >
-        Displayed under the title of this article inside your help center.
+        Displayed under the title of this article inside your Help Center.
       </small>
     </div>
     <i

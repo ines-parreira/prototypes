@@ -55,6 +55,9 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`]
         </i>
       </button>
     </div>
+    <div
+      class="break"
+    />
   </header>
 </div>
 `;

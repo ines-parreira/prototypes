@@ -73,7 +73,7 @@ export const CategoriesTable = ({
                     categoryId={-1}
                     title="Uncategorized articles"
                     renderArticleList={renderArticleList}
-                    tooltip="Uncategorized articles will always be the last ones on the list in the live help center."
+                    tooltip="Uncategorized articles will always be the last ones on the list in the live Help Center."
                 />
                 {records.map((category) => (
                     <CategoriesTableRow

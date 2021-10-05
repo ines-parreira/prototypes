@@ -317,7 +317,7 @@ export class Navbar extends React.Component<Props, State> {
                             >
                                 help
                             </i>
-                            Help center
+                            Help Center
                         </DropdownItem>
                         <DropdownItem
                             tag="a"

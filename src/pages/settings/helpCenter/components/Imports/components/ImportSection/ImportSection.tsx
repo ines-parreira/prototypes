@@ -142,11 +142,11 @@ export const ImportSection = (): JSX.Element | null => {
 
     return (
         <section>
-            <h4>Import articles from another help center</h4>
+            <h4>Import articles from another Help Center</h4>
 
             <p>
                 You can import CSV files with your existing articles of another
-                help center.
+                Help Center.
             </p>
 
             <Button onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}>

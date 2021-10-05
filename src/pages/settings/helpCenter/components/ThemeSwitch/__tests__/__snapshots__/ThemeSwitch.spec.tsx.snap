@@ -9,7 +9,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
       Theme
     </h4>
     <p>
-      Select which theme you prefer to use in your help center.
+      Select which theme you prefer to use in your Help Center.
       <strong>
          This will affect the header & footer.
       </strong>

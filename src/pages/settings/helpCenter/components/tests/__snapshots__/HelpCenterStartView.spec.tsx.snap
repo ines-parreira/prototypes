@@ -35,7 +35,7 @@ exports[`<HelpCenterStartView/> should render the component 1`] = `
       class="page-container container-fluid"
     >
       <p>
-        Help center is a tool that makes it easier to answer your client’s questions in an organic way. Set up a dedicated site to sideload your support flow.
+        Help Center is a tool that makes it easier to answer your client’s questions in an organic way. Set up a dedicated site to sideload your support flow.
          
         <a
           to="#"

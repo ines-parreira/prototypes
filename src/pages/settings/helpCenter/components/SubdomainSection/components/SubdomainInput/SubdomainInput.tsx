@@ -59,7 +59,7 @@ export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
         if (!isAvailable) {
             return (
                 <p className={css.errorMessage}>
-                    This help center subdomain is already taken
+                    This Help Center subdomain is already taken
                 </p>
             )
         }

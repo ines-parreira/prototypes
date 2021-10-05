@@ -136,6 +136,51 @@ export const useArticlesActions = () => {
             return article
         },
 
+        async updateArticle(
+            article: HelpCenterArticle,
+            categoryId: number | null
+        ) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            await client.updateArticle(
+                {
+                    id: article.id,
+                    help_center_id: helpCenterId,
+                },
+                {category_id: categoryId}
+            )
+
+            const positions = categoryId
+                ? await client
+                      .getCategoryArticlesPositions({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                      })
+                      .then((response) => response.data)
+                : await client
+                      .getUncategorizedArticlesPositions({
+                          help_center_id: helpCenterId,
+                      })
+                      .then((response) => response.data)
+
+            const updatedArticle = {
+                ...article,
+                category_id: categoryId,
+                position: positions.findIndex((index) => index === article.id),
+            }
+
+            const localeIsAvailable =
+                article?.available_locales?.includes(
+                    article?.translation?.locale
+                ) || false
+
+            if (localeIsAvailable) {
+                await this.updateArticleTranslation(updatedArticle)
+            } else {
+                await this.createArticleTranslation(updatedArticle)
+            }
+        },
+
         async updateArticleTranslation(article: HelpCenterArticle) {
             if (!client) throw new Error('HTTP client not initialized!')
 

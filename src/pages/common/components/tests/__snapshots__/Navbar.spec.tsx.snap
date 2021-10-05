@@ -183,7 +183,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
         >
           help
         </i>
-        Help center
+        Help Center
       </a>
       <a
         class="dropdown-item"
@@ -444,7 +444,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         >
           help
         </i>
-        Help center
+        Help Center
       </a>
       <a
         class="dropdown-item"
@@ -704,7 +704,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         >
           help
         </i>
-        Help center
+        Help Center
       </a>
       <a
         class="dropdown-item"

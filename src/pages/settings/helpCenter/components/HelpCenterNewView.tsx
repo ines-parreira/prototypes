@@ -123,12 +123,12 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
             history.push(location.pathname.split('/new')[0])
 
             void notify({
-                message: 'Help center successfully created',
+                message: 'Help Center successfully created',
                 status: NotificationStatus.Success,
             })
         } catch (err) {
             void notify({
-                message: 'Failed to create the help center',
+                message: 'Failed to create the Help Center',
                 status: NotificationStatus.Error,
             })
             console.error(err)
@@ -253,7 +253,7 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
                             </Col>
                             <Col md="6">
                                 <SubdomainInput
-                                    help="This is the URL for your Help center. If you don't provide a value, we will generate one for you."
+                                    help="This is the URL for your Help Center. If you don't provide a value, we will generate one for you."
                                     value={newHelpCenter?.subdomain}
                                     onChange={handleChangeSubdomain}
                                     isAvailable={isSubdomainAvailable}

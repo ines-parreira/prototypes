@@ -31,7 +31,7 @@ const labels = {
 
 const tooltips = {
     active:
-        'Everything is working, you can now access your help center using your custom domain.',
+        'Everything is working, you can now access your Help Center using your custom domain.',
     unknown:
         'We were unable to connect to your custom domain, please check your DNS, try again or contact support.',
     pending:

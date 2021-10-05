@@ -86,11 +86,12 @@ export const ARTICLE_ROW_ACTIONS = [
 export const CATEGORIES_PER_PAGE = 30
 
 export const CATEGORY_ROW_ACTIONS = [
-    {
-        name: 'createInCategory',
-        icon: 'add_circle_outline',
-        tooltip: 'Compose article in category.',
-    },
+    // FIXME: https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
+    // {
+    //     name: 'createInCategory',
+    //     icon: 'add_circle_outline',
+    //     tooltip: 'Compose article in category.',
+    // },
     {
         name: 'categorySettings',
         icon: 'settings',

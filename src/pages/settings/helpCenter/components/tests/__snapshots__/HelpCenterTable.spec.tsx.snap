@@ -6,7 +6,7 @@ exports[`<HelpCenterTable/> should display a message when list is empty 1`] = `
     class="page-container container-fluid"
   >
     <div>
-      You have no help center at the moment.
+      You have no Help Center at the moment.
     </div>
   </div>
 </div>

@@ -74,8 +74,11 @@ const DroppableCategoriesTableRow = ({
     onDropEntity,
 }: DroppableCategoriesTableRowProps) => {
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
-    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
     const localesByCode = useSupportedLocales()
+
+    // FIXME: the form language selector is broken for this case
+    // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
+    // const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const languageList = useMemo(() => {
         if (
@@ -100,12 +103,14 @@ const DroppableCategoriesTableRow = ({
             return
         }
 
-        if (name === 'createInCategory') {
-            articleModal.openModal(MODALS.ARTICLE, true, {
-                categoryId: category.id,
-            })
-            return
-        }
+        // FIXME: the form language selector is broken for this case
+        // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
+        // if (name === 'createInCategory') {
+        //     articleModal.openModal(MODALS.ARTICLE, true, {
+        //         categoryId: category.id,
+        //     })
+        //     return
+        // }
     }
 
     return (

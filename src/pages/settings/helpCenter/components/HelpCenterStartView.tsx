@@ -51,7 +51,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
             } catch (err) {
                 void dispatch(
                     notify({
-                        message: 'Failed to retrieve the help center list',
+                        message: 'Failed to retrieve the Help Center list',
                         status: NotificationStatus.Error,
                     })
                 )
@@ -105,7 +105,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
                     dispatch(helpCentersFetched(helpCenterListUpdated))
                     void dispatch(
                         notify({
-                            message: `Help center ${
+                            message: `Help Center ${
                                 activated ? 'activated' : 'deactivated'
                             }`,
                             status: NotificationStatus.Success,
@@ -115,7 +115,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
                     void dispatch(
                         notify({
                             message:
-                                'Something went wrong saving the help center',
+                                'Something went wrong saving the Help Center',
                             status: NotificationStatus.Error,
                         })
                     )
@@ -141,7 +141,7 @@ export const HelpCenterStartView: FunctionComponent = () => {
 
             <Container fluid className="page-container">
                 <p>
-                    Help center is a tool that makes it easier to answer your
+                    Help Center is a tool that makes it easier to answer your
                     client’s questions in an organic way. Set up a dedicated
                     site to sideload your support flow.{' '}
                     <Link to="#">Read more</Link> about how to set it up.

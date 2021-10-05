@@ -96,7 +96,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 label="Excerpt"
                 value={translation.excerpt}
                 onChange={onEditArticle('excerpt')}
-                help="Displayed under the title of this article inside your help center."
+                help="Displayed under the title of this article inside your Help Center."
             />
             {articleId && (
                 <i

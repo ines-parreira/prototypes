@@ -5,6 +5,7 @@ import {LocaleCode} from '../../../../../../models/helpCenter/types'
 
 import HelpCenterEditModalHeader from '../HelpCenterEditModalHeader'
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
+import {getSingleHelpcenterResponseFixture} from '../../../fixtures/getHelpcenterResponse.fixture'
 
 jest.mock('../../../hooks/useLocales', () => ({
     useLocales: () => [
@@ -41,6 +42,7 @@ describe('<HelpCenterEditModalHeader/>', () => {
         onChangeLanguage: mockedOnChangeLanguage,
         onClose: mockedOnClose,
         onClickAction: mockedOnClickAction,
+        helpCenter: getSingleHelpcenterResponseFixture,
     }
 
     beforeEach(() => {
