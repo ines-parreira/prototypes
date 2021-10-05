@@ -476,7 +476,8 @@ export function getOutboundCallFrom(
 export function getNewMessageSender(
     ticket: Map<any, any>,
     newMessageSourceType: TicketMessageSourceType,
-    channels: List<any>
+    channels: List<any>,
+    integrations: Map<any, any>
 ) {
     if (newMessageSourceType === 'internal-note') {
         return fromJS({
@@ -550,6 +551,11 @@ export function getNewMessageSender(
                 newMessageSourceType,
                 TicketMessageSourceType.YotpoReview,
             ].includes(type)
+        } else if (newMessageSourceType === TicketMessageSourceType.Email) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.Chat,
+            ].includes(type)
         }
 
         return type === newMessageSourceType
@@ -583,6 +589,30 @@ export function getNewMessageSender(
             return lastSender
         }
         return preferredChannel
+    }
+
+    // for chat integration, retrieve a preferred email if any
+    if (
+        lastMessage.getIn(['source', 'type']) === TicketMessageSourceType.Chat
+    ) {
+        const integration = (integrations.get('integrations') as List<
+            any
+        >).find(
+            (integration: Map<any, any>) =>
+                integration.get('id') === lastMessage.get('integration_id')
+        ) as Map<any, any>
+        const linkedEmailIntegration = integration.getIn([
+            'meta',
+            'preferences',
+            'linked_email_integration',
+        ])
+
+        return (
+            (channels.find(
+                (channel: Map<any, any>) =>
+                    channel.get('id') === linkedEmailIntegration
+            ) as Map<any, any>) || preferredChannel
+        )
     }
 
     // If we don't find a channel, we use the preferred channel

@@ -32,6 +32,7 @@ import {
     smoochTicket,
     twitterQuotedTweet,
     twitterTweet,
+    chatTicket,
 } from './fixtures'
 
 jest.addMatchers(immutableMatchers)
@@ -211,6 +212,7 @@ const receiversStateExample = {
 const channels = getEmailChannels({
     integrations: fromJS(integrationsState),
 } as RootState)
+const integrations = fromJS([])
 
 describe('ticket utils', () => {
     describe('getSourceTypeOfResponse()', () => {
@@ -404,7 +406,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     smoochTicket,
                     TicketMessageSourceType.Chat,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -420,7 +423,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     facebookPost,
                     TicketMessageSourceType.FacebookComment,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -439,7 +443,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _smoochTicket,
                     TicketMessageSourceType.Chat,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -458,7 +463,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _facebookPost,
                     TicketMessageSourceType.FacebookComment,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -487,7 +493,8 @@ describe('ticket utils', () => {
                     getNewMessageSender(
                         testData.tweet,
                         testData.sourceType,
-                        channels
+                        channels,
+                        integrations
                     )
                 ).toEqualImmutable(expected)
             }
@@ -504,7 +511,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -524,7 +532,75 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
+                )
+            ).toEqualImmutable(expected)
+        })
+
+        it('should return `from` field from associated email of integration (chat ticket)', () => {
+            const emailIntegrationId = integrationsState.integrations.find(
+                (integration) =>
+                    integration.id ===
+                    chatTicket.getIn(['messages', 0, 'integration_id'])
+            )?.meta?.preferences?.linked_email_integration
+
+            const expected = fromJS(
+                channels.find(
+                    (channel: Map<any, any>) =>
+                        emailIntegrationId === channel.get('id')
+                )
+            )
+            expect(
+                getNewMessageSender(
+                    chatTicket,
+                    TicketMessageSourceType.Email,
+                    channels,
+                    fromJS(integrationsState)
+                )
+            ).toEqualImmutable(expected)
+        })
+
+        it('should return `from` field from last email message (chat ticket)', () => {
+            const ticket: Map<any, any> = fromJS({
+                messages: [
+                    chatTicket.get('messages'),
+                    {
+                        source: {
+                            to: [
+                                {
+                                    name: 'Steve Frizeli',
+                                    address: 'steve.frizeli@gmail.com',
+                                },
+                            ],
+                            from: {
+                                name: 'Acme Support',
+                                address: 'support@acme.gorgias.io',
+                            },
+                            type: 'email',
+                        },
+                        id: 152,
+                        from_agent: true,
+                        integration_id: 8,
+                    },
+                ],
+            })
+            const emailIntegrationValue = ((ticket.get('messages') as List<
+                any
+            >).last() as Map<any, any>).getIn(['source', 'from', 'address'])
+
+            const expected = fromJS(
+                channels.find(
+                    (channel: Map<any, any>) =>
+                        emailIntegrationValue === channel.get('address')
+                )
+            )
+            expect(
+                getNewMessageSender(
+                    ticket,
+                    TicketMessageSourceType.Email,
+                    channels,
+                    fromJS(integrationsState)
                 )
             ).toEqualImmutable(expected)
         })
@@ -547,7 +623,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -580,7 +657,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -599,7 +677,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -615,7 +694,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
         })
@@ -625,7 +705,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.InternalNote,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(
                 fromJS({
@@ -655,7 +736,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
+                    integrations
                 )
             ).toEqualImmutable(expected)
 
@@ -664,7 +746,8 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
-                    channels.push(testChannel)
+                    channels.push(testChannel),
+                    integrations
                 )
             ).toEqualImmutable(testChannel)
         })
@@ -688,7 +771,12 @@ describe('ticket utils', () => {
             const channels = fromJS([expectedSender])
 
             expect(
-                getNewMessageSender(ticket, newMessageSourceType, channels)
+                getNewMessageSender(
+                    ticket,
+                    newMessageSourceType,
+                    channels,
+                    integrations
+                )
             ).toEqual(expectedSender)
         })
     })

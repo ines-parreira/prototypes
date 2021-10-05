@@ -68,6 +68,7 @@ describe('integrations selectors', () => {
                     IntegrationType.SmoochIntegrationType,
                     IntegrationType.FacebookIntegrationType,
                     IntegrationType.PhoneIntegrationType,
+                    IntegrationType.GorgiasChatIntegrationType,
                 ].includes(inte.get('type', ''))
             )
 

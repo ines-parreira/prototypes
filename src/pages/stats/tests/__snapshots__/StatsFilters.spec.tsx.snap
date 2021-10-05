@@ -76,7 +76,7 @@ exports[`<StatsFilters /> should display the page 1`] = `
             <div
               class="badge"
             >
-              4
+              5
             </div>
           </button>
           <div
@@ -149,6 +149,22 @@ exports[`<StatsFilters /> should display the page 1`] = `
                 email
               </i>
                Acme Unverified
+            </label>
+            <label
+              class="item dropdown-item form-check-label"
+              role="menuitem"
+              tabindex="0"
+            >
+              <input
+                class="mr-2 checkbox"
+                type="checkbox"
+              />
+              <i
+                class="icon material-icons icon"
+              >
+                chat
+              </i>
+               Chitty chatty
             </label>
           </div>
         </div>

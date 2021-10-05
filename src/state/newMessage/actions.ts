@@ -244,7 +244,7 @@ export const setSender = (sender?: Maybe<string>) => (
     getState: () => RootState
 ): ReturnType<StoreDispatch> => {
     const state = getState()
-    const {ticket} = state
+    const {integrations, ticket} = state
     const sourceType = selectors.getNewMessageType(state)
     const channels =
         sourceType === TicketMessageSourceType.Phone
@@ -261,7 +261,8 @@ export const setSender = (sender?: Maybe<string>) => (
 
     if (_sender.isEmpty()) {
         _sender =
-            getNewMessageSender(ticket, sourceType, channels) || fromJS({})
+            getNewMessageSender(ticket, sourceType, channels, integrations) ||
+            fromJS({})
     }
 
     if (

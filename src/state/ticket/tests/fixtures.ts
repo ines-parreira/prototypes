@@ -440,3 +440,45 @@ export const twitterQuotedTweet = fromJS({
         },
     ],
 }) as Map<any, any>
+
+export const chatTicket = fromJS({
+    messages: [
+        {
+            source: {
+                from: {
+                    address: '1232353100194770',
+                    name: 'Paul Atréides',
+                },
+                type: 'chat',
+                to: [
+                    {
+                        address: '8765645678',
+                        name: 'Chani',
+                    },
+                ],
+            },
+            id: 153,
+            from_agent: false,
+            integration_id: 8,
+        },
+        {
+            source: {
+                from: {
+                    address: '8765645678',
+                    name: 'Chani',
+                },
+                type: 'chat',
+                to: [
+                    {
+                        address: '1232353100194770',
+                        name: 'Paul Atréides',
+                    },
+                ],
+                cc: [],
+            },
+            id: 189,
+            from_agent: true,
+            integration_id: 8,
+        },
+    ],
+}) as Map<any, any>
