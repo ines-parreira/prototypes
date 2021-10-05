@@ -76,7 +76,7 @@ exports[`<GorgiasChatIntegrationCustomInstallationCard/> render() should display
             onClick={[Function]}
             tag="a"
           >
-            Shopify Website
+            Shopify website
           </NavLink>
         </NavItem>
         <NavItem
@@ -90,13 +90,14 @@ exports[`<GorgiasChatIntegrationCustomInstallationCard/> render() should display
             onClick={[Function]}
             tag="a"
           >
-            Any Other Website
+            Any other website
           </NavLink>
         </NavItem>
         <NavItem
           className="tab-item"
           key="tab-link-GOOGLE_TAG_MANAGER"
           tag="li"
+          title="Coming soon!"
         >
           <NavLink
             className="tabLink"

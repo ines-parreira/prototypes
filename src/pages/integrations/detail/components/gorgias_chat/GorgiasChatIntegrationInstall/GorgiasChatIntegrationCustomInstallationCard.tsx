@@ -49,9 +49,10 @@ export function GorgiasChatIntegrationCustomInstallationCard({
         tabId: CustomInstallationTab
         tabComponent: React.ReactNode
         disabled?: boolean
+        hoverTitle?: string
     }[] = [
         {
-            title: 'Any Other Website',
+            title: 'Any other website',
             tabId: CustomInstallationTab.OTHER_WEBSITE,
             tabComponent: <CustomInstallationOtherWebsiteTab code={code} />,
         },
@@ -60,13 +61,14 @@ export function GorgiasChatIntegrationCustomInstallationCard({
             tabId: CustomInstallationTab.GOOGLE_TAG_MANAGER,
             tabComponent: null,
             disabled: true,
+            hoverTitle: 'Coming soon!',
         },
     ]
 
     if (isShopifyChat) {
         customInstallationTabs = [
             {
-                title: 'Shopify Website',
+                title: 'Shopify website',
                 tabId: CustomInstallationTab.SHOPIFY,
                 tabComponent: (
                     <CustomInstallationShopifyTab
@@ -112,10 +114,11 @@ export function GorgiasChatIntegrationCustomInstallationCard({
                     <h4>Install chat widget</h4>
                     <Nav className={css['tab-bar']} tabs>
                         {customInstallationTabs.map(
-                            ({title, tabId, disabled}) => (
+                            ({title, tabId, disabled, hoverTitle}) => (
                                 <NavItem
                                     key={`tab-link-${tabId}`}
                                     className={css['tab-item']}
+                                    title={hoverTitle}
                                 >
                                     <NavLink
                                         href={disabled ? undefined : '#'}

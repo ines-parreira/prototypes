@@ -17,11 +17,10 @@ exports[`<CustomInstallationOtherWebsiteTab/> should display the custom installa
     <div
       className="instruction-text"
     >
-      Localize in the source files of your website in which file is the tag 
+      Edit the source code of your website which contains the closing HTML tag 
       <b>
         &lt;/body&gt;
       </b>
-       and open it
     </div>
   </div>
   <div
@@ -83,7 +82,7 @@ exports[`<CustomInstallationOtherWebsiteTab/> should display the custom installa
       }
     }
   >
-    Please note that by copying the code here, the chat could be shown on all webpages. Make sure to copy the code to just specific pages if needed.
+    Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
   </Alert>
   <CodeSnippet
     code="<script>installChat();</script>"

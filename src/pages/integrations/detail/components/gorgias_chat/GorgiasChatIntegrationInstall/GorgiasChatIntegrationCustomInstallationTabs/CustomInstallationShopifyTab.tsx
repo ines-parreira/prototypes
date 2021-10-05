@@ -1,6 +1,5 @@
 import React from 'react'
 import {Alert} from 'reactstrap'
-import {Link} from 'react-router-dom'
 
 import CodeSnippet from '../../../../../../common/components/CodeSnippet'
 
@@ -12,20 +11,7 @@ type Props = {
     sspAvailable: boolean
 }
 
-const SSPSnippet = `<script>
-var gorgiasChatInterval = window.setInterval(function() {
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")) {
-        GorgiasChat.setShopifyContext('your-store.myshopify.com');
-        window.clearInterval(gorgiasChatInterval); // do not delete this line
-    }
-}, 50);
-</script>`
-
-export function CustomInstallationShopifyTab({
-    code,
-    integrationId,
-    sspAvailable,
-}: Props) {
+export function CustomInstallationShopifyTab({code}: Props) {
     return (
         <div className={css['wrapper']}>
             <div className={css['instruction']}>
@@ -69,58 +55,6 @@ export function CustomInstallationShopifyTab({
                 needed.
             </Alert>
             <CodeSnippet code={code} />
-            <h4>Enable Self-Service</h4>
-            <p>
-                This will enable self-service on your chat but you'll be able to
-                control the settings from the{' '}
-                <Link
-                    to={`/app/settings/integrations/gorgias_chat/${integrationId}/self_service`}
-                >
-                    Self-Service page
-                </Link>
-                .
-            </p>
-            {sspAvailable ? (
-                <>
-                    <div className={css['instruction']}>
-                        <div>
-                            <span className={css['instruction-number']}>1</span>
-                        </div>
-                        <div className={css['instruction-text']}>
-                            Add this code snippet just after the installation
-                            code snippet from the previous step. Please remember
-                            to <b>replace XXXX in the snippet below</b> with
-                            your Shopify store name{' '}
-                            <b>yourShop.myshopify.com</b>.
-                        </div>
-                    </div>
-
-                    <CodeSnippet code={SSPSnippet} />
-                    <div className={css['instruction']}>
-                        <div>
-                            <span className={css['instruction-number']}>2</span>
-                        </div>
-                        <div className={css['instruction-text']}>
-                            Access your chat's{' '}
-                            <Link to={`/app/settings/self-service`}>
-                                Self-Service settings
-                            </Link>{' '}
-                            and activate the installation toggle for the
-                            specific Shopify store site that you want to
-                            activate the self-service portal on. If the toggle
-                            turns green and stays green, then the self-service
-                            portal is live on your site.
-                        </div>
-                    </div>
-                </>
-            ) : (
-                <Alert color="warning">
-                    The self-service features{' '}
-                    <b>are not available for custom live chat</b>. Please
-                    connect your live chat to a store in order to set-up
-                    self-service features.
-                </Alert>
-            )}
         </div>
     )
 }

@@ -17,8 +17,8 @@ export function CustomInstallationOtherWebsiteTab({code}: Props) {
                     <span className={css['instruction-number']}>1</span>
                 </div>
                 <div className={css['instruction-text']}>
-                    Localize in the source files of your website in which file
-                    is the tag <b>&#x3C;/body&#x3E;</b> and open it
+                    Edit the source code of your website which contains the
+                    closing HTML tag <b>&#x3C;/body&#x3E;</b>
                 </div>
             </div>
             <div className={css['instruction']}>
@@ -38,9 +38,10 @@ export function CustomInstallationOtherWebsiteTab({code}: Props) {
                 </div>
             </div>
             <Alert color="warning">
-                Please note that by copying the code here, the chat could be
-                shown on all webpages. Make sure to copy the code to just
-                specific pages if needed.
+                Please note that by inserting this snippet on your webpage, it
+                will load the chat on that specific webpage only. Make sure to
+                insert the snippet on all the pages for which you wish to
+                display the chat widget.
             </Alert>
             <CodeSnippet code={code} />
         </div>

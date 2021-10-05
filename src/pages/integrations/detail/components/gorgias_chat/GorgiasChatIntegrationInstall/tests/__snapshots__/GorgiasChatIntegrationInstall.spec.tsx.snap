@@ -774,7 +774,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                     </Card>
                   </GorgiasChatIntegrationOneClickInstallationCard>
                   <GorgiasChatIntegrationCustomInstallationCard
-                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
                     isShopifyChat={true}
                   >
@@ -893,7 +893,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                               href="#"
                                               onClick={[Function]}
                                             >
-                                              Shopify Website
+                                              Shopify website
                                             </a>
                                           </NavLink>
                                         </li>
@@ -917,7 +917,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                               href="#"
                                               onClick={[Function]}
                                             >
-                                              Any Other Website
+                                              Any other website
                                             </a>
                                           </NavLink>
                                         </li>
@@ -926,9 +926,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         className="tab-item"
                                         key="tab-link-GOOGLE_TAG_MANAGER"
                                         tag="li"
+                                        title="Coming soon!"
                                       >
                                         <li
                                           className="tab-item nav-item"
+                                          title="Coming soon!"
                                         >
                                           <NavLink
                                             className="tabLink"
@@ -964,7 +966,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           className="tab-pane active"
                                         >
                                           <CustomInstallationShopifyTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                             integrationId={2}
                                             sspAvailable={true}
                                           >
@@ -1136,7 +1138,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                 </Fade>
                                               </Alert>
                                               <CodeSnippet
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <Alert
                                                   className="wrapper"
@@ -1213,186 +1215,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                       >
                                                         <pre
                                                           className="code"
-                                                          id="code-snippet-4"
+                                                          id="code-snippet-3"
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install"&gt;!function(_){_.GORGIAS_CHAT_APP_ID="undefined",_.GORGIAS_CHAT_BASE_URL="undefined",_.GORGIAS_API_BASE_URL="";var e=new XMLHttpRequest;e.open("GET","https:///applications/undefined",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https:///applications/undefined");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="undefined/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https:///applications/undefined")},e.onerror=function(_){console.error(_)},e.send()}(window||{});&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                                                         </pre>
                                                       </div>
                                                     </Transition>
                                                   </Fade>
                                                 </Alert>
                                               </CodeSnippet>
-                                              <h4>
-                                                Enable Self-Service
-                                              </h4>
-                                              <p>
-                                                This will enable self-service on your chat but you'll be able to control the settings from the
-                                                 
-                                                <Link
-                                                  to="/app/settings/integrations/gorgias_chat/2/self_service"
-                                                >
-                                                  <a
-                                                    to="/app/settings/integrations/gorgias_chat/2/self_service"
-                                                  >
-                                                    Self-Service page
-                                                  </a>
-                                                </Link>
-                                                .
-                                              </p>
-                                              <div
-                                                className="instruction"
-                                              >
-                                                <div>
-                                                  <span
-                                                    className="instruction-number"
-                                                  >
-                                                    1
-                                                  </span>
-                                                </div>
-                                                <div
-                                                  className="instruction-text"
-                                                >
-                                                  Add this code snippet just after the installation code snippet from the previous step. Please remember to 
-                                                  <b>
-                                                    replace XXXX in the snippet below
-                                                  </b>
-                                                   with your Shopify store name
-                                                   
-                                                  <b>
-                                                    yourShop.myshopify.com
-                                                  </b>
-                                                  .
-                                                </div>
-                                              </div>
-                                              <CodeSnippet
-                                                code="<script>
-var gorgiasChatInterval = window.setInterval(function() {
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty(\\"on\\")) {
-        GorgiasChat.setShopifyContext('your-store.myshopify.com');
-        window.clearInterval(gorgiasChatInterval); // do not delete this line
-    }
-}, 50);
-</script>"
-                                              >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
-                                                  onMouseEnter={[Function]}
-                                                  onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
-                                                >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
-                                                  >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
-                                                    >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
-                                                        role="alert"
-                                                      >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-5"
-                                                        >
-                                                          &lt;script&gt;
-var gorgiasChatInterval = window.setInterval(function() {
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")) {
-        GorgiasChat.setShopifyContext('your-store.myshopify.com');
-        window.clearInterval(gorgiasChatInterval); // do not delete this line
-    }
-}, 50);
-&lt;/script&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
-                                              <div
-                                                className="instruction"
-                                              >
-                                                <div>
-                                                  <span
-                                                    className="instruction-number"
-                                                  >
-                                                    2
-                                                  </span>
-                                                </div>
-                                                <div
-                                                  className="instruction-text"
-                                                >
-                                                  Access your chat's
-                                                   
-                                                  <Link
-                                                    to="/app/settings/self-service"
-                                                  >
-                                                    <a
-                                                      to="/app/settings/self-service"
-                                                    >
-                                                      Self-Service settings
-                                                    </a>
-                                                  </Link>
-                                                   
-                                                  and activate the installation toggle for the specific Shopify store site that you want to activate the self-service portal on. If the toggle turns green and stays green, then the self-service portal is live on your site.
-                                                </div>
-                                              </div>
                                             </div>
                                           </CustomInstallationShopifyTab>
                                         </div>
@@ -1406,7 +1237,7 @@ var gorgiasChatInterval = window.setInterval(function() {
                                           className="tab-pane"
                                         >
                                           <CustomInstallationOtherWebsiteTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -1424,11 +1255,10 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                 <div
                                                   className="instruction-text"
                                                 >
-                                                  Localize in the source files of your website in which file is the tag 
+                                                  Edit the source code of your website which contains the closing HTML tag 
                                                   <b>
                                                     &lt;/body&gt;
                                                   </b>
-                                                   and open it
                                                 </div>
                                               </div>
                                               <div
@@ -1529,13 +1359,13 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                       className="alert alert-warning fade"
                                                       role="alert"
                                                     >
-                                                      Please note that by copying the code here, the chat could be shown on all webpages. Make sure to copy the code to just specific pages if needed.
+                                                      Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
                                                     </div>
                                                   </Transition>
                                                 </Fade>
                                               </Alert>
                                               <CodeSnippet
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <Alert
                                                   className="wrapper"
@@ -1612,9 +1442,9 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                       >
                                                         <pre
                                                           className="code"
-                                                          id="code-snippet-6"
+                                                          id="code-snippet-4"
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install"&gt;!function(_){_.GORGIAS_CHAT_APP_ID="undefined",_.GORGIAS_CHAT_BASE_URL="undefined",_.GORGIAS_API_BASE_URL="";var e=new XMLHttpRequest;e.open("GET","https:///applications/undefined",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https:///applications/undefined");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="undefined/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https:///applications/undefined")},e.onerror=function(_){console.error(_)},e.send()}(window||{});&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                                                         </pre>
                                                       </div>
                                                     </Transition>
@@ -1978,7 +1808,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                   className="col-md-8"
                 >
                   <GorgiasChatIntegrationCustomInstallationCard
-                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
                     isShopifyChat={false}
                   >
@@ -2097,7 +1927,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                               href="#"
                                               onClick={[Function]}
                                             >
-                                              Any Other Website
+                                              Any other website
                                             </a>
                                           </NavLink>
                                         </li>
@@ -2106,9 +1936,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                         className="tab-item"
                                         key="tab-link-GOOGLE_TAG_MANAGER"
                                         tag="li"
+                                        title="Coming soon!"
                                       >
                                         <li
                                           className="tab-item nav-item"
+                                          title="Coming soon!"
                                         >
                                           <NavLink
                                             className="tabLink"
@@ -2144,7 +1976,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                           className="tab-pane active"
                                         >
                                           <CustomInstallationOtherWebsiteTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -2162,11 +1994,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                 <div
                                                   className="instruction-text"
                                                 >
-                                                  Localize in the source files of your website in which file is the tag 
+                                                  Edit the source code of your website which contains the closing HTML tag 
                                                   <b>
                                                     &lt;/body&gt;
                                                   </b>
-                                                   and open it
                                                 </div>
                                               </div>
                                               <div
@@ -2267,13 +2098,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                       className="alert alert-warning fade"
                                                       role="alert"
                                                     >
-                                                      Please note that by copying the code here, the chat could be shown on all webpages. Make sure to copy the code to just specific pages if needed.
+                                                      Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
                                                     </div>
                                                   </Transition>
                                                 </Fade>
                                               </Alert>
                                               <CodeSnippet
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <Alert
                                                   className="wrapper"
@@ -2350,9 +2181,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                       >
                                                         <pre
                                                           className="code"
-                                                          id="code-snippet-7"
+                                                          id="code-snippet-5"
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install"&gt;!function(_){_.GORGIAS_CHAT_APP_ID="undefined",_.GORGIAS_CHAT_BASE_URL="undefined",_.GORGIAS_API_BASE_URL="";var e=new XMLHttpRequest;e.open("GET","https:///applications/undefined",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https:///applications/undefined");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="undefined/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https:///applications/undefined")},e.onerror=function(_){console.error(_)},e.send()}(window||{});&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                                                         </pre>
                                                       </div>
                                                     </Transition>
@@ -2858,7 +2689,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                     </Card>
                   </GorgiasChatIntegrationOneClickInstallationCard>
                   <GorgiasChatIntegrationCustomInstallationCard
-                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
                     isShopifyChat={true}
                   >
@@ -2977,7 +2808,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                               href="#"
                                               onClick={[Function]}
                                             >
-                                              Shopify Website
+                                              Shopify website
                                             </a>
                                           </NavLink>
                                         </li>
@@ -3001,7 +2832,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                               href="#"
                                               onClick={[Function]}
                                             >
-                                              Any Other Website
+                                              Any other website
                                             </a>
                                           </NavLink>
                                         </li>
@@ -3010,9 +2841,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         className="tab-item"
                                         key="tab-link-GOOGLE_TAG_MANAGER"
                                         tag="li"
+                                        title="Coming soon!"
                                       >
                                         <li
                                           className="tab-item nav-item"
+                                          title="Coming soon!"
                                         >
                                           <NavLink
                                             className="tabLink"
@@ -3048,7 +2881,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                           className="tab-pane active"
                                         >
                                           <CustomInstallationShopifyTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                             integrationId={2}
                                             sspAvailable={true}
                                           >
@@ -3220,7 +3053,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                 </Fade>
                                               </Alert>
                                               <CodeSnippet
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <Alert
                                                   className="wrapper"
@@ -3299,184 +3132,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                           className="code"
                                                           id="code-snippet-1"
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install"&gt;!function(_){_.GORGIAS_CHAT_APP_ID="undefined",_.GORGIAS_CHAT_BASE_URL="undefined",_.GORGIAS_API_BASE_URL="";var e=new XMLHttpRequest;e.open("GET","https:///applications/undefined",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https:///applications/undefined");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="undefined/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https:///applications/undefined")},e.onerror=function(_){console.error(_)},e.send()}(window||{});&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                                                         </pre>
                                                       </div>
                                                     </Transition>
                                                   </Fade>
                                                 </Alert>
                                               </CodeSnippet>
-                                              <h4>
-                                                Enable Self-Service
-                                              </h4>
-                                              <p>
-                                                This will enable self-service on your chat but you'll be able to control the settings from the
-                                                 
-                                                <Link
-                                                  to="/app/settings/integrations/gorgias_chat/2/self_service"
-                                                >
-                                                  <a
-                                                    to="/app/settings/integrations/gorgias_chat/2/self_service"
-                                                  >
-                                                    Self-Service page
-                                                  </a>
-                                                </Link>
-                                                .
-                                              </p>
-                                              <div
-                                                className="instruction"
-                                              >
-                                                <div>
-                                                  <span
-                                                    className="instruction-number"
-                                                  >
-                                                    1
-                                                  </span>
-                                                </div>
-                                                <div
-                                                  className="instruction-text"
-                                                >
-                                                  Add this code snippet just after the installation code snippet from the previous step. Please remember to 
-                                                  <b>
-                                                    replace XXXX in the snippet below
-                                                  </b>
-                                                   with your Shopify store name
-                                                   
-                                                  <b>
-                                                    yourShop.myshopify.com
-                                                  </b>
-                                                  .
-                                                </div>
-                                              </div>
-                                              <CodeSnippet
-                                                code="<script>
-var gorgiasChatInterval = window.setInterval(function() {
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty(\\"on\\")) {
-        GorgiasChat.setShopifyContext('your-store.myshopify.com');
-        window.clearInterval(gorgiasChatInterval); // do not delete this line
-    }
-}, 50);
-</script>"
-                                              >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
-                                                  onMouseEnter={[Function]}
-                                                  onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
-                                                >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
-                                                  >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
-                                                    >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
-                                                        role="alert"
-                                                      >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-2"
-                                                        >
-                                                          &lt;script&gt;
-var gorgiasChatInterval = window.setInterval(function() {
-    if (window.GorgiasChat && GorgiasChat.hasOwnProperty("on")) {
-        GorgiasChat.setShopifyContext('your-store.myshopify.com');
-        window.clearInterval(gorgiasChatInterval); // do not delete this line
-    }
-}, 50);
-&lt;/script&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
-                                              <div
-                                                className="instruction"
-                                              >
-                                                <div>
-                                                  <span
-                                                    className="instruction-number"
-                                                  >
-                                                    2
-                                                  </span>
-                                                </div>
-                                                <div
-                                                  className="instruction-text"
-                                                >
-                                                  Access your chat's
-                                                   
-                                                  <Link
-                                                    to="/app/settings/self-service"
-                                                  >
-                                                    <a
-                                                      to="/app/settings/self-service"
-                                                    >
-                                                      Self-Service settings
-                                                    </a>
-                                                  </Link>
-                                                   
-                                                  and activate the installation toggle for the specific Shopify store site that you want to activate the self-service portal on. If the toggle turns green and stays green, then the self-service portal is live on your site.
-                                                </div>
-                                              </div>
                                             </div>
                                           </CustomInstallationShopifyTab>
                                         </div>
@@ -3490,7 +3152,7 @@ var gorgiasChatInterval = window.setInterval(function() {
                                           className="tab-pane"
                                         >
                                           <CustomInstallationOtherWebsiteTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -3508,11 +3170,10 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                 <div
                                                   className="instruction-text"
                                                 >
-                                                  Localize in the source files of your website in which file is the tag 
+                                                  Edit the source code of your website which contains the closing HTML tag 
                                                   <b>
                                                     &lt;/body&gt;
                                                   </b>
-                                                   and open it
                                                 </div>
                                               </div>
                                               <div
@@ -3613,13 +3274,13 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                       className="alert alert-warning fade"
                                                       role="alert"
                                                     >
-                                                      Please note that by copying the code here, the chat could be shown on all webpages. Make sure to copy the code to just specific pages if needed.
+                                                      Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
                                                     </div>
                                                   </Transition>
                                                 </Fade>
                                               </Alert>
                                               <CodeSnippet
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <Alert
                                                   className="wrapper"
@@ -3696,9 +3357,9 @@ var gorgiasChatInterval = window.setInterval(function() {
                                                       >
                                                         <pre
                                                           className="code"
-                                                          id="code-snippet-3"
+                                                          id="code-snippet-2"
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install"&gt;!function(_){_.GORGIAS_CHAT_APP_ID="undefined",_.GORGIAS_CHAT_BASE_URL="undefined",_.GORGIAS_API_BASE_URL="";var e=new XMLHttpRequest;e.open("GET","https:///applications/undefined",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https:///applications/undefined");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="undefined/static/js/main.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - https:///applications/undefined")},e.onerror=function(_){console.error(_)},e.send()}(window||{});&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                                                         </pre>
                                                       </div>
                                                     </Transition>
@@ -3739,4 +3400,4 @@ var gorgiasChatInterval = window.setInterval(function() {
 </Connect(GorgiasChatIntegrationInstall)>
 `;
 
-exports[`renderChatCodeSnippet() should render correctly with new format 1`] = `"<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install\\">!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);var r=document.createElement(\\"script\\");r.setAttribute(\\"defer\\",!0),r.src=\\"undefined/static/js/main.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(r)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"`;
+exports[`renderChatCodeSnippet() should render correctly with new format 1`] = `"<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"`;
