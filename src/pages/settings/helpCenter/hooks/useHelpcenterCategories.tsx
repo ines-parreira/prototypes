@@ -26,7 +26,7 @@ type Pagination = {
 
 export const useHelpCenterCategories = (
     helpCenterId: number,
-    queryParams: Omit<Paths.ListCategories.QueryParameters, 'page'>
+    params: Omit<Paths.ListCategories.QueryParameters, 'page'>
 ): HelpCenterCategoriesHook => {
     const dispatch = useAppDispatch()
     const categories = useSelector(getCategories)
@@ -41,9 +41,7 @@ export const useHelpCenterCategories = (
         pagination,
     ])
 
-    const fetchCategories = async () => {
-        let {page, nbPages} = pagination
-
+    const fetchCategories = async (page: number) => {
         if (client) {
             try {
                 setLoading(true)
@@ -51,14 +49,11 @@ export const useHelpCenterCategories = (
                 const {
                     data: {meta, data},
                 } = await client.listCategories({
-                    ...queryParams,
+                    ...params,
                     help_center_id: helpCenterId,
-                    page: pagination.page + 1,
+                    page: page + 1,
                     order_by: 'position',
                 })
-
-                page = meta.page
-                nbPages = meta.nb_pages
 
                 const positions = await client
                     .getCategoriesPositions({
@@ -74,10 +69,11 @@ export const useHelpCenterCategories = (
                 )
 
                 dispatch(saveCategories([...categories, ...fetchedCategories]))
+
+                setPagination({page: meta.page, nbPages: meta.nb_pages})
             } catch (err) {
                 console.error(err)
             } finally {
-                setPagination({page, nbPages})
                 setLoading(false)
             }
         }
@@ -85,13 +81,13 @@ export const useHelpCenterCategories = (
 
     const fetchMore = async () => {
         if (hasMore && !isLoading) {
-            await fetchCategories()
+            await fetchCategories(pagination.page)
         }
     }
 
     useEffect(() => {
-        void fetchCategories()
-    }, [])
+        void fetchCategories(0)
+    }, [params.locale])
 
     return {
         categories,

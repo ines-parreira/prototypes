@@ -60,10 +60,12 @@ const dependencyWrapper: React.ComponentType<any> = ({
 }: {
     children: Element
 }) => <Provider store={mockStore(defaultState)}>{children}</Provider>
+
 describe('useHelpCenterCategories', () => {
     afterEach(() => {
         jest.clearAllMocks()
     })
+
     it('finishes loading once the requests are done', async () => {
         const {result, waitForNextUpdate} = renderHook(
             () => useHelpCenterCategories(1, {locale: 'en-US'}),
@@ -77,6 +79,7 @@ describe('useHelpCenterCategories', () => {
         expect(result.current.isLoading).toBeFalsy()
         expect(result.current.hasMore).toEqual(false)
     })
+
     it('saves the categories once they are fetched', async () => {
         const {waitForNextUpdate} = renderHook(
             () => useHelpCenterCategories(1, {locale: 'en-US'}),
@@ -87,6 +90,7 @@ describe('useHelpCenterCategories', () => {
         await waitForNextUpdate()
         expect(saveCategories).toHaveBeenCalled()
     })
+
     it('uses the getCategories selector', () => {
         renderHook(() => useHelpCenterCategories(1, {locale: 'en-US'}), {
             wrapper: dependencyWrapper,
