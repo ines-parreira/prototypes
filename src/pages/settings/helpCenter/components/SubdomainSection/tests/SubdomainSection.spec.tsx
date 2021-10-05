@@ -14,6 +14,7 @@ describe('<SubdomainSection />', () => {
         const {findByText} = render(
             <SubdomainSection value="" href="" onChange={jest.fn} />
         )
+
         await findByText(HELP_CENTER_DOMAIN)
     })
 
@@ -21,6 +22,7 @@ describe('<SubdomainSection />', () => {
         const {value} = getSubdomainInput(
             <SubdomainSection value="my-domain" href="" onChange={jest.fn} />
         )
+
         expect(value).toEqual('my-domain')
     })
 
@@ -33,6 +35,7 @@ describe('<SubdomainSection />', () => {
                 onChange={jest.fn}
             />
         )
+
         expect(placeholder).toEqual('input something')
     })
 
@@ -40,11 +43,13 @@ describe('<SubdomainSection />', () => {
         it('renders the error message', () => {
             const {getByTestId} = render(
                 <SubdomainSection
-                    value="my-domain;"
+                    value="domain-test"
                     href=""
                     onChange={jest.fn}
+                    isValid={false}
                 />
             )
+
             getByTestId('error-message')
         })
     })

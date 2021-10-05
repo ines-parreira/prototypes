@@ -7,7 +7,7 @@ import {HELP_CENTER_DOMAIN} from '../../../../constants'
 
 import css from './SubdomainInput.less'
 
-type SubdomainInputProps = {
+export type SubdomainInputProps = {
     label?: string
     help?: string
     name?: string
@@ -40,14 +40,16 @@ export const SubdomainInput: FunctionComponent<SubdomainInputProps> = ({
                         <i className="material-icons">error_outline</i>
                         Subdomain is invalid or contains forbidden keywords
                     </span>
-                    <Tooltip target="error-policy" placement="bottom-start">
+                    <Tooltip
+                        target="error-policy"
+                        placement="bottom-start"
+                        style={{textAlign: 'left'}}
+                    >
                         <ul data-testid="error-policy" className={css.policy}>
-                            <li>- should have less than 63 characters</li>
-                            <li>
-                                - must begin and end with a letter or number
-                            </li>
-                            <li>- may contain hyphens (dashes)</li>
-                            <li>- may not begin or end with a hyphen</li>
+                            <li>Should have less than 63 characters</li>
+                            <li>Must begin and end with a letter or number</li>
+                            <li>May contain hyphens (dashes)</li>
+                            <li>May not begin or end with a hyphen</li>
                         </ul>
                     </Tooltip>
                 </div>

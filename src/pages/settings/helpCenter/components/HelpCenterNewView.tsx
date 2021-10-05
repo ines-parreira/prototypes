@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {
@@ -72,21 +73,33 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
         value: locale.code,
     }))
 
-    const checkSubdomainAvailability = async (subdomain: string) => {
-        if (client) {
-            try {
-                await client.checkHelpCenterWithSubdomainExists({subdomain})
+    const checkSubdomainAvailability = useCallback(
+        _debounce(async () => {
+            if (
+                client &&
+                newHelpCenter.subdomain &&
+                isValidSubdomain(newHelpCenter.subdomain)
+            ) {
+                try {
+                    await client.checkHelpCenterWithSubdomainExists({
+                        subdomain: newHelpCenter.subdomain,
+                    })
 
-                setIsSubdomainAvailable(false)
-            } catch (err) {
-                if (axios.isAxiosError(err) && err.response?.status === 404) {
-                    setIsSubdomainAvailable(true)
-                } else {
-                    throw err
+                    setIsSubdomainAvailable(false)
+                } catch (err) {
+                    if (
+                        axios.isAxiosError(err) &&
+                        err.response?.status === 404
+                    ) {
+                        setIsSubdomainAvailable(true)
+                    } else {
+                        throw err
+                    }
                 }
             }
-        }
-    }
+        }, 500),
+        [newHelpCenter.subdomain]
+    )
 
     const handleSubmit = async () => {
         if (!client) {
@@ -132,13 +145,20 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
     }
 
     const handleChangeName = (name: string) => {
-        setNewHelpCenter((prevNewHelpCenter) => ({
-            ...prevNewHelpCenter,
-            name,
-            subdomain: isPristineSubdomain
-                ? slugify(name)
-                : prevNewHelpCenter.subdomain,
-        }))
+        setNewHelpCenter((prevNewHelpCenter) => {
+            if (!prevNewHelpCenter.subdomain) {
+                setPristineSubdomain(true)
+            }
+
+            return {
+                ...prevNewHelpCenter,
+                name,
+                subdomain:
+                    isPristineSubdomain || !prevNewHelpCenter.subdomain
+                        ? slugify(name)
+                        : prevNewHelpCenter.subdomain,
+            }
+        })
     }
 
     const handleChangeSubdomain = (subdomain: string) => {
@@ -189,13 +209,10 @@ export const HelpCenterNewView = ({notify, helpCenterCreated}: Props) => {
     useEffect(() => {
         setIsSubdomainAvailable(true)
 
-        if (
-            newHelpCenter?.subdomain &&
-            isValidSubdomain(newHelpCenter.subdomain)
-        ) {
-            void checkSubdomainAvailability(newHelpCenter.subdomain)
-        }
-    }, [newHelpCenter.subdomain])
+        void checkSubdomainAvailability()
+
+        return () => checkSubdomainAvailability.cancel()
+    }, [newHelpCenter.subdomain, checkSubdomainAvailability])
 
     return (
         <div className="full-width">

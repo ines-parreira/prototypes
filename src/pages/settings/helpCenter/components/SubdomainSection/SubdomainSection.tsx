@@ -1,24 +1,20 @@
 import React, {ReactNode} from 'react'
 
-import {isValidSubdomain} from '../../utils/validations'
-
-import {SubdomainInput} from './components/SubdomainInput'
+import {SubdomainInput, SubdomainInputProps} from './components/SubdomainInput'
 import css from './SubdomainSection.less'
 
-type Props = {
-    value: string
+type Props = Pick<
+    SubdomainInputProps,
+    'value' | 'placeholder' | 'onChange' | 'isValid' | 'isAvailable'
+> & {
     href: string
-    placeholder?: string
-    onChange: (value: string) => void
     children?: ReactNode
 }
 
 export const SubdomainSection = ({
-    value,
     href,
-    placeholder,
-    onChange,
     children,
+    ...inputProps
 }: Props): JSX.Element => {
     return (
         <section className={css.container}>
@@ -39,12 +35,7 @@ export const SubdomainSection = ({
                 Help Center website will be accessible. You can change it to
                 better match your needs.
             </p>
-            <SubdomainInput
-                value={value}
-                placeholder={placeholder}
-                onChange={onChange}
-                isValid={isValidSubdomain(value)}
-            />
+            <SubdomainInput {...inputProps} />
             {children}
         </section>
     )

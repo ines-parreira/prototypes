@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
+import axios from 'axios'
 import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
 import {useSelector} from 'react-redux'
 import {useHistory, useLocation} from 'react-router-dom'
 import {Button, Container} from 'reactstrap'
@@ -27,27 +29,6 @@ import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
 
-// type Props = RouteComponentProps & ConnectedProps<typeof connector>
-
-/**
- * @description
- *      This function validates the following:
- *  - if new value is not empty
- *  - if new value meets the subdomain requirements (alphanumeric and - or _)
- *  - if new value is different from the current one
- *
- * @param newValue String
- * @param currentValue String
- * @returns Boolean
- */
-function validateNewSubdomain(newValue: string, currentValue: string): boolean {
-    if (newValue === currentValue) {
-        return false
-    }
-
-    return isValidSubdomain(newValue)
-}
-
 export const HelpCenterInstallationView = (): JSX.Element | null => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
@@ -55,22 +36,35 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     const location = useLocation()
     const helpCenter = useSelector(getCurrentHelpCenter)
     const {isReady, client} = useHelpcenterApi()
-
-    const [subDomainValue, setSubdomainValue] = React.useState(
+    const [subdomainValue, setSubdomainValue] = useState(
         helpCenter?.subdomain || ''
     )
+    const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
+    const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
 
-    const [
-        deleteModalConfirmation,
-        setDeleteModalConfirmation,
-    ] = React.useState('')
-    const deleteBtnDisabled = deleteModalConfirmation !== helpCenter?.name
+    const checkSubdomainAvailability = useCallback(
+        _debounce(async () => {
+            if (client && subdomainValue !== helpCenter?.subdomain) {
+                try {
+                    await client.checkHelpCenterWithSubdomainExists({
+                        subdomain: subdomainValue,
+                    })
 
-    React.useEffect(() => {
-        if (helpCenter) {
-            setSubdomainValue(helpCenter.subdomain)
-        }
-    }, [helpCenter])
+                    setIsSubdomainAvailable(false)
+                } catch (err) {
+                    if (
+                        axios.isAxiosError(err) &&
+                        err.response?.status === 404
+                    ) {
+                        setIsSubdomainAvailable(true)
+                    } else {
+                        throw err
+                    }
+                }
+            }
+        }, 500),
+        [subdomainValue]
+    )
 
     const handleOnDeleteHelpcenter = () => {
         if (isReady && client) {
@@ -101,7 +95,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                         help_center_id: helpCenterId,
                     },
                     {
-                        subdomain: subDomainValue,
+                        subdomain: subdomainValue,
                     }
                 )
                 .then((response) => {
@@ -126,11 +120,30 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
         }
     }
 
+    useEffect(() => {
+        setIsSubdomainAvailable(true)
+
+        void checkSubdomainAvailability()
+
+        return () => checkSubdomainAvailability.cancel()
+    }, [subdomainValue, checkSubdomainAvailability])
+
+    const deleteBtnDisabled = deleteModalConfirmation !== helpCenter?.name
+
+    useEffect(() => {
+        if (helpCenter) {
+            setSubdomainValue(helpCenter.subdomain)
+        }
+    }, [helpCenter])
+
     if (helpCenter === null) {
         return null
     }
 
-    const subdomain = helpCenter ? helpCenter.subdomain : ''
+    const isNewSubdomainValid =
+        subdomainValue !== helpCenter.subdomain &&
+        isSubdomainAvailable &&
+        isValidSubdomain(subdomainValue)
 
     return (
         <div className="full-width">
@@ -148,16 +161,16 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                 className={classnames('page-container', css.container)}
             >
                 <SubdomainSection
-                    value={subDomainValue}
-                    href={getHelpCenterDomain(subdomain)}
+                    value={subdomainValue}
+                    href={getHelpCenterDomain(helpCenter.subdomain)}
                     placeholder="brand-name"
                     onChange={setSubdomainValue}
+                    isAvailable={isSubdomainAvailable}
+                    isValid={isValidSubdomain(subdomainValue)}
                 >
                     <Button
                         color="primary"
-                        disabled={
-                            !validateNewSubdomain(subDomainValue, subdomain)
-                        }
+                        disabled={!isNewSubdomainValid}
                         onClick={handleOnUpdateHelpCenter}
                     >
                         Save Changes

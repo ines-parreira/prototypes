@@ -66,7 +66,7 @@ describe('<HelpCenterNewView/>', () => {
     })
 
     describe('Reset form', () => {
-        it('should disabled the cancel button when the form has its initial state', async () => {
+        it('should disable the cancel button when the form has its initial state', async () => {
             const {findByRole} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
                     <HelpCenterNewView {...props} />
@@ -75,6 +75,7 @@ describe('<HelpCenterNewView/>', () => {
             const cancelButton = await findByRole('button', {name: /cancel/i})
             expect(cancelButton.className).toMatch(/disabled/i)
         })
+
         it('should enable the cancel button when the form is different from its initial state', async () => {
             const {findByRole} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
@@ -107,6 +108,7 @@ describe('<HelpCenterNewView/>', () => {
             })
             expect(submitButton.className).toMatch(/disabled/i)
         })
+
         it('should enable the submit button when all the required fields are filled', async () => {
             const {findByRole, getByRole} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
@@ -137,6 +139,7 @@ describe('<HelpCenterNewView/>', () => {
             })
             expect(submitButton.className).not.toMatch(/disabled/i)
         })
+
         it('should call helpcenter API on submit a new helpcenter', async () => {
             const {findByRole, getByTestId} = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
