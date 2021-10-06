@@ -7,9 +7,9 @@
     "repository": "https://github.com/gorgias/gorgias",
     "scripts": {
         "types": "tsc -p ./tsconfig.json --allowJs false --noEmit true",
-        "eslint:all": "func() { eslint -c ./.eslintrc.js --quiet g/static/private/js/\"$1\"; }; func",
+        "eslint": "eslint --quiet g/static/private/js/\"$1\"",
         "stylelint:less": "stylelint \"g/static/private/**/*.less\"",
-        "lint": "run-p stylelint:less eslint:all",
+        "lint": "run-p stylelint:less eslint",
         "quality": "run-s lint types",
         "jest": "export TZ=America/Creston; LC_ALL=\"en_US.UTF-8\" NODE_ICU_DATA=node_modules/full-icu jest",
         "test": "run-s quality jest",
