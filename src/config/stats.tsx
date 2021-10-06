@@ -1286,8 +1286,11 @@ export const stats = toImmutable<
             },
             plugins: {
                 tooltip: {
-                    mode: 'point',
+                    intersect: true,
                     position: 'nearest',
+                    filter: (context: TooltipItem<'line'>) => {
+                        return context.formattedValue !== '0'
+                    },
                 },
             },
         }),
