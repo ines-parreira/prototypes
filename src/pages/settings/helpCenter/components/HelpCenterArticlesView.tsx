@@ -555,6 +555,8 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     ...prevState,
                     opened: false,
                 }))
+                // close modal to reset its parameters (category_id)
+                articleModal.closeModal()
             } catch (err) {
                 void dispatch(
                     notify({
@@ -589,6 +591,8 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                     ...prevState,
                     opened: false,
                 }))
+                // close modal to reset its parameters (category_id)
+                articleModal.closeModal()
             } catch (err) {
                 void dispatch(
                     notify({
