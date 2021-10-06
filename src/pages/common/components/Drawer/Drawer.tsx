@@ -81,7 +81,19 @@ const Drawer = ({
                 transitionDelay: open ? '0ms' : `${transitionDurationMs}ms`,
             }}
         >
-            {open && <div className="backdrop" onClick={onBackdropClick} />}
+            <div
+                className={classNames({
+                    backdrop: true,
+                    opened: open,
+                })}
+                style={{
+                    transitionDelay: open
+                        ? `${transitionDurationMs / 2}ms`
+                        : '0ms',
+                    transitionDuration: `${transitionDurationMs / 2}ms`,
+                }}
+                onClick={onBackdropClick}
+            />
             <div
                 data-testid={name}
                 style={{
