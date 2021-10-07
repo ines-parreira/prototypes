@@ -365,6 +365,7 @@ export type Product = {
     image: Maybe<Image>
     images: Array<Image>
     variants: Variant[]
+    handle?: string
 }
 
 export type DraftOrderInvoice = {

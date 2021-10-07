@@ -2903,9 +2903,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           }
                                                         }
                                                       >
-                                                        <Toolbar
+                                                        <Connect(Toolbar)
                                                           attachFiles={[Function]}
-                                                          buttons={Array []}
                                                           canDropFiles={false}
                                                           getEditorRef={[Function]}
                                                           getEditorState={[Function]}
@@ -2944,145 +2943,170 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           setEditorState={[Function]}
                                                           setReadOnly={[Function]}
                                                         >
-                                                          <div
-                                                            className="editor-toolbar page"
-                                                            onDragLeave={[Function]}
-                                                            onDragOver={[Function]}
-                                                            onDrop={[Function]}
+                                                          <Toolbar
+                                                            attachFiles={[Function]}
+                                                            buttons={Array []}
+                                                            canDropFiles={false}
+                                                            dispatch={[Function]}
+                                                            getEditorRef={[Function]}
+                                                            getEditorState={[Function]}
+                                                            getPlugins={[Function]}
+                                                            getProps={[Function]}
+                                                            getReadOnly={[Function]}
+                                                            imageAction={
+                                                              <AddImage
+                                                                getEditorRef={[Function]}
+                                                                getEditorState={[Function]}
+                                                                getPlugins={[Function]}
+                                                                getProps={[Function]}
+                                                                getReadOnly={[Function]}
+                                                                setEditorState={[Function]}
+                                                                setReadOnly={[Function]}
+                                                              />
+                                                            }
+                                                            integrations={Immutable.List []}
+                                                            linkAction={
+                                                              <UNDEFINED
+                                                                getEditorRef={[Function]}
+                                                                getEditorState={[Function]}
+                                                                getPlugins={[Function]}
+                                                                getProps={[Function]}
+                                                                getReadOnly={[Function]}
+                                                                isOpen={false}
+                                                                onClose={[Function]}
+                                                                onOpen={[Function]}
+                                                                onTextChange={[Function]}
+                                                                onUrlChange={[Function]}
+                                                                setEditorState={[Function]}
+                                                                setReadOnly={[Function]}
+                                                                text=""
+                                                                url=""
+                                                              />
+                                                            }
+                                                            setEditorState={[Function]}
+                                                            setReadOnly={[Function]}
                                                           >
                                                             <div
-                                                              className="actionsWrapper"
+                                                              className="editor-toolbar page"
+                                                              onDragLeave={[Function]}
+                                                              onDragOver={[Function]}
+                                                              onDrop={[Function]}
                                                             >
                                                               <div
-                                                                className="actions"
+                                                                className="actionsWrapper"
                                                               >
-                                                                <Decorated(InlineStyle)
-                                                                  getEditorState={[Function]}
-                                                                  setEditorState={[Function]}
+                                                                <div
+                                                                  className="actions"
                                                                 >
-                                                                  <InlineStyle
+                                                                  <Decorated(InlineStyle)
                                                                     getEditorState={[Function]}
-                                                                    icon="format_bold"
-                                                                    name="Bold"
                                                                     setEditorState={[Function]}
-                                                                    style="BOLD"
                                                                   >
-                                                                    <Button
+                                                                    <InlineStyle
+                                                                      getEditorState={[Function]}
                                                                       icon="format_bold"
-                                                                      isActive={false}
-                                                                      isDisabled={false}
                                                                       name="Bold"
-                                                                      onToggle={[Function]}
+                                                                      setEditorState={[Function]}
+                                                                      style="BOLD"
                                                                     >
-                                                                      <button
-                                                                        className="button btn btn-secondary btn-transparent"
-                                                                        onClick={[Function]}
-                                                                        onMouseDown={[Function]}
-                                                                        title="Bold"
-                                                                        type="button"
+                                                                      <Button
+                                                                        icon="format_bold"
+                                                                        isActive={false}
+                                                                        isDisabled={false}
+                                                                        name="Bold"
+                                                                        onToggle={[Function]}
                                                                       >
-                                                                        <i
-                                                                          className="material-icons"
+                                                                        <button
+                                                                          className="button btn btn-secondary btn-transparent"
+                                                                          onClick={[Function]}
+                                                                          onMouseDown={[Function]}
+                                                                          title="Bold"
+                                                                          type="button"
                                                                         >
-                                                                          format_bold
-                                                                        </i>
-                                                                      </button>
-                                                                    </Button>
-                                                                  </InlineStyle>
-                                                                </Decorated(InlineStyle)>
-                                                                <Decorated(InlineStyle)
-                                                                  getEditorState={[Function]}
-                                                                  setEditorState={[Function]}
-                                                                >
-                                                                  <InlineStyle
+                                                                          <i
+                                                                            className="material-icons"
+                                                                          >
+                                                                            format_bold
+                                                                          </i>
+                                                                        </button>
+                                                                      </Button>
+                                                                    </InlineStyle>
+                                                                  </Decorated(InlineStyle)>
+                                                                  <Decorated(InlineStyle)
                                                                     getEditorState={[Function]}
-                                                                    icon="format_italic"
-                                                                    name="Italic"
                                                                     setEditorState={[Function]}
-                                                                    style="ITALIC"
                                                                   >
-                                                                    <Button
+                                                                    <InlineStyle
+                                                                      getEditorState={[Function]}
                                                                       icon="format_italic"
-                                                                      isActive={false}
-                                                                      isDisabled={false}
                                                                       name="Italic"
-                                                                      onToggle={[Function]}
+                                                                      setEditorState={[Function]}
+                                                                      style="ITALIC"
                                                                     >
-                                                                      <button
-                                                                        className="button btn btn-secondary btn-transparent"
-                                                                        onClick={[Function]}
-                                                                        onMouseDown={[Function]}
-                                                                        title="Italic"
-                                                                        type="button"
+                                                                      <Button
+                                                                        icon="format_italic"
+                                                                        isActive={false}
+                                                                        isDisabled={false}
+                                                                        name="Italic"
+                                                                        onToggle={[Function]}
                                                                       >
-                                                                        <i
-                                                                          className="material-icons"
+                                                                        <button
+                                                                          className="button btn btn-secondary btn-transparent"
+                                                                          onClick={[Function]}
+                                                                          onMouseDown={[Function]}
+                                                                          title="Italic"
+                                                                          type="button"
                                                                         >
-                                                                          format_italic
-                                                                        </i>
-                                                                      </button>
-                                                                    </Button>
-                                                                  </InlineStyle>
-                                                                </Decorated(InlineStyle)>
-                                                                <Decorated(InlineStyle)
-                                                                  getEditorState={[Function]}
-                                                                  setEditorState={[Function]}
-                                                                >
-                                                                  <InlineStyle
+                                                                          <i
+                                                                            className="material-icons"
+                                                                          >
+                                                                            format_italic
+                                                                          </i>
+                                                                        </button>
+                                                                      </Button>
+                                                                    </InlineStyle>
+                                                                  </Decorated(InlineStyle)>
+                                                                  <Decorated(InlineStyle)
                                                                     getEditorState={[Function]}
-                                                                    icon="format_underline"
-                                                                    name="Underline"
                                                                     setEditorState={[Function]}
-                                                                    style="UNDERLINE"
                                                                   >
-                                                                    <Button
+                                                                    <InlineStyle
+                                                                      getEditorState={[Function]}
                                                                       icon="format_underline"
-                                                                      isActive={false}
-                                                                      isDisabled={false}
                                                                       name="Underline"
-                                                                      onToggle={[Function]}
+                                                                      setEditorState={[Function]}
+                                                                      style="UNDERLINE"
                                                                     >
-                                                                      <button
-                                                                        className="button btn btn-secondary btn-transparent"
-                                                                        onClick={[Function]}
-                                                                        onMouseDown={[Function]}
-                                                                        title="Underline"
-                                                                        type="button"
+                                                                      <Button
+                                                                        icon="format_underline"
+                                                                        isActive={false}
+                                                                        isDisabled={false}
+                                                                        name="Underline"
+                                                                        onToggle={[Function]}
                                                                       >
-                                                                        <i
-                                                                          className="material-icons"
+                                                                        <button
+                                                                          className="button btn btn-secondary btn-transparent"
+                                                                          onClick={[Function]}
+                                                                          onMouseDown={[Function]}
+                                                                          title="Underline"
+                                                                          type="button"
                                                                         >
-                                                                          format_underline
-                                                                        </i>
-                                                                      </button>
-                                                                    </Button>
-                                                                  </InlineStyle>
-                                                                </Decorated(InlineStyle)>
-                                                                <Connect(AddLinkContainer)
-                                                                  getEditorRef={[Function]}
-                                                                  getEditorState={[Function]}
-                                                                  getPlugins={[Function]}
-                                                                  getProps={[Function]}
-                                                                  getReadOnly={[Function]}
-                                                                  isOpen={false}
-                                                                  onClose={[Function]}
-                                                                  onOpen={[Function]}
-                                                                  onTextChange={[Function]}
-                                                                  onUrlChange={[Function]}
-                                                                  setEditorState={[Function]}
-                                                                  setReadOnly={[Function]}
-                                                                  text=""
-                                                                  url=""
-                                                                >
-                                                                  <AddLinkContainer
+                                                                          <i
+                                                                            className="material-icons"
+                                                                          >
+                                                                            format_underline
+                                                                          </i>
+                                                                        </button>
+                                                                      </Button>
+                                                                    </InlineStyle>
+                                                                  </Decorated(InlineStyle)>
+                                                                  <Connect(AddLinkContainer)
                                                                     getEditorRef={[Function]}
                                                                     getEditorState={[Function]}
                                                                     getPlugins={[Function]}
                                                                     getProps={[Function]}
                                                                     getReadOnly={[Function]}
                                                                     isOpen={false}
-                                                                    linkEditionEnded={[Function]}
-                                                                    linkEditionStarted={[Function]}
                                                                     onClose={[Function]}
                                                                     onOpen={[Function]}
                                                                     onTextChange={[Function]}
@@ -3092,11 +3116,89 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     text=""
                                                                     url=""
                                                                   >
-                                                                    <ButtonPopover
-                                                                      icon="link"
-                                                                      isActive={false}
+                                                                    <AddLinkContainer
+                                                                      getEditorRef={[Function]}
+                                                                      getEditorState={[Function]}
+                                                                      getPlugins={[Function]}
+                                                                      getProps={[Function]}
+                                                                      getReadOnly={[Function]}
                                                                       isOpen={false}
-                                                                      name="Insert link"
+                                                                      linkEditionEnded={[Function]}
+                                                                      linkEditionStarted={[Function]}
+                                                                      onClose={[Function]}
+                                                                      onOpen={[Function]}
+                                                                      onTextChange={[Function]}
+                                                                      onUrlChange={[Function]}
+                                                                      setEditorState={[Function]}
+                                                                      setReadOnly={[Function]}
+                                                                      text=""
+                                                                      url=""
+                                                                    >
+                                                                      <ButtonPopover
+                                                                        icon="link"
+                                                                        isActive={false}
+                                                                        isOpen={false}
+                                                                        name="Insert link"
+                                                                        onClose={[Function]}
+                                                                        onOpen={[Function]}
+                                                                      >
+                                                                        <ForwardRef
+                                                                          isOpen={false}
+                                                                          trigger={
+                                                                            <Button
+                                                                              icon="link"
+                                                                              isActive={false}
+                                                                              isDisabled={false}
+                                                                              name="Insert link"
+                                                                              onToggle={[Function]}
+                                                                            />
+                                                                          }
+                                                                        >
+                                                                          <span
+                                                                            className="popoverWrapper"
+                                                                          >
+                                                                            <Button
+                                                                              icon="link"
+                                                                              isActive={false}
+                                                                              isDisabled={false}
+                                                                              name="Insert link"
+                                                                              onToggle={[Function]}
+                                                                            >
+                                                                              <button
+                                                                                className="button btn btn-secondary btn-transparent"
+                                                                                onClick={[Function]}
+                                                                                onMouseDown={[Function]}
+                                                                                title="Insert link"
+                                                                                type="button"
+                                                                              >
+                                                                                <i
+                                                                                  className="material-icons"
+                                                                                >
+                                                                                  link
+                                                                                </i>
+                                                                              </button>
+                                                                            </Button>
+                                                                            <div
+                                                                              className="popover top-left hidden"
+                                                                            />
+                                                                          </span>
+                                                                        </ForwardRef>
+                                                                      </ButtonPopover>
+                                                                    </AddLinkContainer>
+                                                                  </Connect(AddLinkContainer)>
+                                                                  <AddImage
+                                                                    getEditorRef={[Function]}
+                                                                    getEditorState={[Function]}
+                                                                    getPlugins={[Function]}
+                                                                    getProps={[Function]}
+                                                                    getReadOnly={[Function]}
+                                                                    setEditorState={[Function]}
+                                                                    setReadOnly={[Function]}
+                                                                  >
+                                                                    <ButtonPopover
+                                                                      icon="insert_photo"
+                                                                      isOpen={false}
+                                                                      name="Insert image"
                                                                       onClose={[Function]}
                                                                       onOpen={[Function]}
                                                                     >
@@ -3104,10 +3206,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         isOpen={false}
                                                                         trigger={
                                                                           <Button
-                                                                            icon="link"
+                                                                            icon="insert_photo"
                                                                             isActive={false}
                                                                             isDisabled={false}
-                                                                            name="Insert link"
+                                                                            name="Insert image"
                                                                             onToggle={[Function]}
                                                                           />
                                                                         }
@@ -3116,23 +3218,23 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           className="popoverWrapper"
                                                                         >
                                                                           <Button
-                                                                            icon="link"
+                                                                            icon="insert_photo"
                                                                             isActive={false}
                                                                             isDisabled={false}
-                                                                            name="Insert link"
+                                                                            name="Insert image"
                                                                             onToggle={[Function]}
                                                                           >
                                                                             <button
                                                                               className="button btn btn-secondary btn-transparent"
                                                                               onClick={[Function]}
                                                                               onMouseDown={[Function]}
-                                                                              title="Insert link"
+                                                                              title="Insert image"
                                                                               type="button"
                                                                             >
                                                                               <i
                                                                                 className="material-icons"
                                                                               >
-                                                                                link
+                                                                                insert_photo
                                                                               </i>
                                                                             </button>
                                                                           </Button>
@@ -3142,132 +3244,73 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         </span>
                                                                       </ForwardRef>
                                                                     </ButtonPopover>
-                                                                  </AddLinkContainer>
-                                                                </Connect(AddLinkContainer)>
-                                                                <AddImage
-                                                                  getEditorRef={[Function]}
-                                                                  getEditorState={[Function]}
-                                                                  getPlugins={[Function]}
-                                                                  getProps={[Function]}
-                                                                  getReadOnly={[Function]}
-                                                                  setEditorState={[Function]}
-                                                                  setReadOnly={[Function]}
-                                                                >
-                                                                  <ButtonPopover
-                                                                    icon="insert_photo"
-                                                                    isOpen={false}
-                                                                    name="Insert image"
-                                                                    onClose={[Function]}
-                                                                    onOpen={[Function]}
+                                                                  </AddImage>
+                                                                  <AddEmoji
+                                                                    getEditorState={[Function]}
+                                                                    setEditorState={[Function]}
                                                                   >
-                                                                    <ForwardRef
-                                                                      isOpen={false}
-                                                                      trigger={
-                                                                        <Button
-                                                                          icon="insert_photo"
-                                                                          isActive={false}
-                                                                          isDisabled={false}
-                                                                          name="Insert image"
-                                                                          onToggle={[Function]}
-                                                                        />
-                                                                      }
-                                                                    >
-                                                                      <span
-                                                                        className="popoverWrapper"
-                                                                      >
-                                                                        <Button
-                                                                          icon="insert_photo"
-                                                                          isActive={false}
-                                                                          isDisabled={false}
-                                                                          name="Insert image"
-                                                                          onToggle={[Function]}
-                                                                        >
-                                                                          <button
-                                                                            className="button btn btn-secondary btn-transparent"
-                                                                            onClick={[Function]}
-                                                                            onMouseDown={[Function]}
-                                                                            title="Insert image"
-                                                                            type="button"
-                                                                          >
-                                                                            <i
-                                                                              className="material-icons"
-                                                                            >
-                                                                              insert_photo
-                                                                            </i>
-                                                                          </button>
-                                                                        </Button>
-                                                                        <div
-                                                                          className="popover top-left hidden"
-                                                                        />
-                                                                      </span>
-                                                                    </ForwardRef>
-                                                                  </ButtonPopover>
-                                                                </AddImage>
-                                                                <AddEmoji
-                                                                  getEditorState={[Function]}
-                                                                  setEditorState={[Function]}
-                                                                >
-                                                                  <ButtonPopover
-                                                                    className="p-0 d-flex"
-                                                                    icon="insert_emoticon"
-                                                                    isOpen={false}
-                                                                    name="Insert emoji"
-                                                                    onClose={[Function]}
-                                                                    onOpen={[Function]}
-                                                                  >
-                                                                    <ForwardRef
+                                                                    <ButtonPopover
                                                                       className="p-0 d-flex"
+                                                                      icon="insert_emoticon"
                                                                       isOpen={false}
-                                                                      trigger={
-                                                                        <Button
-                                                                          icon="insert_emoticon"
-                                                                          isActive={false}
-                                                                          isDisabled={false}
-                                                                          name="Insert emoji"
-                                                                          onToggle={[Function]}
-                                                                        />
-                                                                      }
+                                                                      name="Insert emoji"
+                                                                      onClose={[Function]}
+                                                                      onOpen={[Function]}
                                                                     >
-                                                                      <span
-                                                                        className="popoverWrapper"
+                                                                      <ForwardRef
+                                                                        className="p-0 d-flex"
+                                                                        isOpen={false}
+                                                                        trigger={
+                                                                          <Button
+                                                                            icon="insert_emoticon"
+                                                                            isActive={false}
+                                                                            isDisabled={false}
+                                                                            name="Insert emoji"
+                                                                            onToggle={[Function]}
+                                                                          />
+                                                                        }
                                                                       >
-                                                                        <Button
-                                                                          icon="insert_emoticon"
-                                                                          isActive={false}
-                                                                          isDisabled={false}
-                                                                          name="Insert emoji"
-                                                                          onToggle={[Function]}
+                                                                        <span
+                                                                          className="popoverWrapper"
                                                                         >
-                                                                          <button
-                                                                            className="button btn btn-secondary btn-transparent"
-                                                                            onClick={[Function]}
-                                                                            onMouseDown={[Function]}
-                                                                            title="Insert emoji"
-                                                                            type="button"
+                                                                          <Button
+                                                                            icon="insert_emoticon"
+                                                                            isActive={false}
+                                                                            isDisabled={false}
+                                                                            name="Insert emoji"
+                                                                            onToggle={[Function]}
                                                                           >
-                                                                            <i
-                                                                              className="material-icons"
+                                                                            <button
+                                                                              className="button btn btn-secondary btn-transparent"
+                                                                              onClick={[Function]}
+                                                                              onMouseDown={[Function]}
+                                                                              title="Insert emoji"
+                                                                              type="button"
                                                                             >
-                                                                              insert_emoticon
-                                                                            </i>
-                                                                          </button>
-                                                                        </Button>
-                                                                        <div
-                                                                          className="p-0 d-flex popover top-left hidden"
-                                                                        />
-                                                                      </span>
-                                                                    </ForwardRef>
-                                                                  </ButtonPopover>
-                                                                </AddEmoji>
-                                                              </div>
-                                                              <div
-                                                                className="hoverOverlay"
-                                                              >
-                                                                Add files as attachments
+                                                                              <i
+                                                                                className="material-icons"
+                                                                              >
+                                                                                insert_emoticon
+                                                                              </i>
+                                                                            </button>
+                                                                          </Button>
+                                                                          <div
+                                                                            className="p-0 d-flex popover top-left hidden"
+                                                                          />
+                                                                        </span>
+                                                                      </ForwardRef>
+                                                                    </ButtonPopover>
+                                                                  </AddEmoji>
+                                                                </div>
+                                                                <div
+                                                                  className="hoverOverlay"
+                                                                >
+                                                                  Add files as attachments
+                                                                </div>
                                                               </div>
                                                             </div>
-                                                          </div>
-                                                        </Toolbar>
+                                                          </Toolbar>
+                                                        </Connect(Toolbar)>
                                                       </RichFieldToolbar>
                                                     </div>
                                                   </div>

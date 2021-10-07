@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddProductLink/> should not render when the popover is closed 1`] = `
+<div>
+  <span
+    class="popoverWrapper"
+  >
+    <button
+      class="button btn btn-secondary btn-transparent"
+      title="Insert Shopify Product"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        shopify
+      </i>
+    </button>
+    <div
+      class="productLinkToolTip p-0 d-flex popover top-left hidden"
+    />
+  </span>
+</div>
+`;
+
+exports[`<AddProductLink/> should render the product picker when the popover is clicked and only one integration 1`] = `
+<div>
+  <span
+    class="popoverWrapper"
+  >
+    <button
+      class="button btn btn-secondary btn-transparent"
+      title="Insert Shopify Product"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        shopify
+      </i>
+    </button>
+    <div
+      class="productLinkToolTip p-0 d-flex popover top-left"
+    >
+      <div
+        class="productLineContainer"
+      >
+        <div
+          class="input-icon input-icon-left searchInput"
+        >
+          <i
+            class="icon material-icons md-2"
+          >
+            more_horiz
+          </i>
+          <input
+            class="form-control"
+            placeholder="Search products"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="headerResult"
+        >
+          <div
+            class="backContainer"
+          />
+          <div>
+            <img
+              alt="Shopify logo"
+              class="shopifyLogo"
+              src="test-file-stub"
+            />
+            <span
+              class="headerText"
+            >
+              My Shop
+            </span>
+          </div>
+          <div
+            class="itemCount"
+          >
+            <span
+              class="resultTotal"
+            >
+              0
+               PRODUCTS
+            </span>
+          </div>
+        </div>
+        <div
+          class="listGroupContainer"
+        >
+          <div
+            class="noResultContainer"
+          >
+            <p
+              class="noResultText"
+            >
+              No results found
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </span>
+</div>
+`;
+
+exports[`<AddProductLink/> should render the store picker because of multiple integrations 1`] = `
+<div>
+  <span
+    class="popoverWrapper"
+  >
+    <button
+      class="button btn btn-secondary btn-transparent"
+      title="Insert Shopify Product"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        shopify
+      </i>
+    </button>
+    <div
+      class="productLinkToolTip p-0 d-flex popover top-left"
+    >
+      <div
+        class="productLineContainer"
+      >
+        <ul
+          class="list-group list-group-flush"
+        >
+          <button
+            class="customListGroup list-group-item-action list-group-item"
+          >
+            <div
+              class="integrationRowContainer"
+            >
+              <div
+                class="integrationRow"
+              >
+                <img
+                  alt="Shopify logo"
+                  class="shopifyLogo"
+                  src="test-file-stub"
+                />
+                <span>
+                  My Shop
+                </span>
+              </div>
+              <i
+                class="material-icons arrowIcon"
+              >
+                keyboard_arrow_right
+              </i>
+            </div>
+          </button>
+          <button
+            class="customListGroup list-group-item-action list-group-item"
+          >
+            <div
+              class="integrationRowContainer"
+            >
+              <div
+                class="integrationRow"
+              >
+                <img
+                  alt="Shopify logo"
+                  class="shopifyLogo"
+                  src="test-file-stub"
+                />
+                <span>
+                  My Shop
+                </span>
+              </div>
+              <i
+                class="material-icons arrowIcon"
+              >
+                keyboard_arrow_right
+              </i>
+            </div>
+          </button>
+        </ul>
+      </div>
+    </div>
+  </span>
+</div>
+`;

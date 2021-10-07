@@ -1,0 +1,535 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShopifyProductLine/> should render the product picker 1`] = `
+<div>
+  <div
+    class="productLineContainer"
+  >
+    <div
+      class="input-icon input-icon-left searchInput"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        more_horiz
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search products"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="headerResult"
+    >
+      <div
+        class="backContainer"
+      />
+      <div>
+        <img
+          alt="Shopify logo"
+          class="shopifyLogo"
+          src="test-file-stub"
+        />
+        <span
+          class="headerText"
+        >
+          My store
+        </span>
+      </div>
+      <div
+        class="itemCount"
+      >
+        <span
+          class="resultTotal"
+        >
+          0
+           PRODUCTS
+        </span>
+      </div>
+    </div>
+    <div
+      class="listGroupContainer"
+    >
+      <div
+        class="noResultContainer"
+      >
+        <p
+          class="noResultText"
+        >
+          No results found
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ShopifyProductLine/> should render the product picker with products 1`] = `
+<div>
+  <div
+    class="productLineContainer"
+  >
+    <div
+      class="input-icon input-icon-left searchInput"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search products"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="headerResult"
+    >
+      <div
+        class="backContainer"
+      />
+      <div>
+        <img
+          alt="Shopify logo"
+          class="shopifyLogo"
+          src="test-file-stub"
+        />
+        <span
+          class="headerText"
+        >
+          My store
+        </span>
+      </div>
+      <div
+        class="itemCount"
+      >
+        <span
+          class="resultTotal"
+        >
+          2
+           PRODUCTS
+        </span>
+      </div>
+    </div>
+    <div
+      class="listGroupContainer"
+    >
+      <ul
+        class="list-group list-group-flush"
+      >
+        <button
+          class="list-group-item-action list-group-item"
+          id="resultRow0"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt
+              </div>
+              <div
+                class="subtitle"
+              >
+                6 variants
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                2,563
+              </span>
+               in stock
+               
+              for 6 variants
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+          id="resultRow1"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/3310_small.jpg?v=1626190829"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Strong phone
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 33BB10
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                3,307
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+      </ul>
+    </div>
+  </div>
+   
+</div>
+`;
+
+exports[`<ShopifyProductLine/> should render the variants picker of a product 1`] = `
+<div>
+  <div
+    class="productLineContainer"
+  >
+    <div
+      class="input-icon input-icon-left searchInput"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search products"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="headerResult"
+    >
+      <div
+        class="backContainer"
+      >
+        <button
+          class="mr-2 btn btn-light btn-sm"
+          tabindex="-1"
+          type="button"
+        >
+          <i
+            class="icon material-icons mr-2"
+          >
+            arrow_back
+          </i>
+          Back
+        </button>
+      </div>
+      <div>
+        <img
+          alt="Shopify logo"
+          class="shopifyLogo"
+          src="test-file-stub"
+        />
+        <span
+          class="headerText"
+        >
+          My store
+        </span>
+      </div>
+      <div
+        class="itemCount"
+      >
+        <span
+          class="resultTotal"
+        >
+          6
+           VARIANTS
+        </span>
+      </div>
+    </div>
+    <div
+      class="listGroupContainer"
+    >
+      <ul
+        class="list-group list-group-flush"
+      >
+        <button
+          class="list-group-item-action list-group-item"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt - S
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 781A896
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                493
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt - M
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 781A897
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                486
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt - L
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 781A898
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                488
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt - XL
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 781A899
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                498
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt - XXL
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 781A900
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                299
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="imgContainer"
+            >
+              <img
+                class="img"
+                src="//cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt_small.jpg?v=1626170834"
+              />
+            </div>
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                Black shirt - XXXL
+              </div>
+              <div
+                class="subtitle"
+              >
+                SKU: 781A901
+              </div>
+            </div>
+            <div
+              class="stock"
+            >
+              <span
+                class="success"
+              >
+                299
+              </span>
+               in stock
+               
+            </div>
+          </div>
+        </button>
+      </ul>
+    </div>
+  </div>
+   
+</div>
+`;

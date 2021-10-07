@@ -1,9 +1,21 @@
 import classnames from 'classnames'
 import React, {Component, ReactNode, DragEvent} from 'react'
 
-import css from './Toolbar.less'
+import {connect, ConnectedProps} from 'react-redux'
+
+import {RootState} from '../../../../../state/types'
+import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
+import {IntegrationType} from '../../../../../models/integration/types'
+
+import {
+    AddEmoji,
+    Bold,
+    Italic,
+    Underline,
+    AddProductLink,
+} from './components/index.js'
 import {ActionName, ActionInjectedProps} from './types'
-import {AddEmoji, Bold, Italic, Underline} from './components/index.js'
+import css from './Toolbar.less'
 
 type State = {
     isHovered: boolean
@@ -17,9 +29,10 @@ type Props = {
     linkAction: ReactNode
     imageAction: ReactNode
     quickReply: ReactNode
-} & ActionInjectedProps
+} & ActionInjectedProps &
+    ConnectedProps<typeof connector>
 
-export default class Toolbar extends Component<Props, State> {
+export class Toolbar extends Component<Props, State> {
     static defaultProps = {
         buttons: [],
     }
@@ -84,7 +97,13 @@ export default class Toolbar extends Component<Props, State> {
         Toolbar.isDisplayedAction(name, this.props.displayedActions)
 
     render() {
-        const {buttons, getEditorState, setEditorState, quickReply} = this.props
+        const {
+            buttons,
+            getEditorState,
+            setEditorState,
+            quickReply,
+            integrations,
+        } = this.props
         const actionsProps = {getEditorState, setEditorState}
 
         return (
@@ -117,6 +136,15 @@ export default class Toolbar extends Component<Props, State> {
                         {this._isDisplayedAction(ActionName.Emoji) && (
                             <AddEmoji {...actionsProps} />
                         )}
+                        {this._isDisplayedAction(ActionName.ProductPicker) &&
+                        integrations.size > 0 &&
+                        false /* todo(@maximelandry): remove the false flag when making it available to users */ && (
+                                <AddProductLink
+                                    getEditorState={actionsProps.getEditorState}
+                                    setEditorState={actionsProps.setEditorState}
+                                    integrations={integrations}
+                                />
+                            )}
                     </div>
                     {buttons.map(this._renderButton)}
 
@@ -128,3 +156,10 @@ export default class Toolbar extends Component<Props, State> {
         )
     }
 }
+
+const connector = connect((state: RootState) => ({
+    integrations: getIntegrationsByTypes([
+        IntegrationType.ShopifyIntegrationType,
+    ])(state),
+}))
+export default connector(Toolbar)

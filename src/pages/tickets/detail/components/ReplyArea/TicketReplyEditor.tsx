@@ -28,6 +28,8 @@ import {getContext} from '../../../../../state/prediction/selectors'
 import {canAddAttachments} from '../../../../../business/ticket'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 
+import {ActionName} from '../../../../common/draftjs/plugins/toolbar/types'
+
 import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
 
 import css from './TicketReplyEditor.less'
@@ -338,14 +340,14 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         let displayedActions
 
         if (!isNewMessageRichType) {
-            displayedActions = ['EMOJI']
+            displayedActions = [ActionName.Emoji, ActionName.ProductPicker]
         }
 
         if (isNewMessageFacebookMessengerType) {
             if (!displayedActions) {
                 displayedActions = []
             }
-            displayedActions.push('IMAGE')
+            displayedActions.push(ActionName.Image)
         }
 
         const canInsertInlineImages =
