@@ -15,6 +15,7 @@ import {
     AddProductLink,
 } from './components/index.js'
 import {ActionName, ActionInjectedProps} from './types'
+
 import css from './Toolbar.less'
 
 type State = {

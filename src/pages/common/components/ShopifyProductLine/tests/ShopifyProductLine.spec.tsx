@@ -1,6 +1,7 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
+
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
@@ -17,6 +18,7 @@ const minProps = {
         domain: 'my-store.com',
     }),
     resetStoreChoice: jest.fn(),
+    productClicked: jest.fn(),
 }
 
 const middlewares = [thunk]
@@ -47,7 +49,7 @@ describe('<ShopifyProductLine/>', () => {
 
         const {container, getByText} = render(
             <Provider store={store}>
-                <ShopifyProductLine {...minProps} />{' '}
+                <ShopifyProductLine {...minProps} />
             </Provider>
         )
 
@@ -64,7 +66,7 @@ describe('<ShopifyProductLine/>', () => {
 
         const {container, getByText} = render(
             <Provider store={store}>
-                <ShopifyProductLine {...minProps} />{' '}
+                <ShopifyProductLine {...minProps} />
             </Provider>
         )
 
@@ -73,6 +75,8 @@ describe('<ShopifyProductLine/>', () => {
             fireEvent.click(getByText(/Black shirt/i))
             expect(getByText(/781A899/i)).toBeDefined()
             expect(container).toMatchSnapshot()
+            fireEvent.click(getByText(/781A899/i))
+            expect(minProps.productClicked).toHaveBeenCalled()
         })
     })
 })

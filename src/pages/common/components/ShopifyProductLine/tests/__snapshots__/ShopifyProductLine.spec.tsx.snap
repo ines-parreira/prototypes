@@ -209,7 +209,6 @@ exports[`<ShopifyProductLine/> should render the product picker with products 1`
       </ul>
     </div>
   </div>
-   
 </div>
 `;
 
@@ -530,6 +529,5 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
       </ul>
     </div>
   </div>
-   
 </div>
 `;

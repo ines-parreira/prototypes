@@ -18,6 +18,7 @@ import {
     Product,
     Variant,
 } from '../../../../constants/integrations/types/shopify'
+
 import {IntegrationDataItem} from '../../../../models/integration/types'
 
 import {notify} from '../../../../state/notifications/actions'
@@ -29,11 +30,13 @@ import css from './ShopifyProductLine.less'
 
 type OwnProps = {
     shopifyIntegration: Map<string, string>
+    productClicked: (productLink: string, productTitle?: string) => void
     onResetStoreChoice?: () => void
 }
 export default function ShopifyProductLine({
     shopifyIntegration,
     onResetStoreChoice,
+    productClicked,
 }: OwnProps) {
     const gorgiasApi = new GorgiasApi()
     const dispatch = useAppDispatch()
@@ -73,6 +76,7 @@ export default function ShopifyProductLine({
             setIsLoading(false)
         }
     }, [filter])
+
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
         setIsLoading(true)
@@ -84,12 +88,11 @@ export default function ShopifyProductLine({
 
         const variants = result?.data?.variants || []
         if (variants.length === 1 && result) {
-            // todo(@maximelandry): implement adding link here
-            // eslint-disable-next-line no-console
-            console.log(
-                `www.${shopifyIntegration.get('shop_domain')}/products/${
+            productClicked(
+                `https://${shopifyIntegration.get('shop_domain')}/products/${
                     result?.data?.handle || ''
-                }`
+                }`,
+                result?.data?.title
             )
         } else {
             setClickedResult(result)
@@ -98,13 +101,16 @@ export default function ShopifyProductLine({
     }
 
     const handleSubResultClicked = (index: number) => {
-        const result = subResults[index] as IntegrationDataItem<Product>
-        // todo(@maximelandry): implement adding link here
-        // eslint-disable-next-line no-console
-        console.log(
-            `www.${shopifyIntegration.get('shop_domain')}/products/${
+        const result = subResults[index] as Variant
+        let variantTitle = clickedResult?.data.title
+        if (result.title && variantTitle)
+            variantTitle = variantTitle.concat('-', result.title)
+        else variantTitle = result.title
+        productClicked(
+            `https://${shopifyIntegration.get('shop_domain')}/products/${
                 clickedResult?.data.handle || ''
-            }?variant=${result?.id || ''}`
+            }?variant=${result?.id || ''}`,
+            variantTitle
         )
     }
 

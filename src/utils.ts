@@ -44,6 +44,7 @@ import {getHighestRole} from './state/agents/helpers'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
 import {isProduction} from './utils/environment'
+import {linkify} from './utils/editor'
 
 type Message = {
     created_datetime: Date
@@ -503,6 +504,32 @@ export function insertText(
     const contentState = editorState.getCurrentContent()
     const modifier = Modifier.replaceText(contentState, selection, text)
     return EditorState.push(editorState, modifier, 'insert-fragment')
+}
+
+/**
+ * Insert link in editorState
+ */
+export function insertLink(
+    editorState: EditorState,
+    url: string,
+    text?: string
+): EditorState {
+    const parsedUrl = linkify.match(url)?.[0]?.url || url
+
+    let contentState = editorState
+        .getCurrentContent()
+        .createEntity('link', 'MUTABLE', {url: parsedUrl})
+    const selection = editorState.getSelection()
+    const entityKey = contentState.getLastCreatedEntityKey()
+
+    contentState = Modifier.replaceText(
+        contentState,
+        selection,
+        text || url,
+        undefined,
+        entityKey
+    )
+    return EditorState.push(editorState, contentState, 'apply-entity')
 }
 
 /**

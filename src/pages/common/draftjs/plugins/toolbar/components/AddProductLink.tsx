@@ -2,12 +2,15 @@ import React, {useEffect, useState, useCallback} from 'react'
 
 import classnames from 'classnames'
 
-import {fromJS, Map, List} from 'immutable'
 import {ListGroup, ListGroupItem} from 'reactstrap'
+import {EditorState} from 'draft-js'
+import {fromJS, Map, List} from 'immutable'
 
 import ShopifyProductLine from '../../../../components/ShopifyProductLine/ShopifyProductLine'
 
 import shortcutManager from '../../../../../../services/shortcutManager'
+
+import {insertLink} from '../../../../../../utils'
 
 import {EditorStateGetter, EditorStateSetter} from '../types'
 
@@ -22,7 +25,11 @@ type OwnProps = {
     integrations: List<any>
 }
 
-export default function AddProductLink({integrations}: OwnProps) {
+export default function AddProductLink({
+    integrations,
+    getEditorState,
+    setEditorState,
+}: OwnProps) {
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
         null
@@ -53,6 +60,23 @@ export default function AddProductLink({integrations}: OwnProps) {
             })
         )
     }
+
+    const addProductLink = useCallback(
+        (link: string, text?: string) => {
+            const editorState = getEditorState()
+            if (!link) return
+            let newEditorState = insertLink(editorState, link, text)
+
+            // forcing the current selection ensures that it will be at its right place
+            newEditorState = EditorState.forceSelection(
+                newEditorState,
+                newEditorState.getSelection()
+            )
+            setEditorState(newEditorState)
+            setOpen(false)
+        },
+        [getEditorState, setEditorState, setOpen]
+    )
 
     useEffect(() => {
         const integrationsArr = integrations.toArray()
@@ -123,6 +147,7 @@ export default function AddProductLink({integrations}: OwnProps) {
                 </div>
             ) : (
                 <ShopifyProductLine
+                    productClicked={addProductLink}
                     onResetStoreChoice={
                         integrations.size > 1
                             ? handleResetStoreChoice
