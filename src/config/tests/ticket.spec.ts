@@ -361,8 +361,9 @@ describe('Config: ticket', () => {
         )
 
         it.each([
-            TicketMessageSourceType.TwitterQuotedTweet,
             TicketMessageSourceType.TwitterTweet,
+            TicketMessageSourceType.TwitterQuotedTweet,
+            TicketMessageSourceType.TwitterMentionTweet,
         ])(
             'should return twitter tweet source if the last source is twitter tweet or quoted tweet',
             (sourceType) => {
@@ -418,8 +419,9 @@ describe('Config: ticket', () => {
         )
 
         it.each([
-            TicketMessageSourceType.TwitterQuotedTweet,
             TicketMessageSourceType.TwitterTweet,
+            TicketMessageSourceType.TwitterQuotedTweet,
+            TicketMessageSourceType.TwitterMentionTweet,
         ])(
             'should return Twitter channel if the last not system message is from a Twitter Tweet or Quoted Tweet',
             (sourceType) => {

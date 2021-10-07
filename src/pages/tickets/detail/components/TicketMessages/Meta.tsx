@@ -73,6 +73,7 @@ export default function Meta(props: Props) {
         TicketMessageSourceType.YotpoReview,
         TicketMessageSourceType.TwitterTweet,
         TicketMessageSourceType.TwitterQuotedTweet,
+        TicketMessageSourceType.TwitterMentionTweet,
     ]
 
     const isStoryMentionDirectMessage =
@@ -151,6 +152,8 @@ export default function Meta(props: Props) {
             source.type === TicketMessageSourceType.TwitterTweet && !!parentId
         const isTwitterQuoteTweet =
             source.type === TicketMessageSourceType.TwitterQuotedTweet
+        const isTwitterMentionTweet =
+            source.type === TicketMessageSourceType.TwitterMentionTweet
 
         const getId = (input: string, place = 1) =>
             input && input.includes('_') ? input.split('_')[place] : ''
@@ -200,7 +203,7 @@ export default function Meta(props: Props) {
             } else {
                 link = permalink
             }
-        } else if (isTwitterRootTweet) {
+        } else if (isTwitterRootTweet || isTwitterMentionTweet) {
             type = 'tweet'
             link = `https://twitter.com/${twitterFromUsername!}/status/${tweetId!}`
         } else if (isTwitterReplyTweet) {

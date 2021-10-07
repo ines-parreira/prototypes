@@ -307,31 +307,37 @@ describe('ticket message meta', () => {
     })
 
     describe('twitter', () => {
-        it('should display "go to tweet" link', () => {
-            const fromUsername = 'gorgiasio'
-            const tweetId = '1399880580741935107'
-            const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
-            const source = {
-                from: {name: fromUsername, address: '12345'},
-                to: [{name: fromUsername, address: '12345'}],
-                extra: {
-                    conversation_id: tweetId,
-                },
-                type: TicketMessageSourceType.TwitterTweet,
+        it.each([
+            TicketMessageSourceType.TwitterTweet,
+            TicketMessageSourceType.TwitterMentionTweet,
+        ])(
+            'should display "go to tweet" link',
+            (type: TicketMessageSourceType) => {
+                const fromUsername = 'gorgiasio'
+                const tweetId = '1399880580741935107'
+                const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
+                const source = {
+                    from: {name: fromUsername, address: '12345'},
+                    to: [{name: fromUsername, address: '12345'}],
+                    extra: {
+                        conversation_id: tweetId,
+                    },
+                    type: type,
+                }
+
+                const component = shallow(
+                    <Meta
+                        via={TicketChannel.Twitter}
+                        integrationId={118}
+                        source={source}
+                    />
+                )
+
+                const from = component.find('From').dive()
+                expect(from.text()).toBe('go to tweet')
+                expect(from.find('a').prop('href')).toEqual(tweetPermalink)
             }
-
-            const component = shallow(
-                <Meta
-                    via={TicketChannel.Twitter}
-                    integrationId={118}
-                    source={source}
-                />
-            )
-
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to tweet')
-            expect(from.find('a').prop('href')).toEqual(tweetPermalink)
-        })
+        )
 
         it('should display "replying to @twitter_handle - go to tweet" link', () => {
             const fromUsername = 'SmsBump'

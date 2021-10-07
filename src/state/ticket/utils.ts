@@ -53,14 +53,26 @@ export function getLastSameSourceTypeMessage(
     messages: List<any>,
     sourceType: string
 ) {
+    let sourceTypesToSearch = [sourceType]
+
+    if (sourceType === TicketMessageSourceType.TwitterTweet) {
+        sourceTypesToSearch = [
+            TicketMessageSourceType.TwitterTweet,
+            TicketMessageSourceType.TwitterQuotedTweet,
+            TicketMessageSourceType.TwitterMentionTweet,
+        ]
+    }
+
     const msg = ticketConfig
         .orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
-        .filter(
-            (m: Map<any, any>) => m.getIn(['source', 'type']) === sourceType
+        .filter((m: Map<any, any>) =>
+            sourceTypesToSearch.includes(m.getIn(['source', 'type'], ''))
         )
         .last() as Map<any, any>
 
+    // TODO(@ionut): Refactor all of the below if-else if statements to use the same approach as Twitter
+    //  for better readability
     if (!msg && sourceType === TicketMessageSourceType.FacebookComment) {
         return messages
             .filter(
@@ -100,14 +112,6 @@ export function getLastSameSourceTypeMessage(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
                     TicketMessageSourceType.InstagramMentionMedia
-            )
-            .last() as Map<any, any>
-    } else if (!msg && sourceType === TicketMessageSourceType.TwitterTweet) {
-        return messages
-            .filter(
-                (m: Map<any, any>) =>
-                    m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.TwitterQuotedTweet
             )
             .last() as Map<any, any>
     } else if (
@@ -532,8 +536,9 @@ export function getNewMessageSender(
             newMessageSourceType === TicketMessageSourceType.TwitterTweet
         ) {
             return [
-                newMessageSourceType,
+                TicketMessageSourceType.TwitterTweet,
                 TicketMessageSourceType.TwitterQuotedTweet,
+                TicketMessageSourceType.TwitterMentionTweet,
             ].includes(type)
         } else if (
             newMessageSourceType ===

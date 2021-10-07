@@ -32,6 +32,7 @@ export enum TicketMessageSourceType {
     YotpoReviewPrivateComment = 'yotpo-review-private-comment',
     TwitterTweet = 'twitter-tweet',
     TwitterQuotedTweet = 'twitter-quoted-tweet',
+    TwitterMentionTweet = 'twitter-mention-tweet',
 }
 
 export enum TicketStatus {
