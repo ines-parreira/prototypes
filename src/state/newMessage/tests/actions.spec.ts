@@ -1390,6 +1390,56 @@ describe('actions', () => {
         })
     })
 
+    describe('addProductCardAttachments()', () => {
+        const cardDetail = {
+            currency: 'USD',
+            fullProductTitle: 'foo',
+            imageUrl:
+                'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
+            link:
+                'https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335',
+            price: '1.00',
+            productTitle: 'bar',
+            variantTitle: 'baz',
+        }
+        it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
+            mockedUploadFiles.mockReturnValue(Promise.resolve([]))
+            store = mockStore({
+                newMessage: initialState,
+                ticket: typeSafeTicketInitialState.set('id', 1),
+            })
+            store.dispatch(
+                actions.addProductCardAttachments(
+                    typeSafeTicketInitialState.set('id', 1),
+                    cardDetail
+                )
+            )
+
+            setImmediate(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                done()
+            })
+        })
+
+        it('should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket', (done) => {
+            store = mockStore({
+                newMessage: initialState,
+                ticket: typeSafeTicketInitialState.set('id', 2),
+            })
+            store.dispatch(
+                actions.addProductCardAttachments(
+                    typeSafeTicketInitialState.set('id', 1),
+                    cardDetail
+                )
+            )
+
+            setImmediate(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                done()
+            })
+        })
+    })
+
     describe('updatePotentialCustomers', () => {
         it('should return a list of potential customer on success', () => {
             mockServer.onPost('/api/search/').reply(200, {

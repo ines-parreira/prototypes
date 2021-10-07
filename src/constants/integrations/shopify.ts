@@ -37,3 +37,5 @@ export const FulfillmentStatus = Object.freeze({
     PARTIAL: 'partial',
     RESTOCKED: 'restocked',
 })
+
+export const ShopifyProductCardContentType = 'application/productCard'

@@ -1,4 +1,5 @@
 import {IntegrationType} from '../../models/integration/types'
+import {TicketChannel} from '../../business/types/ticket'
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.ShopifyIntegrationType,
@@ -84,6 +85,17 @@ export const MACRO_HIDDEN_VARIABLES = {
         },
     ],
 }
+
+export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS = [
+    TicketChannel.Facebook,
+    TicketChannel.FacebookMention,
+    TicketChannel.FacebookMessenger,
+    TicketChannel.FacebookRecommendations,
+    TicketChannel.InstagramAdComment,
+    TicketChannel.InstagramComment,
+    TicketChannel.InstagramMention,
+    TicketChannel.InstagramDirectMessage,
+]
 
 export const MACRO_PREVIOUS_VARIABLES = {
     type: IntegrationType.ShopifyIntegrationType,

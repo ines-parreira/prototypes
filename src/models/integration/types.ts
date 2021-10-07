@@ -33,6 +33,16 @@ export enum IntegrationDataItemType {
 export type Product = IntegrationProduct
 export type Variant = IntegrationVariant
 
+export type ProductCardDetails = {
+    fullProductTitle: string
+    imageUrl: string
+    link: string
+    variantTitle?: string
+    price?: string
+    productTitle?: string
+    currency?: string
+}
+
 export type IntegrationDataItem<T> = {
     id: number
     integration_id: number

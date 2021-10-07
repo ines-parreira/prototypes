@@ -364,6 +364,7 @@ export type Product = {
     created_at: string
     image: Maybe<Image>
     images: Array<Image>
+    options: Array<Record<string, any>>
     variants: Variant[]
     handle?: string
 }

@@ -29,7 +29,7 @@
     }
 
     .item {
-        display: inline-block;
+        display: block;
         overflow: hidden;
         width: 120px;
         height: 80px;
@@ -47,6 +47,86 @@
 
         &:hover .itemMeta {
             opacity: 1;
+        }
+    }
+
+    .attachmentContainer {
+        padding-bottom: 0.5rem;
+        display: inline-block;
+    }
+
+    .productImageContainer {
+        border-radius: 3px;
+        border-right: 1px solid @darkQuartz2;
+        display: flex;
+        width: 81px;
+        height: 80px;
+    }
+
+    .productCard {
+        width: 210px;
+        height: 80px;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        margin-right: 0.8em;
+        border-radius: 3px;
+        border: 1px solid @darkQuartz2;
+        vertical-align: top;
+
+        .productMeta {
+            position: absolute;
+            top: 0;
+            background: fade(#333, 90%);
+            opacity: 0;
+            color: #fff;
+            height: 100%;
+            width: 100%;
+            padding: 0.8em;
+            transition: all 0.3s;
+            font-size: 10px;
+
+            @media @mobiles {
+                opacity: 1 !important;
+            }
+        }
+
+        &:last-item {
+            margin-right: 0;
+        }
+
+        &:hover .productMeta {
+            opacity: 1;
+        }
+    }
+
+    .productDetail {
+        padding: 8px 8px 8px 8px;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        background-color: #fff;
+        .productName {
+            font-size: 10pt;
+            font-weight: 600;
+            overflow: hidden;
+            margin-bottom: 0px;
+            max-height: 2.4em;
+            line-height: 1.2;
+            text-after-overflow: ellipis;
+        }
+        .variantName {
+            color: @neutral6;
+            width: 120px;
+            font-size: 8pt;
+            white-space: nowrap;
+            margin-bottom: 0px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .productPrice {
+            font-size: 9pt;
+            font-weight: 600;
         }
     }
 

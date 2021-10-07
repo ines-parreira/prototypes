@@ -32,13 +32,18 @@ import {ActionTemplate, Attachment} from '../../types'
 import type {CurrentUser, RootState, StoreDispatch} from '../types'
 import {getMomentNow} from '../../utils/date'
 import {TicketMessageSourceType} from '../../business/types/ticket'
-import {IntegrationType} from '../../models/integration/types'
+import {
+    IntegrationType,
+    ProductCardDetails,
+} from '../../models/integration/types'
 import {ApiListResponse} from '../../models/api/types'
 import {Ticket as TicketResponse} from '../../models/ticket/types'
 import {Customer} from '../customers/types'
 import {NotificationStatus} from '../notifications/types'
 import {SocketEventType} from '../../services/socketManager/types'
 import history from '../../pages/history'
+
+import {ShopifyProductCardContentType} from '../../constants/integrations/shopify'
 
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
@@ -74,10 +79,10 @@ export const addAttachments = (
     dispatch({
         type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START,
     })
+
     const {newMessage} = getState()
 
     let attachments = atts
-
     const newMessageSourceType = newMessage.getIn([
         'newMessage',
         'source',
@@ -162,6 +167,41 @@ export const addAttachments = (
             })
         }
     )
+}
+
+export const addProductCardAttachments = (
+    ticket: Map<any, any>,
+    productCardDetails: ProductCardDetails
+) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
+    const state = getState()
+    const {ticket: _ticket} = state
+
+    if (ticket.get('id') !== _ticket.get('id')) {
+        return Promise.resolve()
+    }
+
+    const resp = [
+        {
+            content_type: 'application/productCard',
+            name: productCardDetails.productTitle,
+            size: 0,
+            url: productCardDetails.imageUrl,
+            extra: {
+                price: productCardDetails.price,
+                variant_name: productCardDetails.variantTitle,
+                product_link: productCardDetails.link,
+                currency: productCardDetails.currency,
+            },
+        },
+    ]
+
+    dispatch({
+        type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+        resp,
+    })
 }
 
 export const deleteAttachment = (index: number) => ({
@@ -369,6 +409,28 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
     // cache source type when changed
     responseUtils.setSourceTypeCache(currentTicket.get('id'), sourceType)
 
+    //Clean up productCard attachments for unsupported channels
+    if (
+        sourceType !== TicketMessageSourceType.Chat &&
+        sourceType !== TicketMessageSourceType.InternalNote
+    ) {
+        const currentAttachments = selectors.getNewMessageAttachments(state)
+        const currentAttachmentsArray = currentAttachments.toArray() as Array<
+            Map<any, any>
+        >
+        for (
+            let index = currentAttachmentsArray.length - 1;
+            index >= 0;
+            index--
+        ) {
+            if (
+                currentAttachmentsArray[index].get('content_type') ===
+                ShopifyProductCardContentType
+            )
+                dispatch(deleteAttachment(index))
+        }
+    }
+
     switch (sourceType) {
         case TicketMessageSourceType.EmailForward: {
             //$TsFixMe remove casting once ticket selectors are migrated
@@ -376,7 +438,6 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
                 state: RootState
             ) => List<any>)(state)
             let attachments: FileList | Attachment[] = []
-
             messages.forEach((message: Map<any, any>) => {
                 attachments = (attachments as Array<Attachment>).concat(
                     toJS<Attachment[]>(
@@ -391,9 +452,11 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
             ) as List<any>
 
             // Filter out all attachments already present in the state, to avoid setting them again when changing
-            // the source type to `email-forward` multiple times
+            // the source type to `email-forward` multiple times, also remove productCard attachments
             attachments = attachments.filter(
-                (attachment) => !currentAttachmentsUrls.includes(attachment.url)
+                (attachment) =>
+                    !currentAttachmentsUrls.includes(attachment.url) &&
+                    attachment.content_type !== ShopifyProductCardContentType
             )
 
             dispatch(

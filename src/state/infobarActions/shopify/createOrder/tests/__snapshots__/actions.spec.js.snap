@@ -261,6 +261,7 @@ Array [
       1 => Immutable.Map {
         "id": 1,
         "title": "Product 1",
+        "options": Immutable.List [],
         "created_at": "2020-01-01 00:00:00.000000",
         "image": Immutable.Map {
           "id": 1,
@@ -618,6 +619,7 @@ Array [
       8345093387 => Immutable.Map {
         "id": 8345093387,
         "title": "Acidulous candy",
+        "options": Immutable.List [],
         "created_at": "2020-01-01 00:00:00.000000",
         "image": Immutable.Map {
           "id": 1,
@@ -826,6 +828,7 @@ Array [
       8345093387 => Immutable.Map {
         "id": 8345093387,
         "title": "Acidulous candy",
+        "options": Immutable.List [],
         "created_at": "2020-01-01 00:00:00.000000",
         "image": Immutable.Map {
           "id": 1,

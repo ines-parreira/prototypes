@@ -25,7 +25,7 @@ exports[`<TicketReply/> should render the editor 1`] = `
   />
   <TicketAttachments
     attachments={Immutable.List []}
-    className="p-2"
+    className="p-2 d-flex flex-wrap"
     deleteAttachment={[MockFunction]}
     removable={true}
   />

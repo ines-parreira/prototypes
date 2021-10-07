@@ -55,6 +55,7 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
         Immutable.Map {
           "id": 1,
           "title": "Product 1",
+          "options": Immutable.List [],
           "created_at": "2020-01-01 00:00:00.000000",
           "image": Immutable.Map {
             "id": 1,
@@ -118,6 +119,7 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
         Immutable.Map {
           "id": 2,
           "title": "Product 2",
+          "options": Immutable.List [],
           "created_at": "2020-01-01 00:00:00.000000",
           "image": Immutable.Map {
             "id": 1,

@@ -1,5 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react'
 
+import {connect, ConnectedProps} from 'react-redux'
+
 import classnames from 'classnames'
 
 import {ListGroup, ListGroupItem} from 'reactstrap'
@@ -8,13 +10,26 @@ import {fromJS, Map, List} from 'immutable'
 
 import ShopifyProductLine from '../../../../components/ShopifyProductLine/ShopifyProductLine'
 
+import {RootState} from '../../../../../../state/types'
+import {ProductCardDetails} from '../../../../../../models/integration/types'
+
 import shortcutManager from '../../../../../../services/shortcutManager'
 
-import {insertLink} from '../../../../../../utils'
+import {insertLink, insertText} from '../../../../../../utils'
+
+import {addProductCardAttachments} from '../../../../../../state/newMessage/actions'
+
+import {
+    getNewMessageChannel,
+    isNewMessagePublic,
+} from '../../../../../../state/newMessage/selectors'
+import {TicketChannel} from '../../../../../../business/types/ticket'
 
 import {EditorStateGetter, EditorStateSetter} from '../types'
 
 import {getIconFromType} from '../../../../../../state/integrations/helpers'
+
+import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS} from '../../../../../../config/integrations/shopify'
 
 import Popover from './ButtonPopover'
 import css from './AddProductLink.less'
@@ -25,11 +40,15 @@ type OwnProps = {
     integrations: List<any>
 }
 
-export default function AddProductLink({
+export function AddProductLink({
     integrations,
     getEditorState,
     setEditorState,
-}: OwnProps) {
+    ticket,
+    addProductCardAttachments,
+    newMessageChannel,
+    isNewMessagePublic,
+}: ConnectedProps<typeof connector> & OwnProps) {
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
         null
@@ -48,34 +67,65 @@ export default function AddProductLink({
     }, [setOpen])
 
     const handleIntegrationClicked = (index: number) => {
-        const integrationsArr = integrations.toArray()[index] as Map<any, any>
+        const integrationRow = integrations.toArray()[index] as Map<any, any>
 
         setPickedShopifyIntegration(
             fromJS({
-                id: integrationsArr.get('id'),
-                name: integrationsArr.get('name'),
-                shop_domain: (integrationsArr.get('meta') as Map<any, any>).get(
+                id: integrationRow.get('id'),
+                name: integrationRow.get('name'),
+                shop_domain: (integrationRow.get('meta') as Map<any, any>).get(
                     'shop_domain'
+                ),
+                currency: (integrationRow.get('meta') as Map<any, any>).get(
+                    'currency'
                 ),
             })
         )
     }
 
     const addProductLink = useCallback(
-        (link: string, text?: string) => {
+        (productCardDetails: ProductCardDetails) => {
             const editorState = getEditorState()
-            if (!link) return
-            let newEditorState = insertLink(editorState, link, text)
-
-            // forcing the current selection ensures that it will be at its right place
-            newEditorState = EditorState.forceSelection(
-                newEditorState,
-                newEditorState.getSelection()
-            )
-            setEditorState(newEditorState)
+            if (
+                newMessageChannel === (TicketChannel.Chat as string) ||
+                !isNewMessagePublic
+            ) {
+                addProductCardAttachments(ticket, productCardDetails)
+            } else {
+                let newEditorState
+                //Facebook/IG doesn't support hyperlinks
+                if (
+                    UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
+                        newMessageChannel
+                    )
+                ) {
+                    newEditorState = insertText(
+                        editorState,
+                        productCardDetails.link.concat(' ')
+                    )
+                } else {
+                    newEditorState = insertLink(
+                        editorState,
+                        productCardDetails.link,
+                        (productCardDetails.fullProductTitle ||
+                            productCardDetails.productTitle)!.concat(' ')
+                    )
+                }
+                newEditorState = EditorState.forceSelection(
+                    newEditorState,
+                    newEditorState.getSelection()
+                )
+                setEditorState(newEditorState)
+            }
             setOpen(false)
         },
-        [getEditorState, setEditorState, setOpen]
+        [
+            getEditorState,
+            setEditorState,
+            setOpen,
+            newMessageChannel,
+            isNewMessagePublic,
+        ]
     )
 
     useEffect(() => {
@@ -159,3 +209,13 @@ export default function AddProductLink({
         </Popover>
     )
 }
+
+const connector = connect(
+    (state: RootState) => ({
+        ticket: state.ticket,
+        newMessageChannel: getNewMessageChannel(state),
+        isNewMessagePublic: isNewMessagePublic(state),
+    }),
+    {addProductCardAttachments}
+)
+export default connector(AddProductLink)

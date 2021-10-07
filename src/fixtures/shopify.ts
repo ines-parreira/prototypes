@@ -82,6 +82,7 @@ export const shopifyProductFixture = ({
 } = {}): Product => ({
     id,
     title,
+    options: [],
     created_at: '2020-01-01 00:00:00.000000',
     image: shopifyImageFixture(),
     images: [shopifyImageFixture()],

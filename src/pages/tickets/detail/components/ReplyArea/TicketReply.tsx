@@ -38,7 +38,7 @@ export class TicketReplyContainer extends Component<Props> {
                 removable
                 attachments={newMessageAttachments}
                 deleteAttachment={deleteAttachment}
-                className="p-2"
+                className="p-2 d-flex flex-wrap"
             />
         )
     }

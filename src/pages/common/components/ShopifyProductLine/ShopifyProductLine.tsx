@@ -15,30 +15,55 @@ import ProductResult from '../../forms/ProductSearchInput/ProductResult'
 import VariantResult from '../../forms/ProductSearchInput/VariantResult'
 
 import {
+    IntegrationDataItem,
     Product,
     Variant,
-} from '../../../../constants/integrations/types/shopify'
-
-import {IntegrationDataItem} from '../../../../models/integration/types'
+    ProductCardDetails,
+} from '../../../../models/integration/types'
 
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
 
-import {getIconFromType} from '../../../../state/integrations/helpers'
+import {
+    getIconFromUrl,
+    getIconFromType,
+} from '../../../../state/integrations/helpers'
 
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {
     shopifyIntegration: Map<string, string>
-    productClicked: (productLink: string, productTitle?: string) => void
+    productClicked: (productCardDetails: ProductCardDetails) => void
     onResetStoreChoice?: () => void
 }
+
+const generateVariantName = (
+    productOptions?: Array<Record<string, any>>,
+    variantOptions?: Record<string, any>
+) => {
+    if (!productOptions?.length || !variantOptions) return undefined
+    let variantName = ''
+
+    productOptions.forEach(function (productOption, index) {
+        variantName = variantName.concat(
+            ' ',
+            productOption.name,
+            ': ',
+            variantOptions[index]
+        )
+        if (index < productOptions.length - 1)
+            variantName = variantName.concat(' | ')
+    })
+    return variantName
+}
+
 export default function ShopifyProductLine({
     shopifyIntegration,
     onResetStoreChoice,
     productClicked,
 }: OwnProps) {
     const gorgiasApi = new GorgiasApi()
+    const shopifyPlaceholderImage = 'integrations/shopify-placeholder.png'
     const dispatch = useAppDispatch()
     const [filter, setFilter] = useState('')
     const [onOpen, setOnOpen] = useState(true)
@@ -77,47 +102,87 @@ export default function ShopifyProductLine({
         }
     }, [filter])
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault()
-        setIsLoading(true)
-        setFilter(event.target.value)
-    }
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            event.preventDefault()
+            setIsLoading(true)
+            setFilter(event.target.value)
+        },
+        [setFilter, setIsLoading]
+    )
 
-    const handleProductClick = (index: number) => {
-        const result = shopifyProducts[index]
+    const handleProductClick = useCallback(
+        (index: number) => {
+            const result = shopifyProducts[index]
 
-        const variants = result?.data?.variants || []
-        if (variants.length === 1 && result) {
-            productClicked(
-                `https://${shopifyIntegration.get('shop_domain')}/products/${
-                    result?.data?.handle || ''
-                }`,
-                result?.data?.title
+            const variants = result?.data?.variants || []
+
+            if (variants.length === 1 && result) {
+                const productCardDetails = {
+                    imageUrl:
+                        result?.data?.image?.src ||
+                        getIconFromUrl(shopifyPlaceholderImage),
+                    price: result?.data?.variants[0].price,
+                    currency: shopifyIntegration.get('currency'),
+                    link: `https://${shopifyIntegration.get(
+                        'shop_domain'
+                    )}/products/${result?.data?.handle || ''}`,
+                    productTitle: result?.data?.title,
+                } as ProductCardDetails
+
+                productClicked(productCardDetails)
+            } else {
+                setClickedResult(result)
+                setSubResults(variants)
+            }
+        },
+        [productClicked, shopifyProducts]
+    )
+
+    const handleSubResultClicked = useCallback(
+        (index: number) => {
+            const result = subResults[index] as Variant
+
+            let fullProductTitle = clickedResult?.data.title
+            if (result.title && fullProductTitle)
+                fullProductTitle = fullProductTitle.concat('-', result.title)
+            else fullProductTitle = result.title
+            const pickedOptions = (['option1', 'option2', 'option3'] as Array<
+                keyof Variant
+            >).map((key) => {
+                if (result[key]) return result[key]
+            })
+
+            const variantTitle = generateVariantName(
+                clickedResult?.data?.options,
+                pickedOptions
             )
-        } else {
-            setClickedResult(result)
-            setSubResults(variants)
-        }
-    }
 
-    const handleSubResultClicked = (index: number) => {
-        const result = subResults[index] as Variant
-        let variantTitle = clickedResult?.data.title
-        if (result.title && variantTitle)
-            variantTitle = variantTitle.concat('-', result.title)
-        else variantTitle = result.title
-        productClicked(
-            `https://${shopifyIntegration.get('shop_domain')}/products/${
-                clickedResult?.data.handle || ''
-            }?variant=${result?.id || ''}`,
-            variantTitle
-        )
-    }
+            const variantCardDetails = {
+                imageUrl:
+                    clickedResult?.data?.image?.src ||
+                    getIconFromUrl(shopifyPlaceholderImage),
+                price: result?.price,
+                currency: shopifyIntegration.get('currency'),
+                link: `https://${shopifyIntegration.get(
+                    'shop_domain'
+                )}/products/${clickedResult?.data.handle || ''}?variant=${
+                    result?.id || ''
+                }`,
+                productTitle: clickedResult?.data?.title,
+                variantTitle: variantTitle,
+                fullProductTitle: fullProductTitle,
+            } as ProductCardDetails
 
-    const handleBackClicked = () => {
+            productClicked(variantCardDetails)
+        },
+        [productClicked, subResults, generateVariantName]
+    )
+
+    const handleBackClicked = useCallback(() => {
         setSubResults([])
         setClickedResult(null)
-    }
+    }, [setSubResults, setClickedResult])
 
     useDebounce(fetchResults, 300, [filter])
     useEffect(() => {

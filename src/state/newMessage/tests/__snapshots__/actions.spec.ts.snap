@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`actions addProductCardAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments 1`] = `
+Array [
+  Object {
+    "resp": Array [
+      Object {
+        "content_type": "application/productCard",
+        "extra": Object {
+          "currency": "USD",
+          "price": "1.00",
+          "product_link": "https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335",
+          "variant_name": "baz",
+        },
+        "name": "bar",
+        "size": 0,
+        "url": "https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784",
+      },
+    ],
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
+  },
+]
+`;
+
+exports[`actions addProductCardAttachments() should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket 1`] = `Array []`;
+
 exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment 1`] = `
 Array [
   Object {

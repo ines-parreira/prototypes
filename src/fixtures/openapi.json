@@ -2190,6 +2190,11 @@
                     "description": "The name of the file.",
                     "example": "file.pdf",
                     "type": "string"
+                },
+                "extra": {
+                    "description": "Extra information for custom content types",
+                    "example": {},
+                    "type": "string"
                 }
             },
             "type": "object"

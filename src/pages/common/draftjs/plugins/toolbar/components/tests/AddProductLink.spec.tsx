@@ -1,11 +1,11 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
+import {List} from 'immutable'
+
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-
-import {List} from 'immutable'
 
 import AddProductLink from '../AddProductLink'
 import {integrationsStateWithShopify} from '../../../../../../../fixtures/integrations'
@@ -27,7 +27,11 @@ describe('<AddProductLink/>', () => {
     })
 
     it('should not render when the popover is closed', () => {
-        const {container} = render(<AddProductLink {...minProps} />)
+        const {container} = render(
+            <Provider store={store}>
+                <AddProductLink {...minProps} />
+            </Provider>
+        )
         expect(container).toMatchSnapshot()
     })
 
@@ -47,11 +51,13 @@ describe('<AddProductLink/>', () => {
         ) as List<any>
         integrations = integrations.push(integrations.toArray()[0])
         const {getByText, container} = render(
-            <AddProductLink
-                integrations={integrations}
-                getEditorState={minProps.getEditorState}
-                setEditorState={minProps.setEditorState}
-            />
+            <Provider store={store}>
+                <AddProductLink
+                    integrations={integrations}
+                    getEditorState={minProps.getEditorState}
+                    setEditorState={minProps.setEditorState}
+                />
+            </Provider>
         )
         fireEvent.click(getByText(/shopify/i))
         expect(container).toMatchSnapshot()

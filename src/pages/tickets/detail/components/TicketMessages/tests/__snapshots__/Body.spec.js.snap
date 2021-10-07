@@ -882,102 +882,114 @@ exports[`Body should display the Twitter quoted tweet card if there's matching m
                                       <div
                                         className="component"
                                       >
-                                        <a
-                                          className="item hasPreview"
-                                          href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg"
+                                        <div
+                                          className="attachmentContainer"
                                           key="0"
-                                          onClick={[Function]}
-                                          rel="noopener noreferrer"
-                                          style={
-                                            Object {
-                                              "backgroundImage": "url(http://proxy-url/120x80,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg)",
-                                            }
-                                          }
-                                          target="_blank"
                                         >
-                                          <div
-                                            className="itemMeta"
+                                          <a
+                                            className="item hasPreview"
+                                            href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg"
+                                            onClick={[Function]}
+                                            rel="noopener noreferrer"
+                                            style={
+                                              Object {
+                                                "backgroundImage": "url(http://proxy-url/120x80,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg)",
+                                              }
+                                            }
+                                            target="_blank"
                                           >
                                             <div
-                                              className="metaName"
+                                              className="itemMeta"
                                             >
-                                              E-osiPxWYAEyISV.jpg
-                                            </div>
-                                            <div
-                                              className="metaType"
-                                            >
-                                              <i
-                                                className="material-icons md-2"
+                                              <div
+                                                className="metaName"
                                               >
-                                                photo_library
-                                              </i>
+                                                E-osiPxWYAEyISV.jpg
+                                              </div>
+                                              <div
+                                                className="metaType"
+                                              >
+                                                <i
+                                                  className="material-icons md-2"
+                                                >
+                                                  photo_library
+                                                </i>
+                                              </div>
                                             </div>
-                                          </div>
-                                        </a>
-                                        <a
-                                          className="item hasPreview"
-                                          href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg"
+                                          </a>
+                                        </div>
+                                        <div
+                                          className="attachmentContainer"
                                           key="1"
-                                          onClick={[Function]}
-                                          rel="noopener noreferrer"
-                                          style={
-                                            Object {
-                                              "backgroundImage": "url(http://proxy-url/120x80,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg)",
-                                            }
-                                          }
-                                          target="_blank"
                                         >
-                                          <div
-                                            className="itemMeta"
+                                          <a
+                                            className="item hasPreview"
+                                            href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg"
+                                            onClick={[Function]}
+                                            rel="noopener noreferrer"
+                                            style={
+                                              Object {
+                                                "backgroundImage": "url(http://proxy-url/120x80,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg)",
+                                              }
+                                            }
+                                            target="_blank"
                                           >
                                             <div
-                                              className="metaName"
+                                              className="itemMeta"
                                             >
-                                              E-osiP0X0AAKVWI.jpg
-                                            </div>
-                                            <div
-                                              className="metaType"
-                                            >
-                                              <i
-                                                className="material-icons md-2"
+                                              <div
+                                                className="metaName"
                                               >
-                                                photo_library
-                                              </i>
+                                                E-osiP0X0AAKVWI.jpg
+                                              </div>
+                                              <div
+                                                className="metaType"
+                                              >
+                                                <i
+                                                  className="material-icons md-2"
+                                                >
+                                                  photo_library
+                                                </i>
+                                              </div>
                                             </div>
-                                          </div>
-                                        </a>
-                                        <a
-                                          className="item hasPreview"
-                                          href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg"
+                                          </a>
+                                        </div>
+                                        <div
+                                          className="attachmentContainer"
                                           key="2"
-                                          onClick={[Function]}
-                                          rel="noopener noreferrer"
-                                          style={
-                                            Object {
-                                              "backgroundImage": "url(http://proxy-url/120x80,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg)",
-                                            }
-                                          }
-                                          target="_blank"
                                         >
-                                          <div
-                                            className="itemMeta"
+                                          <a
+                                            className="item hasPreview"
+                                            href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg"
+                                            onClick={[Function]}
+                                            rel="noopener noreferrer"
+                                            style={
+                                              Object {
+                                                "backgroundImage": "url(http://proxy-url/120x80,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg)",
+                                              }
+                                            }
+                                            target="_blank"
                                           >
                                             <div
-                                              className="metaName"
+                                              className="itemMeta"
                                             >
-                                              E-osiPxXIAI2cwW.jpg
-                                            </div>
-                                            <div
-                                              className="metaType"
-                                            >
-                                              <i
-                                                className="material-icons md-2"
+                                              <div
+                                                className="metaName"
                                               >
-                                                photo_library
-                                              </i>
+                                                E-osiPxXIAI2cwW.jpg
+                                              </div>
+                                              <div
+                                                className="metaType"
+                                              >
+                                                <i
+                                                  className="material-icons md-2"
+                                                >
+                                                  photo_library
+                                                </i>
+                                              </div>
                                             </div>
-                                          </div>
-                                        </a>
+                                          </a>
+                                        </div>
                                         <Lightbox
                                           backdropClosesModal={true}
                                           closeButtonTitle="Close (Esc)"

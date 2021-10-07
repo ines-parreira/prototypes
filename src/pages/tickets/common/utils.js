@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {getValuePropFromSourceType} from '../../../state/ticket/utils.ts'
 import {getActionTemplate} from '../../../utils.ts'
 import {EMAIL_SOURCE, PHONE_SOURCE} from '../../../config/ticket.ts'
+import {ShopifyProductCardContentType} from '../../../constants/integrations/shopify.ts'
 
 /**
  * Return the label of the given person
@@ -49,6 +50,8 @@ export function fileIconFromContentType(contentType) {
         return 'library_books'
     } else if (contentType.startsWith('text/')) {
         return 'library_books'
+    } else if (contentType === ShopifyProductCardContentType) {
+        return 'shopify'
     }
 
     return 'library_add'

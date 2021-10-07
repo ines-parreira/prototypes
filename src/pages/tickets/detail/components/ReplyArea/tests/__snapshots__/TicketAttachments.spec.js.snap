@@ -75,70 +75,142 @@ exports[`TicketAttachments component private should display both an error messag
     1
      attachment(s) to this message which we couldn't download.
   </div>
-  <a
-    className="item hasPreview"
-    href="http://gorgias.io/bar"
+  <div
+    className="attachmentContainer"
     key="0"
-    onClick={[Function]}
-    rel="noopener noreferrer"
-    style={
-      Object {
-        "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
-      }
-    }
-    target="_blank"
   >
-    <div
-      className="itemMeta"
+    <a
+      className="item hasPreview"
+      href="http://gorgias.io/bar"
+      onClick={[Function]}
+      rel="noopener noreferrer"
+      style={
+        Object {
+          "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
+        }
+      }
+      target="_blank"
     >
       <div
-        className="metaName"
+        className="itemMeta"
       >
-        foo
-      </div>
-      <div
-        className="metaType"
-      >
-        <i
-          className="material-icons md-2"
+        <div
+          className="metaName"
         >
-          photo_library
-        </i>
+          foo
+        </div>
+        <div
+          className="metaType"
+        >
+          <i
+            className="material-icons md-2"
+          >
+            photo_library
+          </i>
+        </div>
       </div>
-    </div>
-  </a>
-  <a
-    className="item hasPreview"
-    href="http://gorgias.io/foo"
+    </a>
+  </div>
+  <div
+    className="attachmentContainer"
     key="1"
-    onClick={[Function]}
-    rel="noopener noreferrer"
-    style={
-      Object {
-        "backgroundImage": "url(http://proxy-url/120x80,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo)",
-      }
-    }
-    target="_blank"
   >
-    <div
-      className="itemMeta"
+    <a
+      className="item hasPreview"
+      href="http://gorgias.io/foo"
+      onClick={[Function]}
+      rel="noopener noreferrer"
+      style={
+        Object {
+          "backgroundImage": "url(http://proxy-url/120x80,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo)",
+        }
+      }
+      target="_blank"
     >
       <div
-        className="metaName"
+        className="itemMeta"
       >
-        baz
+        <div
+          className="metaName"
+        >
+          baz
+        </div>
+        <div
+          className="metaType"
+        >
+          <i
+            className="material-icons md-2"
+          >
+            photo_library
+          </i>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div
+    className="attachmentContainer"
+    key="2"
+  >
+    <div
+      className="productCard"
+    >
+      <div
+        className="productImageContainer"
+      >
+        <img
+          alt="qux"
+          src="http://proxy-url/80x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar"
+        />
       </div>
       <div
-        className="metaType"
+        className="productDetail"
       >
-        <i
-          className="material-icons md-2"
+        <p
+          className="productName"
         >
-          photo_library
-        </i>
+          qux
+        </p>
+        <p
+          className="variantName"
+        >
+          quux
+        </p>
+        <div
+          className="productPrice"
+        >
+          <MoneyAmount
+            amount={2}
+            currencyCode="USD"
+            negative={false}
+            renderIfZero={true}
+          />
+        </div>
       </div>
+      <a
+        className="productMeta"
+        href="http://gorgias.io/bar"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <div
+          className="metaName"
+        >
+          qux
+          <br />
+          quux
+        </div>
+        <div
+          className="metaType"
+        >
+          <i
+            className="material-icons md-2"
+          >
+            shopify
+          </i>
+        </div>
+      </a>
     </div>
-  </a>
+  </div>
   <Lightbox
     backdropClosesModal={true}
     closeButtonTitle="Close (Esc)"
@@ -184,65 +256,137 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
 <div
   className="component"
 >
-  <a
-    className="item hasPreview"
-    href="http://gorgias.io/bar"
+  <div
+    className="attachmentContainer"
     key="0"
-    onClick={[Function]}
-    rel="noopener noreferrer"
-    style={
-      Object {
-        "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
+  >
+    <a
+      className="item hasPreview"
+      href="http://gorgias.io/bar"
+      onClick={[Function]}
+      rel="noopener noreferrer"
+      style={
+        Object {
+          "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
+        }
       }
-    }
-    target="_blank"
-  >
-    <div
-      className="itemMeta"
+      target="_blank"
     >
       <div
-        className="metaName"
+        className="itemMeta"
       >
-        foo
-      </div>
-      <div
-        className="metaType"
-      >
-        <i
-          className="material-icons md-2"
+        <div
+          className="metaName"
         >
-          photo_library
-        </i>
+          foo
+        </div>
+        <div
+          className="metaType"
+        >
+          <i
+            className="material-icons md-2"
+          >
+            photo_library
+          </i>
+        </div>
       </div>
-    </div>
-  </a>
-  <a
-    className="item"
-    href="foo"
+    </a>
+  </div>
+  <div
+    className="attachmentContainer"
     key="1"
-    onClick={[Function]}
-    rel="noopener noreferrer"
-    target="_blank"
   >
-    <div
-      className="itemMeta"
+    <a
+      className="item"
+      href="foo"
+      onClick={[Function]}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <div
-        className="metaName"
+        className="itemMeta"
       >
-        bar
+        <div
+          className="metaName"
+        >
+          bar
+        </div>
+        <div
+          className="metaType"
+        >
+          <i
+            className="material-icons md-2"
+          >
+            library_books
+          </i>
+        </div>
+      </div>
+    </a>
+  </div>
+  <div
+    className="attachmentContainer"
+    key="2"
+  >
+    <div
+      className="productCard"
+    >
+      <div
+        className="productImageContainer"
+      >
+        <img
+          alt="qux"
+          src="http://proxy-url/80x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar"
+        />
       </div>
       <div
-        className="metaType"
+        className="productDetail"
       >
-        <i
-          className="material-icons md-2"
+        <p
+          className="productName"
         >
-          library_books
-        </i>
+          qux
+        </p>
+        <p
+          className="variantName"
+        >
+          quux
+        </p>
+        <div
+          className="productPrice"
+        >
+          <MoneyAmount
+            amount={2}
+            currencyCode="USD"
+            negative={false}
+            renderIfZero={true}
+          />
+        </div>
       </div>
+      <a
+        className="productMeta"
+        href="http://gorgias.io/bar"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <div
+          className="metaName"
+        >
+          qux
+          <br />
+          quux
+        </div>
+        <div
+          className="metaType"
+        >
+          <i
+            className="material-icons md-2"
+          >
+            shopify
+          </i>
+        </div>
+      </a>
     </div>
-  </a>
+  </div>
   <Lightbox
     backdropClosesModal={true}
     closeButtonTitle="Close (Esc)"

@@ -22,6 +22,17 @@ describe('TicketAttachments component', () => {
             content_type: 'text/html',
             url: 'foo',
         },
+        {
+            name: 'qux',
+            content_type: 'application/productCard',
+            url: 'http://gorgias.io/bar',
+            extra: {
+                price: 2,
+                variant_name: 'quux',
+                product_link: 'http://gorgias.io/bar',
+                currency: 'USD',
+            },
+        },
     ])
 
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
@@ -45,18 +56,23 @@ describe('TicketAttachments component', () => {
         })
 
         it('should display all attachments', () => {
-            expect(component.find('.item').length).toBe(attachments.size)
+            expect(component.find('.attachmentContainer').length).toBe(
+                attachments.size
+            )
         })
 
         it('should set a preview on the first attachment', () => {
-            expect(component.children().at(0)).toHaveStyle(
+            expect(component.children().children().at(0)).toHaveStyle(
                 'backgroundImage',
                 `url(${proxifyURL('http://gorgias.io/bar', '120x80')})`
             )
         })
 
         it('should not set a preview on the second attachment', () => {
-            expect(component.children().at(1)).toHaveProp('style', undefined)
+            expect(component.children().children().at(1)).toHaveProp(
+                'style',
+                undefined
+            )
         })
 
         it('should not show the remove button', () => {
@@ -185,6 +201,17 @@ describe('TicketAttachments component', () => {
                             content_type: 'image/png',
                             url: 'http://gorgias.io/foo',
                             public: true,
+                        },
+                        {
+                            name: 'qux',
+                            content_type: 'application/productCard',
+                            url: 'http://gorgias.io/bar',
+                            extra: {
+                                price: 2,
+                                variant_name: 'quux',
+                                product_link: 'http://gorgias.io/bar',
+                                currency: 'USD',
+                            },
                         },
                     ])}
                     deleteAttachment={_noop}
