@@ -121,6 +121,27 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                   </span>
                 </label>
               </div>
+              <div
+                class="form-check"
+                color=""
+              >
+                <label
+                  class="control-label form-check-label"
+                  for="id-mentions_enabled"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input form-check-input"
+                    id="id-mentions_enabled"
+                    type="checkbox"
+                  />
+                  <span
+                    style="vertical-align: middle;"
+                  >
+                    Enable Twitter mentions
+                  </span>
+                </label>
+              </div>
             </div>
             <div>
               <button
