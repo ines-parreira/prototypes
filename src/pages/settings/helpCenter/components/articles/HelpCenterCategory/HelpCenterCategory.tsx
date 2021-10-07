@@ -40,7 +40,11 @@ import {
 } from '../../../constants'
 import {useLocales} from '../../../hooks/useLocales'
 import {useLocaleSelectOptions} from '../../../hooks/useLocaleSelectOptions'
-import {buildCategorySlug, slugify} from '../../../utils/helpCenter.utils'
+import {
+    buildCategorySlug,
+    getHelpCenterDomain,
+    slugify,
+} from '../../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../../ConfirmationModal'
 import {
     ActionType,
@@ -56,6 +60,7 @@ type Props = {
     isLoading: boolean
     canSave: boolean
     helpCenter: HelpCenter
+    customDomain?: string
     category?: Category
     translation?: CategoryTranslation
     onLocaleChange: (locale: LocaleCode) => void
@@ -74,6 +79,7 @@ export const HelpCenterCategory = ({
     translation,
     category,
     helpCenter,
+    customDomain,
     onLocaleChange,
     onSave,
     onCreate,
@@ -89,7 +95,7 @@ export const HelpCenterCategory = ({
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
-    const [currentLocale, setCurrentLocale] = useState(viewLanguage)
+    const [locale, setLocale] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
     const categoryTitleRef = useRef<HTMLInputElement>(null)
@@ -98,6 +104,11 @@ export const HelpCenterCategory = ({
     const localeOptions = useLocaleSelectOptions(
         locales,
         helpCenter.supported_locales || []
+    )
+
+    const domain = useMemo(
+        () => getHelpCenterDomain(helpCenter.subdomain, customDomain),
+        [customDomain, helpCenter.subdomain]
     )
 
     const options: OptionItem[] = useMemo(
@@ -123,7 +134,7 @@ export const HelpCenterCategory = ({
     )
 
     useEffect(() => {
-        setCurrentLocale(viewLanguage)
+        setLocale(viewLanguage)
     }, [viewLanguage])
 
     useEffect(() => {
@@ -132,13 +143,13 @@ export const HelpCenterCategory = ({
             setSlug(translation?.slug || '')
             setDescription(translation?.description || '')
             if (translation?.locale) {
-                setCurrentLocale(translation?.locale)
+                setLocale(translation?.locale)
             }
         } else {
             setTitle('')
             setSlug('')
             setDescription('')
-            setCurrentLocale(viewLanguage)
+            setLocale(viewLanguage)
         }
     }, [isOpen, category, translation, viewLanguage])
 
@@ -172,7 +183,7 @@ export const HelpCenterCategory = ({
     }
 
     const handleOnChangeLocale = (ev: MouseEvent, value: LocaleCode) => {
-        setCurrentLocale(value)
+        setLocale(value)
         onLocaleChange(value)
     }
 
@@ -211,7 +222,7 @@ export const HelpCenterCategory = ({
                     title,
                     slug,
                     description,
-                    locale: currentLocale,
+                    locale,
                 },
             })
 
@@ -224,14 +235,14 @@ export const HelpCenterCategory = ({
                 slug,
                 description,
             },
-            currentLocale
+            locale
         )
     }
 
     const copyURL = () => {
-        const {subdomain} = helpCenter
+        const categoryId = category?.id
 
-        copy(buildCategorySlug(subdomain, currentLocale, slug, category?.id))
+        copy(buildCategorySlug({domain, locale, slug, categoryId}))
 
         void dispatch(
             notify({
@@ -252,7 +263,7 @@ export const HelpCenterCategory = ({
                 <span className={css.title}>Category Settings</span>
                 <Drawer.HeaderActions>
                     <ArticleLanguageSelect
-                        selected={currentLocale}
+                        selected={locale}
                         list={options}
                         onSelect={handleOnChangeLocale}
                         onClickAction={handleOnClickAction}
@@ -297,10 +308,7 @@ export const HelpCenterCategory = ({
                                 data-testid="slug-prefix"
                                 className={css['slug-prefix']}
                             >
-                                {buildCategorySlug(
-                                    helpCenter.subdomain,
-                                    currentLocale
-                                )}
+                                {buildCategorySlug({domain, locale})}
                             </span>
                         </InputGroupAddon>
                         <Input

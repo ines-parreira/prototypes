@@ -37,16 +37,25 @@ export function slugify(value: string): string {
     return ''
 }
 
-export const getHelpCenterDomain = (subdomain: string): string =>
-    `https://${subdomain}${HELP_CENTER_DOMAIN}`
+export const getAbsoluteUrl = (domain: string): string => `https://${domain}`
 
-export const buildCategorySlug = (
+export const getHelpCenterDomain = (
     subdomain: string,
-    locale: string,
-    slug?: string,
+    customDomain?: string
+): string => customDomain || `${subdomain}${HELP_CENTER_DOMAIN}`
+
+export const buildCategorySlug = ({
+    domain,
+    locale,
+    slug,
+    categoryId,
+}: {
+    domain: string
+    locale: string
+    slug?: string
     categoryId?: number
-): string => {
-    let categorySlug = `${getHelpCenterDomain(subdomain)}/${locale}/articles/`
+}): string => {
+    let categorySlug = getAbsoluteUrl(`${domain}/${locale}/articles/`)
 
     if (slug) {
         categorySlug = `${categorySlug}${slug}`
@@ -59,13 +68,18 @@ export const buildCategorySlug = (
     return categorySlug
 }
 
-export const buildArticleSlug = (
-    subdomain: string,
-    locale: string,
-    slug?: string,
+export const buildArticleSlug = ({
+    domain,
+    locale,
+    slug,
+    articleId,
+}: {
+    domain: string
+    locale: string
+    slug?: string
     articleId?: number
-): string => {
-    let articleSlug = `${getHelpCenterDomain(subdomain)}/${locale}/`
+}): string => {
+    let articleSlug = getAbsoluteUrl(`${domain}/${locale}/`)
 
     if (slug) {
         articleSlug = `${articleSlug}${slug}`

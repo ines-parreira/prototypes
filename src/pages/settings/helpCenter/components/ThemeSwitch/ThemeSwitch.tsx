@@ -24,7 +24,7 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
     onColorChange,
 }: ThemeSwitchProps) => {
     return (
-        <section className={css.themes}>
+        <>
             <h4>Theme</h4>
             <p>
                 Select which theme you prefer to use in your Help Center.
@@ -51,6 +51,6 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
                 value={currentColor}
                 onChange={onColorChange}
             />
-        </section>
+        </>
     )
 }

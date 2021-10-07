@@ -12,12 +12,12 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 
-import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
 
 import {useCurrentHelpCenter} from '../useCurrentHelpCenter'
 
 const mockedGetHelpCenter = jest.fn().mockResolvedValue({
-    data: getHelpcentersResponseFixture[0],
+    data: getHelpCentersResponseFixture[0],
 })
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -65,7 +65,7 @@ describe('useCurrentHelpCenter()', () => {
     it('returns the data from store if it is available', () => {
         const dataState: Partial<RootState> = {
             entities: {
-                helpCenters: _keyBy(getHelpcentersResponseFixture, 'id'),
+                helpCenters: _keyBy(getHelpCentersResponseFixture, 'id'),
             } as any,
             helpCenter: {
                 ui: {...uiState, currentId: 1},
@@ -79,7 +79,7 @@ describe('useCurrentHelpCenter()', () => {
 
         expect(result.current.isLoading).toBeFalsy()
         expect(result.current.data).toEqual(
-            getHelpcentersResponseFixture.find(
+            getHelpCentersResponseFixture.find(
                 (helpCenter) => helpCenter.id === 1
             )
         )

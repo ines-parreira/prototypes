@@ -17,7 +17,7 @@ export const HelpCenterContactUsView = () => {
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb
-                        helpcenterName="Helpcenter Name"
+                        helpcenterName="Help Center Name"
                         activeLabel="Contact Us"
                     />
                 }

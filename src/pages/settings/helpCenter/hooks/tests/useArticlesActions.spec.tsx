@@ -39,6 +39,11 @@ jest.mock('../useHelpcenterApi', () => {
                         translation: {},
                     },
                 }),
+                updateArticle: jest.fn().mockResolvedValue({
+                    data: {
+                        translation: {},
+                    },
+                }),
                 updateArticleTranslation: jest
                     .fn()
                     .mockResolvedValueOnce({
@@ -147,7 +152,7 @@ describe('useArticlesActions', () => {
     })
 
     describe('createArticle()', () => {
-        it('dispatches saveArticles action', async () => {
+        it('dispatches saveArticles action for article in category', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
@@ -162,15 +167,13 @@ describe('useArticlesActions', () => {
 
             expect(saveArticles).toHaveBeenCalled()
         })
-    })
 
-    describe('createArticleInCategory()', () => {
-        it('dispatches saveArticles action', async () => {
+        it('dispatches saveArticles action for uncategorized article', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.createArticleInCategory(
+            await result.current.createArticle(
                 {
                     locale: 'en-US',
                     title: '',
@@ -185,43 +188,13 @@ describe('useArticlesActions', () => {
         })
     })
 
-    describe('updateArticleTranslation()', () => {
-        it('does not dispatch the updateArticle action if locale param is different from view language', async () => {
+    describe('updateArticle()', () => {
+        it('dispatches saveArticles and pushArticleSupportedLocales actions for article in category', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateArticleTranslation({
-                ...getSingleArticleEnglish,
-                translation: {
-                    ...getSingleArticleEnglish.translation,
-                    locale: 'fr-FR',
-                },
-            })
-
-            expect(updateArticle).not.toHaveBeenCalled()
-        })
-
-        it('dispatches the updateArticle action if locale param is equal to view language', async () => {
-            const {result} = renderHook(useArticlesActions, {
-                wrapper: dependencyWrapper,
-            })
-
-            await result.current.updateArticleTranslation(
-                getSingleArticleEnglish
-            )
-
-            expect(updateArticle).toHaveBeenCalled()
-        })
-    })
-
-    describe('createArticleTranslation()', () => {
-        it('dispatches pushArticleSupportedLocales action', async () => {
-            const {result} = renderHook(useArticlesActions, {
-                wrapper: dependencyWrapper,
-            })
-
-            await result.current.createArticleTranslation({
+            await result.current.updateArticle({
                 id: 1,
                 help_center_id: 1,
                 position: 1,
@@ -240,6 +213,7 @@ describe('useArticlesActions', () => {
                 },
             })
 
+            expect(updateArticle).toHaveBeenCalled()
             expect(pushArticleSupportedLocales).toHaveBeenCalledWith({
                 articleId: 1,
                 supportedLocales: ['fr-FR'],
@@ -259,28 +233,26 @@ describe('useArticlesActions', () => {
         })
     })
 
-    describe('updateArticlePositionInCategory()', () => {
-        it('dispatches updateArticlesOrder action', async () => {
+    describe('updateArticlesPositions()', () => {
+        it('dispatches updateArticlesOrder action for article in category', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateArticlePositionInCategory(
+            await result.current.updateArticlesPositions(
                 [getSingleArticleEnglish],
                 1
             )
 
             expect(updateArticlesOrder).toHaveBeenCalled()
         })
-    })
 
-    describe('updateUncategorizedArticlePosition()', () => {
-        it('dispatches updateArticlesOrder action', async () => {
+        it('dispatches updateArticlesOrder action for uncategorized article', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateUncategorizedArticlePosition([
+            await result.current.updateArticlesPositions([
                 getSingleArticleEnglish,
             ])
 
@@ -288,7 +260,7 @@ describe('useArticlesActions', () => {
         })
     })
 
-    describe('deleteArticleTranslation', () => {
+    describe('deleteArticleTranslation()', () => {
         it('dispatches the removeLocaleFromArticle', async () => {
             const {result} = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,

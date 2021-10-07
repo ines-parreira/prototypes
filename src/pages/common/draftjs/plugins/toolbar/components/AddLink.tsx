@@ -198,7 +198,7 @@ export class AddLinkContainer extends Component<Props> {
                     <InputField
                         className={css.field}
                         label="Link text"
-                        placeholder="Ex. Helpcenter Article"
+                        placeholder="Ex. Help Center Article"
                         onChange={this.props.onTextChange}
                         value={this.props.text}
                         autoFocus={!this.props.text}

@@ -42,7 +42,7 @@ describe('<UpdateToggle />', () => {
         activated: true,
         label: 'label',
         description: 'description',
-        fieldName: 'search_deactivated' as keyof Components.Schemas.UpdateHelpcenterDto,
+        fieldName: 'search_deactivated' as keyof Components.Schemas.UpdateHelpCenterDto,
     }
 
     beforeEach(() => {

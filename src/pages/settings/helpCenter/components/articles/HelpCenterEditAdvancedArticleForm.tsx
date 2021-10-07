@@ -13,19 +13,19 @@ import css from './HelpCenterEditAdvancedArticleForm.less'
 type Props = {
     articleId?: number
     translation: HelpCenterArticleTranslation
-    subdomain: string
+    helpCenterDomain: string
     onChange: (translation: HelpCenterArticleTranslation) => void
 }
 
 export const HelpCenterEditAdvancedArticleForm = ({
     articleId,
     translation,
-    subdomain,
+    helpCenterDomain: domain,
     onChange,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
-    const slugPrefix = buildArticleSlug(subdomain, translation.locale)
+    const slugPrefix = buildArticleSlug({domain, locale: translation.locale})
     const slugSuffix = articleId ? `-${articleId.toString()}` : ''
 
     const onEditArticle = (editKey: string) => (newValue: string) => {
@@ -46,7 +46,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
     const copyURL = () => {
         const {locale, slug} = translation
 
-        copy(buildArticleSlug(subdomain, locale, slug, articleId))
+        copy(buildArticleSlug({domain, locale, slug, articleId}))
 
         void dispatch(
             notify({

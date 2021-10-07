@@ -313,7 +313,7 @@ export class Navbar extends React.Component<Props, State> {
                         >
                             <i
                                 className="material-icons mr-2"
-                                title="Helpcenter"
+                                title="Help Center"
                             >
                                 help
                             </i>

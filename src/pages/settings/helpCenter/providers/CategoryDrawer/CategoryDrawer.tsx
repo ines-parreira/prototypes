@@ -3,11 +3,11 @@ import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 
 import {
-    HelpCenter,
     Category,
-    LocaleCode,
     CategoryTranslation,
     CreateCategoryDto,
+    HelpCenter,
+    LocaleCode,
 } from '../../../../../models/helpCenter/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
@@ -24,9 +24,13 @@ import {MODALS} from '../../constants'
 
 type Props = {
     helpCenter: HelpCenter
+    customDomain?: string
 }
 
-export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
+export const CategoryDrawer = ({
+    helpCenter,
+    customDomain,
+}: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
     const params = getParams() as Category & {isCreate?: boolean}
@@ -173,6 +177,7 @@ export const CategoryDrawer = ({helpCenter}: Props): JSX.Element => {
             isCreate={params?.isCreate}
             category={category}
             helpCenter={helpCenter}
+            customDomain={customDomain}
             isOpen={isOpen()}
             canSave={!categoriesActions.isLoading}
             translation={translation.value}

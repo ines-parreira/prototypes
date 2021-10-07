@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 import HelpCenterStartView from '../HelpCenterStartView'
 import {HELP_CENTER_BASE_PATH} from '../../constants'
 import {renderWithRouter} from '../../../../../utils/testing'
-import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -18,9 +18,9 @@ describe('<HelpCenterStartView/>', () => {
     const defaultState: Partial<RootState> = {
         entities: {
             helpCenters: {
-                '1': getHelpcentersResponseFixture[0],
-                '2': getHelpcentersResponseFixture[1],
-                '3': getHelpcentersResponseFixture[2],
+                '1': getHelpCentersResponseFixture[0],
+                '2': getHelpCentersResponseFixture[1],
+                '3': getHelpCentersResponseFixture[2],
             },
         } as any,
     }

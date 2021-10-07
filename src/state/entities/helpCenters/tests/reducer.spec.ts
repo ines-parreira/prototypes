@@ -6,14 +6,14 @@ import {
     helpCentersFetched,
 } from '../actions'
 import reducer from '../reducer'
-import {getHelpcentersResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpcenterResponse.fixture'
 
 describe('helpCenters reducer', () => {
     describe('createHelpcenter action', () => {
         it('should add a new helpcenter to the state', () => {
             const newState = reducer(
                 {},
-                helpCenterCreated(getHelpcentersResponseFixture[0])
+                helpCenterCreated(getHelpCentersResponseFixture[0])
             )
             expect(newState).toMatchSnapshot()
         })
@@ -23,8 +23,8 @@ describe('helpCenters reducer', () => {
         it('should delete a helpcenter from the state', () => {
             const newState = reducer(
                 {
-                    '1': getHelpcentersResponseFixture[0],
-                    '2': getHelpcentersResponseFixture[1],
+                    '1': getHelpCentersResponseFixture[0],
+                    '2': getHelpCentersResponseFixture[1],
                 },
                 helpCenterDeleted(1)
             )
@@ -36,7 +36,7 @@ describe('helpCenters reducer', () => {
         it('should add a new helpcenter to the state', () => {
             const newState = reducer(
                 {},
-                helpCenterFetched(getHelpcentersResponseFixture[0])
+                helpCenterFetched(getHelpCentersResponseFixture[0])
             )
             expect(newState).toMatchSnapshot()
         })
@@ -45,13 +45,13 @@ describe('helpCenters reducer', () => {
     describe('updateHelpcenter action', () => {
         it('should replace an existing helpcenter in the state', () => {
             const updatedHelpcenterMock = {
-                ...getHelpcentersResponseFixture[0],
+                ...getHelpCentersResponseFixture[0],
                 name: 'bar',
             }
             const newState = reducer(
                 {
-                    '1': getHelpcentersResponseFixture[0],
-                    '2': getHelpcentersResponseFixture[1],
+                    '1': getHelpCentersResponseFixture[0],
+                    '2': getHelpCentersResponseFixture[1],
                 },
                 helpCenterUpdated(updatedHelpcenterMock)
             )
@@ -63,7 +63,7 @@ describe('helpCenters reducer', () => {
         it('should add the helpcenters to the state', () => {
             const newState = reducer(
                 {},
-                helpCentersFetched(getHelpcentersResponseFixture)
+                helpCentersFetched(getHelpCentersResponseFixture)
             )
             expect(newState).toMatchSnapshot()
         })

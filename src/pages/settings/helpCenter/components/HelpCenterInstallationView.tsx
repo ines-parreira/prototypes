@@ -19,7 +19,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-import {getHelpCenterDomain} from '../utils/helpCenter.utils'
+import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {getSubdomainValidationError} from '../utils/validations'
 
 import {CustomDomain} from './CustomDomain'
@@ -79,7 +79,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
                     )
                     void dispatch(
                         notify({
-                            message: 'Helpcenter successfully deleted',
+                            message: 'Help Center successfully deleted',
                             status: NotificationStatus.Success,
                         })
                     )
@@ -146,6 +146,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
     )
     const isNewSubdomainValid =
         !subdomainError && subdomainValue !== helpCenter.subdomain
+    const helpCenterDomain = getHelpCenterDomain(helpCenter.subdomain)
 
     return (
         <div className="full-width">
@@ -164,7 +165,7 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
             >
                 <SubdomainSection
                     value={subdomainValue}
-                    href={getHelpCenterDomain(helpCenter.subdomain)}
+                    href={getAbsoluteUrl(helpCenterDomain)}
                     placeholder="brand-name"
                     onChange={setSubdomainValue}
                     error={subdomainError}

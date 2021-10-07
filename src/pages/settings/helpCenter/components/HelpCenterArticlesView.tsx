@@ -38,6 +38,7 @@ import {
     articleOptionalFields,
     articleRequiredFields,
     buildArticleSlug,
+    getHelpCenterDomain,
     getNewTranslation,
     slugify,
 } from '../utils/helpCenter.utils'
@@ -96,6 +97,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         charCount: number
         wordCount: number
     }>()
+    const [customDomain, setCustomDomain] = useState<string | undefined>()
 
     const {client} = useHelpcenterApi()
     const helpCenter = useSelector(getCurrentHelpCenter)
@@ -111,6 +113,25 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         dispatch(resetCategories())
         dispatch(resetArticles())
     }, [])
+
+    useEffect(() => {
+        async function getCustomDomain() {
+            if (client && helpCenterId) {
+                const {
+                    data: {data: customDomains},
+                } = await client.listCustomDomains({
+                    help_center_id: helpCenterId,
+                })
+
+                setCustomDomain(
+                    customDomains.find((domain) => domain.status === 'active')
+                        ?.hostname
+                )
+            }
+        }
+
+        void getCustomDomain()
+    }, [client, helpCenterId])
 
     // Make sure to exit fullscreen mode when modal view changes
     useEffect(() => {
@@ -140,6 +161,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
             try {
                 setIsArticleLoading(true)
+
                 const {
                     data: {data: translations},
                 } = await client.listArticleTranslations({
@@ -272,6 +294,12 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         if (!selectedArticle?.translation || !helpCenter) {
             return null
         }
+
+        const helpCenterDomain = getHelpCenterDomain(
+            helpCenter.subdomain,
+            customDomain
+        )
+
         switch (editModal.content) {
             case HelpCenterModalContent.ARTICLE:
                 return (
@@ -386,7 +414,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                                         }
                                 )
                             }
-                            subdomain={helpCenter.subdomain}
+                            helpCenterDomain={helpCenterDomain}
                         />
                         <HelpCenterEditModalFooter
                             counters={counters}
@@ -445,11 +473,14 @@ export const HelpCenterArticlesView = (): JSX.Element => {
 
         if (action === 'copyToClipboard') {
             if (article?.translation && helpCenter?.subdomain) {
-                const {locale, slug} = article.translation
+                const {id: articleId, translation} = article
+                const {locale, slug} = translation
                 const {subdomain} = helpCenter
 
+                const domain = getHelpCenterDomain(subdomain, customDomain)
+
                 try {
-                    copy(buildArticleSlug(subdomain, locale, slug, article.id))
+                    copy(buildArticleSlug({domain, locale, slug, articleId}))
 
                     void dispatch(
                         notify({
@@ -570,16 +601,11 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         // Create Article
         else {
             try {
-                if (selectedCategory !== null) {
-                    await articlesActions.createArticleInCategory(
-                        selectedArticle.translation,
-                        selectedCategory
-                    )
-                } else {
-                    await articlesActions.createArticle(
-                        selectedArticle.translation
-                    )
-                }
+                await articlesActions.createArticle(
+                    selectedArticle.translation,
+                    selectedCategory
+                )
+
                 void dispatch(
                     notify({
                         message: 'Article successfully created',
@@ -634,14 +660,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         categoryId: number,
         articles: HelpCenterArticle[]
     ): void => {
-        if (categoryId >= 0) {
-            void articlesActions.updateArticlePositionInCategory(
-                articles,
-                categoryId
-            )
-        } else {
-            void articlesActions.updateUncategorizedArticlePosition(articles)
-        }
+        void articlesActions.updateArticlesPositions(
+            articles,
+            categoryId >= 0 ? categoryId : undefined
+        )
     }
 
     return (
@@ -686,7 +708,10 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         )}
                     />
 
-                    <CategoryDrawer helpCenter={helpCenter} />
+                    <CategoryDrawer
+                        helpCenter={helpCenter}
+                        customDomain={customDomain}
+                    />
                     <HelpCenterEditModal
                         open={editModal.opened}
                         fullscreen={

@@ -179,7 +179,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
       >
         <i
           class="material-icons mr-2"
-          title="Helpcenter"
+          title="Help Center"
         >
           help
         </i>
@@ -440,7 +440,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
       >
         <i
           class="material-icons mr-2"
-          title="Helpcenter"
+          title="Help Center"
         >
           help
         </i>
@@ -700,7 +700,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
       >
         <i
           class="material-icons mr-2"
-          title="Helpcenter"
+          title="Help Center"
         >
           help
         </i>

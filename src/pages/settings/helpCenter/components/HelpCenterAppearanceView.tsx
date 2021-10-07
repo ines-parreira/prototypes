@@ -1,11 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
-
-import isHexColor from 'validator/lib/isHexColor'
-
+import classNames from 'classnames'
 import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
-
 import {Button, Container, FormGroup} from 'reactstrap'
+import isHexColor from 'validator/lib/isHexColor'
 
 import {HelpCenter} from '../../../../models/helpCenter/types'
 
@@ -48,7 +46,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     )
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
     const primaryLogo = useFileUpload()
-    const whiteLogo = useFileUpload()
+    const lightLogo = useFileUpload()
     const favicon = useFileUpload()
     const bannerImage = useFileUpload()
 
@@ -81,14 +79,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 payload.brand_logo_url = null
             }
 
-            if (whiteLogo.payload) {
-                await whiteLogo.uploadFile().then((files) => {
+            if (lightLogo.payload) {
+                await lightLogo.uploadFile().then((files) => {
                     if (files[0]) {
-                        payload.brand_logo_white_url = files[0].url
+                        payload.brand_logo_light_url = files[0].url
                     }
                 })
-            } else if (whiteLogo.isTouched) {
-                payload.brand_logo_white_url = null
+            } else if (lightLogo.isTouched) {
+                payload.brand_logo_light_url = null
             }
 
             if (favicon.payload) {
@@ -129,7 +127,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         primaryLogo,
         favicon,
         bannerImage,
-        whiteLogo,
+        lightLogo,
     ])
 
     const allowSaveCurrentAppearance = useMemo(() => {
@@ -143,7 +141,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
         if (
             primaryLogo.isTouched ||
-            whiteLogo.isTouched ||
+            lightLogo.isTouched ||
             favicon.isTouched ||
             bannerImage.isTouched
         ) {
@@ -156,7 +154,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         selectedTheme,
         currentColor,
         primaryLogo,
-        whiteLogo,
+        lightLogo,
         favicon,
         bannerImage,
     ])
@@ -165,7 +163,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         setSelectedTheme(helpCenterTheme)
         setCurrentColor(helpCenterColor)
         primaryLogo.discardFile()
-        whiteLogo.discardFile()
+        lightLogo.discardFile()
         favicon.discardFile()
         bannerImage.discardFile()
     }
@@ -183,7 +181,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
             )
 
             primaryLogo.discardFile()
-            whiteLogo.discardFile()
+            lightLogo.discardFile()
             bannerImage.discardFile()
             favicon.discardFile()
         } catch (err) {
@@ -224,14 +222,13 @@ export const HelpCenterAppearanceView: React.FC = () => {
             <HelpCenterNavigation helpcenterId={helpCenterId} />
             <Container
                 fluid
-                className="page-container"
-                style={{maxWidth: 680, marginLeft: 0, paddingBottom: 18}}
+                className={classNames('page-container', css.container)}
             >
                 <div className={css.section}>
                     <h3>Appearance</h3>
                     <p>Set up your Help Center’s logo, color and theme.</p>
                 </div>
-                <section className={css.logos}>
+                <div className={classNames(css.section, css.logos)}>
                     <ImageUpload
                         id="primary_logo"
                         title="Standard Logo"
@@ -249,17 +246,17 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         }}
                     />
                     <ImageUpload
-                        id="white_logo"
-                        title="White Logo"
+                        id="light_logo"
+                        title="Light Logo"
                         info="Used in the main navigation when with the dark theme."
-                        file={whiteLogo.payload}
-                        defaultPreview={helpCenter?.brand_logo_white_url || ''}
-                        onChangeFile={whiteLogo.changeFile}
-                        isTouched={whiteLogo.isTouched}
+                        file={lightLogo.payload}
+                        defaultPreview={helpCenter?.brand_logo_light_url || ''}
+                        onChangeFile={lightLogo.changeFile}
+                        isTouched={lightLogo.isTouched}
                         helpTextProps={{
                             highlight: getImageUploadHighlightText(
-                                whiteLogo,
-                                helpCenter?.brand_logo_white_url
+                                lightLogo,
+                                helpCenter?.brand_logo_light_url
                             ),
                             text: 'recommended size 1800 x 240',
                         }}
@@ -282,14 +279,16 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         accept="image/png,image/jpeg,image/x-icon"
                         size="small"
                     />
-                </section>
-                <ThemeSwitch
-                    selectedTheme={selectedTheme}
-                    currentColor={currentColor}
-                    onThemeChange={setSelectedTheme}
-                    onColorChange={setCurrentColor}
-                />
-                <section className={css.section}>
+                </div>
+                <div className={css.section}>
+                    <ThemeSwitch
+                        selectedTheme={selectedTheme}
+                        currentColor={currentColor}
+                        onThemeChange={setSelectedTheme}
+                        onColorChange={setCurrentColor}
+                    />
+                </div>
+                <div className={css.section}>
                     <ImageUpload
                         id="banner_image"
                         title="Banner Background"
@@ -307,9 +306,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             text: 'recommended size 1440 x 316',
                         }}
                     />
-                </section>
-                <section>
-                    <h3>Other settings</h3>
+                </div>
+                <div className={css.section}>
+                    <h3 className="mb-3">Other settings</h3>
                     <UpdateToggle
                         activated={
                             helpCenter.search_deactivated_datetime === null
@@ -327,7 +326,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         description="Turns on/off the ‘Powered by Gorgias’ label in your Help Center footer."
                         fieldName="powered_by_deactivated"
                     />
-                </section>
+                </div>
                 <footer>
                     <FormGroup className="mt-5">
                         <Button

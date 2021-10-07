@@ -65,32 +65,6 @@ describe('<HelpCenterNewView/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    describe('Reset form', () => {
-        it('should disable the cancel button when the form has its initial state', async () => {
-            const {findByRole} = renderWithRouter(
-                <Provider store={mockedStore(defaultState)}>
-                    <HelpCenterNewView {...props} />
-                </Provider>
-            )
-            const cancelButton = await findByRole('button', {name: /cancel/i})
-            expect(cancelButton.className).toMatch(/disabled/i)
-        })
-
-        it('should enable the cancel button when the form is different from its initial state', async () => {
-            const {findByRole} = renderWithRouter(
-                <Provider store={mockedStore(defaultState)}>
-                    <HelpCenterNewView {...props} />
-                </Provider>
-            )
-            const brandInput = await findByRole('textbox', {
-                name: /help center name/i,
-            })
-            fireEvent.change(brandInput, {target: {value: 'My brand'}})
-            const cancelButton = await findByRole('button', {name: /cancel/i})
-            expect(cancelButton.className).not.toMatch(/disabled/i)
-        })
-    })
-
     describe('Submit form', () => {
         it('should disable the submit button if all the required fields are not filled', async () => {
             const {findByRole} = renderWithRouter(
@@ -104,7 +78,7 @@ describe('<HelpCenterNewView/>', () => {
             fireEvent.change(brandInput, {target: {value: 'My brand'}})
             fireEvent.change(brandInput, {target: {value: ''}})
             const submitButton = await findByRole('button', {
-                name: /add new helpcenter/i,
+                name: /add new help center/i,
             })
             expect(submitButton.className).toMatch(/disabled/i)
         })
@@ -135,7 +109,7 @@ describe('<HelpCenterNewView/>', () => {
             expect(subdomainInput.value).toEqual('custom-subdomain')
 
             const submitButton = await findByRole('button', {
-                name: /add new helpcenter/i,
+                name: /add new help center/i,
             })
             expect(submitButton.className).not.toMatch(/disabled/i)
         })
@@ -150,7 +124,7 @@ describe('<HelpCenterNewView/>', () => {
                 name: /help center name/i,
             })
             const submitButton = await findByRole('button', {
-                name: /add new helpcenter/i,
+                name: /add new help center/i,
             })
 
             void act(async () => {

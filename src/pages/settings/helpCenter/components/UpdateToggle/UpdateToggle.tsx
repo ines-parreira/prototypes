@@ -15,7 +15,7 @@ type Props = {
     activated: boolean
     label: string
     description: string
-    fieldName: keyof Components.Schemas.UpdateHelpcenterDto
+    fieldName: keyof Components.Schemas.UpdateHelpCenterDto
 }
 
 export const UpdateToggle = ({

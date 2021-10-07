@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
 import {getSingleHelpcenterResponseFixture as helpCenter} from '../../../../fixtures/getHelpcenterResponse.fixture'
+import {getSingleCustomDomainResponseFixture as customDomain} from '../../../../fixtures/getCustomDomainsResponse.fixture'
 
 import {RootState, StoreDispatch} from '../../../../../../../state/types'
 import {initialState as articlesState} from '../../../../../../../state/helpCenter/articles/reducer'
@@ -36,12 +37,6 @@ jest.mock('../../../../hooks/useLocales', () => ({
     ],
 }))
 
-type Props = {
-    isOpen?: boolean
-    canSave?: boolean
-    getCategory?: () => Promise<unknown>
-}
-
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
@@ -54,7 +49,13 @@ const defaultState: Partial<RootState> = {
     },
 }
 
-const Example = ({isOpen = false, canSave = true}: Props) => {
+type Props = {
+    isOpen?: boolean
+    canSave?: boolean
+    customDomain?: string
+}
+
+const Example = ({isOpen = false, canSave = true, customDomain}: Props) => {
     const [open, setOpen] = React.useState(isOpen)
 
     return (
@@ -67,6 +68,7 @@ const Example = ({isOpen = false, canSave = true}: Props) => {
                 isLoading={false}
                 canSave={canSave}
                 helpCenter={helpCenter}
+                customDomain={customDomain}
                 onClose={() => setOpen(false)}
                 onLocaleChange={jest.fn()}
                 onDeleteTranslation={jest.fn()}
@@ -158,6 +160,16 @@ describe('<HelpCenterCategory>', () => {
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
             `https://${helpCenter.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
+        )
+    })
+
+    it("displays the custom domain's hostname in slug", () => {
+        const {getByTestId} = render(
+            <Example isOpen customDomain={customDomain.hostname} />
+        )
+
+        expect(getByTestId('slug-prefix').textContent).toEqual(
+            `https://${customDomain.hostname}/en-US/articles/`
         )
     })
 

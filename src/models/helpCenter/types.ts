@@ -10,12 +10,14 @@ export type LocaleEntity = Components.Schemas.LocaleEntity
 
 // HELP CENTER
 
-export type CreateHelpcenterDto = Components.Schemas.CreateHelpcenterDto
+export type CreateHelpCenterDto = Components.Schemas.CreateHelpCenterDto
 export type HelpCenter = Components.Schemas.HelpCenterEntity & {
     supported_locales?: LocaleCode[]
 }
 export type HelpCenterArticlesListPage = Components.Schemas.ArticlesListPageDto
 export type HelpCenterArticleTranslation = Components.Schemas.ArticleTranslationEntity
+
+export type HelpCenterCustomDomainsListPage = Components.Schemas.CustomDomainsListPageDto
 
 export type HelpCenterLocaleCode = HelpCenter['default_locale']
 export type HelpCenterLocale = Components.Schemas.LocaleEntity

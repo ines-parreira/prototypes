@@ -5,7 +5,7 @@ import _keyBy from 'lodash/keyBy'
 import {HelpCenterLocale} from '../../../../../models/helpCenter/types'
 
 import HelpCenterTable from '../HelpCenterTable'
-import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
 describe('<HelpCenterTable/>', () => {
@@ -14,7 +14,7 @@ describe('<HelpCenterTable/>', () => {
 
     const props = {
         isLoading: false,
-        list: getHelpcentersResponseFixture,
+        list: getHelpCentersResponseFixture,
         locales: _keyBy<HelpCenterLocale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
         onToggle: mockedOnToggle,

@@ -16,7 +16,7 @@ import {initialState as articlesState} from '../../../../../../state/helpCenter/
 import {initialState as categoriesState} from '../../../../../../state/helpCenter/categories/reducer'
 import {initialState as uiState} from '../../../../../../state/helpCenter/ui/reducer'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {getHelpcentersResponseFixture} from '../../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../../fixtures/getHelpcenterResponse.fixture'
 import {CustomDomain} from '../CustomDomain'
 
 jest.mock('../../../hooks/useHelpCenterIdParam', () => {
@@ -108,7 +108,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpcentersResponseFixture[0],
+            '1': getHelpCentersResponseFixture[0],
         },
     } as any,
     helpCenter: {

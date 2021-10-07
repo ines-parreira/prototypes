@@ -4,7 +4,7 @@ import {HelpCenter} from '../../../../models/helpCenter/types'
  * This file will be removed once the CMS deployed in production
  */
 
-export const getHelpcentersResponseFixture: HelpCenter[] = [
+export const getHelpCentersResponseFixture: HelpCenter[] = [
     {
         id: 1,
         subdomain: 'acme',

@@ -2,7 +2,7 @@ import _keyBy from 'lodash/keyBy'
 
 import {StoreState} from '../../../types'
 
-import {getHelpcentersResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../../../pages/settings/helpCenter/fixtures/getHelpcenterResponse.fixture'
 
 import {initialState as uiState} from '../../../helpCenter/ui/reducer'
 import {initialState as articlesState} from '../../../helpCenter/articles/reducer'
@@ -29,7 +29,7 @@ describe('Entities/Help Center', () => {
         it('returns the right help center by currentId', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
-                    helpCenters: _keyBy(getHelpcentersResponseFixture, 'id'),
+                    helpCenters: _keyBy(getHelpCentersResponseFixture, 'id'),
                 } as any,
                 helpCenter: {
                     ui: {
@@ -42,7 +42,7 @@ describe('Entities/Help Center', () => {
             }
 
             expect(getCurrentHelpCenter(dataStore as StoreState)).toEqual(
-                getHelpcentersResponseFixture[0]
+                getHelpCentersResponseFixture[0]
             )
         })
     })
@@ -51,10 +51,10 @@ describe('Entities/Help Center', () => {
         it('returns the list sorted by created date', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
-                    helpCenters: _keyBy(getHelpcentersResponseFixture, 'id'),
+                    helpCenters: _keyBy(getHelpCentersResponseFixture, 'id'),
                 } as any,
             }
-            const sortedFixture = getHelpcentersResponseFixture.sort(
+            const sortedFixture = getHelpCentersResponseFixture.sort(
                 (
                     {created_datetime: createdDate1},
                     {created_datetime: createdDate2}

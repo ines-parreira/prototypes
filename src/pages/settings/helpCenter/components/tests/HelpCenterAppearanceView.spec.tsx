@@ -9,7 +9,7 @@ import {initialState as articlesState} from '../../../../../state/helpCenter/art
 import {initialState as uiState} from '../../../../../state/helpCenter/ui/reducer'
 import {initialState as categoriesState} from '../../../../../state/helpCenter/categories/reducer'
 import {renderWithRouter} from '../../../../../utils/testing'
-import {getHelpcentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
+import {getHelpCentersResponseFixture} from '../../fixtures/getHelpcenterResponse.fixture'
 import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -19,7 +19,7 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenters: {
-            '1': getHelpcentersResponseFixture[0],
+            '1': getHelpCentersResponseFixture[0],
         },
     } as any,
     helpCenter: {
@@ -30,7 +30,7 @@ const defaultState: Partial<RootState> = {
 }
 
 const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
-    data: getHelpcentersResponseFixture[0],
+    data: getHelpCentersResponseFixture[0],
 })
 
 jest.mock('../../hooks/useHelpcenterApi', () => {

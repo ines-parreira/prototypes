@@ -34,362 +34,335 @@ exports[`<HelpCenterNewView/> should render the component 1`] = `
       </nav>
     </div>
     <div
-      class="page-container container-fluid"
-      style="max-width: 680px; margin-left: 0px;"
+      class="page-container container container-fluid"
     >
-      <section>
+      <div
+        class="section form"
+      >
         <div
-          class="row"
+          class="InputField formInput required form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Help Center name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="form-control"
+              id="id-name"
+              placeholder="Ex. Customer Support"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <small
+            class="form-text text-muted"
+          >
+            This is going to be displayed whenever your logo isn’t available and also in search engines.
+          </small>
+        </div>
+        <div
+          class="InputField subdomainInput form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-subdomain"
+          >
+            Subdomain
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="id-subdomain"
+              type="text"
+              value=""
+            />
+            <span
+              class="input-group-append"
+            >
+              <span
+                class="input-group-text"
+              >
+                .gorgias.rehab
+              </span>
+            </span>
+          </div>
+          <small
+            class="form-text text-muted"
+          >
+            This is the URL for your Help Center. If you don't provide a value, we will generate one for you.
+          </small>
+        </div>
+      </div>
+      <div
+        class="section"
+      >
+        <h3>
+          Languages
+        </h3>
+        <label
+          class="control-label"
+          for="language-select"
+        >
+          Default language
+        </label>
+        <p>
+          Choose the default language that will be used every time it’s not detected or as a second option if the selected language isn’t available.
+        </p>
+        <div
+          id="language-select"
         >
           <div
-            class="col-md-6"
+            style="display: inline-block;"
           >
             <div
-              class="InputField formInput required form-group"
-              color=""
+              class="dropdown"
             >
-              <label
-                class="control-label"
-                for="id-name"
-              >
-                Help Center name
-              </label>
               <div
+                aria-expanded="false"
+                aria-haspopup="true"
                 class=""
+                data-toggle="dropdown"
               >
-                <input
-                  class="form-control"
-                  id="id-name"
-                  placeholder="Ex. Customer Support"
-                  required=""
-                  type="text"
-                  value=""
-                />
-              </div>
-              <small
-                class="form-text text-muted"
-              >
-                This is going to be displayed whenever your logo isn’t available and also in search engines.
-              </small>
-            </div>
-          </div>
-          <div
-            class="col-md-6"
-          >
-            <div
-              class="InputField subdomainInput form-group"
-              color=""
-            >
-              <label
-                class="control-label"
-                for="id-subdomain"
-              >
-                Subdomain
-              </label>
-              <div
-                class="input-group"
-              >
-                <input
-                  class="form-control"
-                  id="id-subdomain"
-                  type="text"
-                  value=""
-                />
-                <span
-                  class="input-group-append"
+                <div
+                  class="select dropdown-toggle"
                 >
                   <span
-                    class="input-group-text"
+                    class="label"
+                    style="min-width: 10px; opacity: 1;"
                   >
-                    .gorgias.rehab
+                    <span>
+                      <img
+                        alt="en-US"
+                        class="flag-emoji"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        English - USA
+                      </span>
+                    </span>
                   </span>
-                </span>
+                  <input
+                    autocomplete="chrome-off"
+                    class="input"
+                    style="min-width: 10px;"
+                    type="text"
+                    value=""
+                  />
+                </div>
               </div>
-              <small
-                class="form-text text-muted"
+              <div
+                aria-hidden="true"
+                class="options dropdown-menu"
+                role="menu"
+                tabindex="-1"
               >
-                This is the URL for your Help Center. If you don't provide a value, we will generate one for you.
-              </small>
+                
+                <button
+                  class="option option--focused dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span>
+                      <img
+                        alt="fr-FR"
+                        class="flag-emoji"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        French - France
+                      </span>
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span>
+                      <img
+                        alt="fr-CA"
+                        class="flag-emoji"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        French - Canada
+                      </span>
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <span>
+                      <img
+                        alt="cs-CZ"
+                        class="flag-emoji"
+                        src="test-file-stub"
+                      />
+                      <span>
+                        Czech - Czech Republic
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          class="row"
+      </div>
+      <div
+        class="section"
+      >
+        <h3
+          class="mb-3"
         >
-          <div
-            class="col-12"
+          Appearance
+        </h3>
+        <h4>
+          Theme
+        </h4>
+        <p>
+          Select which theme you prefer to use in your Help Center.
+          <strong>
+             This will affect the header & footer.
+          </strong>
+        </p>
+        <div
+          class="list"
+        >
+          <button
+            aria-label="Light Theme"
+            class="wrapper selected"
           >
-            <h3>
-              Languages
-            </h3>
-            <p>
-              Choose the default language that will be used every time it’s not detected or as a second option if the selected language isn’t available.
-            </p>
-          </div>
-          <div
-            class="col-12"
-          >
-            <label
-              class="control-label"
-              for="language-select"
-            >
-              Default language
-            </label>
             <div
-              id="language-select"
-              style="margin-bottom: 32px;"
+              class="preview"
             >
-              <div
-                style="display: inline-block;"
+              <img
+                alt="preview-light"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="label"
+            >
+              <input
+                checked=""
+                class="form-check-input"
+                readonly=""
+                tabindex="-1"
+                type="radio"
+              />
+              <span
+                class="text"
+              >
+                Light Theme
+              </span>
+            </div>
+          </button>
+          <button
+            aria-label="Dark Theme"
+            class="wrapper"
+          >
+            <div
+              class="preview"
+            >
+              <img
+                alt="preview-dark"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="label"
+            >
+              <input
+                class="form-check-input"
+                readonly=""
+                tabindex="-1"
+                type="radio"
+              />
+              <span
+                class="text"
+              >
+                Dark Theme
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-input-1"
+          >
+            Primary Color
+          </label>
+          <div
+            class=""
+          >
+            <div
+              class="d-inline-block"
+            >
+              <button
+                class="button btn btn-secondary"
+                id="color-picker-2"
+                type="button"
               >
                 <div
-                  class="dropdown"
-                >
-                  <div
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class=""
-                    data-toggle="dropdown"
-                  >
-                    <div
-                      class="select dropdown-toggle"
-                    >
-                      <span
-                        class="label"
-                        style="min-width: 10px; opacity: 1;"
-                      >
-                        <span>
-                          <img
-                            alt="en-US"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                          <span>
-                            English - USA
-                          </span>
-                        </span>
-                      </span>
-                      <input
-                        autocomplete="chrome-off"
-                        class="input"
-                        style="min-width: 10px;"
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div
-                    aria-hidden="true"
-                    class="options dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
-                  >
-                    
-                    <button
-                      class="option option--focused dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                    >
-                      <span>
-                        <span>
-                          <img
-                            alt="fr-FR"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                          <span>
-                            French - France
-                          </span>
-                        </span>
-                      </span>
-                    </button>
-                    <button
-                      class="option dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                    >
-                      <span>
-                        <span>
-                          <img
-                            alt="fr-CA"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                          <span>
-                            French - Canada
-                          </span>
-                        </span>
-                      </span>
-                    </button>
-                    <button
-                      class="option dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                    >
-                      <span>
-                        <span>
-                          <img
-                            alt="cs-CZ"
-                            class="flag-emoji"
-                            src="test-file-stub"
-                          />
-                          <span>
-                            Czech - Czech Republic
-                          </span>
-                        </span>
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+                  class="color"
+                  style="background-color: rgb(74, 141, 249);"
+                />
+              </button>
             </div>
           </div>
-        </div>
-        <div
-          class="row"
-        >
-          <div
-            class="col-12"
+          <small
+            class="form-text text-muted"
           >
-            <h3>
-              Appearance
-            </h3>
-            <section
-              class="themes"
-            >
-              <h4>
-                Theme
-              </h4>
-              <p>
-                Select which theme you prefer to use in your Help Center.
-                <strong>
-                   This will affect the header & footer.
-                </strong>
-              </p>
-              <div
-                class="list"
-              >
-                <button
-                  aria-label="Light Theme"
-                  class="wrapper selected"
-                >
-                  <div
-                    class="preview"
-                  >
-                    <img
-                      alt="preview-light"
-                      src="test-file-stub"
-                    />
-                  </div>
-                  <div
-                    class="label"
-                  >
-                    <input
-                      checked=""
-                      class="form-check-input"
-                      readonly=""
-                      tabindex="-1"
-                      type="radio"
-                    />
-                    <span
-                      class="text"
-                    >
-                      Light Theme
-                    </span>
-                  </div>
-                </button>
-                <button
-                  aria-label="Dark Theme"
-                  class="wrapper"
-                >
-                  <div
-                    class="preview"
-                  >
-                    <img
-                      alt="preview-dark"
-                      src="test-file-stub"
-                    />
-                  </div>
-                  <div
-                    class="label"
-                  >
-                    <input
-                      class="form-check-input"
-                      readonly=""
-                      tabindex="-1"
-                      type="radio"
-                    />
-                    <span
-                      class="text"
-                    >
-                      Dark Theme
-                    </span>
-                  </div>
-                </button>
-              </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
-                <label
-                  class="control-label"
-                  for="id-input-1"
-                >
-                  Primary Color
-                </label>
-                <div
-                  class=""
-                >
-                  <div
-                    class="d-inline-block"
-                  >
-                    <button
-                      class="button btn btn-secondary"
-                      id="color-picker-2"
-                      type="button"
-                    >
-                      <div
-                        class="color"
-                        style="background-color: rgb(74, 141, 249);"
-                      />
-                    </button>
-                  </div>
-                </div>
-                <small
-                  class="form-text text-muted"
-                >
-                  This will be used as your primary color in hyperlinks, pagination and icons.
-                </small>
-              </div>
-            </section>
-          </div>
+            This will be used as your primary color in hyperlinks, pagination and icons.
+          </small>
         </div>
+      </div>
+      <div
+        class="section"
+      >
         <div
-          class="py-4 row"
+          class="d-flex"
         >
-          <div
-            class="col"
+          <button
+            class="btn btn-success disabled"
+            disabled=""
+            type="button"
           >
-            <button
-              class="btn btn-success disabled"
-              disabled=""
-              type="button"
-            >
-              Add new Helpcenter
-            </button>
-            <button
-              class="cancelButton btn btn-secondary disabled"
-              disabled=""
-              type="button"
-            >
-              Cancel
-            </button>
-          </div>
+            Add new Help Center
+          </button>
+          <button
+            class="cancelButton btn btn-secondary"
+            type="button"
+          >
+            Cancel
+          </button>
         </div>
-      </section>
+      </div>
     </div>
   </div>
 </div>

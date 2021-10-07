@@ -18,7 +18,7 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
     const props = {
         articleId: 1,
         translation,
-        subdomain: 'acme',
+        helpCenterDomain: 'acme.gorgias.rehab',
         onChange: mockedOnChange,
     }
 

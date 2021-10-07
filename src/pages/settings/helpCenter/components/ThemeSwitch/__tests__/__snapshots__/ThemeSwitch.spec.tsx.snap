@@ -2,113 +2,109 @@
 
 exports[`<ThemeSwitch> matches snapshot 1`] = `
 <div>
-  <section
-    class="themes"
+  <h4>
+    Theme
+  </h4>
+  <p>
+    Select which theme you prefer to use in your Help Center.
+    <strong>
+       This will affect the header & footer.
+    </strong>
+  </p>
+  <div
+    class="list"
   >
-    <h4>
-      Theme
-    </h4>
-    <p>
-      Select which theme you prefer to use in your Help Center.
-      <strong>
-         This will affect the header & footer.
-      </strong>
-    </p>
-    <div
-      class="list"
+    <button
+      aria-label="Light Theme"
+      class="wrapper selected"
     >
-      <button
-        aria-label="Light Theme"
-        class="wrapper selected"
-      >
-        <div
-          class="preview"
-        >
-          <img
-            alt="preview-light"
-            src="test-file-stub"
-          />
-        </div>
-        <div
-          class="label"
-        >
-          <input
-            checked=""
-            class="form-check-input"
-            readonly=""
-            tabindex="-1"
-            type="radio"
-          />
-          <span
-            class="text"
-          >
-            Light Theme
-          </span>
-        </div>
-      </button>
-      <button
-        aria-label="Dark Theme"
-        class="wrapper"
-      >
-        <div
-          class="preview"
-        >
-          <img
-            alt="preview-dark"
-            src="test-file-stub"
-          />
-        </div>
-        <div
-          class="label"
-        >
-          <input
-            class="form-check-input"
-            readonly=""
-            tabindex="-1"
-            type="radio"
-          />
-          <span
-            class="text"
-          >
-            Dark Theme
-          </span>
-        </div>
-      </button>
-    </div>
-    <div
-      class="InputField form-group"
-      color=""
-    >
-      <label
-        class="control-label"
-        for="id-input-1"
-      >
-        Primary Color
-      </label>
       <div
-        class=""
+        class="preview"
       >
-        <div
-          class="d-inline-block"
-        >
-          <button
-            class="button btn btn-secondary"
-            id="color-picker-2"
-            type="button"
-          >
-            <div
-              class="color"
-              style="background-color: rgb(74, 141, 249);"
-            />
-          </button>
-        </div>
+        <img
+          alt="preview-light"
+          src="test-file-stub"
+        />
       </div>
-      <small
-        class="form-text text-muted"
+      <div
+        class="label"
       >
-        This will be used as your primary color in hyperlinks, pagination and icons.
-      </small>
+        <input
+          checked=""
+          class="form-check-input"
+          readonly=""
+          tabindex="-1"
+          type="radio"
+        />
+        <span
+          class="text"
+        >
+          Light Theme
+        </span>
+      </div>
+    </button>
+    <button
+      aria-label="Dark Theme"
+      class="wrapper"
+    >
+      <div
+        class="preview"
+      >
+        <img
+          alt="preview-dark"
+          src="test-file-stub"
+        />
+      </div>
+      <div
+        class="label"
+      >
+        <input
+          class="form-check-input"
+          readonly=""
+          tabindex="-1"
+          type="radio"
+        />
+        <span
+          class="text"
+        >
+          Dark Theme
+        </span>
+      </div>
+    </button>
+  </div>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <label
+      class="control-label"
+      for="id-input-1"
+    >
+      Primary Color
+    </label>
+    <div
+      class=""
+    >
+      <div
+        class="d-inline-block"
+      >
+        <button
+          class="button btn btn-secondary"
+          id="color-picker-2"
+          type="button"
+        >
+          <div
+            class="color"
+            style="background-color: rgb(74, 141, 249);"
+          />
+        </button>
+      </div>
     </div>
-  </section>
+    <small
+      class="form-text text-muted"
+    >
+      This will be used as your primary color in hyperlinks, pagination and icons.
+    </small>
+  </div>
 </div>
 `;
