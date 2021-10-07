@@ -9,6 +9,8 @@ import {ShowMore} from '../../ShowMore.tsx'
 
 import css from './ListInfobarWidget.less'
 
+const DEFAULT_LIST_LIMIT = 3
+
 class ListInfobarWidget extends React.Component {
     state = {
         showMoreTimes: 0, // how many times the agent asked to show more of the list
@@ -62,7 +64,7 @@ class ListInfobarWidget extends React.Component {
             }
         }
 
-        let limit = template.getIn(['meta', 'limit'])
+        let limit = template.getIn(['meta', 'limit']) || DEFAULT_LIST_LIMIT
         let sourceList = orderedSource
         let exclusionMessage = null
 
