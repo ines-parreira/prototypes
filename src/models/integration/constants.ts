@@ -10,4 +10,5 @@ export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.FacebookIntegrationType,
     IntegrationType.GorgiasChatIntegrationType,
     IntegrationType.PhoneIntegrationType,
+    IntegrationType.TwitterIntegrationType,
 ])
