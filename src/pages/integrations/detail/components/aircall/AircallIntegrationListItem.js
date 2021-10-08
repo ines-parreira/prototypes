@@ -27,6 +27,9 @@ export default class AircallIntegrationListItem extends React.Component {
 
         return (
             <tr>
+                <td className="smallest align-middle">
+                    <ToggleButton value={!isDisabled} onChange={this._toggle} />
+                </td>
                 <td className="align-middle">
                     <div>
                         <b className="mr-2">{inte.get('name')}</b>
@@ -34,9 +37,6 @@ export default class AircallIntegrationListItem extends React.Component {
                             {inte.getIn(['meta', 'address'])}
                         </span>
                     </div>
-                </td>
-                <td className="smallest align-middle">
-                    <ToggleButton value={!isDisabled} onChange={this._toggle} />
                 </td>
             </tr>
         )

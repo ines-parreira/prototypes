@@ -60,6 +60,12 @@ export default class HTTPIntegrationList extends React.Component {
 
             return (
                 <tr key={int.get('id')}>
+                    <td className="smallest align-middle">
+                        <ToggleButton
+                            value={!isDisabled}
+                            onChange={toggleIntegration}
+                        />
+                    </td>
                     <td className="link-full-td">
                         <Link to={editLink}>
                             <div>
@@ -71,12 +77,6 @@ export default class HTTPIntegrationList extends React.Component {
                                 </span>
                             </div>
                         </Link>
-                    </td>
-                    <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                        />
                     </td>
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />

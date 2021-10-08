@@ -341,30 +341,14 @@ class AdsTable extends Component<AdsTableProps> {
             <Table hover>
                 <thead>
                     <tr className={css.row}>
+                        <th />
                         <th>Name</th>
                         <th>Creation date</th>
-                        <th />
                     </tr>
                 </thead>
                 <tbody>
                     {sortedAds.map((ad: Map<any, any>) => (
                         <tr key={ad.get('id')} className={css.row}>
-                            <td>
-                                <a
-                                    href={ad.get('permalink')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {ad.get('name')}
-                                </a>
-                            </td>
-                            <td>
-                                {ad.get('created_datetime') && (
-                                    <DatetimeLabel
-                                        dateTime={ad.get('created_datetime')}
-                                    />
-                                )}
-                            </td>
                             <td className="smallest align-middle">
                                 <ToggleButton
                                     value={ad.get('is_active')}
@@ -384,6 +368,22 @@ class AdsTable extends Component<AdsTableProps> {
                                         loadingAds.includes(ad.get('id'))
                                     }
                                 />
+                            </td>
+                            <td>
+                                <a
+                                    href={ad.get('permalink')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {ad.get('name')}
+                                </a>
+                            </td>
+                            <td>
+                                {ad.get('created_datetime') && (
+                                    <DatetimeLabel
+                                        dateTime={ad.get('created_datetime')}
+                                    />
+                                )}
                             </td>
                         </tr>
                     ))}

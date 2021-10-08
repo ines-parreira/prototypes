@@ -64,15 +64,6 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
 
                                 return (
                                     <tr key={campaign.get('id')}>
-                                        <td className="link-full-td">
-                                            <Link to={editLink}>
-                                                <div>
-                                                    <b>
-                                                        {campaign.get('name')}
-                                                    </b>
-                                                </div>
-                                            </Link>
-                                        </td>
                                         <td className="smallest align-middle">
                                             <ToggleButton
                                                 value={
@@ -86,6 +77,15 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
                                                     )
                                                 }
                                             />
+                                        </td>
+                                        <td className="link-full-td">
+                                            <Link to={editLink}>
+                                                <div>
+                                                    <b>
+                                                        {campaign.get('name')}
+                                                    </b>
+                                                </div>
+                                            </Link>
                                         </td>
                                         <td className="smallest align-middle">
                                             <ForwardIcon href={editLink} />

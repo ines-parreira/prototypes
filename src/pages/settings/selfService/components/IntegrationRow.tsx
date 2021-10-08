@@ -72,6 +72,13 @@ export const IntegrationRow = ({integration, configuration}: Props) => {
 
     return (
         <tr key={integration.get('id')}>
+            <td className="smallest align-middle">
+                <ToggleButton
+                    value={enabled}
+                    onChange={_onChange}
+                    loading={loading}
+                />
+            </td>
             <td className="link-full-td">
                 <Link
                     to={`/app/settings/self-service/${integrationType}/${shopName}/preferences`}
@@ -87,13 +94,6 @@ export const IntegrationRow = ({integration, configuration}: Props) => {
                         <b>{shopName}</b>
                     </div>
                 </Link>
-            </td>
-            <td className="smallest align-middle">
-                <ToggleButton
-                    value={enabled}
-                    onChange={_onChange}
-                    loading={loading}
-                />
             </td>
             <td className="smallest align-middle">
                 <ForwardIcon

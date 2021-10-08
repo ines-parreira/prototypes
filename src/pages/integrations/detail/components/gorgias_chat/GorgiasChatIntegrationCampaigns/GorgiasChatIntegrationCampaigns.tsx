@@ -66,15 +66,6 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
 
                                 return (
                                     <tr key={campaign.get('id') as number}>
-                                        <td className="link-full-td">
-                                            <Link to={editLink}>
-                                                <div>
-                                                    <b>
-                                                        {campaign.get('name')}
-                                                    </b>
-                                                </div>
-                                            </Link>
-                                        </td>
                                         <td className="smallest align-middle">
                                             <ToggleButton
                                                 value={
@@ -88,6 +79,15 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                                                     )
                                                 }
                                             />
+                                        </td>
+                                        <td className="link-full-td">
+                                            <Link to={editLink}>
+                                                <div>
+                                                    <b>
+                                                        {campaign.get('name')}
+                                                    </b>
+                                                </div>
+                                            </Link>
                                         </td>
                                         <td className="smallest align-middle">
                                             <ForwardIcon href={editLink} />

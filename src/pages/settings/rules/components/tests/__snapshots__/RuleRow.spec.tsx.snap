@@ -19,7 +19,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="smallest align-middle position-relative"
   >
     <label
-      class="switch"
+      class="switch toggle-switch"
     >
       <input
         checked=""

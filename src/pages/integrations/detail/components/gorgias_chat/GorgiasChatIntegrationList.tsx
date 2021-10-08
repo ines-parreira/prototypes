@@ -65,6 +65,15 @@ function GorgiasChatIntegrationList({
 
         return (
             <tr key={integrationId}>
+                <td className="smallest align-middle">
+                    <ToggleButton
+                        value={!isDisabled}
+                        onChange={toggleIntegration}
+                        loading={isLoading}
+                        disabled={!!loading.get('updateIntegration')}
+                    />
+                </td>
+
                 <td className="link-full-td">
                     <Link to={editLink}>
                         <div className={css['integration-link-inner']}>
@@ -101,14 +110,6 @@ function GorgiasChatIntegrationList({
                     </Link>
                 </td>
 
-                <td className="smallest align-middle">
-                    <ToggleButton
-                        value={!isDisabled}
-                        onChange={toggleIntegration}
-                        loading={isLoading}
-                        disabled={!!loading.get('updateIntegration')}
-                    />
-                </td>
                 <td className="smallest align-middle">
                     <ForwardIcon href={editLink} />
                 </td>

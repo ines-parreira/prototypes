@@ -85,13 +85,6 @@ export class ChatIntegrationListContainer extends Component<Props> {
 
             return (
                 <tr key={integration.get('id')}>
-                    <td className="link-full-td">
-                        <Link to={editLink}>
-                            <div>
-                                <b>{integration.get('name')}</b>
-                            </div>
-                        </Link>
-                    </td>
                     <td className="smallest align-middle">
                         <ToggleButton
                             value={!isDisabled}
@@ -99,6 +92,13 @@ export class ChatIntegrationListContainer extends Component<Props> {
                             loading={isLoading}
                             disabled={!!loading.get('updateIntegration')}
                         />
+                    </td>
+                    <td className="link-full-td">
+                        <Link to={editLink}>
+                            <div>
+                                <b>{integration.get('name')}</b>
+                            </div>
+                        </Link>
                     </td>
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />

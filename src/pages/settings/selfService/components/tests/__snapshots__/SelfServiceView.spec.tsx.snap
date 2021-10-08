@@ -53,6 +53,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
               <tbody>
                 <tr>
                   <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
                     class="link-full-td"
                   >
                     <a
@@ -76,15 +85,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
@@ -97,6 +97,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -121,15 +130,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
@@ -142,6 +142,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -166,15 +175,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
@@ -187,6 +187,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -207,15 +216,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                         </b>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -304,6 +304,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
               <tbody>
                 <tr>
                   <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
                     class="link-full-td"
                   >
                     <a
@@ -327,15 +336,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
@@ -348,6 +348,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -372,15 +381,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
@@ -393,6 +393,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -417,15 +426,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore3/preferences"
                     >
@@ -438,6 +438,15 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -458,15 +467,6 @@ exports[`<SelfServiceView/> ToggleButton.onChange() should send an updateSelfSer
                         </b>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"
@@ -555,6 +555,15 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
               <tbody>
                 <tr>
                   <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
+                  <td
                     class="link-full-td"
                   >
                     <a
@@ -578,15 +587,6 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore1/preferences"
                     >
@@ -599,6 +599,15 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=false
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -623,15 +632,6 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   <td
                     class="smallest align-middle"
                   >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=false
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
                     <a
                       to="/app/settings/self-service/shopify/mystore2/preferences"
                     >
@@ -644,6 +644,15 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                   </td>
                 </tr>
                 <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div
+                      data-testid="toggle-button"
+                    >
+                      ToggleButtonMock value=true
+                    </div>
+                  </td>
                   <td
                     class="link-full-td"
                   >
@@ -664,15 +673,6 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
                         </b>
                       </div>
                     </a>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div
-                      data-testid="toggle-button"
-                    >
-                      ToggleButtonMock value=true
-                    </div>
                   </td>
                   <td
                     class="smallest align-middle"

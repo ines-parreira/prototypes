@@ -894,13 +894,13 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 <tr
                   className="row"
                 >
+                  <th />
                   <th>
                     Name
                   </th>
                   <th>
                     Creation date
                   </th>
-                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -908,6 +908,31 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   className="row"
                   key="postid1"
                 >
+                  <td
+                    className="smallest align-middle"
+                  >
+                    <ToggleButton
+                      disabled={false}
+                      loading={false}
+                      onChange={[Function]}
+                      value={true}
+                    >
+                      <label
+                        className="switch toggle-switch"
+                        onClick={[Function]}
+                      >
+                        <input
+                          checked={true}
+                          disabled={false}
+                          readOnly={true}
+                          type="checkbox"
+                        />
+                        <div
+                          className="slider"
+                        />
+                      </label>
+                    </ToggleButton>
+                  </td>
                   <td>
                     <a
                       href="http://fake.link.to/ad1"
@@ -998,6 +1023,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </DatetimeLabelContainer>
                     </Connect(DatetimeLabelContainer)>
                   </td>
+                </tr>
+                <tr
+                  className="row"
+                  key="postid2"
+                >
                   <td
                     className="smallest align-middle"
                   >
@@ -1008,7 +1038,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       value={true}
                     >
                       <label
-                        className="switch"
+                        className="switch toggle-switch"
                         onClick={[Function]}
                       >
                         <input
@@ -1023,11 +1053,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </label>
                     </ToggleButton>
                   </td>
-                </tr>
-                <tr
-                  className="row"
-                  key="postid2"
-                >
                   <td>
                     <a
                       href="http://fake.link.to/ad2"
@@ -1118,22 +1143,27 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </DatetimeLabelContainer>
                     </Connect(DatetimeLabelContainer)>
                   </td>
+                </tr>
+                <tr
+                  className="row"
+                  key="postid3"
+                >
                   <td
                     className="smallest align-middle"
                   >
                     <ToggleButton
-                      disabled={false}
+                      disabled={true}
                       loading={false}
                       onChange={[Function]}
-                      value={true}
+                      value={false}
                     >
                       <label
-                        className="switch"
+                        className="switch toggle-switch disabled"
                         onClick={[Function]}
                       >
                         <input
-                          checked={true}
-                          disabled={false}
+                          checked={false}
+                          disabled={true}
                           readOnly={true}
                           type="checkbox"
                         />
@@ -1143,11 +1173,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </label>
                     </ToggleButton>
                   </td>
-                </tr>
-                <tr
-                  className="row"
-                  key="postid3"
-                >
                   <td>
                     <a
                       href="http://fake.link.to/ad3"
@@ -1237,31 +1262,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                         </span>
                       </DatetimeLabelContainer>
                     </Connect(DatetimeLabelContainer)>
-                  </td>
-                  <td
-                    className="smallest align-middle"
-                  >
-                    <ToggleButton
-                      disabled={true}
-                      loading={false}
-                      onChange={[Function]}
-                      value={false}
-                    >
-                      <label
-                        className="switch disabled"
-                        onClick={[Function]}
-                      >
-                        <input
-                          checked={false}
-                          disabled={true}
-                          readOnly={true}
-                          type="checkbox"
-                        />
-                        <div
-                          className="slider"
-                        />
-                      </label>
-                    </ToggleButton>
                   </td>
                 </tr>
               </tbody>
@@ -1578,13 +1578,13 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 <tr
                   className="row"
                 >
+                  <th />
                   <th>
                     Name
                   </th>
                   <th>
                     Creation date
                   </th>
-                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -1592,6 +1592,31 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   className="row"
                   key="postid1"
                 >
+                  <td
+                    className="smallest align-middle"
+                  >
+                    <ToggleButton
+                      disabled={false}
+                      loading={false}
+                      onChange={[Function]}
+                      value={true}
+                    >
+                      <label
+                        className="switch toggle-switch"
+                        onClick={[Function]}
+                      >
+                        <input
+                          checked={true}
+                          disabled={false}
+                          readOnly={true}
+                          type="checkbox"
+                        />
+                        <div
+                          className="slider"
+                        />
+                      </label>
+                    </ToggleButton>
+                  </td>
                   <td>
                     <a
                       href="http://fake.link.to/ad1"
@@ -1681,31 +1706,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                         </span>
                       </DatetimeLabelContainer>
                     </Connect(DatetimeLabelContainer)>
-                  </td>
-                  <td
-                    className="smallest align-middle"
-                  >
-                    <ToggleButton
-                      disabled={false}
-                      loading={false}
-                      onChange={[Function]}
-                      value={true}
-                    >
-                      <label
-                        className="switch"
-                        onClick={[Function]}
-                      >
-                        <input
-                          checked={true}
-                          disabled={false}
-                          readOnly={true}
-                          type="checkbox"
-                        />
-                        <div
-                          className="slider"
-                        />
-                      </label>
-                    </ToggleButton>
                   </td>
                 </tr>
               </tbody>
@@ -2039,13 +2039,13 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 <tr
                   className="row"
                 >
+                  <th />
                   <th>
                     Name
                   </th>
                   <th>
                     Creation date
                   </th>
-                  <th />
                 </tr>
               </thead>
               <tbody>
@@ -2053,6 +2053,31 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   className="row"
                   key="postid1"
                 >
+                  <td
+                    className="smallest align-middle"
+                  >
+                    <ToggleButton
+                      disabled={false}
+                      loading={false}
+                      onChange={[Function]}
+                      value={true}
+                    >
+                      <label
+                        className="switch toggle-switch"
+                        onClick={[Function]}
+                      >
+                        <input
+                          checked={true}
+                          disabled={false}
+                          readOnly={true}
+                          type="checkbox"
+                        />
+                        <div
+                          className="slider"
+                        />
+                      </label>
+                    </ToggleButton>
+                  </td>
                   <td>
                     <a
                       href="http://fake.link.to/ad1"
@@ -2143,6 +2168,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       </DatetimeLabelContainer>
                     </Connect(DatetimeLabelContainer)>
                   </td>
+                </tr>
+                <tr
+                  className="row"
+                  key="postid2"
+                >
                   <td
                     className="smallest align-middle"
                   >
@@ -2150,14 +2180,14 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       disabled={false}
                       loading={false}
                       onChange={[Function]}
-                      value={true}
+                      value={false}
                     >
                       <label
-                        className="switch"
+                        className="switch toggle-switch"
                         onClick={[Function]}
                       >
                         <input
-                          checked={true}
+                          checked={false}
                           disabled={false}
                           readOnly={true}
                           type="checkbox"
@@ -2168,11 +2198,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       </label>
                     </ToggleButton>
                   </td>
-                </tr>
-                <tr
-                  className="row"
-                  key="postid2"
-                >
                   <td>
                     <a
                       href="http://fake.link.to/ad2"
@@ -2262,31 +2287,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                         </span>
                       </DatetimeLabelContainer>
                     </Connect(DatetimeLabelContainer)>
-                  </td>
-                  <td
-                    className="smallest align-middle"
-                  >
-                    <ToggleButton
-                      disabled={false}
-                      loading={false}
-                      onChange={[Function]}
-                      value={false}
-                    >
-                      <label
-                        className="switch"
-                        onClick={[Function]}
-                      >
-                        <input
-                          checked={false}
-                          disabled={false}
-                          readOnly={true}
-                          type="checkbox"
-                        />
-                        <div
-                          className="slider"
-                        />
-                      </label>
-                    </ToggleButton>
                   </td>
                 </tr>
               </tbody>

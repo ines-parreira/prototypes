@@ -42,6 +42,9 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
         class="headerRow"
       >
         <td
+          class="wrapper smallest"
+        />
+        <td
           class="wrapper"
         >
           <div
@@ -113,6 +116,26 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
         class="row tableBodyRow isClickable"
       >
         <td
+          class="smallest actions"
+        >
+          <div
+            class="cellContent"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                checked=""
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </div>
+        </td>
+        <td
           class="helpCenterName"
         >
           <div
@@ -155,18 +178,6 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
           <div
             class="cellContent"
           >
-            <label
-              class="switch"
-            >
-              <input
-                checked=""
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
             <i
               class="material-icons forwardIcon"
             >
@@ -178,6 +189,26 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
       <tr
         class="row tableBodyRow isClickable"
       >
+        <td
+          class="smallest actions"
+        >
+          <div
+            class="cellContent"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                checked=""
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </div>
+        </td>
         <td
           class="helpCenterName"
         >
@@ -232,18 +263,6 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
           <div
             class="cellContent"
           >
-            <label
-              class="switch"
-            >
-              <input
-                checked=""
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
             <i
               class="material-icons forwardIcon"
             >
@@ -255,6 +274,26 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
       <tr
         class="row tableBodyRow isClickable"
       >
+        <td
+          class="smallest actions"
+        >
+          <div
+            class="cellContent"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                checked=""
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </div>
+        </td>
         <td
           class="helpCenterName"
         >
@@ -309,18 +348,6 @@ exports[`<HelpCenterTable/> should display the table correctly when not loading 
           <div
             class="cellContent"
           >
-            <label
-              class="switch"
-            >
-              <input
-                checked=""
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
             <i
               class="material-icons forwardIcon"
             >

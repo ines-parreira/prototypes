@@ -2,7 +2,7 @@
 
 exports[`ToggleButton should render the button disabled 1`] = `
 <label
-  className="switch disabled"
+  className="switch toggle-switch disabled"
   onClick={[Function]}
 >
   <input
@@ -19,7 +19,7 @@ exports[`ToggleButton should render the button disabled 1`] = `
 
 exports[`ToggleButton should render the button loading 1`] = `
 <label
-  className="switch loading"
+  className="switch toggle-switch loading"
   onClick={[Function]}
 >
   <input
@@ -35,7 +35,7 @@ exports[`ToggleButton should render the button loading 1`] = `
 
 exports[`ToggleButton should render the button loading and disabled 1`] = `
 <label
-  className="switch loading disabled"
+  className="switch toggle-switch loading disabled"
   onClick={[Function]}
 >
   <input
@@ -52,7 +52,7 @@ exports[`ToggleButton should render the button loading and disabled 1`] = `
 
 exports[`ToggleButton should render the checkbox checked 1`] = `
 <label
-  className="switch"
+  className="switch toggle-switch"
   onClick={[Function]}
 >
   <input
@@ -68,7 +68,7 @@ exports[`ToggleButton should render the checkbox checked 1`] = `
 
 exports[`ToggleButton should render the checkbox unchecked 1`] = `
 <label
-  className="switch"
+  className="switch toggle-switch"
   onClick={[Function]}
 >
   <input

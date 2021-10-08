@@ -498,7 +498,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             class="d-flex"
           >
             <label
-              class="switch"
+              class="switch toggle-switch"
             >
               <input
                 readonly=""
@@ -525,7 +525,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
             class="d-flex"
           >
             <label
-              class="switch"
+              class="switch toggle-switch"
             >
               <input
                 checked=""

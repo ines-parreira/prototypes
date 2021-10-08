@@ -30,7 +30,7 @@ export default class ToggleButton extends Component<Props> {
 
         return (
             <label
-                className={classnames(css.switch, {
+                className={classnames(css.switch, 'toggle-switch', {
                     [css.loading]: loading,
                     [css.disabled]: disabled,
                 })}

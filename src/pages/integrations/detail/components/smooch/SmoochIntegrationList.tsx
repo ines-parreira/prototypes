@@ -84,18 +84,18 @@ export class SmoochIntegrationList extends Component<Props> {
 
             return (
                 <tr key={int.get('id')}>
+                    <td className="smallest align-middle">
+                        <ToggleButton
+                            value={!isDisabled}
+                            onChange={toggleIntegration}
+                        />
+                    </td>
                     <td className="link-full-td">
                         <Link to={editLink}>
                             <div>
                                 <b>{int.get('name')}</b>
                             </div>
                         </Link>
-                    </td>
-                    <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                        />
                     </td>
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />

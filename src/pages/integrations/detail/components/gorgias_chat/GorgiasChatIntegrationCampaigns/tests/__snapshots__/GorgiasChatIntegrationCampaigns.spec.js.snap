@@ -217,6 +217,22 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       <tbody>
         <tr>
           <td
+            class="smallest align-middle"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                checked=""
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </td>
+          <td
             class="link-full-td"
           >
             <a
@@ -228,22 +244,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 </b>
               </div>
             </a>
-          </td>
-          <td
-            class="smallest align-middle"
-          >
-            <label
-              class="switch"
-            >
-              <input
-                checked=""
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
           </td>
           <td
             class="smallest align-middle"
@@ -261,6 +261,21 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         </tr>
         <tr>
           <td
+            class="smallest align-middle"
+          >
+            <label
+              class="switch toggle-switch"
+            >
+              <input
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </td>
+          <td
             class="link-full-td"
           >
             <a
@@ -272,21 +287,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 </b>
               </div>
             </a>
-          </td>
-          <td
-            class="smallest align-middle"
-          >
-            <label
-              class="switch"
-            >
-              <input
-                readonly=""
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-            </label>
           </td>
           <td
             class="smallest align-middle"

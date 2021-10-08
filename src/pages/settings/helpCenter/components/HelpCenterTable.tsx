@@ -57,6 +57,7 @@ export function HelpCentersTable({
     return (
         <TableWrapper>
             <TableHead className={css.tableHead}>
+                <HeaderCell className="smallest" />
                 <HeaderCellProperty title="Help Center name" />
                 <HeaderCellProperty title="Languages" />
                 <HeaderCellProperty title="Last updated" />
@@ -79,6 +80,17 @@ export function HelpCentersTable({
                                 key={id}
                                 onClick={() => onClick(id)}
                             >
+                                <BodyCell
+                                    className={classnames(
+                                        'smallest',
+                                        css.actions
+                                    )}
+                                >
+                                    <ToggleButton
+                                        value={activated}
+                                        onChange={handleToggle(id)}
+                                    />
+                                </BodyCell>
                                 <BodyCell className={css.helpCenterName}>
                                     {name}
                                 </BodyCell>
@@ -102,10 +114,6 @@ export function HelpCentersTable({
                                         css.actions
                                     )}
                                 >
-                                    <ToggleButton
-                                        value={activated}
-                                        onChange={handleToggle(id)}
-                                    />
                                     <i
                                         className={classnames(
                                             'material-icons',
