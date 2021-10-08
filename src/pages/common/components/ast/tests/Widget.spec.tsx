@@ -228,7 +228,6 @@ describe('ast', () => {
                 actions = {
                     modifyCodeAST: modifyCodeASTSpy,
                     getCondition,
-                    setRuleCode: jest.fn(),
                 }
             })
 

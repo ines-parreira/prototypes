@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import React, {useMemo, useState, useCallback, Fragment} from 'react'
+import {List, fromJS} from 'immutable'
+import React, {useMemo, useState, Fragment} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {IntegrationType} from '../../../../../models/integration/types'
@@ -14,14 +14,14 @@ import {
 } from '../../../../../models/rule/types'
 import {
     getAstPath,
-    getFormattedRule,
     getCategoryFromPath,
+    generateExpression,
 } from '../../../../../models/rule/utils'
 import {RootState} from '../../../../../state/types'
 import {getIconFromUrl} from '../../../../../state/integrations/helpers'
 import {
     ObjectExpressionPropertyKey,
-    Rule,
+    RuleOperation,
 } from '../../../../../state/rules/types'
 import {makeHasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
 import {RuleItemActions} from '../../../../settings/rules/RulesSettingsForm'
@@ -32,7 +32,6 @@ import css from './MemberExpression.less'
 type OwnProps = {
     object: ObjectExpressionPropertyKey
     property: ObjectExpressionPropertyKey
-    rule: Map<any, any>
     parent: List<any>
     filteredIntegrationTypes?: IntegrationType[]
     actions: RuleItemActions
@@ -42,7 +41,6 @@ export function MemberExpressionContainer({
     hasIntegrationType,
     object,
     property,
-    rule,
     parent,
     filteredIntegrationTypes = [
         IntegrationType.ShopifyIntegrationType,
@@ -82,18 +80,13 @@ export function MemberExpressionContainer({
         })
     }, [])
 
-    const handleSelect = useCallback(
-        (value) => {
-            const {code, code_ast} = getFormattedRule(
-                rule,
-                value,
-                parent
-            ).toJS() as Rule
-            actions.setRuleCode(code, code_ast)
-            setSelectedCategory(null)
-        },
-        [rule, parent]
-    )
+    const handleSelect = (value: string) => {
+        const expression = fromJS(
+            generateExpression(value.split('.').reverse())
+        )
+        actions.modifyCodeAST(parent, expression, RuleOperation.Update)
+        setSelectedCategory(null)
+    }
 
     const valueLabel = useMemo(() => {
         if (!displayedValue) {

@@ -1,49 +1,47 @@
 import {fromJS} from 'immutable'
 
-import * as utils from '../utils.ts'
+import {resolveCallee, resolveSecondArg} from '../utils.ts'
 import schemasJSON from '../../../fixtures/openapi.json'
 import {findProperty, toImmutable} from '../../../utils.ts'
 
+const schemas = fromJS(schemasJSON)
+const emptyCallExpression = fromJS({})
+const getFirstArgSchema = (member) => toImmutable(findProperty(member, schemas))
+
 describe('resolveCallee function', () => {
-    const schemas = fromJS(schemasJSON)
-    const callExpression = fromJS({})
-
     it('should return first operator when there is no default', () => {
-        let firstArgSchema = toImmutable(
-            findProperty('ticket.snooze_datetime', schemas)
-        )
+        let firstArgSchema = getFirstArgSchema('ticket.snooze_datetime')
         expect(['isEmpty', 'isNotEmpty']).toContain(
-            utils.resolveCallee(callExpression, firstArgSchema)
+            resolveCallee(emptyCallExpression, firstArgSchema)
         )
 
-        firstArgSchema = toImmutable(findProperty('ticket.language', schemas))
+        firstArgSchema = getFirstArgSchema('ticket.language')
         expect(['eq', 'neq']).toContain(
-            utils.resolveCallee(callExpression, firstArgSchema)
+            resolveCallee(emptyCallExpression, firstArgSchema)
         )
 
-        firstArgSchema = toImmutable(findProperty('ticket.channel', schemas))
+        firstArgSchema = getFirstArgSchema('ticket.channel')
         expect(['eq', 'neq']).toContain(
-            utils.resolveCallee(callExpression, firstArgSchema)
+            resolveCallee(emptyCallExpression, firstArgSchema)
         )
     })
 
     it('should return default operator', () => {
-        let firstArgSchema = toImmutable(
-            findProperty('ticket.created_datetime', schemas)
-        )
-        expect(utils.resolveCallee(callExpression, firstArgSchema)).toBe(
+        const firstArgSchema = getFirstArgSchema('ticket.created_datetime')
+        expect(resolveCallee(emptyCallExpression, firstArgSchema)).toBe(
             'gteTimedelta'
         )
     })
 
     it('should not return default operator because it is deprecated', () => {
         const deprecatedOperator = 'contains'
-        let firstArgSchema = toImmutable(
-            findProperty('ticket.created_datetime', schemas)
-        ).setIn(['meta', 'defaultOperator'], deprecatedOperator)
+        let firstArgSchema = getFirstArgSchema('ticket.created_datetime').setIn(
+            ['meta', 'defaultOperator'],
+            deprecatedOperator
+        )
 
-        const resolvedOperator = utils.resolveCallee(
-            callExpression,
+        const resolvedOperator = resolveCallee(
+            emptyCallExpression,
             firstArgSchema
         )
 
@@ -54,9 +52,7 @@ describe('resolveCallee function', () => {
     })
 
     it('should not return first operator because it is deprecated', () => {
-        let firstArgSchema = toImmutable(
-            findProperty('ticket.channel', schemas)
-        ).setIn(
+        let firstArgSchema = getFirstArgSchema('ticket.channel', schemas).setIn(
             ['meta', 'operators'],
             fromJS({
                 contains: {label: 'contains'},
@@ -64,6 +60,87 @@ describe('resolveCallee function', () => {
             })
         )
 
-        expect(utils.resolveCallee(callExpression, firstArgSchema)).toBe('eq')
+        expect(resolveCallee(emptyCallExpression, firstArgSchema)).toBe('eq')
+    })
+})
+
+describe('resolveSecondArg function', () => {
+    const mockDate = '2019-01-26T05:34:56-07:00'
+    beforeAll(() => {
+        global.Date.now = jest.fn(() => new Date(mockDate))
+    })
+    it.each([
+        ['isEmpty', null],
+        ['containsAll', '[]'],
+        ['gteTimedelta', "'1d'"],
+        ['gte', `'${mockDate}'`],
+        ['eq', ''],
+    ])('Should return default value (%s)', (callee, secondArg) => {
+        // No current value, no schema
+        expect(resolveSecondArg(emptyCallExpression, null, callee, false)).toBe(
+            secondArg
+        )
+    })
+
+    it.each([
+        ['isEmpty', 'ticket.snooze_datetime', null],
+        ['containsAll', 'ticket.body', '[]'],
+        ['gteTimedelta', 'ticket.created_datetime', "'1d'"],
+        ['gte', 'ticket.created_datetime', `'${mockDate}'`],
+        ['eq', 'ticket.channel', "'aircall'"],
+    ])('Should return proper value (%s)', (callee, firstArg, secondArg) => {
+        //No current value, with schema
+        const firstArgSchema = getFirstArgSchema(firstArg)
+        expect(
+            resolveSecondArg(emptyCallExpression, firstArgSchema, callee, false)
+        ).toBe(secondArg)
+    })
+
+    it.each([
+        ['isEmpty', 'ticket.snooze_datetime', null],
+        ['containsAll', 'ticket.body', '[email]'],
+        ['gteTimedelta', 'ticket.created_datetime', "'1d'"],
+        ['gte', 'ticket.created_datetime', `'${mockDate}'`],
+        ['eq', 'ticket.channel', "'email'"],
+    ])('Should return current value (%s)', (callee, firstArg, secondArg) => {
+        //No current value, with schema
+        const callExpression = fromJS({
+            arguments: [
+                null,
+                {
+                    type: 'Literal',
+                    value: 'email',
+                    raw: 'email',
+                },
+            ],
+        })
+        const firstArgSchema = getFirstArgSchema(firstArg)
+        expect(
+            resolveSecondArg(callExpression, firstArgSchema, callee, false)
+        ).toBe(secondArg)
+    })
+
+    it.each([
+        ['isEmpty', 'ticket.snooze_datetime', null],
+        ['containsAll', 'ticket.body', '[]'],
+        ['gteTimedelta', 'ticket.created_datetime', "'1d'"],
+        ['gte', 'ticket.created_datetime', `'${mockDate}'`],
+        ['eq', 'ticket.channel', "'aircall'"],
+    ])('Should return reset value (%s)', (callee, firstArg, secondArg) => {
+        //No current value, with schema
+        const callExpression = fromJS({
+            arguments: [
+                null,
+                {
+                    type: 'Literal',
+                    value: 'email',
+                    raw: 'email',
+                },
+            ],
+        })
+        const firstArgSchema = getFirstArgSchema(firstArg)
+        expect(
+            resolveSecondArg(callExpression, firstArgSchema, callee, true)
+        ).toBe(secondArg)
     })
 })

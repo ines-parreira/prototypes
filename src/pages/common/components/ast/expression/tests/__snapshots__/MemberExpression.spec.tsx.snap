@@ -389,370 +389,58 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
 exports[`<MemberExpression/> should update the rule on clicking a variable option 1`] = `
 Array [
   Array [
-    "if (eq(ticket.customer.integrations.shopify.last_order.fulfillment_status, null)) {
-    Action('setTags', { tags: 'set' })
-}",
-    Object {
-      "body": Array [
-        Object {
-          "alternate": null,
-          "consequent": Object {
-            "body": Array [
-              Object {
-                "expression": Object {
-                  "arguments": Array [
-                    Object {
-                      "loc": SourceLocation {
-                        "end": Object {
-                          "column": 20,
-                          "line": 2,
-                        },
-                        "start": Position {
-                          "column": 11,
-                          "line": 2,
-                        },
-                      },
-                      "raw": "'setTags'",
-                      "type": "Literal",
-                      "value": "setTags",
-                    },
-                    Object {
-                      "loc": SourceLocation {
-                        "end": Object {
-                          "column": 37,
-                          "line": 2,
-                        },
-                        "start": Position {
-                          "column": 22,
-                          "line": 2,
-                        },
-                      },
-                      "properties": Array [
-                        Object {
-                          "computed": false,
-                          "key": Object {
-                            "loc": SourceLocation {
-                              "end": Object {
-                                "column": 28,
-                                "line": 2,
-                              },
-                              "start": Position {
-                                "column": 24,
-                                "line": 2,
-                              },
-                            },
-                            "name": "tags",
-                            "type": "Identifier",
-                          },
-                          "kind": "init",
-                          "loc": SourceLocation {
-                            "end": Object {
-                              "column": 35,
-                              "line": 2,
-                            },
-                            "start": Position {
-                              "column": 24,
-                              "line": 2,
-                            },
-                          },
-                          "method": false,
-                          "shorthand": false,
-                          "type": "Property",
-                          "value": Object {
-                            "loc": SourceLocation {
-                              "end": Object {
-                                "column": 35,
-                                "line": 2,
-                              },
-                              "start": Position {
-                                "column": 30,
-                                "line": 2,
-                              },
-                            },
-                            "raw": "'set'",
-                            "type": "Literal",
-                            "value": "set",
-                          },
-                        },
-                      ],
-                      "type": "ObjectExpression",
-                    },
-                  ],
-                  "callee": Object {
-                    "loc": SourceLocation {
-                      "end": Object {
-                        "column": 10,
-                        "line": 2,
-                      },
-                      "start": Position {
-                        "column": 4,
-                        "line": 2,
-                      },
-                    },
-                    "name": "Action",
-                    "type": "Identifier",
-                  },
-                  "loc": WrappingSourceLocation {
-                    "end": Object {
-                      "column": 38,
-                      "line": 2,
-                    },
-                    "start": Object {
-                      "column": 4,
-                      "line": 2,
-                    },
-                  },
-                  "type": "CallExpression",
-                },
-                "loc": SourceLocation {
-                  "end": Object {
-                    "column": 38,
-                    "line": 2,
-                  },
-                  "start": Position {
-                    "column": 4,
-                    "line": 2,
-                  },
-                },
-                "type": "ExpressionStatement",
+    Immutable.List [
+      "body",
+      0,
+      "test",
+      "arguments",
+      0,
+    ],
+    Immutable.Map {
+      "computed": false,
+      "object": Immutable.Map {
+        "computed": false,
+        "object": Immutable.Map {
+          "computed": false,
+          "object": Immutable.Map {
+            "computed": false,
+            "object": Immutable.Map {
+              "computed": false,
+              "object": Immutable.Map {
+                "name": "ticket",
+                "type": "Identifier",
               },
-            ],
-            "loc": SourceLocation {
-              "end": Object {
-                "column": 1,
-                "line": 3,
+              "property": Immutable.Map {
+                "name": "customer",
+                "type": "Identifier",
               },
-              "start": Position {
-                "column": 82,
-                "line": 1,
-              },
+              "type": "MemberExpression",
             },
-            "type": "BlockStatement",
-          },
-          "loc": SourceLocation {
-            "end": Object {
-              "column": 1,
-              "line": 3,
-            },
-            "start": Position {
-              "column": 0,
-              "line": 1,
-            },
-          },
-          "test": Object {
-            "arguments": Array [
-              Object {
-                "computed": false,
-                "loc": WrappingSourceLocation {
-                  "end": Object {
-                    "column": 73,
-                    "line": 1,
-                  },
-                  "start": Object {
-                    "column": 7,
-                    "line": 1,
-                  },
-                },
-                "object": Object {
-                  "computed": false,
-                  "loc": WrappingSourceLocation {
-                    "end": Object {
-                      "column": 54,
-                      "line": 1,
-                    },
-                    "start": Object {
-                      "column": 7,
-                      "line": 1,
-                    },
-                  },
-                  "object": Object {
-                    "computed": false,
-                    "loc": WrappingSourceLocation {
-                      "end": Object {
-                        "column": 43,
-                        "line": 1,
-                      },
-                      "start": Object {
-                        "column": 7,
-                        "line": 1,
-                      },
-                    },
-                    "object": Object {
-                      "computed": false,
-                      "loc": WrappingSourceLocation {
-                        "end": Object {
-                          "column": 35,
-                          "line": 1,
-                        },
-                        "start": Object {
-                          "column": 7,
-                          "line": 1,
-                        },
-                      },
-                      "object": Object {
-                        "computed": false,
-                        "loc": WrappingSourceLocation {
-                          "end": Object {
-                            "column": 22,
-                            "line": 1,
-                          },
-                          "start": Object {
-                            "column": 7,
-                            "line": 1,
-                          },
-                        },
-                        "object": Object {
-                          "loc": SourceLocation {
-                            "end": Object {
-                              "column": 13,
-                              "line": 1,
-                            },
-                            "start": Position {
-                              "column": 7,
-                              "line": 1,
-                            },
-                          },
-                          "name": "ticket",
-                          "type": "Identifier",
-                        },
-                        "property": Object {
-                          "loc": SourceLocation {
-                            "end": Object {
-                              "column": 22,
-                              "line": 1,
-                            },
-                            "start": Position {
-                              "column": 14,
-                              "line": 1,
-                            },
-                          },
-                          "name": "customer",
-                          "type": "Identifier",
-                        },
-                        "type": "MemberExpression",
-                      },
-                      "property": Object {
-                        "loc": SourceLocation {
-                          "end": Object {
-                            "column": 35,
-                            "line": 1,
-                          },
-                          "start": Position {
-                            "column": 23,
-                            "line": 1,
-                          },
-                        },
-                        "name": "integrations",
-                        "type": "Identifier",
-                      },
-                      "type": "MemberExpression",
-                    },
-                    "property": Object {
-                      "loc": SourceLocation {
-                        "end": Object {
-                          "column": 43,
-                          "line": 1,
-                        },
-                        "start": Position {
-                          "column": 36,
-                          "line": 1,
-                        },
-                      },
-                      "name": "shopify",
-                      "type": "Identifier",
-                    },
-                    "type": "MemberExpression",
-                  },
-                  "property": Object {
-                    "loc": SourceLocation {
-                      "end": Object {
-                        "column": 54,
-                        "line": 1,
-                      },
-                      "start": Position {
-                        "column": 44,
-                        "line": 1,
-                      },
-                    },
-                    "name": "last_order",
-                    "type": "Identifier",
-                  },
-                  "type": "MemberExpression",
-                },
-                "property": Object {
-                  "loc": SourceLocation {
-                    "end": Object {
-                      "column": 73,
-                      "line": 1,
-                    },
-                    "start": Position {
-                      "column": 55,
-                      "line": 1,
-                    },
-                  },
-                  "name": "fulfillment_status",
-                  "type": "Identifier",
-                },
-                "type": "MemberExpression",
-              },
-              Object {
-                "loc": SourceLocation {
-                  "end": Object {
-                    "column": 79,
-                    "line": 1,
-                  },
-                  "start": Position {
-                    "column": 75,
-                    "line": 1,
-                  },
-                },
-                "raw": "null",
-                "type": "Literal",
-                "value": null,
-              },
-            ],
-            "callee": Object {
-              "loc": SourceLocation {
-                "end": Object {
-                  "column": 6,
-                  "line": 1,
-                },
-                "start": Position {
-                  "column": 4,
-                  "line": 1,
-                },
-              },
-              "name": "eq",
+            "property": Immutable.Map {
+              "name": "integrations",
               "type": "Identifier",
             },
-            "loc": WrappingSourceLocation {
-              "end": Object {
-                "column": 80,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "type": "CallExpression",
+            "type": "MemberExpression",
           },
-          "type": "IfStatement",
+          "property": Immutable.Map {
+            "name": "shopify",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
         },
-      ],
-      "loc": SourceLocation {
-        "end": Object {
-          "column": 1,
-          "line": 3,
+        "property": Immutable.Map {
+          "name": "last_order",
+          "type": "Identifier",
         },
-        "start": Position {
-          "column": 0,
-          "line": 1,
-        },
+        "type": "MemberExpression",
       },
-      "sourceType": "script",
-      "type": "Program",
+      "property": Immutable.Map {
+        "name": "fulfillment_status",
+        "type": "Identifier",
+      },
+      "type": "MemberExpression",
     },
+    "UPDATE",
   ],
 ]
 `;

@@ -65,7 +65,6 @@ export type RuleItemActions = {
         code_ast?: ReturnType<typeof esprima.parse>
     ) => CodeASTType
     getCondition: (path: List<any>) => Map<any, any>
-    setRuleCode: (code: string, ast: CodeASTType) => void
 }
 
 export function RulesSettingsFormContainer({
@@ -344,13 +343,6 @@ export function RulesSettingsFormContainer({
         return ast as CodeASTType
     }
 
-    const setRuleCode = (
-        code: string,
-        code_ast: ReturnType<typeof esprima.parse>
-    ): void => {
-        setRuleDraft({...ruleDraft, code, code_ast})
-    }
-
     const getCondition = (path: List<any>) =>
         fromJS(_getIn(ruleDraft, ['code_ast', ...path.toJS()])) as Map<any, any>
 
@@ -430,7 +422,6 @@ export function RulesSettingsFormContainer({
                                 actions={{
                                     modifyCodeAST,
                                     getCondition,
-                                    setRuleCode,
                                 }}
                             />
                         </FormGroup>

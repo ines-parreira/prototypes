@@ -34,7 +34,6 @@ describe('AddLogicalCondition component', () => {
                             any,
                             any
                         >) || fromJS({}),
-                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />
@@ -66,7 +65,6 @@ describe('AddLogicalCondition component', () => {
                             any,
                             any
                         >) || fromJS({}),
-                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />
@@ -98,7 +96,6 @@ describe('AddLogicalCondition component', () => {
                             any,
                             any
                         >) || fromJS({}),
-                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />
@@ -133,7 +130,6 @@ describe('AddLogicalCondition component', () => {
                             any,
                             any
                         >) || fromJS({}),
-                    setRuleCode: jest.fn(),
                 }}
                 rule={rule}
             />

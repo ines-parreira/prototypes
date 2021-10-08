@@ -49,7 +49,7 @@ function partialPath(
     let fullStop = false
 
     function walk(expr: Maybe<Map<any, any>>, path: Maybe<string>[]) {
-        if (fullStop || stopPath.equals(fromJS(path))) {
+        if (fullStop || (stopPath.size && stopPath.equals(fromJS(path)))) {
             fullStop = true
             return
         }
@@ -302,31 +302,27 @@ export function resolveCallee(
  * What happens here is we try to keep the old value if we can. Otherwise we look into possible
  * values based on `firstArgSchema`
  */
-function resolveSecondArg(
+export function resolveSecondArg(
     callExpression: Map<any, any>,
     firstArgSchema: Schemas,
     callee: string,
     reset: boolean
-) {
+): Maybe<string> {
     // empty operators have only one argument
     if (Object.keys(UNARY_OPERATORS).includes(callee)) {
         return null
     }
 
-    const isCollectionCallee = Object.values(CollectionOperator).includes(
-        callee as any
-    )
-    const isTimedeltaCallee = Object.values(TimedeltaOperator).includes(
-        callee as any
-    )
-    const isDatetimeCallee = Object.values(DatetimeOperator).includes(
-        callee as any
-    )
+    const hasEnum = <T>(enumType: T) => Object.values(enumType).includes(callee)
+    const isCollectionCallee = hasEnum(CollectionOperator)
+    const isTimedeltaCallee = hasEnum(TimedeltaOperator)
+    const isDatetimeCallee = hasEnum(DatetimeOperator)
+
     const args = (callExpression.getIn(['arguments', 1]) || fromJS({})) as Map<
         any,
         any
     >
-    let curDefault = 'null'
+    let curDefault = ''
     let curValue: Maybe<string[] | string> = undefined
 
     // define the current default and value
@@ -401,7 +397,7 @@ function resolveSecondArg(
             case 'integer':
                 return useCurValue && _isInteger(curValue)
                     ? (args.get('raw') as string)
-                    : curDefault
+                    : "''"
 
             case 'boolean':
                 return 'true'
