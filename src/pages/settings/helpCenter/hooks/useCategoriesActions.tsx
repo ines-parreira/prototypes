@@ -225,6 +225,11 @@ export const useCategoriesActions = () => {
 
             setIsLoading(true)
 
+            await client.deleteCategoryArticles({
+                help_center_id: helpCenterId,
+                category_id: categoryId,
+            })
+
             const response = await client.deleteCategory({
                 help_center_id: helpCenterId,
                 id: categoryId,
