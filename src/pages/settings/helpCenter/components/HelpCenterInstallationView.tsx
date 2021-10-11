@@ -20,14 +20,18 @@ import InputField from '../../../common/forms/InputField'
 import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
-import {getSubdomainValidationError} from '../utils/validations'
+import {
+    getSubdomainValidationError,
+    isValidSubdomain,
+} from '../utils/validations'
 
 import {CustomDomain} from './CustomDomain'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
-import css from './HelpCenterInstallationView.less'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
+
+import css from './HelpCenterInstallationView.less'
 
 export const HelpCenterInstallationView = (): JSX.Element | null => {
     const dispatch = useAppDispatch()
@@ -44,7 +48,11 @@ export const HelpCenterInstallationView = (): JSX.Element | null => {
 
     const checkSubdomainAvailability = useCallback(
         _debounce(async () => {
-            if (client && subdomainValue !== helpCenter?.subdomain) {
+            if (
+                client &&
+                isValidSubdomain(subdomainValue) &&
+                subdomainValue !== helpCenter?.subdomain
+            ) {
                 try {
                     await client.checkHelpCenterWithSubdomainExists({
                         subdomain: subdomainValue,

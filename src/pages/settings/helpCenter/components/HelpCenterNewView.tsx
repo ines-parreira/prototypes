@@ -1,36 +1,40 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import axios from 'axios'
 import classnames from 'classnames'
+import produce from 'immer'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container, Button, Label} from 'reactstrap'
-import produce from 'immer'
-import axios from 'axios'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Label} from 'reactstrap'
 
+import {CreateHelpCenterDto} from '../../../../models/helpCenter/types'
 import {validLocaleCode} from '../../../../models/helpCenter/utils'
+import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
+import {notify as notifyAction} from '../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../state/notifications/types'
+import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField.js'
 import SelectField from '../../../common/forms/SelectField/SelectField'
-import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
-import {CreateHelpCenterDto} from '../../../../models/helpCenter/types'
-import {helpCenterCreated} from '../../../../state/entities/helpCenters/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {notify as notifyAction} from '../../../../state/notifications/actions'
 import {SubdomainInput} from '../components/SubdomainSection'
-import {useLocales} from '../hooks/useLocales'
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
-import {getSubdomainValidationError} from '../utils/validations'
 import {
     DEFAULT_THEME,
     HELP_CENTER_BASE_PATH,
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_LANGUAGE_DEFAULT,
 } from '../constants'
+import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useLocales} from '../hooks/useLocales'
 import {HelpCenterThemes} from '../types'
 import {slugify} from '../utils/helpCenter.utils'
+import {
+    getSubdomainValidationError,
+    isValidSubdomain,
+} from '../utils/validations'
 
 import {ThemeSwitch} from './ThemeSwitch'
+
 import css from './HelpCenterNewView.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -81,7 +85,11 @@ export const HelpCenterNewView = ({
 
     const checkSubdomainAvailability = useCallback(
         _debounce(async () => {
-            if (client && newHelpCenter.subdomain) {
+            if (
+                client &&
+                newHelpCenter.subdomain &&
+                isValidSubdomain(newHelpCenter.subdomain)
+            ) {
                 try {
                     await client.checkHelpCenterWithSubdomainExists({
                         subdomain: newHelpCenter.subdomain,

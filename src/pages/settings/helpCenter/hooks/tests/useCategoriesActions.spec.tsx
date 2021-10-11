@@ -77,6 +77,7 @@ jest.mock('../useHelpcenterApi', () => {
                 }),
                 deleteCategoryTranslation: jest.fn().mockResolvedValue({}),
                 deleteCategory: jest.fn().mockResolvedValue({}),
+                deleteCategoryArticles: jest.fn().mockResolvedValue({}),
             },
         }),
     }

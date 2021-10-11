@@ -54,6 +54,7 @@ import {ConfirmationModal} from './ConfirmationModal'
 import css from './HelpCenterArticlesView.less'
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
+import {CloseArticleModal} from './articles/CloseArticleModal'
 
 type HelpCenterModalState = {
     opened: boolean
@@ -91,6 +92,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
     ] = useState<HelpCenterArticleTranslation[] | null>(null)
     const [articleLanguage, setArticleLanguage] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
+    const [pendingCloseArticle, setPendingCloseArticle] = useState(false)
     const [fullscreenEditModal, setFullscreenEditModal] = useState(false)
     const [isArticleLoading, setIsArticleLoading] = useState(false)
     const [counters, setCounters] = useState<{
@@ -666,6 +668,27 @@ export const HelpCenterArticlesView = (): JSX.Element => {
         )
     }
 
+    const handleOnDiscard = () => {
+        setEditModal((prevState) => ({
+            ...prevState,
+            opened: false,
+        }))
+        setPendingCloseArticle(false)
+    }
+
+    const handleOnEdit = () => {
+        setPendingCloseArticle(false)
+    }
+
+    const handleOnSave = async () => {
+        await saveArticle()
+        setEditModal((prevState) => ({
+            ...prevState,
+            opened: false,
+        }))
+        setPendingCloseArticle(false)
+    }
+
     return (
         <div className={classnames('full-width', css.wrapper)}>
             <PageHeader
@@ -720,16 +743,35 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         }
                         isLoading={isArticleLoading}
                         portalRootId="app-root"
-                        onBackdropClick={() =>
-                            setEditModal((prevState) => ({
-                                ...prevState,
-                                opened: false,
-                            }))
-                        }
+                        onBackdropClick={() => {
+                            if (canSaveArticle) {
+                                setPendingCloseArticle(true)
+                            } else {
+                                setEditModal((prevState) => ({
+                                    ...prevState,
+                                    opened: false,
+                                }))
+                            }
+                        }}
                         transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
                     >
                         {getEditModalContent()}
                     </HelpCenterEditModal>
+                    {pendingCloseArticle && (
+                        <CloseArticleModal
+                            isOpen={!!pendingCloseArticle && canSaveArticle}
+                            title={<span>Are you sure?</span>}
+                            style={{width: '100%', maxWidth: 500}}
+                            onDiscard={handleOnDiscard}
+                            onContinueEditing={handleOnEdit}
+                            onSave={handleOnSave}
+                        >
+                            <span>
+                                If you close this article, you'll lose all
+                                changes made. Do you want to save them?
+                            </span>
+                        </CloseArticleModal>
+                    )}
                     {pendingDeleteLocale && (
                         <ConfirmationModal
                             isOpen={!!pendingDeleteLocale}
