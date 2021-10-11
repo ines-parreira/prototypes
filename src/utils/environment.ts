@@ -103,6 +103,13 @@ const HELPCENTER_PRIVATE_BETA_LIST = [
     'sfbicycle.gorgias.com',
     'getkion.gorgias.com',
     'battlbox.gorgias.com',
+    'nanoleaf.gorgias.com',
+    'test-martin-3.gorgias.com',
+    'testmartin.gorgias.com',
+    'test-martin.gorgias.com',
+    'getmr.gorgias.com',
+    'hello-nomad.gorgias.com',
+    'abstractocean.gorgias.com',
 ]
 
 export function getEnvironment(): GorgiasUIEnv {
