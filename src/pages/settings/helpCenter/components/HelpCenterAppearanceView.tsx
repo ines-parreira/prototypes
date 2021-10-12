@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
+import axios from 'axios'
 import classNames from 'classnames'
 import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
@@ -6,16 +7,12 @@ import {Button, Container, FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
 import {HelpCenter} from '../../../../models/helpCenter/types'
-
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-
 import {helpCenterUpdated} from '../../../../state/entities/helpCenters/actions'
 import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import {notify} from '../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../state/notifications/types'
-
 import PageHeader from '../../../common/components/PageHeader'
-
 import {DEFAULT_THEME, HELP_CENTER_DEFAULT_COLOR} from '../constants'
 import {HelpCenterThemes, isHelpCenterTheme} from '../types'
 import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
@@ -51,10 +48,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const bannerImage = useFileUpload()
 
     useEffect(() => {
-        if (helpCenter?.theme) {
-            if (isHelpCenterTheme(helpCenter?.theme)) {
-                setSelectedTheme(helpCenter.theme)
-            }
+        if (helpCenter?.theme && isHelpCenterTheme(helpCenter.theme)) {
+            setSelectedTheme(helpCenter.theme)
         }
 
         if (helpCenter?.primary_color) {
@@ -62,60 +57,61 @@ export const HelpCenterAppearanceView: React.FC = () => {
         }
     }, [helpCenter])
 
-    const [updateResponse, updateHelpCenter] = useAsyncFn(async () => {
+    const getFileUploadURL = async (file: FileUpload) => {
+        if (file.payload) {
+            const uploadedFile = await file.uploadFile()
+
+            return uploadedFile?.url
+        } else if (primaryLogo.isTouched) {
+            return null
+        }
+    }
+
+    const [updateResponse, saveCurrentAppearance] = useAsyncFn(async () => {
         if (client && helpCenter) {
-            const payload: Partial<HelpCenter> = {
-                theme: selectedTheme,
-                primary_color: currentColor,
-            }
+            try {
+                const payload: Partial<HelpCenter> = {
+                    theme: selectedTheme,
+                    primary_color: currentColor,
+                }
 
-            if (primaryLogo.payload) {
-                await primaryLogo.uploadFile().then((files) => {
-                    if (files[0]) {
-                        payload.brand_logo_url = files[0].url
-                    }
-                })
-            } else if (primaryLogo.isTouched) {
-                payload.brand_logo_url = null
-            }
+                payload.brand_logo_url = await getFileUploadURL(primaryLogo)
+                payload.brand_logo_light_url = await getFileUploadURL(lightLogo)
+                payload.favicon_url = await getFileUploadURL(favicon)
+                payload.banner_image_url = await getFileUploadURL(bannerImage)
 
-            if (lightLogo.payload) {
-                await lightLogo.uploadFile().then((files) => {
-                    if (files[0]) {
-                        payload.brand_logo_light_url = files[0].url
-                    }
-                })
-            } else if (lightLogo.isTouched) {
-                payload.brand_logo_light_url = null
-            }
+                const {data} = await client.updateHelpCenter(
+                    {
+                        help_center_id: helpCenter.id,
+                    },
+                    payload
+                )
 
-            if (favicon.payload) {
-                await favicon.uploadFile().then((files) => {
-                    if (files[0]) {
-                        payload.favicon_url = files[0].url
-                    }
-                })
-            } else if (favicon.isTouched) {
-                payload.favicon_url = null
-            }
+                dispatch(helpCenterUpdated(data))
 
-            if (bannerImage.payload) {
-                await bannerImage.uploadFile().then((files) => {
-                    if (files[0]) {
-                        payload.banner_image_url = files[0].url
-                    }
-                })
-            } else if (bannerImage.isTouched) {
-                payload.banner_image_url = null
-            }
+                resetCurrentAppearance()
 
-            const response = await client.updateHelpCenter(
-                {
-                    help_center_id: helpCenter.id,
-                },
-                payload
-            )
-            return response
+                void dispatch(
+                    notify({
+                        message: 'Help Center successfully updated',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            } catch (err) {
+                const errorMessage =
+                    axios.isAxiosError(err) && err.response?.status === 413
+                        ? 'one or more files are larger than the size limit.'
+                        : 'please try again later.'
+
+                void dispatch(
+                    notify({
+                        message: `Couldn't update the Help Center: ${errorMessage}`,
+                        status: NotificationStatus.Error,
+                    })
+                )
+
+                console.error(err)
+            }
         }
 
         throw Error('client or help center ID are missing!')
@@ -130,7 +126,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
         lightLogo,
     ])
 
-    const allowSaveCurrentAppearance = useMemo(() => {
+    const canSaveCurrentAppearance = useMemo(() => {
+        if (updateResponse.loading) {
+            return false
+        }
+
         if (selectedTheme !== helpCenter?.theme) {
             return Boolean(selectedTheme)
         }
@@ -157,42 +157,16 @@ export const HelpCenterAppearanceView: React.FC = () => {
         lightLogo,
         favicon,
         bannerImage,
+        updateResponse,
     ])
 
-    const discardCurrentAppearance = () => {
+    const resetCurrentAppearance = () => {
         setSelectedTheme(helpCenterTheme)
         setCurrentColor(helpCenterColor)
         primaryLogo.discardFile()
         lightLogo.discardFile()
         favicon.discardFile()
         bannerImage.discardFile()
-    }
-
-    const saveCurrentAppearance = async () => {
-        try {
-            const {data} = await updateHelpCenter()
-            dispatch(helpCenterUpdated(data))
-
-            void dispatch(
-                notify({
-                    message: 'Help Center successfully updated',
-                    status: NotificationStatus.Success,
-                })
-            )
-
-            primaryLogo.discardFile()
-            lightLogo.discardFile()
-            bannerImage.discardFile()
-            favicon.discardFile()
-        } catch (err) {
-            void dispatch(
-                notify({
-                    message: "Couldn't update the Help Center",
-                    status: NotificationStatus.Error,
-                })
-            )
-            console.error(err)
-        }
     }
 
     const getImageUploadHighlightText = (
@@ -242,7 +216,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                 primaryLogo,
                                 helpCenter?.brand_logo_url
                             ),
-                            text: 'recommended size 1800 x 240',
+                            text: 'recommended size 540 x 72 - Maximum 10 MB',
                         }}
                     />
                     <ImageUpload
@@ -258,7 +232,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                 lightLogo,
                                 helpCenter?.brand_logo_light_url
                             ),
-                            text: 'recommended size 1800 x 240',
+                            text: 'recommended size 540 x 72 - Maximum 10 MB',
                         }}
                     />
                     <ImageUpload
@@ -303,7 +277,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                 bannerImage,
                                 helpCenter?.banner_image_url
                             ),
-                            text: 'recommended size 1440 x 316',
+                            text: 'recommended size 1440 x 316 - Maximum 10 MB',
                         }}
                     />
                 </div>
@@ -332,19 +306,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         <Button
                             className="mr-2"
                             color="success"
-                            disabled={
-                                !allowSaveCurrentAppearance ||
-                                updateResponse.loading
-                            }
+                            disabled={!canSaveCurrentAppearance}
                             onClick={saveCurrentAppearance}
                         >
                             {updateResponse.loading
                                 ? 'Saving...'
                                 : 'Save Changes'}
                         </Button>
-                        <Button onClick={discardCurrentAppearance}>
-                            Cancel
-                        </Button>
+                        <Button onClick={resetCurrentAppearance}>Cancel</Button>
                     </FormGroup>
                 </footer>
             </Container>

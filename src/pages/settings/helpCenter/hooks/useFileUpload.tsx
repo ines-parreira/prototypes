@@ -6,7 +6,7 @@ import {Attachment} from '../../../../types'
 export type FileUpload = {
     isTouched: boolean
     payload: File | undefined
-    uploadFile: () => Promise<Attachment[]>
+    uploadFile: () => Promise<Attachment | null>
     changeFile: (payload: File | undefined) => void
     discardFile: () => void
 }
@@ -29,10 +29,12 @@ export function useFileUpload(): FileUpload {
         if (isTouched && localFile) {
             return uploadFiles([localFile]).then((response) => {
                 setIsTouched(false)
-                return response
+
+                return response[0]
             })
         }
-        return Promise.resolve([])
+
+        return null
     }
 
     return {
