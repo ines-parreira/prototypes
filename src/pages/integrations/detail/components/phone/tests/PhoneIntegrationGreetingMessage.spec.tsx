@@ -3,11 +3,11 @@ import {render, fireEvent} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import {
-    PhoneIntegrationVoicemail,
-    VoiceMailType,
-} from '../PhoneIntegrationVoicemail'
+    PhoneIntegrationGreetingMessage,
+    GreetingMessageType,
+} from '../PhoneIntegrationGreetingMessage'
 
-describe('<PhoneIntegrationVoicemail/>', () => {
+describe('<PhoneIntegrationGreetingMessage/>', () => {
     let updatePhoneVoicemailConfiguration: jest.MockedFunction<(
         formData: FormData
     ) => Promise<unknown>>
@@ -27,11 +27,10 @@ describe('<PhoneIntegrationVoicemail/>', () => {
                         friendly_name: '(415) 111-2222',
                     },
                 },
-                voicemail: {
+                greeting_message: {
                     voice_recording_file_path: null,
-                    voice_message_type: VoiceMailType.TextToSpeech,
+                    voice_message_type: GreetingMessageType.TextToSpeech,
                     text_to_speech_content: 'Hello world!',
-                    allow_to_leave_voicemail: true,
                 },
             },
         })
@@ -48,9 +47,9 @@ describe('<PhoneIntegrationVoicemail/>', () => {
 
         it('should render with default values', () => {
             const {container} = render(
-                <PhoneIntegrationVoicemail
+                <PhoneIntegrationGreetingMessage
                     integration={integration}
-                    updatePhoneVoicemailConfiguration={
+                    updatePhoneGreetingMessageConfiguration={
                         updatePhoneVoicemailConfiguration
                     }
                     notify={notify}
@@ -63,9 +62,9 @@ describe('<PhoneIntegrationVoicemail/>', () => {
         it('should render with TTS type', () => {
             const newText = 'Updated text.'
             const {container, getByText} = render(
-                <PhoneIntegrationVoicemail
+                <PhoneIntegrationGreetingMessage
                     integration={integration}
-                    updatePhoneVoicemailConfiguration={
+                    updatePhoneGreetingMessageConfiguration={
                         updatePhoneVoicemailConfiguration
                     }
                     notify={notify}
@@ -76,7 +75,7 @@ describe('<PhoneIntegrationVoicemail/>', () => {
             const input = getByText(
                 integration.getIn([
                     'meta',
-                    'voicemail',
+                    'greeting_message',
                     'text_to_speech_content',
                 ])
             )
@@ -86,8 +85,7 @@ describe('<PhoneIntegrationVoicemail/>', () => {
             expect(updatePhoneVoicemailConfiguration).toHaveBeenCalledWith(
                 getFormData(
                     fromJS({
-                        voice_message_type: VoiceMailType.TextToSpeech,
-                        allow_to_leave_voicemail: true,
+                        voice_message_type: GreetingMessageType.TextToSpeech,
                         text_to_speech_content: newText,
                     })
                 )
@@ -96,12 +94,11 @@ describe('<PhoneIntegrationVoicemail/>', () => {
 
         it('should render with voice recording type', () => {
             const expectedCall = {
-                voice_message_type: VoiceMailType.VoiceRecording,
-                allow_to_leave_voicemail: true,
+                voice_message_type: GreetingMessageType.VoiceRecording,
             }
 
             integration = integration.setIn(
-                ['meta', 'voicemail'],
+                ['meta', 'greeting_message'],
                 fromJS({
                     text_to_speech_content: null,
                     voice_recording_file_path: 'test_file.mp3',
@@ -109,9 +106,9 @@ describe('<PhoneIntegrationVoicemail/>', () => {
                 })
             )
             const {container, getByText} = render(
-                <PhoneIntegrationVoicemail
+                <PhoneIntegrationGreetingMessage
                     integration={integration}
-                    updatePhoneVoicemailConfiguration={
+                    updatePhoneGreetingMessageConfiguration={
                         updatePhoneVoicemailConfiguration
                     }
                     notify={notify}

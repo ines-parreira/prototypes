@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] = `
+exports[`<PhoneIntegrationGreetingMessage/> render() should render with TTS type 1`] = `
 <div
   class="full-width"
 >
@@ -81,7 +81,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
       <div
         class="col"
       >
-        Set Voicemail
+        Set greeting message
       </div>
     </div>
     <div
@@ -90,7 +90,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
       <div
         class="col"
       >
-        Create a voicemail by uploading an .MP3 file or typing out the message with Text to speech.
+        Add a greeting message by uploading an .MP3 file or typing out the message with text to speech.
       </div>
     </div>
     <div
@@ -156,30 +156,24 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
             </div>
           </div>
           <div
-            class="heading"
+            class="form-group"
           >
-            Caller Options
-          </div>
-          <div
-            class="form-check"
-            color=""
-          >
-            <label
-              class="control-label form-check-label"
-              for="id-input-2"
+            <div
+              class="col"
             >
               <input
-                checked=""
-                class="form-check-input form-check-input"
-                id="id-input-2"
-                type="checkbox"
+                class="form-check-input"
+                id="noMessage"
+                name="voice_message_type"
+                type="radio"
               />
-              <span
-                style="vertical-align: middle;"
+              <label
+                class=""
+                for="noMessage"
               >
-                Allow caller to leave voicemail
-              </span>
-            </label>
+                No greeting message
+              </label>
+            </div>
           </div>
           <button
             class="mt-5 btn btn-success"
@@ -194,7 +188,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with TTS type 1`] =
 </div>
 `;
 
-exports[`<PhoneIntegrationVoicemail/> render() should render with default values 1`] = `
+exports[`<PhoneIntegrationGreetingMessage/> render() should render with default values 1`] = `
 <div
   class="full-width"
 >
@@ -275,7 +269,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
       <div
         class="col"
       >
-        Set Voicemail
+        Set greeting message
       </div>
     </div>
     <div
@@ -284,7 +278,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
       <div
         class="col"
       >
-        Create a voicemail by uploading an .MP3 file or typing out the message with Text to speech.
+        Add a greeting message by uploading an .MP3 file or typing out the message with text to speech.
       </div>
     </div>
     <div
@@ -350,30 +344,24 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
             </div>
           </div>
           <div
-            class="heading"
+            class="form-group"
           >
-            Caller Options
-          </div>
-          <div
-            class="form-check"
-            color=""
-          >
-            <label
-              class="control-label form-check-label"
-              for="id-input-1"
+            <div
+              class="col"
             >
               <input
-                checked=""
-                class="form-check-input form-check-input"
-                id="id-input-1"
-                type="checkbox"
+                class="form-check-input"
+                id="noMessage"
+                name="voice_message_type"
+                type="radio"
               />
-              <span
-                style="vertical-align: middle;"
+              <label
+                class=""
+                for="noMessage"
               >
-                Allow caller to leave voicemail
-              </span>
-            </label>
+                No greeting message
+              </label>
+            </div>
           </div>
           <button
             class="mt-5 btn btn-success"
@@ -388,7 +376,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with default values
 </div>
 `;
 
-exports[`<PhoneIntegrationVoicemail/> render() should render with voice recording type 1`] = `
+exports[`<PhoneIntegrationGreetingMessage/> render() should render with voice recording type 1`] = `
 <div
   class="full-width"
 >
@@ -469,7 +457,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
       <div
         class="col"
       >
-        Set Voicemail
+        Set greeting message
       </div>
     </div>
     <div
@@ -478,7 +466,7 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
       <div
         class="col"
       >
-        Create a voicemail by uploading an .MP3 file or typing out the message with Text to speech.
+        Add a greeting message by uploading an .MP3 file or typing out the message with text to speech.
       </div>
     </div>
     <div
@@ -561,30 +549,24 @@ exports[`<PhoneIntegrationVoicemail/> render() should render with voice recordin
             </div>
           </div>
           <div
-            class="heading"
+            class="form-group"
           >
-            Caller Options
-          </div>
-          <div
-            class="form-check"
-            color=""
-          >
-            <label
-              class="control-label form-check-label"
-              for="id-input-3"
+            <div
+              class="col"
             >
               <input
-                checked=""
-                class="form-check-input form-check-input"
-                id="id-input-3"
-                type="checkbox"
+                class="form-check-input"
+                id="noMessage"
+                name="voice_message_type"
+                type="radio"
               />
-              <span
-                style="vertical-align: middle;"
+              <label
+                class=""
+                for="noMessage"
               >
-                Allow caller to leave voicemail
-              </span>
-            </label>
+                No greeting message
+              </label>
+            </div>
           </div>
           <button
             class="mt-5 btn btn-success"

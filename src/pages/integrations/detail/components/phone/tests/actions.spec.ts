@@ -34,7 +34,7 @@ describe('updatePhoneVoicemailConfiguration', () => {
             .reply(400, {
                 msg: 'Validation failed.',
                 data: {
-                    voicemail_type: ['Not a valid choice.'],
+                    voice_message_type: ['Not a valid choice.'],
                 },
             })
 

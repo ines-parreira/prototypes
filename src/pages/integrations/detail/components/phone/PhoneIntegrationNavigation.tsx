@@ -23,6 +23,9 @@ export default function PhoneIntegrationNavigation({
             <NavLink to={`${baseURL}/voicemail`} exact>
                 Voicemail
             </NavLink>
+            <NavLink to={`${baseURL}/greeting-message`} exact>
+                Greeting Message
+            </NavLink>
         </SecondaryNavbar>
     )
 }

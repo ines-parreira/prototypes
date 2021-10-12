@@ -284,7 +284,7 @@ export const integrationsState = {
                     text_to_speech_content:
                         'We are not available, please leave a message.',
                     voice_recording_file_path: null,
-                    voicemail_type: 'text_to_speech',
+                    voice_message_type: 'text_to_speech',
                 },
             },
             http: null,

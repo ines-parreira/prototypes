@@ -9,7 +9,39 @@ import * as constants from '../../../../../state/integrations/constants.js'
 import {IntegrationType} from '../../../../../models/integration/types'
 import client from '../../../../../models/api/resources'
 
+enum VoiceMessagePaths {
+    VoiceMail = 'voicemail-preferences',
+    GreetingMessage = 'greeting-message',
+}
+
 export const updatePhoneVoicemailConfiguration = (formData: FormData) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
+    const path = VoiceMessagePaths.VoiceMail
+
+    return updatePhoneVoiceMessageConfiguration(formData, path)(
+        dispatch,
+        getState
+    )
+}
+
+export const updatePhoneGreetingMessageConfiguration = (formData: FormData) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
+    const path = VoiceMessagePaths.GreetingMessage
+
+    return updatePhoneVoiceMessageConfiguration(formData, path)(
+        dispatch,
+        getState
+    )
+}
+
+export const updatePhoneVoiceMessageConfiguration = (
+    formData: FormData,
+    path: string
+) => (
     dispatch: StoreDispatch,
     getState: () => RootState
 ): Promise<ReturnType<StoreDispatch>> => {
@@ -19,10 +51,7 @@ export const updatePhoneVoicemailConfiguration = (formData: FormData) => (
         .get('id') as number
 
     return client
-        .put(
-            `/integrations/phone/${integrationId}/voicemail-preferences/`,
-            formData
-        )
+        .put(`/integrations/phone/${integrationId}/${path}/`, formData)
         .then(
             () => {
                 void fetchIntegration(

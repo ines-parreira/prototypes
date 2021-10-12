@@ -86,6 +86,7 @@ import PhoneIntegrationList from './components/phone/PhoneIntegrationList'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
 import PhoneIntegrationPreferences from './components/phone/PhoneIntegrationPreferences'
 import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
+import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -103,7 +104,8 @@ export enum Tab {
     QuickReplies = 'quick_replies',
     ChatSelfService = 'self_service',
     Campaigns = 'campaigns',
-    PhoceVoicemail = 'voicemail',
+    PhoneVoicemail = 'voicemail',
+    PhoneGreetingMessage = 'greeting-message',
     SmoochInsideMigration = 'migration',
 }
 
@@ -442,9 +444,17 @@ export const IntegrationDetailContainer = ({
                     )
                 }
 
-                if (extra === Tab.PhoceVoicemail) {
+                if (extra === Tab.PhoneVoicemail) {
                     return (
                         <PhoneIntegrationVoicemail integration={integration} />
+                    )
+                }
+
+                if (extra === Tab.PhoneGreetingMessage) {
+                    return (
+                        <PhoneIntegrationGreetingMessage
+                            integration={integration}
+                        />
                     )
                 }
             }

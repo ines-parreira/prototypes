@@ -20,14 +20,13 @@ import classnames from 'classnames'
 
 import PageHeader from '../../../../common/components/PageHeader'
 import {IntegrationType} from '../../../../../models/integration/types'
-import BooleanField from '../../../../common/forms/BooleanField.js'
 
 import {notify} from '../../../../../state/notifications/actions'
 
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {countLines} from '../../../../../utils/string'
 
-import {updatePhoneVoicemailConfiguration} from './actions'
+import {updatePhoneGreetingMessageConfiguration} from './actions'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import css from './PhoneIntegrationVoicemail.less'
@@ -40,14 +39,15 @@ const TEXT_TO_SPEECH_MAX_LENGTH = 1000
 const MAX_VOICE_RECORDING_FILE_SIZE_MB = 2
 const MAX_VOICE_RECORDING_FILE_SIZE = MAX_VOICE_RECORDING_FILE_SIZE_MB * 1000000
 
-export enum VoiceMailType {
+export enum GreetingMessageType {
     VoiceRecording = 'voice_recording',
     TextToSpeech = 'text_to_speech',
+    None = 'none',
 }
 
-export function PhoneIntegrationVoicemail({
+export function PhoneIntegrationGreetingMessage({
     integration,
-    updatePhoneVoicemailConfiguration,
+    updatePhoneGreetingMessageConfiguration,
     notify,
 }: Props & ConnectedProps<typeof connector>): JSX.Element {
     const voiceRecordingFileInput = React.useRef() as RefObject<
@@ -55,9 +55,10 @@ export function PhoneIntegrationVoicemail({
     >
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<Error | null>(null)
-    const [voicemailType, setVoicemailType] = useState<VoiceMailType | null>(
-        null
-    )
+    const [
+        voiceMessageType,
+        setVoiceMessageType,
+    ] = useState<GreetingMessageType | null>(null)
     const [voiceRecordingFilePath, setVoiceRecordingFilePath] = useState<
         string | null
     >(null)
@@ -68,50 +69,41 @@ export function PhoneIntegrationVoicemail({
     const [textToSpeechContent, setTextToSpeechContent] = useState<
         string | null
     >(null)
-    const [allowToLeaveVoicemail, setAllowToLeaveVoicemail] = useState<boolean>(
-        false
-    )
 
     useEffect(() => {
-        const voiceMailConfiguration = integration.getIn(
-            ['meta', 'voicemail'],
+        const greetingMessageConfiguration = integration.getIn(
+            ['meta', 'greeting_message'],
             fromJS({})
         ) as Map<string, string | boolean | null>
 
         setVoiceRecordingFilePath(
-            voiceMailConfiguration.get('voice_recording_file_path') as
+            greetingMessageConfiguration.get('voice_recording_file_path') as
                 | string
                 | null
         )
         setTextToSpeechContent(
-            voiceMailConfiguration.get('text_to_speech_content') as
+            greetingMessageConfiguration.get('text_to_speech_content') as
                 | string
                 | null
         )
-        setVoicemailType(
-            voiceMailConfiguration.get(
+        setVoiceMessageType(
+            greetingMessageConfiguration.get(
                 'voice_message_type'
-            ) as VoiceMailType | null
-        )
-        setAllowToLeaveVoicemail(
-            voiceMailConfiguration.get(
-                'allow_to_leave_voicemail',
-                false
-            ) as boolean
+            ) as GreetingMessageType | null
         )
     }, [
         integration,
         setTextToSpeechContent,
-        setVoicemailType,
+        setVoiceMessageType,
         setVoiceRecordingFilePath,
         setNewVoiceRecordingFile,
     ])
 
-    const handleChangeVoiceMailType = useCallback(
-        (voicemailType: VoiceMailType) => {
+    const handleChangeGreetingMessageType = useCallback(
+        (greetingType: GreetingMessageType | null) => {
             const integrationVoiceRecordingFilePath = integration.getIn([
                 'meta',
-                'voicemail',
+                'greeting_message',
                 'voice_recording_file_path',
             ])
 
@@ -119,12 +111,12 @@ export function PhoneIntegrationVoicemail({
                 setVoiceRecordingFilePath(integrationVoiceRecordingFilePath)
             }
             setNewVoiceRecordingFile(null)
-            setVoicemailType(voicemailType)
+            setVoiceMessageType(greetingType)
         },
         [
             integration,
             setNewVoiceRecordingFile,
-            setVoicemailType,
+            setVoiceMessageType,
             voiceRecordingFilePath,
             setVoiceRecordingFilePath,
         ]
@@ -137,12 +129,9 @@ export function PhoneIntegrationVoicemail({
             event.preventDefault()
             const formData = new FormData()
 
-            formData.append('voice_message_type', voicemailType as string)
-            formData.append(
-                'allow_to_leave_voicemail',
-                allowToLeaveVoicemail.toString()
-            )
-            if (voicemailType === VoiceMailType.TextToSpeech) {
+            formData.append('voice_message_type', voiceMessageType as string)
+
+            if (voiceMessageType === GreetingMessageType.TextToSpeech) {
                 formData.append(
                     'text_to_speech_content',
                     textToSpeechContent as string
@@ -157,7 +146,7 @@ export function PhoneIntegrationVoicemail({
             setIsLoading(true)
             try {
                 setError(null)
-                await updatePhoneVoicemailConfiguration(formData)
+                await updatePhoneGreetingMessageConfiguration(formData)
             } catch (error) {
                 setError(error)
             } finally {
@@ -165,13 +154,12 @@ export function PhoneIntegrationVoicemail({
             }
         },
         [
-            voicemailType,
+            voiceMessageType,
             textToSpeechContent,
-            allowToLeaveVoicemail,
             newVoiceRecordingFile,
             setIsLoading,
             setError,
-            updatePhoneVoicemailConfiguration,
+            updatePhoneGreetingMessageConfiguration,
         ]
     )
 
@@ -200,13 +188,9 @@ export function PhoneIntegrationVoicemail({
     )
 
     const isVoiceRecordingTypeSelected =
-        voicemailType === VoiceMailType.VoiceRecording
+        voiceMessageType === GreetingMessageType.VoiceRecording
     const isTextToSpeechTypeSelected =
-        voicemailType === VoiceMailType.TextToSpeech
-
-    const displayCallerOptions =
-        (isTextToSpeechTypeSelected && textToSpeechContent) ||
-        (isVoiceRecordingTypeSelected && voiceRecordingFilePath)
+        voiceMessageType === GreetingMessageType.TextToSpeech
 
     const textToSpeechLines = textToSpeechContent
         ? countLines(textToSpeechContent)
@@ -248,12 +232,12 @@ export function PhoneIntegrationVoicemail({
             <PhoneIntegrationNavigation integration={integration} />
             <Container fluid className="page-container">
                 <Row className={css.heading}>
-                    <Col>Set Voicemail</Col>
+                    <Col>Set greeting message</Col>
                 </Row>
                 <Row className={css.description}>
                     <Col>
-                        Create a voicemail by uploading an .MP3 file or typing
-                        out the message with Text to speech.
+                        Add a greeting message by uploading an .MP3 file or
+                        typing out the message with text to speech.
                     </Col>
                 </Row>
                 <Row>
@@ -270,8 +254,8 @@ export function PhoneIntegrationVoicemail({
                                         id="voiceRecordingType"
                                         checked={isVoiceRecordingTypeSelected}
                                         onChange={() => {
-                                            handleChangeVoiceMailType(
-                                                VoiceMailType.VoiceRecording
+                                            handleChangeGreetingMessageType(
+                                                GreetingMessageType.VoiceRecording
                                             )
                                         }}
                                     />
@@ -321,8 +305,8 @@ export function PhoneIntegrationVoicemail({
                                         type="radio"
                                         id="textToSpeechType"
                                         onChange={() => {
-                                            handleChangeVoiceMailType(
-                                                VoiceMailType.TextToSpeech
+                                            handleChangeGreetingMessageType(
+                                                GreetingMessageType.TextToSpeech
                                             )
                                         }}
                                         checked={isTextToSpeechTypeSelected}
@@ -359,19 +343,28 @@ export function PhoneIntegrationVoicemail({
                                     </Col>
                                 )}
                             </FormGroup>
-                            {displayCallerOptions && (
-                                <>
-                                    <div className={css.heading}>
-                                        Caller Options
-                                    </div>
-                                    <BooleanField
-                                        type="checkbox"
-                                        value={allowToLeaveVoicemail}
-                                        onChange={setAllowToLeaveVoicemail}
-                                        label="Allow caller to leave voicemail"
+
+                            <FormGroup>
+                                <Col>
+                                    <Input
+                                        name="voice_message_type"
+                                        type="radio"
+                                        id="noMessage"
+                                        onChange={() => {
+                                            handleChangeGreetingMessageType(
+                                                GreetingMessageType.None
+                                            )
+                                        }}
+                                        checked={
+                                            voiceMessageType ===
+                                            GreetingMessageType.None
+                                        }
                                     />
-                                </>
-                            )}
+                                    <Label for="noMessage">
+                                        No greeting message
+                                    </Label>
+                                </Col>
+                            </FormGroup>
 
                             <Button
                                 type="submit"
@@ -379,7 +372,7 @@ export function PhoneIntegrationVoicemail({
                                 className={classnames('mt-5', {
                                     'btn-loading': isLoading,
                                 })}
-                                disabled={isLoading || !displayCallerOptions}
+                                disabled={isLoading}
                             >
                                 Save changes
                             </Button>
@@ -391,7 +384,7 @@ export function PhoneIntegrationVoicemail({
     )
 }
 
-const mapDispatchToProps = {updatePhoneVoicemailConfiguration, notify}
+const mapDispatchToProps = {updatePhoneGreetingMessageConfiguration, notify}
 const connector = connect(null, mapDispatchToProps)
 
-export default connector(PhoneIntegrationVoicemail)
+export default connector(PhoneIntegrationGreetingMessage)

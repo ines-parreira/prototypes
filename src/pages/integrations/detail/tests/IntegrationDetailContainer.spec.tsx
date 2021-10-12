@@ -558,7 +558,7 @@ describe('<IntegrationDetailContainer />', () => {
                 {
                     path:
                         '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.PhoneIntegrationType}/1/${Tab.PhoceVoicemail}`,
+                    route: `/integrations/${IntegrationType.PhoneIntegrationType}/1/${Tab.PhoneVoicemail}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

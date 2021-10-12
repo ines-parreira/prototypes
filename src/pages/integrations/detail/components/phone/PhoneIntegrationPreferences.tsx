@@ -53,6 +53,10 @@ export default function PhoneIntegrationPreferences({
     const [emoji, setEmoji] = useState<string | null>(null)
     const [recordInboundCalls, setRecordInboundCalls] = useState(true)
     const [recordOutboundCalls, setRecordOutboundCalls] = useState(true)
+    const [greetingMessageEnabled, setGreetingMessageEnabled] = useState(false)
+    const [greetingMessageContent, setGreetingMessageContent] = useState<
+        string | null
+    >(null)
     const [
         voicemailOutsideBusinessHours,
         setVoicemailOutsideBusinessHours,
@@ -75,6 +79,8 @@ export default function PhoneIntegrationPreferences({
                                 record_inbound_calls: recordInboundCalls,
                                 voicemail_outside_business_hours: voicemailOutsideBusinessHours,
                                 record_outbound_calls: recordOutboundCalls,
+                                greeting_message_enabled: greetingMessageEnabled,
+                                greeting_message_content: greetingMessageContent,
                             },
                         },
                     })
@@ -93,6 +99,8 @@ export default function PhoneIntegrationPreferences({
             recordInboundCalls,
             voicemailOutsideBusinessHours,
             recordOutboundCalls,
+            greetingMessageEnabled,
+            greetingMessageContent,
             actions,
             setIsLoading,
             setError,
@@ -133,11 +141,22 @@ export default function PhoneIntegrationPreferences({
             false
         )
 
+        const greetingMessageEnabled = integration.getIn(
+            ['meta', 'preferences', 'greeting_message_enabled'],
+            false
+        )
+        const greetingMessageContent = integration.getIn(
+            ['meta', 'preferences', 'greeting_message_content'],
+            false
+        )
+
         setTitle(title)
         setEmoji(emoji)
         setRecordInboundCalls(recordInboundCalls)
         setVoicemailOutsideBusinessHours(voicemailOutsideBusinessHours)
         setRecordOutboundCalls(recordOutboundCalls)
+        setGreetingMessageEnabled(greetingMessageEnabled)
+        setGreetingMessageContent(greetingMessageContent)
 
         setIsInitialized(true)
     }, [integration, isInitialized])

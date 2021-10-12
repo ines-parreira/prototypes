@@ -36,6 +36,7 @@ import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 
 import {VoiceMailType} from './PhoneIntegrationVoicemail'
+import {GreetingMessageType} from './PhoneIntegrationGreetingMessage'
 
 interface StateOptions {
     [key: string]: Option[]
@@ -133,10 +134,15 @@ export default function PhoneIntegrationCreate({actions}: Props): JSX.Element {
                                 record_outbound_calls: false,
                             },
                             voicemail: {
-                                voicemail_type: VoiceMailType.TextToSpeech,
+                                voice_message_type: VoiceMailType.TextToSpeech,
                                 voice_recording_file_path: null,
                                 text_to_speech_content: DEFAULT_TEXT_TO_SPEECH_CONTENT,
                                 allow_to_leave_voicemail: true,
+                            },
+                            greeting_message: {
+                                voice_message_type: GreetingMessageType.None,
+                                voice_recording_file_path: null,
+                                text_to_speech_content: null,
                             },
                         },
                     })
