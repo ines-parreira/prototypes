@@ -53,7 +53,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
     <div
       class="mb-3"
     >
-      Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.
+      Create tickets when customers interact with you via replies or mentions on Twitter.
     </div>
   </div>
   <table
@@ -152,7 +152,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
     <div
       class="mb-3"
     >
-      Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.
+      Create tickets when customers interact with you via replies or mentions on Twitter.
     </div>
     <div
       class="d-inline-flex alert alert-warning fade"
@@ -263,7 +263,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
     <div
       class="mb-3"
     >
-      Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.
+      Create tickets when customers interact with you via replies or mentions on Twitter.
     </div>
     <div
       class="d-inline-flex alert alert-danger fade"
@@ -389,7 +389,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
     <div
       class="mb-3"
     >
-      Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.
+      Create tickets when customers interact with you via replies or mentions on Twitter.
     </div>
     <div
       class="mt-3"

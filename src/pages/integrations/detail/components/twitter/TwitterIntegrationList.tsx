@@ -42,7 +42,7 @@ export function TwitterIntegrationList({
     const isLimitReached = twitterIntegrations.size >= _maxIntegrations
 
     const longTypeDescription =
-        'Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter.'
+        'Create tickets when customers interact with you via replies or mentions on Twitter.'
 
     const integrationToItemDisplay = (integration: Map<string, string>) => (
         <TwitterIntegrationListItem integration={integration} />

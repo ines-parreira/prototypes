@@ -212,7 +212,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: IntegrationType.TwitterIntegrationType,
         title: 'Twitter',
         description:
-            'Create tickets when customers interact with you via replies, mentions, or direct messages on Twitter',
+            'Create tickets when customers interact with you via replies or mentions on Twitter',
         image: 'integrations/twitter.png',
         requiredFeature: AccountFeature.TwitterIntegration,
     },
