@@ -1,4 +1,4 @@
-import {getNewTranslation, slugify} from '../helpCenter.utils'
+import {getAbsoluteUrl, getNewTranslation, slugify} from '../helpCenter.utils'
 
 describe('getNewTranslation()', () => {
     it('have the expected properties', () => {
@@ -44,5 +44,29 @@ describe('slugify()', () => {
 
     describe('it encodes emojis as UTF-8', () => {
         expect(slugify('Clown 🤡')).toEqual('clown-%F0%9F%A4%A1')
+    })
+})
+
+describe('getAbsoluteUrl()', () => {
+    it(`returns a valid absolute URL for 'gorgias.com'`, () => {
+        expect(getAbsoluteUrl('gorgias.com')).toEqual('https://gorgias.com')
+    })
+
+    it(`returns a valid absolute URL for 'www.gorgias.com'`, () => {
+        expect(getAbsoluteUrl('www.gorgias.com')).toEqual(
+            'https://www.gorgias.com'
+        )
+    })
+
+    it(`returns a valid absolute URL for 'http://gorgias.com'`, () => {
+        expect(getAbsoluteUrl('http://gorgias.com')).toEqual(
+            'http://gorgias.com'
+        )
+    })
+
+    it(`returns a valid absolute URL for 'https://gorgias.com'`, () => {
+        expect(getAbsoluteUrl('https://gorgias.com')).toEqual(
+            'https://gorgias.com'
+        )
     })
 })

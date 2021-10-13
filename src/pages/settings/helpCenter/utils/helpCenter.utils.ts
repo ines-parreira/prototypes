@@ -37,7 +37,11 @@ export function slugify(value: string): string {
     return ''
 }
 
-export const getAbsoluteUrl = (domain: string): string => `https://${domain}`
+export const getAbsoluteUrl = (value: string): string => {
+    const withProtocol = /^((http|https|ftp):\/\/)/
+
+    return withProtocol.test(value) ? value : `https://${value}`
+}
 
 export const getHelpCenterDomain = (
     subdomain: string,

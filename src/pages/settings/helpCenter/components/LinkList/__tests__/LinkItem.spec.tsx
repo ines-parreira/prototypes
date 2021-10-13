@@ -42,8 +42,8 @@ describe('<LinkItem>', () => {
         const {container} = render(
             <LinkItem
                 id={1}
-                value="https://test.com"
                 label="Test link"
+                value="https://test.com"
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
             />
@@ -56,8 +56,8 @@ describe('<LinkItem>', () => {
         const {container} = render(
             <LinkItem
                 id={2}
-                value="test.com"
                 label="Test link"
+                value="/invalid-link"
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
             />
@@ -70,8 +70,8 @@ describe('<LinkItem>', () => {
         const {getByTestId} = render(
             <LinkItem
                 id={1}
-                value=""
                 label="Test link"
+                value=""
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
             />
@@ -86,8 +86,8 @@ describe('<LinkItem>', () => {
         const {getByTestId} = render(
             <LinkItem
                 id={1}
-                value="https://test.com"
                 label=""
+                value="https://test.com"
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
             />
@@ -102,8 +102,8 @@ describe('<LinkItem>', () => {
         const {getByTestId, queryByTestId} = render(
             <ControlledLinkItem
                 id={1}
-                value=""
                 label=""
+                value=""
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
             />
@@ -152,25 +152,18 @@ describe('<LinkItem>', () => {
         expect(readLabelError()).toBeNull()
         expect(readValueError()?.textContent).toEqual(ErrMessage.invalidUrl)
 
-        // Input an invalid link value along with the link title
-        // Expect invalid error message for link input
-        act(() => {
-            fireEvent.change(valueInput, {target: {value: 'www.gorgias.com'}})
-        })
-        expect(labelInput.value).toEqual('Home')
-        expect(valueInput.value).toEqual('www.gorgias.com')
-        expect(readLabelError()).toBeNull()
-        expect(readValueError()?.textContent).toEqual(ErrMessage.invalidUrl)
-
-        // Reset the link title and keep the invalid link value
-        // Expect missing error message for title input and keep invalid error message for link input
+        // Reset the link title and input a valid link value
+        // Expect missing error message for title
         act(() => {
             fireEvent.change(labelInput, {target: {value: ''}})
+            fireEvent.change(valueInput, {
+                target: {value: 'www.gorgias.com'},
+            })
         })
         expect(labelInput.value).toEqual('')
         expect(valueInput.value).toEqual('www.gorgias.com')
         expect(readLabelError()?.textContent).toEqual(ErrMessage.missingLabel)
-        expect(readValueError()?.textContent).toEqual(ErrMessage.invalidUrl)
+        expect(readValueError()).toBeNull()
 
         // Input a valid title and a valid link
         // Expect no errors

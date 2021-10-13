@@ -1,70 +1,60 @@
-import React from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {Button, Container, FormGroup} from 'reactstrap'
 
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 import {
     LocaleCode,
     LocalSocialNavigationLink,
     NavigationLinkDto,
 } from '../../../../models/helpCenter/types'
-
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-
+import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
 import {
     changeViewLanguage,
     getViewLanguage,
 } from '../../../../state/helpCenter/ui'
-import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify} from '../../../../state/notifications/actions'
-import {getCurrentHelpCenter} from '../../../../state/entities/helpCenters/selectors'
-
+import {NotificationStatus} from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
-
+import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {
     HELP_CENTER_LANGUAGE_DEFAULT,
     SOCIAL_NAVIGATION_LINKS,
 } from '../constants'
-
+import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
+import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import {useLocales} from '../hooks/useLocales'
+import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
 import {
     useNavigationLinks,
     useSocialNavigationLinks,
 } from '../hooks/useNavigationLinks'
-import {useLocaleSelectOptions} from '../hooks/useLocaleSelectOptions'
-import {useHelpcenterApi} from '../hooks/useHelpcenterApi'
-
-import {saveSocialLinks, saveNavigationLinks} from '../utils/navigationLinks'
-
-import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
-import {useLocales} from '../hooks/useLocales'
+import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
 
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from './HelpCenterNavigation'
 import {NavSection} from './NavSection'
 
 export const HelpCenterCustomizationView = () => {
-    const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
-    const locales = useLocales()
-
-    const helpCenter = useSelector(getCurrentHelpCenter)
+    const helpCenterId = useHelpCenterIdParam()
     const {isReady, client} = useHelpcenterApi()
-
-    const [links, setLinks] = React.useState<NavigationLinkDto[]>([])
+    const locales = useLocales()
+    const helpCenter = useSelector(getCurrentHelpCenter)
     const selectedLocale =
         useSelector(getViewLanguage) || HELP_CENTER_LANGUAGE_DEFAULT
-
     const localesOptions = useLocaleSelectOptions(
         locales,
-        helpCenter?.supported_locales || []
+        helpCenter?.supported_locales
     )
+    const [links, setLinks] = useState<NavigationLinkDto[]>([])
 
     const handleOnChangeLocale = (locale: LocaleCode) => {
         dispatch(changeViewLanguage(locale))
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         async function init() {
             if (isReady && client && selectedLocale) {
                 await client
@@ -79,7 +69,7 @@ export const HelpCenterCustomizationView = () => {
         void init()
     }, [isReady, helpCenterId, selectedLocale, client])
 
-    const linksWithoutSocial = React.useMemo(
+    const linksWithoutSocial = useMemo(
         () =>
             links.filter((link) =>
                 link.meta?.network
@@ -91,7 +81,7 @@ export const HelpCenterCustomizationView = () => {
         [links]
     )
 
-    const socialLinks = React.useMemo(
+    const socialLinks = useMemo(
         () =>
             Object.entries(SOCIAL_NAVIGATION_LINKS).map<
                 LocalSocialNavigationLink

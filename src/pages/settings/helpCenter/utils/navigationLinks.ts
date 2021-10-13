@@ -9,9 +9,10 @@ import {
     NavigationLinkMeta,
 } from '../../../../models/helpCenter/types'
 
+import {getAbsoluteUrl} from './helpCenter.utils'
+
 export const isURLOptions: IsURLOptions = {
     require_host: true,
-    require_protocol: true,
 }
 
 export async function saveSocialLinks(
@@ -44,7 +45,7 @@ export async function saveSocialLinks(
                     },
                     {
                         label: socialLink.label,
-                        value: socialLink.value,
+                        value: getAbsoluteUrl(socialLink.value),
                     }
                 )
             }
@@ -55,7 +56,7 @@ export async function saveSocialLinks(
                 },
                 {
                     label: socialLink.label,
-                    value: socialLink.value,
+                    value: getAbsoluteUrl(socialLink.value),
                     locale: context.locale,
                     group,
                     meta,
@@ -119,7 +120,7 @@ export async function saveNavigationLinks(
                     },
                     {
                         label: link.label,
-                        value: link.value,
+                        value: getAbsoluteUrl(link.value),
                         locale: context.locale,
                         group: context.group,
                     }
@@ -138,7 +139,7 @@ export async function saveNavigationLinks(
                     },
                     {
                         label: link.label,
-                        value: link.value,
+                        value: getAbsoluteUrl(link.value),
                     }
                 )
             )

@@ -7,12 +7,12 @@ import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtu
 
 import {useLocaleSelectOptions} from '../useLocaleSelectOptions'
 
-const availableLanguages = ['en-US']
+const availableLanguages: LocaleCode[] = ['en-US']
 
 const Example = () => {
     const options = useLocaleSelectOptions(
         getLocalesResponseFixture,
-        availableLanguages as LocaleCode[]
+        availableLanguages
     )
 
     return (

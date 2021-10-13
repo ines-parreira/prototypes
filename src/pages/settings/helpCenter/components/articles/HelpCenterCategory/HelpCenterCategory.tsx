@@ -103,7 +103,7 @@ export const HelpCenterCategory = ({
 
     const localeOptions = useLocaleSelectOptions(
         locales,
-        helpCenter.supported_locales || []
+        helpCenter.supported_locales
     )
 
     const domain = useMemo(

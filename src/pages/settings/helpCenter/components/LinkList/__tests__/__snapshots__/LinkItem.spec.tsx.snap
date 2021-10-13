@@ -62,7 +62,7 @@ exports[`<LinkItem> should display the link item with an error message 1`] = `
         class="link-input is-invalid form-control"
         data-testid="link-item-value-2"
         type="text"
-        value="test.com"
+        value="/invalid-link"
       />
       <div
         class="invalid-feedback"

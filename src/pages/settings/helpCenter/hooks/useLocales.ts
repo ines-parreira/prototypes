@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect, useState} from 'react'
 
 import {HelpCenterLocale} from '../../../../models/helpCenter/types'
 
@@ -8,18 +8,16 @@ let cachedLocales: HelpCenterLocale[] = []
 
 export const useLocales = (): HelpCenterLocale[] => {
     const {client} = useHelpcenterApi()
-    const [locales, setLocales] = React.useState<HelpCenterLocale[]>(
-        cachedLocales
-    )
+    const [locales, setLocales] = useState<HelpCenterLocale[]>(cachedLocales)
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (client && locales.length === 0) {
             void client.listLocales().then((response) => {
                 setLocales(response.data)
                 cachedLocales = response.data
             })
         }
-    }, [client])
+    }, [client, locales])
 
     return locales
 }

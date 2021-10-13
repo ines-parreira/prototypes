@@ -1,4 +1,4 @@
-import React from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import produce, {Draft} from 'immer'
 import {chain as _chain} from 'lodash'
 import _defaults from 'lodash/defaults'
@@ -97,18 +97,17 @@ export const useNavigationLinks = (
     isListValid: () => boolean
     resetFields: () => void
 } => {
-    const [links, setLinks] = React.useState<LocalNavigationLink[]>(
+    const [links, setLinks] = useState<LocalNavigationLink[]>(
         decorateLocaleLinks(group, response)
     )
 
-    React.useEffect(() => {
+    useEffect(() => {
         setLinks(decorateLocaleLinks(group, response))
     }, [response, group])
 
-    const innerOptions = React.useMemo(
-        () => _defaults(options, DEFAULT_OPTIONS),
-        [options]
-    )
+    const innerOptions = useMemo(() => _defaults(options, DEFAULT_OPTIONS), [
+        options,
+    ])
 
     const add = (locale: LocaleCode) => {
         setLinks(
@@ -161,20 +160,17 @@ export const useSocialNavigationLinks = (
     isListValid: () => boolean
     resetFields: () => void
 } => {
-    const [links, setLinks] = React.useState<LocalSocialNavigationLink[]>(
-        response
-    )
+    const [links, setLinks] = useState<LocalSocialNavigationLink[]>(response)
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (response.length > 0) {
             setLinks(response)
         }
     }, [response])
 
-    const innerOptions = React.useMemo(
-        () => _defaults(options, DEFAULT_OPTIONS),
-        [options]
-    )
+    const innerOptions = useMemo(() => _defaults(options, DEFAULT_OPTIONS), [
+        options,
+    ])
 
     const remove = (id: number) => {
         setLinks(draftRemoveLink<LocalSocialNavigationLink>(links, id))
