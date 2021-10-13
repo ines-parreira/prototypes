@@ -3,51 +3,44 @@
 exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
 <div>
   <div
-    class="editableListWidget"
     id="editable-list-2-tooltip-target"
   >
     <div
       class="MultiSelectField"
     >
       <div
-        class="select MultiSelectFieldOpts"
+        class="container compact"
       >
         <span
-          class="tag badge badge-secondary"
-          style="color: rgb(2, 117, 216);"
+          class="tag compact badge badge-secondary"
         >
-          <span>
-            <span
-              class="badgeText"
-            >
-              cool
-            </span>
-            <i
-              class="material-icons ml-1 badgeClose"
-            >
-              close
-            </i>
+          <span
+            class="tagText"
+          >
+            cool
           </span>
+          <i
+            class="material-icons ml-1 closeIcon"
+          >
+            close
+          </i>
         </span>
         <span
-          class="tag badge badge-secondary"
-          style="color: rgb(2, 117, 216);"
+          class="tag compact badge badge-secondary"
         >
-          <span>
-            <span
-              class="badgeText"
-            >
-              super
-            </span>
-            <i
-              class="material-icons ml-1 badgeClose"
-            >
-              close
-            </i>
+          <span
+            class="tagText"
+          >
+            super
           </span>
+          <i
+            class="material-icons ml-1 closeIcon"
+          >
+            close
+          </i>
         </span>
         <div
-          class="input-container"
+          class="inputContainer multiSelectOptionField-dropdown compact"
         >
           <div
             class="dropdown"
@@ -59,7 +52,7 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
               data-toggle="dropdown"
             >
               <input
-                class="input ml-2"
+                class="input compact"
                 placeholder="Add tags..."
                 value=""
               />
@@ -88,17 +81,16 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
 exports[`<EditableListWidget/> should render an empty list because no options has been given 1`] = `
 <div>
   <div
-    class="editableListWidget"
     id="editable-list-1-tooltip-target"
   >
     <div
       class="MultiSelectField"
     >
       <div
-        class="select MultiSelectFieldOpts"
+        class="container compact"
       >
         <div
-          class="input-container"
+          class="inputContainer multiSelectOptionField-dropdown compact"
         >
           <div
             class="dropdown"
@@ -110,7 +102,7 @@ exports[`<EditableListWidget/> should render an empty list because no options ha
               data-toggle="dropdown"
             >
               <input
-                class="input ml-2"
+                class="input compact"
                 placeholder="Add tags..."
                 value=""
               />

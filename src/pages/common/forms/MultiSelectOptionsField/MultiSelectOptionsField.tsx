@@ -25,6 +25,7 @@ type Props = {
     onFocus?: () => void
     loading?: boolean
     dropdownMenu?: ComponentType<unknown>
+    isCompact?: boolean
 }
 
 type State = {
@@ -40,7 +41,6 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
         options: [],
         plural: 'items',
         singular: 'item',
-        tagColor: '#0275d8',
         selectedOptions: [],
     }
 
@@ -225,11 +225,11 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
             className,
             style,
             selectedOptions,
-            tagColor,
             plural,
             allowCustomOptions,
             dropdownMenu,
             isDisabled,
+            isCompact,
         } = this.props
         const {isFocused, filteredOptions, input} = this.state
 
@@ -247,15 +247,17 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                 style={style}
             >
                 <div
-                    className={classNames(css.select, 'MultiSelectFieldOpts')}
+                    className={classNames(css.container, {
+                        [css.compact]: isCompact,
+                    })}
                     onClick={this._focus}
                 >
                     {selectedOptions.map((selectedOption: Option) => (
                         <OptionTag
                             key={selectedOption.value}
                             option={selectedOption}
-                            color={tagColor}
                             onRemove={this._onRemoveOptionTag}
+                            isCompact={isCompact}
                         />
                     ))}
                     <Dropdown
@@ -270,6 +272,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                         onSelect={this._onDropdownSelect}
                         onDelete={this._onDropdownDelete}
                         menu={dropdownMenu}
+                        isCompact={isCompact}
                     />
                 </div>
             </div>

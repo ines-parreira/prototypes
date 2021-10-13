@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DuplicateOrderFooterComponent/> render() should render 1`] = `
+exports[`<OrderFooterComponent/> render() should render 1`] = `
 <Container
   className="container"
   fluid={true}
@@ -62,13 +62,13 @@ exports[`<DuplicateOrderFooterComponent/> render() should render 1`] = `
         </h4>
         <MultiSelectOptionsField
           allowCustomOptions={true}
+          className="tagsDropdown"
           matchInput={true}
           onChange={[Function]}
           options={Array []}
           plural="tags"
           selectedOptions={Array []}
           singular="tag"
-          tagColor="#0275d8"
         />
       </div>
     </Col>
@@ -107,7 +107,7 @@ exports[`<DuplicateOrderFooterComponent/> render() should render 1`] = `
 </Container>
 `;
 
-exports[`<DuplicateOrderFooterComponent/> render() should render with tags 1`] = `
+exports[`<OrderFooterComponent/> render() should render with tags 1`] = `
 <Container
   className="container"
   fluid={true}
@@ -169,6 +169,7 @@ exports[`<DuplicateOrderFooterComponent/> render() should render with tags 1`] =
         </h4>
         <MultiSelectOptionsField
           allowCustomOptions={true}
+          className="tagsDropdown"
           matchInput={true}
           onChange={[Function]}
           options={
@@ -205,7 +206,6 @@ exports[`<DuplicateOrderFooterComponent/> render() should render with tags 1`] =
             ]
           }
           singular="tag"
-          tagColor="#0275d8"
         />
       </div>
     </Col>

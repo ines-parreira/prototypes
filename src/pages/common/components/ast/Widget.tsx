@@ -523,9 +523,6 @@ export class Widget extends Component<Props, State> {
                 return (
                     <MultiSelectField
                         className={`${className || ''} Text`}
-                        style={{
-                            display: 'inline-block',
-                        }}
                         values={widget.value}
                         singular="word"
                         plural="words"

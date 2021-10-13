@@ -1,4 +1,5 @@
 import React, {Component, FocusEvent, KeyboardEvent, ChangeEvent} from 'react'
+import classnames from 'classnames'
 
 import css from './Input.less'
 
@@ -13,6 +14,7 @@ type Props = {
     onUp: () => void
     onDown: () => void
     onChange: (value: string) => void
+    isCompact?: boolean
 }
 
 export default class Input extends Component<Props> {
@@ -103,12 +105,14 @@ export default class Input extends Component<Props> {
     }
 
     render() {
-        const {placeholder, value, onFocus} = this.props
+        const {placeholder, value, onFocus, isCompact} = this.props
 
         return (
             <input
                 ref={this.inputRef}
-                className={`${css.input} ml-2`}
+                className={classnames(css.input, {
+                    [css.compact]: isCompact,
+                })}
                 placeholder={placeholder}
                 value={value}
                 onFocus={onFocus}

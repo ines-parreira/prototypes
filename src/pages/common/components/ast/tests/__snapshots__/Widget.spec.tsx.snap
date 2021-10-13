@@ -129,12 +129,6 @@ exports[`ast Widget should render case-insensitive MultiSelectField (containsAll
   options={Array []}
   plural="words"
   singular="word"
-  style={
-    Object {
-      "display": "inline-block",
-    }
-  }
-  tagColor="#0275d8"
   values={
     Array [
       "hello",

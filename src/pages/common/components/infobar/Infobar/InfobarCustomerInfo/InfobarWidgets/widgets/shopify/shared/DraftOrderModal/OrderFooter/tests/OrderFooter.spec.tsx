@@ -7,7 +7,7 @@ import {
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker.js'
 import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
-import {DuplicateOrderFooterComponent} from '../OrderFooter'
+import {OrderFooterComponent} from '../OrderFooter'
 import {ShopifyActionType} from '../../../../types'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
@@ -25,10 +25,10 @@ jest.mock(
     }
 )
 
-describe('<DuplicateOrderFooterComponent/>', () => {
+describe('<OrderFooterComponent/>', () => {
     const context = {integrationId: 1}
     let onPayloadChange: jest.MockedFunction<
-        ComponentProps<typeof DuplicateOrderFooterComponent>['onPayloadChange']
+        ComponentProps<typeof OrderFooterComponent>['onPayloadChange']
     >
 
     beforeEach(() => {
@@ -38,7 +38,7 @@ describe('<DuplicateOrderFooterComponent/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const component = shallow(
-                <DuplicateOrderFooterComponent
+                <OrderFooterComponent
                     editable
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
@@ -56,7 +56,7 @@ describe('<DuplicateOrderFooterComponent/>', () => {
             payload.tags = 'tag1,tag2,tag3'
 
             const component = shallow(
-                <DuplicateOrderFooterComponent
+                <OrderFooterComponent
                     editable
                     actionName={ShopifyActionType.DuplicateOrder}
                     currencyCode="USD"
@@ -88,7 +88,7 @@ describe('<DuplicateOrderFooterComponent/>', () => {
                 ) as Map<any, any>
 
                 const component = shallow(
-                    <DuplicateOrderFooterComponent
+                    <OrderFooterComponent
                         editable
                         actionName={actionName}
                         currencyCode="USD"
@@ -134,8 +134,8 @@ describe('<DuplicateOrderFooterComponent/>', () => {
                     shopifyDraftOrderPayloadFixture()
                 ) as Map<any, any>
 
-                const component = shallow<DuplicateOrderFooterComponent>(
-                    <DuplicateOrderFooterComponent
+                const component = shallow<OrderFooterComponent>(
+                    <OrderFooterComponent
                         editable
                         actionName={actionName}
                         currencyCode="USD"

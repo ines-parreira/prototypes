@@ -16,7 +16,6 @@ import Tooltip from '../../../../../Tooltip'
 
 import {ShopifyActionType} from './shopify/types'
 import {ActionButtonContext} from './ActionButton'
-import css from './EditableListWidget.less'
 
 type OwnProps = {
     selectedOptions: string
@@ -137,7 +136,7 @@ export function EditableListWidget(
     }
 
     return (
-        <div id={tooltipTargetID} className={css.editableListWidget}>
+        <div id={tooltipTargetID}>
             <MultiSelectOptionsField
                 selectedOptions={selectedValues}
                 plural="tags"
@@ -148,6 +147,7 @@ export function EditableListWidget(
                 isDisabled={notEditable}
                 allowCustomOptions
                 matchInput
+                isCompact
             />
             {notEditable && !widgetIsEditing && (
                 <Tooltip placement="top" target={tooltipTargetID}>

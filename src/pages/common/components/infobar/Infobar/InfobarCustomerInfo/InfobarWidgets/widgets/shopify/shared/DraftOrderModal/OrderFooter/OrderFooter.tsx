@@ -32,7 +32,7 @@ type State = {
     note: string
 }
 
-export class DuplicateOrderFooterComponent extends Component<Props, State> {
+export class OrderFooterComponent extends Component<Props, State> {
     static contextTypes = {
         integrationId: PropTypes.number.isRequired,
     }
@@ -124,10 +124,10 @@ export class DuplicateOrderFooterComponent extends Component<Props, State> {
                         <div>
                             <h4>Tags</h4>
                             <MultiSelectOptionsField
-                                options={DuplicateOrderFooterComponent.tagsToOptions(
+                                options={OrderFooterComponent.tagsToOptions(
                                     this._defaultTags
                                 )}
-                                selectedOptions={DuplicateOrderFooterComponent.tagsToOptions(
+                                selectedOptions={OrderFooterComponent.tagsToOptions(
                                     tags
                                 )}
                                 plural="tags"
@@ -135,6 +135,7 @@ export class DuplicateOrderFooterComponent extends Component<Props, State> {
                                 onChange={this._onTagsChange}
                                 allowCustomOptions
                                 matchInput
+                                className={css.tagsDropdown}
                             />
                         </div>
                     </Col>
@@ -166,4 +167,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DuplicateOrderFooterComponent)
+)(OrderFooterComponent)

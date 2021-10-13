@@ -9,12 +9,12 @@ type Props = {
     plural: string
     singular: string
     style?: CSSProperties
-    tagColor: string
     values: any[] | null
     className?: string
     caseInsensitive?: boolean
     onChange: (options: any[]) => void
     dropdownMenu?: ComponentType<unknown>
+    isCompact?: boolean
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
@@ -24,7 +24,6 @@ export default class MultiSelectField extends React.Component<Props> {
         options: [],
         plural: 'items',
         singular: 'item',
-        tagColor: '#0275d8',
         values: [],
     }
 
@@ -53,7 +52,6 @@ export default class MultiSelectField extends React.Component<Props> {
                 options={this.props.options}
                 plural={this.props.plural}
                 singular={this.props.singular}
-                tagColor={this.props.tagColor}
                 selectedOptions={selectedOptions}
                 onChange={this._onChange}
                 style={this.props.style}
@@ -61,6 +59,7 @@ export default class MultiSelectField extends React.Component<Props> {
                 caseInsensitive={this.props.caseInsensitive}
                 dropdownMenu={this.props.dropdownMenu}
                 matchInput
+                isCompact={this.props.isCompact}
             />
         )
     }

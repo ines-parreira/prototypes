@@ -45,13 +45,12 @@ exports[`MultiSelectField should render a multi select input with custom props 1
   plural="tags"
   selectedOptions={Array []}
   singular="tag"
-  tagColor="#0275d8"
 >
   <div
     className="MultiSelectField"
   >
     <div
-      className="select MultiSelectFieldOpts"
+      className="container"
       onClick={[Function]}
     >
       <Dropdown
@@ -82,7 +81,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
         value=""
       >
         <div
-          className="input-container"
+          className="inputContainer multiSelectOptionField-dropdown"
         >
           <UncontrolledDropdown
             isOpen={false}
@@ -133,7 +132,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                             value=""
                           >
                             <input
-                              className="input ml-2"
+                              className="input"
                               onBlur={[Function]}
                               onChange={[Function]}
                               onFocus={[Function]}
@@ -288,13 +287,12 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
   plural="items"
   selectedOptions={Array []}
   singular="item"
-  tagColor="#0275d8"
 >
   <div
     className="MultiSelectField"
   >
     <div
-      className="select MultiSelectFieldOpts"
+      className="container"
       onClick={[Function]}
     >
       <Dropdown
@@ -310,7 +308,7 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
         value=""
       >
         <div
-          className="input-container"
+          className="inputContainer multiSelectOptionField-dropdown"
         >
           <UncontrolledDropdown
             isOpen={false}
@@ -361,7 +359,7 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
                             value=""
                           >
                             <input
-                              className="input ml-2"
+                              className="input"
                               onBlur={[Function]}
                               onChange={[Function]}
                               onFocus={[Function]}
@@ -427,7 +425,6 @@ Object {
   "plural": "items",
   "selectedOptions": Array [],
   "singular": "item",
-  "tagColor": "#0275d8",
 }
 `;
 
@@ -550,6 +547,5 @@ Object {
   "plural": "tags",
   "selectedOptions": Array [],
   "singular": "tag",
-  "tagColor": "#0275d8",
 }
 `;

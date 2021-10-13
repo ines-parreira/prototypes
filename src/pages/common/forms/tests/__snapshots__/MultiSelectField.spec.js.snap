@@ -22,7 +22,6 @@ exports[`MultiSelectField should render the select field with no selected option
   }
   plural="tags"
   singular="tag"
-  tagColor="#0275d8"
   values={null}
 >
   <MultiSelectOptionsField
@@ -48,13 +47,12 @@ exports[`MultiSelectField should render the select field with no selected option
     plural="tags"
     selectedOptions={Array []}
     singular="tag"
-    tagColor="#0275d8"
   >
     <div
       className="MultiSelectField"
     >
       <div
-        className="select MultiSelectFieldOpts"
+        className="container"
         onClick={[Function]}
       >
         <Dropdown
@@ -85,7 +83,7 @@ exports[`MultiSelectField should render the select field with no selected option
           value=""
         >
           <div
-            className="input-container"
+            className="inputContainer multiSelectOptionField-dropdown"
           >
             <UncontrolledDropdown
               isOpen={false}
@@ -136,7 +134,7 @@ exports[`MultiSelectField should render the select field with no selected option
                               value=""
                             >
                               <input
-                                className="input ml-2"
+                                className="input"
                                 onBlur={[Function]}
                                 onChange={[Function]}
                                 onFocus={[Function]}
