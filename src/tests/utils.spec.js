@@ -504,6 +504,14 @@ describe('global utils', () => {
 `)
             ).toMatchSnapshot()
         })
+
+        it('should not proxify a proxified image', () => {
+            expect(
+                utils.proxifyImages(
+                    `<img src="${window.IMAGE_PROXY_URL}http://gorgias.io/hello" />`
+                )
+            ).toMatchSnapshot()
+        })
     })
 
     describe('hoursToSeconds', () => {

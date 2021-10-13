@@ -449,7 +449,13 @@ export const proxifyImages = (html: string, format = '1000x'): string => {
             const attributePairs: string[] = []
             attributesKeys.forEach((k) => {
                 let v = attributes[k] as string
-                if (name === 'img' && k === 'src') {
+                if (
+                    name === 'img' &&
+                    k === 'src' &&
+                    (attributes.src as string).indexOf(
+                        window.IMAGE_PROXY_URL
+                    ) === -1
+                ) {
                     try {
                         v = proxifyURL(attributes.src as string, format)
                     } catch (error) {
