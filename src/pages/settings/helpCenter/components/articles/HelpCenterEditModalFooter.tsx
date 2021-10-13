@@ -8,6 +8,7 @@ import css from './HelpCenterEditModalFooter.less'
 type Props = {
     counters?: {charCount: number; wordCount: number}
     canSave: boolean
+    canDelete: boolean
     onSave: () => void
     onDelete: () => void
 }
@@ -15,6 +16,7 @@ type Props = {
 export const HelpCenterEditModalFooter = ({
     counters,
     canSave,
+    canDelete,
     onSave,
     onDelete,
 }: Props): JSX.Element => {
@@ -39,13 +41,15 @@ export const HelpCenterEditModalFooter = ({
                     Save Article
                 </Button>
 
-                <Button
-                    className={css['delete-btn']}
-                    onClick={() => setPendingDeleteArticle(true)}
-                >
-                    <i className="material-icons mr-2">delete</i>
-                    Delete Article
-                </Button>
+                {canDelete && (
+                    <Button
+                        className={css['delete-btn']}
+                        onClick={() => setPendingDeleteArticle(true)}
+                    >
+                        <i className="material-icons mr-2">delete</i>
+                        Delete Article
+                    </Button>
+                )}
             </div>
             {counters && (
                 <div className={css.counters}>

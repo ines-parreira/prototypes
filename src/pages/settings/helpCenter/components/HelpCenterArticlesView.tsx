@@ -367,6 +367,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         <HelpCenterEditModalFooter
                             counters={counters}
                             canSave={canSaveArticle}
+                            canDelete={!!selectedArticle.id}
                             onSave={saveArticle}
                             onDelete={deleteArticle}
                         />
@@ -421,6 +422,7 @@ export const HelpCenterArticlesView = (): JSX.Element => {
                         <HelpCenterEditModalFooter
                             counters={counters}
                             canSave={canSaveArticle}
+                            canDelete={!!selectedArticle.id}
                             onSave={saveArticle}
                             onDelete={deleteArticle}
                         />
