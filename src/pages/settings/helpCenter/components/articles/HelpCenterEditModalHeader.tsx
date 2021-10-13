@@ -105,33 +105,35 @@ export const HelpCenterEditModalHeader = ({
 
     return (
         <header className={css.header}>
-            <input
-                type="text"
-                value={title}
-                placeholder="Title"
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                    onEditTitle && onEditTitle(event.target.value)
-                }
-                disabled={Boolean(!onEditTitle)}
-                className={css.titleInput}
-            />
-            <div className={css.headerControls}>
-                <ArticleLanguageSelect
-                    selected={language}
-                    list={localeSelectOptions}
-                    onSelect={onChangeLanguage}
-                    onClickAction={onClickAction}
+            <div className={css.headerTopContainer}>
+                <input
+                    type="text"
+                    value={title}
+                    placeholder="Title"
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        onEditTitle && onEditTitle(event.target.value)
+                    }
+                    disabled={Boolean(!onEditTitle)}
+                    className={css.titleInput}
                 />
-                {toggleModalBtn}
-                {onResize && getResizeModalButton()}
-                <button
-                    type="button"
-                    className={css.controlButton}
-                    onClick={onClose}
-                    aria-label="close modal"
-                >
-                    <i className="material-icons mr-2">keyboard_tab</i>
-                </button>
+                <div className={css.headerControls}>
+                    <ArticleLanguageSelect
+                        selected={language}
+                        list={localeSelectOptions}
+                        onSelect={onChangeLanguage}
+                        onClickAction={onClickAction}
+                    />
+                    {toggleModalBtn}
+                    {onResize && getResizeModalButton()}
+                    <button
+                        type="button"
+                        className={css.controlButton}
+                        onClick={onClose}
+                        aria-label="close modal"
+                    >
+                        <i className="material-icons mr-2">keyboard_tab</i>
+                    </button>
+                </div>
             </div>
             <div className={css.break} />
             {onEditCategory && selectedCategory !== undefined && (

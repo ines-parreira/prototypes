@@ -161,7 +161,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
               Upload image
             </span>
             <span>
-              recommended size 540 x 72 - Maximum 10 MB
+              maximum 10 MB
             </span>
           </div>
         </div>
@@ -233,7 +233,7 @@ exports[`<HelpCenterAppearanceView/> should render the component 1`] = `
               Upload image
             </span>
             <span>
-              recommended size 540 x 72 - Maximum 10 MB
+              maximum 10 MB
             </span>
           </div>
         </div>

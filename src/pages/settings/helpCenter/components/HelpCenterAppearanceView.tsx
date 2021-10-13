@@ -216,7 +216,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                 primaryLogo,
                                 helpCenter?.brand_logo_url
                             ),
-                            text: 'recommended size 540 x 72 - Maximum 10 MB',
+                            text: 'maximum 10 MB',
                         }}
                     />
                     <ImageUpload
@@ -232,7 +232,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                 lightLogo,
                                 helpCenter?.brand_logo_light_url
                             ),
-                            text: 'recommended size 540 x 72 - Maximum 10 MB',
+                            text: 'maximum 10 MB',
                         }}
                     />
                     <ImageUpload

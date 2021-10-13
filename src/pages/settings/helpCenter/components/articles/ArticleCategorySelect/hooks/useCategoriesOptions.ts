@@ -37,7 +37,7 @@ const useCategoriesOptions = ({locale, helpCenterId}: UseCategoriesOptions) => {
         }))
         if (isMounted()) {
             setOptions([
-                {label: '- No category', value: NO_CATEGORY_OPTION},
+                {label: '- No category -', value: NO_CATEGORY_OPTION},
                 ...newOptions,
             ])
         }

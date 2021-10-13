@@ -3,10 +3,13 @@
 :local {
     .header {
         display: flex;
+        flex-direction: column;
+    }
+    .headerTopContainer {
+        display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 18px 16px;
-        flex-wrap: wrap;
+        padding: 16px;
     }
     .titleInput,
     .titleInput:disabled {
@@ -47,12 +50,7 @@
         font-size: 14px;
         line-height: 20px;
     }
-    .break {
-        flex-basis: 100%;
-        height: 0;
-    }
     .categorySelect {
-        margin-top: 20px;
-        width: 400px;
+        padding: 8px 16px;
     }
 }

@@ -13,7 +13,7 @@ export const FooterActions = () => {
     const $ref = React.createRef<HTMLElement>()
 
     return (
-        <footer style={{marginTop: 64, display: 'inline-flex'}} ref={$ref}>
+        <footer ref={$ref}>
             <Button
                 color="success"
                 disabled={!(arePreferencesChanged() && areChangesValid())}

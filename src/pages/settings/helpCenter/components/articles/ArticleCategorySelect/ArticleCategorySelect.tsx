@@ -1,11 +1,14 @@
 import React from 'react'
+import classNames from 'classnames'
 
-import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
+import SelectField from '../../../../../common/forms/SelectField/SelectField'
 
 import useCategoriesOptions, {
     NO_CATEGORY_OPTION,
 } from './hooks/useCategoriesOptions'
+
+import css from './ArticleCategorySelect.less'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode
@@ -19,7 +22,7 @@ const ArticleCategorySelect = ({
     categoryId,
     helpCenterId,
     onChange,
-}: ArticleCategorySelectProps) => {
+}: ArticleCategorySelectProps): JSX.Element => {
     const options = useCategoriesOptions({locale, helpCenterId})
 
     const selectOption = categoryId === null ? NO_CATEGORY_OPTION : categoryId
@@ -39,6 +42,9 @@ const ArticleCategorySelect = ({
                 }
             }}
             options={options}
+            className={classNames(css.select, {
+                [css.noCategory]: categoryId === null,
+            })}
         />
     )
 }

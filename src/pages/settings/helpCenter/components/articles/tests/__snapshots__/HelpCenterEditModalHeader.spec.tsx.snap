@@ -5,55 +5,59 @@ exports[`<HelpCenterEditModalHeader/> should display the component correctly 1`]
   <header
     class="header"
   >
-    <input
-      class="titleInput"
-      disabled=""
-      placeholder="Title"
-      type="text"
-      value="Article"
-    />
     <div
-      class="headerControls"
+      class="headerTopContainer"
     >
+      <input
+        class="titleInput"
+        disabled=""
+        placeholder="Title"
+        type="text"
+        value="Article"
+      />
       <div
-        class="wrapper"
+        class="headerControls"
       >
-        <button
-          class="trigger"
-          data-testid="dropdown-select-trigger"
+        <div
+          class="wrapper"
         >
-          <span
-            class="label"
+          <button
+            class="trigger"
+            data-testid="dropdown-select-trigger"
           >
-            <span>
-              <img
-                alt="fr-FR"
-                class="flag-emoji"
-                src="test-file-stub"
-              />
+            <span
+              class="label"
+            >
               <span>
-                French - France
+                <img
+                  alt="fr-FR"
+                  class="flag-emoji"
+                  src="test-file-stub"
+                />
+                <span>
+                  French - France
+                </span>
               </span>
             </span>
-          </span>
-          <span
-            class="material-icons"
+            <span
+              class="material-icons"
+            >
+              arrow_drop_down
+            </span>
+          </button>
+        </div>
+        <button
+          aria-label="close modal"
+          class="controlButton"
+          type="button"
+        >
+          <i
+            class="material-icons mr-2"
           >
-            arrow_drop_down
-          </span>
+            keyboard_tab
+          </i>
         </button>
       </div>
-      <button
-        aria-label="close modal"
-        class="controlButton"
-        type="button"
-      >
-        <i
-          class="material-icons mr-2"
-        >
-          keyboard_tab
-        </i>
-      </button>
     </div>
     <div
       class="break"

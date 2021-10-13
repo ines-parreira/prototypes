@@ -1,24 +1,23 @@
 import React from 'react'
+import classNames from 'classnames'
 import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 
 import {getCurrentHelpCenter} from '../../../../../state/entities/helpCenters/selectors'
-
 import Loader from '../../../../common/components/Loader/Loader'
 import PageHeader from '../../../../common/components/PageHeader'
-
-import {LanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
 import {useLocales} from '../../hooks/useLocales'
-
-import {HelpCenterNavigation} from '../HelpCenterNavigation'
-import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
+import {LanguagePreferencesSettings} from '../../providers/LanguagePreferencesSettings'
 import {DefaultLanguageSelect} from '../DefaultLanguageSelect'
+import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
+import {HelpCenterNavigation} from '../HelpCenterNavigation'
 
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
-
-import {FooterActions} from './components/FooterActions'
 import {DisplayName} from './components/DisplayName'
+import {FooterActions} from './components/FooterActions'
+
+import css from './HelpCenterPreferencesView.less'
 
 export const HelpCenterPreferencesView = () => {
     const helpcenterId = useHelpCenterIdParam()
@@ -51,8 +50,7 @@ export const HelpCenterPreferencesView = () => {
             >
                 <Container
                     fluid
-                    className="page-container"
-                    style={{maxWidth: 680, marginLeft: 0}}
+                    className={classNames('page-container', css.container)}
                 >
                     <DisplayName />
                     <DefaultLanguageSelect localesAvailable={locales} />
