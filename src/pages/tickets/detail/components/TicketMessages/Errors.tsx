@@ -2,6 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 
 import {TicketMessage} from '../../../../../models/ticket/types'
+import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 
 import Error from './Error'
 
@@ -15,6 +16,17 @@ type Props = {
 
 const Errors = (props: Props) => {
     const {message, loading, hasActionError, ticketId, setStatus} = props
+
+    if (
+        [
+            TicketMessageSourceType.YotpoReviewPublicComment,
+            TicketMessageSourceType.YotpoReviewPrivateComment,
+        ].includes(message.source!.type) &&
+        message.last_sending_error &&
+        message.last_sending_error.error === 'Review already has a comment'
+    ) {
+        message.is_retriable = false
+    }
 
     return (
         <>
