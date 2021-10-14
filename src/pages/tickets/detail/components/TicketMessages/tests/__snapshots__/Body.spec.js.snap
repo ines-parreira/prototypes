@@ -1051,3 +1051,42 @@ exports[`Body should display the Twitter quoted tweet card if there's matching m
   </div>
 </Body>
 `;
+
+exports[`Body should display the Yotpo product card if there's matching metadata 1`] = `
+<div
+  className="component"
+>
+  <Content
+    html="<div>This is a really good product!</div>"
+    strippedHtml={null}
+    strippedText={null}
+    text="This is a really good product!"
+  />
+  <ProductEmbeddedCard
+    product={
+      Object {
+        "average_score": 4.3,
+        "category": Object {
+          "id": 1,
+          "name": "electronics",
+        },
+        "created_at": "2017-10-10 09:01:43",
+        "description": "economic washing machine",
+        "external_product_id": "09876427",
+        "id": 11111111,
+        "images": Array [
+          Object {
+            "original": "https://cdn.yotpo.com/Product//original.jpg?",
+            "square": "https://cdn.yotpo.com/Product//original.jpg?",
+          },
+        ],
+        "name": "Tandem washing machine",
+        "specs": Array [],
+        "total_reviews": 100,
+        "updated_at": "2021-09-08 23:21:23",
+        "url": "www.yotpo.com/product/GGGGG",
+      }
+    }
+  />
+</div>
+`;

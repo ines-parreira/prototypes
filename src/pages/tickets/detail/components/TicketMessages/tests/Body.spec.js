@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 
 import Body from '../Body.tsx'
 import {
@@ -182,6 +182,109 @@ describe('Body', () => {
             rule_id: null,
         }
         const component = mount(<Body message={quotedTweetTicketMessage} />)
+        expect(component).toMatchSnapshot()
+    })
+
+    it("should display the Yotpo product card if there's matching metadata", () => {
+        const productCardTicketMessage = {
+            sent_datetime: '2021-09-07T01:51:41+00:00',
+            channel: TicketChannel.YotpoReview,
+            meta: {
+                product: {
+                    id: 11111111,
+                    external_product_id: '09876427',
+                    name: 'Tandem washing machine',
+                    url: 'www.yotpo.com/product/GGGGG',
+                    created_at: '2017-10-10 09:01:43',
+                    updated_at: '2021-09-08 23:21:23',
+                    average_score: 4.3,
+                    total_reviews: 100,
+                    category: {
+                        id: 1,
+                        name: 'electronics',
+                    },
+                    description: 'economic washing machine',
+                    specs: [],
+                    images: [
+                        {
+                            original:
+                                'https://cdn.yotpo.com/Product//original.jpg?',
+                            square:
+                                'https://cdn.yotpo.com/Product//original.jpg?',
+                        },
+                    ],
+                },
+            },
+            integration_id: 10,
+            body_html: '<div>This is a really good product!</div>',
+            public: true,
+            body_text: 'This is a really good product!',
+            subject: '5 stars review left by Sebastian H. - Great!',
+            uri: '/api/tickets/377/messages/10/',
+            via: TicketVia.Yotpo,
+            ticket_id: 377,
+            receiver: {
+                id: 1,
+                email: 'support@acme.gorgias.io',
+                name: 'Acme Support',
+                firstname: 'Acme',
+                lastname: 'Support',
+                meta: null,
+            },
+            external_id: '1435058157764685824',
+            stripped_signature: null,
+            from_agent: false,
+            attachments: [
+                {
+                    url:
+                        'https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg',
+                    name: 'E-pZxm5XoAAmsSo.jpg',
+                    size: 106372,
+                    content_type: 'image/jpeg',
+                    public: true,
+                },
+            ],
+            opened_datetime: null,
+            created_datetime: '2021-09-07T01:51:41+00:00',
+            message_id: undefined,
+            stripped_html: null,
+            stripped_text: null,
+            sender: {
+                id: 67,
+                email: '',
+                name: 'Sebastian H.',
+                firstname: 'Sebastian H.',
+                lastname: '',
+                meta: {
+                    name_set_via: 'yotpo',
+                },
+            },
+            intents: [],
+            last_sending_error: undefined,
+            source: {
+                type: TicketMessageSourceType.YotpoReview,
+                to: [
+                    {
+                        name: 'Yotpo account #XXXXXXXXXXXXXXXXX',
+                        address: '',
+                    },
+                ],
+                from: {
+                    name: 'Sebastian H.',
+                    address: 'sebastian@support.com',
+                },
+                extra: {
+                    parent_id: undefined,
+                    conversation_id: '1435058157764685824',
+                },
+            },
+            id: 1231,
+            actions: null,
+            failed_datetime: null,
+            isMessage: true,
+            rule_id: null,
+        }
+        const component = shallow(<Body message={productCardTicketMessage} />)
         expect(component).toMatchSnapshot()
     })
 })

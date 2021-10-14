@@ -1,5 +1,4 @@
 import React from 'react'
-
 import {Col, Container, Row} from 'reactstrap'
 
 import classNamesBind from 'classnames/bind'
@@ -8,11 +7,10 @@ import FacebookCarousel from '../FacebookCarousel'
 import {TicketMessage} from '../../../../../models/ticket/types'
 
 import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
-
+import ProductEmbeddedCard from '../../../../common/components/ProductEmbeddedCard/ProductEmbeddedCard'
 import {mapQuotedTweetTicketMessageToEmbeddedCard} from '../../../../common/components/TicketMessageEmbeddedCard/utils'
 
 import Content from './Content'
-
 import css from './Body.less'
 
 const classNames = classNamesBind.bind(css)
@@ -54,6 +52,9 @@ const Body = (props: Props) => {
                         </Col>
                     </Row>
                 </Container>
+            )}
+            {message.meta && message.meta.product && (
+                <ProductEmbeddedCard product={message.meta.product} />
             )}
         </div>
     )

@@ -180,6 +180,7 @@ export type Meta = {
     is_story_reply?: boolean
     facebook_reactions?: FacebookReactions
     quoted_tweet?: QuotedTweet
+    product?: ProductDetails
 }
 
 export type FacebookPrivateReply = {
@@ -236,4 +237,17 @@ export type QuotedTweet = {
         username: string
     }
     attachments: Attachment[]
+}
+
+export type ProductDetails = {
+    average_score: number
+    category: {name: string}
+    description: string
+    images: Array<{
+        original: string
+        square: string
+    }>
+    name: string
+    total_reviews: number
+    url: string
 }
