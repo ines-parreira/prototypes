@@ -28,7 +28,6 @@ exports[`Header should correctly display intents 1`] = `
       messageCreatedDatetime=""
       meta={null}
       ruleId={null}
-      subject="Some subject"
       via="email"
     />
   </div>
@@ -153,7 +152,6 @@ exports[`Header should display header 1`] = `
       messageCreatedDatetime=""
       meta={null}
       ruleId={null}
-      subject="Some subject"
       via="email"
     />
   </div>
@@ -427,7 +425,6 @@ exports[`Header should not display header with metaContent = "Message hidden" be
           "type": "facebook-comment",
         }
       }
-      subject="Some subject"
       via="facebook"
     />
   </div>

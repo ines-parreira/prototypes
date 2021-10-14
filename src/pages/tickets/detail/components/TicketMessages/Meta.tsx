@@ -41,7 +41,6 @@ export default function Meta(props: Props) {
         via,
         integrationId,
         messageCreatedDatetime,
-        subject,
     } = props
     const widgets = []
 
@@ -165,10 +164,7 @@ export default function Meta(props: Props) {
 
         if (!!messageId && isYotpoReview) {
             type = 'review'
-            link = 'https://reviews.yotpo.com/#/moderation/reviews'
-            if (subject) {
-                link += `?query=${subject}&sort_by=review_creation_date`
-            }
+            link = `https://reviews.yotpo.com/#/moderation/reviews?filterType=reviews&id=${messageId}`
             yotpoReviewScore = source.extra.score
         } else if (isFacebookPost) {
             const postId = isFacebookPost ? getId(fullPostId!) : fullPostId
